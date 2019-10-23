@@ -30,6 +30,11 @@
       <genEnumLiterals ecoreEnumLiteral="krendering.ecore#//LineCap/CAP_ROUND"/>
       <genEnumLiterals ecoreEnumLiteral="krendering.ecore#//LineCap/CAP_SQUARE"/>
     </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="krendering.ecore#//ModifierState">
+      <genEnumLiterals ecoreEnumLiteral="krendering.ecore#//ModifierState/DONT_CARE"/>
+      <genEnumLiterals ecoreEnumLiteral="krendering.ecore#//ModifierState/PRESSED"/>
+      <genEnumLiterals ecoreEnumLiteral="krendering.ecore#//ModifierState/NOT_PRESSED"/>
+    </genEnums>
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="krendering.ecore#//Trigger">
       <genEnumLiterals ecoreEnumLiteral="krendering.ecore#//Trigger/SINGLECLICK"/>
       <genEnumLiterals ecoreEnumLiteral="krendering.ecore#//Trigger/DOUBLECLICK"/>

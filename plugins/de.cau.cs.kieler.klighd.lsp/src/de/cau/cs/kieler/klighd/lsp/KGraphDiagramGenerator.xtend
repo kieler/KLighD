@@ -27,6 +27,7 @@ import de.cau.cs.kieler.klighd.kgraph.util.KGraphUtil
 import de.cau.cs.kieler.klighd.krendering.KBackground
 import de.cau.cs.kieler.klighd.krendering.KContainerRendering
 import de.cau.cs.kieler.klighd.krendering.KForeground
+import de.cau.cs.kieler.klighd.krendering.KImage
 import de.cau.cs.kieler.klighd.krendering.KRectangle
 import de.cau.cs.kieler.klighd.krendering.KRendering
 import de.cau.cs.kieler.klighd.krendering.KRenderingFactory
@@ -97,8 +98,7 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
      * @see KGraphDiagramState
      */
     @Accessors(PUBLIC_GETTER)
-    private var ArrayList<SKLabel> modelLabels
-
+    private var List<SKLabel> modelLabels
     /**
      * A map containing all {@link KText}s from the source KGraph under the key of their ID in the texts-only SGraph.
      * @see #generateTextDiagram
@@ -106,6 +106,12 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
      */
     @Accessors(PUBLIC_GETTER)
     private var Map<String, KText> textMapping
+    
+    /**
+     * The {@link KImage}s contained in the view model.
+     */
+    @Accessors(PUBLIC_GETTER)
+    private var List<KImage> images
 
     /**
      * The root node of the translated {@link SGraph}.
@@ -165,6 +171,7 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
         kGraphToSModelElementMap = new HashMap
         textMapping = new HashMap
         modelLabels = new ArrayList
+        images = new ArrayList
         idGen = new KGraphElementIDGenerator
         edgesToGenerate = new ArrayList
 
@@ -181,12 +188,11 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
 
 //        val endTime = System.currentTimeMillis
 //        println("SGraph generation finished after " + (endTime - startTime) + "ms.")
-        return if (cancelIndicator.canceled)
-            null
-        else
-            diagramRoot
-    // TODO: incorporate the cancelIndicator on more places?
-    }
+        return if (cancelIndicator.canceled) 
+               null 
+           else 
+               diagramRoot
+	}
 
     /**
      * Translates all {@code nodes} and their outgoing edges to {@link SModelElement}s. Also handles tracing and
@@ -295,11 +301,10 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
         val nodeElement = configSElement(SKNode, idGen.getId(node))
 
         nodeElement.size = new Dimension(node.width, node.height)
+        nodeElement.tooltip = node.getProperty(KlighdProperties.TOOLTIP)
         val filteredData = node.data.filter [
             KRendering.isAssignableFrom(it.class) || KRenderingLibrary.isAssignableFrom(it.class)
         ].toList
-
-        modelLabels.addAll(findTextsAndLabels(filteredData))
 
         nodeElement.data = node.data.filter[KRenderingLibrary.isAssignableFrom(it.class)].toList
 
@@ -307,7 +312,8 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
         nodeElement.posId = node.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_I_D)
         nodeElement.layerCons = node.getProperty(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT)
         nodeElement.posCons = node.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT)
-
+        
+        findSpecialRenderings(filteredData)
         
         var parent = node
         while (parent.parent !== null) {
@@ -348,11 +354,11 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
         val SKEdge edgeElement = configSElement(SKEdge, idGen.getId(edge))
         edgeElement.sourceId = idGen.getId(edge.source)
         edgeElement.targetId = idGen.getId(edge.target)
+        edgeElement.tooltip = edge.getProperty(KlighdProperties.TOOLTIP)
 
         val renderings = edge.data.filter[KRendering.isAssignableFrom(it.class)].toList
-
-        modelLabels.addAll(findTextsAndLabels(renderings))
-
+        
+        findSpecialRenderings(renderings)
         edgeElement.children.addAll(createLabels(edge.labels))
         edgeElement.junctionPoints = edge.getProperty(CoreOptions.JUNCTION_POINTS)
 
@@ -370,11 +376,11 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
      */
     private def SKPort generatePort(KPort port) {
         val SKPort portElement = configSElement(SKPort, idGen.getId(port))
-
-        val renderings = port.data.filter[KRendering.isAssignableFrom(it.class)].toList
-
-        modelLabels.addAll(findTextsAndLabels(renderings))
-
+        portElement.tooltip = port.getProperty(KlighdProperties.TOOLTIP)
+        
+        val renderings = port.data.filter [ KRendering.isAssignableFrom(it.class)].toList
+        
+        findSpecialRenderings(renderings)
         portElement.children.addAll(createLabels(port.labels))
 
         // activate the element by default if it does not have an active/inactive status yet.
@@ -394,14 +400,14 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
      */
     private def SKLabel generateLabel(KLabel label, boolean main) {
         val SKLabel labelElement = configSElement(SKLabel, idGen.getId(label))
+        labelElement.tooltip = label.getProperty(KlighdProperties.TOOLTIP)
         labelElement.text = label.text
 
         val renderings = label.data.filter[KRendering.isAssignableFrom(it.class)].toList
 
         if (main) {
             // remember KLabel element for later size estimation
-            modelLabels.addAll(findTextsAndLabels(renderings))
-
+            findSpecialRenderings(renderings)
             // activate the element by default if it does not have an active/inactive status yet.
             val renderingContextData = RenderingContextData.get(label)
             if (!renderingContextData.containsPoperty(KlighdInternalProperties.ACTIVE)) {
@@ -523,24 +529,27 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
     }
 
     /**
-     * Finds all KText and KLabel elements within the renderings in dataList and returns them as new labels.
-     * Also remembers the mapping to the KText elements from the source model in the textMapping field.
+     * Looks through the data of elements and searches for special renderings that are needed to be pre-processed before
+     * rendering:
+     * Finds all KText and KLabel elements within the renderings in dataList and puts them as new labels in the
+     * {@code modelLabels} field.
+     * Remembers the mapping to the KText elements from the source model in the textMapping field.
+     * Stores all {@link KImage}s in the {@code images} field.
      */
-    private def List<SKLabel> findTextsAndLabels(List<KGraphData> dataList) {
-        val dataTexts = new ArrayList
-        for (data : dataList) {
-            dataTexts.addAll(findTextsAndLabels(data))
+    private def void findSpecialRenderings(List<KGraphData> datas) {
+        for (data : datas) {
+            findSpecialRenderings(data)
         }
-        return dataTexts
     }
 
     /**
-     * Finds all {@link KText} and {@link KLabel} elements within the renderings in {@code dataList} and returns them as
-     * new labels. Also remembers the mapping to the KText elements from the source model in the {@code textMapping} 
+     * Finds all {@link KText}, {@link KLabel} and {@link KImage} elements within the renderings in {@code dataList} and 
+     * stores them. Also remembers the mapping to the KText elements from the source model in the {@code textMapping} 
      * field.
      */
-    private def List<SKLabel> findTextsAndLabels(KGraphData data) {
-        val dataLabels = new ArrayList
+    private def void findSpecialRenderings(KGraphData data) {
+        var SKLabel dataLabel = null
+        var KImage dataImage = null
         if (data instanceof KText) {
             // create a new Label with data as its text
             val label = KGraphFactory.eINSTANCE.createKLabel()
@@ -566,17 +575,27 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
             sKLabel.id = diagramRoot.id + KGraphElementIDGenerator.ID_SEPARATOR + "texts-only" +
                 KGraphElementIDGenerator.ID_SEPARATOR + KGraphElementIDGenerator.LABEL_SEPARATOR + label.hashCode
             textMapping.put(sKLabel.id, data)
-
-            dataLabels += sKLabel
+            
+            dataLabel = sKLabel
         } else if (data instanceof KContainerRendering) {
-            for (childData : data.children) {
-                dataLabels.addAll(findTextsAndLabels(childData))
+            // KImages are container renderings themselves, so also look for their child renderings.
+            if (data instanceof KImage) {
+                dataImage = data
+            }
+            
+            for (childData: data.children) {
+                findSpecialRenderings(childData)
             }
         } else if (data instanceof KRenderingLibrary) {
-            // TODO: add all texts in the KRenderingLibrary and don't add any from KRenderingRefs
-            // I don't have an example of used texts in KRenderingLibraries yet (construct one)
+            // TODO: add all texts and images in the KRenderingLibrary and don't add any from KRenderingRefs
+            // I don't have an example of used texts/images in KRenderingLibraries yet (construct one)
         }
-        return dataLabels
+        if (dataLabel !== null) {
+            modelLabels.add(dataLabel)
+        }
+        if (dataImage !== null) {
+            images.add(dataImage)
+        }
     }
 
     /**

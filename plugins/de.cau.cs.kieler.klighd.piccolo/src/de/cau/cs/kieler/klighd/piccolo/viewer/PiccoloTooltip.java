@@ -24,6 +24,7 @@ import com.google.common.base.Strings;
 import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
 import de.cau.cs.kieler.klighd.krendering.KRendering;
+import de.cau.cs.kieler.klighd.piccolo.KlighdNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.KlighdCanvas;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdBasicInputEventHandler;
@@ -39,10 +40,11 @@ import edu.umd.cs.piccolo.util.PBounds;
 import edu.umd.cs.piccolo.util.PStack;
 
 /**
- * The class realizes a tooltip for the {@link KlighdCanvas}. Tooltips are either retrieved from a
- * {@link de.cau.cs.kieler.klighd.piccolo.IKlighdNode.IKGraphElementNode IKGraphElementNode}'s
- * displayed root {@link KRendering} or, if this is not available, from the corresponding
- * {@link KGraphElement}'s {@link KLayoutData}.
+ * The class realizes a tooltip for the {@link KlighdCanvas}. Tooltips are retrieved from a
+ * {@link de.cau.cs.kieler.klighd.piccolo.KlighdNode.KlighdFigureNode KlighdFigureNode}'s
+ * displayed {@link KRendering},
+ * a {@link de.cau.cs.kieler.klighd.piccolo.IKlighdNode.IKGraphElementNode IKGraphElementNode} or,
+ * if this is not available, from the corresponding {@link KGraphElement}'s {@link KLayoutData}.
  *
  * TODO: Evaluate the realization of the tooltip by means of an SWT Widget, too, although that won't
  * be available for the web-based approach.
@@ -135,26 +137,34 @@ public class PiccoloTooltip {
         public void mouseHovered(final PInputEvent event) {
             event.setHandled(true);
 
-            // determine the IGraphElement the mouse is over
+            // Determine the IInternalKGraphElementNode and the KlighdNode.KlighdFigureNode the mouse is over.
             final PStack nodeStack = event.getPath().getNodeStackReference();
 
+            // The topmost graph element and rendering element from the stack.
+            IInternalKGraphElementNode<?> graphElement = null;
+            KRendering rendering = null;
+            
             Object n = nodeStack.pop();
-            while (!nodeStack.isEmpty() && !(n instanceof IInternalKGraphElementNode<?>)) {
+            // Continue if the stack is empty or a graph element is found.
+            while (!(nodeStack.isEmpty() || (graphElement instanceof IInternalKGraphElementNode<?>))) {
+                if (n instanceof IInternalKGraphElementNode<?> && graphElement == null) {
+                    graphElement = (IInternalKGraphElementNode<?>) n;
+                }
+                if (n instanceof KlighdNode.KlighdFigureNode<?> && rendering == null) {
+                    rendering = ((KlighdNode.KlighdFigureNode<?>) n).getViewModelElement();
+                }
                 n = nodeStack.pop();
             }
 
-            final IInternalKGraphElementNode<?> graphElement;
 
-            if (n instanceof KNodeTopNode) {
-                return;
-            } else if (n instanceof IInternalKGraphElementNode<?>) {
-                 graphElement = (IInternalKGraphElementNode<?>) n;
-            } else {
+            if (graphElement instanceof KNodeTopNode || graphElement == null) {
                 return;
             }
 
-            final AbstractKGERenderingController<?, ?> ctr = graphElement.getRenderingController();
-            final KRendering rendering = ctr.getCurrentRendering();
+            if (rendering == null) {
+                final AbstractKGERenderingController<?, ?> ctr = graphElement.getRenderingController();
+                rendering = ctr.getCurrentRendering();
+            }
 
             // fall-back to the KGraphElement if no rendering is specified
             kge = graphElement.getViewModelElement();
@@ -170,8 +180,9 @@ public class PiccoloTooltip {
 
             // retrieve the tooltip
             String tooltipText = null;
-            if (rendering != null) {
+            while (tooltipText == null && rendering instanceof KRendering) {
                 tooltipText = rendering.getProperty(KlighdProperties.TOOLTIP);
+                rendering = rendering.getParent();
             }
 
             if (tooltipText == null && kge != null) {

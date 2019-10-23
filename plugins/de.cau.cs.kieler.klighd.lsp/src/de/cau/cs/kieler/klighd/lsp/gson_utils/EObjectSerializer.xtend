@@ -110,6 +110,10 @@ class EObjectSerializer implements JsonSerializer<EObject> {
                     }
                 }
             }
+            if (propertyHolder.hasProperty(KlighdProperties.TOOLTIP)) {
+                jsonObject.add("tooltip", context.serialize(
+                    propertyHolder.getProperty(KlighdProperties.TOOLTIP)))
+            }
         }
         return jsonObject
     }

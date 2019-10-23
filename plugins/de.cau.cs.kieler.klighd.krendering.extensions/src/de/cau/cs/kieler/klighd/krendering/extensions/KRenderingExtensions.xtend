@@ -13,8 +13,13 @@
  */
 package de.cau.cs.kieler.klighd.krendering.extensions
 
+import de.cau.cs.kieler.klighd.kgraph.KGraphElement
+import de.cau.cs.kieler.klighd.kgraph.KLabel
+import de.cau.cs.kieler.klighd.kgraph.KNode
+import de.cau.cs.kieler.klighd.kgraph.KPort
 import de.cau.cs.kieler.klighd.krendering.Colors
 import de.cau.cs.kieler.klighd.krendering.HorizontalAlignment
+import de.cau.cs.kieler.klighd.krendering.KArc
 import de.cau.cs.kieler.klighd.krendering.KAreaPlacementData
 import de.cau.cs.kieler.klighd.krendering.KBackground
 import de.cau.cs.kieler.klighd.krendering.KColor
@@ -55,16 +60,13 @@ import de.cau.cs.kieler.klighd.krendering.KVerticalAlignment
 import de.cau.cs.kieler.klighd.krendering.LineCap
 import de.cau.cs.kieler.klighd.krendering.LineJoin
 import de.cau.cs.kieler.klighd.krendering.LineStyle
+import de.cau.cs.kieler.klighd.krendering.ModifierState
 import de.cau.cs.kieler.klighd.krendering.Trigger
 import de.cau.cs.kieler.klighd.krendering.Underline
 import de.cau.cs.kieler.klighd.krendering.VerticalAlignment
 import org.eclipse.emf.ecore.EClass
 
 import static extension org.eclipse.emf.ecore.util.EcoreUtil.*
-import de.cau.cs.kieler.klighd.kgraph.KGraphElement
-import de.cau.cs.kieler.klighd.kgraph.KNode
-import de.cau.cs.kieler.klighd.kgraph.KPort
-import de.cau.cs.kieler.klighd.kgraph.KLabel
 
 /**
  * This class contains lots of convenient helper functions for configuring KRendering-based view models, 
@@ -132,6 +134,24 @@ class KRenderingExtensions {
 
     def dispatch KEllipse addEllipse(KLabel label){
         return createKEllipse() => [
+            label.data += it
+        ];
+    }
+    
+    def dispatch KArc addArc(KNode node) {
+        return createKArc() => [
+            node.data += it
+        ];
+    }
+    
+    def dispatch KArc addArc(KPort port) {
+        return createKArc() => [
+            port.data += it
+        ];
+    }
+    
+    def dispatch KArc addArc(KLabel label) {
+        return createKArc() => [
             label.data += it
         ];
     }
@@ -235,8 +255,36 @@ class KRenderingExtensions {
         return rendering;
     }
     
+    /**
+     * @deprecated Use {@link #addAction(KRendering, Trigger, String, ModifierState, ModifierState, ModifierState)} instead.
+     */
     def <T extends KRendering> T addAction(T rendering, Trigger trigger, String actionId,
             boolean altPressed, boolean ctrlCmdPressed, boolean shiftPressed) {
+
+        rendering.actions += createKAction() => [
+            it.trigger = trigger;
+            it.actionId = actionId;
+            if (altPressed) {
+                it.altPressed = ModifierState.PRESSED;
+            } else {
+                it.altPressed = ModifierState.DONT_CARE;
+            }
+            if (ctrlCmdPressed) {
+                it.ctrlCmdPressed = ModifierState.PRESSED;
+            } else {
+                it.ctrlCmdPressed = ModifierState.DONT_CARE;
+            }
+            if (shiftPressed) {
+                it.shiftPressed = ModifierState.PRESSED;
+            } else {
+                it.shiftPressed = ModifierState.DONT_CARE;
+            }
+        ];
+        return rendering;
+    }
+    
+    def <T extends KRendering> T addAction(T rendering, Trigger trigger, String actionId,
+            ModifierState altPressed, ModifierState ctrlCmdPressed, ModifierState shiftPressed) {
 
         rendering.actions += createKAction() => [
             it.trigger = trigger;
@@ -253,7 +301,7 @@ class KRenderingExtensions {
      * after a single (!) click on <code>rendering</code>. The action triggered with a delay if and
      * only if no subsequent click occurs within the system wide double click time.
      * 
-     * @extensionCategory actions       
+     * @extensionCategory actions
      */    
     def <T extends KRendering> T addSingleClickAction(T rendering, String actionId) {
         return rendering.addAction(Trigger::SINGLECLICK, actionId);
@@ -263,20 +311,35 @@ class KRenderingExtensions {
      * Configures the action being registered in KLighD with <code>actionId</code> to be executed
      * after a single (!) click on <code>rendering</code>. The action triggered with a delay if and
      * only if no subsequent click occurs within the system wide double click time, and if the
-     * required modifier keys are pressed.
+     * required modifier keys are pressed. If the modifiers here are false, it is ignored if they are pressed.
      * 
-     * @extensionCategory actions       
+     * @extensionCategory actions
+     * @deprecated Use {@link #addSingleClickAction(KRendering, String, ModifierState, ModifierState, ModifierState)}
+     * instead.
      */    
     def <T extends KRendering> T addSingleClickAction(T rendering, String actionId,
             boolean altPressed, boolean ctrlCmdPressed, boolean shiftPressed) {
         return rendering.addAction(Trigger::SINGLECLICK, actionId, altPressed, ctrlCmdPressed, shiftPressed);
     }
+    
+    /**
+     * Configures the action being registered in KLighD with <code>actionId</code> to be executed
+     * after a single (!) click on <code>rendering</code>. The action triggered with a delay if and
+     * only if no subsequent click occurs within the system wide double click time, and if the
+     * modifier keys are in the given state.
+     * 
+     * @extensionCategory actions
+     */    
+    def <T extends KRendering> T addSingleClickAction(T rendering, String actionId,
+            ModifierState altPressed, ModifierState ctrlCmdPressed, ModifierState shiftPressed) {
+        return rendering.addAction(Trigger::SINGLECLICK, actionId, altPressed, ctrlCmdPressed, shiftPressed);
+    }
 
     /**
      * Configures the action being registered in KLighD with <code>actionId</code> to be executed
-     * after a double (or tripple, ...) click on <code>rendering</code>.
+     * after a double (or triple, ...) click on <code>rendering</code>.
      * 
-     * @extensionCategory actions       
+     * @extensionCategory actions
      */    
     def <T extends KRendering> T addDoubleClickAction(T rendering, String actionId) {
         return rendering.addAction(Trigger::DOUBLECLICK, actionId);
@@ -284,13 +347,26 @@ class KRenderingExtensions {
 
     /**
      * Configures the action being registered in KLighD with <code>actionId</code> to be executed
-     * after a double (or tripple, ...) click on <code>rendering</code> if the required modifier
-     * keys are pressed.
+     * after a double (or triple, ...) click on <code>rendering</code> if the required modifier
+     * keys are pressed. If the modifiers here are false, it is ignored if they are pressed.
      * 
-     * @extensionCategory actions       
+     * @extensionCategory actions
+     * @deprecated Use {@link #addDoubleClickAction(KRendering, String, ModifierState, ModifierState, ModifierState)}
+     * instead.
      */    
     def <T extends KRendering> T addDoubleClickAction(T rendering, String actionId,
             boolean altPressed, boolean ctrlCmdPressed, boolean shiftPressed) {
+        return rendering.addAction(Trigger::DOUBLECLICK, actionId, altPressed, ctrlCmdPressed, shiftPressed);
+    }
+    
+    /**
+     * Configures the action being registered in KLighD with <code>actionId</code> to be executed
+     * after a double (or triple, ...) click on <code>rendering</code> if the modifier keys are in the given state.
+     * 
+     * @extensionCategory actions
+     */    
+    def <T extends KRendering> T addDoubleClickAction(T rendering, String actionId,
+            ModifierState altPressed, ModifierState ctrlCmdPressed, ModifierState shiftPressed) {
         return rendering.addAction(Trigger::DOUBLECLICK, actionId, altPressed, ctrlCmdPressed, shiftPressed);
     }
 
@@ -300,7 +376,7 @@ class KRenderingExtensions {
      * within the system wide double click time. In contrast to #addSingleClickAction, there's
      * no delay between the event receipt and the action execution.
      * 
-     * @extensionCategory actions       
+     * @extensionCategory actions
      */    
     def <T extends KRendering> T addSingleOrMultiClickAction(T rendering, String actionId) {
         return rendering.addAction(Trigger::SINGLE_OR_MULTICLICK, actionId);
@@ -313,10 +389,26 @@ class KRenderingExtensions {
      * In contrast to #addSingleClickAction, there's no delay between the event receipt and the
      * action execution.
      * 
-     * @extensionCategory actions       
+     * @extensionCategory actions
+     * @deprecated Use {@link #addSingleOrMultiClickAction(KRendering, String, ModifierState, ModifierState, ModifierState)}
+     * instead.
      */    
     def <T extends KRendering> T addSingleOrMultiClickAction(T rendering, String actionId,
             boolean altPressed, boolean ctrlCmdPressed, boolean shiftPressed) {
+        return rendering.addAction(Trigger::SINGLE_OR_MULTICLICK, actionId, altPressed, ctrlCmdPressed, shiftPressed);
+    }
+    
+    /**
+     * Configures the action being registered in KLighD with <code>actionId</code> to be executed
+     * after a single click on <code>rendering</code> regardless of whether more clicks follow
+     * within the system wide double click time, if the modifier keys are in the given state.
+     * In contrast to #addSingleClickAction, there's no delay between the event receipt and the
+     * action execution.
+     * 
+     * @extensionCategory actions
+     */    
+    def <T extends KRendering> T addSingleOrMultiClickAction(T rendering, String actionId,
+            ModifierState altPressed, ModifierState ctrlCmdPressed, ModifierState shiftPressed) {
         return rendering.addAction(Trigger::SINGLE_OR_MULTICLICK, actionId, altPressed, ctrlCmdPressed, shiftPressed);
     }
 

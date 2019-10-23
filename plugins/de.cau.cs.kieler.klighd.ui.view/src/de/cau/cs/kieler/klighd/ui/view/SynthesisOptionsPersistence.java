@@ -51,6 +51,8 @@ final class SynthesisOptionsPersistence {
                     return value.toString();
                 } else if (option.isChoiceOption()) {
                     return Integer.toString(value.toString().hashCode());
+                } else if (option.isTextOption() && value instanceof String) {
+                    return (String) value;
                 }
             }
         } catch (Exception e) {
@@ -87,6 +89,8 @@ final class SynthesisOptionsPersistence {
                             return match;
                         }
                     }
+                } else if (option.isTextOption()) {
+                    return value;
                 }
             }
         } catch (Exception e) {

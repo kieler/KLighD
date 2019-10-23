@@ -22,6 +22,7 @@ import de.cau.cs.kieler.klighd.incremental.util.UIDAdapter;
 import de.cau.cs.kieler.klighd.kgraph.KEdge;
 import de.cau.cs.kieler.klighd.kgraph.KLabel;
 import de.cau.cs.kieler.klighd.kgraph.KNode;
+import de.cau.cs.kieler.klighd.kgraph.KPort;
 
 /**
  * Recursively compares two {@link KNodes} via their corresponding {@link UIDAdapter}s.
@@ -130,6 +131,28 @@ public class KComparison {
      */
     public KLabel lookupNewLabel(final KLabel baseLabel) {
         return newAdapter.getLabel(baseAdapter.getId(baseLabel));
+    }
+    
+    /**
+     * Get the port from the base model with the same id as the given port.
+     * 
+     * @param newPort
+     *            the port to get the corresponding base port to.
+     * @return the base port, or {@code null} if none found.
+     */
+    public KPort lookupBasePort(final KPort newPort) {
+        return baseAdapter.getPort(newAdapter.getId(newPort));
+    }
+
+    /**
+     * Get the port from the new model with the same id as the given port.
+     * 
+     * @param basePort
+     *            the port to get the corresponding new port to.
+     * @return the new port, or {@code null} if none found.
+     */
+    public KPort lookupNewPort(final KPort basePort) {
+        return newAdapter.getPort(baseAdapter.getId(basePort));
     }
 
     /**

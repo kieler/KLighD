@@ -18,7 +18,6 @@ import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart
 import de.cau.cs.kieler.klighd.KlighdDataManager
 import de.cau.cs.kieler.klighd.SynthesisOption
 import de.cau.cs.kieler.klighd.ViewContext
-import de.cau.cs.kieler.klighd.incremental.IncrementalUpdateStrategy
 import de.cau.cs.kieler.klighd.kgraph.KNode
 import de.cau.cs.kieler.klighd.lsp.model.SKGraph
 import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties
@@ -101,7 +100,7 @@ class KGraphDiagramUpdater extends DiagramUpdater {
 
             return diagramServer -> createModel(viewContext, id, context.cancelChecker)
         ].thenAccept [
-            key.requestTextSizesAndUpdateModel(value)
+            key.prepareUpdateModel(value)
         ].exceptionally [ throwable |
             println("ERROR: " + throwable)
             return null
@@ -193,7 +192,7 @@ class KGraphDiagramUpdater extends DiagramUpdater {
         // otherwise the ViewContext can be simply updated.
         if (modelTypeChanged) {
             // Configure the ViewContext and the KlighD synthesis to generate the KGraph model correctly.
-            properties.useViewer(SprottyViewer.ID).useUpdateStrategy(IncrementalUpdateStrategy.ID)
+            properties.useViewer(SprottyViewer.ID)
             // needs to be a IDiagramWorkbenchPart, as it calls the standard constructor.
             // TODO: The ViewContext should have a default constructor for non-SWT-based viewer.
             viewContext = new ViewContext(null as IDiagramWorkbenchPart, model).configure(properties)
@@ -240,6 +239,7 @@ class KGraphDiagramUpdater extends DiagramUpdater {
             diagramState.putKGraphToSModelElementMap(id, diagramGenerator.getKGraphToSModelElementMap)
             diagramState.putTexts(id, diagramGenerator.getModelLabels)
             diagramState.putTextMapping(id, diagramGenerator.getTextMapping)
+            diagramState.putImages(id, diagramGenerator.images)
         }
 
         return sGraph

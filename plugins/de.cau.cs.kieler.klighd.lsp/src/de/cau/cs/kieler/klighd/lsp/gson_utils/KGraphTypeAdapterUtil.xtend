@@ -14,6 +14,7 @@ package de.cau.cs.kieler.klighd.lsp.gson_utils
 
 import com.google.gson.GsonBuilder
 import de.cau.cs.kieler.klighd.SynthesisOption
+import de.cau.cs.kieler.klighd.lsp.model.CheckedImagesAction
 import de.cau.cs.kieler.klighd.lsp.model.ComputedTextBoundsAction
 import de.cau.cs.kieler.klighd.lsp.model.PerformActionAction
 import de.cau.cs.kieler.klighd.lsp.model.SetSynthesisAction
@@ -31,6 +32,7 @@ public class KGraphTypeAdapterUtil {
         gsonBuilder
         .registerTypeAdapterFactory(
             new ActionTypeAdapter.Factory => [
+                addActionKind(CheckedImagesAction.KIND, CheckedImagesAction)
                 addActionKind(ComputedTextBoundsAction.KIND, ComputedTextBoundsAction)
                 addActionKind(PerformActionAction.KIND, PerformActionAction)
                 addActionKind(SetSynthesisAction.KIND, SetSynthesisAction)

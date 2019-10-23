@@ -15,6 +15,7 @@ package de.cau.cs.kieler.klighd.krendering.impl;
 
 import de.cau.cs.kieler.klighd.krendering.KAction;
 import de.cau.cs.kieler.klighd.krendering.KRenderingPackage;
+import de.cau.cs.kieler.klighd.krendering.ModifierState;
 import de.cau.cs.kieler.klighd.krendering.Trigger;
 
 import org.eclipse.emf.common.notify.Notification;
@@ -34,9 +35,9 @@ import org.eclipse.emf.ecore.impl.EObjectImpl;
  * <ul>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.impl.KActionImpl#getActionId <em>Action Id</em>}</li>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.impl.KActionImpl#getTrigger <em>Trigger</em>}</li>
- *   <li>{@link de.cau.cs.kieler.klighd.krendering.impl.KActionImpl#isAltPressed <em>Alt Pressed</em>}</li>
- *   <li>{@link de.cau.cs.kieler.klighd.krendering.impl.KActionImpl#isCtrlCmdPressed <em>Ctrl Cmd Pressed</em>}</li>
- *   <li>{@link de.cau.cs.kieler.klighd.krendering.impl.KActionImpl#isShiftPressed <em>Shift Pressed</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.klighd.krendering.impl.KActionImpl#getAltPressed <em>Alt Pressed</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.klighd.krendering.impl.KActionImpl#getCtrlCmdPressed <em>Ctrl Cmd Pressed</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.klighd.krendering.impl.KActionImpl#getShiftPressed <em>Shift Pressed</em>}</li>
  * </ul>
  *
  * @generated
@@ -83,64 +84,64 @@ public class KActionImpl extends EObjectImpl implements KAction {
     protected Trigger trigger = TRIGGER_EDEFAULT;
 
     /**
-     * The default value of the '{@link #isAltPressed() <em>Alt Pressed</em>}' attribute.
+     * The default value of the '{@link #getAltPressed() <em>Alt Pressed</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #isAltPressed()
+     * @see #getAltPressed()
      * @generated
      * @ordered
      */
-    protected static final boolean ALT_PRESSED_EDEFAULT = false;
+    protected static final ModifierState ALT_PRESSED_EDEFAULT = ModifierState.DONT_CARE;
 
     /**
-     * The cached value of the '{@link #isAltPressed() <em>Alt Pressed</em>}' attribute.
+     * The cached value of the '{@link #getAltPressed() <em>Alt Pressed</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #isAltPressed()
+     * @see #getAltPressed()
      * @generated
      * @ordered
      */
-    protected boolean altPressed = ALT_PRESSED_EDEFAULT;
+    protected ModifierState altPressed = ALT_PRESSED_EDEFAULT;
 
     /**
-     * The default value of the '{@link #isCtrlCmdPressed() <em>Ctrl Cmd Pressed</em>}' attribute.
+     * The default value of the '{@link #getCtrlCmdPressed() <em>Ctrl Cmd Pressed</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #isCtrlCmdPressed()
+     * @see #getCtrlCmdPressed()
      * @generated
      * @ordered
      */
-    protected static final boolean CTRL_CMD_PRESSED_EDEFAULT = false;
+    protected static final ModifierState CTRL_CMD_PRESSED_EDEFAULT = ModifierState.DONT_CARE;
 
     /**
-     * The cached value of the '{@link #isCtrlCmdPressed() <em>Ctrl Cmd Pressed</em>}' attribute.
+     * The cached value of the '{@link #getCtrlCmdPressed() <em>Ctrl Cmd Pressed</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #isCtrlCmdPressed()
+     * @see #getCtrlCmdPressed()
      * @generated
      * @ordered
      */
-    protected boolean ctrlCmdPressed = CTRL_CMD_PRESSED_EDEFAULT;
+    protected ModifierState ctrlCmdPressed = CTRL_CMD_PRESSED_EDEFAULT;
 
     /**
-     * The default value of the '{@link #isShiftPressed() <em>Shift Pressed</em>}' attribute.
+     * The default value of the '{@link #getShiftPressed() <em>Shift Pressed</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #isShiftPressed()
+     * @see #getShiftPressed()
      * @generated
      * @ordered
      */
-    protected static final boolean SHIFT_PRESSED_EDEFAULT = false;
+    protected static final ModifierState SHIFT_PRESSED_EDEFAULT = ModifierState.DONT_CARE;
 
     /**
-     * The cached value of the '{@link #isShiftPressed() <em>Shift Pressed</em>}' attribute.
+     * The cached value of the '{@link #getShiftPressed() <em>Shift Pressed</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #isShiftPressed()
+     * @see #getShiftPressed()
      * @generated
      * @ordered
      */
-    protected boolean shiftPressed = SHIFT_PRESSED_EDEFAULT;
+    protected ModifierState shiftPressed = SHIFT_PRESSED_EDEFAULT;
 
     /**
      * <!-- begin-user-doc -->
@@ -208,7 +209,7 @@ public class KActionImpl extends EObjectImpl implements KAction {
      * <!-- end-user-doc -->
      * @generated
      */
-    public boolean isAltPressed() {
+    public ModifierState getAltPressed() {
         return altPressed;
     }
 
@@ -217,9 +218,9 @@ public class KActionImpl extends EObjectImpl implements KAction {
      * <!-- end-user-doc -->
      * @generated
      */
-    public void setAltPressed(boolean newAltPressed) {
-        boolean oldAltPressed = altPressed;
-        altPressed = newAltPressed;
+    public void setAltPressed(ModifierState newAltPressed) {
+        ModifierState oldAltPressed = altPressed;
+        altPressed = newAltPressed == null ? ALT_PRESSED_EDEFAULT : newAltPressed;
         if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, KRenderingPackage.KACTION__ALT_PRESSED, oldAltPressed, altPressed));
     }
@@ -229,7 +230,7 @@ public class KActionImpl extends EObjectImpl implements KAction {
      * <!-- end-user-doc -->
      * @generated
      */
-    public boolean isCtrlCmdPressed() {
+    public ModifierState getCtrlCmdPressed() {
         return ctrlCmdPressed;
     }
 
@@ -238,9 +239,9 @@ public class KActionImpl extends EObjectImpl implements KAction {
      * <!-- end-user-doc -->
      * @generated
      */
-    public void setCtrlCmdPressed(boolean newCtrlCmdPressed) {
-        boolean oldCtrlCmdPressed = ctrlCmdPressed;
-        ctrlCmdPressed = newCtrlCmdPressed;
+    public void setCtrlCmdPressed(ModifierState newCtrlCmdPressed) {
+        ModifierState oldCtrlCmdPressed = ctrlCmdPressed;
+        ctrlCmdPressed = newCtrlCmdPressed == null ? CTRL_CMD_PRESSED_EDEFAULT : newCtrlCmdPressed;
         if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, KRenderingPackage.KACTION__CTRL_CMD_PRESSED, oldCtrlCmdPressed, ctrlCmdPressed));
     }
@@ -250,7 +251,7 @@ public class KActionImpl extends EObjectImpl implements KAction {
      * <!-- end-user-doc -->
      * @generated
      */
-    public boolean isShiftPressed() {
+    public ModifierState getShiftPressed() {
         return shiftPressed;
     }
 
@@ -259,9 +260,9 @@ public class KActionImpl extends EObjectImpl implements KAction {
      * <!-- end-user-doc -->
      * @generated
      */
-    public void setShiftPressed(boolean newShiftPressed) {
-        boolean oldShiftPressed = shiftPressed;
-        shiftPressed = newShiftPressed;
+    public void setShiftPressed(ModifierState newShiftPressed) {
+        ModifierState oldShiftPressed = shiftPressed;
+        shiftPressed = newShiftPressed == null ? SHIFT_PRESSED_EDEFAULT : newShiftPressed;
         if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, KRenderingPackage.KACTION__SHIFT_PRESSED, oldShiftPressed, shiftPressed));
     }
@@ -279,11 +280,11 @@ public class KActionImpl extends EObjectImpl implements KAction {
             case KRenderingPackage.KACTION__TRIGGER:
                 return getTrigger();
             case KRenderingPackage.KACTION__ALT_PRESSED:
-                return isAltPressed();
+                return getAltPressed();
             case KRenderingPackage.KACTION__CTRL_CMD_PRESSED:
-                return isCtrlCmdPressed();
+                return getCtrlCmdPressed();
             case KRenderingPackage.KACTION__SHIFT_PRESSED:
-                return isShiftPressed();
+                return getShiftPressed();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -303,13 +304,13 @@ public class KActionImpl extends EObjectImpl implements KAction {
                 setTrigger((Trigger)newValue);
                 return;
             case KRenderingPackage.KACTION__ALT_PRESSED:
-                setAltPressed((Boolean)newValue);
+                setAltPressed((ModifierState)newValue);
                 return;
             case KRenderingPackage.KACTION__CTRL_CMD_PRESSED:
-                setCtrlCmdPressed((Boolean)newValue);
+                setCtrlCmdPressed((ModifierState)newValue);
                 return;
             case KRenderingPackage.KACTION__SHIFT_PRESSED:
-                setShiftPressed((Boolean)newValue);
+                setShiftPressed((ModifierState)newValue);
                 return;
         }
         super.eSet(featureID, newValue);

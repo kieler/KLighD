@@ -11,14 +11,14 @@
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
-package de.cau.cs.kieler.klighd.piccolo.internal.util;
+package de.cau.cs.kieler.klighd.util;
 
 import java.awt.geom.Point2D;
 
 import org.eclipse.elk.core.util.Pair;
 
 /**
- * A utility class providing math functionality based on data structures used in Piccolo.
+ * A utility class providing math functionality based on polyline structures.
  * 
  * @author mri
  */

@@ -86,8 +86,9 @@ public class KlighdStyledText extends KlighdNode.KlighdFigureNode<KText> {
         this.setRendering(theKText);
 
         // re-enable the pickability of textNode if required,
-        //  as the selection and cursor selection will not work otherwise
-        this.setPickable(theKText.isCursorSelectable() || isSelectable());
+        //  as the selection and cursor selection and tooltips will not work otherwise
+        this.setPickable(theKText.isCursorSelectable() || isSelectable()
+            || theKText.hasProperty(KlighdProperties.TOOLTIP));
     }
 
     /**
