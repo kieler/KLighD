@@ -93,7 +93,7 @@ class Reevaluation {
 
         val layerConsTarget = ConstraintsUtils.getLayerConstraint(target)
         val layerId = target.getProperty(LayeredOptions.LAYERING_LAYER_I_D)
-        val origLayer = layerConsTarget > layerId ? layerConsTarget : layerId
+        val origLayer = (layerConsTarget > layerId) ? layerConsTarget : layerId
         val origLayerL = ConstraintsUtils.getNodesOfLayer(origLayer, nodes)
 
         if (origLayerL.length == 1) {
