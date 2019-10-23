@@ -3,7 +3,7 @@
  *
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright 2018 by
+ * Copyright 2018-2019 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -19,10 +19,10 @@ import de.cau.cs.kieler.klighd.lsp.utils.RenderingPreparer
 import java.io.ByteArrayOutputStream
 import java.util.ArrayList
 import org.apache.log4j.Logger
-import org.eclipse.elk.core.LayoutConfigurator
 import org.eclipse.elk.graph.ElkNode
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
+import org.eclipse.sprotty.Action
 import org.eclipse.sprotty.SGraph
 import org.eclipse.sprotty.SModelRoot
 import org.eclipse.sprotty.layout.ElkLayoutEngine
@@ -43,7 +43,7 @@ public class KGraphLayoutEngine extends ElkLayoutEngine {
 	
 	public static val LOG = Logger.getLogger(KGraphLayoutEngine)
 	
-	override layout(SModelRoot root) {
+	override layout(SModelRoot root, Action cause) {
 	    synchronized (diagramState) {
     	    if (root instanceof SGraph) {
     	        // The layout is executed on the KGraph, not the SGraph. So get the KGraph belonging to this SGraph from

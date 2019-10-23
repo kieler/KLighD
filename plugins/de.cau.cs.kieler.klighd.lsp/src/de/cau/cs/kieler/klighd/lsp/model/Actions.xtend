@@ -17,6 +17,8 @@ import java.util.List
 import java.util.function.Consumer
 import org.eclipse.sprotty.Action
 import org.eclipse.sprotty.ElementAndBounds
+import org.eclipse.sprotty.RequestAction
+import org.eclipse.sprotty.ResponseAction
 import org.eclipse.sprotty.SModelRoot
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.xtend.lib.annotations.EqualsHashCode
@@ -31,11 +33,12 @@ import org.eclipse.xtend.lib.annotations.ToString
 @Accessors
 @EqualsHashCode
 @ToString(skipNulls = true)
-public class RequestTextBoundsAction implements Action {
+public class RequestTextBoundsAction implements RequestAction<ComputedTextBoundsAction> {
     public static val KIND = 'requestTextBounds'
     private String kind = KIND
     
     private SModelRoot textDiagram
+    private String requestId
     
     public new() {}
     public new(Consumer<RequestTextBoundsAction> initializer) {
@@ -156,11 +159,13 @@ public class SetSynthesisAction implements Action {
 @Accessors
 @EqualsHashCode
 @ToString(skipNulls = true)
-public class ComputedTextBoundsAction implements Action {
+public class ComputedTextBoundsAction implements ResponseAction {
     public static val KIND = 'computedTextBounds'
     private String kind = KIND
+    private int revision
     
     private List<ElementAndBounds> bounds
+    private String responseId
     
     public new() {}
     public new(Consumer<ComputedTextBoundsAction> initializer) {

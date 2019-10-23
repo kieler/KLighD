@@ -156,12 +156,11 @@ public class KGraphDiagramServer extends LanguageAwareDiagramServer {
             val textMapping = diagramState.getTextMapping(currentRoot.id)
             for (elementAndBound : action.bounds) {
                 val elementId = elementAndBound.elementId
-                val newBounds = elementAndBound.newBounds
-                if (newBounds === null) {
-                    throw new NullPointerException("Estimated Bounds for a KText are null!")
+                val newSize = elementAndBound.newSize
+                if (newSize === null) {
+                    throw new NullPointerException("Estimated Size for a KText is null!")
                 }
-                val newBounds_klighd = new Bounds(newBounds.x as float, newBounds.y as float,
-                    newBounds.width as float, newBounds.height as float)
+                val newBounds_klighd = new Bounds(0, 0, newSize.width as float, newSize.height as float)
                 val kText = textMapping.get(elementId)
                 if (kText === null) {
                     LOG.info("The textMapping does not contain the referenced Text anymore. The model has changed before" + 
