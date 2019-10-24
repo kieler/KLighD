@@ -93,7 +93,7 @@ class Reevaluation {
 
         val layerConsTarget = ConstraintsUtils.getLayerConstraint(target)
         val layerId = target.getProperty(LayeredOptions.LAYERING_LAYER_I_D)
-        val origLayer = (layerConsTarget > layerId) ? layerConsTarget : layerId
+        val origLayer = if (layerConsTarget > layerId) layerConsTarget else layerId
         val origLayerL = ConstraintsUtils.getNodesOfLayer(origLayer, nodes)
 
         if (origLayerL.length == 1) {
@@ -293,8 +293,8 @@ class Reevaluation {
 
         var propNodes = nodes.filter([n|n.hasProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT)])
         for (n : propNodes) {
-            val layer = n.hasProperty(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT) ? ConstraintsUtils.
-                    getLayerConstraint(n) : n.getProperty(LayeredOptions.LAYERING_LAYER_I_D)
+            val layer = if (n.hasProperty(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT)) ConstraintsUtils.
+                    getLayerConstraint(n) else n.getProperty(LayeredOptions.LAYERING_LAYER_I_D)
             
             if(!layerPosSet.add(layer -> ConstraintsUtils.getPosConstraint(n))){
                 ConstraintsUtils.nullifyPosConstraint(n)
