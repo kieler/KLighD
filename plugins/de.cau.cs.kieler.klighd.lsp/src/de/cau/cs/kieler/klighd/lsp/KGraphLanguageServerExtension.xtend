@@ -404,7 +404,9 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
                 diagramState.putSnapshotModel(uri, model)
             }
             diagramServer.initializeOptions(#{
-                DiagramOptions.OPTION_SOURCE_URI -> uri
+                DiagramOptions.OPTION_SOURCE_URI -> uri,
+                DiagramOptions.OPTION_NEEDS_CLIENT_LAYOUT -> "false",
+                DiagramOptions.OPTION_NEEDS_SERVER_LAYOUT -> "true"
             })
             // With that new diagram server, do a similar procedure to generate a diagram as for usual diagrams (except,
             // use the 'model' as its model.

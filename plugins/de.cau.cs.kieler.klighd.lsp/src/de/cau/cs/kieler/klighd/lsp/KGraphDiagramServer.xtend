@@ -12,6 +12,7 @@
  */
 package de.cau.cs.kieler.klighd.lsp
 
+import com.google.common.io.ByteStreams
 import com.google.inject.Inject
 import de.cau.cs.kieler.klighd.IAction
 import de.cau.cs.kieler.klighd.IAction.ActionContext
@@ -156,12 +157,11 @@ public class KGraphDiagramServer extends LanguageAwareDiagramServer {
             val textMapping = diagramState.getTextMapping(currentRoot.id)
             for (elementAndBound : action.bounds) {
                 val elementId = elementAndBound.elementId
-                val newBounds = elementAndBound.newBounds
-                if (newBounds === null) {
-                    throw new NullPointerException("Estimated Bounds for a KText are null!")
+                val newSize = elementAndBound.newSize
+                if (newSize === null) {
+                    throw new NullPointerException("Estimated Size for a KText is null!")
                 }
-                val newBounds_klighd = new Bounds(newBounds.x as float, newBounds.y as float,
-                    newBounds.width as float, newBounds.height as float)
+                val newBounds_klighd = new Bounds(0, 0, newSize.width as float, newSize.height as float)
                 val kText = textMapping.get(elementId)
                 if (kText === null) {
                     LOG.info("The textMapping does not contain the referenced Text anymore. The model has changed before" + 
@@ -239,7 +239,7 @@ public class KGraphDiagramServer extends LanguageAwareDiagramServer {
                         val imageStream = Platform.getBundle(bundle)
                             .getResource(path)
                             .openStream
-                        val imageBytes = imageStream.readAllBytes
+                        val imageBytes = ByteStreams.toByteArray(imageStream)
                         imageStream.close
                         val imageString = Base64.encoder.encodeToString(imageBytes)
                         images.add(notCached -> imageString)
