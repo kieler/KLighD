@@ -65,25 +65,14 @@ public class IncrementalUpdateStrategy implements IUpdateStrategy {
         }
 
         UIDAdapter baseAdapter = UIDAdapters.retrieveAdapter(baseModel);
-        if (baseAdapter.isInvalid()) {
-            UIDAdapters.removeAdapter(baseModel);
-            logFallback(IStatus.WARNING, "Duplicate UID in base model.");
-            fallback(baseModel, newModel, viewContext);
-            return;
-        }
         UIDAdapter newAdapter = UIDAdapters.retrieveAdapter(newModel);
-        if (newAdapter.isInvalid()) {
-            UIDAdapters.removeAdapter(newModel);
-            logFallback(IStatus.WARNING, "Duplicate UID in new model.");
-            fallback(baseModel, newModel, viewContext);
-            return;
-        }
 
         try {
             KComparison comparison = new KComparison(baseAdapter, newAdapter);
             KGraphMerger merger = new KGraphMerger(comparison, new KGraphDataFilter());
             merger.merge();
 
+            UIDAdapters.removeAdapter(baseModel);
             UIDAdapters.removeAdapter(newModel);
 
         } catch (RuntimeException e) {
@@ -95,12 +84,6 @@ public class IncrementalUpdateStrategy implements IUpdateStrategy {
             // if incremental updating failed, apply the SimpleUpdateStrategy
             fallback(baseModel, newModel, viewContext);
         }
-    }
-
-    private void logFallback(final int severity, final String reason) {
-        StatusManager.getManager().handle(
-                new Status(severity, PLUGIN_ID, "Fallback to simple update. Reason: " + reason),
-                StatusManager.LOG);
     }
 
     private void fallback(final KNode baseModel, final KNode newModel,
