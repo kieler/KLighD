@@ -190,7 +190,7 @@ public class ActionControlFactory implements ISelectionChangedListener, IViewCha
                             .options(result.getLayoutConfigs())
                             .performLayout();
                 } else {
-                    viewContext.getLayoutRecorder().stopRecording(ZoomStyle.NONE, null, null, 0);
+                    viewContext.getLayoutRecorder().stopRecording(ZoomStyle.NONE, null, 0);
                 }
             }
         });

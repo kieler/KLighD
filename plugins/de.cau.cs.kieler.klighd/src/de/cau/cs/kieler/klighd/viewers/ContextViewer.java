@@ -179,6 +179,13 @@ public class ContextViewer implements IViewer, ILayoutRecorder, ISelectionProvid
     /**
      * {@inheritDoc}
      */
+    public void stopRecording(final ZoomStyle zoomStyle, final KGraphElement focusElement, final int animationTime) {
+        stopRecording(zoomStyle, focusElement, null, animationTime);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public void stopRecording(final ZoomStyle zoomStyle, final KGraphElement focusElement,
             final KVector previousPosition, final int animationTime) {
         if (layoutRecorder != null) {

@@ -115,6 +115,26 @@ public enum ZoomStyle {
      * Dispatching method determining a {@link ZoomStyle} value based on the given flags.
      * 'zoomToFit' has higher priority than 'zoomToFocus'.
      *
+     * @deprecated use {@link #create(boolean, boolean, boolean, boolean, boolean)}
+     *
+     * @param zoomToActualSize
+     *            request of zoom to actual size
+     * @param zoomToFit
+     *            request of zoom to fit
+     * @param zoomToFocus
+     *            request of zoom to focus
+     *
+     * @return a {@link ZoomStyle} depending on the parameters.
+     */
+    public static ZoomStyle create(final boolean zoomToActualSize, final boolean zoomToFit,
+            final boolean zoomToFitContent, final boolean zoomToFocus) {
+        return create(zoomToActualSize, zoomToFit, zoomToFitContent, zoomToFocus, false);
+    }
+
+    /**
+     * Dispatching method determining a {@link ZoomStyle} value based on the given flags.
+     * 'zoomToFit' has higher priority than 'zoomToFocus'.
+     *
      * @param zoomToActualSize
      *            request of zoom to actual size
      * @param zoomToFit

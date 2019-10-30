@@ -83,6 +83,21 @@ public class DiagramZoomController {
     public void setFocusNode(final KNode node) {
         this.focusNode = node;
     }
+    
+    /**
+     * Performs a zooming depending on the specified style.
+     *
+     * @param zoomStyle
+     *            the desired style
+     * @param desiredFocusElement
+     *            the {@link KGraphElement} to focus in case <code>zoomStyle</code> is
+     *            {@link ZoomStyle#ZOOM_TO_FOCUS} or {@link ZoomStyle#ZOOM_TO_STAY}, is ignored otherwise
+     * @param duration
+     *            time to animate
+     */
+    public void zoom(final ZoomStyle zoomStyle, final KGraphElement desiredFocusElement, final int duration) {
+        zoom(zoomStyle, desiredFocusElement, null, duration);
+    }
 
     /**
      * Performs a zooming depending on the specified style.
@@ -128,7 +143,9 @@ public class DiagramZoomController {
             break;
 
         case ZOOM_TO_STAY:
-            zoomToStay(desiredFocusElement, previousPosition, duration);
+            if (previousPosition != null) {
+                zoomToStay(desiredFocusElement, previousPosition, duration);
+            }
             break;
 
         default:

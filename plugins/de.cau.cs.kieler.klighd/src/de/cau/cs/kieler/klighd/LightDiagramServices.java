@@ -236,7 +236,7 @@ public final class LightDiagramServices {
             }
         } else {
             if (recorder != null) {
-                recorder.stopRecording(config.zoomStyle(), null, null, 0);
+                recorder.stopRecording(config.zoomStyle(), null, 0);
             }
         }
         

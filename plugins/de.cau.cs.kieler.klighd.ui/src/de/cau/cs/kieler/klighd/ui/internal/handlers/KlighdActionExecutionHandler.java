@@ -145,11 +145,11 @@ public class KlighdActionExecutionHandler extends AbstractHandler {
 
         } else if (resultOfLastRun != null) {
             viewContext.getLayoutRecorder().stopRecording(
-                    ZoomStyle.create(resultOfLastRun, viewContext), resultOfLastRun.getFocusElement(), null, 0);
+                    ZoomStyle.create(resultOfLastRun, viewContext), resultOfLastRun.getFocusElement(), 0);
         } else {
             // ... i.e. no action has been executed at all
             // skip any layout and zoom update
-            viewContext.getLayoutRecorder().stopRecording(ZoomStyle.NONE, null, null, 0);
+            viewContext.getLayoutRecorder().stopRecording(ZoomStyle.NONE, null, 0);
         }
 
         // and finally return as required by the API

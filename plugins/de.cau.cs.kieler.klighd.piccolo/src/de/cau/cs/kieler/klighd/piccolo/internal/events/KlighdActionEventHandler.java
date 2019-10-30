@@ -197,7 +197,7 @@ public class KlighdActionEventHandler implements PInputEventListener {
             resultOfLastAction = actionImpl.execute(context);
 
             if (resultOfLastAction == null) {
-                viewer.stopRecording(ZoomStyle.NONE, null, null, 0);
+                viewer.stopRecording(ZoomStyle.NONE, null, 0);
 
                 final String msg = "KLighD action event handler: Execution of " + actionImpl.getClass()
                         + " returned 'null', expected an IAction.ActionResult.";
@@ -235,7 +235,7 @@ public class KlighdActionEventHandler implements PInputEventListener {
             //  zooming requests the resulting zoomStyle will be ZoomStyle.NONE,
             //  see implementation of ActionResult.create(...)
             vc.getLayoutRecorder().stopRecording(ZoomStyle.create(resultOfLastAction, vc),
-                    resultOfLastAction.getFocusElement(), null, 0);
+                    resultOfLastAction.getFocusElement(), 0);
 
             return;
         }

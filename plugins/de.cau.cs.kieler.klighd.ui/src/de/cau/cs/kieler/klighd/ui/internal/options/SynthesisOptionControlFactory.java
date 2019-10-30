@@ -794,7 +794,7 @@ public class SynthesisOptionControlFactory {
                 .options(result.getLayoutConfigs())
                 .performLayout();
         } else {
-            viewContext.getLayoutRecorder().stopRecording(ZoomStyle.NONE, null, null, 0);
+            viewContext.getLayoutRecorder().stopRecording(ZoomStyle.NONE, null, 0);
         }
     }
 }

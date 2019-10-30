@@ -542,6 +542,20 @@ public interface IAction {
         /**
          * Getter.
          *
+         * @return the {@link KNode} to focus on
+         * @deprecated use {@link #getFocusElement()} instead.
+         */
+        public KNode getFocusNode() {
+            if (focus instanceof KNode) {
+                return (KNode) focus;
+            } else {
+                return null;
+            }
+        }
+
+        /**
+         * Getter.
+         *
          * @return the {@link KGraphElement} to focus on
          */
         public KGraphElement getFocusElement() {

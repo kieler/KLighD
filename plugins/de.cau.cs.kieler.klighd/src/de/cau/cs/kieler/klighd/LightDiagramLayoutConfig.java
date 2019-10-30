@@ -20,6 +20,7 @@ import org.eclipse.elk.core.options.CoreOptions;
 import org.eclipse.elk.graph.properties.IPropertyHolder;
 
 import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
+import de.cau.cs.kieler.klighd.kgraph.KNode;
 import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties;
 
 /**
@@ -200,6 +201,19 @@ public class LightDiagramLayoutConfig {
     }
 
     /**
+     * Sets the node to focus on.
+     * 
+     * @param theFocusNode
+     *            the {@link KNode} to focus on if {@link ZoomStyle#ZOOM_TO_FOCUS} or
+     *            {@link ZoomStyle#ZOOM_TO_STAY_SELECTED} is set.
+     * @return the configuration
+     */
+    public LightDiagramLayoutConfig focusNode(final KNode theFocusNode) {
+        this.focusElement = theFocusNode;
+        return this;
+    }
+
+    /**
      * Sets the element to focus on.
      * 
      * @param theFocusElement
@@ -312,6 +326,20 @@ public class LightDiagramLayoutConfig {
      */
     ZoomStyle zoomStyle() {
         return this.zoomStyle;
+    }
+
+    /**
+     * The node to focus on if {@link ZoomStyle#ZOOM_TO_FOCUS} or {@link ZoomStyle#ZOOM_TO_STAY_SELECTED} is
+     * configured.
+     * 
+     * @return the focusNode
+     */
+    KNode focusNode() {
+        if (this.focusElement instanceof KNode) {
+            return (KNode) this.focusElement;
+        } else {
+            return null;
+        }
     }
 
     /**

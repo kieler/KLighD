@@ -296,6 +296,22 @@ public class DiagramController {
      * @param focusElement
      *            the {@link KGraphElement} to focus in case <code>zoomStyle</code> is
      *            {@link ZoomStyle#ZOOM_TO_FOCUS} or {@link ZoomStyle#ZOOM_TO_STAY}, is ignored otherwise
+     * @param animationTime
+     *            duration of the animated layout
+     *
+     * @see de.cau.cs.kieler.klighd.internal.ILayoutRecorder#stopRecording(ZoomStyle, KNode, int)
+     *      ILayoutRecorder#stopRecording(ZoomStyle, KNode, int)
+     */
+    public void stopRecording(final ZoomStyle zoomStyle, final KGraphElement focusElement, final int animationTime) {
+        stopRecording(zoomStyle, focusElement, null, animationTime);
+    }
+
+    /**
+     * @param zoomStyle
+     *            the style used to zoom, e.g. zoom to fit or zoom to focus
+     * @param focusElement
+     *            the {@link KGraphElement} to focus in case <code>zoomStyle</code> is
+     *            {@link ZoomStyle#ZOOM_TO_FOCUS} or {@link ZoomStyle#ZOOM_TO_STAY}, is ignored otherwise
      * @param previousPosition
      *            the position the selected element had in the previous layout run.
      *            Is ignored if the <code>zoomStyle</code> is {@link ZoomStyle#ZOOM_TO_STAY}.

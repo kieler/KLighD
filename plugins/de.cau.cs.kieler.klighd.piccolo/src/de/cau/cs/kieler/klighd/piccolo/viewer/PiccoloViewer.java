@@ -344,6 +344,13 @@ public class PiccoloViewer extends AbstractViewer implements ILayoutRecorder,
 
         stopRecording(zoomStyle, focusElement, previousPosition, animationTime);
     }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void stopRecording(final ZoomStyle zoomStyle, final KGraphElement focusElement, final int animationTime) {
+        stopRecording(zoomStyle, focusElement, null, animationTime);
+    }
 
     /**
      * {@inheritDoc}
@@ -407,7 +414,7 @@ public class PiccoloViewer extends AbstractViewer implements ILayoutRecorder,
      */
     @Override
     public void zoom(final ZoomStyle style, final int duration) {
-        controller.getZoomController().zoom(style, null, null, duration);
+        controller.getZoomController().zoom(style, null, duration);
     }
 
     /**
