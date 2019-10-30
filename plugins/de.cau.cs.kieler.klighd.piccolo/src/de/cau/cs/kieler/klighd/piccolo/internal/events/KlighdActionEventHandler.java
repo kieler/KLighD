@@ -17,6 +17,7 @@ import java.awt.geom.Point2D;
 import java.util.List;
 
 import org.eclipse.elk.core.LayoutConfigurator;
+import org.eclipse.elk.core.math.KVector;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.graphics.Point;
@@ -34,7 +35,6 @@ import de.cau.cs.kieler.klighd.LightDiagramLayoutConfig;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.ZoomStyle;
 import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
-import de.cau.cs.kieler.klighd.kgraph.KNode;
 import de.cau.cs.kieler.klighd.krendering.KAction;
 import de.cau.cs.kieler.klighd.krendering.KRendering;
 import de.cau.cs.kieler.klighd.krendering.ModifierState;
@@ -235,7 +235,7 @@ public class KlighdActionEventHandler implements PInputEventListener {
             //  zooming requests the resulting zoomStyle will be ZoomStyle.NONE,
             //  see implementation of ActionResult.create(...)
             vc.getLayoutRecorder().stopRecording(ZoomStyle.create(resultOfLastAction, vc),
-                    resultOfLastAction.getFocusNode(), 0);
+                    resultOfLastAction.getFocusElement(), 0);
 
             return;
         }
@@ -243,7 +243,8 @@ public class KlighdActionEventHandler implements PInputEventListener {
         final boolean doSynthesis = anyActionRequiresSynthesis;
         final boolean animate = resultOfLastAction.getAnimateLayout();
         final ZoomStyle zoomStyle = ZoomStyle.create(resultOfLastActionRequiringLayout, vc);
-        final KNode focusNode = resultOfLastActionRequiringLayout.getFocusNode();
+        final KGraphElement focusElement = resultOfLastActionRequiringLayout.getFocusElement();
+        final KVector previousPosition = resultOfLastActionRequiringLayout.getPreviousPosition();
         final List<LayoutConfigurator> layoutConfigs = resultOfLastAction.getLayoutConfigs();
 
         // Execute the layout asynchronously in order to let the KLighdInputManager
@@ -265,7 +266,8 @@ public class KlighdActionEventHandler implements PInputEventListener {
                 new LightDiagramLayoutConfig(vc)
                         .animate(animate)
                         .zoomStyle(zoomStyle)
-                        .focusNode(focusNode)
+                        .focusElement(focusElement)
+                        .previousPosition(previousPosition)
                         .options(layoutConfigs)
                         .performLayout();
             }
