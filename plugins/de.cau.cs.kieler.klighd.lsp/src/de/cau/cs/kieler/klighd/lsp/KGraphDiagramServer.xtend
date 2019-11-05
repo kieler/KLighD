@@ -193,8 +193,15 @@ public class KGraphDiagramServer extends LanguageAwareDiagramServer {
             val klighdAction = KlighdDataManager.instance.getActionById(action.actionId)
             val viewer = diagramState.viewer
             val actionContext = new ActionContext(viewer, null, kGraphElement, kRendering)
-            val shouldUpdate = klighdAction.execute(actionContext)
-            if (shouldUpdate.actionPerformed) {
+            val actionResult = klighdAction.execute(actionContext)
+            if (actionResult.needsSynthesis) {
+                val diagramUpdater = diagramLanguageServer.diagramUpdater
+                if (diagramUpdater instanceof KGraphDiagramUpdater) {
+                    diagramUpdater.updateDiagram(this)
+                } else {
+                    throw new IllegalStateException("The diagramUpdater was not initialized correctly")
+                }
+            } else if (actionResult.actionPerformed) {
                 val diagramUpdater = diagramLanguageServer.diagramUpdater
                 if (diagramUpdater instanceof KGraphDiagramUpdater) {
                     diagramUpdater.updateLayout(this)

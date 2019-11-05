@@ -28,6 +28,7 @@ import de.cau.cs.kieler.klighd.lsp.model.SetSynthesesAction
 import de.cau.cs.kieler.klighd.lsp.model.SetSynthesesActionData
 import de.cau.cs.kieler.klighd.lsp.model.SetSynthesisOptionsParam
 import de.cau.cs.kieler.klighd.lsp.model.ValuedSynthesisOption
+import java.net.URLDecoder
 import java.util.ArrayList
 import java.util.Collection
 import java.util.List
@@ -42,6 +43,7 @@ import org.eclipse.elk.core.util.Pair
 import org.eclipse.elk.graph.ElkGraphElement
 import org.eclipse.elk.graph.properties.IProperty
 import org.eclipse.emf.common.util.URI
+import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.lsp4j.DocumentHighlight
 import org.eclipse.lsp4j.InitializeParams
 import org.eclipse.lsp4j.TextDocumentPositionParams
@@ -55,7 +57,6 @@ import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.xtext.ide.server.UriExtensions
 import org.eclipse.xtext.ide.server.occurrences.IDocumentHighlightService
 import org.eclipse.xtext.util.CancelIndicator
-import java.net.URLDecoder
 
 /**
  * Language server extension that implements functionality for the generation of diagrams and handling of their diagram
@@ -139,7 +140,7 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
      */
     def void sendAvailableSyntheses(String path, IDiagramServer server) {
         if (path !== null) {
-            languageServerAccess.doRead(path) [
+            doRead(path) [ resource, ci |
                 val availableSynthesesData = getAvailableSynthesesData(resource.contents.head?.class)
                 
                 server.dispatch(new SetSynthesesAction(availableSynthesesData))
@@ -167,9 +168,9 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
     }
     
     override getOptions(GetOptionParam param) {
-        return languageServerAccess.doRead(param.uri) [ context |
+        return doRead(param.uri) [ resource, ci |
             synchronized (diagramState) {
-                val ViewContext viewContext = diagramState.getKGraphContext(context.resource.URI.toString)
+                val ViewContext viewContext = diagramState.getKGraphContext(resource.URI.toString)
                 if (viewContext === null) {
                     // A diagram for this file is currently not opened, so no options can be shown.
                     return null
@@ -218,9 +219,9 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
     }
     
     override setSynthesisOptions(SetSynthesisOptionsParam param) {
-        return languageServerAccess.doRead(param.uri) [ context |
+        return doRead(param.uri) [ resource, ci |
             synchronized (diagramState) {
-                val ViewContext viewContext = diagramState.getKGraphContext(context.resource.URI.toString)
+                val ViewContext viewContext = diagramState.getKGraphContext(resource.URI.toString)
                 if (viewContext === null) {
                     // The diagram has already been closed
                     return "ERR"
@@ -242,7 +243,7 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
                 }
                 // Update the diagram.
                 if (diagramUpdater instanceof KGraphDiagramUpdater) {
-                    (diagramUpdater as KGraphDiagramUpdater).updateDiagrams2(#[context.resource.URI])
+                    (diagramUpdater as KGraphDiagramUpdater).updateDiagrams2(#[resource.URI])
                     return "OK"
                 }
                 return "ERR"
@@ -251,9 +252,9 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
     }
     
     override setLayoutOptions(SetLayoutOptionsParam param) {
-        return languageServerAccess.doRead(param.uri) [ context |
+        return doRead(param.uri) [ resource, ci |
             synchronized (diagramState) {
-                val key = context.resource.URI.toString
+                val key = resource.URI.toString
                 val LayoutConfigurator layoutConfig = diagramState.getLayoutConfig(key)
                 if (layoutConfig === null) {
                     // The diagram has already been closed
@@ -295,8 +296,20 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
             val klighdAction = KlighdDataManager.instance.getActionById(param.actionId)
             val viewer = diagramState.viewer
             val actionContext = new ActionContext(viewer, null, null, null)
-            val shouldUpdate = klighdAction.execute(actionContext)
-            if (shouldUpdate.actionPerformed) {
+            val actionResult = klighdAction.execute(actionContext)
+            if (actionResult.needsSynthesis) {
+                if (diagramUpdater instanceof KGraphDiagramUpdater) {
+                    val diagramServer = this.diagramServerManager.findDiagramServersByUri(param.uri)
+                        .filter(KGraphDiagramServer).head
+                    if (diagramServer !== null) {
+                        (diagramUpdater as KGraphDiagramUpdater).updateDiagram(diagramServer)
+                    } else {
+                        return CompletableFuture.completedFuture("ERR")
+                    }
+                } else {
+                    return CompletableFuture.completedFuture("ERR")
+                }
+            } else if (actionResult.actionPerformed) {
                 if (diagramUpdater instanceof KGraphDiagramUpdater) {
                     val diagramServer = this.diagramServerManager.findDiagramServersByUri(param.uri)
                         .filter(KGraphDiagramServer).head
@@ -503,5 +516,33 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
         if (diagramUpdater instanceof KGraphDiagramUpdater) {
             (diagramUpdater as KGraphDiagramUpdater).updateDiagrams2(#[URI.createURI(URLDecoder.decode(uri, "UTF-8"))])
         }
+    }
+    
+    /**
+     * Provides read access to fully resolved resource, even if it is not an XTextResource.
+     * Similar to {@link LanguageServerImpl.access#doRead(String, Function)} just without full read access to the
+     * document.
+     * 
+     * @param path The path to the file that should be read.
+     * @param work What should be done with the Resource.
+     * 
+     * @return The result of {@code work} as a completable future.
+     */
+    def <T> CompletableFuture<T> doRead(String path, (Resource, CancelIndicator)=>T work) {
+        return requestManager.runRead [ ci |
+            val resource = getResource(_uriExtensions.toUri(path))
+            work.apply(resource, ci)
+        ]
+    }
+    
+    /**
+     * Returns the resource in this workspace that is located by the given URI.
+     * 
+     * @param uri The URI.
+     * @return The resource created by the file located by the URI
+     */
+    def Resource getResource(URI uri) {
+        val ws = this.workspaceManager as KeithWorkspaceManager
+        return ws.getResource(uri)
     }
 }

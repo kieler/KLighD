@@ -61,6 +61,7 @@ import org.eclipse.sprotty.SPort
 import org.eclipse.sprotty.xtext.IDiagramGenerator
 import org.eclipse.sprotty.xtext.tracing.ITraceProvider
 import org.eclipse.xtend.lib.annotations.Accessors
+import org.eclipse.xtext.resource.XtextResource
 import org.eclipse.xtext.util.CancelIndicator
 
 /**
@@ -290,7 +291,7 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
         // synthesis. Otherwise the tracing will not work
         val modelKElement = kElement.properties.get(KlighdInternalProperties.MODEL_ELEMEMT)
         if (modelKElement instanceof EObject) {
-            if (modelKElement.eResource !== null) {
+            if (modelKElement.eResource instanceof XtextResource) {
                 traceProvider.trace(sElement, modelKElement)
             }
         }
