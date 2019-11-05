@@ -342,6 +342,10 @@ public class UIDAdapter extends EContentAdapter {
             }
         }
         id = parentId + ID_SEPARATOR + localId;
+        if (localId == "root" && nodes.containsKey(id)) {
+            // This is a dangling node and should not be included in the graph.
+            return null;
+        }
         id = resolveIDClash(id, nodes);
         nodes.put(id, node);
         return id;

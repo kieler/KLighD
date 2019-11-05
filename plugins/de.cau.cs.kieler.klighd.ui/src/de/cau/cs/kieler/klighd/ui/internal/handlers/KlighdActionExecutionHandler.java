@@ -138,13 +138,14 @@ public class KlighdActionExecutionHandler extends AbstractHandler {
             new LightDiagramLayoutConfig(viewContext)
                 .animate(result.getAnimateLayout())
                 .zoomStyle(zoomStyle)
-                .focusNode(result.getFocusNode())
+                .focusElement(result.getFocusElement())
+                .previousPosition(result.getPreviousPosition())
                 .options(result.getLayoutConfigs())
                 .performLayout();
 
         } else if (resultOfLastRun != null) {
             viewContext.getLayoutRecorder().stopRecording(
-                    ZoomStyle.create(resultOfLastRun, viewContext), resultOfLastRun.getFocusNode(), 0);
+                    ZoomStyle.create(resultOfLastRun, viewContext), resultOfLastRun.getFocusElement(), 0);
         } else {
             // ... i.e. no action has been executed at all
             // skip any layout and zoom update

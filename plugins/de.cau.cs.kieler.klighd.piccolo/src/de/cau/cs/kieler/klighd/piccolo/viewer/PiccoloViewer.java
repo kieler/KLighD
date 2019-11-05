@@ -24,6 +24,7 @@ import javax.swing.Timer;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.elk.core.math.KVector;
 import org.eclipse.elk.core.options.CoreOptions;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ControlAdapter;
@@ -41,6 +42,7 @@ import de.cau.cs.kieler.klighd.internal.ILayoutRecorder;
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
 import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
 import de.cau.cs.kieler.klighd.kgraph.KNode;
+import de.cau.cs.kieler.klighd.kgraph.util.KGraphUtil;
 import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;
 import de.cau.cs.kieler.klighd.piccolo.internal.KlighdCanvas;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.DiagramController;
@@ -309,7 +311,8 @@ public class PiccoloViewer extends AbstractViewer implements ILayoutRecorder,
     public void stopRecording(final int animationTime) {
         final ViewContext viewContext = this.getViewContext();
         final ZoomStyle zoomStyle;
-        final KNode focusNode;
+        KGraphElement focusElement;
+        final KVector previousPosition;
 
         // get the zoomStyle
         if (viewContext != null) {
@@ -320,28 +323,41 @@ public class PiccoloViewer extends AbstractViewer implements ILayoutRecorder,
                 // in case 'nzs' is unequal to ZOOM_TO_FOCUS, the NEXT_FOCUS_NODE is likely to be null,
                 //  otherwise it may be null, or may denote to a KNode
                 //  - both cases have to be handled properly!
-                focusNode = viewContext.getProperty(KlighdInternalProperties.NEXT_FOCUS_NODE);
+                focusElement = viewContext.getProperty(KlighdInternalProperties.NEXT_FOCUS_ELEMENT);
+                // If the focus element is not contained in the view model, ignore it.
+                if (focusElement != null && !KGraphUtil.isDescendant(focusElement, viewContext.getViewModel())) {
+                    focusElement = null;
+                }
 
                 viewContext.setProperty(KlighdInternalProperties.NEXT_ZOOM_STYLE, null);
-                viewContext.setProperty(KlighdInternalProperties.NEXT_FOCUS_NODE, null);
+                viewContext.setProperty(KlighdInternalProperties.NEXT_FOCUS_ELEMENT, null);
             } else {
-                zoomStyle = this.getViewContext().getZoomStyle();
-                focusNode = null;
+                zoomStyle = viewContext.getZoomStyle();
+                focusElement = null;
             }
+            previousPosition = viewContext.getProperty(KlighdInternalProperties.PREVIOUS_POSITION);
         } else {
             zoomStyle = ZoomStyle.NONE;
-            focusNode = null;
+            focusElement = null;
+            previousPosition = null;
         }
 
-        stopRecording(zoomStyle, focusNode, animationTime);
+        stopRecording(zoomStyle, focusElement, previousPosition, animationTime);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void stopRecording(final ZoomStyle zoomStyle, final KGraphElement focusElement, final int animationTime) {
+        stopRecording(zoomStyle, focusElement, null, animationTime);
     }
 
     /**
      * {@inheritDoc}
      */
-    public void stopRecording(final ZoomStyle zoomStyle, final KNode focusNode,
-            final int animationTime) {
-        controller.stopRecording(zoomStyle, focusNode, animationTime);
+    public void stopRecording(final ZoomStyle zoomStyle, final KGraphElement focusElement,
+            KVector previousPosition, final int animationTime) {
+        controller.stopRecording(zoomStyle, focusElement, previousPosition, animationTime);
     }
 
     /**

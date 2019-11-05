@@ -13,6 +13,7 @@
  */
 package de.cau.cs.kieler.klighd.internal.util;
 
+import org.eclipse.elk.core.math.KVector;
 import org.eclipse.elk.graph.properties.IProperty;
 import org.eclipse.elk.graph.properties.Property;
 
@@ -21,7 +22,7 @@ import com.google.common.base.Predicate;
 import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.ZoomStyle;
 import de.cau.cs.kieler.klighd.internal.ILayoutRecorder;
-import de.cau.cs.kieler.klighd.kgraph.KNode;
+import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
 import de.cau.cs.kieler.klighd.kgraph.PersistentEntry;
 
 /**
@@ -96,11 +97,18 @@ public final class KlighdInternalProperties {
             "klighd.zoom.nextZoomStyle");
     
     /**
-     * The {@link KNode} to be focus during upcoming diagram layout if {@link #NEXT_ZOOM_STYLE} is
-     * {@link ZoomStyle#ZOOM_TO_FOCUS}.
+     * The {@link KGraphElement} to be focus during upcoming diagram layout if {@link #NEXT_ZOOM_STYLE} is
+     * {@link ZoomStyle#ZOOM_TO_FOCUS} or {@link ZoomStyle#ZOOM_TO_STAY_SELECTED}.
      */
-    public static final IProperty<KNode> NEXT_FOCUS_NODE = new Property<KNode>(
-            "klighd.zoom.nextFocusNode");
+    public static final IProperty<KGraphElement> NEXT_FOCUS_ELEMENT = new Property<KGraphElement>(
+            "klighd.zoom.nextFocusElement");
+    
+    /**
+     * The position the selected element had in the previous layout that is included in the new layout 
+     * if the {@link ZoomStyle} is {@link ZoomStyle#ZOOM_TO_STAY_SELECTED}.
+     */
+    public static final IProperty<KVector> PREVIOUS_POSITION = new Property<KVector>(
+            "klighd.zoom.previousPosition");
     
     /**
      * Property to be attached to the {@link de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout
