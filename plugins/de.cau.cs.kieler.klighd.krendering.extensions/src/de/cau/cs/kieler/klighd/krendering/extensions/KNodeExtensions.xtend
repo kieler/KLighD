@@ -59,6 +59,20 @@ class KNodeExtensions {
      */ 
     def private KNode create node: KGraphUtil::createInitializedNode internalCreateNode(ArrayList<Object> oc) {
     }
+    
+    /**
+     * The Xtend-generated internal create map for {@link #internalCreateNode} with a more accessible name.
+     */
+    private def getInternalNodeMap() {
+        return this._createCache_internalCreateNode
+    }
+    
+    /**
+     * A convenient test method to check whether or not a specific node exists in the create extension
+     */
+    def boolean nodeExists(Object... os) {
+        getInternalNodeMap.containsKey(newArrayList(os))
+    }
 
     /**
      * A convenient getter preserving the element image relation by a create extension.
@@ -72,6 +86,13 @@ class KNodeExtensions {
      */ 
     def KNode getNode(Object o1, Object o2) {
         newArrayList(o1, o2).internalCreateNode
+    }
+    
+    /**
+     * A convenient getter preserving the element image relation by a create extension.
+     */ 
+    def KNode getNode(Object... os) {
+        newArrayList(os).internalCreateNode
     }
     
     /**
@@ -95,6 +116,14 @@ class KNodeExtensions {
      */
     def KNode createNode(Object o1, Object o2) {
         return o1.getNode(o2)
+    }
+    
+    /**
+     * An alias of {@link #getNode} allowing to express in business that the KNode will
+     * be created at this place. It is just syntactic sugar.  
+     */
+    def KNode createNode(Object... os) {
+        return os.node
     }
     
     def Pair<Float, Float> getNodeSize(KNode node) {

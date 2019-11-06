@@ -91,6 +91,20 @@ class KPortExtensions {
     }
     
     /**
+     * The Xtend-generated internal create map for {@link #internalCreatePort} with a more accessible name.
+     */
+    private def getInternalPortMap() {
+        return this._createCache_internalCreatePort
+    }
+    
+    /**
+     * A convenient test method to check whether or not a specific port exists in the create extension
+     */
+    def boolean portExists(Object... os) {
+        getInternalPortMap.containsKey(newArrayList(os))
+    }
+    
+    /**
      * A convenient port getter based on a single business object preserving the
      * element image relation by a create extension.
      */
@@ -120,6 +134,14 @@ class KPortExtensions {
      */
     def KPort getPort(Object o1, Object o2, Object o3, Object o4) {
         return newArrayList(o1, o2, o3, o4).internalCreatePort()
+    }
+    
+    /**
+     * A convenient port getter based on a single business object preserving the
+     * element image relation by a create extension.
+     */
+    def KPort getPort(Object... os) {
+        return newArrayList(os).internalCreatePort()
     }
     
     /**
@@ -159,6 +181,14 @@ class KPortExtensions {
      */
     def KPort createPort(Object o1, Object o2, Object o3, Object o4) {
         return o1.getPort(o2, o3, o4);
+    }
+    
+    /**
+     * An alias of {@link #getPort(Object o1)} allowing to express in business that the KPort will
+     * be created at this place. It is just syntactic sugar.  
+     */
+    def KPort createPort(Object... os) {
+        return os.getPort()
     }
     
     /**
