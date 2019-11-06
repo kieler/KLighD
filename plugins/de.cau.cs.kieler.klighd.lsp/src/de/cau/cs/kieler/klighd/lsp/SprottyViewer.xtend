@@ -24,6 +24,7 @@ import de.cau.cs.kieler.klighd.lsp.utils.SprottyProperties
 import de.cau.cs.kieler.klighd.util.RenderingContextData
 import de.cau.cs.kieler.klighd.viewers.AbstractViewer
 import de.cau.cs.kieler.klighd.viewers.ContextViewer
+import org.eclipse.elk.core.math.KVector
 import org.eclipse.swt.widgets.Composite
 
 /**
@@ -183,11 +184,16 @@ class SprottyViewer extends AbstractViewer implements ILayoutRecorder,
         // do nothing.
     }
     
-    override stopRecording(ZoomStyle zoomStyle, KNode focusNode, int animationTime) {
+    override stopRecording(ZoomStyle zoomStyle, KGraphElement focusElement, int animationTime) {
 //        println("stop recording called")
         // do nothing.
     }
     
+    override stopRecording(ZoomStyle zoomStyle, KGraphElement focusElement, KVector previousPosition,
+        int animationTime) {
+//        println("stop recording called")
+        // do nothing.
+    }
     override getDiagramOutlinePage() {
 //        println("get diagramOutlinePage called")
         return null
