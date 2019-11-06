@@ -24,6 +24,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.elk.core.math.KVector;
 import org.eclipse.elk.core.math.Spacing;
 import org.eclipse.elk.core.options.CoreOptions;
 import org.eclipse.elk.core.util.Pair;
@@ -292,21 +293,40 @@ public class DiagramController {
     /**
      * @param zoomStyle
      *            the style used to zoom, e.g. zoom to fit or zoom to focus
-     * @param focusNode
-     *            the {@link KNode} to focus in case <code>zoomStyle</code> is
-     *            {@link ZoomStyle#ZOOM_TO_FOCUS}, is ignored otherwise
+     * @param focusElement
+     *            the {@link KGraphElement} to focus in case <code>zoomStyle</code> is
+     *            {@link ZoomStyle#ZOOM_TO_FOCUS} or {@link ZoomStyle#ZOOM_TO_STAY}, is ignored otherwise
      * @param animationTime
      *            duration of the animated layout
      *
      * @see de.cau.cs.kieler.klighd.internal.ILayoutRecorder#stopRecording(ZoomStyle, KNode, int)
      *      ILayoutRecorder#stopRecording(ZoomStyle, KNode, int)
      */
-    public void stopRecording(final ZoomStyle zoomStyle, final KNode focusNode,
-            final int animationTime) {
+    public void stopRecording(final ZoomStyle zoomStyle, final KGraphElement focusElement, final int animationTime) {
+        stopRecording(zoomStyle, focusElement, null, animationTime);
+    }
+
+    /**
+     * @param zoomStyle
+     *            the style used to zoom, e.g. zoom to fit or zoom to focus
+     * @param focusElement
+     *            the {@link KGraphElement} to focus in case <code>zoomStyle</code> is
+     *            {@link ZoomStyle#ZOOM_TO_FOCUS} or {@link ZoomStyle#ZOOM_TO_STAY}, is ignored otherwise
+     * @param previousPosition
+     *            the position the selected element had in the previous layout run.
+     *            Is ignored if the <code>zoomStyle</code> is {@link ZoomStyle#ZOOM_TO_STAY}.
+     * @param animationTime
+     *            duration of the animated layout
+     *
+     * @see de.cau.cs.kieler.klighd.internal.ILayoutRecorder#stopRecording(ZoomStyle, KNode, int)
+     *      ILayoutRecorder#stopRecording(ZoomStyle, KNode, int)
+     */
+    public void stopRecording(final ZoomStyle zoomStyle, final KGraphElement focusElement,
+            final KVector previousPosition, final int animationTime) {
         if (record) {
             record = false;
 
-            handleRecordedChanges(zoomStyle, focusNode, animationTime);
+            handleRecordedChanges(zoomStyle, focusElement, previousPosition, animationTime);
         }
     }
 
@@ -880,8 +900,8 @@ public class DiagramController {
     /**
      * Applies the recorded layout changes by creating appropriate activities.
      */
-    private void handleRecordedChanges(final ZoomStyle zoomStyle, final KNode focusNode,
-            final int animationTime) {
+    private void handleRecordedChanges(final ZoomStyle zoomStyle, final KGraphElement focusElement,
+            final KVector previousPosition, final int animationTime) {
         final PRoot root = topNode.getRoot();
 
         // create activities to apply all recorded changes
@@ -968,7 +988,7 @@ public class DiagramController {
         recordedChanges.clear();
 
         // apply a proper zoom handling if requested
-        getZoomController().zoom(zoomStyle, focusNode, animationTime);
+        getZoomController().zoom(zoomStyle, focusElement, previousPosition, animationTime);
     }
 
     /**

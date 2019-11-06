@@ -22,8 +22,8 @@ import de.cau.cs.kieler.klighd.krendering.KRenderingFactory
 import de.cau.cs.kieler.klighd.krendering.KRoundedBendsPolyline
 import de.cau.cs.kieler.klighd.krendering.KSpline
 import de.cau.cs.kieler.klighd.krendering.ViewSynthesisShared
+import java.util.ArrayList
 import java.util.List
-import java.util.Map
 import javax.inject.Inject
 import org.eclipse.elk.graph.properties.IProperty
 
@@ -44,6 +44,7 @@ import org.eclipse.elk.graph.properties.IProperty
  * 
  * @author chsch
  * @author ssm
+ * @autnor nre
  * 
  * @containsExtensions
  */
@@ -63,53 +64,49 @@ class KEdgeExtensions {
     /**
      * A convenient getter preserving the element image relation by a create extension.
      */ 
-    def private KEdge create port: KGraphUtil::createInitializedEdge internalCreateEdge(List<Object> oc) {
+    def private KEdge create port: KGraphUtil::createInitializedEdge internalCreateEdge(Object... oc) {
     }
-
+    
     /**
-     * The following method retrieves the internal map of the create extension. 
-     * This is mandatory for queries (e.g. exist tests) on the internal hash map hidden by Xtend.
-     */ 
-    def private Map<? extends List<? extends Object>, KEdge> create it: try {
-            // this try catch statement is the creation statement within this 'create' extension
-            // it's executed within a 'synchronized' block for thread safety purposes,
-            //  see generated java code
-            this.class.getDeclaredField("_createCache_internalCreateEdge").get(this)
-                as Map<? extends List<? extends Object>, KEdge>
-
-        } catch (Throwable t) {
-            emptyMap()
-
-        } getInternalEdgeMap() {
-        // the 'create extension's body is empty as the obtained map needn't to be manipulated in any way 
+     * The Xtend-generated internal create map for {@link #internalCreateEdge} with a more accessible name.
+     */
+    private def getInternalEdgeMap() {
+        return this._createCache_internalCreateEdge
     }
 
     /**
      * A convenient test method to check whether or not a specific edge exists in the create extension
      */
     def boolean edgeExists(Object o1) {
-        getInternalEdgeMap().containsKey(newArrayList(newArrayList(o1)))
+        getInternalEdgeMap().containsKey(newArrayList(o1))
     }
 
     /**
      * A convenient test method to check whether or not a specific edge exists in the create extension
      */
     def boolean edgeExists(Object o1, Object o2) {
-        getInternalEdgeMap().containsKey(newArrayList(newArrayList(o1, o2)))
+        getInternalEdgeMap().containsKey(newArrayList(o1, o2))
     }
 
     /**
      * A convenient test method to check whether or not a specific edge exists in the create extension
      */
     def boolean edgeExists(Object o1, Object o2, Object o3) {
-        getInternalEdgeMap().containsKey(newArrayList(newArrayList(o1, o2, o3)))
+        getInternalEdgeMap().containsKey(newArrayList(o1, o2, o3))
     }
 
     /**
      * A convenient test method to check whether or not a specific edge exists in the create extension
      */
     def boolean edgeExists(Object o1, Object o2, Object o3, Object o4) {
-        getInternalEdgeMap().containsKey(newArrayList(newArrayList(o1, o2, o3, o4)))
+        getInternalEdgeMap().containsKey(newArrayList(o1, o2, o3, o4))
+    }
+    
+    /**
+     * A convenient test method to check whether or not a specific edge exists in the create extension
+     */
+    def boolean edgeExists(Object... os) {
+        getInternalEdgeMap.containsKey(newArrayList(os))
     }
 
     /**
@@ -117,7 +114,7 @@ class KEdgeExtensions {
      * element image relation by a create extension.
      */
     def KEdge getEdge(Object o1) {
-        return newArrayList(o1).internalCreateEdge()
+        return internalCreateEdge(o1)
     }
     
     /**
@@ -125,7 +122,7 @@ class KEdgeExtensions {
      * element image relation by a create extension.
      */
     def KEdge getEdge(Object o1, Object o2) {
-        return newArrayList(o1, o2).internalCreateEdge()
+        return internalCreateEdge(o1, o2)
     }
     
     /**
@@ -133,7 +130,7 @@ class KEdgeExtensions {
      * element image relation by a create extension.
      */
     def KEdge getEdge(Object o1, Object o2, Object o3) {
-        return newArrayList(o1, o2, o3).internalCreateEdge()
+        return internalCreateEdge(o1, o2, o3)
     }
     
     /**
@@ -141,7 +138,15 @@ class KEdgeExtensions {
      * element image relation by a create extension.
      */
     def KEdge getEdge(Object o1, Object o2, Object o3, Object o4) {
-        return newArrayList(o1, o2, o3, o4).internalCreateEdge()
+        return internalCreateEdge(o1, o2, o3, o4)
+    }
+    
+    /**
+     * A convenient port getter based on a single business object preserving the
+     * element image relation by a create extension.
+     */
+    def KEdge getEdge(Object... os) {
+        return internalCreateEdge(os)
     }
     
     /**
@@ -181,6 +186,14 @@ class KEdgeExtensions {
      */
     def KEdge createEdge(Object o1, Object o2, Object o3, Object o4) {
         return o1.getEdge(o2, o3, o4);
+    }
+    
+    /**
+     * An alias of {@link #getEdge(Object o1)} allowing to express in business that the KEdge will
+     * be created at this place. It is just syntactic sugar.  
+     */
+    def KEdge createEdge(Object... os) {
+        return os.getEdge()
     }
     
     /**
@@ -256,7 +269,7 @@ class KEdgeExtensions {
      * getSemanticObject returns the primary (semantic) object of an edge.
      */
     def Object getSemanticObject(KEdge edge) {
-        ((getInternalEdgeMap.filter[p1, p2|p2 == edge].keySet.head as List<?>).head as List<Object>).head
+        (getInternalEdgeMap.filter[p1, p2|p2 == edge].keySet.head as List<?>).head
     }
     
     

@@ -19,6 +19,7 @@ import org.eclipse.sprotty.xtext.DefaultDiagramModule
 import org.eclipse.sprotty.xtext.IDiagramGenerator
 import org.eclipse.sprotty.xtext.ls.DiagramUpdater
 import org.eclipse.sprotty.xtext.tracing.TextRegionProvider
+import org.eclipse.xtext.ide.server.WorkspaceManager
 import org.eclipse.xtext.naming.IQualifiedNameProvider
 import org.eclipse.xtext.naming.SimpleNameProvider
 
@@ -62,5 +63,9 @@ public class KGraphDiagramModule extends DefaultDiagramModule {
     
     public def Class<? extends IQualifiedNameProvider> bindIQualifiedNameProvider() {
         SimpleNameProvider
+    }
+    
+    public def Class<? extends WorkspaceManager> bindWorkspaceManger() {
+        KeithWorkspaceManager
     }
 }
