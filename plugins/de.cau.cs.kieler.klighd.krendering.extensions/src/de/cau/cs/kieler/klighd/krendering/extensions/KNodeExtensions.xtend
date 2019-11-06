@@ -13,7 +13,6 @@
  */
 package de.cau.cs.kieler.klighd.krendering.extensions
 
-import com.google.common.collect.Lists
 import com.google.inject.Injector
 import com.google.inject.Scope
 import de.cau.cs.kieler.klighd.kgraph.KGraphElement
@@ -21,7 +20,6 @@ import de.cau.cs.kieler.klighd.kgraph.KNode
 import de.cau.cs.kieler.klighd.kgraph.util.KGraphUtil
 import de.cau.cs.kieler.klighd.krendering.ViewSynthesisShared
 import java.util.ArrayList
-import java.util.HashMap
 import javax.inject.Inject
 import org.eclipse.elk.core.math.KVector
 import org.eclipse.elk.core.options.CoreOptions
@@ -55,11 +53,29 @@ class KNodeExtensions {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////                    KNodeExtensions
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    final HashMap<ArrayList<?>, KNode> nodeCache = newHashMap
     
     /**
-     * A convenient getter preserving the element image relation.
+     * A convenient getter preserving the element image relation by a create extension.
+     */ 
+    def private KNode create node: KGraphUtil::createInitializedNode internalCreateNode(ArrayList<Object> oc) {
+    }
+    
+    /**
+     * The Xtend-generated internal create map for {@link #internalCreateNode} with a more accessible name.
+     */
+    private def getInternalNodeMap() {
+        return this._createCache_internalCreateNode
+    }
+    
+    /**
+     * A convenient test method to check whether or not a specific node exists in the create extension
+     */
+    def boolean nodeExists(Object... os) {
+        getInternalNodeMap.containsKey(newArrayList(os))
+    }
+
+    /**
+     * A convenient getter preserving the element image relation by a create extension.
      */ 
     def KNode getNode(Object o) {
         // This method is necessary so that the one-parameter extension does not break as xtend does not recognice it as
@@ -77,27 +93,10 @@ class KNodeExtensions {
     }
     
     /**
-     * A convenient getter preserving the element image relation.
+     * A convenient getter preserving the element image relation by a create extension.
      */ 
     def KNode getNode(Object... os) {
-        val ArrayList<?> cacheKey = Lists.newArrayList(os)
-        var KNode result = null;
-        synchronized (nodeCache) {
-          if (nodeCache.containsKey(cacheKey)) {
-            return nodeCache.get(cacheKey);
-          }
-          result = KGraphUtil.createInitializedNode();
-          nodeCache.put(cacheKey, result);
-        }
-        return result;
-    }
-    
-    /**
-     * A convenient check method to look up if a node for the given arguments has already been created.
-     */
-    def boolean nodeExists(Object... os) {
-        val ArrayList<?> cacheKey = Lists.newArrayList(os)
-        return nodeCache.get(cacheKey) !== null
+        newArrayList(os).internalCreateNode
     }
     
     /**
@@ -130,7 +129,7 @@ class KNodeExtensions {
      * be created at this place. It is just syntactic sugar.  
      */
     def KNode createNode(Object... os) {
-        return getNode(os)
+        return os.node
     }
     
     def Pair<Float, Float> getNodeSize(KNode node) {
