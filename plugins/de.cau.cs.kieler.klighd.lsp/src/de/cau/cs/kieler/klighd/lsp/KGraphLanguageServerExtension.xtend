@@ -271,8 +271,9 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
                         layoutConfig.configure(ElkGraphElement).setProperty(optionData, value);
                     } else if (optionData.type === Type.DOUBLE) {
                         layoutConfig.configure(ElkGraphElement).setProperty(optionData,
-                            Double.parseDouble(layoutOption.value.toString)
-                        )
+                            Double.parseDouble(layoutOption.value.toString))
+                    } else if (optionData.type === Type.BOOLEAN) {
+                        layoutConfig.configure(ElkGraphElement).setProperty(optionData, layoutOption.value)
                     } else { // TODO: implement the other cases, if necessary.
                         layoutConfig.configure(ElkGraphElement).setProperty(optionData, layoutOption.value);
                     }
@@ -345,9 +346,6 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
             if (option.values.contains(newOption)) {
                 viewContext.configureOption(option, newOption)
                 return
-            }
-            if (newOption instanceof String) {
-                println("Here")
             }
             // Every number (including int) will be represented as a double in a possible JavaScript server.
             // Because of that, try to match the new value to an int.
