@@ -187,6 +187,7 @@ class KGraphDiagramUpdater extends DiagramUpdater {
             // TODO: The ViewContext should have a default constructor for non-SWT-based viewer.
             viewContext = new ViewContext(null as IDiagramWorkbenchPart, model).configure(properties)
             viewer = viewContext.createViewer(null, null) as SprottyViewer
+            viewer.diagramServer = server as KGraphDiagramServer
             viewer.viewContext = viewContext
             // Update the model and with that call the diagram synthesis.
             viewContext.update(model)

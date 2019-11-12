@@ -33,12 +33,17 @@ import de.cau.cs.kieler.klighd.microlayout.Bounds
 import de.cau.cs.kieler.klighd.util.KlighdProperties
 import java.util.ArrayList
 import java.util.Base64
+import java.util.List
 import java.util.Map
 import org.apache.log4j.Logger
 import org.eclipse.core.runtime.Platform
+import org.eclipse.emf.ecore.EObject
 import org.eclipse.sprotty.Action
 import org.eclipse.sprotty.ActionMessage
+import org.eclipse.sprotty.SModelElement
 import org.eclipse.sprotty.SModelRoot
+import org.eclipse.sprotty.SelectAction
+import org.eclipse.sprotty.SelectAllAction
 import org.eclipse.sprotty.SetModelAction
 import org.eclipse.sprotty.UpdateModelAction
 import org.eclipse.sprotty.xtext.LanguageAwareDiagramServer
@@ -262,6 +267,34 @@ public class KGraphDiagramServer extends LanguageAwareDiagramServer {
                 setOrUpdateModel
             }
         }
+    }
+    
+    /**
+     * Selects the SGraph elements mapped by the given selectable KGraph elements.
+     * 
+     * @param toBeSelected The elements that will be selected in the diagram, if they are selectable. 
+     */
+    def void selectElements(List<EObject> toBeSelected) {
+        val toBeSelectedSModelElementIDs = newArrayList
+        
+        synchronized(diagramState) {
+            val map = diagramState.getKGraphToSModelElementMap(diagramState.getURIString(clientId))
+            toBeSelected.forEach [
+                val sModelElement = map.get(it)
+                if (sModelElement instanceof SModelElement) {
+                    toBeSelectedSModelElementIDs.add(sModelElement.id)
+                }
+                
+            ]
+        }
+        // Deselect all elements first, so only the new elements are selected now.
+        val deselectAllAction = new SelectAllAction
+        deselectAllAction.select = false
+        dispatch(deselectAllAction)
+        
+        val selectAction = new SelectAction
+        selectAction.selectedElementsIDs = toBeSelectedSModelElementIDs
+        dispatch(selectAction)
     }
     
     /**
