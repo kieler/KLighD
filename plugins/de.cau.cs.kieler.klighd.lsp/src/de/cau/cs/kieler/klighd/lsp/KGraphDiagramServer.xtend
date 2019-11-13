@@ -53,8 +53,8 @@ import org.eclipse.sprotty.xtext.LanguageAwareDiagramServer
  * 
  * @author nre
  */
-public class KGraphDiagramServer extends LanguageAwareDiagramServer {
-    private static val LOG = Logger.getLogger(KGraphDiagramServer)
+class KGraphDiagramServer extends LanguageAwareDiagramServer {
+    static val LOG = Logger.getLogger(KGraphDiagramServer)
     
     @Inject 
     protected KGraphDiagramState diagramState
@@ -303,7 +303,7 @@ public class KGraphDiagramServer extends LanguageAwareDiagramServer {
      * 
      * @param options The options to be initialized on this diagram server.
      */
-    public def initializeOptions(Map<String, String> options) {
+    def initializeOptions(Map<String, String> options) {
         if (getOptions.isEmpty) {
             setOptions(options)
         }

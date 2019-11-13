@@ -31,11 +31,11 @@ import org.eclipse.sprotty.layout.ElkLayoutEngine
  * Handles the server side layout of KGraphs.
  * Based on the yang-lsp implementation by TypeFox.
  * 
- * @author nir
+ * @author nre
  * @see <a href="https://github.com/theia-ide/yang-lsp/blob/master/yang-lsp/io.typefox.yang.diagram/src/main/java/io/typefox/yang/diagram/YangLayoutEngine.xtend">
  *      YangLayoutEngine</a>
  */
-public class KGraphLayoutEngine extends ElkLayoutEngine {
+class KGraphLayoutEngine extends ElkLayoutEngine {
     /**
      * Stores data for the generation of diagrams.
      */

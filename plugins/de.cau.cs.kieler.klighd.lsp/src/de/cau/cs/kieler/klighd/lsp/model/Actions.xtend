@@ -33,15 +33,15 @@ import org.eclipse.xtend.lib.annotations.ToString
 @Accessors
 @EqualsHashCode
 @ToString(skipNulls = true)
-public class RequestTextBoundsAction implements RequestAction<ComputedTextBoundsAction> {
+class RequestTextBoundsAction implements RequestAction<ComputedTextBoundsAction> {
     public static val KIND = 'requestTextBounds'
-    private String kind = KIND
+    String kind = KIND
     
-    private SModelRoot textDiagram
-    private String requestId
+    SModelRoot textDiagram
+    String requestId
     
-    public new() {}
-    public new(Consumer<RequestTextBoundsAction> initializer) {
+    new() {}
+    new(Consumer<RequestTextBoundsAction> initializer) {
         initializer.accept(this)
     }
     
@@ -49,7 +49,7 @@ public class RequestTextBoundsAction implements RequestAction<ComputedTextBounds
      * Constructor to call when creating this. The {@code textDiagram} should contain a sprotty Diagram with all texts,
      * whose bounds should be requested.
      */
-    public new(SModelRoot textDiagram) {
+    new(SModelRoot textDiagram) {
         this.textDiagram = textDiagram
     }
 }
@@ -62,7 +62,7 @@ public class RequestTextBoundsAction implements RequestAction<ComputedTextBounds
 @Accessors
 @EqualsHashCode
 @ToString(skipNulls = true)
-public class SetSynthesesAction implements Action {
+class SetSynthesesAction implements Action {
     public static val KIND = 'setSyntheses'
     String kind = KIND
     
@@ -82,7 +82,7 @@ public class SetSynthesesAction implements Action {
 @Accessors
 @EqualsHashCode
 @ToString(skipNulls = true)
-public class CheckImagesAction implements Action {
+class CheckImagesAction implements Action {
     public static val KIND = 'checkImages'
     String kind = KIND
     
@@ -101,7 +101,7 @@ public class CheckImagesAction implements Action {
 @Accessors
 @EqualsHashCode
 @ToString(skipNulls = true)
-public class StoreImagesAction implements Action {
+class StoreImagesAction implements Action {
     public static val KIND = 'storeImages'
     String kind = KIND
     
@@ -118,7 +118,7 @@ public class StoreImagesAction implements Action {
 @Accessors
 @EqualsHashCode
 @ToString(skipNulls = true)
-public class CheckedImagesAction implements Action {
+class CheckedImagesAction implements Action {
     public static val KIND = 'checkedImages'
     String kind = KIND
     
@@ -138,7 +138,7 @@ public class CheckedImagesAction implements Action {
 @Accessors
 @EqualsHashCode
 @ToString(skipNulls = true)
-public class SetSynthesisAction implements Action {
+class SetSynthesisAction implements Action {
     public static val KIND = 'setSynthesis'
     String kind = KIND
     
@@ -159,16 +159,16 @@ public class SetSynthesisAction implements Action {
 @Accessors
 @EqualsHashCode
 @ToString(skipNulls = true)
-public class ComputedTextBoundsAction implements ResponseAction {
+class ComputedTextBoundsAction implements ResponseAction {
     public static val KIND = 'computedTextBounds'
-    private String kind = KIND
-    private int revision
+    String kind = KIND
+    int revision
     
-    private List<ElementAndBounds> bounds
-    private String responseId
+    List<ElementAndBounds> bounds
+    String responseId
     
-    public new() {}
-    public new(Consumer<ComputedTextBoundsAction> initializer) {
+    new() {}
+    new(Consumer<ComputedTextBoundsAction> initializer) {
         initializer.accept(this)
     }
 }
@@ -181,16 +181,16 @@ public class ComputedTextBoundsAction implements ResponseAction {
 @Accessors
 @EqualsHashCode
 @ToString(skipNulls = true)
-public class PerformActionAction implements Action {
+class PerformActionAction implements Action {
     public static val KIND = 'performAction'
-    private String kind = KIND
+    String kind = KIND
     
-    private String actionId
-    private String kGraphElementId
-    private String kRenderingId
+    String actionId
+    String kGraphElementId
+    String kRenderingId
     
-    public new() {}
-    public new(Consumer<PerformActionAction> initializer) {
+    new() {}
+    new(Consumer<PerformActionAction> initializer) {
         initializer.accept(this)
     }
 }

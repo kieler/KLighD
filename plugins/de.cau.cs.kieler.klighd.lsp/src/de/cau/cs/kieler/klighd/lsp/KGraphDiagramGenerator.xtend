@@ -79,8 +79,8 @@ import org.eclipse.xtext.util.CancelIndicator
  * @see <a href="https://github.com/theia-ide/yang-lsp/blob/master/yang-lsp/io.typefox.yang.diagram/src/main/java/io/typefox/yang/diagram/YangDiagramGenerator.xtend">
  *      YangDiagramGenerator</a>
  */
-public class KGraphDiagramGenerator implements IDiagramGenerator {
-	private static val LOG = Logger.getLogger(KGraphDiagramGenerator)
+class KGraphDiagramGenerator implements IDiagramGenerator {
+	static val LOG = Logger.getLogger(KGraphDiagramGenerator)
     
     /**
      * A map that maps each {@link KGraphElement} to its {@link SModelElement}.
@@ -89,7 +89,7 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
      * @see KGraphLayoutEngine
      */
     @Accessors(PUBLIC_GETTER)
-    private var Map<KGraphElement, SModelElement> kGraphToSModelElementMap
+    var Map<KGraphElement, SModelElement> kGraphToSModelElementMap
     
     /**
      * A list containing all texts from the source KGraph inside Sprotty labels. Used for the simpler texts-only SGraph.
@@ -97,7 +97,7 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
      * @see KGraphDiagramState
      */
     @Accessors(PUBLIC_GETTER)
-    private var List<SKLabel> modelLabels
+    var List<SKLabel> modelLabels
     
     /**
      * A map containing all {@link KText}s from the source KGraph under the key of their ID in the texts-only SGraph.
@@ -105,41 +105,41 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
      * @see KGraphDiagramState
      */
     @Accessors(PUBLIC_GETTER)
-    private var Map<String, KText> textMapping
+    var Map<String, KText> textMapping
     
     /**
      * The {@link KImage}s contained in the view model.
      */
     @Accessors(PUBLIC_GETTER)
-    private var List<KImage> images
+    var List<KImage> images
 
     /**
      * The root node of the translated {@link SGraph}.
      */
-	private var SGraph diagramRoot
+	var SGraph diagramRoot
 	
 	/**
 	 * Provides functionality to tag SModelElements.
 	 */
 	@Inject
-	private ITraceProvider traceProvider
+	ITraceProvider traceProvider
     
     /**
      * Generates unique IDs for any KGraphElement.
      */
-    private KGraphElementIDGenerator idGen
+    KGraphElementIDGenerator idGen
     
     /**
      * List of all {@link KEdge}s that need to be generated in the end and added into the list that is the second
      * element of each pair.
      */
-    private List<Pair<KEdge, List<SModelElement>>> edgesToGenerate
+    List<Pair<KEdge, List<SModelElement>>> edgesToGenerate
 
     /**
      * Creates a {@link ViewContext} containing the KGraph model for any {@link Object} model with a registered 
      * transformation in KLighD. 
      */
-    public static def ViewContext translateModel(Object model, ViewContext oldVC) {
+    static def ViewContext translateModel(Object model, ViewContext oldVC) {
         return LightDiagramServices.translateModel2(model, oldVC)
     }
 	
@@ -163,7 +163,7 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
 	 * @param identifier      The URI of the resource containing this KNode before the translation.
 	 * @param cancelIndicator Indicates, if the action requesting this translation has already been canceled.
 	 */
-	public def SGraph toSGraph(KNode parentNode, String identifier, CancelIndicator cancelIndicator) {
+	def SGraph toSGraph(KNode parentNode, String identifier, CancelIndicator cancelIndicator) {
 //        println("Starting SGraph generation!")
 //        val startTime = System.currentTimeMillis
         LOG.info("Generating diagram for input: '" + identifier + "'")
@@ -613,7 +613,7 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
      * @param labels A list of all labels, this SGraph should contain.
      * @param parentId The ID of the graph containing all these labels.
      */
-    public static def SGraph generateTextDiagram(List<SKLabel> labels, String parentId) {
+    static def SGraph generateTextDiagram(List<SKLabel> labels, String parentId) {
         // equivalent for the SRootElement
         val root = new SKGraph => [
             type = 'graph'

@@ -25,7 +25,7 @@ import java.io.IOException
  * 
  * @author nir
  */
-public class Point2DTypeAdapter extends TypeAdapter<Point2D>{
+class Point2DTypeAdapter extends TypeAdapter<Point2D>{
         
     override write(JsonWriter out, Point2D value) throws IOException {
         if (value === null) {

@@ -30,5 +30,5 @@ interface IPreferencesExtension {
      * @param param Defines the KEITH-server-specific preferences.
      */
     @JsonNotification('setPreferences')
-    public def void setPreferences(Map<String, Object> param)
+    def void setPreferences(Map<String, Object> param)
 }

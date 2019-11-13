@@ -27,8 +27,8 @@ import org.eclipse.sprotty.server.json.ActionTypeAdapter
  * 
  * @author nre
  */
-public class KGraphTypeAdapterUtil {
-    public def static GsonBuilder configureGson(GsonBuilder gsonBuilder) {
+class KGraphTypeAdapterUtil {
+    def static GsonBuilder configureGson(GsonBuilder gsonBuilder) {
         gsonBuilder
         .registerTypeAdapterFactory(
             new ActionTypeAdapter.Factory => [

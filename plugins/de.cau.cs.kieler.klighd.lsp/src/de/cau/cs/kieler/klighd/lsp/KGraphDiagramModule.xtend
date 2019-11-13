@@ -31,13 +31,13 @@ import org.eclipse.xtext.naming.SimpleNameProvider
  * @see <a href="https://github.com/theia-ide/yang-lsp/blob/master/yang-lsp/io.typefox.yang.diagram/src/main/java/io/typefox/yang/diagram/YangDiagramModule.xtend">
  *      YangDiagramModule</a>
  */
-public class KGraphDiagramModule extends DefaultDiagramModule {
+class KGraphDiagramModule extends DefaultDiagramModule {
 	
 	override bindILayoutEngine() {
 		KGraphLayoutEngine
 	}
 	
-	public def Class<? extends IDiagramGenerator> bindIDiagramGenerator() {
+	def Class<? extends IDiagramGenerator> bindIDiagramGenerator() {
 		KGraphDiagramGenerator
 	}
 	
@@ -45,7 +45,7 @@ public class KGraphDiagramModule extends DefaultDiagramModule {
         KGraphDiagramServer
     }
     
-	public def Class<? extends TextRegionProvider> bindTraceRegionProvider() {
+	def Class<? extends TextRegionProvider> bindTraceRegionProvider() {
         SimpleTraceRegionProvider
     }
     
@@ -53,7 +53,7 @@ public class KGraphDiagramModule extends DefaultDiagramModule {
         KGraphDiagramServerFactory
     }
     
-    public def Class<? extends DiagramUpdater> bindDiagramUpdater() {
+    def Class<? extends DiagramUpdater> bindDiagramUpdater() {
         KGraphDiagramUpdater
     }
     
@@ -61,11 +61,11 @@ public class KGraphDiagramModule extends DefaultDiagramModule {
         KeithDiagramSelectionListener
     }
     
-    public def Class<? extends IQualifiedNameProvider> bindIQualifiedNameProvider() {
+    def Class<? extends IQualifiedNameProvider> bindIQualifiedNameProvider() {
         SimpleNameProvider
     }
     
-    public def Class<? extends WorkspaceManager> bindWorkspaceManger() {
+    def Class<? extends WorkspaceManager> bindWorkspaceManger() {
         KeithWorkspaceManager
     }
 }

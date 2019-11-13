@@ -36,11 +36,11 @@ import org.eclipse.sprotty.SShapeElement
  * 
  * @author nre
  */
-public class KGraphMappingUtil {    
+class KGraphMappingUtil {    
     /**
      * Map the layout of each KGraph element in the map to their corresponding SGraph elements.
      */
-    public static def mapLayout(Map<KGraphElement, SModelElement> mapping) {
+    static def mapLayout(Map<KGraphElement, SModelElement> mapping) {
         mapping.forEach[kGraphElement, sModelElement |
             // Layout data looks different for different KGraph Element Types
             if (kGraphElement instanceof KNode && sModelElement instanceof SKNode) {

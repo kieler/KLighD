@@ -44,21 +44,19 @@ class SprottyViewer extends AbstractViewer implements ILayoutRecorder {
     /** The identifier of this viewer type as specified in the extension. */
     public static final String ID = "de.cau.cs.kieler.klighd.lsp.SprottyViewer"
     
-    private ViewContext viewContext
-    
-    private KNode model
+    ViewContext viewContext
     
     @Accessors(PUBLIC_SETTER)
     KGraphDiagramServer diagramServer
     
-    public static class Provider implements IViewerProvider {
+    static class Provider implements IViewerProvider {
         override createViewer(ContextViewer parentViewer, Composite parent) {
             return new SprottyViewer()
         }
     }
     
     override setModel(KNode model, boolean sync) {
-        this.model = model
+        // do nothing.
     }
     
     override centerOn(KGraphElement diagramElement, int duration) {

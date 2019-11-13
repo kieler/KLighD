@@ -24,7 +24,7 @@ import org.eclipse.xtend.lib.annotations.Data
  * 
  * @author nre
  */
- @Data
+@Data
 class LayoutOptionUIData {
     /** identifier of the layout option. */
     String optionId
@@ -88,7 +88,7 @@ class LayoutOptionUIData {
     }
     
     /** The default value for the lower bound. */
-    private static final int DEFAULT_MIN = 0
+    static final int DEFAULT_MIN = 0
 
     /**
      * Get a lower bound for values of the given option.
@@ -109,7 +109,7 @@ class LayoutOptionUIData {
     }
 
     /** The default value for the upper bound. */
-    private static final int DEFAULT_MAX = 100
+    static final int DEFAULT_MAX = 100
 
     /**
      * Get an upper bound for values of the given option.

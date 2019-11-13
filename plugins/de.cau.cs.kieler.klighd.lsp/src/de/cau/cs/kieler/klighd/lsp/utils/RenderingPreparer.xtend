@@ -52,7 +52,7 @@ import static com.google.common.collect.Iterables.filter
  * 
  * @author nre
  */
-public final class RenderingPreparer {
+final class RenderingPreparer {
     /**
      * Prepares a KGraphElement to be rendered in an external viewer.
      * Calculates the position, width and height of each rendering of the parameters {@code element} from KLighD's 
@@ -68,7 +68,7 @@ public final class RenderingPreparer {
      * 
      * @param element The parent element containing the graph to calculate all rendering bounds for.
      */
-    public static def void prepareRendering(KGraphElement element) {
+    static def void prepareRendering(KGraphElement element) {
         // calculate the sizes of all renderings:
         for (data : element.data) {
             switch(data) {
@@ -362,7 +362,7 @@ public final class RenderingPreparer {
     /**
      * Calculates the bounding box of a KEdge.
      */
-    public static def Bounds edgeBounds(KEdge edge) {
+    private static def Bounds edgeBounds(KEdge edge) {
         var float minX = Float.MAX_VALUE
         var float minY = Float.MAX_VALUE
         var float maxX = Float.MIN_VALUE
@@ -391,21 +391,21 @@ public final class RenderingPreparer {
     /**
      * Convenience method to set the calculated bounds property of the given rendering
      */
-    public static def setBounds(KRendering rendering, Bounds bounds) {
+    private static def setBounds(KRendering rendering, Bounds bounds) {
         rendering.properties.put(SprottyProperties.CALCULATED_BOUNDS, bounds)
     }
     
     /**
      * Convenience method to set the calculated decoration property of the given rendering
      */
-    public static def setDecoration(KRendering rendering, Decoration decoration) {
+    private static def setDecoration(KRendering rendering, Decoration decoration) {
         rendering.properties.put(SprottyProperties.CALCULATED_DECORATION, decoration)
     }
     
     /**
      * A filter that lets only styles with a valid modifier id pass.
      */
-    private static val Predicate<KStyle> MODIFIED_STYLE_FILTER = new Predicate<KStyle>() {
+    static val Predicate<KStyle> MODIFIED_STYLE_FILTER = new Predicate<KStyle>() {
         override apply(KStyle style) {
             return !Strings.isNullOrEmpty(style.getModifierId())
                     && KlighdDataManager.getInstance()
@@ -413,7 +413,7 @@ public final class RenderingPreparer {
         }
     };
 
-    private static val StyleModificationContext singletonModContext = new StyleModificationContext();
+    static val StyleModificationContext singletonModContext = new StyleModificationContext();
     
     /**
      * @see de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController#processModifiableStyles
