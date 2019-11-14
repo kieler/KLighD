@@ -44,6 +44,7 @@ import org.eclipse.elk.graph.properties.IProperty
  * 
  * @author chsch
  * @author ssm
+ * @autnor nre
  * 
  * @containsExtensions
  */
@@ -63,7 +64,7 @@ class KEdgeExtensions {
     /**
      * A convenient getter preserving the element image relation by a create extension.
      */ 
-    def private KEdge create port: KGraphUtil::createInitializedEdge internalCreateEdge(ArrayList<Object> oc) {
+    def private KEdge create port: KGraphUtil::createInitializedEdge internalCreateEdge(Object... oc) {
     }
     
     /**
@@ -113,7 +114,7 @@ class KEdgeExtensions {
      * element image relation by a create extension.
      */
     def KEdge getEdge(Object o1) {
-        return newArrayList(o1).internalCreateEdge()
+        return internalCreateEdge(o1)
     }
     
     /**
@@ -121,7 +122,7 @@ class KEdgeExtensions {
      * element image relation by a create extension.
      */
     def KEdge getEdge(Object o1, Object o2) {
-        return newArrayList(o1, o2).internalCreateEdge()
+        return internalCreateEdge(o1, o2)
     }
     
     /**
@@ -129,7 +130,7 @@ class KEdgeExtensions {
      * element image relation by a create extension.
      */
     def KEdge getEdge(Object o1, Object o2, Object o3) {
-        return newArrayList(o1, o2, o3).internalCreateEdge()
+        return internalCreateEdge(o1, o2, o3)
     }
     
     /**
@@ -137,7 +138,7 @@ class KEdgeExtensions {
      * element image relation by a create extension.
      */
     def KEdge getEdge(Object o1, Object o2, Object o3, Object o4) {
-        return newArrayList(o1, o2, o3, o4).internalCreateEdge()
+        return internalCreateEdge(o1, o2, o3, o4)
     }
     
     /**
@@ -145,7 +146,7 @@ class KEdgeExtensions {
      * element image relation by a create extension.
      */
     def KEdge getEdge(Object... os) {
-        return newArrayList(os).internalCreateEdge()
+        return internalCreateEdge(os)
     }
     
     /**
@@ -268,7 +269,7 @@ class KEdgeExtensions {
      * getSemanticObject returns the primary (semantic) object of an edge.
      */
     def Object getSemanticObject(KEdge edge) {
-        ((getInternalEdgeMap.filter[p1, p2|p2 == edge].keySet.head as List<?>).head as List<Object>).head
+        (getInternalEdgeMap.filter[p1, p2|p2 == edge].keySet.head as List<?>).head
     }
     
     

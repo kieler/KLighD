@@ -49,6 +49,7 @@ import org.eclipse.elk.graph.properties.IProperty
  * {@code injector.injectMembers(this)} in the constructor of your class.
  * 
  * @author chsch
+ * @author nre
  * 
  * @containsExtensions
  */
@@ -87,7 +88,7 @@ class KPortExtensions {
     /**
      * A convenient getter preserving the element image relation by a create extension.
      */ 
-    def private KPort create port: KGraphUtil::createInitializedPort internalCreatePort(ArrayList<Object> oc) {
+    def private KPort create port: KGraphUtil::createInitializedPort internalCreatePort(Object... oc) {
     }
     
     /**
@@ -109,7 +110,7 @@ class KPortExtensions {
      * element image relation by a create extension.
      */
     def KPort getPort(Object o1) {
-        return newArrayList(o1).internalCreatePort()
+        return internalCreatePort(o1)
     }
     
     /**
@@ -117,7 +118,7 @@ class KPortExtensions {
      * element image relation by a create extension.
      */
     def KPort getPort(Object o1, Object o2) {
-        return newArrayList(o1, o2).internalCreatePort()
+        return internalCreatePort(o1, o2)
     }
     
     /**
@@ -125,7 +126,7 @@ class KPortExtensions {
      * element image relation by a create extension.
      */
     def KPort getPort(Object o1, Object o2, Object o3) {
-        return newArrayList(o1, o2, o3).internalCreatePort()
+        return internalCreatePort(o1, o2, o3)
     }
     
     /**
@@ -133,7 +134,7 @@ class KPortExtensions {
      * element image relation by a create extension.
      */
     def KPort getPort(Object o1, Object o2, Object o3, Object o4) {
-        return newArrayList(o1, o2, o3, o4).internalCreatePort()
+        return internalCreatePort(o1, o2, o3, o4)
     }
     
     /**
@@ -141,7 +142,7 @@ class KPortExtensions {
      * element image relation by a create extension.
      */
     def KPort getPort(Object... os) {
-        return newArrayList(os).internalCreatePort()
+        return internalCreatePort(os)
     }
     
     /**

@@ -44,6 +44,7 @@ import org.eclipse.elk.graph.properties.Property
  * {@code injector.injectMembers(this)} in the constructor of your class.
  * 
  * @author chsch
+ * @author nre
  * 
  * @containsExtensions
  */
@@ -57,7 +58,7 @@ class KNodeExtensions {
     /**
      * A convenient getter preserving the element image relation by a create extension.
      */ 
-    def private KNode create node: KGraphUtil::createInitializedNode internalCreateNode(ArrayList<Object> oc) {
+    def private KNode create node: KGraphUtil::createInitializedNode internalCreateNode(Object... oc) {
     }
     
     /**
@@ -78,25 +79,21 @@ class KNodeExtensions {
      * A convenient getter preserving the element image relation by a create extension.
      */ 
     def KNode getNode(Object o) {
-        // This method is necessary so that the one-parameter extension does not break as xtend does not recognice it as
-        // an array.
-        getNode(#[o])
+        internalCreateNode(o)
     }
     
     /**
      * A convenient getter preserving the element image relation.
-     * @deprecated Use getNode(Object[]) instead.
      */ 
     def KNode getNode(Object o1, Object o2) {
-        // This method is necessary as removing it would break binary compatibility with older, already compiled versions.
-        getNode(#[o1, o2])
+        internalCreateNode(o1, o2)
     }
     
     /**
      * A convenient getter preserving the element image relation by a create extension.
      */ 
     def KNode getNode(Object... os) {
-        newArrayList(os).internalCreateNode
+        internalCreateNode(os)
     }
     
     /**
@@ -117,10 +114,8 @@ class KNodeExtensions {
     /**
      * An alias of {@link #getNode} allowing to express in business that the KNode will
      * be created at this place. It is just syntactic sugar.
-     * @deprecated Use createNode(Object[]) instead.
      */
     def KNode createNode(Object o1, Object o2) {
-        // This method is necessary as removing it would break binary compatibility with older, already compiled versions.
         return o1.getNode(o2)
     }
     
