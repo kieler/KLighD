@@ -12,10 +12,13 @@
  */
 package de.cau.cs.kieler.klighd.lsp.constraints
 
+import org.eclipse.xtend.lib.annotations.Data
+
 /**
- * @author jet, cos
+ * @author jet, cos, sdo
  * 
  */
+@Data
 class StaticConstraint {
 
     /**
@@ -41,38 +44,4 @@ class StaticConstraint {
     int posCons
     
     int layerCons
-
-    new(String uri, String id, int layer, int layerCons, int position, int posCons) {
-        this.uri = uri
-        this.id = id
-        this.layer = layer
-        this.position = position
-        this.posCons = posCons
-        this.layerCons = layerCons
-    }
-
-    def String getUri() {
-        return this.uri
-    }
-
-    def String getID() {
-        return id
-    }
-
-    def int getLayer() {
-        return layer
-    }
-
-    def int getPosition() {
-        return position
-    }
-    
-    def int getLayerCons(){
-        return layerCons
-    }
-    
-    def int getPosCons(){
-        return posCons
-    }
-
 }

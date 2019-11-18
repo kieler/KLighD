@@ -12,24 +12,14 @@
  */
 package de.cau.cs.kieler.klighd.lsp.constraints
 
+import org.eclipse.xtend.lib.annotations.Data
+
 /**
- * @author jet, cos
+ * @author jet, cos, sdo
  * 
  */
+@Data
 class DeleteConstraint {
     String uri
     String id
-
-    new(String uri, String id) {
-        this.uri = uri
-        this.id = id
-    }
-
-    def String getUri() {
-        return this.uri
-    }
-
-    def String getID() {
-        return id
-    }
 }

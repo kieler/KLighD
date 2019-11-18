@@ -48,17 +48,17 @@ class ConstraintsLanguageServerExtension implements ILanguageServerExtension, Co
     }
 
     override setLayerConstraint(LayerConstraint lc) {
-        setConstraint(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT, lc.uri, lc.ID, lc.layer, lc.layerCons)
+        setConstraint(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT, lc.uri, lc.id, lc.layer, lc.layerCons)
     }
 
     override setPositionConstraint(PositionConstraint pc) {
-        setConstraint(LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT, pc.uri, pc.ID,
+        setConstraint(LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT, pc.uri, pc.id,
             pc.position, pc.posCons)
     }
 
     override deleteStaticConstraint(DeleteConstraint dc) {
         val uri = dc.uri
-        val kNode = getKNode(uri, dc.ID)
+        val kNode = getKNode(uri, dc.id)
         if (kNode !== null) {
             ConstraintsUtils.nullifyPosConstraint(kNode)
             ConstraintsUtils.nullifyLayerConstraint(kNode)
@@ -69,7 +69,7 @@ class ConstraintsLanguageServerExtension implements ILanguageServerExtension, Co
 
     override deletePositionConstraint(DeleteConstraint dc) {
         val uri = dc.uri
-        val kNode = getKNode(uri, dc.ID)
+        val kNode = getKNode(uri, dc.id)
         if (kNode !== null) {
             ConstraintsUtils.nullifyPosConstraint(kNode)
             updateSourceCode(
@@ -84,7 +84,7 @@ class ConstraintsLanguageServerExtension implements ILanguageServerExtension, Co
 
     override deleteLayerConstraint(DeleteConstraint dc) {
         val uri = dc.uri
-        val kNode = getKNode(uri, dc.ID)
+        val kNode = getKNode(uri, dc.id)
         if (kNode !== null) {
             ConstraintsUtils.nullifyLayerConstraint(kNode)
             updateSourceCode(kNode, LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT, null, uri)
@@ -255,7 +255,7 @@ class ConstraintsLanguageServerExtension implements ILanguageServerExtension, Co
     override setStaticConstraint(StaticConstraint sc) {
         val uri = sc.uri
         val root = getRoot(uri)
-        val kNode = getKNode(uri, sc.ID, root)
+        val kNode = getKNode(uri, sc.id, root)
         val parentOfNode = kNode.parent
 
         // In case that the interactive mode is active, the viewContext is not null 

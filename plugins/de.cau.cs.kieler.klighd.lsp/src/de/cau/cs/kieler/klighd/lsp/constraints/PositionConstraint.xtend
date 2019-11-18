@@ -12,36 +12,16 @@
  */
 package de.cau.cs.kieler.klighd.lsp.constraints
 
+import org.eclipse.xtend.lib.annotations.Data
 
 /**
- * @author jet, cos
+ * @author jet, cos, sdo
  * 
  */
+@Data
 class PositionConstraint {
     String uri
     String id
     int position
     int posCons
-
-    new(String uri, String id, int position, int posCons) {
-        this.uri = uri
-        this.id = id
-        this.position = position
-    }
-
-    def String getUri() {
-        return this.uri
-    }
-
-    def String getID() {
-        return id
-    }
-
-    def int getPosition() {
-        return position
-    }
-    
-    def int getPosCons(){
-        return posCons
-    }
 }

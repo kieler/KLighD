@@ -12,37 +12,16 @@
  */
 package de.cau.cs.kieler.klighd.lsp.constraints
 
+import org.eclipse.xtend.lib.annotations.Data
 
 /**
- * @author jet, cos
+ * @author jet, cos, sdo
  * 
  */
+@Data
 class LayerConstraint {
     String uri
     String id
     int layer
     int layerCons
-
-    new(String uri, String id, int layer, int layerCons) {
-        this.uri = uri
-        this.id = id
-        this.layer = layer
-        this.layerCons = layerCons
-    }
-
-    def String getUri() {
-        return this.uri
-    }
-
-    def String getID() {
-        return id
-    }
-
-    def int getLayer() {
-        return layer
-    }
-    
-    def int getLayerCons(){
-        return layerCons
-    }
 }
