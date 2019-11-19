@@ -22,11 +22,6 @@ import org.eclipse.xtend.lib.annotations.Data
 class StaticConstraint {
 
     /**
-     * URI of the resource as String
-     */
-    String uri
-
-    /**
      * Id of the target node
      */
     String id

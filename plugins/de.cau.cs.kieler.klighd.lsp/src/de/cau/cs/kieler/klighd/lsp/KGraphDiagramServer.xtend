@@ -42,6 +42,8 @@ import org.eclipse.sprotty.SModelRoot
 import org.eclipse.sprotty.SetModelAction
 import org.eclipse.sprotty.UpdateModelAction
 import org.eclipse.sprotty.xtext.LanguageAwareDiagramServer
+import de.cau.cs.kieler.klighd.lsp.constraints.ConstraintActionHandler
+import de.cau.cs.kieler.klighd.lsp.constraints.RefreshLayoutAction
 
 /**
  * Diagram server extension adding functionality to special actions needed for handling KGraphs.
@@ -50,6 +52,9 @@ import org.eclipse.sprotty.xtext.LanguageAwareDiagramServer
  */
 public class KGraphDiagramServer extends LanguageAwareDiagramServer {
     private static val LOG = Logger.getLogger(KGraphDiagramServer)
+    
+    @Inject
+    protected ConstraintActionHandler constraintActionHandler
     
     @Inject 
     protected KGraphDiagramState diagramState
@@ -75,7 +80,7 @@ public class KGraphDiagramServer extends LanguageAwareDiagramServer {
      */
     protected boolean imagesUpdated = false
     
-    protected Object modelLock = new Object
+    public Object modelLock = new Object
     
     /**
      * Prepares the client side update of the model by processing the potentially needed text sizes and images on the 
@@ -138,7 +143,11 @@ public class KGraphDiagramServer extends LanguageAwareDiagramServer {
                 handle(action as SetSynthesisAction)
             } else if (action.getKind === CheckedImagesAction.KIND) {
                 handle(action as CheckedImagesAction)
-            } else{
+            } else if (action.getKind === RefreshLayoutAction.KIND) {
+                handle(action as RefreshLayoutAction)
+            } else if (constraintActionHandler.canHandleAction(action.getKind)) {
+                constraintActionHandler.handle(action, clientId, this)
+            } else {
                 super.accept(message)
             }
         }
@@ -254,6 +263,13 @@ public class KGraphDiagramServer extends LanguageAwareDiagramServer {
             if (textsUpdated) {
                 setOrUpdateModel
             }
+        }
+    }
+    
+    protected def handle(RefreshLayoutAction action) {
+        synchronized(diagramState) {
+            this.diagramLanguageServer.diagramUpdater.updateDiagram(this)
+            return
         }
     }
     

@@ -34,7 +34,7 @@ import org.eclipse.xtext.ide.server.ILanguageServerExtension
  * 
  */
 @Singleton
-class ConstraintsLanguageServerExtension implements ILanguageServerExtension, ConstraintsCommandExtension {
+class ConstraintsLanguageServerExtension implements ILanguageServerExtension {
 
     @Accessors ConstraintsLanguageClient client;
 
@@ -47,17 +47,19 @@ class ConstraintsLanguageServerExtension implements ILanguageServerExtension, Co
     override initialize(ILanguageServerAccess access) {
     }
 
-    override setLayerConstraint(LayerConstraint lc) {
-        setConstraint(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT, lc.uri, lc.id, lc.layer, lc.layerCons)
+    def setLayerConstraint(LayerConstraint lc, String clientId) {
+        val uri = diagramState.getURIString(clientId)
+        setConstraint(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT, uri, lc.id, lc.layer, lc.layerCons)
     }
 
-    override setPositionConstraint(PositionConstraint pc) {
-        setConstraint(LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT, pc.uri, pc.id,
+    def setPositionConstraint(PositionConstraint pc, String clientId) {
+        val uri = diagramState.getURIString(clientId)
+        setConstraint(LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT, uri, pc.id,
             pc.position, pc.posCons)
     }
 
-    override deleteStaticConstraint(DeleteConstraint dc) {
-        val uri = dc.uri
+    def deleteStaticConstraint(DeleteConstraint dc, String clientId) {
+        val uri = diagramState.getURIString(clientId)
         val kNode = getKNode(uri, dc.id)
         if (kNode !== null) {
             ConstraintsUtils.nullifyPosConstraint(kNode)
@@ -67,8 +69,8 @@ class ConstraintsLanguageServerExtension implements ILanguageServerExtension, Co
         }
     }
 
-    override deletePositionConstraint(DeleteConstraint dc) {
-        val uri = dc.uri
+    def deletePositionConstraint(DeleteConstraint dc, String clientId) {
+        val uri = diagramState.getURIString(clientId)
         val kNode = getKNode(uri, dc.id)
         if (kNode !== null) {
             ConstraintsUtils.nullifyPosConstraint(kNode)
@@ -82,8 +84,8 @@ class ConstraintsLanguageServerExtension implements ILanguageServerExtension, Co
         }
     }
 
-    override deleteLayerConstraint(DeleteConstraint dc) {
-        val uri = dc.uri
+    def deleteLayerConstraint(DeleteConstraint dc, String clientId) {
+        val uri = diagramState.getURIString(clientId)
         val kNode = getKNode(uri, dc.id)
         if (kNode !== null) {
             ConstraintsUtils.nullifyLayerConstraint(kNode)
@@ -252,8 +254,8 @@ class ConstraintsLanguageServerExtension implements ILanguageServerExtension, Co
      * are encapsulated in an instance of StaticConstraint.
      * 
      */
-    override setStaticConstraint(StaticConstraint sc) {
-        val uri = sc.uri
+    def setStaticConstraint(StaticConstraint sc, String clientId) {
+        val uri = diagramState.getURIString(clientId)
         val root = getRoot(uri)
         val kNode = getKNode(uri, sc.id, root)
         val parentOfNode = kNode.parent
@@ -285,8 +287,8 @@ class ConstraintsLanguageServerExtension implements ILanguageServerExtension, Co
 //            if (reval.reevaluateAfterEmptyingALayer(kNode, layerCons, allNodes)) {
 //                layerCons--
 //            }
-            //TODO: Shift reevaluation is not ready yet. 
-            //reval.shiftIfNec(kNode, newLayerId, newLayerCons, newPosId, newPosCons, oldLayerNodes, targetLayerNodes,allNodes)
+            // TODO: Shift reevaluation is not ready yet. 
+            // reval.shiftIfNec(kNode, newLayerId, newLayerCons, newPosId, newPosCons, oldLayerNodes, targetLayerNodes,allNodes)
             reval.reevaluatePosConstraintsAfterLayerSwap(targetLayerNodes, oldLayerNodes, kNode, newPosId)
 
             ConstraintsUtils.setLayerConstraint(kNode, newLayerCons)
@@ -299,11 +301,4 @@ class ConstraintsLanguageServerExtension implements ILanguageServerExtension, Co
 
         }
     }
-
-    @Inject KGraphLanguageServerExtension kGraphLanguageServerExt
-
-    override refreshLayout(String uri) {
-        kGraphLanguageServerExt.updateLayout(uri)
-    }
-
 }

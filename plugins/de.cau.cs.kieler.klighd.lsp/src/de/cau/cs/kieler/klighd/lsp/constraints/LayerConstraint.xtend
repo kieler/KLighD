@@ -20,7 +20,6 @@ import org.eclipse.xtend.lib.annotations.Data
  */
 @Data
 class LayerConstraint {
-    String uri
     String id
     int layer
     int layerCons

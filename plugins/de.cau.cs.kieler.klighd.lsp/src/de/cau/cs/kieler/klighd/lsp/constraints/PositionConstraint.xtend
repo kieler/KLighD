@@ -20,7 +20,6 @@ import org.eclipse.xtend.lib.annotations.Data
  */
 @Data
 class PositionConstraint {
-    String uri
     String id
     int position
     int posCons

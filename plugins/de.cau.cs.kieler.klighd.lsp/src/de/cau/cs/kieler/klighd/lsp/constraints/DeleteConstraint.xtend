@@ -20,6 +20,5 @@ import org.eclipse.xtend.lib.annotations.Data
  */
 @Data
 class DeleteConstraint {
-    String uri
     String id
 }
