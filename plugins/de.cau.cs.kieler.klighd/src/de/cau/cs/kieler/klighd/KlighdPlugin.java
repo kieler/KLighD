@@ -51,6 +51,8 @@ public class KlighdPlugin extends AbstractUIPlugin {
     /** the shared instance. */
     private static KlighdPlugin plugin;
 
+    private static boolean suppressDisplayScaleCompensationWhileHandlingText = false;
+
     /**
      * The constructor.
      */
@@ -91,6 +93,29 @@ public class KlighdPlugin extends AbstractUIPlugin {
      */
     public static KlighdPlugin getDefault() {
         return plugin;
+    }
+
+    /**
+     * Returns the (global) setting on adjusting text sizes wrt. the system wide display scale
+     * setting.
+     * 
+     * @return <code>true</code> if compensation shall be suppress, <code>false</code> by default.
+     */
+    public static boolean isSuppressDisplayScaleCompensationWhileHandlingText() {
+        return suppressDisplayScaleCompensationWhileHandlingText;
+    }
+
+    /**
+     * Changes the (global) setting on adjusting text sizes wrt. the system wide display scale
+     * setting. This setting is not supposed to be changed in UI applications, but may be altered
+     * in off-screen rendering applications.
+     *
+     * @param suppress
+     *            <code>true</code> if compensation shall be suppressed, <code>false</code> reverts
+     *            to the default.
+     */
+    public static void setSuppressDisplayScaleCompensationWhileHandlingText(boolean suppress) {
+        suppressDisplayScaleCompensationWhileHandlingText = suppress;
     }
 
     /**
