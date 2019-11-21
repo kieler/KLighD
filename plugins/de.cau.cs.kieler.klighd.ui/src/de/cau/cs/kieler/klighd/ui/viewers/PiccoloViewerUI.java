@@ -167,7 +167,9 @@ public class PiccoloViewerUI extends PiccoloViewer {
 
         // ... and register it in the workbench part site, in order to let the work bench populate it!
         final IWorkbenchPart part = parentViewer.getViewContext().getDiagramWorkbenchPart();
-        part.getSite().registerContextMenu(KlighdUIPlugin.FLOATING_TEXT_MENU_ID, menu, parentViewer);
+        if (part != null)
+            part.getSite().registerContextMenu(
+                    KlighdUIPlugin.FLOATING_TEXT_MENU_ID, menu, parentViewer);
 
         this.getControl().getCamera().addInputEventListener(
                 new KlighdLabelWidgetEventHandler(this, labelWidget));
