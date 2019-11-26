@@ -17,7 +17,9 @@ import com.google.inject.Inject
 import de.cau.cs.kieler.klighd.IAction
 import de.cau.cs.kieler.klighd.IAction.ActionContext
 import de.cau.cs.kieler.klighd.KlighdDataManager
+import de.cau.cs.kieler.klighd.kgraph.KLabel
 import de.cau.cs.kieler.klighd.kgraph.KNode
+import de.cau.cs.kieler.klighd.krendering.KRendering
 import de.cau.cs.kieler.klighd.krendering.KText
 import de.cau.cs.kieler.klighd.lsp.model.CheckImagesAction
 import de.cau.cs.kieler.klighd.lsp.model.CheckedImagesAction
@@ -29,6 +31,7 @@ import de.cau.cs.kieler.klighd.lsp.model.SetSynthesisAction
 import de.cau.cs.kieler.klighd.lsp.model.StoreImagesAction
 import de.cau.cs.kieler.klighd.lsp.utils.KGraphElementIDGenerator
 import de.cau.cs.kieler.klighd.lsp.utils.KRenderingIDGenerator
+import de.cau.cs.kieler.klighd.lsp.utils.SprottyProperties
 import de.cau.cs.kieler.klighd.microlayout.Bounds
 import de.cau.cs.kieler.klighd.util.KlighdProperties
 import java.util.ArrayList
@@ -160,20 +163,54 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
             // after a RequestTextBoundsAction, where it got stored before.
             
             val textMapping = diagramState.getTextMapping(currentRoot.id)
+            // Add the bounds for each label to the text's properties and remember which KTexts have been modified.
+            // Also calculate the widths and heights of all texts on the fly to be applied later.
+            val List<KText> texts = newArrayList
+            val Map<KText, float[]> textWidths = newHashMap
+            val Map<KText, float[]> textHeights = newHashMap 
             for (elementAndBound : action.bounds) {
                 val elementId = elementAndBound.elementId
                 val newSize = elementAndBound.newSize
                 if (newSize === null) {
                     throw new NullPointerException("Estimated Size for a KText is null!")
                 }
-                val newBounds_klighd = new Bounds(0, 0, newSize.width as float, newSize.height as float)
                 val kText = textMapping.get(elementId)
                 if (kText === null) {
                     LOG.info("The textMapping does not contain the referenced Text anymore. The model has changed before" + 
                         "completion of the request. Terminating this request.")
                     return
                 }
-                kText.properties.put(KlighdProperties.CALCULATED_TEXT_BOUNDS, newBounds_klighd)
+                val index = Integer.parseInt(elementId.split("\\$").last) // Matches the character '$'
+                if (!texts.contains(kText)) {
+                    var container = kText.eContainer
+                    while (container instanceof KRendering) {
+                        container = container.eContainer
+                    }
+                    var String text
+                    if (container instanceof KLabel) {
+                        text = container.text
+                    } else {
+                        text = kText.text
+                    }
+                    var lines = text.split("\n", -1).size
+                    texts.add(kText)
+                    val widths = newFloatArrayOfSize(lines)
+                    widths.set(index, newSize.width as float)
+                    textWidths.put(kText, widths)
+                    val heights = newFloatArrayOfSize(lines)
+                    heights.set(index, newSize.height as float)
+                    textHeights.put(kText, heights)
+                } else {
+                    textWidths.get(kText).set(index, newSize.width as float)
+                    textHeights.get(kText).set(index, newSize.height as float)
+                }
+            }
+            // Apply the text's bounds.
+            for (text : texts) {
+                text.properties.put(KlighdProperties.CALCULATED_TEXT_BOUNDS, 
+                    new Bounds(0, 0, textWidths.get(text).max, textHeights.get(text).fold(0f, [ a, b | a + b ])))
+                text.properties.put(SprottyProperties.CALCULATED_TEXT_LINE_WIDTHS, textWidths.get(text))
+                text.properties.put(SprottyProperties.CALCULATED_TEXT_LINE_HEIGHTS, textHeights.get(text))
             }
             textsUpdated = true
             if (imagesUpdated) {

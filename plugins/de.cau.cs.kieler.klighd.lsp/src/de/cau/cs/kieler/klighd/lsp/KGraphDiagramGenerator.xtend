@@ -541,36 +541,49 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
      * field.
      */
     private def void findSpecialRenderings(KGraphData data) {
-        var SKLabel dataLabel = null
+        val List<SKLabel> dataLabels = newArrayList
         var KImage dataImage = null
         if (data instanceof KText) {
-            // create a new Label with data as its text
-            val label = KGraphFactory.eINSTANCE.createKLabel()
+            // create a new Label with data as its text for each line in the original text.
             // KTexts in Labels have their texts stored inside their ancestor KLabel, not in the KText itself
             var container = data.eContainer
             while (container instanceof KRendering) {
                 container = container.eContainer
             }
+            var String text
             if (container instanceof KLabel) {
-                label.text = container.text
+                text = container.text
             } else {
-                label.text = data.text
+                text = data.text
             }
-            if (label.text === null) {
+            if (text === null) {
                 throw new IllegalStateException("Neither the KText nor its containing KLabel have a text!")
             }
-            // need to put a copy of the text inside the new label because otherwise inserting it into the label will
-            // modify the eContainer feature of the Text, which should not be changed
-            label.data += EcoreUtil.copy(data)
+            // Found the original text, split it up into individual labels for each line
+            val lines = text.split("\n", -1)
+            lines.forEach [ line, index |
+                val newLabel = KGraphFactory.eINSTANCE.createKLabel
+                newLabel.text = line
+                // need to put a copy of the text inside the new label because otherwise inserting it into the label will
+                // modify the eContainer feature of the Text, which should not be changed
+                val newData = EcoreUtil.copy(data)
+                newData.text = line
+                newLabel.data += newData
+                
+                // generate a new Label as if it would belong to the main model
+                val sKLabel = generateLabel(newLabel, false)
+                sKLabel.id = diagramRoot.id + KGraphElementIDGenerator.ID_SEPARATOR + "texts-only" + 
+                    KGraphElementIDGenerator.ID_SEPARATOR + KGraphElementIDGenerator.LABEL_SEPARATOR 
+                    + newLabel.hashCode + KGraphElementIDGenerator.ID_SEPARATOR + index
+                // All lines point towards the same original data. For matching, the index in the ID has to be taken
+                // into account as well to match it to its line.
+                textMapping.put(sKLabel.id, data)
+                
+                dataLabels += sKLabel
+            ]
             
-            // generate a new Label as if it would belong to the main model
-            val sKLabel = generateLabel(label, false)
-            sKLabel.id = diagramRoot.id + KGraphElementIDGenerator.ID_SEPARATOR + "texts-only" + 
-                KGraphElementIDGenerator.ID_SEPARATOR + KGraphElementIDGenerator.LABEL_SEPARATOR 
-                + label.hashCode
-            textMapping.put(sKLabel.id, data)
             
-            dataLabel = sKLabel
+            
         } else if (data instanceof KContainerRendering) {
             // KImages are container renderings themselves, so also look for their child renderings.
             if (data instanceof KImage) {
@@ -584,8 +597,8 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
             // TODO: add all texts and images in the KRenderingLibrary and don't add any from KRenderingRefs
             // I don't have an example of used texts/images in KRenderingLibraries yet (construct one)
         }
-        if (dataLabel !== null) {
-            modelLabels.add(dataLabel)
+        if (!dataLabels.empty) {
+            modelLabels.addAll(dataLabels)
         }
         if (dataImage !== null) {
             images.add(dataImage)
