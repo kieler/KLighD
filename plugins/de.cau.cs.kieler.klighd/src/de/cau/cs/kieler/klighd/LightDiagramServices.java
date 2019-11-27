@@ -156,6 +156,19 @@ public final class LightDiagramServices {
         final IDiagramWorkbenchPart thePart = pair.getFirst();
         final ViewContext theViewContext = pair.getSecond();
 
+        if (thePart != null) {
+            final IViewer theViewer = thePart.getViewer();
+            if (theViewer == null
+                    || theViewer.getControl() != null && theViewer.getControl().isDisposed()) {
+                // This might happen, if the layout computation is to be executed asynchronously
+                //  and 'thePart' (and with that the corresponding control(s)) has been disposed
+                //  in the meantime.
+                // In that case the layout computation request can be considered out-dated
+                //  and some of the subsequent executions may fail, so...
+                return;
+            }
+        }
+
         final ILayoutRecorder recorder = theViewContext.getLayoutRecorder();
         final KNode viewModel = theViewContext.getViewModel();
 
