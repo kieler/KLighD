@@ -23,6 +23,7 @@ import org.eclipse.sprotty.SPort
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.elk.graph.properties.IProperty
 import java.util.Map
+import org.eclipse.elk.core.options.Direction
 
 /**
  * Sprotty node with additional fields needed by the translation from a
@@ -36,6 +37,7 @@ public class SKNode extends SNode {
     private int layerCons
     private int posCons 
     private boolean interactiveLayout
+    private Direction direction
     private String tooltip
 }
 

@@ -48,6 +48,7 @@ import java.util.HashMap
 import java.util.List
 import java.util.Map
 import org.apache.log4j.Logger
+import org.eclipse.elk.alg.layered.options.LayeredOptions
 import org.eclipse.elk.core.options.CoreOptions
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.util.EcoreUtil
@@ -62,8 +63,6 @@ import org.eclipse.sprotty.xtext.IDiagramGenerator
 import org.eclipse.sprotty.xtext.tracing.ITraceProvider
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.xtext.util.CancelIndicator
-import org.eclipse.elk.graph.properties.IProperty
-import org.eclipse.elk.alg.layered.options.LayeredOptions
 
 /**
  * A diagram generator that can create Sprotty {@link SGraph} from any {@link EObject} that has a registered view
@@ -320,6 +319,7 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
             parent = parent.parent
         }
         nodeElement.interactiveLayout = parent.getProperty(LayeredOptions.INTERACTIVE_LAYOUT);
+        nodeElement.direction = parent.getProperty(LayeredOptions.DIRECTION)
         
         
         val renderingContextData = RenderingContextData.get(node)
