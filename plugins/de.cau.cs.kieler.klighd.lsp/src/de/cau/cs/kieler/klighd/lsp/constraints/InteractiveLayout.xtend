@@ -247,7 +247,7 @@ class InteractiveLayout {
         for (nodesOfLayer : layers) {
             for (node : nodesOfLayer) {
                 switch (direction) {
-                    case RIGHT: {
+                    case UNDEFINED, case RIGHT: {
                         node.xpos = position
                         if (position + node.width >= nextPosition) {
                             nextPosition = position + node.width
@@ -271,13 +271,10 @@ class InteractiveLayout {
                             nextPosition = position - node.height
                         }
                     }
-                    case UNDEFINED: {
-                        throw new UnsupportedOperationException("UNDEFINED is not supported as a layout direction the interactive mode")
-                    }
                 }
             }
             // nodes in different layer should not overlap horizontally 
-            if (direction.equals(Direction.RIGHT) || direction.equals(Direction.DOWN)) {
+            if (direction.equals(Direction.UNDEFINED) || direction.equals(Direction.RIGHT) || direction.equals(Direction.DOWN)) {
                 position = nextPosition + 1
             } else {
                 position = nextPosition - 1
@@ -290,7 +287,7 @@ class InteractiveLayout {
             var node = layers.get(0).get(0)
             var padding = node.getProperty(LayeredOptions.PADDING)
             switch (direction) {
-                case RIGHT: {
+                case UNDEFINED, case RIGHT: {
                     node.parent.width = (padding.left + padding.right + position - node.xpos +
                     node.getProperty(LayeredOptions.SPACING_NODE_NODE_BETWEEN_LAYERS) * (layers.length - 1)
                             ) as float
@@ -309,9 +306,6 @@ class InteractiveLayout {
                     node.parent.width = (padding.left + padding.right + node.ypos + node.height - position +
                     node.getProperty(LayeredOptions.SPACING_NODE_NODE_BETWEEN_LAYERS) * (layers.length - 1)
                             ) as float
-                }
-                case UNDEFINED: {
-                    throw new UnsupportedOperationException("UNDEFINED is not supported as a layout direction the interactive mode")
                 }
             }
         }
@@ -336,7 +330,7 @@ class InteractiveLayout {
         }
 
         // determine the order of the nodes
-        sortListsForYPos(nodesWithPositionConstraint, nodes, direction)
+        sortNodesInLayer(nodesWithPositionConstraint, nodes, direction)
         // add the nodes with position constraint at the desired position in the nodes list
         for (node : nodesWithPositionConstraint) {
             var pos = node.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT)
@@ -362,7 +356,7 @@ class InteractiveLayout {
      * @param propNodes The nodes which position constraint is set
      * @param nodes The nodes without position constraints
      */
-    private def sortListsForYPos(List<KNode> nodesWithPositionConstraint, List<KNode> nodes, Direction direction) {
+    private def sortNodesInLayer(List<KNode> nodesWithPositionConstraint, List<KNode> nodes, Direction direction) {
         // sorting based on position the nodes should have
         nodesWithPositionConstraint.sort(
             [ a, b |
@@ -373,14 +367,11 @@ class InteractiveLayout {
         // sorting based on the y(RIGHT/LEFT)/x(DOWN/UP) coordinates
         nodes.sort([ a, b |
             switch(direction) {
-                case RIGHT, case LEFT: {
+                case UNDEFINED, case RIGHT, case LEFT: {
                     return (a.ypos - b.ypos) as int
                 }
                 case DOWN, case UP: {
                     return (a.xpos - b.xpos) as int
-                }
-                case UNDEFINED: {
-                    throw new UnsupportedOperationException("UNDEFINED is not supported as a layout direction the interactive mode")
                 }
             }
         ])
