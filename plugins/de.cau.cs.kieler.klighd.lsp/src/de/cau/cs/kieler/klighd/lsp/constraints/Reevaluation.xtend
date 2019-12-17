@@ -14,16 +14,17 @@ package de.cau.cs.kieler.klighd.lsp.constraints
 
 import de.cau.cs.kieler.klighd.kgraph.KNode
 import java.util.HashSet
+import java.util.LinkedList
 import java.util.List
 import org.eclipse.elk.alg.layered.options.LayeredOptions
 
 /**
- * @author cos
+ * @author cos, sdo
  * 
  */
 class Reevaluation {
 
-    HashSet<KNode> changedNodes = newHashSet()
+    LinkedList<ConstraintProperty> changedNodes = newLinkedList()
     KNode target
 
     new(KNode target) {
@@ -41,7 +42,7 @@ class Reevaluation {
     /**
      * Adjusts position constraints in a layer after one node has been introduced to it.
      */
-    def reevaluatePosConstraintsAfterLayerSwap(List<KNode> newNodesOfLayer, List<KNode> oldNodesOfLayer, KNode target,
+    def reevaluatePositionConstraintsAfterLayerSwap(List<KNode> newNodesOfLayer, List<KNode> oldNodesOfLayer, KNode target,
         int newPos) {
 
         // formerLayer != newLayer -- should always be true - it doesn't cause errors if it's not, though.
@@ -55,7 +56,7 @@ class Reevaluation {
 
     }
 
-    def reevaluatePosConstraintsAfterPosChangeInLayer(List<KNode> nodesOfLayer, KNode target, int newPos) {
+    def reevaluatePositionConstraintsAfterPosChangeInLayer(List<KNode> nodesOfLayer, KNode target, int newPos) {
         val oldPos = target.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_I_D)
 
         if (newPos < oldPos) {
@@ -103,8 +104,7 @@ class Reevaluation {
             for (node : nodes) {
                 val layerCons = ConstraintsUtils.getLayerConstraint(node)
                 if (layerCons >= origLayer) {
-                    changedNodes.add(node)
-                    ConstraintsUtils.setLayerConstraint(node, layerCons - 1)
+                    changedNodes.add(new ConstraintProperty(node, LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT, layerCons - 1))
                 }
             }
 
@@ -118,7 +118,6 @@ class Reevaluation {
     /**
      * Shifting-Reevaluation
      * Simulates the shifting of nodes in order to adjust layer and position constraints.
-     * TODO: Position constraint reeval 
      * 
      * @param insertedNode the node that is the target of the constraints
      * @param posCons the value of the position constraint for insertedNode
@@ -127,7 +126,7 @@ class Reevaluation {
      * @param newLayerNodes The target layer of insertedNode
      * @param nodes All nodes of the current graph
      */
-    def void shiftIfNec(KNode insertedNode, int newLayerId, int layerCons, int newPosId, int posCons,
+    def void shiftIfNecessary(KNode insertedNode, int newLayerId, int layerCons, int newPosId, int posCons,
         List<KNode> oldLayerNodes, List<KNode> newLayerNodes, List<KNode> nodes) {
 
         val adjacentNodes = ConstraintsUtils.getAdjacentNodes(insertedNode)
@@ -138,9 +137,8 @@ class Reevaluation {
             if (newLayerNodes.contains(n)) {
                 // If the shifted node has a layer constraint. It needs to be incremented else the shift would have no effect.
                 shiftedNodes.add(n)
-                if (ConstraintsUtils.getLayerConstraint(n) !== -1 && false) {
-                    ConstraintsUtils.setLayerConstraint(n, layerCons + 1)
-                    changedNodes.add(n)
+                if (ConstraintsUtils.getLayerConstraint(n) !== -1 && false) { // TODO
+                    changedNodes.add(new ConstraintProperty(n, LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT, layerCons + 1))
 
                 }
                 // Test whether the shift leads to more shifts in the next layer.
@@ -148,7 +146,7 @@ class Reevaluation {
                 val nPosId = n.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_I_D)
                 val nPosCons = ConstraintsUtils.getPosConstraint(n)
 
-                shiftIfNec(n, newLayerId + 1, layerCons + 1, nPosId, nPosCons, newLayerNodes, nextNextLayerNodes, nodes)
+                shiftIfNecessary(n, newLayerId + 1, layerCons + 1, nPosId, nPosCons, newLayerNodes, nextNextLayerNodes, nodes)
 
             }
         }
@@ -174,17 +172,16 @@ class Reevaluation {
         val posIndexOfShifted = shiftedNode.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_I_D)
         val posConsShifted = ConstraintsUtils.getPosConstraint(shiftedNode)
         if (posConsShifted !== -1) {
-            reevaluatePosConstraintsAfterLayerSwap(originLayer, targetLayer, shiftedNode, posConsShifted)
+            reevaluatePositionConstraintsAfterLayerSwap(originLayer, targetLayer, shiftedNode, posConsShifted)
 
         } else {
-            reevaluatePosConstraintsAfterLayerSwap(originLayer, targetLayer, shiftedNode, posIndexOfShifted)
+            reevaluatePositionConstraintsAfterLayerSwap(originLayer, targetLayer, shiftedNode, posIndexOfShifted)
 
         }
         // Reevaluate the position constraints in the source and target layer accordingly
         // Also examine the position constraint of the target node
         if (posCons > 0 && posCons >= posIndexOfShifted) {
-            targetNode.setProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT, posCons - 1)
-            changedNodes.add(targetNode)
+            changedNodes.add(new ConstraintProperty(targetNode, LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT, posCons - 1))
         }
 
     }
@@ -206,8 +203,7 @@ class Reevaluation {
                 val posChoiceCons = ConstraintsUtils.getPosConstraint(node)
 
                 if (node != target && posChoiceCons !== -1) {
-                    ConstraintsUtils.setPosConstraint(node, posChoiceCons + offset)
-                    changedNodes.add(node)
+                    changedNodes.add(new ConstraintProperty(node, LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT, posChoiceCons + offset))
                 }
             }
         }

@@ -18,19 +18,19 @@ import de.cau.cs.kieler.klighd.ViewContext
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties
 import de.cau.cs.kieler.klighd.kgraph.KNode
 import de.cau.cs.kieler.klighd.lsp.KGraphDiagramState
-import de.cau.cs.kieler.klighd.lsp.KGraphLanguageServerExtension
 import de.cau.cs.kieler.klighd.lsp.utils.KGraphElementIDGenerator
 import java.util.List
 import javax.inject.Singleton
 import org.eclipse.elk.alg.layered.options.LayeredOptions
 import org.eclipse.elk.graph.ElkNode
 import org.eclipse.elk.graph.properties.IProperty
+import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.xtext.ide.server.ILanguageServerAccess
 import org.eclipse.xtext.ide.server.ILanguageServerExtension
 
 /**
- * @author jet, cos
+ * @author jet, cos, sdo
  * 
  */
 @Singleton
@@ -58,13 +58,69 @@ class ConstraintsLanguageServerExtension implements ILanguageServerExtension {
             pc.position, pc.posCons)
     }
 
+    /**
+     * Sets a layer constraint and a positional constraint that 
+     * are encapsulated in an instance of StaticConstraint.
+     * 
+     */
+    def setStaticConstraint(StaticConstraint sc, String clientId) {
+        val uri = diagramState.getURIString(clientId)
+        val root = getRoot(uri)
+        val kNode = getKNode(uri, sc.id, root)
+        val parentOfNode = kNode.parent
+
+        // In case that the interactive mode is active, the viewContext is not null 
+        // and the element is actually a KNode. Carry on.
+        if (kNode !== null && parentOfNode !== null) {
+            /*
+             * As long as no increased pos constraint is present in the target layer
+             * and no increased layer constraint is present left to the target layer
+             * newLayerId === newLayer Cons && newPosCons = newPosId
+             * In the other cases both values can differ.
+             */
+            var allNodes = parentOfNode.children
+            var newLayerId = sc.layer
+            val newPosId = sc.position
+            val newPosCons = sc.posCons
+            var newLayerCons = sc.layerCons
+
+            val layerId = kNode.getProperty(LayeredOptions.LAYERING_LAYER_I_D)
+
+            var targetLayerNodes = ConstraintsUtils.getNodesOfLayer(newLayerId, allNodes)
+            var oldLayerNodes = ConstraintsUtils.getNodesOfLayer(layerId, allNodes)
+
+            // Reevaluate insertion of node to target layer
+            var reval = new Reevaluation(kNode)
+
+            //TODO: As an option, look what it does
+            if (reval.reevaluateAfterEmptyingALayer(kNode, newLayerCons, allNodes)) {
+                newLayerCons--
+            }
+            // TODO: Shift reevaluation is not ready yet. 
+            // reval.shiftIfNec(kNode, newLayerId, newLayerCons, newPosId, newPosCons, oldLayerNodes, targetLayerNodes,allNodes)
+            reval.reevaluatePositionConstraintsAfterLayerSwap(targetLayerNodes, oldLayerNodes, kNode, newPosId)
+
+            var changedNodes = reval.changedNodes
+            changedNodes.add(new ConstraintProperty(kNode, LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT, newPosCons))
+            changedNodes.add(new ConstraintProperty(kNode, LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT, newLayerCons))
+            // Update source code of the model
+            val resource = ConstraintsUtils.getResourceFromUri(uri, injector)
+            for (entry : changedNodes) {
+                updateSourceCode(resource, entry)
+            }
+            resource.save(emptyMap)
+
+        }
+    }
+
     def deleteStaticConstraint(DeleteConstraint dc, String clientId) {
         val uri = diagramState.getURIString(clientId)
         val kNode = getKNode(uri, dc.id)
         if (kNode !== null) {
-            ConstraintsUtils.nullifyPosConstraint(kNode)
-            ConstraintsUtils.nullifyLayerConstraint(kNode)
-            updateSourceCode(kNode, uri)
+            val resource = ConstraintsUtils.getResourceFromUri(uri, injector)
+            updateSourceCode(resource, new ConstraintProperty(kNode, LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT, null))
+            updateSourceCode(resource, new ConstraintProperty(kNode, LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT, null))
+            resource.save(emptyMap)
 
         }
     }
@@ -73,14 +129,9 @@ class ConstraintsLanguageServerExtension implements ILanguageServerExtension {
         val uri = diagramState.getURIString(clientId)
         val kNode = getKNode(uri, dc.id)
         if (kNode !== null) {
-            ConstraintsUtils.nullifyPosConstraint(kNode)
-            updateSourceCode(
-                kNode,
-                LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT,
-                null,
-                uri
-            )
-
+            val resource = ConstraintsUtils.getResourceFromUri(uri, injector)
+            updateSourceCode(resource, new ConstraintProperty(kNode, LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT, null))
+            resource.save(emptyMap)
         }
     }
 
@@ -88,8 +139,9 @@ class ConstraintsLanguageServerExtension implements ILanguageServerExtension {
         val uri = diagramState.getURIString(clientId)
         val kNode = getKNode(uri, dc.id)
         if (kNode !== null) {
-            ConstraintsUtils.nullifyLayerConstraint(kNode)
-            updateSourceCode(kNode, LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT, null, uri)
+            val resource = ConstraintsUtils.getResourceFromUri(uri, injector)
+            updateSourceCode(resource, new ConstraintProperty(kNode, LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT, null))
+            resource.save(emptyMap)
         }
     }
 
@@ -103,7 +155,7 @@ class ConstraintsLanguageServerExtension implements ILanguageServerExtension {
      * @param targetID The id of the node on which the constraint should be set.
      * @param value Either the id of the position or the id of the layer.
      */
-    private def setConstraint(IProperty<Integer> PropID, String uri, String targetID, int valueId, int valueCons) {
+    private def setConstraint(IProperty<Integer> property, String uri, String targetID, int valueId, int valueCons) {
         val root = getRoot(uri)
         val kNode = getKNode(uri, targetID, root)
         val parentOfNode = kNode.parent
@@ -114,15 +166,17 @@ class ConstraintsLanguageServerExtension implements ILanguageServerExtension {
             residingLayer = ConstraintsUtils.getNodesOfLayer(layerID, parentOfNode.children)
 
             var reval = new Reevaluation(kNode)
-            switch (PropID) {
+            switch (property) {
                 case LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT:
-                    reval.reevaluatePosConstraintsAfterPosChangeInLayer(residingLayer, kNode, valueId)
+                    reval.reevaluatePositionConstraintsAfterPosChangeInLayer(residingLayer, kNode, valueId)
             }
-            kNode.setProperty(PropID, valueCons)
-
-            var changes = reval.changedNodes
-            changes.add(kNode)
-            updateSourceCode(changes.toList, uri)
+            
+            var changedNodes = reval.changedNodes
+            changedNodes.add(new ConstraintProperty(kNode, property, valueCons))
+            val resource = ConstraintsUtils.getResourceFromUri(uri, injector)
+            for (entry : changedNodes) {
+                updateSourceCode(resource, entry)
+            }
         }
     }
 
@@ -138,10 +192,10 @@ class ConstraintsLanguageServerExtension implements ILanguageServerExtension {
             val mapKToS = diagramState.getKGraphToSModelElementMap(uri)
 
             // KGraphElement which corresponding SNode has the correct ID
-            val kGEle = KGraphElementIDGenerator.findElementById(mapKToS, ID)
+            val kGraphElement = KGraphElementIDGenerator.findElementById(mapKToS, ID)
 
-            if (kGEle instanceof KNode) {
-                return kGEle as KNode
+            if (kGraphElement instanceof KNode) {
+                return kGraphElement as KNode
             } else {
                 return null
             }
@@ -180,125 +234,17 @@ class ConstraintsLanguageServerExtension implements ILanguageServerExtension {
         return viewContext?.viewModel
 
     }
-
+    
     /**
-     * Updates the source code of the elk model that is in the resource of {@code uri}.
+     * Searches for node specified by ConstraintProperty and sets the desired property
      */
-    private def updateSourceCode(KNode kNode, IProperty<Integer> PropID, Integer value, String uri) {
-        // set Property of corresponding elkNode 
-        val elkNode = kNode.getProperty(KlighdInternalProperties.MODEL_ELEMEMT)
-
-        if (elkNode instanceof ElkNode) {
-            // elkNode.setProperty(PropID, value)
-            ConstraintsUtils.copyConstraintProp(elkNode, kNode, PropID)
-            refreshModelInEditor(ConstraintsUtils.getRootNodeOf(elkNode), uri)
-
-        }
-    }
-
-    /**
-     * Updates the source code of the elk model that is in the resource of {@code uri}.
-     */
-    private def updateSourceCode(KNode kNode, String uri) {
-        // set Property of corresponding elkNode 
-        val elkNode = kNode.getProperty(KlighdInternalProperties.MODEL_ELEMEMT)
-
-        if (elkNode instanceof ElkNode) {
-            ConstraintsUtils.copyAllConstraints(elkNode, kNode)
-
-            refreshModelInEditor(ConstraintsUtils.getRootNodeOf(elkNode), uri)
-
-        }
-    }
-
-    /**
-     * Updates the source code of the elk model that is in the resource of {@code uri}.
-     */
-    private def updateSourceCode(List<KNode> kNodes, String uri) {
-
-        for (kNode : kNodes) {
-            // set Property of corresponding elkNode 
-            val elkNode = kNode.getProperty(KlighdInternalProperties.MODEL_ELEMEMT)
-
-            if (elkNode instanceof ElkNode) {
-                ConstraintsUtils.copyAllConstraints(elkNode, kNode)
-            }
-        }
-
-        val n = kNodes.head.getProperty(KlighdInternalProperties.MODEL_ELEMEMT)
-        if (n instanceof ElkNode) {
-            refreshModelInEditor(ConstraintsUtils.getRootNodeOf(n), uri)
-        }
-
-    }
-
-    /** 
-     * Takes an updated Elk model, clears the resource and saves the updated model in the resource.
-     * This also refreshes the model that is shown in KEITH/KIELER.
-     * 
-     * @param newModel the (updated) Elk model that should be shown in the editor of KEITH/KIELER
-     * @param resourceUri the uri of the model's resource
-     */
-    private def refreshModelInEditor(ElkNode newModel, String resourceUri) {
-        val resource = ConstraintsUtils.getResourceFromUri(resourceUri, injector)
-        // Delete the old model
-        resource.contents.clear
-        // Store the new model
-        resource.contents += newModel
-        // Serialize it into the file without any additional options
+    private def updateSourceCode(Resource resource, ConstraintProperty entry) {
+        val elkNode = entry.KNode.getProperty(KlighdInternalProperties.MODEL_ELEMEMT) as ElkNode
+        
+        val resourceElement = (resource.contents.head as ElkNode).children.filter[child |
+            return child.identifier == elkNode.identifier
+        ].head
+        resourceElement.setProperty(entry.property, entry.value)
         resource.save(emptyMap())
-    }
-
-    /**
-     * Sets a layer constraint and a positional constraint that 
-     * are encapsulated in an instance of StaticConstraint.
-     * 
-     */
-    def setStaticConstraint(StaticConstraint sc, String clientId) {
-        val uri = diagramState.getURIString(clientId)
-        val root = getRoot(uri)
-        val kNode = getKNode(uri, sc.id, root)
-        val parentOfNode = kNode.parent
-
-        // In case that the interactive mode is active, the viewContext is not null 
-        // and the element is actually a KNode. Carry on.
-        if (kNode !== null && parentOfNode !== null) {
-            /*
-             * As long as no increased pos constraint is present in the target layer
-             * and no increased layer constraint is present left to the target layer
-             * newLayerId === newLayer Cons && newPosCons = newPosId
-             * In the other cases both values can differ.
-             */
-            var allNodes = parentOfNode.children
-            var newLayerId = sc.layer
-            val newPosId = sc.position
-            val newPosCons = sc.posCons
-            val newLayerCons = sc.layerCons
-
-            val layerId = kNode.getProperty(LayeredOptions.LAYERING_LAYER_I_D)
-
-            var targetLayerNodes = ConstraintsUtils.getNodesOfLayer(newLayerId, allNodes)
-            var oldLayerNodes = ConstraintsUtils.getNodesOfLayer(layerId, allNodes)
-
-            // Reevaluate insertion of node to target layer
-            var reval = new Reevaluation(kNode)
-
-//TODO: Should this be active now or not? Probably not. It should be an option.
-//            if (reval.reevaluateAfterEmptyingALayer(kNode, layerCons, allNodes)) {
-//                layerCons--
-//            }
-            // TODO: Shift reevaluation is not ready yet. 
-            // reval.shiftIfNec(kNode, newLayerId, newLayerCons, newPosId, newPosCons, oldLayerNodes, targetLayerNodes,allNodes)
-            reval.reevaluatePosConstraintsAfterLayerSwap(targetLayerNodes, oldLayerNodes, kNode, newPosId)
-
-            ConstraintsUtils.setLayerConstraint(kNode, newLayerCons)
-            ConstraintsUtils.setPosConstraint(kNode, newPosCons)
-
-            var ns = reval.changedNodes
-            ns.add(kNode)
-            // Update source code of the model
-            updateSourceCode(ns.toList, uri)
-
-        }
     }
 }
