@@ -107,7 +107,7 @@ public class DeleteStaticConstraintAction implements Action {
 @EqualsHashCode
 @ToString(skipNulls = true)
 public class DeletePositionConstraintAction implements Action {
-    public static val KIND = 'deleteStaticConstraint'
+    public static val KIND = 'deletePositionConstraint'
     String kind = KIND
     
     DeleteConstraint constraint
@@ -127,7 +127,7 @@ public class DeletePositionConstraintAction implements Action {
 @EqualsHashCode
 @ToString(skipNulls = true)
 public class DeleteLayerConstraintAction implements Action {
-    public static val KIND = 'deleteStaticConstraint'
+    public static val KIND = 'deleteLayerConstraint'
     String kind = KIND
     
     DeleteConstraint constraint

@@ -64,7 +64,7 @@ class ConstraintActionHandler implements IActionHandler {
             }
         } else if (action instanceof DeleteLayerConstraintAction) {
             synchronized((server as KGraphDiagramServer).modelLock) {
-                constraintLS.deletePositionConstraint(action.constraint, clientId)
+                constraintLS.deleteLayerConstraint(action.constraint, clientId)
             }
         } else {
             throw new IllegalArgumentException("Action " + action.kind + " not supported by handler " + this.class.simpleName)
