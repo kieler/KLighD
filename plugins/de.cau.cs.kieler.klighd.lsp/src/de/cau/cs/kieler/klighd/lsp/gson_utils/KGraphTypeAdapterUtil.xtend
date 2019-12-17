@@ -14,7 +14,9 @@ package de.cau.cs.kieler.klighd.lsp.gson_utils
 
 import com.google.gson.GsonBuilder
 import de.cau.cs.kieler.klighd.SynthesisOption
-import de.cau.cs.kieler.klighd.lsp.constraints.DeleteConstraintAction
+import de.cau.cs.kieler.klighd.lsp.constraints.DeleteLayerConstraintAction
+import de.cau.cs.kieler.klighd.lsp.constraints.DeletePositionConstraintAction
+import de.cau.cs.kieler.klighd.lsp.constraints.DeleteStaticConstraintAction
 import de.cau.cs.kieler.klighd.lsp.constraints.RefreshLayoutAction
 import de.cau.cs.kieler.klighd.lsp.constraints.SetLayerConstraintAction
 import de.cau.cs.kieler.klighd.lsp.constraints.SetPositionConstraintAction
@@ -44,7 +46,9 @@ public class KGraphTypeAdapterUtil {
                 addActionKind(SetStaticConstraintAction.KIND, SetStaticConstraintAction)
                 addActionKind(SetPositionConstraintAction.KIND, SetPositionConstraintAction)
                 addActionKind(SetLayerConstraintAction.KIND, SetLayerConstraintAction)
-                addActionKind(DeleteConstraintAction.KIND, DeleteConstraintAction)
+                addActionKind(DeleteStaticConstraintAction.KIND, DeleteStaticConstraintAction)
+                addActionKind(DeletePositionConstraintAction.KIND, DeletePositionConstraintAction)
+                addActionKind(DeleteLayerConstraintAction.KIND, DeleteLayerConstraintAction)
                 addActionKind(RefreshLayoutAction.KIND, RefreshLayoutAction)
             ]
         )

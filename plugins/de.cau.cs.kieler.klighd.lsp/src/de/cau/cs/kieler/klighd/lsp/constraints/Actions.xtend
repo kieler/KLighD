@@ -86,14 +86,54 @@ public class SetLayerConstraintAction implements Action {
 @Accessors
 @EqualsHashCode
 @ToString(skipNulls = true)
-public class DeleteConstraintAction implements Action {
-    public static val KIND = 'DeleteConstraint'
+public class DeleteStaticConstraintAction implements Action {
+    public static val KIND = 'deleteStaticConstraint'
     String kind = KIND
     
     DeleteConstraint constraint
     
     new() {}
-    new(Consumer<DeleteConstraintAction> initializer) {
+    new(Consumer<DeleteStaticConstraintAction> initializer) {
+        initializer.accept(this)
+    }
+}
+
+/**
+ * Deletes the constraint on the node that is identified by the given id.
+ * 
+ * @author sdo
+ */
+@Accessors
+@EqualsHashCode
+@ToString(skipNulls = true)
+public class DeletePositionConstraintAction implements Action {
+    public static val KIND = 'deleteStaticConstraint'
+    String kind = KIND
+    
+    DeleteConstraint constraint
+    
+    new() {}
+    new(Consumer<DeletePositionConstraintAction> initializer) {
+        initializer.accept(this)
+    }
+}
+
+/**
+ * Deletes the constraint on the node that is identified by the given id.
+ * 
+ * @author sdo
+ */
+@Accessors
+@EqualsHashCode
+@ToString(skipNulls = true)
+public class DeleteLayerConstraintAction implements Action {
+    public static val KIND = 'deleteStaticConstraint'
+    String kind = KIND
+    
+    DeleteConstraint constraint
+    
+    new() {}
+    new(Consumer<DeleteLayerConstraintAction> initializer) {
         initializer.accept(this)
     }
 }

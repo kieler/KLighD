@@ -34,7 +34,11 @@ class ConstraintActionHandler implements IActionHandler {
         return kind === "setStaticConstraint" ||
             kind === "deleteConstraint" ||
             kind === "setLayerConstraint" ||
-            kind === "setPositionConstraint"
+            kind === "setPositionConstraint" ||
+            kind === "deleteStaticConstraint" ||
+            kind === "deletePositionConstraint" ||
+            kind === "deleteLayerConstraint"
+            
     }
     
     override handle(Action action, String clientId, LanguageAwareDiagramServer server) {
@@ -50,8 +54,18 @@ class ConstraintActionHandler implements IActionHandler {
             synchronized((server as KGraphDiagramServer).modelLock) {
                 constraintLS.setLayerConstraint(action.constraint, clientId)
             }
-        } else if (action instanceof DeleteConstraintAction) {
-            // TODO
+        } else if (action instanceof DeleteStaticConstraintAction) {
+            synchronized((server as KGraphDiagramServer).modelLock) {
+                constraintLS.deleteStaticConstraint(action.constraint, clientId)
+            }
+        } else if (action instanceof DeletePositionConstraintAction) {
+            synchronized((server as KGraphDiagramServer).modelLock) {
+                constraintLS.deletePositionConstraint(action.constraint, clientId)
+            }
+        } else if (action instanceof DeleteLayerConstraintAction) {
+            synchronized((server as KGraphDiagramServer).modelLock) {
+                constraintLS.deletePositionConstraint(action.constraint, clientId)
+            }
         } else {
             throw new IllegalArgumentException("Action " + action.kind + " not supported by handler " + this.class.simpleName)
         }
