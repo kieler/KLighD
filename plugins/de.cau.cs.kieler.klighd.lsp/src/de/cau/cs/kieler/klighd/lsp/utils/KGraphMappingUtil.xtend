@@ -63,11 +63,15 @@ class KGraphMappingUtil {
         var ArrayList<Point> routingPoints = new ArrayList<Point>
         val sourcePoint = kedge.sourcePoint
         val targetPoint = kedge.targetPoint
-        routingPoints.add(new Point(sourcePoint.x, sourcePoint.y))
+        if (sourcePoint !== null) {
+            routingPoints.add(new Point(sourcePoint.x, sourcePoint.y))
+        }
         for (bendPoint : kedge.bendPoints) {
             routingPoints.add(new Point(bendPoint.x, bendPoint.y))
         }
-        routingPoints.add(new Point(targetPoint.x, targetPoint.y))
+        if (targetPoint !== null) {
+            routingPoints.add(new Point(targetPoint.x, targetPoint.y))
+        }
         skedge.routingPoints = routingPoints
         
         // Copy the bend points.

@@ -368,9 +368,13 @@ final class RenderingPreparer {
         var float maxX = Float.MIN_VALUE
         var float maxY = Float.MIN_VALUE
         var List<KPoint> pointList = new ArrayList()
-        pointList.add(edge.sourcePoint)
+        if (edge.sourcePoint !== null) {
+            pointList.add(edge.sourcePoint)
+        }
         pointList.addAll(edge.bendPoints)
-        pointList.add(edge.targetPoint)
+        if (edge.targetPoint !== null) {
+            pointList.add(edge.targetPoint)
+        }
         for (point : pointList) {
             if (point.x < minX) {
                 minX = point.x
