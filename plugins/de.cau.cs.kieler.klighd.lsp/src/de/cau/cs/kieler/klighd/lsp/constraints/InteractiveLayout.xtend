@@ -55,12 +55,12 @@ class InteractiveLayout {
         val root = viewContext.viewModel
         if (root.getProperty(LayeredOptions.INTERACTIVE_LAYOUT)) {
 
+            // initial layout
+            layoutE.onlyLayoutOnKGraph(id)
             root.setProperty(LayeredOptions.SEPARATE_CONNECTED_COMPONENTS, false)
             setStandardStrats(root)
 
             prepareParentsForFirstLayout(root)
-            // initial layout
-            layoutE.onlyLayoutOnKGraph(id)
             // set coordinates
             setCoordinatesDepthFirst(root)
             // activate interactive strategies
