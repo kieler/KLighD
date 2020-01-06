@@ -1,0 +1,9 @@
+bin/
+xtend-gen/
+target/
+localM2/
+.svn/
+.DS_Store
+*.class
+*.pdf
+*.java._trace

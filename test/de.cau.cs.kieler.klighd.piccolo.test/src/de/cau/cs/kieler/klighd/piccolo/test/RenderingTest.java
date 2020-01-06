@@ -53,13 +53,13 @@ import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KNodeAbstractNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdPath;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.RGBGradient;
+import de.cau.cs.kieler.klighd.test.runners.ModelCollectionTestRunner;
+import de.cau.cs.kieler.klighd.test.runners.ModelCollectionTestRunner.BundleId;
+import de.cau.cs.kieler.klighd.test.runners.ModelCollectionTestRunner.ModelFilter;
+import de.cau.cs.kieler.klighd.test.runners.ModelCollectionTestRunner.ModelPath;
 import de.cau.cs.kieler.klighd.util.Iterables2;
 import de.cau.cs.kieler.klighd.util.ModelingUtil;
 import de.cau.cs.kieler.klighd.util.RenderingContextData;
-import de.cau.cs.kieler.pragmatics.test.common.runners.ModelCollectionTestRunner;
-import de.cau.cs.kieler.pragmatics.test.common.runners.ModelCollectionTestRunner.BundleId;
-import de.cau.cs.kieler.pragmatics.test.common.runners.ModelCollectionTestRunner.ModelFilter;
-import de.cau.cs.kieler.pragmatics.test.common.runners.ModelCollectionTestRunner.ModelPath;
 import edu.umd.cs.piccolo.PRoot;
 
 /**
