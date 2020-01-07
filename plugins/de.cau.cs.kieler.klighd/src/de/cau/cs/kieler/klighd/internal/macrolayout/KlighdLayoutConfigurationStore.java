@@ -41,7 +41,6 @@ import org.eclipse.ui.IWorkbenchPart;
 
 import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.IViewer;
-import de.cau.cs.kieler.klighd.KlighdOptions;
 import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
 import de.cau.cs.kieler.klighd.kgraph.KEdge;
@@ -247,12 +246,12 @@ public class KlighdLayoutConfigurationStore implements ILayoutConfigurationStore
      * @return the corresponding KLighD (context) {@link IViewer}, or {@code null}
      */
     private IViewer getViewer() {
-        IViewer viewer = graphElement.getProperty(KlighdOptions.VIEWER);
+        IViewer viewer = graphElement.getProperty(KlighdInternalProperties.VIEWER);
 
         if (viewer == null) {
             if (workbenchPart instanceof IDiagramWorkbenchPart) {
                 viewer = ((IDiagramWorkbenchPart) workbenchPart).getViewer();
-                graphElement.setProperty(KlighdOptions.VIEWER, viewer);
+                graphElement.setProperty(KlighdInternalProperties.VIEWER, viewer);
             }
         }
         return viewer;
