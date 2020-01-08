@@ -38,7 +38,6 @@ import org.eclipse.swt.graphics.Pattern;
 import org.eclipse.swt.graphics.RGB;
 
 import de.cau.cs.kieler.klighd.piccolo.internal.KlighdSWTGraphicsEx;
-import de.cau.cs.kieler.klighd.piccolo.internal.KlighdSWTGraphicsImpl;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.PolylineUtil;
 
 /**
@@ -125,8 +124,8 @@ public class GraphicsAdapter extends Graphics {
     
     
     /**
-     * Creates a Draw2D graphics adapter. An {@link edu.umd.cs.piccolox.swt.SWTGraphics2D
-     * SWTGraphics2D} must be provided by means of a setter!
+     * Creates a Draw2D graphics adapter. A {@link KlighdSWTGraphicsEx } must be provided by means
+     * of a setter!
      * 
      * @author chsch
      */
@@ -140,13 +139,13 @@ public class GraphicsAdapter extends Graphics {
      *            a specialized AWT {@link java.awt.Graphics2D Graphics2D} graphics facading SWT's
      *            {@link org.eclipse.swt.graphics.GC GC}
      */
-    public GraphicsAdapter(final KlighdSWTGraphicsImpl graphics) {
+    public GraphicsAdapter(final KlighdSWTGraphicsEx graphics) {
         this.pg = graphics;
     }
     
     /**
-     * Setter of the 'SWTGraphics2D' to be used. Must be invoked in combination with using the
-     * default constructor. Is flagged 'package protected' (no modifier) by intention.
+     * Setter of the {@link KlighdSWTGraphicsEx} to be used. Must be invoked in combination with
+     * using the default constructor. Is flagged 'package protected' (no modifier) by intention.
      * 
      * @author chsch
      * 
