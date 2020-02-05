@@ -12,14 +12,30 @@
   <artifactId>de.cau.cs.kieler.klighd.krendering</artifactId>
   <version>0.45.0-SNAPSHOT</version>
   <packaging>eclipse-plugin</packaging>
-  
+
   <build>
     <sourceDirectory>src</sourceDirectory>
     <plugins>
-      <!-- Generate code from .melk files. -->
+
+      <!-- src-custom to source-directories -->
       <plugin>
-        <groupId>org.eclipse.xtext</groupId>
-        <artifactId>xtext-maven-plugin</artifactId>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <version>1.3</version>
+        <executions>
+          <execution>
+            <id>add-source</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>add-source</goal>
+            </goals>
+            <configuration>
+              <sources>
+                <source>src-custom</source>
+              </sources>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>

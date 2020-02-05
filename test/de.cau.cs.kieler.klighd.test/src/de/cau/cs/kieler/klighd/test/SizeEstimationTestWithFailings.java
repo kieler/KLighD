@@ -19,11 +19,11 @@ import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
 
 import de.cau.cs.kieler.klighd.kgraph.KNode;
-import de.cau.cs.kieler.pragmatics.test.common.runners.ModelCollectionTestRunner;
-import de.cau.cs.kieler.pragmatics.test.common.runners.ModelCollectionTestRunner.BundleId;
-import de.cau.cs.kieler.pragmatics.test.common.runners.ModelCollectionTestRunner.ModelFilter;
-import de.cau.cs.kieler.pragmatics.test.common.runners.ModelCollectionTestRunner.ModelPath;
-import de.cau.cs.kieler.pragmatics.test.common.runners.ModelCollectionTestRunner.StopOnFailure;
+import de.cau.cs.kieler.klighd.test.runners.ModelCollectionTestRunner;
+import de.cau.cs.kieler.klighd.test.runners.ModelCollectionTestRunner.BundleId;
+import de.cau.cs.kieler.klighd.test.runners.ModelCollectionTestRunner.ModelFilter;
+import de.cau.cs.kieler.klighd.test.runners.ModelCollectionTestRunner.ModelPath;
+import de.cau.cs.kieler.klighd.test.runners.ModelCollectionTestRunner.StopOnFailure;
 
 /**
  * This test is pretty much the same as {@link SizeEstimationTest} except the inclusion

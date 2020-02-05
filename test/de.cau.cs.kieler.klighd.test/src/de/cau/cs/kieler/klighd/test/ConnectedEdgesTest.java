@@ -39,12 +39,12 @@ import de.cau.cs.kieler.klighd.kgraph.KNode;
 import de.cau.cs.kieler.klighd.kgraph.KPort;
 import de.cau.cs.kieler.klighd.kgraph.PersistentEntry;
 import de.cau.cs.kieler.klighd.kgraph.util.KGraphUtil;
+import de.cau.cs.kieler.klighd.test.runners.ModelCollectionTestRunner;
+import de.cau.cs.kieler.klighd.test.runners.ModelCollectionTestRunner.BundleId;
+import de.cau.cs.kieler.klighd.test.runners.ModelCollectionTestRunner.ModelFilter;
+import de.cau.cs.kieler.klighd.test.runners.ModelCollectionTestRunner.ModelPath;
+import de.cau.cs.kieler.klighd.test.runners.ModelCollectionTestRunner.StopOnFailure;
 import de.cau.cs.kieler.klighd.util.Iterables2;
-import de.cau.cs.kieler.pragmatics.test.common.runners.ModelCollectionTestRunner;
-import de.cau.cs.kieler.pragmatics.test.common.runners.ModelCollectionTestRunner.BundleId;
-import de.cau.cs.kieler.pragmatics.test.common.runners.ModelCollectionTestRunner.ModelFilter;
-import de.cau.cs.kieler.pragmatics.test.common.runners.ModelCollectionTestRunner.ModelPath;
-import de.cau.cs.kieler.pragmatics.test.common.runners.ModelCollectionTestRunner.StopOnFailure;
 
 /**
  * @author mkr

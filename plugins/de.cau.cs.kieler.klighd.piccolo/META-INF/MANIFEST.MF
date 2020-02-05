@@ -7,7 +7,7 @@ Bundle-Vendor: Kiel University
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Require-Bundle: com.google.guava;bundle-version="10.0.0",
- edu.umd.cs.piccolo;bundle-version="1.3.2";visibility:=reexport,
+ edu.umd.cs.piccolo;bundle-version="1.3.4";visibility:=reexport,
  de.cau.cs.kieler.klighd;bundle-version="0.3.0";visibility:=reexport,
  org.eclipse.elk.core.service;bundle-version="0.1.0",
  de.cau.cs.kieler.klighd.kgraph;bundle-version="0.1.0"
