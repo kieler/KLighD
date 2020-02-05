@@ -40,7 +40,8 @@ import de.cau.cs.kieler.klighd.viewers.ContextViewer;
  * 
  * @author chsch
  */
-public class KlighdTreeSelection extends TreeSelection implements IKlighdSelection, Iterable<EObject> {
+@SuppressWarnings("rawtypes")
+public class KlighdTreeSelection extends TreeSelection implements IKlighdSelection, Iterable {
     
     /**
      * Empty singleton instance of {@link KlighdTreeSelection}.
