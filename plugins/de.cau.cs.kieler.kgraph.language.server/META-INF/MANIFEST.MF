@@ -11,6 +11,7 @@ Bundle-ActivationPolicy: lazy
 Require-Bundle: com.google.gson;bundle-version="2.8.2",
  com.google.inject;bundle-version="3.0.0",
  de.cau.cs.kieler.kgraph.text.ide,
+ de.cau.cs.kieler.klighd,
  de.cau.cs.kieler.klighd.lsp,
  org.apache.log4j;bundle-version="1.2.15",
  org.eclipse.core.runtime,
