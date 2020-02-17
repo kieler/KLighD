@@ -13,8 +13,6 @@
  */
 package de.cau.cs.kieler.klighd.actions;
 
-import org.eclipse.emf.ecore.EObject;
-
 import com.google.common.collect.Iterables;
 
 import de.cau.cs.kieler.klighd.IAction;
@@ -42,7 +40,7 @@ public class ClipSelectionAction implements IAction {
      * {@inheritDoc}
      */
     public ActionResult execute(final ActionContext context) {
-        final Iterable<EObject> selection = context.getContextViewer().getDiagramSelection();
+        final Iterable<?> selection = context.getContextViewer().getDiagramSelection();
         final IViewer contextViewer = context.getContextViewer();
         
         final Object first = Iterables.getFirst(selection, null);

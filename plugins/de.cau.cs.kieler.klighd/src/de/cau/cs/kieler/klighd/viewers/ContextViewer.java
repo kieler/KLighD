@@ -832,8 +832,9 @@ public class ContextViewer implements IViewer, ILayoutRecorder, ISelectionProvid
      */
     public void toggleSelectionOfDiagramElements(final Set<? extends EObject> toBeToggled) {
         final KlighdTreeSelection diagSelection = this.getDiagramSelection();
-        final List<EObject> theSelection = newArrayList(diagSelection != null
-                ? diagSelection : KlighdTreeSelection.EMPTY);
+        final List<EObject> theSelection = newArrayList(
+                filter(diagSelection != null ? diagSelection : KlighdTreeSelection.EMPTY, EObject.class)
+        );
 
         for (final EObject diagramElement : Sets.filter(toBeToggled, isSelectable())) {
             final boolean removed = theSelection.remove(diagramElement);
@@ -913,7 +914,7 @@ public class ContextViewer implements IViewer, ILayoutRecorder, ISelectionProvid
         final KlighdTreeSelection diagSelection = getDiagramSelection();
 
         final List<EObject> currentlySelected = diagSelection != null
-                ? newArrayList(diagSelection) : Collections.<EObject>emptyList();
+                ? newArrayList(filter(diagSelection, EObject.class)) : Collections.<EObject>emptyList();
         final List<EObject> toBeSelected = newArrayList(filter(diagramElements, Predicates.notNull()));
 
         for (final KRendering r : concat(transform(filter(currentlySelected, notIn(toBeSelected)),
@@ -997,7 +998,7 @@ public class ContextViewer implements IViewer, ILayoutRecorder, ISelectionProvid
      * Resets the highlighting of the currently selected diagram elements.
      */
     private void resetSelectionHighlighting() {
-        final Iterable<EObject> currentSelection = getDiagramSelection();
+        final Iterable<EObject> currentSelection = filter(getDiagramSelection(), EObject.class);
         if (currentSelection != null) {
             for (final KRendering r : concat(transform(currentSelection, AS_RENDERING))) {
                 r.setProperty(KlighdInternalProperties.SELECTED, false);
