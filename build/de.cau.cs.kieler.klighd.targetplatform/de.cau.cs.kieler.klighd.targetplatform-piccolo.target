@@ -31,6 +31,10 @@
       <repository location="http://xtext.github.io/download/updates/releases/2.1.1/"/>
     </location>
     <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+      <unit id="edu.umd.cs.piccolo" version="1.3.4.qualifier"/>
+      <repository location="http://openkieler.github.io/KLighD/v1.0.0/"/>
+    </location>
+    <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
       <unit id="javax.xml.bind" version="0.0.0"/>
       <unit id="com.google.inject" version="0.0.0"/>
       <unit id="com.google.guava" version="21.0.0.v20170206-1425"/>

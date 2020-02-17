@@ -4,12 +4,16 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>de.cau.cs.kieler.klighd</groupId>
   <artifactId>parent</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>1.0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <modules>
-	<!-- all plugins need to be listed as module -->
     <module>build/de.cau.cs.kieler.klighd.targetplatform</module>
+
+    <!-- the following 3 entries exist just for the tycho-versions:setVerion task to work properly -->
+    <module>plugins</module>
+    <module>test</module>
+    <module>features</module>
 
     <module>plugins/de.cau.cs.kieler.klighd</module>
     <module>plugins/de.cau.cs.kieler.klighd.incremental</module>
@@ -143,7 +147,7 @@
             <artifact>
               <groupId>de.cau.cs.kieler.klighd</groupId>
               <artifactId>de.cau.cs.kieler.klighd.targetplatform</artifactId>
-              <version>0.0.1-SNAPSHOT</version>
+              <version>1.0.1-SNAPSHOT</version>
             </artifact>
           </target>
 
