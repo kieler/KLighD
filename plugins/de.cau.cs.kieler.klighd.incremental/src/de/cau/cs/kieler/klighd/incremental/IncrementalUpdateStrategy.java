@@ -72,9 +72,6 @@ public class IncrementalUpdateStrategy implements IUpdateStrategy {
             KGraphMerger merger = new KGraphMerger(comparison, new KGraphDataFilter());
             merger.merge();
 
-            UIDAdapters.removeAdapter(baseModel);
-            UIDAdapters.removeAdapter(newModel);
-
         } catch (RuntimeException e) {
             final String msg = "KLighD: Incremental update of diagram failed.";
             StatusManager.getManager().handle(new Status(IStatus.ERROR, PLUGIN_ID, msg, e),
@@ -84,6 +81,9 @@ public class IncrementalUpdateStrategy implements IUpdateStrategy {
             // if incremental updating failed, apply the SimpleUpdateStrategy
             fallback(baseModel, newModel, viewContext);
         }
+
+        UIDAdapters.removeAdapter(baseModel);
+        UIDAdapters.removeAdapter(newModel);
     }
 
     private void fallback(final KNode baseModel, final KNode newModel,

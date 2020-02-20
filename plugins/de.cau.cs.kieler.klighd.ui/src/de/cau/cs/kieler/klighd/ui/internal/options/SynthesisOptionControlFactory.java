@@ -789,7 +789,8 @@ public class SynthesisOptionControlFactory {
             new LightDiagramLayoutConfig(viewContext)
                 .animate(result.getAnimateLayout())
                 .zoomStyle(ZoomStyle.create(result, viewContext))
-                .focusNode(result.getFocusNode())
+                .focusElement(result.getFocusElement())
+                .previousPosition(result.getPreviousPosition())
                 .options(result.getLayoutConfigs())
                 .performLayout();
         } else {

@@ -329,7 +329,7 @@ public class UIDAdapter extends EContentAdapter {
             parentId = "";
             localId = "root";
         } else {
-            parentId = getId(parent);
+            parentId = addId(parent);
             KIdentifier identifier = node.getData(KIdentifier.class);
             if (identifier != null) {
                 localId = identifier.getId();
@@ -342,6 +342,10 @@ public class UIDAdapter extends EContentAdapter {
             }
         }
         id = parentId + ID_SEPARATOR + localId;
+        if (localId == "root" && nodes.containsKey(id)) {
+            // This is a dangling node and should not be included in the graph.
+            return null;
+        }
         id = resolveIDClash(id, nodes);
         nodes.put(id, node);
         return id;
@@ -519,22 +523,21 @@ public class UIDAdapter extends EContentAdapter {
      * Generate IDs recursively for this {@link KNode} and all its child {@link KGraphElement}s.
      * 
      * @param node the node to start generating IDs from.
-     * @param recursive whether the ids for all children should be generated as well.
      */
-    public void generateIDs(final KNode node, final boolean recursive) {
+    public void generateIDs(final KNode node) {
         addId(node);
         
         for (KNode childNode : node.getChildren()) {
-            generateIDs(childNode, recursive);
+            generateIDs(childNode);
         }
         for (KPort port : node.getPorts()) {
-            generateIDs(port, recursive);
+            generateIDs(port);
         }
         for (KLabel label : node.getLabels()) {
-            generateIDs(label, recursive);
+            generateIDs(label);
         }
         for (KEdge edge : node.getOutgoingEdges()) {
-            generateIDs(edge, recursive);
+            generateIDs(edge);
         }
     }
     
@@ -542,13 +545,12 @@ public class UIDAdapter extends EContentAdapter {
      * Generate IDs recursively for this {@link KPort} and all its child {@link KGraphElement}s.
      * 
      * @param port the port to start generating IDs from.
-     * @param recursive whether the ids for all children should be generated as well.
      */
-    public void generateIDs(final KPort port, final boolean recursive) {
+    public void generateIDs(final KPort port) {
         addId(port);
         
         for (KLabel label : port.getLabels()) {
-            generateIDs(label, recursive);
+            generateIDs(label);
         }
     }
     
@@ -556,9 +558,8 @@ public class UIDAdapter extends EContentAdapter {
      * Generate IDs recursively for this {@link KLabel} and all its child {@link KGraphElement}s.
      * 
      * @param label the label to start generating IDs from.
-     * @param recursive whether the ids for all children should be generated as well.
      */
-    public void generateIDs(final KLabel label, final boolean recursive) {
+    public void generateIDs(final KLabel label) {
         addId(label);
     }
     
@@ -566,13 +567,12 @@ public class UIDAdapter extends EContentAdapter {
      * Generate IDs recursively for this {@link KEdge} and all its child {@link KGraphElement}s.
      * 
      * @param edge the edge to start generating IDs from.
-     * @param recursive whether the ids for all children should be generated as well.
      */
-    public void generateIDs(final KEdge edge, final boolean recursive) {
+    public void generateIDs(final KEdge edge) {
         addId(edge);
         
         for (KLabel label : edge.getLabels()) {
-            generateIDs(label, recursive);
+            generateIDs(label);
         }
     }
 

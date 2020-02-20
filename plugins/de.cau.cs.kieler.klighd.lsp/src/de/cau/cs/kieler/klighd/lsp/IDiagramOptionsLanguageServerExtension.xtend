@@ -29,7 +29,7 @@ import org.eclipse.lsp4j.jsonrpc.services.JsonSegment
  * @author nre
  */
 @JsonSegment('keith/diagramOptions')
-public interface IDiagramOptionsLanguageServerExtension {
+interface IDiagramOptionsLanguageServerExtension {
     
     /**
      * Method called by a client to get a list of all {@link ValuedSynthesisOption}s defined for a diagram handled by 
@@ -40,7 +40,7 @@ public interface IDiagramOptionsLanguageServerExtension {
      * opened, {@code null} otherwise.
      */
     @JsonRequest('getOptions')
-    public def CompletableFuture<GetOptionsResult> getOptions(GetOptionParam param)
+    def CompletableFuture<GetOptionsResult> getOptions(GetOptionParam param)
     
     /**
      * Method called by a client to set the {@link SynthesisOption}s of the diagram resolved by {@code param.uri} to 
@@ -50,17 +50,17 @@ public interface IDiagramOptionsLanguageServerExtension {
      * @return "OK", if the diagram was found and the new options have been set, "ERR" otherwise.
      */
     @JsonRequest('setSynthesisOptions')
-    public def CompletableFuture<String> setSynthesisOptions(SetSynthesisOptionsParam param)
+    def CompletableFuture<String> setSynthesisOptions(SetSynthesisOptionsParam param)
     
     /**
-     * Method called by a client to set the layout optionss of the diagram resolved by {@code param.uri} to 
+     * Method called by a client to set the layout options of the diagram resolved by {@code param.uri} to 
      * the options given in {@code param.layoutOptions}. Also updates the layout of the diagram.
      * 
      * @param param The {@code uri} to resolve the diagram and the new options given by {@code synthesisOption}.
      * @return "OK", if the diagram was found and the new options have been set, "ERR" otherwise.
      */
     @JsonRequest('setLayoutOptions')
-    public def CompletableFuture<String> setLayoutOptions(SetLayoutOptionsParam param)
+    def CompletableFuture<String> setLayoutOptions(SetLayoutOptionsParam param)
     
     /**
      * Method called by a client to perform an action on the diagram resolved by {@code param.uri}. The diagram may be
@@ -71,5 +71,5 @@ public interface IDiagramOptionsLanguageServerExtension {
      * @return "OK", if the diagram was found and the action has been executed, "ERR" otherwise.
      */
     @JsonRequest('performAction')
-    public def CompletableFuture<String> performAction(PerformActionParam param)
+    def CompletableFuture<String> performAction(PerformActionParam param)
 }

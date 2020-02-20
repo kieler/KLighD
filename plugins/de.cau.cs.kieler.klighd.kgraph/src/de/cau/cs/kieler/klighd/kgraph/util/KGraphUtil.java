@@ -431,6 +431,42 @@ public final class KGraphUtil {
         }
         return point;
     }
+    
+    /**
+     * Returns the absolute position of the given element from the positions of its {@link KShapeLayout} parents.
+     * 
+     * @param element The element to which the point should be calculated.
+     * @return The absolute position of the element in the diagram.
+     */
+    public static KVector getAbsolute(final KGraphElement element) {
+        KVector absolutePosition;
+        EObject parent = element;
+        while (!(element instanceof KShapeLayout) && parent != null) {
+            parent = parent.eContainer();
+        }
+        if (parent == null) {
+            return null;
+        }
+        absolutePosition = new KVector(((KShapeLayout) parent).getXpos(), ((KShapeLayout) parent).getYpos());
+        
+        parent = parent.eContainer();
+        while (parent != null) {
+            while (!(parent instanceof KShapeLayout) && parent != null) {
+                    parent = parent.eContainer();
+            }
+            // We know that the parent is a KShapeLayout now, if its not null.
+            if (parent != null) {
+                
+                KInsets insets = ((KShapeLayout) parent).getInsets();
+                absolutePosition.add(insets.getLeft(),  insets.getTop());
+                
+                absolutePosition.add(((KShapeLayout) parent).getXpos(), ((KShapeLayout) parent).getYpos());
+                parent = parent.eContainer();
+            }
+        }
+        
+        return absolutePosition;
+    }
 
     /**
      * Determines the port side for the given port from its relative position at
@@ -738,6 +774,25 @@ public final class KGraphUtil {
         KNode current = child;
         while (current.getParent() != null) {
             current = current.getParent();
+            if (current == parent) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    /**
+     * Determines whether the given child element is a descendant of the parent node. This method does
+     * not regard a node as its own descendant.
+     * 
+     * @param child a child element
+     * @param parent a parent node
+     * @return {@code true} if {@code child} is contained directly or indirectly in {@code parent}.
+     */
+    public static boolean isDescendant(final KGraphElement child, final KNode parent) {
+        EObject current = child;
+        while (current.eContainer() != null) {
+            current = current.eContainer();
             if (current == parent) {
                 return true;
             }

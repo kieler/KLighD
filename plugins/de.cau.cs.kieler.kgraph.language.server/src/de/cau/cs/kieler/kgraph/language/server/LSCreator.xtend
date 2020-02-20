@@ -14,11 +14,15 @@ package de.cau.cs.kieler.kgraph.language.server
 
 import com.google.gson.GsonBuilder
 import com.google.inject.Injector
+import de.cau.cs.kieler.klighd.IViewerProvider
+import de.cau.cs.kieler.klighd.KlighdDataManager
 import de.cau.cs.kieler.klighd.lsp.KGraphDiagramModule
 import de.cau.cs.kieler.klighd.lsp.KGraphDiagramServerModule
+import de.cau.cs.kieler.klighd.lsp.SprottyViewer
 import de.cau.cs.kieler.klighd.lsp.gson_utils.KGraphTypeAdapterUtil
 import java.io.InputStream
 import java.io.OutputStream
+import java.util.Map
 import java.util.concurrent.ExecutorService
 import java.util.function.Consumer
 import java.util.function.Function
@@ -82,6 +86,14 @@ class LSCreator {
     def buildAndStartLS(Injector injector, LanguageServerImpl ls, InputStream in, OutputStream out,
         ExecutorService threadPool, Function<MessageConsumer, MessageConsumer> wrapper, boolean socket
     ) {
+        // Hack the SprottyViewer into the KlighdDataManager.
+        // FIXME: Once De-Eclipsification of KLighD is done, this should be done by public API.
+        val viewerProviderField = KlighdDataManager.getDeclaredField("idViewerProviderMapping")
+        viewerProviderField.accessible = true
+        val viewerProvider = viewerProviderField.get(KlighdDataManager.getInstance) as Map<String, IViewerProvider>
+        viewerProvider.clear
+        viewerProvider.put("de.cau.cs.kieler.klighd.lsp.SprottyViewer", new SprottyViewer.Provider)
+        
         // TypeAdapter is needed to be able to send recursive data in json
         val Consumer<GsonBuilder> configureGson = [ gsonBuilder |
             KGraphTypeAdapterUtil.configureGson(gsonBuilder)

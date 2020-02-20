@@ -17,7 +17,9 @@ import com.google.inject.Inject
 import de.cau.cs.kieler.klighd.IAction
 import de.cau.cs.kieler.klighd.IAction.ActionContext
 import de.cau.cs.kieler.klighd.KlighdDataManager
+import de.cau.cs.kieler.klighd.kgraph.KLabel
 import de.cau.cs.kieler.klighd.kgraph.KNode
+import de.cau.cs.kieler.klighd.krendering.KRendering
 import de.cau.cs.kieler.klighd.krendering.KText
 import de.cau.cs.kieler.klighd.lsp.interactive.layered.ConstraintActionHandler
 import de.cau.cs.kieler.klighd.lsp.interactive.rectpack.RectPackActionHandler
@@ -32,16 +34,22 @@ import de.cau.cs.kieler.klighd.lsp.model.SetSynthesisAction
 import de.cau.cs.kieler.klighd.lsp.model.StoreImagesAction
 import de.cau.cs.kieler.klighd.lsp.utils.KGraphElementIDGenerator
 import de.cau.cs.kieler.klighd.lsp.utils.KRenderingIDGenerator
+import de.cau.cs.kieler.klighd.lsp.utils.SprottyProperties
 import de.cau.cs.kieler.klighd.microlayout.Bounds
 import de.cau.cs.kieler.klighd.util.KlighdProperties
 import java.util.ArrayList
 import java.util.Base64
+import java.util.List
 import java.util.Map
 import org.apache.log4j.Logger
 import org.eclipse.core.runtime.Platform
+import org.eclipse.emf.ecore.EObject
 import org.eclipse.sprotty.Action
 import org.eclipse.sprotty.ActionMessage
+import org.eclipse.sprotty.SModelElement
 import org.eclipse.sprotty.SModelRoot
+import org.eclipse.sprotty.SelectAction
+import org.eclipse.sprotty.SelectAllAction
 import org.eclipse.sprotty.SetModelAction
 import org.eclipse.sprotty.UpdateModelAction
 import org.eclipse.sprotty.xtext.LanguageAwareDiagramServer
@@ -51,8 +59,8 @@ import org.eclipse.sprotty.xtext.LanguageAwareDiagramServer
  * 
  * @author nre
  */
-public class KGraphDiagramServer extends LanguageAwareDiagramServer {
-    private static val LOG = Logger.getLogger(KGraphDiagramServer)
+class KGraphDiagramServer extends LanguageAwareDiagramServer {
+    static val LOG = Logger.getLogger(KGraphDiagramServer)
     
     @Inject
     protected ConstraintActionHandler constraintActionHandler
@@ -170,20 +178,54 @@ public class KGraphDiagramServer extends LanguageAwareDiagramServer {
             // after a RequestTextBoundsAction, where it got stored before.
             
             val textMapping = diagramState.getTextMapping(currentRoot.id)
+            // Add the bounds for each label to the text's properties and remember which KTexts have been modified.
+            // Also calculate the widths and heights of all texts on the fly to be applied later.
+            val List<KText> texts = newArrayList
+            val Map<KText, float[]> textWidths = newHashMap
+            val Map<KText, float[]> textHeights = newHashMap 
             for (elementAndBound : action.bounds) {
                 val elementId = elementAndBound.elementId
                 val newSize = elementAndBound.newSize
                 if (newSize === null) {
                     throw new NullPointerException("Estimated Size for a KText is null!")
                 }
-                val newBounds_klighd = new Bounds(0, 0, newSize.width as float, newSize.height as float)
                 val kText = textMapping.get(elementId)
                 if (kText === null) {
                     LOG.info("The textMapping does not contain the referenced Text anymore. The model has changed before" + 
                         "completion of the request. Terminating this request.")
                     return
                 }
-                kText.properties.put(KlighdProperties.CALCULATED_TEXT_BOUNDS, newBounds_klighd)
+                val index = Integer.parseInt(elementId.split("\\$").last) // Matches the character '$'
+                if (!texts.contains(kText)) {
+                    var container = kText.eContainer
+                    while (container instanceof KRendering) {
+                        container = container.eContainer
+                    }
+                    var String text
+                    if (container instanceof KLabel) {
+                        text = container.text
+                    } else {
+                        text = kText.text
+                    }
+                    var lines = text.split("\n", -1).size
+                    texts.add(kText)
+                    val widths = newFloatArrayOfSize(lines)
+                    widths.set(index, newSize.width as float)
+                    textWidths.put(kText, widths)
+                    val heights = newFloatArrayOfSize(lines)
+                    heights.set(index, newSize.height as float)
+                    textHeights.put(kText, heights)
+                } else {
+                    textWidths.get(kText).set(index, newSize.width as float)
+                    textHeights.get(kText).set(index, newSize.height as float)
+                }
+            }
+            // Apply the text's bounds.
+            for (text : texts) {
+                text.properties.put(KlighdProperties.CALCULATED_TEXT_BOUNDS, 
+                    new Bounds(0, 0, textWidths.get(text).max, textHeights.get(text).fold(0f, [ a, b | a + b ])))
+                text.properties.put(SprottyProperties.CALCULATED_TEXT_LINE_WIDTHS, textWidths.get(text))
+                text.properties.put(SprottyProperties.CALCULATED_TEXT_LINE_HEIGHTS, textHeights.get(text))
             }
             textsUpdated = true
             if (imagesUpdated) {
@@ -208,8 +250,15 @@ public class KGraphDiagramServer extends LanguageAwareDiagramServer {
             val klighdAction = KlighdDataManager.instance.getActionById(action.actionId)
             val viewer = diagramState.viewer
             val actionContext = new ActionContext(viewer, null, kGraphElement, kRendering)
-            val shouldUpdate = klighdAction.execute(actionContext)
-            if (shouldUpdate.actionPerformed) {
+            val actionResult = klighdAction.execute(actionContext)
+            if (actionResult.needsSynthesis) {
+                val diagramUpdater = diagramLanguageServer.diagramUpdater
+                if (diagramUpdater instanceof KGraphDiagramUpdater) {
+                    diagramUpdater.updateDiagram(this)
+                } else {
+                    throw new IllegalStateException("The diagramUpdater was not initialized correctly")
+                }
+            } else if (actionResult.actionPerformed) {
                 val diagramUpdater = diagramLanguageServer.diagramUpdater
                 if (diagramUpdater instanceof KGraphDiagramUpdater) {
                     diagramUpdater.updateLayout(this)
@@ -280,12 +329,40 @@ public class KGraphDiagramServer extends LanguageAwareDiagramServer {
     }
     
     /**
+     * Selects the SGraph elements mapped by the given selectable KGraph elements.
+     * 
+     * @param toBeSelected The elements that will be selected in the diagram, if they are selectable. 
+     */
+    def void selectElements(List<EObject> toBeSelected) {
+        val toBeSelectedSModelElementIDs = newArrayList
+        
+        synchronized(diagramState) {
+            val map = diagramState.getKGraphToSModelElementMap(diagramState.getURIString(clientId))
+            toBeSelected.forEach [
+                val sModelElement = map.get(it)
+                if (sModelElement instanceof SModelElement) {
+                    toBeSelectedSModelElementIDs.add(sModelElement.id)
+                }
+                
+            ]
+        }
+        // Deselect all elements first, so only the new elements are selected now.
+        val deselectAllAction = new SelectAllAction
+        deselectAllAction.select = false
+        dispatch(deselectAllAction)
+        
+        val selectAction = new SelectAction
+        selectAction.selectedElementsIDs = toBeSelectedSModelElementIDs
+        dispatch(selectAction)
+    }
+    
+    /**
      * Initializes the stored options in this diagram server. Usable if a diagram server is created by something other
      * than a {@link SetModelAction}.
      * 
      * @param options The options to be initialized on this diagram server.
      */
-    public def initializeOptions(Map<String, String> options) {
+    def initializeOptions(Map<String, String> options) {
         if (getOptions.isEmpty) {
             setOptions(options)
         }

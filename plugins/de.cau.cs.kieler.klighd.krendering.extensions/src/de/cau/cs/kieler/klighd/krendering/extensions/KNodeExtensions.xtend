@@ -3,7 +3,7 @@
  *
  * http://www.informatik.uni-kiel.de/rtsys/kieler/
  * 
- * Copyright 2012 by
+ * Copyright 2012-2019 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -44,6 +44,7 @@ import org.eclipse.elk.graph.properties.Property
  * {@code injector.injectMembers(this)} in the constructor of your class.
  * 
  * @author chsch
+ * @author nre
  * 
  * @containsExtensions
  */
@@ -53,25 +54,46 @@ class KNodeExtensions {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////                    KNodeExtensions
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+    
     /**
      * A convenient getter preserving the element image relation by a create extension.
      */ 
-    def private KNode create node: KGraphUtil::createInitializedNode internalCreateNode(ArrayList<Object> oc) {
+    def private KNode create node: KGraphUtil::createInitializedNode internalCreateNode(Object... oc) {
+    }
+    
+    /**
+     * The Xtend-generated internal create map for {@link #internalCreateNode} with a more accessible name.
+     */
+    private def getInternalNodeMap() {
+        return this._createCache_internalCreateNode
+    }
+    
+    /**
+     * A convenient test method to check whether or not a specific node exists in the create extension
+     */
+    def boolean nodeExists(Object... os) {
+        getInternalNodeMap.containsKey(newArrayList(os))
     }
 
     /**
      * A convenient getter preserving the element image relation by a create extension.
      */ 
     def KNode getNode(Object o) {
-        newArrayList(o).internalCreateNode
+        internalCreateNode(o)
+    }
+    
+    /**
+     * A convenient getter preserving the element image relation.
+     */ 
+    def KNode getNode(Object o1, Object o2) {
+        internalCreateNode(o1, o2)
     }
     
     /**
      * A convenient getter preserving the element image relation by a create extension.
      */ 
-    def KNode getNode(Object o1, Object o2) {
-        newArrayList(o1, o2).internalCreateNode
+    def KNode getNode(Object... os) {
+        internalCreateNode(os)
     }
     
     /**
@@ -91,10 +113,18 @@ class KNodeExtensions {
     
     /**
      * An alias of {@link #getNode} allowing to express in business that the KNode will
-     * be created at this place. It is just syntactic sugar.  
+     * be created at this place. It is just syntactic sugar.
      */
     def KNode createNode(Object o1, Object o2) {
         return o1.getNode(o2)
+    }
+    
+    /**
+     * An alias of {@link #getNode} allowing to express in business that the KNode will
+     * be created at this place. It is just syntactic sugar.  
+     */
+    def KNode createNode(Object... os) {
+        return os.node
     }
     
     def Pair<Float, Float> getNodeSize(KNode node) {

@@ -156,14 +156,29 @@ public final class LightDiagramServices {
         final IDiagramWorkbenchPart thePart = pair.getFirst();
         final ViewContext theViewContext = pair.getSecond();
 
+        if (thePart != null) {
+            final IViewer theViewer = thePart.getViewer();
+            if (theViewer == null
+                    || theViewer.getControl() != null && theViewer.getControl().isDisposed()) {
+                // This might happen, if the layout computation is to be executed asynchronously
+                //  and 'thePart' (and with that the corresponding control(s)) has been disposed
+                //  in the meantime.
+                // In that case the layout computation request can be considered out-dated
+                //  and some of the subsequent executions may fail, so...
+                return;
+            }
+        }
+
         final ILayoutRecorder recorder = theViewContext.getLayoutRecorder();
         final KNode viewModel = theViewContext.getViewModel();
 
         if (viewModel != null) {
             theViewContext.setProperty(KlighdInternalProperties.NEXT_ZOOM_STYLE,
                     config.zoomStyle());
-            theViewContext.setProperty(KlighdInternalProperties.NEXT_FOCUS_NODE,
-                    config.focusNode());
+            theViewContext.setProperty(KlighdInternalProperties.NEXT_FOCUS_ELEMENT,
+                    config.focusElement());
+            theViewContext.setProperty(KlighdInternalProperties.PREVIOUS_POSITION,
+                    config.previousPosition());
     
             // Activate the ELK Service plug-in so all layout options are loaded
             ElkServicePlugin.getInstance();

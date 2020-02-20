@@ -103,10 +103,19 @@ class EObjectSerializer implements JsonSerializer<EObject> {
                         propertyHolder.getProperty(SprottyProperties.CALCULATED_DECORATION)))
                 }
                 if (source.class === KTextImpl) {
-                    // Only KTexts have the additional calculatedTextBounds property.
+                    // Only KTexts have the additional calculatedTextBounds and calculatedTextLineWidths/Heights
+                    // properties.
                     if (propertyHolder.hasProperty(KlighdProperties.CALCULATED_TEXT_BOUNDS)) {
                         jsonObject.add("calculatedTextBounds", context.serialize(
                             propertyHolder.getProperty(KlighdProperties.CALCULATED_TEXT_BOUNDS)))
+                    }
+                    if (propertyHolder.hasProperty(SprottyProperties.CALCULATED_TEXT_LINE_WIDTHS)) {
+                        jsonObject.add("calculatedTextLineWidths", context.serialize(
+                            propertyHolder.<float[]>getProperty(SprottyProperties.CALCULATED_TEXT_LINE_WIDTHS)))
+                    }
+                    if (propertyHolder.hasProperty(SprottyProperties.CALCULATED_TEXT_LINE_HEIGHTS)) {
+                        jsonObject.add("calculatedTextLineHeights", context.serialize(
+                            propertyHolder.<float[]>getProperty(SprottyProperties.CALCULATED_TEXT_LINE_HEIGHTS)))
                     }
                 }
             }

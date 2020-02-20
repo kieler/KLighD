@@ -24,7 +24,7 @@ import org.eclipse.swt.graphics.RGB;
 
 import de.cau.cs.kieler.klighd.IDiagramExporter.ExportData;
 import de.cau.cs.kieler.klighd.IDiagramExporter.ExportDataBuilder;
-import de.cau.cs.kieler.klighd.KlighdOptions;
+import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
@@ -51,6 +51,14 @@ public class SVGOffscreenRenderer extends AbstractOffscreenRenderer {
             "de.cau.cs.kieler.klighd.piccolo.svg.generator",
             GENERATOR_SVG_FREEHEP_EXTENDED);
 
+    /** Property definition for defining transparent diagram background. */
+    public static final IProperty<Boolean> SVG_EXPORT_TRANSPARENT_BACKGROUND = new Property<Boolean>(
+              "de.cau.cs.kieler.klighd.svgExport.transparentBackground", false);
+
+    /** Property definition for defining the diagram background color. */
+    public static final IProperty<RGB> SVG_EXPORT_BACKGROUND_COLOR = new Property<RGB>(
+              "de.cau.cs.kieler.klighd.svgExport.backgroundColor", KlighdConstants.WHITE);
+
     /**
      * {@inheritDoc}
      */
@@ -69,12 +77,12 @@ public class SVGOffscreenRenderer extends AbstractOffscreenRenderer {
                         ? properties.getProperty(ADDITIONAL_ROOT_DATA) : ADDITIONAL_ROOT_DATA.getDefault();
         final String css = properties != null
                 ? properties.getProperty(CSS) : CSS.getDefault();
-        final boolean transparentBackground = properties != null
-                ? properties.getProperty(KlighdOptions.SVG_EXPORT_TRANSPARENT_BACKGROUND)
-                : KlighdOptions.SVG_EXPORT_TRANSPARENT_BACKGROUND.getDefault();
-        final RGB backgroundColor = properties != null
-                ? properties.getProperty(KlighdOptions.SVG_EXPORT_BACKGROUND_COLOR)
-                : KlighdOptions.SVG_EXPORT_BACKGROUND_COLOR.getDefault();
+        final boolean transparentBackground =
+                properties != null ? properties.getProperty(SVG_EXPORT_TRANSPARENT_BACKGROUND)
+                        : SVG_EXPORT_TRANSPARENT_BACKGROUND.getDefault();
+        final RGB backgroundColor =
+                properties != null ? properties.getProperty(SVG_EXPORT_BACKGROUND_COLOR)
+                        : SVG_EXPORT_BACKGROUND_COLOR.getDefault();
 
         // Construct a KLighD main camera ...
         //  (the basic PRoot is sufficient here, as this canvas doesn't rely on any SWT stuff)

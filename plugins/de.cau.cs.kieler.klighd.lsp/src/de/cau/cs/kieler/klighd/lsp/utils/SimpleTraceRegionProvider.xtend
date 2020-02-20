@@ -23,7 +23,7 @@ import org.eclipse.xtext.util.TextRegion
  * 
  * @author nre
  */
-public class SimpleTraceRegionProvider extends TextRegionProvider {
+class SimpleTraceRegionProvider extends TextRegionProvider {
     /**
      * Returns the text region of the entire definition of this {@link EObject}, if no more specific region is found.
      */

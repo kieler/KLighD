@@ -132,7 +132,7 @@ public class KGraphMerger {
             if (comparison.lookupBaseNode(node) == null) {
                 KNode copiedNode = EcoreUtil.copy(node);
                 baseParent.getChildren().add(copiedNode);
-                comparison.getBaseAdapter().generateIDs(copiedNode, false);
+                comparison.getBaseAdapter().generateIDs(copiedNode);
             }
         }
     }
@@ -234,7 +234,7 @@ public class KGraphMerger {
         for (KPoint kPoint : newEdge.getBendPoints()) {
             bendPoints.add(EcoreUtil.copy(kPoint));
         }
-        comparison.getBaseAdapter().generateIDs(baseEdge, false);
+        comparison.getBaseAdapter().generateIDs(baseEdge);
         handleLabels(baseEdge, newEdge);
     }
 
@@ -283,11 +283,11 @@ public class KGraphMerger {
         KLabeledGraphElement newParent = newLabel.getParent();
         KLabeledGraphElement baseParent = null;
         if (newParent instanceof KNode) {
-            baseParent = comparison.lookupBaseNode((KNode) newLabel.getParent());
+            baseParent = comparison.lookupBaseNode((KNode) newParent);
         } else if (newParent instanceof KPort) {
-            baseParent = comparison.lookupBasePort((KPort) newLabel.getParent());
+            baseParent = comparison.lookupBasePort((KPort) newParent);
         } else if (newParent instanceof KEdge) {
-            baseParent = comparison.lookupBaseEdge((KEdge) newLabel.getParent());
+            baseParent = comparison.lookupBaseEdge((KEdge) newParent);
         }
         if (baseParent != baseLabel.getParent()) {
             baseLabel.setParent(baseParent);
@@ -297,7 +297,7 @@ public class KGraphMerger {
         updateShapeLayout(baseLabel, newLabel);
         baseLabel.setText(newLabel.getText());
         copyInsets(newLabel.getInsets(), baseLabel.getInsets());
-        comparison.getBaseAdapter().generateIDs(baseLabel, false);
+        comparison.getBaseAdapter().generateIDs(baseLabel);
     }
 
     /**
@@ -347,7 +347,7 @@ public class KGraphMerger {
         updateGraphElement(basePort, newPort);
         updateShapeLayout(basePort, newPort);
         copyInsets(newPort.getInsets(), basePort.getInsets());
-        comparison.getBaseAdapter().generateIDs(basePort, false);
+        comparison.getBaseAdapter().generateIDs(basePort);
         handleLabels(basePort, newPort);
     }
 

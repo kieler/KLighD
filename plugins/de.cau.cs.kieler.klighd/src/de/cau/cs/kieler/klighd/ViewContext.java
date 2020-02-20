@@ -626,6 +626,13 @@ public class ViewContext extends MapPropertyHolder {
     public boolean isZoomToFocus() {
         return !isZoomToFit() && !isZoomToFitContent() && zoomStyle == ZoomStyle.getZoomToFocusStyle();
     }
+    
+    /**
+     * @return whether the zoom style is zoom to stay.
+     */
+    public boolean isZoomToStay() {
+        return zoomStyle == ZoomStyle.ZOOM_TO_STAY;
+    }
 
     /**
      * @param zoomStyle the zoomStyle to set

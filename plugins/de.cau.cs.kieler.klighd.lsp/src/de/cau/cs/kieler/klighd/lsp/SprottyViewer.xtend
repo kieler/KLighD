@@ -15,7 +15,6 @@ package de.cau.cs.kieler.klighd.lsp
 import de.cau.cs.kieler.klighd.IViewerProvider
 import de.cau.cs.kieler.klighd.ViewContext
 import de.cau.cs.kieler.klighd.ZoomStyle
-import de.cau.cs.kieler.klighd.internal.IDiagramOutlinePage
 import de.cau.cs.kieler.klighd.internal.ILayoutRecorder
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties
 import de.cau.cs.kieler.klighd.kgraph.KGraphElement
@@ -24,33 +23,40 @@ import de.cau.cs.kieler.klighd.lsp.utils.SprottyProperties
 import de.cau.cs.kieler.klighd.util.RenderingContextData
 import de.cau.cs.kieler.klighd.viewers.AbstractViewer
 import de.cau.cs.kieler.klighd.viewers.ContextViewer
+import java.util.List
+import org.eclipse.elk.core.math.KVector
+import org.eclipse.emf.ecore.EObject
 import org.eclipse.swt.widgets.Composite
+import org.eclipse.xtend.lib.annotations.Accessors
+
+import static com.google.common.collect.Iterables.filter
+import static de.cau.cs.kieler.klighd.util.KlighdPredicates.isSelectable
 
 /**
- * A KlighD viewer to represent external sprotty diagram contexts.
+ * A KlighD viewer to represent external Sprotty diagram contexts.
  * Warning: Unimplemented methods of this viewer currently just output that they got called, but do not do anything.
  * Needs to be completed first.
  * 
  * @author nre
  */
-class SprottyViewer extends AbstractViewer implements ILayoutRecorder,
-    IDiagramOutlinePage.Provider { // TODO: Can this interface help with generating the diagram only once the LS is ready?
+class SprottyViewer extends AbstractViewer implements ILayoutRecorder {
     
     /** The identifier of this viewer type as specified in the extension. */
     public static final String ID = "de.cau.cs.kieler.klighd.lsp.SprottyViewer"
     
-    private ViewContext viewContext
+    ViewContext viewContext
     
-    private KNode model
+    @Accessors(PUBLIC_SETTER)
+    KGraphDiagramServer diagramServer
     
-    public static class Provider implements IViewerProvider {
+    static class Provider implements IViewerProvider {
         override createViewer(ContextViewer parentViewer, Composite parent) {
             return new SprottyViewer()
         }
     }
     
     override setModel(KNode model, boolean sync) {
-        this.model = model
+        // do nothing.
     }
     
     override centerOn(KGraphElement diagramElement, int duration) {
@@ -183,14 +189,20 @@ class SprottyViewer extends AbstractViewer implements ILayoutRecorder,
         // do nothing.
     }
     
-    override stopRecording(ZoomStyle zoomStyle, KNode focusNode, int animationTime) {
+    override stopRecording(ZoomStyle zoomStyle, KGraphElement focusElement, int animationTime) {
 //        println("stop recording called")
         // do nothing.
     }
     
-    override getDiagramOutlinePage() {
-//        println("get diagramOutlinePage called")
-        return null
+    override stopRecording(ZoomStyle zoomStyle, KGraphElement focusElement, KVector previousPosition,
+        int animationTime) {
+//        println("stop recording called")
+        // do nothing.
+    }
+    
+    override resetSelectionToDiagramElements(Iterable<? extends EObject> diagramElements) {
+        val List<EObject> toBeSelected = newArrayList(filter(diagramElements, isSelectable))
+        this.diagramServer.selectElements(toBeSelected)
     }
     
 }

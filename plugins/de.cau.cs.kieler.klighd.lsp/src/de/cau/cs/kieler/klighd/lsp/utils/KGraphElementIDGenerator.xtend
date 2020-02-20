@@ -3,7 +3,7 @@
  *
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright 2018 by
+ * Copyright 2018-2019 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -16,17 +16,16 @@ import de.cau.cs.kieler.klighd.kgraph.KEdge
 import de.cau.cs.kieler.klighd.kgraph.KGraphElement
 import de.cau.cs.kieler.klighd.kgraph.KIdentifier
 import de.cau.cs.kieler.klighd.kgraph.KLabel
-import de.cau.cs.kieler.klighd.kgraph.KLabeledGraphElement
 import de.cau.cs.kieler.klighd.kgraph.KNode
 import de.cau.cs.kieler.klighd.kgraph.KPort
 import de.cau.cs.kieler.klighd.krendering.KContainerRendering
 import de.cau.cs.kieler.klighd.krendering.KPolyline
 import de.cau.cs.kieler.klighd.krendering.KRendering
+import de.cau.cs.kieler.klighd.krendering.KRenderingRef
 import de.cau.cs.kieler.klighd.krendering.KStyleHolder
 import java.util.HashMap
 import java.util.Map
 import org.eclipse.sprotty.SModelElement
-import de.cau.cs.kieler.klighd.krendering.KRenderingRef
 
 /**
  * Class for generating unique IDs for any {@link KGraphElement}. Use a single instance of this and call getId() for all
@@ -35,16 +34,16 @@ import de.cau.cs.kieler.klighd.krendering.KRenderingRef
  * 
  * @author nre
  */
-public class KGraphElementIDGenerator {
+class KGraphElementIDGenerator {
     /**
      * Internal map to remember the ID for all {@link KGraphElement}s for that IDs already have been generated.
      */
-    private Map<KGraphElement, String> elementToIdMap
+    Map<KGraphElement, String> elementToIdMap
     
     /**
      * Internal map to remember the {@link KGraphElement} for all IDs for that IDs already have been generated.
      */
-    private Map<String, KGraphElement> idToElementMap
+    Map<String, KGraphElement> idToElementMap
     
     /**
      * The character used to separate levels of hierarchy in the ID of {@link KGraphElement}s or unnamed elements.
@@ -75,7 +74,7 @@ public class KGraphElementIDGenerator {
     /**
      * generates a unique ID for any {@link KGraphElement}. Returns the same ID for the element if called a second time.
      */
-    public def String getId(KGraphElement element) {
+    def String getId(KGraphElement element) {
         var String id = null
         
         // if the ID was already calculated, use that
@@ -143,7 +142,7 @@ public class KGraphElementIDGenerator {
      * @param id The unique ID of one SModelElement in the map.
      * @return The KGraphElement that is the key in the given map with a matching ID in its value.
      */
-    public static def findElementById(Map<KGraphElement, SModelElement> k2sMap, String id) {
+    static def findElementById(Map<KGraphElement, SModelElement> k2sMap, String id) {
         // TODO: maybe store the map also the other way, so this can be done more efficiently.
         // Or have a map from IDs to their originating KGraphElements.
         val filteredMap = k2sMap.filter [ kge, sme |
@@ -159,7 +158,7 @@ public class KGraphElementIDGenerator {
  * 
  * @author nre
  */
-public class KRenderingIDGenerator {
+class KRenderingIDGenerator {
     /**
      * The character used to separate levels of hierarchy in the ID of {@link KRendering}s.
      */
@@ -178,7 +177,7 @@ public class KRenderingIDGenerator {
      * and writes it in their ID fields.
      * If the given rendering already has an id, it has to bee unique and not contain the character '$'.
      */
-    public static def void generateIdsRecursive(KStyleHolder rendering) {
+    static def void generateIdsRecursive(KStyleHolder rendering) {
         if (rendering !== null) {
             if (rendering.id === null) {
                 rendering.id = "" + RENDERING_SEPERATOR + rendering.hashCode
@@ -230,7 +229,7 @@ public class KRenderingIDGenerator {
      * @param id The ID to look for.
      * @return The {@link KRendering} with the given ID.
      */
-    public static def findRenderingById(KGraphElement element, String id) {
+    static def findRenderingById(KGraphElement element, String id) {
         val ids = id.split("\\" + KRenderingIDGenerator.ID_SEPARATOR)
         // Every rendering ID is built hierarchically, separated by the RENDERING_SEPERATOR symbol.
         

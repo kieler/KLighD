@@ -19,6 +19,7 @@ import org.eclipse.sprotty.xtext.DefaultDiagramModule
 import org.eclipse.sprotty.xtext.IDiagramGenerator
 import org.eclipse.sprotty.xtext.ls.DiagramUpdater
 import org.eclipse.sprotty.xtext.tracing.TextRegionProvider
+import org.eclipse.xtext.ide.server.WorkspaceManager
 import org.eclipse.xtext.naming.IQualifiedNameProvider
 import org.eclipse.xtext.naming.SimpleNameProvider
 
@@ -30,13 +31,13 @@ import org.eclipse.xtext.naming.SimpleNameProvider
  * @see <a href="https://github.com/theia-ide/yang-lsp/blob/master/yang-lsp/io.typefox.yang.diagram/src/main/java/io/typefox/yang/diagram/YangDiagramModule.xtend">
  *      YangDiagramModule</a>
  */
-public class KGraphDiagramModule extends DefaultDiagramModule {
+class KGraphDiagramModule extends DefaultDiagramModule {
 	
 	override bindILayoutEngine() {
 		KGraphLayoutEngine
 	}
 	
-	public def Class<? extends IDiagramGenerator> bindIDiagramGenerator() {
+	def Class<? extends IDiagramGenerator> bindIDiagramGenerator() {
 		KGraphDiagramGenerator
 	}
 	
@@ -44,7 +45,7 @@ public class KGraphDiagramModule extends DefaultDiagramModule {
         KGraphDiagramServer
     }
     
-	public def Class<? extends TextRegionProvider> bindTraceRegionProvider() {
+	def Class<? extends TextRegionProvider> bindTraceRegionProvider() {
         SimpleTraceRegionProvider
     }
     
@@ -52,7 +53,7 @@ public class KGraphDiagramModule extends DefaultDiagramModule {
         KGraphDiagramServerFactory
     }
     
-    public def Class<? extends DiagramUpdater> bindDiagramUpdater() {
+    def Class<? extends DiagramUpdater> bindDiagramUpdater() {
         KGraphDiagramUpdater
     }
     
@@ -60,7 +61,11 @@ public class KGraphDiagramModule extends DefaultDiagramModule {
         KeithDiagramSelectionListener
     }
     
-    public def Class<? extends IQualifiedNameProvider> bindIQualifiedNameProvider() {
+    def Class<? extends IQualifiedNameProvider> bindIQualifiedNameProvider() {
         SimpleNameProvider
+    }
+    
+    def Class<? extends WorkspaceManager> bindWorkspaceManger() {
+        KeithWorkspaceManager
     }
 }

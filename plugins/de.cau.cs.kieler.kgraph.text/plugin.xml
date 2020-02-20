@@ -7,17 +7,5 @@
 			class = "de.cau.cs.kieler.kgraph.text.grandom.GrandomPackage"
 			genModel = "model/generated/GRandom.genmodel" />
 	</extension>
-	
-	<extension
-          point="de.cau.cs.kieler.formats.graphFormats">
-            
-       <handler
-             class="de.cau.cs.kieler.kgraph.text.KGraphTextHandler"
-             description="Xtext-based notation for the KGraph format."
-             extensions="kgt"
-             id="de.cau.cs.kieler.kgraph.text"
-             name="KGraph Text">
-       </handler>
-    </extension>
     
 </plugin>
