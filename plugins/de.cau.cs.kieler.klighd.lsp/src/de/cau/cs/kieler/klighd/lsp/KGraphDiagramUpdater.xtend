@@ -19,6 +19,7 @@ import de.cau.cs.kieler.klighd.KlighdDataManager
 import de.cau.cs.kieler.klighd.SynthesisOption
 import de.cau.cs.kieler.klighd.ViewContext
 import de.cau.cs.kieler.klighd.kgraph.KNode
+import de.cau.cs.kieler.klighd.lsp.interactive.InteractiveLayout
 import de.cau.cs.kieler.klighd.lsp.model.SKGraph
 import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties
 import java.util.HashSet
@@ -27,13 +28,12 @@ import java.util.Map
 import java.util.concurrent.CompletableFuture
 import org.eclipse.emf.common.util.URI
 import org.eclipse.sprotty.IDiagramServer
+import org.eclipse.sprotty.ILayoutEngine
 import org.eclipse.sprotty.SGraph
 import org.eclipse.sprotty.xtext.ILanguageAwareDiagramServer
 import org.eclipse.sprotty.xtext.ls.DiagramLanguageServer
 import org.eclipse.sprotty.xtext.ls.DiagramUpdater
 import org.eclipse.xtext.util.CancelIndicator
-import org.eclipse.sprotty.ILayoutEngine
-import de.cau.cs.kieler.klighd.lsp.constraints.InteractiveLayout
 
 /**
  * Connection between {@link IDiagramServer} and the {@link DiagramLanguageServer}. With this singleton diagram updater,
@@ -65,7 +65,7 @@ class KGraphDiagramUpdater extends DiagramUpdater {
     ILayoutEngine layoutEngine
 
     @Inject
-    InteractiveLayout inLa
+    InteractiveLayout interactiveLayout
 
     override initialize(DiagramLanguageServer languageServer) {
         this.languageServer = languageServer
@@ -225,9 +225,9 @@ class KGraphDiagramUpdater extends DiagramUpdater {
      * @param cancelChecker The {@link CancelIndicator} used to tell the diagram translation to stop.
      */
     synchronized def SGraph createModel(ViewContext viewContext, String id, CancelIndicator cancelChecker) {
-        // own code
+        // Do interactive layout
         if (layoutEngine instanceof KGraphLayoutEngine) {
-            inLa.calcLayout(id, layoutEngine as KGraphLayoutEngine)
+            interactiveLayout.calcLayout(id, layoutEngine as KGraphLayoutEngine)
         }
 
         // Generate the SGraph model from the KGraph model and store every later relevant part in the

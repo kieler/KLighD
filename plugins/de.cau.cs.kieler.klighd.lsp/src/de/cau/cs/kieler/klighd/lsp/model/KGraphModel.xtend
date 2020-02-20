@@ -12,18 +12,21 @@
  */
 package de.cau.cs.kieler.klighd.lsp.model
 
+import de.cau.cs.kieler.klighd.kgraph.KEdge
 import de.cau.cs.kieler.klighd.kgraph.KGraphData
+import de.cau.cs.kieler.klighd.kgraph.KLabel
+import de.cau.cs.kieler.klighd.kgraph.KNode
+import de.cau.cs.kieler.klighd.kgraph.KPort
+import java.util.HashMap
 import java.util.List
 import org.eclipse.elk.core.math.KVectorChain
+import org.eclipse.elk.core.options.Direction
 import org.eclipse.sprotty.SEdge
 import org.eclipse.sprotty.SGraph
 import org.eclipse.sprotty.SLabel
 import org.eclipse.sprotty.SNode
 import org.eclipse.sprotty.SPort
 import org.eclipse.xtend.lib.annotations.Accessors
-import org.eclipse.elk.graph.properties.IProperty
-import java.util.Map
-import org.eclipse.elk.core.options.Direction
 
 /**
  * Sprotty node with additional fields needed by the translation from a
@@ -32,6 +35,7 @@ import org.eclipse.elk.core.options.Direction
 @Accessors
 public class SKNode extends SNode {
     private List<KGraphData> data
+    private HashMap<String, Object> properties = newHashMap
     private int layerId
     private int posId
     private int layerCons

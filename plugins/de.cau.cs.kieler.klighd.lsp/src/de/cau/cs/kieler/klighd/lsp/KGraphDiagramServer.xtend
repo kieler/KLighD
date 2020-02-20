@@ -19,10 +19,13 @@ import de.cau.cs.kieler.klighd.IAction.ActionContext
 import de.cau.cs.kieler.klighd.KlighdDataManager
 import de.cau.cs.kieler.klighd.kgraph.KNode
 import de.cau.cs.kieler.klighd.krendering.KText
+import de.cau.cs.kieler.klighd.lsp.interactive.layered.ConstraintActionHandler
+import de.cau.cs.kieler.klighd.lsp.interactive.rectpack.RectPackActionHandler
 import de.cau.cs.kieler.klighd.lsp.model.CheckImagesAction
 import de.cau.cs.kieler.klighd.lsp.model.CheckedImagesAction
 import de.cau.cs.kieler.klighd.lsp.model.ComputedTextBoundsAction
 import de.cau.cs.kieler.klighd.lsp.model.PerformActionAction
+import de.cau.cs.kieler.klighd.lsp.model.RefreshLayoutAction
 import de.cau.cs.kieler.klighd.lsp.model.RequestTextBoundsAction
 import de.cau.cs.kieler.klighd.lsp.model.SKGraph
 import de.cau.cs.kieler.klighd.lsp.model.SetSynthesisAction
@@ -42,8 +45,6 @@ import org.eclipse.sprotty.SModelRoot
 import org.eclipse.sprotty.SetModelAction
 import org.eclipse.sprotty.UpdateModelAction
 import org.eclipse.sprotty.xtext.LanguageAwareDiagramServer
-import de.cau.cs.kieler.klighd.lsp.constraints.ConstraintActionHandler
-import de.cau.cs.kieler.klighd.lsp.constraints.RefreshLayoutAction
 
 /**
  * Diagram server extension adding functionality to special actions needed for handling KGraphs.
@@ -55,6 +56,9 @@ public class KGraphDiagramServer extends LanguageAwareDiagramServer {
     
     @Inject
     protected ConstraintActionHandler constraintActionHandler
+    
+    @Inject
+    protected RectPackActionHandler rectPackActionHandler
     
     @Inject 
     protected KGraphDiagramState diagramState
@@ -147,6 +151,8 @@ public class KGraphDiagramServer extends LanguageAwareDiagramServer {
                 handle(action as RefreshLayoutAction)
             } else if (constraintActionHandler.canHandleAction(action.getKind)) {
                 constraintActionHandler.handle(action, clientId, this)
+            } else if (rectPackActionHandler.canHandleAction(action.getKind)) {
+                rectPackActionHandler.handle(action, clientId, this)
             } else {
                 super.accept(message)
             }

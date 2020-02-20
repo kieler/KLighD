@@ -194,3 +194,21 @@ public class PerformActionAction implements Action {
         initializer.accept(this)
     }
 }
+
+/**
+ * Refreshes the layout.
+ * 
+ * @author sdo
+ */
+@Accessors
+@EqualsHashCode
+@ToString(skipNulls = true)
+public class RefreshLayoutAction implements Action {
+    public static val KIND = 'refreshLayout'
+    String kind = KIND
+    
+    new() {}
+    new(Consumer<RefreshLayoutAction> initializer) {
+        initializer.accept(this)
+    }
+}

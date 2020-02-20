@@ -10,35 +10,33 @@
  * 
  * This code is provided under the terms of the Eclipse Public License (EPL).
  */
-package de.cau.cs.kieler.klighd.lsp.constraints
+package de.cau.cs.kieler.klighd.lsp.interactive.layered
 
 import com.google.inject.Inject
-import de.cau.cs.kieler.klighd.lsp.IActionHandler
+import de.cau.cs.kieler.klighd.lsp.AbstractActionHandler
+import de.cau.cs.kieler.klighd.lsp.KGraphDiagramServer
 import org.eclipse.sprotty.Action
 import org.eclipse.sprotty.xtext.LanguageAwareDiagramServer
-import de.cau.cs.kieler.klighd.lsp.KGraphDiagramServer
 
 /**
  * @author sdo
  *
  */
-class ConstraintActionHandler implements IActionHandler {
+class ConstraintActionHandler extends AbstractActionHandler {
     
     @Inject
     ConstraintsLanguageServerExtension constraintLS
     
-    /**
-     * TODO find a more dynamic way to check for this
-     */
-    override canHandleAction(String kind) {
-        return kind === "setStaticConstraint" ||
-            kind === "deleteConstraint" ||
-            kind === "setLayerConstraint" ||
-            kind === "setPositionConstraint" ||
-            kind === "deleteStaticConstraint" ||
-            kind === "deletePositionConstraint" ||
-            kind === "deleteLayerConstraint"
-            
+    
+    new() {
+        this.supportedMessages = newHashMap(
+            SetStaticConstraintAction.KIND -> SetStaticConstraintAction,
+            SetPositionConstraintAction.KIND -> SetPositionConstraintAction,
+            SetLayerConstraintAction.KIND -> SetLayerConstraintAction,
+            DeleteStaticConstraintAction.KIND -> DeleteStaticConstraintAction,
+            DeletePositionConstraintAction.KIND -> DeletePositionConstraintAction,
+            DeleteLayerConstraintAction.KIND -> DeleteLayerConstraintAction
+        )
     }
     
     override handle(Action action, String clientId, LanguageAwareDiagramServer server) {

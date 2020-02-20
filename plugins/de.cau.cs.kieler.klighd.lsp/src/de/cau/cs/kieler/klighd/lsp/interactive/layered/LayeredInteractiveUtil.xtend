@@ -1,24 +1,19 @@
 /*
  * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
- * 
+ *
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright 2019 by
+ * Copyright 2020 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
  * 
  * This code is provided under the terms of the Eclipse Public License (EPL).
  */
-package de.cau.cs.kieler.klighd.lsp.constraints
+package de.cau.cs.kieler.klighd.lsp.interactive.layered
 
-import com.google.inject.Inject
-import com.google.inject.Singleton
-import de.cau.cs.kieler.klighd.ViewContext
 import de.cau.cs.kieler.klighd.kgraph.KEdge
 import de.cau.cs.kieler.klighd.kgraph.KNode
-import de.cau.cs.kieler.klighd.lsp.KGraphDiagramState
-import de.cau.cs.kieler.klighd.lsp.KGraphLayoutEngine
 import java.util.ArrayList
 import java.util.List
 import org.eclipse.elk.alg.layered.options.CrossingMinimizationStrategy
@@ -26,57 +21,40 @@ import org.eclipse.elk.alg.layered.options.CycleBreakingStrategy
 import org.eclipse.elk.alg.layered.options.LayeredOptions
 import org.eclipse.elk.alg.layered.options.LayeringStrategy
 import org.eclipse.elk.core.math.KVector
-import org.eclipse.emf.common.util.EList
 import org.eclipse.elk.core.options.Direction
+import org.eclipse.emf.common.util.EList
+import de.cau.cs.kieler.klighd.lsp.interactive.InteractiveLayout
 
 /**
- * @author jet, cos
- * 
+ * @author sdo
+ *
  */
-@Singleton
-class InteractiveLayout {
-
-    @Inject
-    private KGraphDiagramState diagramState
+class LayeredInteractiveUtil {
 
     /**
-     * Calculates the layout for graphs that contain constraints.
+     * Sets the coordinates of the nodes in the graph, which root is the given node. 
      * 
-     * @param id The identifier used in the SGraph model generation and that is used to store diagram generation
-     * relevant data in the {@link KGraphDiagramState}.
-     * @param layoutE The KGraphLayoutEngine
+     * @param root Root of the graph
      */
-    public def calcLayout(String id, KGraphLayoutEngine layoutE) {
-        var ViewContext viewContext = null
-        synchronized (diagramState) {
-            viewContext = diagramState.getKGraphContext(id)
+    public static def void setCoordinatesDepthFirst(KNode root) {
+        for (n : root.children) {
+            if (!n.children.empty) {
+                InteractiveLayout.setRequiredInteractiveOptions(n)
+            }
         }
-
-        val root = viewContext.viewModel
-        if (root.getProperty(LayeredOptions.INTERACTIVE_LAYOUT)) {
-
-            // initial layout
-            layoutE.onlyLayoutOnKGraph(id)
-            root.setProperty(LayeredOptions.SEPARATE_CONNECTED_COMPONENTS, false)
-            setStandardStrats(root)
-
-            prepareParentsForFirstLayout(root)
-            // set coordinates
-            setCoordinatesDepthFirst(root)
-            // activate interactive strategies
+        if (!root.children.empty && root.getProperty(LayeredOptions.INTERACTIVE_LAYOUT)) {
+            setCoordinates(root)
             setInteractiveStrategies(root)
-
-            layoutE.onlyLayoutOnKGraph(id)
-
         }
-    }
 
+    }
+    
     /**
      * Sets the coordinates of the nodes in the graph {@code root} according to the set constraints.
      * 
      * @param root The root of the graph that should be layouted.
      */
-    private def setCoordinates(KNode root) {
+    private static def setCoordinates(KNode root) {
         var layers = calcLayerNodes(root.children)
         val direction = root.getProperty(LayeredOptions.DIRECTION)
         setCoordinateInLayoutDirection(layers, direction)
@@ -85,6 +63,7 @@ class InteractiveLayout {
                 setCoordinatesOrthogonalToLayoutDirection(layer, direction)
             }
         }
+        return
     }
 
     /**
@@ -92,7 +71,7 @@ class InteractiveLayout {
      * 
      *  @param nodes The nodes of the graph for which the layers should be calculated.
      */
-    private def calcLayerNodes(EList<KNode> nodes) {
+    private static def calcLayerNodes(EList<KNode> nodes) {
         var allNodes = newArrayList()
         var nodesWithLayerConstraint = newArrayList()
         // copy all nodes in another list
@@ -119,7 +98,7 @@ class InteractiveLayout {
      * @param propNs Nodes with set layer constraint that should be added to the layers.
      * @param layerNodes List that contains the layers with their corresponding nodes.
      */
-    private def assignLayersToNodesWithProperty(ArrayList<KNode> nodesWithLayerConstraint, ArrayList<ArrayList<KNode>> layering) {
+    private static def assignLayersToNodesWithProperty(ArrayList<KNode> nodesWithLayerConstraint, ArrayList<ArrayList<KNode>> layering) {
         // sorting based on layer the node should be in
         nodesWithLayerConstraint.sort(
             [ a, b |
@@ -158,7 +137,7 @@ class InteractiveLayout {
      * @param layerNodes All existing layers with the containing nodes.
      * @param incoming Determines if incoming or outgoing edges should be considered. True: incoming edges.
      */
-    private def void shiftOtherNodes(KNode movedNode, int layer, ArrayList<ArrayList<KNode>> layerNodes,
+    private static def void shiftOtherNodes(KNode movedNode, int layer, ArrayList<ArrayList<KNode>> layerNodes,
         boolean incoming) {
         var nodesOfLayer = layerNodes.get(layer)
         // get edges
@@ -201,7 +180,7 @@ class InteractiveLayout {
      * 
      * @param nodes The nodes of the graph which layers should be calculated.
      */
-    private def initialLayers(ArrayList<KNode> nodes) {
+    private static def initialLayers(ArrayList<KNode> nodes) {
         // sorting based on layer ID position
         nodes.sort([ a, b |
             a.getProperty(LayeredOptions.LAYERING_LAYER_I_D) - b.getProperty(LayeredOptions.LAYERING_LAYER_I_D)
@@ -215,7 +194,9 @@ class InteractiveLayout {
             var layer = node.getProperty(LayeredOptions.LAYERING_LAYER_I_D)
             if (layer > currentLayer) {
                 // node is in a new layer
-                layerNodes.add(nodesOfLayer)
+                if (!nodesOfLayer.isEmpty) {
+                    layerNodes.add(nodesOfLayer)
+                }
                 nodesOfLayer = newArrayList()
                 currentLayer = layer
             }
@@ -229,95 +210,64 @@ class InteractiveLayout {
             // add the last layer
             layerNodes.add(nodesOfLayer)
         }
-        // the first node is added to the second layer
-        // thats why the first layer must be removed
-        layerNodes.remove(0)
         return layerNodes
     }
 
     /**
      * Sets the x coordinates of the nodes in {@code layers} according to their layer.
+     * TODO remove magic constants
+     * FIXME The problem is that the height and width of a node are determined by the height and width before the layout with constraints.
+     *      They are therefore potentially wrong
      *  
-     * @param layers The layers containing the associated nodes.
+     * @param layers The layers containing the associated nodes, already sorted regarding layers
      */
-    private def setCoordinateInLayoutDirection(ArrayList<ArrayList<KNode>> layers, Direction direction) {
+    private static def setCoordinateInLayoutDirection(ArrayList<ArrayList<KNode>> layers, Direction direction) {
         var float position = 0
         var float nextPosition = 0
-        // nodes in the same layer get the same x/y coordinate
+        // Assign x (RIGHT, LEFT)/y (UP, DOWN) coordinate such that all nodes get a pseudo position that assigns them to 
+        // the correct layer when using interactive mode
         for (nodesOfLayer : layers) {
             for (node : nodesOfLayer) {
                 switch (direction) {
                     case UNDEFINED, case RIGHT: {
-                        node.xpos = position
-                        if (position + node.width >= nextPosition) {
-                            nextPosition = position + node.width
+                        node.xpos = position;
+                        if (position + node.width / 2 >= nextPosition) {
+                            nextPosition = node.xpos + node.width + 100000
                         }
                     }
                     case LEFT:  {
                         node.xpos = position
-                        if (position <= nextPosition) {
-                            nextPosition = position - node.width
+                        if (node.xpos <= nextPosition) {
+                            nextPosition = node.xpos - 100000
                         }
                     }                    
                     case DOWN: {
-                        node.ypos = position
+                        node.ypos = position;
                         if (position + node.height >= nextPosition) {
-                            nextPosition = position + node.height
+                            nextPosition = node.ypos + node.height + 100000
                         }
                     }
                     case UP: {
                         node.ypos = position
-                        if (position <= nextPosition) {
-                            nextPosition = position - node.height
+                        if (node.ypos <= nextPosition) {
+                            nextPosition = node.ypos - 100000
                         }
                     }
                 }
             }
-            // nodes in different layer should not overlap horizontally 
-            if (direction.equals(Direction.UNDEFINED) || direction.equals(Direction.RIGHT) || direction.equals(Direction.DOWN)) {
-                position = nextPosition + 1
-            } else {
-                position = nextPosition - 1
-            }
+            position = nextPosition
                
         }
-
-        // adjust the width of the parent of the nodes in the layers
-        if (!layers.empty && !layers.get(0).empty) {
-            var node = layers.get(0).get(0)
-            var padding = node.getProperty(LayeredOptions.PADDING)
-            switch (direction) {
-                case UNDEFINED, case RIGHT: {
-                    node.parent.width = (padding.left + padding.right + position - node.xpos +
-                    node.getProperty(LayeredOptions.SPACING_NODE_NODE_BETWEEN_LAYERS) * (layers.length - 1)
-                            ) as float
-                }
-                case LEFT:  {
-                    node.parent.width = (padding.left + padding.right + node.xpos + node.width - position +
-                    node.getProperty(LayeredOptions.SPACING_NODE_NODE_BETWEEN_LAYERS) * (layers.length - 1)
-                            ) as float
-                }                    
-                case DOWN: {
-                    node.parent.width = (padding.left + padding.right + position - node.ypos +
-                    node.getProperty(LayeredOptions.SPACING_NODE_NODE_BETWEEN_LAYERS) * (layers.length - 1)
-                            ) as float
-                }
-                case UP: {
-                    node.parent.width = (padding.left + padding.right + node.ypos + node.height - position +
-                    node.getProperty(LayeredOptions.SPACING_NODE_NODE_BETWEEN_LAYERS) * (layers.length - 1)
-                            ) as float
-                }
-            }
-        }
+        return
     }
 
     /**
      * Sets the positions of the nodes in {@code nodesOfLayer}.
+     * TODO remove magic constants
      * 
      * @param nodesOfLayer The list containing nodes that are in the same layer. 
      */
-    private def setCoordinatesOrthogonalToLayoutDirection(List<KNode> nodesOfLayer, Direction direction) {
-
+    private static def setCoordinatesOrthogonalToLayoutDirection(List<KNode> nodesOfLayer, Direction direction) {
         // separate node with and without position constraint
         val List<KNode> nodesWithPositionConstraint = newArrayList()
         val List<KNode> nodes = newArrayList()
@@ -342,21 +292,32 @@ class InteractiveLayout {
         }
 
         // set the y positions according to the order of the nodes
-        var yPos = nodes.get(0).ypos
-        for (node : nodes) {
-            node.setProperty(LayeredOptions.POSITION, new KVector(node.xpos, yPos))
-            yPos = yPos + node.height + 1
+        switch (direction) {
+            case UNDEFINED, case RIGHT, case LEFT: {
+                var yPos = nodes.get(0).ypos
+                for (node : nodes) {
+                    node.setProperty(LayeredOptions.POSITION, new KVector(node.xpos, yPos))
+                    yPos = yPos + node.height + 100000
+                }
+            }                   
+            case DOWN, case UP: {
+                var xPos = nodes.get(0).xpos
+                for (node : nodes) {
+                    node.setProperty(LayeredOptions.POSITION, new KVector(xPos, node.ypos))
+                    xPos = xPos + node.width + 100000
+                }
+            }
         }
     }
 
     /**
      * Sorts the {@code propNodes} according their position constraint 
-     * and {@code nodes} according to their y coordinate.
+     * and {@code nodes} according to relevant coordinate (y for left, right, x for up, down).
      * 
      * @param propNodes The nodes which position constraint is set
      * @param nodes The nodes without position constraints
      */
-    private def sortNodesInLayer(List<KNode> nodesWithPositionConstraint, List<KNode> nodes, Direction direction) {
+    private static def sortNodesInLayer(List<KNode> nodesWithPositionConstraint, List<KNode> nodes, Direction direction) {
         // sorting based on position the nodes should have
         nodesWithPositionConstraint.sort(
             [ a, b |
@@ -383,48 +344,10 @@ class InteractiveLayout {
      * 
      * @param root The graph which strategies should be set.
      */
-    private def setInteractiveStrategies(KNode root) {
+    private static def setInteractiveStrategies(KNode root) {
         root.setProperty(LayeredOptions.CROSSING_MINIMIZATION_SEMI_INTERACTIVE, true)
         root.setProperty(LayeredOptions.LAYERING_STRATEGY, LayeringStrategy.INTERACTIVE)
         root.setProperty(LayeredOptions.CYCLE_BREAKING_STRATEGY, CycleBreakingStrategy.INTERACTIVE)
-    }
-
-    /**
-     * Sets the interactive_layout property, deactivates separate connected components, and resets strategies
-     * on all children of root, having own children.
-     */
-    private def void prepareParentsForFirstLayout(KNode root) {
-        for (n : root.children) {
-            val nestedNodes = n.children
-            if (!nestedNodes.empty) {
-                n.setProperty(LayeredOptions.INTERACTIVE_LAYOUT, true)
-                n.setProperty(LayeredOptions.SEPARATE_CONNECTED_COMPONENTS, false)
-                setStandardStrats(n)
-                prepareParentsForFirstLayout(n)
-            }
-        }
-    }
-
-    /**
-     * Sets the coordinates of the nodes in the graph, which root is the given node. 
-     * 
-     * @param root Root of the graph
-     */
-    private def void setCoordinatesDepthFirst(KNode root) {
-        var empty = true
-        for (n : root.children) {
-            empty = false
-            val nestedNodes = n.children
-            if (!nestedNodes.empty) {
-                empty = false
-                setInteractiveStrategies(n)
-                setCoordinatesDepthFirst(n)
-            }
-        }
-        if (!empty) {
-            setCoordinates(root)
-        }
-
     }
 
     /**
@@ -433,10 +356,9 @@ class InteractiveLayout {
      * 
      * @param root The graph which strategies should be set.
      */
-    private def setStandardStrats(KNode root) {
+    private static def setStandardStrats(KNode root) {
         root.setProperty(LayeredOptions.CROSSING_MINIMIZATION_STRATEGY, CrossingMinimizationStrategy.LAYER_SWEEP)
         root.setProperty(LayeredOptions.LAYERING_STRATEGY, LayeringStrategy.NETWORK_SIMPLEX)
         root.setProperty(LayeredOptions.CYCLE_BREAKING_STRATEGY, CycleBreakingStrategy.DEPTH_FIRST)
     }
-
 }

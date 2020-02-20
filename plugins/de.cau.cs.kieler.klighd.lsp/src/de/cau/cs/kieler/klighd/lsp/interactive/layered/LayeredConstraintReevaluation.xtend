@@ -10,9 +10,11 @@
  * 
  * This code is provided under the terms of the Eclipse Public License (EPL).
  */
-package de.cau.cs.kieler.klighd.lsp.constraints
+package de.cau.cs.kieler.klighd.lsp.interactive.layered
 
 import de.cau.cs.kieler.klighd.kgraph.KNode
+import de.cau.cs.kieler.klighd.lsp.interactive.ConstraintProperty
+import de.cau.cs.kieler.klighd.lsp.interactive.InteractiveUtil
 import java.util.HashSet
 import java.util.LinkedList
 import java.util.List
@@ -22,7 +24,7 @@ import org.eclipse.elk.alg.layered.options.LayeredOptions
  * @author cos, sdo
  * 
  */
-class Reevaluation {
+class LayeredConstraintReevaluation {
 
     LinkedList<ConstraintProperty> changedNodes = newLinkedList()
     KNode target
@@ -95,7 +97,7 @@ class Reevaluation {
         val layerConsTarget = ConstraintsUtils.getLayerConstraint(target)
         val layerId = target.getProperty(LayeredOptions.LAYERING_LAYER_I_D)
         val origLayer = if (layerConsTarget > layerId) layerConsTarget else layerId
-        val origLayerL = ConstraintsUtils.getNodesOfLayer(origLayer, nodes)
+        val origLayerL = InteractiveUtil.getNodesOfLayer(origLayer, nodes)
 
         if (origLayerL.length == 1) {
             /* If a layer is emptied and disappears from the drawing 
@@ -129,7 +131,7 @@ class Reevaluation {
     def void shiftIfNecessary(KNode insertedNode, int newLayerId, int layerCons, int newPosId, int posCons,
         List<KNode> oldLayerNodes, List<KNode> newLayerNodes, List<KNode> nodes) {
 
-        val adjacentNodes = ConstraintsUtils.getAdjacentNodes(insertedNode)
+        val adjacentNodes = InteractiveUtil.getAdjacentNodes(insertedNode)
 
         var List<KNode> shiftedNodes = newArrayList()
 
@@ -142,7 +144,7 @@ class Reevaluation {
 
                 }
                 // Test whether the shift leads to more shifts in the next layer.
-                val nextNextLayerNodes = ConstraintsUtils.getNodesOfLayer(newLayerId + 1, nodes)
+                val nextNextLayerNodes = InteractiveUtil.getNodesOfLayer(newLayerId + 1, nodes)
                 val nPosId = n.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_I_D)
                 val nPosCons = ConstraintsUtils.getPosConstraint(n)
 

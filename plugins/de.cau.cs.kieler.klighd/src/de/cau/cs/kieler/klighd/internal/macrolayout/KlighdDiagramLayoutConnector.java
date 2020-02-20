@@ -282,6 +282,19 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
             (-1),
             (-1),
             null);
+    
+    /**
+     * This internal property serves as a vehicle to apply the positionID 
+     * that was set during ELK RectPacking back on the KGraph.
+     * 
+     * It is used for the Intentional Layout in Sprotty Diagrams
+     */
+    private static final IProperty<Integer> CURRENT_POSITION = new Property<Integer>(
+            "org.eclipse.elk.rectpacking.currentPosition",
+            (-1),
+            (-1),
+            null);   
+    
 
     /**
      * Creates a layout node for the node inside the given layout parent node.
@@ -680,13 +693,18 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
                     final KNode node = (KNode) element;
                     
                     //Apply the nodeID and layerId that were set on the LGraph on the ElkGraph
-                    if(layoutNode.hasProperty(LAYERING_LAYER_I_D) 
+                    if (layoutNode.hasProperty(LAYERING_LAYER_I_D) 
                             && layoutNode.hasProperty(CROSSING_MINIMIZATION_POSITION_I_D)) {
                         
                         final int nodeID = layoutNode.getProperty(CROSSING_MINIMIZATION_POSITION_I_D);
                         final int layerID = layoutNode.getProperty(LAYERING_LAYER_I_D);
                         node.setProperty(CROSSING_MINIMIZATION_POSITION_I_D, nodeID);
                         node.setProperty(LAYERING_LAYER_I_D, layerID);
+                    }
+                    
+                    if (layoutNode.hasProperty(CURRENT_POSITION)) {
+                        final int position = layoutNode.getProperty(CURRENT_POSITION);
+                        node.setProperty(CURRENT_POSITION, position);
                     }
                   
                     

@@ -49,6 +49,7 @@ import java.util.List
 import java.util.Map
 import org.apache.log4j.Logger
 import org.eclipse.elk.alg.layered.options.LayeredOptions
+import org.eclipse.elk.alg.packing.rectangles.options.RectPackingOptions
 import org.eclipse.elk.core.options.CoreOptions
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.util.EcoreUtil
@@ -163,8 +164,6 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
      * @param cancelIndicator Indicates, if the action requesting this translation has already been canceled.
      */
     public def SGraph toSGraph(KNode parentNode, String identifier, CancelIndicator cancelIndicator) {
-//        println("Starting SGraph generation!")
-//        val startTime = System.currentTimeMillis
         LOG.info("Generating diagram for input: '" + identifier + "'")
 
         kGraphToSModelElementMap = new HashMap
@@ -185,8 +184,6 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
         // Do post processing.
         postProcess()
 
-//        val endTime = System.currentTimeMillis
-//        println("SGraph generation finished after " + (endTime - startTime) + "ms.")
         return if (cancelIndicator.canceled) 
                null 
            else 
@@ -306,19 +303,24 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
         ].toList
 
         nodeElement.data = node.data.filter[KRenderingLibrary.isAssignableFrom(it.class)].toList
-
-        nodeElement.layerId = node.getProperty(LayeredOptions.LAYERING_LAYER_I_D)
-        nodeElement.posId = node.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_I_D)
-        nodeElement.layerCons = node.getProperty(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT)
-        nodeElement.posCons = node.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT)
-        
+        nodeElement.properties.put("layerId", node.getProperty(LayeredOptions.LAYERING_LAYER_I_D))
+        nodeElement.properties.put("positionId", node.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_I_D))
+        nodeElement.properties.put("layerConstraint", node.getProperty(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT))
+        nodeElement.properties.put("positionConstraint", node.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT))
+        nodeElement.properties.put("interactiveLayout", node.getProperty(CoreOptions.INTERACTIVE_LAYOUT))
+        nodeElement.properties.put("algorithm", node.getProperty(CoreOptions.ALGORITHM))
+        nodeElement.properties.put("desiredPosition", node.getProperty(RectPackingOptions.DESIRED_POSITION))
+        val currentPosition = node.getProperty(RectPackingOptions.CURRENT_POSITION)
+        nodeElement.properties.put("currentPosition", currentPosition)
+        nodeElement.properties.put("aspectRatio", node.getProperty(RectPackingOptions.ASPECT_RATIO))
         findSpecialRenderings(filteredData)
         
         var parent = node
-        while (parent.parent !== null) {
-            parent = parent.parent
+        if (node.parent !== null) {
+            parent = node.parent
         }
-        nodeElement.interactiveLayout = parent.getProperty(LayeredOptions.INTERACTIVE_LAYOUT);
+        // FIXME this is bad
+        // The client expects every node to know what its direction is
         nodeElement.direction = parent.getProperty(LayeredOptions.DIRECTION)
         
         

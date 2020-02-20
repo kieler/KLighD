@@ -14,20 +14,23 @@ package de.cau.cs.kieler.klighd.lsp.gson_utils
 
 import com.google.gson.GsonBuilder
 import de.cau.cs.kieler.klighd.SynthesisOption
-import de.cau.cs.kieler.klighd.lsp.constraints.DeleteLayerConstraintAction
-import de.cau.cs.kieler.klighd.lsp.constraints.DeletePositionConstraintAction
-import de.cau.cs.kieler.klighd.lsp.constraints.DeleteStaticConstraintAction
-import de.cau.cs.kieler.klighd.lsp.constraints.RefreshLayoutAction
-import de.cau.cs.kieler.klighd.lsp.constraints.SetLayerConstraintAction
-import de.cau.cs.kieler.klighd.lsp.constraints.SetPositionConstraintAction
-import de.cau.cs.kieler.klighd.lsp.constraints.SetStaticConstraintAction
+import de.cau.cs.kieler.klighd.lsp.interactive.layered.DeleteLayerConstraintAction
+import de.cau.cs.kieler.klighd.lsp.interactive.layered.DeletePositionConstraintAction
+import de.cau.cs.kieler.klighd.lsp.interactive.layered.DeleteStaticConstraintAction
+import de.cau.cs.kieler.klighd.lsp.interactive.layered.SetLayerConstraintAction
+import de.cau.cs.kieler.klighd.lsp.interactive.layered.SetPositionConstraintAction
+import de.cau.cs.kieler.klighd.lsp.interactive.layered.SetStaticConstraintAction
+import de.cau.cs.kieler.klighd.lsp.interactive.rectpack.RectPackDeletePositionConstraintAction
+import de.cau.cs.kieler.klighd.lsp.interactive.rectpack.RectPackSetPositionConstraintAction
 import de.cau.cs.kieler.klighd.lsp.model.CheckedImagesAction
 import de.cau.cs.kieler.klighd.lsp.model.ComputedTextBoundsAction
 import de.cau.cs.kieler.klighd.lsp.model.PerformActionAction
+import de.cau.cs.kieler.klighd.lsp.model.RefreshLayoutAction
 import de.cau.cs.kieler.klighd.lsp.model.SetSynthesisAction
 import java.awt.geom.Point2D
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.sprotty.server.json.ActionTypeAdapter
+import de.cau.cs.kieler.klighd.lsp.interactive.rectpack.SetAspectRatioAction
 
 /**
  * Static util class to configure needed gson type adapters for KGraph serialization.
@@ -43,13 +46,16 @@ public class KGraphTypeAdapterUtil {
                 addActionKind(ComputedTextBoundsAction.KIND, ComputedTextBoundsAction)
                 addActionKind(PerformActionAction.KIND, PerformActionAction)
                 addActionKind(SetSynthesisAction.KIND, SetSynthesisAction)
+                addActionKind(RefreshLayoutAction.KIND, RefreshLayoutAction)
                 addActionKind(SetStaticConstraintAction.KIND, SetStaticConstraintAction)
                 addActionKind(SetPositionConstraintAction.KIND, SetPositionConstraintAction)
                 addActionKind(SetLayerConstraintAction.KIND, SetLayerConstraintAction)
                 addActionKind(DeleteStaticConstraintAction.KIND, DeleteStaticConstraintAction)
                 addActionKind(DeletePositionConstraintAction.KIND, DeletePositionConstraintAction)
                 addActionKind(DeleteLayerConstraintAction.KIND, DeleteLayerConstraintAction)
-                addActionKind(RefreshLayoutAction.KIND, RefreshLayoutAction)
+                addActionKind(RectPackSetPositionConstraintAction.KIND, RectPackSetPositionConstraintAction)
+                addActionKind(RectPackDeletePositionConstraintAction.KIND, RectPackDeletePositionConstraintAction)
+                addActionKind(SetAspectRatioAction.KIND, SetAspectRatioAction)
             ]
         )
         .registerTypeAdapter(Point2D, new Point2DTypeAdapter)

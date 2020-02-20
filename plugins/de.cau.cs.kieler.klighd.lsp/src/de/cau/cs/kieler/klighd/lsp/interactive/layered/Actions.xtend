@@ -10,7 +10,7 @@
  * 
  * This code is provided under the terms of the Eclipse Public License (EPL).
  */
-package de.cau.cs.kieler.klighd.lsp.constraints
+package de.cau.cs.kieler.klighd.lsp.interactive.layered
 
 import java.util.function.Consumer
 import org.eclipse.sprotty.Action
@@ -134,24 +134,6 @@ public class DeleteLayerConstraintAction implements Action {
     
     new() {}
     new(Consumer<DeleteLayerConstraintAction> initializer) {
-        initializer.accept(this)
-    }
-}
-
-/**
- * Refreshes the layout. This is currently not used and might not be feasible in that context.
- * 
- * @author sdo
- */
-@Accessors
-@EqualsHashCode
-@ToString(skipNulls = true)
-public class RefreshLayoutAction implements Action {
-    public static val KIND = 'refreshLayout'
-    String kind = KIND
-    
-    new() {}
-    new(Consumer<RefreshLayoutAction> initializer) {
         initializer.accept(this)
     }
 }
