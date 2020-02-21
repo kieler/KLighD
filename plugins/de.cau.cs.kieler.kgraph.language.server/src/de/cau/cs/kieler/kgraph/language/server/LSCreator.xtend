@@ -37,6 +37,8 @@ import org.eclipse.xtext.ide.server.LanguageServerImpl
 import org.eclipse.xtext.ide.server.ServerLauncher
 import org.eclipse.xtext.resource.IResourceServiceProvider
 import org.eclipse.xtext.util.Modules2
+import de.cau.cs.kieler.klighd.lsp.interactive.layered.ConstraintsLanguageServerExtension
+import de.cau.cs.kieler.klighd.lsp.interactive.rectpack.RectPackInterativeLanguageServerExtension
 
 /** 
  * Provides methods to create a LS.
@@ -99,8 +101,11 @@ class LSCreator {
             KGraphTypeAdapterUtil.configureGson(gsonBuilder)
         ]
         // Get all LSExtensions to use them as local services
+        
+        var constraintsLSExt = injector.getInstance(ConstraintsLanguageServerExtension)
+        var rectPackLSExt = injector.getInstance(RectPackInterativeLanguageServerExtension)
         var iLanguageServerExtensions = <Object>newArrayList(ls,
-            injector.getInstance(RegistrationLanguageServerExtension))
+            injector.getInstance(RegistrationLanguageServerExtension), constraintsLSExt, rectPackLSExt)
         val launcher = new Builder<LanguageClient>()
                 .setLocalServices(iLanguageServerExtensions)
                 .setRemoteInterface(LanguageClient)
