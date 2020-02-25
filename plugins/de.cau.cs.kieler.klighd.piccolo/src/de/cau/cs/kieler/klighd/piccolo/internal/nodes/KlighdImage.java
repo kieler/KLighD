@@ -26,12 +26,11 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
-import org.eclipse.ui.statushandlers.StatusManager;
 import org.osgi.framework.Bundle;
 
 import com.google.common.collect.Lists;
 
-import de.cau.cs.kieler.klighd.KlighdPlugin;
+import de.cau.cs.kieler.klighd.Klighd;
 import de.cau.cs.kieler.klighd.krendering.KImage;
 import de.cau.cs.kieler.klighd.piccolo.KlighdNode;
 import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;
@@ -260,8 +259,7 @@ public class KlighdImage extends KlighdNode.KlighdFigureNode<KImage> implements 
                 final String msg =
                         "KLighD: Error occurred while loading the image " + path + " in bundle "
                                 + bundleName;
-                StatusManager.getManager().handle(
-                        new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID, msg, e), StatusManager.LOG);
+                Klighd.log(new Status(IStatus.ERROR, Klighd.PLUGIN_ID, msg, e));
             }
         }
     }

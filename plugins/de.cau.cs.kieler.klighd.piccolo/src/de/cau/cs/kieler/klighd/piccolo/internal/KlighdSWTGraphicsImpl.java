@@ -64,7 +64,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 import de.cau.cs.kieler.klighd.KlighdConstants;
-import de.cau.cs.kieler.klighd.KlighdPlugin;
+import de.cau.cs.kieler.klighd.Klighd;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdPaths;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.RGBGradient;
 import de.cau.cs.kieler.klighd.util.KlighdSemanticDiagramData;
@@ -97,7 +97,7 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
 
     // SUPPRESS CHECKSTYLE NEXT 2 MagicNumber
     /** The bit position of {@link GC#DRAW_OFFSET} required for avoiding Eclipse bugs 335769 & 253670.*/
-    private static final int DRAW_OFFSET_BIT = KlighdPlugin.IS_WINDOWS ? 14 : 9;
+    private static final int DRAW_OFFSET_BIT = Klighd.IS_WINDOWS ? 14 : 9;
 
     /** A {@link TextLayout} used to draw styled texts (e.g. those with underline and/or strikeout). */
     protected TextLayout textLayout;

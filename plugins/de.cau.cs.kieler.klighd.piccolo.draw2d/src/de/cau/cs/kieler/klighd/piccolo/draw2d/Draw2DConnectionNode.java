@@ -23,11 +23,11 @@ import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.PolylineConnection;
 import org.eclipse.draw2d.UpdateManager;
 import org.eclipse.draw2d.geometry.PointList;
-import org.eclipse.ui.statushandlers.StatusManager;
 
 import com.google.common.collect.Iterables;
 
-import de.cau.cs.kieler.klighd.KlighdPlugin;
+import de.cau.cs.kieler.klighd.Klighd;
+import de.cau.cs.kieler.klighd.piccolo.KlighdPiccolo;
 import de.cau.cs.kieler.klighd.piccolo.draw2d.Draw2DNode.WrappingUpdateManager;
 import de.cau.cs.kieler.klighd.piccolo.internal.KlighdSWTGraphicsEx;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KCustomConnectionFigureNode;
@@ -124,9 +124,7 @@ public class Draw2DConnectionNode extends KCustomConnectionFigureNode {
         } catch (final Throwable throwable) {
             final String msg = "KLighD: Error occurred while drawing the custom connection figure "
                     + this.figure.getClass().getName();
-            StatusManager.getManager().handle(
-                    new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID, msg, throwable),
-                    StatusManager.LOG);
+            Klighd.log(new Status(IStatus.ERROR, KlighdPiccolo.PLUGIN_ID, msg, throwable));
         }
     }
 }

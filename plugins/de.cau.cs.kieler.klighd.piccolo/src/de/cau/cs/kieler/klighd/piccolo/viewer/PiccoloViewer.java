@@ -30,10 +30,10 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ControlAdapter;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.statushandlers.StatusManager;
 
 import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.IViewerProvider;
+import de.cau.cs.kieler.klighd.Klighd;
 import de.cau.cs.kieler.klighd.ViewChangeType;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.ZoomStyle;
@@ -43,7 +43,7 @@ import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
 import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
 import de.cau.cs.kieler.klighd.kgraph.KNode;
 import de.cau.cs.kieler.klighd.kgraph.util.KGraphUtil;
-import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;
+import de.cau.cs.kieler.klighd.piccolo.KlighdPiccolo;
 import de.cau.cs.kieler.klighd.piccolo.internal.KlighdCanvas;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.DiagramController;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdActionEventHandler;
@@ -441,8 +441,8 @@ public class PiccoloViewer extends AbstractViewer implements ILayoutRecorder,
     public void reveal(final KGraphElement diagramElement, final int duration) {
         final PNode node = getRepresentation(diagramElement);
         if (node == null) {
-            StatusManager.getManager().handle(
-                    new Status(IStatus.WARNING, KlighdPiccoloPlugin.PLUGIN_ID, new String(
+            Klighd.handle(
+                    new Status(IStatus.WARNING, KlighdPiccolo.PLUGIN_ID, new String(
                             NO_DIAGRAM_ELEMENT_REPRESENTATION_ERROR_MSG).replace("XX",
                             diagramElement.toString())));
         } else {
@@ -456,8 +456,8 @@ public class PiccoloViewer extends AbstractViewer implements ILayoutRecorder,
                 camera.animateViewToPanToBounds(destBounds, duration);
 
             } else {
-                StatusManager.getManager().handle(
-                        new Status(IStatus.WARNING, KlighdPiccoloPlugin.PLUGIN_ID, new String(
+                Klighd.handle(
+                        new Status(IStatus.WARNING, KlighdPiccolo.PLUGIN_ID, new String(
                                 NOT_IN_CURRENT_CLIP_REVEAL_ERROR_MSG).replace("XX",
                                 diagramElement.toString())));
             }
@@ -473,8 +473,8 @@ public class PiccoloViewer extends AbstractViewer implements ILayoutRecorder,
     public void centerOn(final KGraphElement diagramElement, final int duration) {
         final PNode node = getRepresentation(diagramElement);
         if (node == null) {
-            StatusManager.getManager().handle(
-                    new Status(IStatus.WARNING, KlighdPiccoloPlugin.PLUGIN_ID, new String(
+            Klighd.handle(
+                    new Status(IStatus.WARNING, KlighdPiccolo.PLUGIN_ID, new String(
                             NO_DIAGRAM_ELEMENT_REPRESENTATION_ERROR_MSG).replace("XX",
                             diagramElement.toString())));
         } else {
@@ -488,10 +488,10 @@ public class PiccoloViewer extends AbstractViewer implements ILayoutRecorder,
                 camera.animateViewToCenterBounds(destBounds, false, duration);
 
             } else {
-                StatusManager.getManager().handle(
-                        new Status(IStatus.WARNING, KlighdPiccoloPlugin.PLUGIN_ID, new String(
-                                NOT_IN_CURRENT_CLIP_CENTER_ON_ERROR_MSG).replace("XX",
-                                diagramElement.toString())));
+                Klighd.handle(
+                        new Status(IStatus.WARNING, KlighdPiccolo.PLUGIN_ID,
+                            NOT_IN_CURRENT_CLIP_CENTER_ON_ERROR_MSG.replace("XX",
+                                    diagramElement.toString())));
             }
         }
     }
@@ -506,9 +506,9 @@ public class PiccoloViewer extends AbstractViewer implements ILayoutRecorder,
     public void panToTopLeftCorner(final KNode diagramElement, final int duration) {
         final PNode node = getRepresentation(diagramElement);
         if (node == null) {
-            StatusManager.getManager().handle(
-                    new Status(IStatus.WARNING, KlighdPiccoloPlugin.PLUGIN_ID, new String(
-                            NO_DIAGRAM_ELEMENT_REPRESENTATION_ERROR_MSG).replace("XX",
+            Klighd.handle(
+                    new Status(IStatus.WARNING, KlighdPiccolo.PLUGIN_ID,
+                            NO_DIAGRAM_ELEMENT_REPRESENTATION_ERROR_MSG.replace("XX",
                             diagramElement.toString())));
         } else {
             final KlighdMainCamera camera = canvas.getCamera();
@@ -527,9 +527,9 @@ public class PiccoloViewer extends AbstractViewer implements ILayoutRecorder,
                 // ... and trigger the change
                 camera.animateViewToTransform(t, duration);
             } else {
-                StatusManager.getManager().handle(
-                        new Status(IStatus.WARNING, KlighdPiccoloPlugin.PLUGIN_ID, new String(
-                                NOT_IN_CURRENT_CLIP_TO_TOP_LEFT_ERROR_MSG).replace("XX",
+                Klighd.handle(
+                        new Status(IStatus.WARNING, KlighdPiccolo.PLUGIN_ID,
+                                NOT_IN_CURRENT_CLIP_TO_TOP_LEFT_ERROR_MSG.replace("XX",
                                 diagramElement.toString())));
             }
         }

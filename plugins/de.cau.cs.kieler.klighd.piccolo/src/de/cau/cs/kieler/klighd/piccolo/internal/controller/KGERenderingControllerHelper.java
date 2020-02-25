@@ -24,13 +24,12 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
-import org.eclipse.ui.statushandlers.StatusManager;
 import org.osgi.framework.Bundle;
 
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 
-import de.cau.cs.kieler.klighd.KlighdPlugin;
+import de.cau.cs.kieler.klighd.Klighd;
 import de.cau.cs.kieler.klighd.krendering.HorizontalAlignment;
 import de.cau.cs.kieler.klighd.krendering.KArc;
 import de.cau.cs.kieler.klighd.krendering.KAreaPlacementData;
@@ -58,6 +57,7 @@ import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
 import de.cau.cs.kieler.klighd.piccolo.IKlighdNode;
 import de.cau.cs.kieler.klighd.piccolo.IKlighdNode.IKlighdFigureNode;
 import de.cau.cs.kieler.klighd.piccolo.KlighdNode;
+import de.cau.cs.kieler.klighd.piccolo.KlighdPiccolo;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KCustomConnectionFigureNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KCustomFigureNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KEdgeNode;
@@ -630,14 +630,15 @@ final class KGERenderingControllerHelper {
             final String msg =
                     "KLighD: Error occurred while loading an image from a bundle "
                     + "('imageObject' == null): 'bundleName' is null, too, which is not expected!";
-            StatusManager.getManager().handle(
-                    new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID, msg), StatusManager.LOG);
+            Klighd.log(new Status(IStatus.ERROR, KlighdPiccolo.PLUGIN_ID, msg));
+            
             return createDummy(parent, initialBounds);
 
         } else {
             // determine the containing bundle,
             // trim potentially leading and trailing quotation marks
             final String bundleName = image.getBundleName().replace("\"", "");
+            final String msgBundleInfix = !Klighd.IS_PLATFORM_RUNNING ? "" : " from bundle " + bundleName;
 
             final Bundle bundle = Platform.getBundle(bundleName);
 
@@ -645,16 +646,16 @@ final class KGERenderingControllerHelper {
                 final String msg = "KLighD: Error occurred while loading an image from bundle "
                         + image.getBundleName()
                         + " : Bundle is not available!";
-                StatusManager.getManager().handle(new Status(
-                        IStatus.ERROR, KlighdPlugin.PLUGIN_ID, msg), StatusManager.LOG);
+                Klighd.log(new Status(IStatus.ERROR, KlighdPiccolo.PLUGIN_ID, msg));
+                
                 return createDummy(parent, initialBounds);
 
             } else if (image.getImagePath() == null) {
                 final String msg = "KLighD: Error occurred while loading an image from bundle "
                         + bundleName + " : 'imagePath' is null!" + KlighdPlugin.LINE_SEPARATOR
                         + "Provide a valid bundle relative path of the image!";
-                StatusManager.getManager().handle(new Status(
-                        IStatus.ERROR, KlighdPlugin.PLUGIN_ID, msg), StatusManager.LOG);
+                Klighd.log(new Status(IStatus.ERROR, KlighdPiccolo.PLUGIN_ID, msg));
+                
                 return createDummy(parent, initialBounds);
 
             } else {
@@ -666,8 +667,8 @@ final class KGERenderingControllerHelper {
                             + bundleName + " : No entry could be found on path " + imagePath
                             + KlighdPlugin.LINE_SEPARATOR
                             + "Provide a valid bundle relative path of the image!";
-                    StatusManager.getManager().handle(new Status(
-                            IStatus.ERROR, KlighdPlugin.PLUGIN_ID, msg), StatusManager.LOG);
+                    Klighd.log(new Status(IStatus.ERROR, KlighdPiccolo.PLUGIN_ID, msg));
+                    
                     return createDummy(parent, initialBounds);
 
                 } else {

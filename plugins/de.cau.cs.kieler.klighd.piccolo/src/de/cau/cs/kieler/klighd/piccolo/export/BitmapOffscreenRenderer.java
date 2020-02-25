@@ -23,7 +23,7 @@ import org.eclipse.swt.widgets.Shell;
 
 import de.cau.cs.kieler.klighd.IDiagramExporter.ExportDataBuilder;
 import de.cau.cs.kieler.klighd.ViewContext;
-import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;
+import de.cau.cs.kieler.klighd.piccolo.KlighdPiccolo;
 import de.cau.cs.kieler.klighd.piccolo.internal.KlighdCanvas;
 import de.cau.cs.kieler.klighd.util.AbstractRunnableWithResult;
 import de.cau.cs.kieler.klighd.util.KlighdProperties;
@@ -62,7 +62,7 @@ public class BitmapOffscreenRenderer extends AbstractOffscreenRenderer {
                 //  event loop calling "Display.getCurrent().readAndDispatch();" repeatedly
                 Display.getDefault().syncExec(runnable);
             } catch (final Throwable e) {
-                return new Status(IStatus.ERROR, KlighdPiccoloPlugin.PLUGIN_ID,
+                return new Status(IStatus.ERROR, KlighdPiccolo.PLUGIN_ID,
                         DISPLAY_ACCESS_FAILURE, e);
             }
         }
@@ -86,7 +86,7 @@ public class BitmapOffscreenRenderer extends AbstractOffscreenRenderer {
             this.buildUpDiagram(viewContext, canvas.getCamera(), properties);
 
         } catch (final RuntimeException e) {
-            return new Status(IStatus.ERROR, KlighdPiccoloPlugin.PLUGIN_ID,
+            return new Status(IStatus.ERROR, KlighdPiccolo.PLUGIN_ID,
                     BUILDING_UP_FIGURES_FAILURE_MSG, e);
         }
 
@@ -98,7 +98,7 @@ public class BitmapOffscreenRenderer extends AbstractOffscreenRenderer {
                     new ExportDataBuilder(viewContext, format, output).scale(imageScale).build());
 
         } catch (final RuntimeException e) {
-            return new Status(IStatus.ERROR, KlighdPiccoloPlugin.PLUGIN_ID,
+            return new Status(IStatus.ERROR, KlighdPiccolo.PLUGIN_ID,
                     EXPORT_DIAGRAM_FAILURE_MSG, e);
         }
 

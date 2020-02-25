@@ -24,7 +24,7 @@ import org.osgi.framework.BundleContext;
 public class KlighdPiccoloPlugin extends AbstractUIPlugin {
 
     /** the plug-in ID. */
-    public static final String PLUGIN_ID = "de.cau.cs.kieler.klighd.piccolo";
+    public static final String PLUGIN_ID = KlighdPiccolo.PLUGIN_ID;
 
     /** the shared instance. */
     private static KlighdPiccoloPlugin plugin;

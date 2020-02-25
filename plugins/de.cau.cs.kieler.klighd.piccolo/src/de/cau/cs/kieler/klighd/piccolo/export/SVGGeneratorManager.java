@@ -21,12 +21,12 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
-import org.osgi.framework.Bundle;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Maps;
 
-import de.cau.cs.kieler.klighd.KlighdPlugin;
+import de.cau.cs.kieler.klighd.Klighd;
+import de.cau.cs.kieler.klighd.piccolo.KlighdPiccolo;
 
 /**
  * Singleton class that takes care of loading all svg generators from the {@code svgGenerators}
@@ -233,9 +233,6 @@ public final class SVGGeneratorManager {
                 "Extension point " + extensionPoint + ": Invalid entry in element "
                         + element.getName() + ", contributed by "
                         + element.getContributor().getName();
-        final IStatus status =
-                new Status(IStatus.WARNING, KlighdPlugin.PLUGIN_ID, 0, message, exception);
-        final Bundle kp = Platform.getBundle(KlighdPlugin.PLUGIN_ID);
-        Platform.getLog(kp).log(status);
+        Klighd.log(new Status(IStatus.WARNING, KlighdPiccolo.PLUGIN_ID, 0, message, exception));
     }
 }

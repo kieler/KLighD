@@ -21,8 +21,9 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
 import de.cau.cs.kieler.klighd.kgraph.KNode;
+import de.cau.cs.kieler.klighd.Klighd;
 import de.cau.cs.kieler.klighd.piccolo.IKlighdNode.IKNodeNode;
-import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;
+import de.cau.cs.kieler.klighd.piccolo.KlighdPiccolo;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.NodeUtil;
 import edu.umd.cs.piccolo.PCamera;
 import edu.umd.cs.piccolo.PLayer;
@@ -333,8 +334,7 @@ public class KlighdMainCamera extends PCamera {
 
         } catch (final Throwable t) {
             final String msg = "KLighD (MainCamera): Drawing diagram failed due to exception: ";
-            KlighdPiccoloPlugin.getDefault().getLog()
-                    .log(new Status(IStatus.ERROR, KlighdPiccoloPlugin.PLUGIN_ID, msg, t));
+            Klighd.log(new Status(IStatus.ERROR, KlighdPiccolo.PLUGIN_ID, msg, t));
         }
     }
 }

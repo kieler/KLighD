@@ -32,7 +32,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.ui.IWorkbenchPart;
-import org.eclipse.ui.statushandlers.StatusManager;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
 import com.google.common.base.Function;
@@ -41,6 +40,7 @@ import de.cau.cs.kieler.klighd.IKlighdSelection;
 import de.cau.cs.kieler.klighd.IModelModificationHandler;
 import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.IViewerProvider;
+import de.cau.cs.kieler.klighd.Klighd;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
 import de.cau.cs.kieler.klighd.krendering.KText;
@@ -537,8 +537,7 @@ public class PiccoloViewerUI extends PiccoloViewer {
             final String msg =
                     "KLighD: An error occured while applying the updated string value in "
                             + viewContext.getDiagramWorkbenchPart().getPartId() + "!";
-            StatusManager.getManager().handle(
-                    new Status(IStatus.ERROR, KlighdUIPlugin.PLUGIN_ID, msg, e));
+            Klighd.handle(new Status(IStatus.ERROR, KlighdUIPlugin.PLUGIN_ID, msg, e));
         }
     }
 

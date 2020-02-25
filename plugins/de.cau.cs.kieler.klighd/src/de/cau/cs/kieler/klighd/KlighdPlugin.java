@@ -13,11 +13,11 @@
  */
 package de.cau.cs.kieler.klighd;
 
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.elk.core.data.LayoutMetaDataService;
 import org.eclipse.elk.graph.util.ElkReflect;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.eclipse.ui.statushandlers.StatusManager;
 import org.osgi.framework.BundleContext;
 
 import de.cau.cs.kieler.klighd.util.ExpansionAwareLayoutOption;
@@ -34,19 +34,19 @@ import de.cau.cs.kieler.klighd.util.ExpansionAwareLayoutOption;
 public class KlighdPlugin extends AbstractUIPlugin {
 
     /** the plug-in ID. */
-    public static final String PLUGIN_ID = "de.cau.cs.kieler.klighd";
+    public static final String PLUGIN_ID = Klighd.PLUGIN_ID;
 
     /** A definition place of the platform-specific line separator. */
-    public static final String LINE_SEPARATOR = System.getProperty("line.separator");
+    public static final String LINE_SEPARATOR = Klighd.LINE_SEPARATOR;
 
     /** A Boolean flag indicating that the tool is running on a linux system. */
-    public static final boolean IS_LINUX = Platform.getOS().equals(Platform.OS_LINUX);
+    public static final boolean IS_LINUX = Klighd.IS_LINUX;
 
     /** A Boolean flag indicating that the tool is running on a MacOSX system. */
-    public static final boolean IS_MACOSX = Platform.getOS().equals(Platform.OS_MACOSX);
+    public static final boolean IS_MACOSX = Klighd.IS_MACOSX;
 
     /** A Boolean flag indicating that the tool is running on a Windows system. */
-    public static final boolean IS_WINDOWS = Platform.getOS().equals(Platform.OS_WIN32);
+    public static final boolean IS_WINDOWS = Klighd.IS_WINDOWS;
 
     /** the shared instance. */
     private static KlighdPlugin plugin;
@@ -64,10 +64,16 @@ public class KlighdPlugin extends AbstractUIPlugin {
     public void start(final BundleContext context) throws Exception {
         super.start(context);
         plugin = this;
+
+        // install an alternative status manager delegating to the default Eclipse Status Manager
+        Klighd.setStatusManager((status, style) -> {
+            StatusManager.getManager().handle(status, style);
+        });
+
         // make sure that the layout meta data service has been initialized, 
         //  in particular that the ElkReflect registry has been filled 
         LayoutMetaDataService.getInstance();
-        
+
         ElkReflect.register(
                 ExpansionAwareLayoutOption.ExpansionAwareLayoutOptionData.class,
                 () -> new ExpansionAwareLayoutOption.ExpansionAwareLayoutOptionData(), 

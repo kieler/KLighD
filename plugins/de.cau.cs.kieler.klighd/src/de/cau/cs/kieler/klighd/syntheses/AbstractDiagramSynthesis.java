@@ -24,12 +24,11 @@ import org.eclipse.elk.core.LayoutConfigurator;
 import org.eclipse.elk.core.util.Pair;
 import org.eclipse.elk.graph.properties.IProperty;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.ui.statushandlers.StatusManager;
 
 import com.google.common.base.Function;
 
 import de.cau.cs.kieler.klighd.DisplayedActionData;
-import de.cau.cs.kieler.klighd.KlighdPlugin;
+import de.cau.cs.kieler.klighd.Klighd;
 import de.cau.cs.kieler.klighd.SynthesisOption;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.internal.ISynthesis;
@@ -149,14 +148,13 @@ public abstract class AbstractDiagramSynthesis<S> implements ISynthesis {
                 final String msg = "KLighD " + getClass().getSimpleName()
                         + " diagram synthesis init: found multiple methods named "
                         + "\"transform\" requiring a single parameter and returning a KNode."
-                        + KlighdPlugin.LINE_SEPARATOR
+                        + Klighd.LINE_SEPARATOR
                         + "KLighD's automatic source data type resolution requires exactly one "
                         + "\"transform\" method implementing the abstract one required by the "
-                        + "super class." + KlighdPlugin.LINE_SEPARATOR
+                        + "super class." + Klighd.LINE_SEPARATOR
                         + "Alternatively provide the input data type by overriding "
                         + "\"getInputDataType()\".";
-                StatusManager.getManager().handle(
-                        new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID, msg));
+                Klighd.handle(new Status(IStatus.ERROR, Klighd.PLUGIN_ID, msg));
 
                 transformMethod = null;
                 break;

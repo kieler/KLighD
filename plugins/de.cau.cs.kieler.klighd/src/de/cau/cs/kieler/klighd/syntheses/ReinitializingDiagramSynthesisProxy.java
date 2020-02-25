@@ -35,7 +35,7 @@ import com.google.inject.Scope;
 import com.google.inject.TypeLiteral;
 
 import de.cau.cs.kieler.klighd.DisplayedActionData;
-import de.cau.cs.kieler.klighd.KlighdDataManager;
+import de.cau.cs.kieler.klighd.Klighd;
 import de.cau.cs.kieler.klighd.SynthesisOption;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.internal.ISynthesis;
@@ -243,7 +243,7 @@ public class ReinitializingDiagramSynthesisProxy<S> implements ISynthesis {
             res = Guice.createInjector(this.transformationClassBinding).getInstance(
                             this.transformationClass);
         } catch (final Exception e) {
-            final String nl = KlighdDataManager.NEW_LINE;
+            final String nl = Klighd.LINE_SEPARATOR;
             final String msg =
                     "KLighD: Cannot instantiate " + this.transformationClass.getCanonicalName()
                             + "." + nl + "Is that class free of compiler errors?" + nl

@@ -40,8 +40,8 @@ import org.eclipse.swt.graphics.RGB;
 import com.google.common.base.Objects;
 import com.google.common.collect.Maps;
 
+import de.cau.cs.kieler.klighd.Klighd;
 import de.cau.cs.kieler.klighd.KlighdConstants;
-import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.krendering.KRendering;
 import de.cau.cs.kieler.klighd.piccolo.KlighdNode;
 import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
@@ -87,7 +87,7 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
     // in order to fix the windows specific issue with the monitor zoom related line width scaling
     //  (KIPRA-1925) but avoid additional effort on other platforms,
     // do the workaround only if the following condition is *not* satisfied
-    private static final boolean skipCopyingLineAttributes = !KlighdPlugin.IS_WINDOWS;
+    private static final boolean skipCopyingLineAttributes = !Klighd.IS_WINDOWS;
 
     /**
      * Types of supported polyline paths, for internal use only.
