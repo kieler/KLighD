@@ -13,10 +13,9 @@
  */
 package de.cau.cs.kieler.klighd;
 
+import org.eclipse.core.runtime.Plugin;
 import org.eclipse.elk.core.data.LayoutMetaDataService;
 import org.eclipse.elk.graph.util.ElkReflect;
-import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.ui.statushandlers.StatusManager;
 import org.osgi.framework.BundleContext;
 
@@ -31,7 +30,7 @@ import de.cau.cs.kieler.klighd.util.ExpansionAwareLayoutOption;
  * @kieler.design proposed by chsch
  * @kieler.rating proposed yellow by chsch
  */
-public class KlighdPlugin extends AbstractUIPlugin {
+public class KlighdPlugin extends Plugin {
 
     /** the plug-in ID. */
     public static final String PLUGIN_ID = Klighd.PLUGIN_ID;
@@ -97,17 +96,5 @@ public class KlighdPlugin extends AbstractUIPlugin {
      */
     public static KlighdPlugin getDefault() {
         return plugin;
-    }
-
-    /**
-     * Returns an image descriptor for the image file at the given plug-in
-     * relative path.
-     * 
-     * @param path
-     *            the path
-     * @return the image descriptor
-     */
-    public static ImageDescriptor getImageDescriptor(final String path) {
-        return imageDescriptorFromPlugin(PLUGIN_ID, path);
     }
 }

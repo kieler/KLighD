@@ -71,12 +71,12 @@ import com.google.common.collect.Sets;
 
 import de.cau.cs.kieler.klighd.Klighd;
 import de.cau.cs.kieler.klighd.KlighdDataManager;
-import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.LightDiagramLayoutConfig;
 import de.cau.cs.kieler.klighd.SynthesisOption;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.internal.ISynthesis;
 import de.cau.cs.kieler.klighd.kgraph.KNode;
+import de.cau.cs.kieler.klighd.ui.KlighdUIPlugin;
 import de.cau.cs.kieler.klighd.ui.parts.DiagramViewPart;
 import de.cau.cs.kieler.klighd.ui.view.controller.AbstractViewUpdateController;
 import de.cau.cs.kieler.klighd.ui.view.controller.ViewUpdateControllerFactory;
@@ -119,7 +119,7 @@ public final class DiagramView extends DiagramViewPart implements ISelectionChan
     // -- Icons --
     /** The icon for refreshing view content. */
     private static final ImageDescriptor REFRESH_ICON =
-            KlighdPlugin.getImageDescriptor("icons/full/elcl16/refresh.gif");
+            KlighdUIPlugin.getImageDescriptorFromKlighdBase("icons/full/elcl16/refresh.gif");
     /** The icon for layout view content. */
     private static final ImageDescriptor ARRANGE_ICON =
             KlighdViewPlugin.getImageDescriptor("icons/full/menu16/arrange.gif");

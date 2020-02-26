@@ -58,7 +58,6 @@ import de.cau.cs.kieler.klighd.DisplayedActionData;
 import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.KlighdConstants;
-import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.KlighdPreferences;
 import de.cau.cs.kieler.klighd.LightDiagramServices;
 import de.cau.cs.kieler.klighd.SynthesisOption;
@@ -66,6 +65,7 @@ import de.cau.cs.kieler.klighd.ViewChangeType;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.ZoomStyle;
 import de.cau.cs.kieler.klighd.internal.ISynthesis;
+import de.cau.cs.kieler.klighd.ui.KlighdUIPlugin;
 import de.cau.cs.kieler.klighd.ui.parts.DiagramViewPart;
 import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties;
 
@@ -230,14 +230,16 @@ public final class DiagramSideBar {
 
         // create the right arrow for collapsing the options pane
         final Label rightArrowLabel = new Label(arrowsContainer, SWT.NONE);
-        final Image rightArrow = KlighdPlugin.getImageDescriptor("icons/arrow-right.gif").createImage();
+        final Image rightArrow = KlighdUIPlugin
+                .getImageDescriptorFromKlighdBase("icons/arrow-right.gif").createImage();
         resources.add(rightArrow);
         rightArrowLabel.setImage(rightArrow);
         rightArrowLabel.setVisible(true);
 
         // create the left arrow for expanding the options pane
         final Label leftArrowLabel = new Label(arrowsContainer, SWT.NONE);
-        final Image leftArrow = KlighdPlugin.getImageDescriptor("icons/arrow-left.gif").createImage();
+        final Image leftArrow = KlighdUIPlugin
+                .getImageDescriptorFromKlighdBase("icons/arrow-left.gif").createImage();
         resources.add(leftArrow);
         leftArrowLabel.setImage(leftArrow);
         leftArrowLabel.setVisible(true);
@@ -445,8 +447,8 @@ public final class DiagramSideBar {
         final Button zoomToOneBtn = new Button(parent, SWT.PUSH | SWT.FLAT);
 
         // Zoom to Fit
-        final Image zoomToFitImage =
-                KlighdPlugin.getImageDescriptor("icons/kieler-zoomtofit.gif").createImage();
+        final Image zoomToFitImage = KlighdUIPlugin
+                .getImageDescriptorFromKlighdBase("icons/kieler-zoomtofit.gif").createImage();
         resources.add(zoomToFitImage);
         zoomToFitBtn.setImage(zoomToFitImage);
         zoomToFitBtn.setToolTipText("Toggle Zoom to Fit");
@@ -471,8 +473,8 @@ public final class DiagramSideBar {
         });
 
         // Zoom to focus
-        final Image zoomToFocusImage =
-                KlighdPlugin.getImageDescriptor("icons/kieler-zoomtofocus.gif").createImage();
+        final Image zoomToFocusImage = KlighdUIPlugin
+                .getImageDescriptorFromKlighdBase("icons/kieler-zoomtofocus.gif").createImage();
         resources.add(zoomToFocusImage);
         zoomToFocusBtn.setImage(zoomToFocusImage);
         zoomToFocusBtn.setToolTipText("Toggle Zoom to Focus");
@@ -496,8 +498,8 @@ public final class DiagramSideBar {
         });
 
         // Zoom to actual size (1:1)
-        final Image zoomToOneImage =
-                KlighdPlugin.getImageDescriptor("icons/kieler-zoomtoone.gif").createImage();
+        final Image zoomToOneImage = KlighdUIPlugin
+                .getImageDescriptorFromKlighdBase("icons/kieler-zoomtoone.gif").createImage();
         resources.add(zoomToOneImage);
         zoomToOneBtn.setImage(zoomToOneImage);
         zoomToOneBtn.setToolTipText("Zoom to Original Size");
