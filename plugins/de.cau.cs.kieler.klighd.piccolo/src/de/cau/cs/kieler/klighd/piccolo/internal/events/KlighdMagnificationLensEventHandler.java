@@ -15,14 +15,13 @@ package de.cau.cs.kieler.klighd.piccolo.internal.events;
 
 import java.awt.geom.Point2D;
 
-import org.eclipse.jface.preference.IPreferenceStore;
-import org.eclipse.jface.util.IPropertyChangeListener;
-import org.eclipse.jface.util.PropertyChangeEvent;
+import org.eclipse.core.runtime.preferences.IEclipsePreferences.IPreferenceChangeListener;
+import org.eclipse.core.runtime.preferences.IEclipsePreferences.PreferenceChangeEvent;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.RGB;
 
-import de.cau.cs.kieler.klighd.KlighdPlugin;
+import de.cau.cs.kieler.klighd.IKlighdPreferenceStore;
 import de.cau.cs.kieler.klighd.KlighdPreferences;
 import de.cau.cs.kieler.klighd.piccolo.internal.KlighdCanvas;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMagnificationLensCamera;
@@ -42,7 +41,7 @@ import edu.umd.cs.piccolo.util.PBounds;
  */
 public class KlighdMagnificationLensEventHandler extends KlighdBasicInputEventHandler {
     
-    private static final IPreferenceStore STORE = KlighdPlugin.getDefault().getPreferenceStore();
+    private static final IKlighdPreferenceStore STORE = KlighdPreferences.getPreferenceStore();
     private static final int CTRL_CMD = KlighdKeyEventListener.OS_MACOSX ? SWT.COMMAND : SWT.CTRL;
     
     private final KlighdMainCamera mainCamera;
@@ -89,10 +88,11 @@ public class KlighdMagnificationLensEventHandler extends KlighdBasicInputEventHa
         };
 
         KlighdPreferences.registerPrefChangeListener((KlighdCanvas) canvasCamera.getComponent(),
-                new IPropertyChangeListener() {
+                new IPreferenceChangeListener() {
 
-            public void propertyChange(final PropertyChangeEvent event) {
-                final String pref = event.getProperty();
+            @Override
+            public void preferenceChange(PreferenceChangeEvent event) {
+                final String pref = event.getKey();
                 
                 // SUPPRESS CHECKSTYLE NEXT 15 MagicNumber
                 

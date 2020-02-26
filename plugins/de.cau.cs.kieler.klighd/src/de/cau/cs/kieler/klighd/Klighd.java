@@ -25,6 +25,9 @@ public class Klighd {
     /** the plug-in ID. */
     public static final String PLUGIN_ID = "de.cau.cs.kieler.klighd";
 
+    /** the UI plug-in ID. */
+    public static final String UI_PLUGIN_ID = PLUGIN_ID + ".ui";
+
     /** A definition place of the platform-specific line separator. */
     public static final String LINE_SEPARATOR = System.getProperty("line.separator");
 
@@ -49,11 +52,11 @@ public class Klighd {
         boolean isPlatformRunning = false;
         
         try {
-            
             isLinux = Platform.getOS().equals(Platform.OS_LINUX);
             isOSX = Platform.getOS().equals(Platform.OS_MACOSX);
             isWindows = Platform.getOS().equals(Platform.OS_WIN32);
             isPlatformRunning = Platform.isRunning();
+            
         } catch (Throwable t) {
             String os = System.getProperties().get("os.name").toString().toLowerCase();
             isLinux = os.startsWith("unix");

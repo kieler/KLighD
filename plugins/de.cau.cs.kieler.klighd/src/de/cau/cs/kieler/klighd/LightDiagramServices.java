@@ -186,8 +186,7 @@ public final class LightDiagramServices {
     
             // Animation
             final boolean doAnimate = config.animate() != null ? config.animate().booleanValue()
-                    : KlighdPlugin.getDefault().getPreferenceStore()
-                            .getBoolean(KlighdPreferences.ANIMATE_LAYOUT);
+                    : KlighdPreferences.isAnimateLayout();
             layoutParameters.getGlobalSettings().setProperty(CoreOptions.ANIMATE, doAnimate);
     
             // Animation time properties
@@ -398,7 +397,7 @@ public final class LightDiagramServices {
 
         final ViewContext theViewContext = pair.getSecond();
         final boolean doAnimate = animate != null
-                ? animate.booleanValue() : KlighdPlugin.getDefault()
+                ? animate.booleanValue() : KlighdPreferences
                         .getPreferenceStore().getBoolean(KlighdPreferences.ANIMATE_LAYOUT);
 
         if (theViewContext.getZoomStyle() != ZoomStyle.NONE) {

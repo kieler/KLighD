@@ -11,7 +11,7 @@
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
-package de.cau.cs.kieler.klighd.ui.internal;
+package de.cau.cs.kieler.klighd.ui.internal.preferences;
 
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferencePage;
@@ -30,9 +30,9 @@ import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
-import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.KlighdPreferences;
 import de.cau.cs.kieler.klighd.ZoomStyle;
+import de.cau.cs.kieler.klighd.ui.internal.Messages;
 
 /**
  * Preference page for KLighD.
@@ -98,7 +98,7 @@ public final class KlighdPreferencePage extends PreferencePage implements IWorkb
      * {@inheritDoc}
      */
     public void init(final IWorkbench workbench) {
-        setPreferenceStore(KlighdPlugin.getDefault().getPreferenceStore());
+        setPreferenceStore(KlighdPlatformPreferenceStore.INSTANCE.delegate);
     }
 
     @Override
