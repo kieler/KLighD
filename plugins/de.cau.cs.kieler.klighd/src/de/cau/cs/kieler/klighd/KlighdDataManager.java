@@ -13,14 +13,19 @@
  */
 package de.cau.cs.kieler.klighd;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.ServiceLoader;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -33,16 +38,17 @@ import com.google.common.base.Predicate;
 import com.google.common.base.Strings;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.BiMap;
+import com.google.common.collect.Collections2;
 import com.google.common.collect.HashBiMap;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableList.Builder;
-import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 
 import de.cau.cs.kieler.klighd.internal.ISynthesis;
+import de.cau.cs.kieler.klighd.syntheses.AbstractDiagramSynthesis;
 import de.cau.cs.kieler.klighd.syntheses.GuiceBasedSynthesisFactory;
 import de.cau.cs.kieler.klighd.syntheses.ReinitializingDiagramSynthesisProxy;
 
@@ -110,19 +116,43 @@ public final class KlighdDataManager {
             + "Are there any typing mistakes in the registration? " + NEW_LINE
             + "Is the (maybe generated) code available?";
 
+    private static final String UNEXPECTED_FAILURE_MSG =
+            "KLighD: An unexpected failure occured while loading "
+            + "class <<CLAZZ>>. See attached trace for details." + NEW_LINE;
+
+    private static final String INSTANTIATION_FAILURE_MSG =
+            "KLighD: An unexpected failure occured while instantiating "
+            + "class <<CLAZZ>>. See attached trace for details." + NEW_LINE;
+
     /** the singleton instance. */
     private static KlighdDataManager instance;
 
+    /**
+     * Creates the singleton and initializes it with the data from the extension point.
+     */
+    static {
+        instance = new KlighdDataManager();
+    }
+
+    /**
+     * Returns the singleton instance.
+     *
+     * @return the singleton
+     */
+    public static KlighdDataManager getInstance() {
+        return instance;
+    }
+
     /** the mapping of ids to the corresponding instances of {@link ISynthesis}. */
-    private Map<String, ISynthesis> idSynthesisMapping = Maps.newHashMap();
+    private final Map<String, ISynthesis> idSynthesisMapping;
 
     /** the mapping of types to the corresponding instances of {@link ISynthesis}. */
-    private Multimap<Class<?>, ISynthesis> typeSynthesisMapping = ArrayListMultimap.create();
+    private final Multimap<Class<?>, ISynthesis> typeSynthesisMapping;
 
     /**
      * A caching map that avoids the effort of determining the correct syntheses for a given type
      * each time. */
-    private Map<Class<?>, Iterable<ISynthesis>> concreteTypeSynthesisMapping = Maps.newHashMap();
+    private final Map<Class<?>, Iterable<ISynthesis>> concreteTypeSynthesisMapping = Maps.newHashMap();
 
     /** the mapping of ids on the associated viewer providers. */
     private Map<String, IViewerProvider> idViewerProviderMapping = Maps.newHashMap();
@@ -135,51 +165,52 @@ public final class KlighdDataManager {
 
     private IUpdateStrategy highestPriorityUpdateStrategy = null;
 
-    /** the mapping of ids on the associated style modifiers. */
-    private Map<String, IStyleModifier> idStyleModifierMapping = Maps.newHashMap();
+    /** the mapping of ids to the associated style modifiers. */
+    private final Map<String, IStyleModifier> idStyleModifierMapping = Maps.newHashMap();
 
-    /** the mapping of ids on the associated actions. */
-    private BiMap<String, IAction> idActionMapping = HashBiMap.create();
+    /** the mapping of ids to the associated actions. */
+    private final BiMap<String, IAction> idActionMapping = HashBiMap.create();
 
-    /** the mapping of ids on the associated configuration elements describing the exporters. */
-    private Map<String, IConfigurationElement> exportersMap = Maps.newHashMap();
+    /** the mapping of ids to the associated configuration elements describing the exporters. */
+    private final Map<String, IConfigurationElement> exportersMap = Maps.newHashMap();
 
     /** the list of the available exporters' descriptors. */
-    private List<ExporterDescriptor> descriptors = Lists.newArrayList();
+    private final List<ExporterDescriptor> descriptors = Lists.newArrayList();
 
-    /** the mapping of formats and the supporting off-screen renderers. */
-    private Multimap<String, IOffscreenRenderer> formatOffscreenRendererMapping = null;
+    /** the mapping of ids to the associated export branding descriptors. */
+    private final Map<String, ExportBrandingDescriptor> idExportBrandingMapping = Maps.newHashMap();
+
+    /** the mapping of ids to the associated off-screen renderer descriptors. */
+    private final Map<String, OffscreenRendererDescriptor> idOffscreenRendererMapping = Maps.newHashMap();
 
     /**
      * A private constructor to prevent instantiation.
      */
     private KlighdDataManager() {
-        // do nothing
-    }
-
-    /**
-     * Creates the singleton and initializes it with the data from the extension point.
-     */
-    static {
-        instance = new KlighdDataManager();
-        // load the data from the extension points
-        instance.loadViewerProviderExtension();
-        try {
-            instance.loadModelTransformationsExtension();
-        } catch (final Exception e) {
-            Klighd.handle(
-                    new Status(IStatus.ERROR, Klighd.PLUGIN_ID,
-                            "KLighD: Unexptected failure while loading registered transformations.", e));
+        final Map<String, ISynthesis> id2Synthesis = Maps.newLinkedHashMap();
+        final Multimap<Class<?>, ISynthesis> type2Syntheses = ArrayListMultimap.create();
+        
+        if (Klighd.IS_PLATFORM_RUNNING) {
+            // load the data from the extension points
+            loadKlighdExtensionsViaExtensionPoint();
+            try {
+                loadDiagramSynthesesViaExtensionPoint(id2Synthesis, type2Syntheses);
+                
+            } catch (final Exception e) {
+                id2Synthesis.clear();
+                type2Syntheses.clear();
+                
+                Klighd.handle(
+                        new Status(IStatus.ERROR, Klighd.PLUGIN_ID,
+                                "KLighD: Unexptected failure while loading registered diagram syntheses.", e));
+            }
+            
+        } else {
+            loadDiagramSynthesesViaServiceLoader(id2Synthesis, type2Syntheses);
         }
-    }
-
-    /**
-     * Returns the singleton instance.
-     *
-     * @return the singleton
-     */
-    public static KlighdDataManager getInstance() {
-        return instance;
+        
+        this.idSynthesisMapping = id2Synthesis;
+        this.typeSynthesisMapping = type2Syntheses;
     }
 
     /**
@@ -194,18 +225,96 @@ public final class KlighdDataManager {
      * @param exception
      *            an optional exception that was caused by the invalid entry
      */
-    // is currently also used by klighd.piccolo's ExportHooks class
-    public static void reportError(final String extensionPoint,
-            final IConfigurationElement element, final String attribute, final Exception exception) {
+    private static void reportError(final String extensionPoint,
+            final IConfigurationElement element, final String attribute, final String msgSuffix, final Exception exception) {
         final String message =
                 "KLighD: Element '" + element.getName() + "' extending extension point '"
                         + extensionPoint + "', contributed by '"
                         + element.getContributor().getName()
-                        + "' contains invalid entry in attribute '" + attribute + "'";
+                        + "' contains invalid entry in attribute '" + attribute + "'"
+                        + msgSuffix != null ? ": " + msgSuffix : ".";
         Klighd.handle(
                 new Status(IStatus.WARNING, Klighd.PLUGIN_ID, 0, message, exception));
     }
 
+
+    /* --------------------------------------------------------- */
+    /*  registrations of extensions added via extensions points  */
+    /* --------------------------------------------------------- */
+
+    /**
+     * Loads all registered extensions from the extension point 'extensions' and builds up the
+     * corresponding mappings.
+     */
+    private void loadKlighdExtensionsViaExtensionPoint() {
+        final IConfigurationElement[] extensions = Platform.getExtensionRegistry()
+                .getConfigurationElementsFor(EXTP_ID_EXTENSIONS);
+
+        for (final IConfigurationElement element : extensions) {
+            final String id = element.getAttribute(ATTRIBUTE_ID);
+            if (Strings.isNullOrEmpty(id)) {
+                reportError(EXTP_ID_EXTENSIONS, element, ATTRIBUTE_ID, null, null);
+
+            } else if (ELEMENT_VIEWER.equals(element.getName())) {
+                doRegisterExtension(element, IViewerProvider.class,
+                        viewerProvider -> idViewerProviderMapping.put(id, viewerProvider));
+
+            } else if (ELEMENT_UPDATE_STRATEGY.equals(element.getName())) {
+                doRegisterExtension(element, IUpdateStrategy.class, 
+                        updateStrategy -> doRegisterUpdateStrategy(id, updateStrategy));
+
+            } else if (ELEMENT_STYLE_MODIFIER.equals(element.getName())) {
+                doRegisterExtension(element, IStyleModifier.class,
+                        styleModifier -> idStyleModifierMapping.put(id, styleModifier));
+
+            } else if (ELEMENT_ACTION.equals(element.getName())) {
+                doRegisterExtension(element, IAction.class,
+                        action -> idActionMapping.put(id, action));
+
+            } else if (ELEMENT_EXPORTER.equals(element.getName())) {
+                registerExporter(id, element);
+
+            } else if (ELEMENT_EXPORT_BRANDING.equals(element.getName())) {
+                checkFormatsAndRegisterWithSupplier(element, IExportBranding.class, 
+                        (supportedFormatsSplit, supplier) -> idExportBrandingMapping.put(id,
+                                new ExportBrandingDescriptor(id, supportedFormatsSplit, supplier)));
+                
+            } else if (ELEMENT_OFFSCREEN_RENDERER.equals(element.getName())) {
+                checkFormatsAndRegisterWithSupplier(element, IOffscreenRenderer.class, 
+                        (supportedFormatsSplit, supplier) -> idOffscreenRendererMapping.put(id,
+                                new OffscreenRendererDescriptor(id, supportedFormatsSplit, supplier)));
+
+            } else {
+                final String msg = "KLighD: Found element with invalid name '" + element.getName()
+                        + "' extending extension point '" + EXTP_ID_EXTENSIONS
+                        + "', contributed by '" + element.getContributor().getName() + "'.";
+                Klighd.log(new Status(IStatus.ERROR, Klighd.PLUGIN_ID, msg));
+            }
+        }
+    }
+
+    private <T> void doRegisterExtension(final IConfigurationElement element,
+            final Class<T> type, final Consumer<T> registration) {
+        try {
+            Object action = element.createExecutableExtension(ATTRIBUTE_CLASS);
+            if (type != null && type.isInstance(action)) {
+                registration.accept(type.cast(action));
+            }
+        } catch (CoreException exception) {
+            Klighd.handle(exception, Klighd.PLUGIN_ID);
+        }
+    }
+
+    private IUpdateStrategy doRegisterUpdateStrategy(final String id, final IUpdateStrategy updateStrategy) {
+        final IUpdateStrategy previous = idUpdateStrategyMapping.put(id, updateStrategy);
+        priorityUpdateStrategyMapping.put(updateStrategy.getPriority(), updateStrategy);
+        
+        if (this.highestPriorityUpdateStrategy == null 
+                || this.highestPriorityUpdateStrategy.getPriority() < updateStrategy.getPriority()) {
+            this.highestPriorityUpdateStrategy = updateStrategy;
+        }
+        return previous;
+    }
 
     /**
      * Data record containing the information about an exporter.
@@ -229,112 +338,196 @@ public final class KlighdDataManager {
         }
     }
 
+    private void registerExporter(String id, IConfigurationElement element) {
+        String subFormat = element.getAttribute("subFormat");
+        if (subFormat == null) {
+            subFormat = "";
+        }
+        final String extension = element.getAttribute("extension");
+        final String descr = element.getAttribute("description");
+        final boolean supportsTiling =
+                Boolean.parseBoolean(element.getAttribute("supportsTiling"));
+
+        // create the descriptor
+        final ExporterDescriptor descriptor =
+                new ExporterDescriptor(id, subFormat, descr, extension, supportsTiling);
+        descriptors.add(descriptor);
+
+        // put the configuration element into the map to lazy load the exporter later
+        exportersMap.put(id, element);
+    }
+
     /**
-     * Loads all registered extensions from the extension point 'extensions' and builds up the
-     * corresponding mappings.
+     * Data record containing the information about an export branding.
      */
-    private void loadViewerProviderExtension() {
-        final IConfigurationElement[] extensions = Platform.getExtensionRegistry()
-                .getConfigurationElementsFor(EXTP_ID_EXTENSIONS);
-
-        for (final IConfigurationElement element : extensions) {
-            try {
-                if (ELEMENT_VIEWER.equals(element.getName())) {
-                    // initialize viewer provider from the extension point
-                    final IViewerProvider viewerProvider =
-                            (IViewerProvider) element.createExecutableExtension(ATTRIBUTE_CLASS);
-                    if (viewerProvider != null) {
-                        final String id = element.getAttribute(ATTRIBUTE_ID);
-                        if (id == null || id.length() == 0) {
-                            reportError(EXTP_ID_EXTENSIONS, element, ATTRIBUTE_ID, null);
-                        } else {
-                            idViewerProviderMapping.put(id, viewerProvider);
-                        }
-                    }
-                } else if (ELEMENT_UPDATE_STRATEGY.equals(element.getName())) {
-                    // initialize update strategy from the extension point
-                    final IUpdateStrategy updateStrategy = (IUpdateStrategy) element
-                            .createExecutableExtension(ATTRIBUTE_CLASS);
-                    if (updateStrategy != null) {
-                        final String id = element.getAttribute(ATTRIBUTE_ID);
-                        if (id == null || id.length() == 0) {
-                            reportError(EXTP_ID_EXTENSIONS, element, ATTRIBUTE_ID, null);
-                        } else {
-                            idUpdateStrategyMapping.put(id, updateStrategy);
-                            priorityUpdateStrategyMapping.put(updateStrategy.getPriority(),
-                                    updateStrategy);
-                            if (this.highestPriorityUpdateStrategy == null
-                                    || this.highestPriorityUpdateStrategy.getPriority() < updateStrategy
-                                            .getPriority()) {
-                                this.highestPriorityUpdateStrategy = updateStrategy;
-                            }
-                        }
-                    }
-                } else if (ELEMENT_STYLE_MODIFIER.equals(element.getName())) {
-                    // initialize style modifier from the extension point
-                    final IStyleModifier styleModifier = (IStyleModifier) element
-                            .createExecutableExtension(ATTRIBUTE_CLASS);
-                    if (styleModifier != null) {
-                        final String id = element.getAttribute(ATTRIBUTE_ID);
-                        if (id == null || id.length() == 0) {
-                            reportError(EXTP_ID_EXTENSIONS, element, ATTRIBUTE_ID, null);
-                        } else {
-                            idStyleModifierMapping.put(id, styleModifier);
-                        }
-                    }
-                } else if (ELEMENT_ACTION.equals(element.getName())) {
-                    // initialize style modifier from the extension point
-                    final IAction action = (IAction) element
-                            .createExecutableExtension(ATTRIBUTE_CLASS);
-                    if (action != null) {
-                        final String id = element.getAttribute(ATTRIBUTE_ID);
-                        if (id == null || id.length() == 0) {
-                            reportError(EXTP_ID_EXTENSIONS, element, ATTRIBUTE_ID, null);
-                        } else {
-                            idActionMapping.put(id, action);
-                        }
-                    }
-                } else if (ELEMENT_EXPORTER.equals(element.getName())) {
-                    // store the generator
-                    final String id = element.getAttribute(ATTRIBUTE_ID);
-                    if (id == null || id.length() == 0) {
-                        reportError(EXTP_ID_EXTENSIONS, element, ATTRIBUTE_ID, null);
-                    } else {
-                        String subFormat = element.getAttribute("subFormat");
-                        if (subFormat == null) {
-                            subFormat = "";
-                        }
-                        final String extension = element.getAttribute("extension");
-                        final String descr = element.getAttribute("description");
-                        final boolean supportsTiling =
-                                Boolean.parseBoolean(element.getAttribute("supportsTiling"));
-
-                        // create the descriptor
-                        final ExporterDescriptor descriptor =
-                                new ExporterDescriptor(id, subFormat, descr, extension, supportsTiling);
-                        descriptors.add(descriptor);
-
-                        // put the configuration element into the map to lazy load the exporter later
-                        exportersMap.put(id, element);
-                    }
-                }
-            } catch (final CoreException exception) {
-                Klighd.handle(exception, Klighd.PLUGIN_ID);
-            }
+    public static final class ExportBrandingDescriptor {
+        public final String exporterId;
+        public final Collection<String> supportedFormats;
+        public final Supplier<IExportBranding> supplier;
+        
+        public ExportBrandingDescriptor(final String id, final Collection<String> supportedFormats,
+                Supplier<IExportBranding> supplier) {
+            this.exporterId = id;
+            this.supportedFormats = supportedFormats;
+            this.supplier = supplier;
         }
     }
 
     /**
-     * Loads the registered {@link de.cau.cs.kieler.klighd.syntheses.AbstractDiagramSynthesis
-     * AbstractDiagramSynthesis} from the extension point and builds up the
-     * {@link #typeSynthesisMapping}.
+     * Data record containing the information about an offscreen renderer.
      */
-    private void loadModelTransformationsExtension() {
-        final IConfigurationElement[] extensions = Platform.getExtensionRegistry()
-                .getConfigurationElementsFor(EXTP_ID_DIAGRAM_SYNTHESES);
+    public static final class OffscreenRendererDescriptor {
+        public final String id;
+        public final Collection<String> supportedFormats;
+        public final Supplier<IOffscreenRenderer> supplier;
+        
+        public OffscreenRendererDescriptor(final String id, final Collection<String> supportedFormats,
+                Supplier<IOffscreenRenderer> supplier) {
+            this.id = id;
+            this.supportedFormats = supportedFormats;
+            this.supplier = supplier;
+        }
+    }
+
+    private <T> void checkFormatsAndRegisterWithSupplier(final IConfigurationElement element, final Class<T> type, BiConsumer<Collection<String>, Supplier<T>> registration) {
+        final String supportedFormats = element.getAttribute(ATTRIBUTE_SUPPORTED_FORMATS);
+
+        if (Strings.isNullOrEmpty(supportedFormats)) {
+            reportError(EXTP_ID_EXTENSIONS, element, ATTRIBUTE_SUPPORTED_FORMATS,
+                    "Attribute value must not be empty.", null);
+        } else {
+            final Collection<String> supportedFormatsSplit = Lists.transform(
+                    Arrays.asList(supportedFormats.split(",")), e -> e.trim());
+            
+            registration.accept(supportedFormatsSplit, () -> {
+                try {
+                    final Object extension = element.createExecutableExtension(ATTRIBUTE_CLASS);
+                    if (type.isInstance(extension)) {
+                        return type.cast(extension);
+                    }
+                } catch (final CoreException exception) {
+                    Klighd.handle(exception, Klighd.PLUGIN_ID);
+                }
+                return null;
+            });
+        }
+    }
+
+    /* --------------------------------------------------------- */
+    /*  API for programmatic registrations of extensions         */
+    /* --------------------------------------------------------- */
+
+    public KlighdDataManager registerViewer(final String id, final IViewerProvider viewerProvider) {
+        return doRegisterExtension(id, viewerProvider, IViewerProvider.class,
+                () -> idViewerProviderMapping.put(id, viewerProvider));
+    }
+
+    public KlighdDataManager registerUpdateStrategy(final String id, final IUpdateStrategy updateStrategy) {
+        return doRegisterExtension(id, updateStrategy, IUpdateStrategy.class, 
+                () -> doRegisterUpdateStrategy(id, updateStrategy));
+    }
+
+    public KlighdDataManager registerStyleModifier(final String id, final IStyleModifier styleModifier) {
+        return doRegisterExtension(id, styleModifier, IStyleModifier.class,
+                () -> idStyleModifierMapping.put(id, styleModifier));
+    }
+
+    public KlighdDataManager registerAction(final String id, final IAction action) {
+        return doRegisterExtension(id, action, IAction.class,
+                () -> idActionMapping.put(id, action));
+    }
+
+    public KlighdDataManager registerExportBranding(final String id,
+            final IExportBranding exportBranding, String supportedFormat, final String... moreSupportedFormats) {
+
+        return doRegisterExtension(id, exportBranding, IExportBranding.class, () -> {
+            if (Strings.isNullOrEmpty(supportedFormat)) {
+                throw new IllegalArgumentException(
+                        "KLighD: The 'supportedFormat' must not be 'null' or empty, more formats may be added."); 
+            } else {
+                idExportBrandingMapping.put(id, new ExportBrandingDescriptor(id,
+                        Lists.asList(supportedFormat, moreSupportedFormats), () -> exportBranding));
+                return null;
+            }
+        });
+    }
+
+    public KlighdDataManager registerOffscreenRenderer(final String id,
+            final IOffscreenRenderer offscreenRenderer, String supportedFormat, final String... moreSupportedFormats) {
+
+        return doRegisterExtension(id, offscreenRenderer, IOffscreenRenderer.class, () -> {
+            if (Strings.isNullOrEmpty(supportedFormat)) {
+                throw new IllegalArgumentException(
+                        "KLighD: The 'supportedFormat' must not be 'null' or empty, more formats may be added."); 
+            } else {
+                idOffscreenRendererMapping.put(id, new OffscreenRendererDescriptor(id,
+                        Lists.asList(supportedFormat, moreSupportedFormats), () -> offscreenRenderer));
+                return null;
+            }
+        });
+    }
+
+    private <T> KlighdDataManager doRegisterExtension(final String id, final T element,
+            final Class<T> type, final Supplier<T> registration) {
+        final String typeName = type.getSimpleName();
+        final String msgSuffix = " while registering an '" + typeName + "'.";
+
+        if (Strings.isNullOrEmpty(id))
+            throw new IllegalArgumentException(
+                    "KLighD: 'id' must not be 'null' or empty" + msgSuffix);
+        else if (element == null)
+            throw new IllegalArgumentException(
+                    "KLighD: 'viewerProvider' must not be 'null'" + msgSuffix);
+        else {
+            final T previous = registration.get();
+            if (previous != null)
+                Klighd.log(new Status(IStatus.WARNING, Klighd.PLUGIN_ID,
+                        typeName + " mapping of '" + id + "' -> '"
+                                + previous.getClass().getCanonicalName()
+                                + "' has been overwritten with instance of type '"
+                                + type.getCanonicalName() + "'."));
+        }
+
+        return this;
+    }
+
+    public KlighdDataManager registerDiagramSynthesisClass(Class<? extends AbstractDiagramSynthesis<?>> clazz) {
+        return registerDiagramSynthesisClass(null, clazz);
+    }
+
+    public KlighdDataManager registerDiagramSynthesisClass(final String id,
+            Class<? extends AbstractDiagramSynthesis<?>> clazz) {
+        return registerDiagramSynthesisClass(id, clazz, true);
+    }
+
+    public KlighdDataManager registerDiagramSynthesisClass(final String id,
+            Class<? extends AbstractDiagramSynthesis<?>> clazz, boolean wrapWithReinitializer) {
+        registerDiagramSynthesisClass(id, clazz, wrapWithReinitializer,
+                this.idSynthesisMapping, this.typeSynthesisMapping);
+
+        return this;
+    }
+
+    /**
+     * Loads the registered {@link de.cau.cs.kieler.klighd.syntheses.AbstractDiagramSynthesis
+     * AbstractDiagramSynthesis} from the extension point and and returns the .
+     */
+    private final void loadDiagramSynthesesViaExtensionPoint(Map<String, ISynthesis> idSynthesisMapping,
+            Multimap<Class<?>, ISynthesis> typeSynthesisMapping) {
+        final Iterable<IConfigurationElement> extensions = Iterables.filter(
+                Arrays.asList(
+                        Platform.getExtensionRegistry().getConfigurationElementsFor(EXTP_ID_DIAGRAM_SYNTHESES)
+                ),
+                element -> ELEMENT_DIAGRAM_SYNTHESIS.equals(element.getName())
+        );
 
         for (final IConfigurationElement element : extensions) {
-            if (ELEMENT_DIAGRAM_SYNTHESIS.equals(element.getName())) {
+            final String id = element.getAttribute(ATTRIBUTE_ID);
+            if (Strings.isNullOrEmpty(id))
+                reportError(EXTP_ID_DIAGRAM_SYNTHESES, element, ATTRIBUTE_ID, null, null);
+            
+            else {
+                    
                 // initialize model transformation from the extension point
                 ISynthesis synthesis = null;
                 try {
@@ -361,44 +554,88 @@ public final class KlighdDataManager {
                     Klighd.handle(
                             new Status(IStatus.ERROR, Klighd.PLUGIN_ID, msg, exception
                                     .getCause()));
+                } catch (final Throwable throwable) {
+                    final String msg =
+                           UNEXPECTED_FAILURE_MSG.replace("<<CLAZZ>>",
+                                    element.getAttribute(ATTRIBUTE_CLASS).replaceFirst(
+                                            GuiceBasedSynthesisFactory.CLASS_NAME + ":", ""));
+                    Klighd.handle(
+                            new Status(IStatus.ERROR, Klighd.PLUGIN_ID, msg, throwable));
                 }
 
                 if (synthesis != null) {
-                    final String id = element.getAttribute(ATTRIBUTE_ID);
-                    if (id == null || id.length() == 0) {
-                        reportError(EXTP_ID_DIAGRAM_SYNTHESES, element, ATTRIBUTE_ID, null);
-                    } else {
-                        try {
-                            idSynthesisMapping.put(id, synthesis);
-                            final Class<?> inputDataType = synthesis.getInputDataType();
-                            if (inputDataType != null) {
-                                typeSynthesisMapping.put(inputDataType, synthesis);
-                            }
-
-                        } catch (final WrappedException exception) {
-                            Klighd.handle(
-                                    new Status(IStatus.ERROR, Klighd.PLUGIN_ID, exception
-                                            .getMessage(), exception.getCause()));
-                        } catch (final Exception exception) {
-                            final String msg =
-                                    "KLighD: An unexpected exception occured while loading "
-                                            + "diagram synthesis " + id
-                                            + ". See attached trace for details." + NEW_LINE
-                                            + exception.getMessage();
-                            Klighd.handle(
-                                    new Status(IStatus.ERROR, Klighd.PLUGIN_ID, msg,
-                                            exception.getCause()));
-                        }
-                    }
+                    idSynthesisMapping.put(id, synthesis);
+                    inferInputType(synthesis, id, typeSynthesisMapping);
                 }
             }
         }
-
-        // I hope the ImmutableMultiMap is better wrt. to query performance
-        //  so this immutable copy of the temporary map is created.
-        this.typeSynthesisMapping = ImmutableMultimap.copyOf(typeSynthesisMapping);
     }
 
+    /**
+     * Loads the registered {@link de.cau.cs.kieler.klighd.syntheses.AbstractDiagramSynthesis
+     * AbstractDiagramSynthesis} via Java {@link ServiceLoader}.
+     */
+    private void loadDiagramSynthesesViaServiceLoader(Map<String, ISynthesis> idSynthesisMapping,
+            Multimap<Class<?>, ISynthesis> typeSynthesisMapping) {
+
+        @SuppressWarnings("unchecked")
+        final Iterable<Class<? extends AbstractDiagramSynthesis<?>>> extensions = Iterables.transform(
+                ServiceLoader.load(AbstractDiagramSynthesis.class, KlighdDataManager.class.getClassLoader()),
+                s -> (Class<? extends AbstractDiagramSynthesis<?>>) s.getClass()
+        );
+
+        for (Class<? extends AbstractDiagramSynthesis<?>> clazz: extensions) {
+            registerDiagramSynthesisClass(null, clazz, true, idSynthesisMapping, typeSynthesisMapping);
+        }
+    }
+
+    private void registerDiagramSynthesisClass(final String id,
+            Class<? extends AbstractDiagramSynthesis<?>> clazz, boolean wrapWithReinitializer,
+                    Map<String, ISynthesis> idSynthesisMapping,
+                    Multimap<Class<?>, ISynthesis> typeSynthesisMapping) {
+        final String nonNullId = !Strings.isNullOrEmpty(id) ? id : clazz.getCanonicalName();
+        
+        final ISynthesis synthesis;
+        if (wrapWithReinitializer)
+            synthesis = GuiceBasedSynthesisFactory.getReinitializingDiagramSynthesisProxy(clazz);
+        else {
+            try {
+                synthesis = clazz.newInstance();
+
+            } catch (final InstantiationException | IllegalAccessException | Error e) {
+                final String msg =
+                        INSTANTIATION_FAILURE_MSG.replace("<<CLAZZ>>", clazz.getCanonicalName());
+                Klighd.handle(new Status(IStatus.ERROR, Klighd.PLUGIN_ID, msg, e));
+
+                return;
+            }
+        }
+
+        idSynthesisMapping.put(nonNullId, synthesis);
+        inferInputType(synthesis, nonNullId, typeSynthesisMapping);
+    }
+
+    private void inferInputType(ISynthesis synthesis, String id, Multimap<Class<?>, ISynthesis> typeSynthesisMapping) {
+        try {
+            final Class<?> inputDataType = synthesis.getInputDataType();
+            if (inputDataType != null) {
+                typeSynthesisMapping.put(inputDataType, synthesis);
+            }
+        } catch (final WrappedException exception) {
+            Klighd.handle(
+                    new Status(IStatus.ERROR, Klighd.PLUGIN_ID, exception
+                            .getMessage(), exception.getCause()));
+        } catch (final Exception exception) {
+            final String msg =
+                    "KLighD: An unexpected exception occured while loading "
+                            + "diagram synthesis " + id
+                            + ". See attached trace for details." + NEW_LINE
+                            + exception.getMessage();
+            Klighd.handle(
+                    new Status(IStatus.ERROR, Klighd.PLUGIN_ID, msg,
+                            exception.getCause()));
+        }
+    }
 
     /**
      * Returns the list of registered {@link ISynthesis} implementations whose input types are
@@ -658,22 +895,16 @@ public final class KlighdDataManager {
         IConfigurationElement element = null;
         try {
             element = exportersMap.get(id);
-        if (element == null) {
-            throw new IllegalArgumentException("Id of " + IDiagramExporter.class + " not registered: "
-                    + id + ".");
-        }
-        exporter = (IDiagramExporter) element.createExecutableExtension("class");
+            if (element == null) {
+                throw new IllegalArgumentException("Id of " + IDiagramExporter.class + " not registered: "
+                        + id + ".");
+            }
+            exporter = (IDiagramExporter) element.createExecutableExtension("class");
         } catch (final CoreException exception) {
-            reportError(EXTP_ID_EXTENSIONS, element, ATTRIBUTE_ID, exception);
+            reportError(EXTP_ID_EXTENSIONS, element, ATTRIBUTE_ID, null, exception);
         }
         return exporter;
     }
-
-//    /** name of the 'supportedFormats' attribute in the 'offscreenRenderer' extensions. */
-//    private static final String ATTRIBUTE_SUPPORTED_FORMATS = "supportedFormats";
-
-    /** the mapping of formats and the supporting export hooks. */
-    private static Multimap<String, IConfigurationElement> formatExportHookMapping = null;
 
     /**
      * Returns the collection of registered {@link IExportBranding IExportHooks} with the given
@@ -686,46 +917,23 @@ public final class KlighdDataManager {
      *
      * @return the {@link Iterable} of {@link IExportBranding IExportHooks}
      */
-    public static Iterable<IExportBranding> getExportBrandingByFormat(final String format,
+    public Iterable<IExportBranding> getExportBrandingByFormat(final String format,
             final ViewContext viewContext) {
-        if (formatExportHookMapping == null) {
-            formatExportHookMapping = ArrayListMultimap.create();
-
-            final IConfigurationElement[] extensions =
-                    Platform.getExtensionRegistry().getConfigurationElementsFor(EXTP_ID_EXTENSIONS);
-
-            for (final IConfigurationElement element : extensions) {
-                if (!ELEMENT_EXPORT_BRANDING.equals(element.getName())) {
-                    continue;
-                }
-
-                // requesting an exportBranding by 'id' is currently not supported
-                // if (Strings.isNullOrEmpty(element.getAttribute(ATTRIBUTE_ID))) {
-                //     KlighdDataManager.reportError(EXTP_ID_EXTENSIONS, element, ATTRIBUTE_ID, null);
-                //     continue;
-                // }
-
-                for (final String f : Strings.nullToEmpty(
-                        element.getAttribute(ATTRIBUTE_SUPPORTED_FORMATS)).split("[,\\s]")) {
-                    formatExportHookMapping.put(f, element);
-                }
-            }
-        }
-
+        final Iterable<ExportBrandingDescriptor> descriptors = Collections2.filter(
+                idExportBrandingMapping.values(),
+                descr -> descr.supportedFormats.contains(format)
+        );
+        
         final List<IExportBranding> result = Lists.newArrayList();
-        for (final IConfigurationElement element : formatExportHookMapping.get(format)) {
-            final IExportBranding branding;
-
-            try {
-                branding = (IExportBranding) element.createExecutableExtension(ATTRIBUTE_CLASS);
+        for (final ExportBrandingDescriptor descr : descriptors) {
+            final IExportBranding branding = descr.supplier.get();
+            
+            if (branding != null) {
                 branding.setViewContext(viewContext);
-            } catch (final Exception e) {
-                KlighdDataManager.reportError(EXTP_ID_EXTENSIONS, element, ATTRIBUTE_CLASS, e);
-                continue;
-            }
-
-            if (branding.isEnabled()) {
-                result.add(branding);
+    
+                if (branding.isEnabled()) {
+                    result.add(branding);
+                }
             }
         }
 
@@ -740,38 +948,12 @@ public final class KlighdDataManager {
      *
      * @return the {@link Collection} of
      */
-    public Collection<IOffscreenRenderer> getOffscreenRenderersByFormat(final String format) {
-        if (formatOffscreenRendererMapping == null) {
-            formatOffscreenRendererMapping = ArrayListMultimap.create();
-
-            final IConfigurationElement[] extensions =
-                    Platform.getExtensionRegistry().getConfigurationElementsFor(EXTP_ID_EXTENSIONS);
-
-            for (final IConfigurationElement element : extensions) {
-                try {
-                    if (ELEMENT_OFFSCREEN_RENDERER.equals(element.getName())) {
-                        // initialize style modifier from the extension point
-                        final IOffscreenRenderer renderer =
-                                (IOffscreenRenderer) element
-                                        .createExecutableExtension(ATTRIBUTE_CLASS);
-                        if (renderer != null) {
-                            final String id = element.getAttribute(ATTRIBUTE_ID);
-                            if (id == null || id.length() == 0) {
-                                reportError(EXTP_ID_EXTENSIONS, element, ATTRIBUTE_ID, null);
-                            } else {
-                                for (final String f : element.getAttribute(ATTRIBUTE_SUPPORTED_FORMATS)
-                                        .split("[,\\s]")) {
-                                    formatOffscreenRendererMapping.put(f, renderer);
-                                }
-                            }
-                        }
-                    }
-                } catch (final CoreException exception) {
-                    Klighd.handle(exception, Klighd.PLUGIN_ID);
-                }
-            }
-        }
-
-        return Collections.unmodifiableCollection(formatOffscreenRendererMapping.get(format));
+    public Collection<OffscreenRendererDescriptor> getOffscreenRenderersByFormat(final String format) {
+        return Collections.unmodifiableCollection(
+                Collections2.filter(
+                        idOffscreenRendererMapping.values(),
+                        descr -> descr.supportedFormats.contains(format)
+                )
+        );
     }
 }

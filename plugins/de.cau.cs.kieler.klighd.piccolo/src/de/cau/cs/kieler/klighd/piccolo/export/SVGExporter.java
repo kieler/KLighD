@@ -67,8 +67,8 @@ public class SVGExporter extends KlighdCanvasExporter {
      */
     public IStatus export(final KlighdMainCamera camera, final ExportData data) {
 
-        final Iterable<IExportBranding> brandings =
-                KlighdDataManager.getExportBrandingByFormat(data.format(), data.viewContext());
+        final Iterable<IExportBranding> brandings = KlighdDataManager.getInstance()
+                .getExportBrandingByFormat(data.format(), data.viewContext());
 
         // ... an determine the bounds of the diagram to be exported
         final PBounds bounds = this.getExportedBounds(camera, data.cameraViewport());

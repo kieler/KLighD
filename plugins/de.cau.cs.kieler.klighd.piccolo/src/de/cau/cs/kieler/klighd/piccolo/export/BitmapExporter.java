@@ -69,8 +69,8 @@ public class BitmapExporter extends KlighdCanvasExporter {
         // ... and determine the bounds of the diagram to be exported
         final Rectangle2D bounds = getExportedBounds(camera, data.cameraViewport());
 
-        final Iterable<IExportBranding> brandings =
-               KlighdDataManager.getExportBrandingByFormat(data.format(), data.viewContext());
+        final Iterable<IExportBranding> brandings = KlighdDataManager.getInstance()
+                .getExportBrandingByFormat(data.format(), data.viewContext());
 
         final TilingData tilingInfo = data.tilingInfo();
 

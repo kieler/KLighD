@@ -36,6 +36,7 @@ import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 
+import de.cau.cs.kieler.klighd.KlighdDataManager.OffscreenRendererDescriptor;
 import de.cau.cs.kieler.klighd.internal.ILayoutConfigProvider;
 import de.cau.cs.kieler.klighd.internal.ILayoutRecorder;
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
@@ -577,11 +578,11 @@ public final class LightDiagramServices {
         }
 
         // look for a matching IOffscreeenRenderer
-        final IOffscreenRenderer renderer = Iterables.getFirst(
+        final OffscreenRendererDescriptor rendererDescriptor = Iterables.getFirst(
                 KlighdDataManager.getInstance().getOffscreenRenderersByFormat(format), null);
 
         // if none exists ...
-        if (renderer == null) {
+        if (rendererDescriptor == null) {
             // omit the translation and return
             return null;
         }
@@ -605,9 +606,17 @@ public final class LightDiagramServices {
 
         theProperties.setProperty(IOffscreenRenderer.OUTPUT_FORMAT, format);
 
-        // finally render the diagram and return the result
-        final IStatus result = renderer.render(viewContext, output, theProperties);
+        final IOffscreenRenderer renderer = rendererDescriptor.supplier.get();
+        if (renderer == null) {
+            return new Status(IStatus.ERROR, Klighd.PLUGIN_ID,
+                    "Instantiation of offscreen renderer '" + rendererDescriptor.id
+                            + "' failed, see log for more information.");
 
-        return result;
+        } else {
+            // finally instantiate the renderer, render the diagram and return the result
+            final IStatus result = renderer.render(viewContext, output, theProperties);
+
+            return result;
+        }
     }
 }
