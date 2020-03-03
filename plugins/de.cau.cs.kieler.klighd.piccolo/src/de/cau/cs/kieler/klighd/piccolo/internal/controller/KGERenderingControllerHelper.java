@@ -26,6 +26,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
 import org.osgi.framework.Bundle;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 
@@ -617,6 +618,7 @@ final class KGERenderingControllerHelper {
             final KImage image, final List<KStyle> propagatedStyles, final IKlighdNode parent,
             final Bounds initialBounds) {
 
+        final boolean platformIsRunning = Klighd.IS_PLATFORM_RUNNING;
         final KlighdImage imageNode;
 
         // create the image, the bounds of imageNode are set within the KlighdImage implementation
@@ -626,23 +628,33 @@ final class KGERenderingControllerHelper {
         } else if (image.getImageObject() instanceof ImageData) {
             imageNode = new KlighdImage((ImageData) image.getImageObject(), image);
 
-        } else if (image.getBundleName() == null) {
-            final String msg =
-                    "KLighD: Error occurred while loading an image from a bundle "
-                    + "('imageObject' == null): 'bundleName' is null, too, which is not expected!";
+        } else if (image.getImageObject() != null) {
+            final String msg = "KlighD: Found unexpected object of type '"
+                    + image.getImageObject().getClass().getCanonicalName()
+                    + "', expected instance of (SWT) 'Image' or 'ImageData',"
+                    + " or 'null' provided 'imagePath' is not 'null' or empty.";
             Klighd.log(new Status(IStatus.ERROR, KlighdPiccolo.PLUGIN_ID, msg));
-            
+
+            return createDummy(parent, initialBounds);
+
+        } else if (platformIsRunning && Strings.isNullOrEmpty(image.getBundleName())) {
+            final String msg = "KLighD: Error occurred while loading an image from a bundle "
+                    + "('imageObject' == null): 'bundleName' is null, too, "
+                    + "which is not expected when running on an eclipse platform! "
+                    + "Provide the name of the bundle containing the image file in 'bundleName'.";
+            Klighd.log(new Status(IStatus.ERROR, KlighdPiccolo.PLUGIN_ID, msg));
+
             return createDummy(parent, initialBounds);
 
         } else {
             // determine the containing bundle,
             // trim potentially leading and trailing quotation marks
-            final String bundleName = image.getBundleName().replace("\"", "");
-            final String msgBundleInfix = !Klighd.IS_PLATFORM_RUNNING ? "" : " from bundle " + bundleName;
+            final String bundleName = Strings.nullToEmpty(image.getBundleName()).replace("\"", "");
+            final String msgBundleInfix = !platformIsRunning ? "" : " from bundle " + bundleName;
 
-            final Bundle bundle = Platform.getBundle(bundleName);
+            final Bundle bundle = platformIsRunning ? Platform.getBundle(bundleName) : null;
 
-            if (bundle == null) {
+            if (platformIsRunning && bundle == null) {
                 final String msg = "KLighD: Error occurred while loading an image from bundle "
                         + image.getBundleName()
                         + " : Bundle is not available!";
@@ -650,9 +662,9 @@ final class KGERenderingControllerHelper {
                 
                 return createDummy(parent, initialBounds);
 
-            } else if (image.getImagePath() == null) {
-                final String msg = "KLighD: Error occurred while loading an image from bundle "
-                        + bundleName + " : 'imagePath' is null!" + KlighdPlugin.LINE_SEPARATOR
+            } else if (Strings.isNullOrEmpty(image.getImagePath())) {
+                final String msg = "KLighD: Error occurred while loading an image"
+                        + msgBundleInfix + ": 'imagePath' is 'null' or empty!" + Klighd.LINE_SEPARATOR
                         + "Provide a valid bundle relative path of the image!";
                 Klighd.log(new Status(IStatus.ERROR, KlighdPiccolo.PLUGIN_ID, msg));
                 
@@ -660,19 +672,20 @@ final class KGERenderingControllerHelper {
 
             } else {
                 final String imagePath = image.getImagePath().replace("\"", "");
-                final URL entry = bundle.getEntry(imagePath);
+                final URL entry = platformIsRunning ? bundle.getEntry(imagePath)
+                        : Klighd.class.getResource(imagePath);
 
                 if (entry == null) {
-                    final String msg = "KLighD: Error occurred while loading an image from bundle "
-                            + bundleName + " : No entry could be found on path " + imagePath
-                            + KlighdPlugin.LINE_SEPARATOR
+                    final String msg = "KLighD: Error occurred while loading an image"
+                            + msgBundleInfix + " : No entry could be found on path " + imagePath
+                            + Klighd.LINE_SEPARATOR
                             + "Provide a valid bundle relative path of the image!";
                     Klighd.log(new Status(IStatus.ERROR, KlighdPiccolo.PLUGIN_ID, msg));
                     
                     return createDummy(parent, initialBounds);
 
                 } else {
-                    imageNode = new KlighdImage(bundleName, imagePath, image);
+                    imageNode = new KlighdImage(entry, image);
                 }
             }
         }
