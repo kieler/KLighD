@@ -15,4 +15,12 @@ public class KlighdPiccolo {
     
     /** the plug-in ID. */
     public static final String PLUGIN_ID = Klighd.PLUGIN_ID + ".piccolo";
+    
+    /** The freeHEP-based SVG generator's id, requires the fragment "...klighd.piccolo.freehep". */
+    public static final String GENERATOR_SVG_FREEHEP_EXTENDED =
+            "de.cau.cs.kieler.klighd.piccolo.svggen.freeHEPExtended";
+
+    /** The Batik-based SVG generator's id, requires the fragment "...klighd.piccolo.batik". */
+    public static final String GENERATOR_SVG_BATIK =
+            "de.cau.cs.kieler.klighd.piccolo.svggen.batik";
 }

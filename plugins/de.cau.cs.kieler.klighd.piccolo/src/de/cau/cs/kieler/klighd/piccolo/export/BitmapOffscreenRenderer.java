@@ -38,6 +38,9 @@ import de.cau.cs.kieler.klighd.util.RunnableWithResult;
  */
 public class BitmapOffscreenRenderer extends AbstractOffscreenRenderer {
 
+    /** The id used at registration of the offscreen renderer in the plugin.xml. */
+    public static final String ID = "de.cau.cs.kieler.klighd.piccolo.export.BitmapOffscreenRenderer";
+
     private static final String DISPLAY_ACCESS_FAILURE =
             "KLighD offscreen diagram export: "
                     + "A display is required for creating raster images (BMP, JPEG, PNG)!";
