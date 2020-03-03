@@ -99,6 +99,15 @@ public final class KlighdDataManager {
     /** name of the 'supportedFormats' attribute in the 'offscreenRenderer' extensions. */
     private static final String ATTRIBUTE_SUPPORTED_FORMATS = "supportedFormats";
 
+    /** The related extensions' name. */
+    private static final String ELEMENT_WRAPPER = "wrapper";
+
+    /** The wrapped type field's name. */
+    private static final String ATTRIBUTE_FIGURE_CLASS_ENTRY_NAME = "figureClass";
+
+    /** The wrapper type field's name. */
+    private static final String ATTRIBUTE_WRAPPER_CLASS_ENTRY_NAME = "wrapperClass";
+
     /** the platform-specific newline delimiter. */
     private static final String NEW_LINE = Klighd.LINE_SEPARATOR;
 
@@ -182,6 +191,9 @@ public final class KlighdDataManager {
 
     /** the mapping of ids to the associated off-screen renderer descriptors. */
     private final Map<String, OffscreenRendererDescriptor> idOffscreenRendererMapping = Maps.newHashMap();
+
+    /** the mapping of custom figure types to wrapper figure type being supported by KLighD. */
+    private final List<CustomFigureWrapperDescriptor> customFigureWrapperMapping = Lists.newArrayList();
 
     /**
      * A private constructor to prevent instantiation.
@@ -278,11 +290,14 @@ public final class KlighdDataManager {
                 checkFormatsAndRegisterWithSupplier(element, IExportBranding.class, 
                         (supportedFormatsSplit, supplier) -> idExportBrandingMapping.put(id,
                                 new ExportBrandingDescriptor(id, supportedFormatsSplit, supplier)));
-                
+
             } else if (ELEMENT_OFFSCREEN_RENDERER.equals(element.getName())) {
                 checkFormatsAndRegisterWithSupplier(element, IOffscreenRenderer.class, 
                         (supportedFormatsSplit, supplier) -> idOffscreenRendererMapping.put(id,
                                 new OffscreenRendererDescriptor(id, supportedFormatsSplit, supplier)));
+
+            } else if (ELEMENT_WRAPPER.equals(element.getName())) {
+                registerCustomFigureWrapper(element);
 
             } else {
                 final String msg = "KLighD: Found element with invalid name '" + element.getName()
@@ -413,6 +428,43 @@ public final class KlighdDataManager {
         }
     }
 
+    /**
+     * Data record containing the information about an offscreen renderer.
+     */
+    public static final class CustomFigureWrapperDescriptor {
+        public final String customFigureType;
+        public final String wrapperType;
+        public final String contributor;
+
+        private CustomFigureWrapperDescriptor(final String customFigureType,
+                final String wrapperType, final String contributor) {
+            this.customFigureType = customFigureType;
+            this.wrapperType = wrapperType;
+            this.contributor = contributor;
+        }
+    }
+
+    private void registerCustomFigureWrapper(final IConfigurationElement element) {
+        final String customFigureType = element.getAttribute(ATTRIBUTE_FIGURE_CLASS_ENTRY_NAME);
+        final String wrapperType = element.getAttribute(ATTRIBUTE_WRAPPER_CLASS_ENTRY_NAME);
+
+        final String contributor = element.getContributor().getName();
+
+        if (Strings.isNullOrEmpty(customFigureType)) {
+            final String msg = "KLighD: Custom figure type is 'null' or empty "
+                    + "in a custom figure wrapper extension of '" + contributor + "'.";
+            Klighd.log(new Status(IStatus.ERROR, Klighd.PLUGIN_ID, msg));
+
+        } else if (Strings.isNullOrEmpty(wrapperType)) {
+            final String msg = "KLighD: Wrapper figure type is 'null' or empty "
+                    + "in a custom figure wrapper extension of '" + contributor + "'.";
+            Klighd.log(new Status(IStatus.ERROR, Klighd.PLUGIN_ID, msg));
+
+        } else {
+            customFigureWrapperMapping.add(new CustomFigureWrapperDescriptor(customFigureType, wrapperType, contributor));
+        }
+    }
+
     /* --------------------------------------------------------- */
     /*  API for programmatic registrations of extensions         */
     /* --------------------------------------------------------- */
@@ -486,6 +538,27 @@ public final class KlighdDataManager {
                                 + previous.getClass().getCanonicalName()
                                 + "' has been overwritten with instance of type '"
                                 + type.getCanonicalName() + "'."));
+        }
+
+        return this;
+    }
+
+    public KlighdDataManager registerCustomFigureWrapper(final String customFigureType,
+            final String wrapperType) {
+        return registerCustomFigureWrapper(customFigureType, wrapperType, null);
+    }
+
+    public KlighdDataManager registerCustomFigureWrapper(final String customFigureType,
+            final String wrapperType, final String contributingBundle) {
+        if (Strings.isNullOrEmpty(customFigureType)) {
+            throw new IllegalArgumentException("KLighD: Custom figure type is 'null' or empty.");
+
+        } else if (Strings.isNullOrEmpty(wrapperType)) {
+            throw new IllegalArgumentException("KLighD: Wrapper figure type is 'null' or empty.");
+
+        } else {
+            customFigureWrapperMapping.add(new CustomFigureWrapperDescriptor(customFigureType,
+                    wrapperType, contributingBundle));
         }
 
         return this;
@@ -955,5 +1028,14 @@ public final class KlighdDataManager {
                         descr -> descr.supportedFormats.contains(format)
                 )
         );
+    }
+
+    /**
+     * Returns the list of registered custom figure wrapper mappings.
+     * 
+     * @return the {@link List} of registered custom figure wrappers
+     */
+    public List<CustomFigureWrapperDescriptor> getCustomFigureWrapperDescriptors() {
+        return Collections.unmodifiableList(customFigureWrapperMapping);
     }
 }
