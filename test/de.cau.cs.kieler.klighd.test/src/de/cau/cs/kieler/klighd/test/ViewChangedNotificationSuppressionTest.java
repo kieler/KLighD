@@ -13,20 +13,14 @@
  */
 package de.cau.cs.kieler.klighd.test;
 
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import org.eclipse.elk.core.data.LayoutMetaDataService;
 import org.eclipse.elk.core.options.CoreOptions;
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -54,7 +48,6 @@ import de.cau.cs.kieler.klighd.ViewChangeType;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.ZoomStyle;
 import de.cau.cs.kieler.klighd.kgraph.KNode;
-import de.cau.cs.kieler.klighd.kgraph.util.KGraphDataUtil;
 import de.cau.cs.kieler.klighd.piccolo.viewer.PiccoloViewer;
 import de.cau.cs.kieler.klighd.util.Iterables2;
 import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties;
@@ -99,7 +92,7 @@ public class ViewChangedNotificationSuppressionTest {
         shell.setLocation(100, 100);
         shell.setLayout(new FillLayout());
 
-        viewContext = new ViewContext((IDiagramWorkbenchPart) null, loadTestModel())
+        viewContext = new ViewContext((IDiagramWorkbenchPart) null, KlighdTestPlugin.loadTestModel())
                 .configure(new KlighdSynthesisProperties().useViewer(PiccoloViewer.ID));
 
         new ContextViewer(shell).setModel(viewContext, true);
@@ -107,30 +100,10 @@ public class ViewChangedNotificationSuppressionTest {
         heightDelta = 200 - viewContext.getViewer().getControl().getSize().y;
         shell.setSize(300, 200 + heightDelta);
 
-        KGraphDataUtil.loadDataElements((KNode) viewContext.getInputModel());
         viewContext.update(null);
 
         // the zoom to fit causes the VIEW_PORT change events the listeners are waiting for
         viewContext.setZoomStyle(ZoomStyle.ZOOM_TO_FIT);
-    }
-
-    /**
-     * Loads 'circuit.kgx' from within this bundle.
-     *
-     * @return the runtime representation of the test model.
-     */
-    private EObject loadTestModel() {
-        final ResourceSet set = new ResourceSetImpl();
-
-        final Iterator<URL> it =
-                Iterators.forEnumeration(KlighdTestPlugin.getDefault().getBundle()
-                        .findEntries("/", "circuit.kgx", true));
-        if (!it.hasNext()) {
-            Assert.fail("Test model 'circuit.kgx' could not be found!");
-        }
-
-        final Resource res = set.getResource(URI.createURI(it.next().toString(), true), true);
-        return res.getContents().get(0);
     }
 
     /**
