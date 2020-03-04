@@ -26,6 +26,8 @@ import org.eclipse.elk.core.service.DiagramLayoutEngine;
 import org.eclipse.elk.core.service.DiagramLayoutEngine.Parameters;
 import org.eclipse.elk.core.service.ElkServicePlugin;
 import org.eclipse.elk.core.util.IElkCancelIndicator;
+import org.eclipse.elk.core.util.IElkProgressMonitor;
+import org.eclipse.elk.core.util.NullElkProgressMonitor;
 import org.eclipse.elk.core.util.Pair;
 import org.eclipse.elk.graph.properties.IProperty;
 import org.eclipse.elk.graph.properties.IPropertyHolder;
@@ -39,6 +41,7 @@ import com.google.common.collect.Lists;
 import de.cau.cs.kieler.klighd.KlighdDataManager.OffscreenRendererDescriptor;
 import de.cau.cs.kieler.klighd.internal.ILayoutConfigProvider;
 import de.cau.cs.kieler.klighd.internal.ILayoutRecorder;
+import de.cau.cs.kieler.klighd.internal.macrolayout.KlighdLayoutSetup;
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
 import de.cau.cs.kieler.klighd.kgraph.KNode;
 import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties;
@@ -230,19 +233,34 @@ public final class LightDiagramServices {
     
             final Object diagramPart = recorder != null ? recorder : theViewContext;
     
-            final IElkCancelIndicator cancelationIndicator =
-                    thePart != null ? new DispositionAwareCancelationHandle(thePart) : null;
-    
-            if (additionalConfigs.isEmpty()) {
-                DiagramLayoutEngine.invokeLayout(thePart, diagramPart, cancelationIndicator,
-                        layoutParameters);
+            for (LayoutConfigurator c : additionalConfigs) {
+                layoutParameters.addLayoutRun(c);
+            }
+
+            // instantiating 'KlighdLayoutSetup' and asking for the DiagramLayoutEngine instance
+            //  is probably not in the spirit of the ELK Service API,
+            // but is required for non-eclipse-platform-based usages
+            // for the sake of simplicity I decided to go that way in both scenarios
+            //  (with _and_ without a running eclipse platform)
+            final DiagramLayoutEngine engine = new KlighdLayoutSetup().getDiagramLayoutEngine();
+            final IStatus status;
+
+            if (Klighd.IS_PLATFORM_RUNNING) {
+                final IElkCancelIndicator cancelationIndicator =
+                        thePart != null ? new DispositionAwareCancelationHandle(thePart) : null;
+
+                status = engine.layout(thePart, diagramPart, cancelationIndicator, layoutParameters)
+                        .getProperty(DiagramLayoutEngine.MAPPING_STATUS);
+
             } else {
-                for (LayoutConfigurator c : additionalConfigs) {
-                    layoutParameters.addLayoutRun(c);
-                }
-    
-                DiagramLayoutEngine.invokeLayout(thePart, diagramPart, cancelationIndicator,
-                        layoutParameters);
+                final IElkProgressMonitor progressMonitor = new NullElkProgressMonitor();
+
+                status = engine.layout(thePart, diagramPart, progressMonitor, layoutParameters)
+                        .getProperty(DiagramLayoutEngine.MAPPING_STATUS);
+            }
+
+            if (status != null && !status.isOK()) {
+                Klighd.log(status);
             }
         } else {
             if (recorder != null) {
