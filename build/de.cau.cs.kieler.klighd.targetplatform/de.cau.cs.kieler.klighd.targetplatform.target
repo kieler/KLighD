@@ -20,7 +20,7 @@
       <unit id="org.eclipse.elk.sdk.feature.feature.group" version="0.0.0"/>
       <unit id="org.eclipse.elk.ui.feature.feature.group" version="0.0.0"/>
       <unit id="org.eclipse.elk.ui.feature.source.feature.group" version="0.0.0"/>
-      <repository location="http://download.eclipse.org/elk/updates/releases/0.6.0/"/>
+      <repository location="http://download.eclipse.org/elk/updates/releases/0.6.1/"/>
     </location>
     <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
       <unit id="org.eclipse.xtext.sdk.feature.group" version="0.0.0"/>
