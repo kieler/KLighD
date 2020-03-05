@@ -110,6 +110,17 @@
     </dependency>
   </dependencies>
 
+  <distributionManagement>
+    <snapshotRepository>
+      <id>localSnapshot</id>
+      <url>file://klighd-snapshots</url>
+    </snapshotRepository>
+    <repository>
+      <id>localSnapshot</id>
+      <url>file://klighd</url>
+    </repository>
+  </distributionManagement>
+
   <!-- Modify the build process to add Tycho and configure some utility plug-ins. -->
   <build>
     <plugins>
