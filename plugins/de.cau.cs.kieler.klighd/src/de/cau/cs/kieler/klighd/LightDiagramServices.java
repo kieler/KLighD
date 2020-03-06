@@ -602,17 +602,25 @@ public final class LightDiagramServices {
         // if none exists ...
         if (rendererDescriptor == null) {
             // omit the translation and return
-            return null;
+            return new Status(IStatus.WARNING, Klighd.PLUGIN_ID,
+                    "No suitable offscreen renderer found for output format " + format + ".");
         }
 
         // otherwise try to build up a corresponding view context
-        final ViewContext viewContext = translateModel2(model, null, properties);
+        final ViewContext viewContext;
+        try {
+            viewContext = translateModel2(model, null, properties);
 
-        // if no corresponding diagram synthesis is available and, thus, no diagram has been created...
-        if (viewContext.getViewModel() == null
-                || viewContext.getViewModel().getChildren().isEmpty()) {
-            // skip the rendering call and return
-            return null;
+            // if no corresponding diagram synthesis is available and, thus, no diagram has been created...
+            if (viewContext.getViewModel() == null
+                    || viewContext.getViewModel().getChildren().isEmpty()) {
+                // skip the rendering call and return
+                return new Status(IStatus.WARNING, Klighd.PLUGIN_ID,
+                        "Input model couldn't be translated, got an empty view model.");
+            }
+        } catch (Throwable t) {
+            return new Status(IStatus.ERROR, Klighd.PLUGIN_ID,
+                    "Input model couldn't be translated, see attached trace.", t);
         }
 
         final IPropertyHolder theProperties;
