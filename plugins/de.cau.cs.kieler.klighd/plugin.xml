@@ -70,5 +70,12 @@
             id="de.cau.cs.kieler.klighd.actions.ScaleResetAction">
       </action>
    </extension>
+   <extension
+         point="org.eclipse.elk.core.layoutProviders">
+      <provider
+            class="de.cau.cs.kieler.klighd.KlighdOptions">
+      </provider>
+
+   </extension>
 
 </plugin>
