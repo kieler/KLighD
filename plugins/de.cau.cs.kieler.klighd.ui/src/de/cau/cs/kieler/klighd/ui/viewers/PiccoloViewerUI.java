@@ -41,6 +41,8 @@ import de.cau.cs.kieler.klighd.IKlighdSelection;
 import de.cau.cs.kieler.klighd.IModelModificationHandler;
 import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.IViewerProvider;
+import de.cau.cs.kieler.klighd.KlighdConstants;
+import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
 import de.cau.cs.kieler.klighd.krendering.KText;
@@ -116,6 +118,12 @@ public class PiccoloViewerUI extends PiccoloViewer {
      * SWT text element that acts as an overlay for labels in some situations.
      */
     private StyledText labelWidget;
+    
+    /**
+     * Cached display display scale compensation factor, used for compensating the display scale
+     * when configuring the text label widget.
+     */
+    private float dpiScaleY = 1f;
 
     /**
      * Getter providing the employed {@link StyledText} SWT widget, e.g. for installing additional
@@ -138,6 +146,11 @@ public class PiccoloViewerUI extends PiccoloViewer {
         labelWidget.setEditable(false);
         labelWidget.setVisible(false);
 
+        if (!KlighdPlugin.isSuppressDisplayScaleCompensationWhileHandlingText()) {
+            dpiScaleY =
+                    KlighdConstants.DEFAULT_DISPLAY_DPI / this.getControl().getDisplay().getDPI().y;
+        }
+
         // Configures a new font since on win32 the initially employed font
         //  is used in most other widget of the UI, too!
         // Thus, disposing that font, as done in
@@ -154,7 +167,9 @@ public class PiccoloViewerUI extends PiccoloViewer {
 
         // ... and register it in the workbench part site, in order to let the work bench populate it!
         final IWorkbenchPart part = parentViewer.getViewContext().getDiagramWorkbenchPart();
-        part.getSite().registerContextMenu(KlighdUIPlugin.FLOATING_TEXT_MENU_ID, menu, parentViewer);
+        if (part != null)
+            part.getSite().registerContextMenu(
+                    KlighdUIPlugin.FLOATING_TEXT_MENU_ID, menu, parentViewer);
 
         this.getControl().getCamera().addInputEventListener(
                 new KlighdLabelWidgetEventHandler(this, labelWidget));
@@ -401,7 +416,7 @@ public class PiccoloViewerUI extends PiccoloViewer {
         labelWidget.setLocation((int) Math.round(bounds.getX()), (int) Math.round(bounds.getY()));
 
         final Float prevFontScale = (Float) labelWidget.getData(FONT_SCALE_FACTOR_KEY);
-        final float curViewScale = (float) camera.getViewScale();
+        final float curViewScale = (float) camera.getViewScale() * dpiScaleY;
 
         // in case styledText = null, i.e. this method has been called due to a view transform change
         //  and the widget is not moved to another text field,

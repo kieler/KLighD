@@ -89,10 +89,6 @@ import de.cau.cs.kieler.klighd.util.KlighdSemanticDiagramData;
  * @author uru
  */
 public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
-    
-    /** Whether we're currently running on a Linux system. */
-    private static final boolean RUNNING_ON_LINUX = System.getProperty("os.name").startsWith("Linux")
-            || System.getProperty("os.name").startsWith("LINUX");
 
     public static final String VERSION_1_1 = "Version 1.1 (REC-SVG11-20030114)";
 
@@ -218,6 +214,12 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
     private Display display;
     /** If a display exists, this {@link GC} is used to perform font size calculations. */  
     private GC gc;
+    /** If a display exists, this tracks the display zoom scale ratio to 100% display zoom. */  
+    private float displayScaleX = 1f;
+    /** If a display exists, this tracks the display zoom scale ratio to 100% display zoom. */  
+    private float displayScaleY = 1f;
+    
+    private final float pointToPxFactor = KlighdConstants.DEFAULT_DISPLAY_DPI / 72f;
     /** A mapping of awt fonts to swt fonts. The latter are used for font size calculations. */
     private Map<Font, org.eclipse.swt.graphics.Font> awtSwtFontCache = Maps.newHashMap();
 
@@ -264,7 +266,17 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
         if (display != null && gc == null) {
             // remember to dispose the gc later
             gc = new GC(display);
+            if (!KlighdPlugin.isSuppressDisplayScaleCompensationWhileHandlingText()) {
+                org.eclipse.swt.graphics.Point dpi = display.getDPI();
+                displayScaleX = KlighdConstants.DEFAULT_DISPLAY_DPI / dpi.x;
+                displayScaleY = KlighdConstants.DEFAULT_DISPLAY_DPI / dpi.y;
+            }
         }
+    }
+
+    protected float getAdjustedFontHeight() {
+        final FontMetrics fm = getFontMetrics();
+        return getAdjustedFontHeight(fm.getHeight(), fm.getAscent(), fm.getDescent(), false);
     }
 
     protected SemanticSVGGraphics2D(SemanticSVGGraphics2D graphics, boolean doRestoreOnDispose) {
@@ -778,12 +790,19 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
         //  KLighD uses it to determine the sizes of nodes etc.
         if (isProperty(TEXT_AS_SHAPES)) {
             Path path = new Path(display);
-            path.addString(string, (float) x, (float) y, getSWTFont());
+            path.addString(string, 0, 0, getSWTFont());
             path.close();
 
             // convert to awt path
             Path2D p2d = createAWTPath(path.getPathData());
             path.dispose();
+
+            // since the text shape is created display zoom scale dependent, compensate
+            //  the display's scale now, and shift the path to its designated position
+            final AffineTransform positionAndScale = new AffineTransform();
+            positionAndScale.translate(x, y);
+            positionAndScale.scale(displayScaleX, displayScaleY);
+            p2d.transform(positionAndScale);
 
             fill(p2d);
 
@@ -846,7 +865,7 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
                         getFont().getTransform(),
                         "<text "
                             // style
-                            + addFontHeightUnit(style(style))
+                            + style(style)
                             // semantic data
                             + attributes(false)
                             // Coordinates
@@ -858,31 +877,6 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
         resetSemanticData();
     }
 
-    
-    /**
-     * Parse the attributes string and add a unit to the font-size attribute.
-     * 
-     * A font's size is specified in 'pt' which is a relative size where a height of 72pt
-     * corresponds to 1 inch. When a font is rendered on a screen however, these pts are converted
-     * to pixels and sizes of nodes and boxes are determined correspondingly. We thus use a px size
-     * if we are able to determine the device with wich the font was rendered (i.e. the device).
-     * 
-     * @param attributes
-     *            the text attributes
-     * @return the text attributes with added font-size unit.
-     */
-    private String addFontHeightUnit(final String attributes) {
-        String fontWithUnit;
-        if (display != null) {
-            fontWithUnit =
-                    attributes.replaceFirst("font-size=\"(\\d*(\\.\\d*)?)\"", "font-size=\"$1px\"");
-        } else {
-            fontWithUnit =
-                    attributes.replaceFirst("font-size=\"(\\d*(\\.\\d*)?)\"", "font-size=\"$1pt\"");
-        }
-        return fontWithUnit;
-    }
-    
     /**
      * Insert TSpan elements into a multiline text string.
      * @param text string where lines are indicated by "\n"
@@ -899,32 +893,21 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
         final String[] lines = text.split("\\r?\\n|\\r");
         final StringBuffer content = new StringBuffer();
         if (display != null) {
-            // Translate font size in 'pt' to display 'px', see #addFontHeightUnit javadoc for more information.
-            // As opposed to the font metrics used below, the determined size is a non-rounded decimal number. Linux
-            // is a special case here because the dpi value depends on the display size, not on the scaling factor
-            // chosen by the user. That means that people using high-dpi screens will have font sizes vastly different
-            // from those other people get. We choose 96 in this case as a default that sort of works.
-            final float dpi = RUNNING_ON_LINUX ? 96 : (float) display.getDPI().x;
-            float size = this.getFont().getSize2D() * dpi / 72;
-            
             // Translate the font back to an swt font
             //  KLighD used SWT to determine font sizes and as SWT and AWT font metrics
             //  differ we have to use swt here
             // Note that the font style constants in SWT and AWT are identical
 
-            gc.setFont(getSWTFont());
-            org.eclipse.swt.graphics.FontMetrics fm = gc.getFontMetrics();
-            
-            // FIXME 
-            // The following values are determined experimentally
-            //  as each of the browser/awt/swt seem to determine 
-            //  slightly different values ...
-            // fm.getLeading / 2 seems to be a good value at least under windows
-            
+            final FontMetrics fm = this.getFontMetrics();
+            final int height = fm.getHeight();
+            final int ascent = fm.getAscent();
+            final int descent = fm.getDescent();
+
             // to the 1st baseline 
-            double firstLineHeight = fm.getLeading() / 2d + fm.getAscent();
-            // actually we want to use fm.getHeight, however this seems to be too much
-            double lineHeight = size + fm.getLeading() / 2d; 
+            final float firstLineHeight = getAdjustedFontHeight(height, ascent, descent, true);
+            // distance to each remaining line
+            final float lineHeight = getAdjustedFontHeight(height, ascent, descent, false);
+
             // use tspans to emulate multiline text
             boolean first = true;
             for (final String line : lines) {
@@ -956,6 +939,19 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
         return content.toString();
     }
     
+
+    protected float getAdjustedFontHeight(int height, int ascent, int descent, boolean firstLine) {
+        // FIXME 
+        // The following approximation has been determined experimentally
+        //  as each of the browser/awt/swt seem to determine 
+        //  slightly different values ...
+        // fm.getLeading / 2 seems to be a good value at least under windows
+        // for OSX 'leading' seems to be hard-wired to zero,
+        //  hence 'height == ascent + descent' holds there
+        
+        final int leading = height - ascent - descent;
+        return displayScaleY * (leading + ascent + (firstLine ? 0f : descent));
+    }
 
     /**
      * KLighD uses SWT to estimate font sizes, hence we do 
@@ -1042,11 +1038,17 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
             }
         }
 
+        /*
+         * A font's size is specified in 'pt' which is a relative size where a height of 72pt
+         * corresponds to 1 inch. When a font is rendered on a screen however, these pts are converted
+         * to pixels and sizes of nodes and boxes are determined correspondingly. We thus use a px size
+         * if we are able to determine the device with wich the font was rendered (i.e. the device).
+         */
         Float size = (Float) attributes.get(TextAttribute.SIZE);
         if (display != null) {
-            result.put("font-size", fixedPrecision(size.floatValue() * display.getDPI().x / 72));
+            result.put("font-size", fixedPrecision(size.floatValue() * pointToPxFactor) + "px");
         } else {
-            result.put("font-size", fixedPrecision(size.floatValue()));
+            result.put("font-size", fixedPrecision(size.floatValue()) + "pt");
         }
 
         return result;
@@ -1668,7 +1670,7 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
      * @return the desired {@link Path2D} object.
      */
     public static Path2D createAWTPath(final PathData pathData) {
-        final Path2D p2d = new Path2D.Double();
+        final Path2D p2d = new Path2D.Float();
         final float[] pts = pathData.points;
 
         int i = 0;
