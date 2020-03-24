@@ -22,7 +22,7 @@ import de.cau.cs.kieler.klighd.lsp.interactive.InteractiveUtil
 import java.util.Arrays
 import java.util.List
 import javax.inject.Singleton
-import org.eclipse.elk.alg.packing.rectangles.options.RectPackingOptions
+import org.eclipse.elk.alg.rectpacking.options.RectPackingOptions
 import org.eclipse.elk.core.options.CoreOptions
 import org.eclipse.elk.graph.ElkNode
 import org.eclipse.emf.common.util.URI

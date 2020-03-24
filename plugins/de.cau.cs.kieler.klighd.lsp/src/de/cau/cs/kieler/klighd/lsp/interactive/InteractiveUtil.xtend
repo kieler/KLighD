@@ -22,7 +22,7 @@ import org.eclipse.elk.graph.properties.IProperty
 import org.eclipse.emf.common.util.URI
 import org.eclipse.xtext.resource.XtextResourceSet
 import org.eclipse.elk.core.options.CoreOptions
-import org.eclipse.elk.alg.packing.rectangles.options.RectPackingOptions
+import org.eclipse.elk.alg.rectpacking.options.RectPackingOptions
 
 /**
  * @author sdo

@@ -14,7 +14,7 @@ package de.cau.cs.kieler.klighd.lsp.interactive.rectpack
 
 import de.cau.cs.kieler.klighd.kgraph.KNode
 import de.cau.cs.kieler.klighd.lsp.interactive.InteractiveLayout
-import org.eclipse.elk.alg.packing.rectangles.options.RectPackingOptions
+import org.eclipse.elk.alg.rectpacking.options.RectPackingOptions
 
 /**
  * @author sdo

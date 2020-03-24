@@ -49,7 +49,7 @@ import java.util.List
 import java.util.Map
 import org.apache.log4j.Logger
 import org.eclipse.elk.alg.layered.options.LayeredOptions
-import org.eclipse.elk.alg.packing.rectangles.options.RectPackingOptions
+import org.eclipse.elk.alg.rectpacking.options.RectPackingOptions
 import org.eclipse.elk.core.options.CoreOptions
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.util.EcoreUtil
