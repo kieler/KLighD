@@ -72,7 +72,7 @@ class InteractiveLayout {
             root.setProperty(LayeredOptions.LAYERING_STRATEGY, LayeringStrategy.NETWORK_SIMPLEX)
             root.setProperty(LayeredOptions.CYCLE_BREAKING_STRATEGY, CycleBreakingStrategy.DEPTH_FIRST)
             root.setProperty(LayeredOptions.CROSSING_MINIMIZATION_STRATEGY, CrossingMinimizationStrategy.LAYER_SWEEP)
-        } else if ("rectPacking".equals(algorithm) && !root.children.empty) {
+        } else if ("rectpacking".equals(algorithm) && !root.children.empty) {
             root.setProperty(RectPackingOptions.INTERACTIVE, false)
         } else {
             // Add more cases for different algorithms
@@ -86,13 +86,13 @@ class InteractiveLayout {
     }
     
     /**
-     * Sets interactive options recursiely for a root node.
+     * Sets interactive options recursively for a root node.
      */
     public static def void setRequiredInteractiveOptions(KNode root) {
         val algorithm = root.getProperty(CoreOptions.ALGORITHM)
         if (("layered".equals(algorithm) || algorithm === null) && !root.children.empty) {
             LayeredInteractiveUtil.setCoordinatesDepthFirst(root)
-        } else if ("rectPacking".equals(algorithm) && !root.children.empty) {
+        } else if ("rectpacking".equals(algorithm) && !root.children.empty) {
             RectPackInteractiveUtil.setRequiredInteractiveOptions(root)
         } else {
             // Add more cases for different algorithms

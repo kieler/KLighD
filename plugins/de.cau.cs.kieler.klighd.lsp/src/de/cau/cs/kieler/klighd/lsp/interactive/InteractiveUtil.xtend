@@ -109,7 +109,7 @@ class InteractiveUtil {
                 LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT,
                 LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT
             ]
-        } else if ("rectPacking".equals(algorithm)) {
+        } else if ("rectpacking".equals(algorithm)) {
             props = #[
                 RectPackingOptions.DESIRED_POSITION,
                 RectPackingOptions.ASPECT_RATIO
