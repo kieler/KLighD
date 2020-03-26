@@ -1,7 +1,7 @@
 /*
  * KLighD - KIELER Lightweight Diagrams
  *
- * https://github.com/OpenKieler/KLighD
+ * https://github.com/Kieler/KLighD
  *
  * Copyright 2020 by TypeFox GmbH (typefox.io) and others.
  *
