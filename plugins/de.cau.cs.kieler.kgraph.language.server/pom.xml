@@ -3,14 +3,14 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>de.cau.cs.kieler</groupId>
+    <groupId>de.cau.cs.kieler.klighd</groupId>
     <artifactId>plugins</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.1-SNAPSHOT</version>
   </parent>
 
-  <groupId>de.cau.cs.kieler</groupId>
+  <groupId>de.cau.cs.kieler.klighd</groupId>
   <artifactId>de.cau.cs.kieler.kgraph.language.server</artifactId>
-  <version>0.1.0-SNAPSHOT</version>
+  <version>1.0.1-SNAPSHOT</version>
   <packaging>eclipse-plugin</packaging>
   
   <build>
@@ -23,5 +23,4 @@
       </plugin>
     </plugins>
   </build>
-  
 </project>

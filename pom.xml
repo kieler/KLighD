@@ -20,6 +20,7 @@
     <module>plugins/de.cau.cs.kieler.klighd.kgraph</module>
     <module>plugins/de.cau.cs.kieler.klighd.krendering</module>
     <module>plugins/de.cau.cs.kieler.klighd.krendering.extensions</module>
+    <module>plugins/de.cau.cs.kieler.klighd.lsp</module>
     <module>plugins/de.cau.cs.kieler.klighd.piccolo</module>
     <module>test/de.cau.cs.kieler.klighd.test</module>
     <module>test/de.cau.cs.kieler.klighd.piccolo.test</module>
@@ -31,6 +32,7 @@
     <module>plugins/de.cau.cs.kieler.klighd.ui.emf</module>
     <module>plugins/de.cau.cs.kieler.klighd.ui.view</module>
     <module>plugins/de.cau.cs.kieler.klighd.ui.wizard</module>
+    <module>plugins/de.cau.cs.kieler.kgraph.language.server</module>
     <module>plugins/de.cau.cs.kieler.kgraph.text</module>
     <module>plugins/de.cau.cs.kieler.kgraph.text.ide</module>
     <module>plugins/de.cau.cs.kieler.kgraph.text.ui</module>
