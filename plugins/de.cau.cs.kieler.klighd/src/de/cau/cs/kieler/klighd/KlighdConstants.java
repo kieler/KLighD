@@ -91,8 +91,16 @@ public final class KlighdConstants {
      * Default animation time in ms.
      */
     public static final int DEFAULT_ANIMATION_TIME = 500;
-    
-    
+
+
+    /**
+     * Default display dot density, basically copied from
+     * {@link org.eclipse.swt.internal.DPIUtil#DPI_ZOOM_100()}.
+     * For more details checkout https://en.wikipedia.org/wiki/Dots_per_inch
+     */
+    @SuppressWarnings("restriction")
+    public static final float DEFAULT_DISPLAY_DPI = KlighdPlugin.IS_MACOSX ? 72f : 96f;
+
     /**
      * Constant definition denoting the standard line drawing attributes.
      */
