@@ -49,6 +49,7 @@ import com.google.common.collect.Sets;
 import de.cau.cs.kieler.klighd.IKlighdSelection;
 import de.cau.cs.kieler.klighd.IViewChangeListener;
 import de.cau.cs.kieler.klighd.IViewer;
+import de.cau.cs.kieler.klighd.Klighd;
 import de.cau.cs.kieler.klighd.KlighdTreeSelection;
 import de.cau.cs.kieler.klighd.ViewChangeType;
 import de.cau.cs.kieler.klighd.ViewContext;
@@ -365,6 +366,12 @@ public class ContextViewer implements IViewer, ILayoutRecorder, ISelectionProvid
         return this.currentViewer.isVisible(diagramElement, checkParents);
     }
 
+    private static void checkValidThread(String msgReplacement) {
+        if (Klighd.IS_PLATFORM_RUNNING && PlatformUI.isWorkbenchRunning() && Display.getCurrent() == null) {
+            throw new RuntimeException(NON_DISPLAY_ERROR_MSG.replace("##", msgReplacement));
+        }
+    }
+
     private static final String NON_DISPLAY_ERROR_MSG =
             "KLighD: Application attempted to traverse an Iterator provided by "
             + "IViewer.##. Evaluations of those Iterators must be "
@@ -388,10 +395,8 @@ public class ContextViewer implements IViewer, ILayoutRecorder, ISelectionProvid
 
                 @Override
                 protected Iterator<? extends KNode> getChildren(final Object object) {
-                    if (PlatformUI.isWorkbenchRunning() && Display.getCurrent() == null) {
-                        throw new RuntimeException(NON_DISPLAY_ERROR_MSG.replace("##",
-                                "getVisibleDiagramNodes()"));
-                    }
+                    checkValidThread("getVisibleDiagramNodes()");
+
                     return Iterators.filter(((KNode) object).getChildren().iterator(),
                             new Predicate<KNode>() {
 
@@ -422,10 +427,7 @@ public class ContextViewer implements IViewer, ILayoutRecorder, ISelectionProvid
 
                 @Override
                 protected Iterator<? extends KGraphElement> getChildren(final Object object) {
-                    if (PlatformUI.isWorkbenchRunning() && Display.getCurrent() == null) {
-                        throw new RuntimeException(NON_DISPLAY_ERROR_MSG.replace("##",
-                                "getVisibleDiagramElements()"));
-                    }
+                    checkValidThread("getVisibleDiagramElements()");
 
                     final Iterator<EObject> candidates;
                     if (object instanceof KNode) {

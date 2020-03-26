@@ -18,17 +18,10 @@ import static de.cau.cs.kieler.klighd.piccolo.test.DiagramZoomControllerBoundsCo
 
 import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
-import java.net.URL;
-import java.util.Iterator;
 
 import org.eclipse.elk.core.math.KVector;
 import org.eclipse.elk.core.util.Maybe;
 import org.eclipse.elk.core.util.Pair;
-import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
@@ -49,7 +42,6 @@ import org.junit.runners.Parameterized.Parameter;
 import org.junit.runners.Parameterized.Parameters;
 
 import com.google.common.base.Predicate;
-import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 
 import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
@@ -82,7 +74,7 @@ public class DiagramZoomControllerBoundsComputerTest {
     private static final int EXPECTED_DURATION = 40000; //ms, i.e. 20 seconds
     private static final int A_MOMENT = 500;
 
-    private static final Object testModel = loadTestModel();
+    private static final Object testModel = KlighdTestPlugin.loadTestModel();
     private static final ColorMatcher<Pair<Control, KVector>> IS_BLACK =
             ColorMatcher.acceptingPairsOfControlAndKVectorExpecting(Colors.BLACK);
     private static final ColorMatcher<Pair<Control, KVector>> IS_WHITE =
@@ -99,25 +91,6 @@ public class DiagramZoomControllerBoundsComputerTest {
     private int heightDelta = 0;
 
     // CHECKSTYLEOFF MagicNumber
-
-    /**
-     * Loads 'circuit.kgx' from within this bundle.
-     *
-     * @return the runtime representation of the test model.
-     */
-    private static EObject loadTestModel() {
-        final ResourceSet set = new ResourceSetImpl();
-
-        final Iterator<URL> it =
-                Iterators.forEnumeration(KlighdTestPlugin.getDefault().getBundle()
-                        .findEntries("/", "circuit.kgx", true));
-        if (!it.hasNext()) {
-            Assert.fail("Test model 'circuit.kgx' could not be found!");
-        }
-
-        final Resource res = set.getResource(URI.createURI(it.next().toString(), true), true);
-        return res.getContents().get(0);
-    }
 
     static enum Instruction {
         HIDE_LABELS,

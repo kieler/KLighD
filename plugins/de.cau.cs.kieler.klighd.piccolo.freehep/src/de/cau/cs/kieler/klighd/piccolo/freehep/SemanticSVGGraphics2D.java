@@ -67,8 +67,8 @@ import org.freehep.util.io.WriterOutputStream;
 import com.google.common.base.Strings;
 import com.google.common.collect.Maps;
 
+import de.cau.cs.kieler.klighd.Klighd;
 import de.cau.cs.kieler.klighd.KlighdConstants;
-import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.piccolo.export.KlighdAbstractSVGGraphics.KlighdGradientPaint;
 import de.cau.cs.kieler.klighd.util.KlighdSemanticDiagramData;
 
@@ -266,7 +266,7 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
         if (display != null && gc == null) {
             // remember to dispose the gc later
             gc = new GC(display);
-            if (!KlighdPlugin.isSuppressDisplayScaleCompensationWhileHandlingText()) {
+            if (!Klighd.isSuppressDisplayScaleCompensationWhileHandlingText()) {
                 org.eclipse.swt.graphics.Point dpi = display.getDPI();
                 displayScaleX = KlighdConstants.DEFAULT_DISPLAY_DPI / dpi.x;
                 displayScaleY = KlighdConstants.DEFAULT_DISPLAY_DPI / dpi.y;
@@ -917,7 +917,7 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
                 content.append(tSpanAttributes(line, i++));
                 content.append(">");
                 content.append(line);
-                content.append("</tspan>" + KlighdPlugin.LINE_SEPARATOR);
+                content.append("</tspan>" + Klighd.LINE_SEPARATOR);
                 first = false;
             }
             
@@ -932,7 +932,7 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
                 content.append(tSpanAttributes(line, i++));
                 content.append(">");
                 content.append(line);
-                content.append("</tspan>" + KlighdPlugin.LINE_SEPARATOR);
+                content.append("</tspan>" + Klighd.LINE_SEPARATOR);
             }
         }
 

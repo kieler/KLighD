@@ -24,9 +24,9 @@ import org.eclipse.core.runtime.Status;
 import de.cau.cs.kieler.klighd.DiagramExportConfig;
 import de.cau.cs.kieler.klighd.IExportBranding;
 import de.cau.cs.kieler.klighd.IExportBranding.Trim;
+import de.cau.cs.kieler.klighd.Klighd;
 import de.cau.cs.kieler.klighd.KlighdDataManager;
-import de.cau.cs.kieler.klighd.KlighdPlugin;
-import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;
+import de.cau.cs.kieler.klighd.piccolo.KlighdPiccolo;
 import de.cau.cs.kieler.klighd.piccolo.internal.KlighdCanvas;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
 import edu.umd.cs.piccolo.util.PBounds;
@@ -67,8 +67,8 @@ public class SVGExporter extends KlighdCanvasExporter {
      */
     public IStatus export(final KlighdMainCamera camera, final ExportData data) {
 
-        final Iterable<IExportBranding> brandings =
-                KlighdDataManager.getExportBrandingByFormat(data.format(), data.viewContext());
+        final Iterable<IExportBranding> brandings = KlighdDataManager.getInstance()
+                .getExportBrandingByFormat(data.format(), data.viewContext());
 
         // ... an determine the bounds of the diagram to be exported
         final PBounds bounds = this.getExportedBounds(camera, data.cameraViewport());
@@ -97,7 +97,7 @@ public class SVGExporter extends KlighdCanvasExporter {
 
         } catch (final IllegalArgumentException e) {
             final String msg = "KLighD SVG export: Failed to load SVG exporter backend.";
-            return new Status(IStatus.ERROR, KlighdPiccoloPlugin.PLUGIN_ID, msg, e);
+            return new Status(IStatus.ERROR, KlighdPiccolo.PLUGIN_ID, msg, e);
         }
 
         // The global clip setting is required as (in PPaintContext) a default one will be set!
@@ -129,10 +129,10 @@ public class SVGExporter extends KlighdCanvasExporter {
             String msg = "KLighD SVG export: Failed to write SVG data";
             if (stream != null) {
                 msg += " into the provided OutputStream of type "
-                        + stream.getClass().getCanonicalName() + KlighdPlugin.LINE_SEPARATOR
+                        + stream.getClass().getCanonicalName() + Klighd.LINE_SEPARATOR
                         + " the stream instance is " + stream.toString();
             }
-            return new Status(IStatus.ERROR, KlighdPiccoloPlugin.PLUGIN_ID, msg, e);
+            return new Status(IStatus.ERROR, KlighdPiccolo.PLUGIN_ID, msg, e);
         }
     }
 }

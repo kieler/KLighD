@@ -26,7 +26,7 @@ import de.cau.cs.kieler.klighd.IDiagramExporter.ExportData;
 import de.cau.cs.kieler.klighd.IDiagramExporter.ExportDataBuilder;
 import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.ViewContext;
-import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;
+import de.cau.cs.kieler.klighd.piccolo.KlighdPiccolo;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
 import edu.umd.cs.piccolo.PRoot;
 
@@ -38,13 +38,14 @@ import edu.umd.cs.piccolo.PRoot;
  */
 public class SVGOffscreenRenderer extends AbstractOffscreenRenderer {
 
+    /** The id used at registration of the offscreen renderer in the plugin.xml. */
+    public static final String ID = "de.cau.cs.kieler.klighd.piccolo.export.SVGOffscreenRenderer";
+
     /** The freeHEP-based SVG generator's id, requires the fragment "...klighd.piccolo.freehep". */
-    public static final String GENERATOR_SVG_FREEHEP_EXTENDED =
-            "de.cau.cs.kieler.klighd.piccolo.svggen.freeHEPExtended";
+    public static final String GENERATOR_SVG_FREEHEP_EXTENDED = KlighdPiccolo.GENERATOR_SVG_FREEHEP_EXTENDED;
 
     /** The Batik-based SVG generator's id, requires the fragment "...klighd.piccolo.batik". */
-    public static final String GENERATOR_SVG_BATIK =
-            "de.cau.cs.kieler.klighd.piccolo.svggen.batik";
+    public static final String GENERATOR_SVG_BATIK = KlighdPiccolo.GENERATOR_SVG_BATIK;
 
     /** Property definition for declaring the desired SVG generator. */
     public static final IProperty<String> GENERATOR = new Property<String>(
@@ -93,8 +94,7 @@ public class SVGOffscreenRenderer extends AbstractOffscreenRenderer {
             this.buildUpDiagram(viewContext, camera, properties);
 
         } catch (final RuntimeException e) {
-            return new Status(IStatus.ERROR, KlighdPiccoloPlugin.PLUGIN_ID,
-                    BUILDING_UP_FIGURES_FAILURE_MSG, e);
+            return new Status(IStatus.ERROR, KlighdPiccolo.PLUGIN_ID, BUILDING_UP_FIGURES_FAILURE_MSG, e);
         }
 
         try {
@@ -109,8 +109,7 @@ public class SVGOffscreenRenderer extends AbstractOffscreenRenderer {
                     .build();
             return new SVGExporter().export(camera, data);
         } catch (final RuntimeException e) {
-            return new Status(IStatus.ERROR, KlighdPiccoloPlugin.PLUGIN_ID,
-                    EXPORT_DIAGRAM_FAILURE_MSG, e);
+            return new Status(IStatus.ERROR, KlighdPiccolo.PLUGIN_ID, EXPORT_DIAGRAM_FAILURE_MSG, e);
         }
     }
 }

@@ -48,9 +48,9 @@ import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
+import de.cau.cs.kieler.klighd.Klighd;
 import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.KlighdOptions;
-import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
 import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
 import de.cau.cs.kieler.klighd.kgraph.KInsets;
@@ -1042,7 +1042,7 @@ public final class PlacementUtil {
             textBounds = new Bounds(myGC.textExtent(text));
         }
 
-        if (!KlighdPlugin.isSuppressDisplayScaleCompensationWhileHandlingText()) {
+        if (!Klighd.isSuppressDisplayScaleCompensationWhileHandlingText()) {
             textBounds.width  *= displayScale.x;
             textBounds.height *= displayScale.y;
         }

@@ -26,12 +26,11 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.statushandlers.StatusManager;
 
 import com.google.common.collect.Maps;
 
 import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
-import de.cau.cs.kieler.klighd.KlighdPlugin;
+import de.cau.cs.kieler.klighd.Klighd;
 import de.cau.cs.kieler.klighd.LightDiagramLayoutConfig;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.ui.parts.DiagramEditorPart;
@@ -314,15 +313,12 @@ public final class DiagramViewManager implements IPartListener {
                 }
 
             } catch (final PartInitException e) {
-                StatusManager.getManager()
-                        .handle(new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID, e
-                                .getMessage(), e));
+                Klighd.handle(new Status(IStatus.ERROR, KlighdUIPlugin.PLUGIN_ID, e.getMessage(), e));
 
                 return null;
             } catch (final IllegalArgumentException e) {
-                StatusManager.getManager().handle(
-                        new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID, "Invalid KLighD view id:"
-                                + "must not be empty or contain any colons."));
+                Klighd.handle(new Status(IStatus.ERROR, KlighdUIPlugin.PLUGIN_ID,
+                        "Invalid KLighD view id: must not be empty or contain any colons."));
 
                 return null;
             }

@@ -99,7 +99,7 @@ public final class KlighdConstants {
      * For more details checkout https://en.wikipedia.org/wiki/Dots_per_inch
      */
     @SuppressWarnings("restriction")
-    public static final float DEFAULT_DISPLAY_DPI = KlighdPlugin.IS_MACOSX ? 72f : 96f;
+    public static final float DEFAULT_DISPLAY_DPI = Klighd.IS_MACOSX ? 72f : 96f;
 
     /**
      * Constant definition denoting the standard line drawing attributes.
@@ -112,13 +112,13 @@ public final class KlighdConstants {
      * 
      * Note: This is a AWT constant!
      */
-    public static final String DEFAULT_FONT_NAME = KlighdPlugin.IS_WINDOWS ? "Arial" : Font.SANS_SERIF;
+    public static final String DEFAULT_FONT_NAME = Klighd.IS_WINDOWS ? "Arial" : Font.SANS_SERIF;
 
     /**
      * A platform independent font name identifier for a default monospaced font.
      */
-    public static final String DEFAULT_MONOSPACE_FONT_NAME = KlighdPlugin.IS_WINDOWS ? "Consolas"
-            : KlighdPlugin.IS_MACOSX ? "Monaco" : "Monospace";
+    public static final String DEFAULT_MONOSPACE_FONT_NAME = Klighd.IS_WINDOWS ? "Consolas"
+            : Klighd.IS_MACOSX ? "Monaco" : "Monospace";
 
     /**
      * This font size is used for {@link de.cau.cs.kieler.klighd.krendering.KText KTexts}, if no

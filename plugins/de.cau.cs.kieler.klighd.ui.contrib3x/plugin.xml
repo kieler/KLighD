@@ -29,7 +29,7 @@
    <extension
          point="org.eclipse.ui.preferencePages">
       <page
-            class="de.cau.cs.kieler.klighd.ui.internal.KlighdPreferencePage"
+            class="de.cau.cs.kieler.klighd.ui.internal.preferences.KlighdPreferencePage"
             id="de.cau.cs.kieler.klighd.ui.preferences"
             name="KIELER Lightweight Diagrams">
       </page>

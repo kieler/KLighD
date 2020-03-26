@@ -21,6 +21,7 @@
     <module>plugins/de.cau.cs.kieler.klighd.krendering</module>
     <module>plugins/de.cau.cs.kieler.klighd.krendering.extensions</module>
     <module>plugins/de.cau.cs.kieler.klighd.piccolo</module>
+    <module>plugins/de.cau.cs.kieler.klighd.standalone</module>
     <module>test/de.cau.cs.kieler.klighd.test</module>
     <module>test/de.cau.cs.kieler.klighd.piccolo.test</module>
     <module>plugins/de.cau.cs.kieler.klighd.piccolo.batik</module>
@@ -108,6 +109,17 @@
       <version>1.3.4-SNAPSHOT</version>
     </dependency>
   </dependencies>
+
+  <distributionManagement>
+    <snapshotRepository>
+      <id>localSnapshot</id>
+      <url>file://klighd-snapshots</url>
+    </snapshotRepository>
+    <repository>
+      <id>localSnapshot</id>
+      <url>file://klighd</url>
+    </repository>
+  </distributionManagement>
 
   <!-- Modify the build process to add Tycho and configure some utility plug-ins. -->
   <build>

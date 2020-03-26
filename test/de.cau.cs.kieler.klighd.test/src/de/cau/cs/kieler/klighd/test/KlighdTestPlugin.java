@@ -13,9 +13,23 @@
  */
 package de.cau.cs.kieler.klighd.test;
 
+import java.net.URL;
+import java.util.Iterator;
+
 import org.eclipse.core.runtime.Plugin;
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.junit.Assert;
 import org.osgi.framework.BundleContext;
 
+import com.google.common.collect.Iterators;
+
+import de.cau.cs.kieler.klighd.Klighd;
+import de.cau.cs.kieler.klighd.kgraph.KNode;
+import de.cau.cs.kieler.klighd.kgraph.util.KGraphDataUtil;
+import de.cau.cs.kieler.klighd.standalone.KlighdStandaloneSetup;
 
 /**
  * The activator class controls the plug-in life cycle.
@@ -28,6 +42,11 @@ public class KlighdTestPlugin extends Plugin {
     public static final String PLUGIN_ID = "de.cau.cs.kieler.klighd.test";
 
     private static KlighdTestPlugin plugin;
+    
+    static {
+        if (!Klighd.IS_PLATFORM_RUNNING)
+            KlighdStandaloneSetup.initialize();
+    }
     
     /**
      * {@inheritDoc}
@@ -54,5 +73,31 @@ public class KlighdTestPlugin extends Plugin {
      */
     public static KlighdTestPlugin getDefault() {
         return plugin;
+    }
+    
+    /**
+     * Loads 'circuit.kgx' from within this bundle.
+     *
+     * @return the runtime representation of the test model.
+     */
+    public static KNode loadTestModel() {
+        final ResourceSet set = new ResourceSetImpl();
+
+        final Iterator<URL> it;
+        if (Klighd.IS_PLATFORM_RUNNING)
+            it = Iterators.forEnumeration(
+                    KlighdTestPlugin.getDefault().getBundle().findEntries("/", "circuit.kgx", true));
+        else {
+            it = Iterators.forArray(KlighdTestPlugin.class.getResource("circuit.kgx"));
+        }
+        if (!it.hasNext()) {
+            Assert.fail("Test model 'circuit.kgx' could not be found!");
+        }
+
+        final Resource res = set.getResource(URI.createURI(it.next().toString(), true), true);
+        final KNode root = (KNode) res.getContents().get(0);
+        KGraphDataUtil.loadDataElements(root);
+
+        return root;
     }
 }

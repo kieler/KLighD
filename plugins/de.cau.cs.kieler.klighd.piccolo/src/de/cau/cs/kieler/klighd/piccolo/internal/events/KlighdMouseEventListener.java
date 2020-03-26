@@ -28,7 +28,7 @@ import org.eclipse.swt.events.MouseTrackListener;
 import org.eclipse.swt.events.MouseWheelListener;
 import org.eclipse.swt.widgets.Display;
 
-import de.cau.cs.kieler.klighd.KlighdPlugin;
+import de.cau.cs.kieler.klighd.Klighd;
 import de.cau.cs.kieler.klighd.krendering.Trigger;
 import de.cau.cs.kieler.klighd.piccolo.internal.KlighdCanvas;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.IKlighdInputEventHandlerEx.IKlighdInputEvent;
@@ -117,7 +117,7 @@ public class KlighdMouseEventListener implements MouseListener, MouseMoveListene
 
         lastSingleClickConfig[0] = Boolean.FALSE;
 
-        if (KlighdPlugin.IS_WINDOWS) {
+        if (Klighd.IS_WINDOWS) {
             canvas.setFocus();
         }
 

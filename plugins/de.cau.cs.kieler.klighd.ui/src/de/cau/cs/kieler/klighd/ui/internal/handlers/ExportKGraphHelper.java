@@ -16,7 +16,6 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.PrimitiveIterator.OfInt;
 import java.util.Random;
 import java.util.Set;
 
@@ -33,14 +32,12 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil.Copier;
-import org.eclipse.swt.graphics.FontData;
-import org.eclipse.ui.statushandlers.StatusManager;
 
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
-import de.cau.cs.kieler.klighd.KlighdConstants;
+import de.cau.cs.kieler.klighd.Klighd;
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
 import de.cau.cs.kieler.klighd.kgraph.KEdge;
 import de.cau.cs.kieler.klighd.kgraph.KGraphData;
@@ -55,7 +52,6 @@ import de.cau.cs.kieler.klighd.krendering.KImage;
 import de.cau.cs.kieler.klighd.krendering.KRendering;
 import de.cau.cs.kieler.klighd.krendering.KRenderingLibrary;
 import de.cau.cs.kieler.klighd.krendering.KRenderingRef;
-import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
 import de.cau.cs.kieler.klighd.ui.KlighdUIPlugin;
 import de.cau.cs.kieler.klighd.util.ExpansionAwareLayoutOption;
 import de.cau.cs.kieler.klighd.util.ExpansionAwareLayoutOption.ExpansionAwareLayoutOptionData;
@@ -295,15 +291,11 @@ public final class ExportKGraphHelper {
             r.save(saveOpts);
 
         } catch (IOException e) {
-            StatusManager.getManager()
-                    .handle(new Status(IStatus.ERROR, KlighdUIPlugin.PLUGIN_ID,
-                            "Could not write the KGraph to selected resource.", e),
-                            StatusManager.SHOW);
+            Klighd.show(new Status(IStatus.ERROR, KlighdUIPlugin.PLUGIN_ID,
+                    "Could not write the KGraph to selected resource.", e));
         } catch (Exception e) {
             e.printStackTrace();
-            StatusManager.getManager().handle(
-                    new Status(IStatus.ERROR, KlighdUIPlugin.PLUGIN_ID, "Error occurred.", e),
-                    StatusManager.SHOW);
+            Klighd.show(new Status(IStatus.ERROR, KlighdUIPlugin.PLUGIN_ID, "Error occurred.", e));
         }
     }
 

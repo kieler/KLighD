@@ -32,10 +32,11 @@ import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.emf.workspace.AbstractEMFOperation;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbenchPart;
-import org.eclipse.ui.statushandlers.StatusManager;
 
 import com.google.common.base.Function;
 
+import de.cau.cs.kieler.klighd.Klighd;
+import de.cau.cs.kieler.klighd.ui.KlighdUIPlugin;
 import de.cau.cs.kieler.klighd.ui.modifymodel.AbstractKlighdModelModificationHandler;
 import de.cau.cs.kieler.klighd.viewers.ContextViewer;
 
@@ -105,8 +106,8 @@ public class EditingDomainProviderModelModificationHandler extends
             try {
                 m.invoke(classObject, params.toArray());
             } catch (Exception e) {
-                StatusManager.getManager().handle(
-                        new Status(IStatus.ERROR, "de.cau.cs.kieler.klighd.ui.emf",
+                Klighd.handle(
+                        new Status(IStatus.ERROR, KlighdUIPlugin.PLUGIN_ID,
                                 "An error has occured while trying to execute ksbase method "
                                         + m.getName() + "of class " + classObject.toString(), e));
             }
@@ -119,8 +120,8 @@ public class EditingDomainProviderModelModificationHandler extends
             try {
                 m.invoke(classObject, params.toArray());
             } catch (Exception e) {
-                StatusManager.getManager().handle(
-                        new Status(IStatus.ERROR, "de.cau.cs.kieler.klighd.ui.emf",
+                Klighd.handle(
+                        new Status(IStatus.ERROR, KlighdUIPlugin.PLUGIN_ID,
                                 "An error has occured while trying to execute ksbase method "
                                         + m.getName() + "of class " + classObject.toString(), e));
             }
@@ -250,8 +251,8 @@ public class EditingDomainProviderModelModificationHandler extends
             try {
                 m.invoke(classObject, params.toArray());
             } catch (Exception e) {
-                StatusManager.getManager().handle(
-                        new Status(IStatus.ERROR, "de.cau.cs.kieler.klighd.ui.emf",
+                Klighd.handle(
+                        new Status(IStatus.ERROR, KlighdUIPlugin.PLUGIN_ID,
                                 "An error has occured while trying to execute ksbase method "
                                         + m.getName() + "of class " + classObject.toString(), e));
             }

@@ -26,14 +26,20 @@ pipeline {
   }
 
   stages {
+    stage('Clear m2 snapshots') {
+      steps {
+        sh 'rm -rf klighd-snapshots'
+      }
+    }
+
     stage('Build') {
       steps {
         echo "Using JDK at $JAVA_HOME"
         wrap([$class: 'Xvfb']) {
-          sh "mvn clean verify -B -fae" +
+          sh "mvn clean deploy -B -fae" +
              " --define maven.repo.local=${env.WORKSPACE}/.repository" +
              " --define maven.test.failure.ignore=true"
-        }        
+        }
       }
     }
 
@@ -41,7 +47,7 @@ pipeline {
       steps {
         sh 'rm -rf updatesite'
         sh 'mv build/de.cau.cs.kieler.klighd.repository/target/repository updatesite'
-      }    
+      }
     }
   }
 
@@ -53,6 +59,7 @@ pipeline {
 
     success {
       archiveArtifacts 'updatesite/**/*.*'
+      archiveArtifacts 'klighd-snapshots/**/*.*'
     }
 
     failure {

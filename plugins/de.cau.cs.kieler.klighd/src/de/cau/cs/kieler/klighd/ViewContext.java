@@ -29,7 +29,6 @@ import org.eclipse.elk.graph.properties.MapPropertyHolder;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IWorkbenchPart;
-import org.eclipse.ui.statushandlers.StatusManager;
 
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
@@ -282,9 +281,8 @@ public class ViewContext extends MapPropertyHolder {
                     return synthesis.supports(model, ViewContext.this);
 
                 } catch (final WrappedException e) {
-                    final Status status = new Status(
-                            IStatus.ERROR, KlighdPlugin.PLUGIN_ID, e.getMessage(), e.getCause());
-                    StatusManager.getManager().handle(status, StatusManager.LOG);
+                    Klighd.log(
+                            new Status(IStatus.ERROR, Klighd.PLUGIN_ID, e.getMessage(), e.getCause()));
                     return false;
                 }
             }
@@ -461,8 +459,8 @@ public class ViewContext extends MapPropertyHolder {
                         + synthesis.getClass().getCanonicalName().toString()
                         + " failed for input model " + sourceModel.toString() + ".";
 
-                StatusManager.getManager().handle(
-                        new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID, msg, e));
+                Klighd.handle(
+                        new Status(IStatus.ERROR, Klighd.PLUGIN_ID, msg, e));
                 return false;
             }
 
@@ -477,8 +475,8 @@ public class ViewContext extends MapPropertyHolder {
             final String msg = "KLighD: Could not create a diagram of provided input model "
                     + sourceModel + ".";
 
-            StatusManager.getManager().handle(
-                    new Status(IStatus.WARNING, KlighdPlugin.PLUGIN_ID, msg));
+            Klighd.handle(
+                    new Status(IStatus.WARNING, Klighd.PLUGIN_ID, msg));
             return false;
         }
 

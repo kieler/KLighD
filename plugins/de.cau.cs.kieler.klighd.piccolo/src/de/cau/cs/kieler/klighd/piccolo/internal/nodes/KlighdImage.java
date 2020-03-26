@@ -17,21 +17,19 @@ import java.awt.Shape;
 import java.awt.geom.RectangularShape;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.List;
 
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
-import org.eclipse.ui.statushandlers.StatusManager;
-import org.osgi.framework.Bundle;
 
 import com.google.common.collect.Lists;
 
-import de.cau.cs.kieler.klighd.KlighdPlugin;
+import de.cau.cs.kieler.klighd.Klighd;
 import de.cau.cs.kieler.klighd.krendering.KImage;
 import de.cau.cs.kieler.klighd.piccolo.KlighdNode;
 import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;
@@ -73,8 +71,8 @@ public class KlighdImage extends KlighdNode.KlighdFigureNode<KImage> implements 
 
     private static final long serialVersionUID = 7201328608113593385L;
     
-    private static final ImageRegistry IMAGE_REGISTRY = 
-            KlighdPiccoloPlugin.getDefault().getImageRegistry();
+    private static final ImageRegistry IMAGE_REGISTRY = Klighd.IS_PLATFORM_RUNNING ?
+            KlighdPiccoloPlugin.getDefault().getImageRegistry() : new ImageRegistry();
     
     // These two fields are to be kept consistent,
     //  i.e. both shall denote the same image.
@@ -130,18 +128,15 @@ public class KlighdImage extends KlighdNode.KlighdFigureNode<KImage> implements 
     /**
      * Constructor.
      * 
-     * @param bundleName
-     *            name of the {@link Bundle} to load the image from, must be a valid name of an
-     *            existing bundle (perform checks before calling this constructor!)
-     * @param path
-     *            the image's path within <code>bundle</code>, must be a valid path within the given
-     *            bundle (perform checks before calling this constructor!)
+     * @param uri
+     *            the {@link URL} denoting the location of the image, must be valid (perform checks
+     *            before calling this constructor!)
      * @param kImage
      *            the {@link KImage} of this KlighdImage, especially for Properties
      */
-    public KlighdImage(final String bundleName, final String path, final KImage kImage) {
+    public KlighdImage(final URL url, final KImage kImage) {
         this(kImage);
-        setImage(bundleName, path);
+        setImage(url);
      }
 
     /**
@@ -224,14 +219,11 @@ public class KlighdImage extends KlighdNode.KlighdFigureNode<KImage> implements 
     /**
      * Sets the image to be displayed by this node.
      * 
-     * @param bundleName
-     *            name of the {@link Bundle} to load the image from, must be a valid name of an
-     *            existing bundle (perform checks before calling this constructor!)
-     * @param path
-     *            the image's path within <code>bundle</code>, must be a valid path within the given
-     *            bundle (perform checks before calling this constructor!)
+     * @param uri
+     *            the {@link URL} denoting the location of the image, must be valid (perform checks
+     *            before calling this setter!)
      */
-    public void setImage(final String bundleName, final String path) {
+    public void setImage(final URL url) {
         if (imageKey != null) {
             if (formerImages == null) {
                 formerImages = Lists.newArrayList();
@@ -239,29 +231,23 @@ public class KlighdImage extends KlighdNode.KlighdFigureNode<KImage> implements 
             formerImages.add(imageKey);
         }
         
-        imageKey = bundleName + '#' + path;
+        imageKey = url.toString();
         final ImageDescriptor descr = IMAGE_REGISTRY.getDescriptor(imageKey);
 
         if (descr != null) {
             setImage(descr.getImageData());
 
         } else {
-            // determine the containing bundle,
-            final Bundle bundle = Platform.getBundle(bundleName);
-            
-            // get the bundle and actual image,
             try {
-                setImage(bundle.getEntry(path).openStream()).close();
+                setImage(url.openStream()).close();
 
-                KlighdPiccoloPlugin.getDefault().getImageRegistry()
-                        .put(imageKey, ImageDescriptor.createFromImageData(imageData));
-                
+                KlighdPiccoloPlugin.getDefault().getImageRegistry().put(imageKey,
+                        ImageDescriptor.createFromImageData(imageData));
+
             } catch (final Exception e) {
                 final String msg =
-                        "KLighD: Error occurred while loading the image " + path + " in bundle "
-                                + bundleName;
-                StatusManager.getManager().handle(
-                        new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID, msg, e), StatusManager.LOG);
+                        "KLighD: Error occurred while loading the image at " + url.toString() + ".";
+                Klighd.log(new Status(IStatus.ERROR, Klighd.PLUGIN_ID, msg, e));
             }
         }
     }

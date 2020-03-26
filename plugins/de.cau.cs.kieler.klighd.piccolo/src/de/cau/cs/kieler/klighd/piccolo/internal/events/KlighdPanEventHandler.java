@@ -16,8 +16,8 @@ package de.cau.cs.kieler.klighd.piccolo.internal.events;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
-import org.eclipse.jface.util.IPropertyChangeListener;
-import org.eclipse.jface.util.PropertyChangeEvent;
+import org.eclipse.core.runtime.preferences.IEclipsePreferences.IPreferenceChangeListener;
+import org.eclipse.core.runtime.preferences.IEclipsePreferences.PreferenceChangeEvent;
 import org.eclipse.swt.widgets.Widget;
 
 import de.cau.cs.kieler.klighd.KlighdPreferences;
@@ -56,10 +56,11 @@ public class KlighdPanEventHandler extends PPanEventHandler {
 
         setAutopan(KlighdPreferences.isAdvancedPanningMode());
 
-        KlighdPreferences.registerPrefChangeListener(widget, new IPropertyChangeListener() {
+        KlighdPreferences.registerPrefChangeListener(widget, new IPreferenceChangeListener() {
 
-            public void propertyChange(final PropertyChangeEvent event) {
-                if (KlighdPreferences.ADVANCED_PANNING_MODE.equals(event.getProperty())) {
+            @Override
+            public void preferenceChange(final PreferenceChangeEvent event) {
+                if (KlighdPreferences.ADVANCED_PANNING_MODE.equals(event.getKey())) {
                     setAutopan(KlighdPreferences.isAdvancedPanningMode());
                 }
             }

@@ -35,7 +35,7 @@ import com.google.inject.Scope;
 import com.google.inject.TypeLiteral;
 
 import de.cau.cs.kieler.klighd.DisplayedActionData;
-import de.cau.cs.kieler.klighd.KlighdDataManager;
+import de.cau.cs.kieler.klighd.Klighd;
 import de.cau.cs.kieler.klighd.SynthesisOption;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.internal.ISynthesis;
@@ -68,7 +68,7 @@ import de.cau.cs.kieler.klighd.krendering.ViewSynthesisShared;
  */
 public class ReinitializingDiagramSynthesisProxy<S> implements ISynthesis {
 
-    private final Class<AbstractDiagramSynthesis<S>> transformationClass;
+    private final Class<? extends AbstractDiagramSynthesis<S>> transformationClass;
     private final Module transformationClassBinding;
     private final ViewSynthesisScope synthesisScope;
     
@@ -78,7 +78,7 @@ public class ReinitializingDiagramSynthesisProxy<S> implements ISynthesis {
      * Package protected constructor.
      * @param clazz the transformation class
      */
-    ReinitializingDiagramSynthesisProxy(final Class<AbstractDiagramSynthesis<S>> clazz) {
+    ReinitializingDiagramSynthesisProxy(final Class<? extends AbstractDiagramSynthesis<S>> clazz) {
         this.transformationClass = clazz;
         this.synthesisScope = new ViewSynthesisScope(clazz);
         
@@ -138,11 +138,11 @@ public class ReinitializingDiagramSynthesisProxy<S> implements ISynthesis {
          * @param themainTransformationClazz
          *              the main transformation class
          */
-        ViewSynthesisScope(final Class<AbstractDiagramSynthesis<S>> themainTransformationClazz) {
+        ViewSynthesisScope(final Class<? extends AbstractDiagramSynthesis<S>> themainTransformationClazz) {
             this.mainTransformationClazz = themainTransformationClazz;
         }
         
-        private Class<AbstractDiagramSynthesis<S>> mainTransformationClazz = null;
+        private Class<? extends AbstractDiagramSynthesis<S>> mainTransformationClazz = null;
         private Set<Object> instances = Sets.newHashSet();
 
         private void clear() {
@@ -243,7 +243,7 @@ public class ReinitializingDiagramSynthesisProxy<S> implements ISynthesis {
             res = Guice.createInjector(this.transformationClassBinding).getInstance(
                             this.transformationClass);
         } catch (final Exception e) {
-            final String nl = KlighdDataManager.NEW_LINE;
+            final String nl = Klighd.LINE_SEPARATOR;
             final String msg =
                     "KLighD: Cannot instantiate " + this.transformationClass.getCanonicalName()
                             + "." + nl + "Is that class free of compiler errors?" + nl

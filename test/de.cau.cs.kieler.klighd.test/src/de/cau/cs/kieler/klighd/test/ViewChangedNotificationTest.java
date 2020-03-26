@@ -13,15 +13,8 @@
  */
 package de.cau.cs.kieler.klighd.test;
 
-import java.net.URL;
-import java.util.Iterator;
-
 import org.eclipse.elk.core.data.LayoutMetaDataService;
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Display;
@@ -36,20 +29,18 @@ import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
 import com.google.common.collect.Iterables;
-import com.google.common.collect.Iterators;
 import com.google.common.collect.Sets;
 
 import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.IViewChangeListener;
 import de.cau.cs.kieler.klighd.IViewChangeListener.ViewChange;
-import de.cau.cs.kieler.klighd.KlighdPlugin;
+import de.cau.cs.kieler.klighd.Klighd;
 import de.cau.cs.kieler.klighd.LightDiagramLayoutConfig;
 import de.cau.cs.kieler.klighd.ViewChangeType;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.ZoomStyle;
 import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
 import de.cau.cs.kieler.klighd.kgraph.KNode;
-import de.cau.cs.kieler.klighd.kgraph.util.KGraphDataUtil;
 import de.cau.cs.kieler.klighd.piccolo.viewer.PiccoloViewer;
 import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties;
 import de.cau.cs.kieler.klighd.viewers.ContextViewer;
@@ -92,7 +83,7 @@ public class ViewChangedNotificationTest {
         shell.setLocation(100, 100);
         shell.setLayout(new FillLayout());
 
-        viewContext = new ViewContext((IDiagramWorkbenchPart) null, loadTestModel())
+        viewContext = new ViewContext((IDiagramWorkbenchPart) null, KlighdTestPlugin.loadTestModel())
                 .configure(new KlighdSynthesisProperties().useViewer(PiccoloViewer.ID));
 
         new ContextViewer(shell).setModel(viewContext, true);
@@ -100,7 +91,6 @@ public class ViewChangedNotificationTest {
         heightDelta = 200 - viewContext.getViewer().getControl().getSize().y;
         shell.setSize(300, 200 + heightDelta);
 
-        KGraphDataUtil.loadDataElements((KNode) viewContext.getInputModel());
         viewContext.update(null);
 
         // the zoom to fit causes the VIEW_PORT change events the listener is waiting for
@@ -110,25 +100,6 @@ public class ViewChangedNotificationTest {
         shell.open();
 
         failure = null;
-    }
-
-    /**
-     * Loads 'circuit.kgx' from within this bundle.
-     *
-     * @return the runtime representation of the test model.
-     */
-    private EObject loadTestModel() {
-        final ResourceSet set = new ResourceSetImpl();
-
-        final Iterator<URL> it =
-                Iterators.forEnumeration(KlighdTestPlugin.getDefault().getBundle()
-                        .findEntries("/", "circuit.kgx", true));
-        if (!it.hasNext()) {
-            Assert.fail("Test model 'circuit.kgx' could not be found!");
-        }
-
-        final Resource res = set.getResource(URI.createURI(it.next().toString(), true), true);
-        return res.getContents().get(0);
     }
 
     /**
@@ -289,7 +260,7 @@ public class ViewChangedNotificationTest {
     public void test05() {
         viewContext.setZoomStyle(ZoomStyle.NONE);
         expectedElementsNumber = 4;
-        if (KlighdPlugin.IS_WINDOWS)
+        if (Klighd.IS_WINDOWS)
             shell.setSize(150, shell.getSize().y);
         else
             shell.setSize(130, shell.getSize().y);
@@ -303,7 +274,7 @@ public class ViewChangedNotificationTest {
         viewContext.setZoomStyle(ZoomStyle.NONE);
         countNodesOnly = false;
         expectedElementsNumber = 23;
-        if (KlighdPlugin.IS_WINDOWS)
+        if (Klighd.IS_WINDOWS)
             shell.setSize(150, shell.getSize().y);
         else
             shell.setSize(130, shell.getSize().y);
