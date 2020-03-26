@@ -20,7 +20,7 @@
       <unit id="org.eclipse.elk.sdk.feature.feature.group" version="0.0.0"/>
       <unit id="org.eclipse.elk.ui.feature.feature.group" version="0.0.0"/>
       <unit id="org.eclipse.elk.ui.feature.source.feature.group" version="0.0.0"/>
-      <repository location="http://download.eclipse.org/elk/updates/releases/0.6.1/"/>
+      <repository location="http://build.eclipse.org/modeling/elk/updates/nightly/"/>
     </location>
     <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
       <unit id="org.eclipse.xtext.sdk.feature.group" version="0.0.0"/>
@@ -29,6 +29,10 @@
     <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
       <unit id="de.itemis.xtext.antlr.sdk.feature.group" version="2.1.1.v201405091103"/>
       <repository location="http://xtext.github.io/download/updates/releases/2.1.1/"/>
+    </location>
+    <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+      <unit id="edu.umd.cs.piccolo" version="1.3.4.qualifier"/>
+      <repository location="http://kieler.github.io/KLighD/v1.0.0/"/>
     </location>
     <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
       <unit id="javax.xml.bind" version="0.0.0"/>

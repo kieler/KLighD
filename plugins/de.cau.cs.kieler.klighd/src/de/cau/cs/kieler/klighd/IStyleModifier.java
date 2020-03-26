@@ -14,7 +14,6 @@
 package de.cau.cs.kieler.klighd;
 
 import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
-import de.cau.cs.kieler.klighd.kgraph.KLayoutData;
 import de.cau.cs.kieler.klighd.krendering.KStyle;
 
 /**
