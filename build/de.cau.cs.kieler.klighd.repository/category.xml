@@ -53,6 +53,9 @@
       <category name="kieler-klighd"/>
    </feature>
 
+   <bundle id="de.cau.cs.kieler.klighd.lsp" version="1.0.1.qualifier"/>
+   <bundle id="de.cau.cs.kieler.kgraph.language.server" version="1.0.1.qualifier"/>
+
    <repository-reference location="http://download.eclipse.org/eclipse/updates/4.9/" enabled="true" />
    <repository-reference location="http://download.eclipse.org/releases/photon" enabled="true" />
    <repository-reference location="http://download.eclipse.org/elk/updates/releases/0.6.0/" enabled="true" />
