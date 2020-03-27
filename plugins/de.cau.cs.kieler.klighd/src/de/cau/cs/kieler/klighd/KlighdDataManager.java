@@ -13,6 +13,8 @@
  */
 package de.cau.cs.kieler.klighd;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -128,6 +130,11 @@ public final class KlighdDataManager {
     private static final String UNEXPECTED_FAILURE_MSG =
             "KLighD: An unexpected failure occured while loading "
             + "class <<CLAZZ>>. See attached trace for details." + NEW_LINE;
+
+    private static final String NO_VALID_CONSTRUCTOR_FAILURE_MSG =
+            "KLighD: An unexpected failure occured while identifying the required"
+            + " no-arg constructor of class <<CLAZZ>>. See attached trace for details."
+            + NEW_LINE;
 
     private static final String INSTANTIATION_FAILURE_MSG =
             "KLighD: An unexpected failure occured while instantiating "
@@ -263,44 +270,52 @@ public final class KlighdDataManager {
                 .getConfigurationElementsFor(EXTP_ID_EXTENSIONS);
 
         for (final IConfigurationElement element : extensions) {
+            final String elementName = element.getName();
             final String id = element.getAttribute(ATTRIBUTE_ID);
-            if (Strings.isNullOrEmpty(id)) {
-                reportError(EXTP_ID_EXTENSIONS, element, ATTRIBUTE_ID, null, null);
 
-            } else if (ELEMENT_VIEWER.equals(element.getName())) {
+            // 'wrapper' extensions don't define an 'id' so check for that type of extension first
+            //  before checking for a valid id
+            if (ELEMENT_WRAPPER.equals(elementName)) {
+                registerCustomFigureWrapper(element);
+
+            } else if (Strings.isNullOrEmpty(id)) {
+                final String msg = "KLighD: Found element of type '" + elementName
+                        + "' extending extension point '" + EXTP_ID_EXTENSIONS
+                        + "', contributed by '" + element.getContributor().getName()
+                        + "' with the mandatory 'id' attribute being empty.";
+                Klighd.handle(new Status(IStatus.ERROR, Klighd.PLUGIN_ID, msg));
+
+            } else if (ELEMENT_VIEWER.equals(elementName)) {
                 doRegisterExtension(element, IViewerProvider.class,
                         viewerProvider -> idViewerProviderMapping.put(id, viewerProvider));
 
-            } else if (ELEMENT_UPDATE_STRATEGY.equals(element.getName())) {
+            } else if (ELEMENT_UPDATE_STRATEGY.equals(elementName)) {
                 doRegisterExtension(element, IUpdateStrategy.class, 
                         updateStrategy -> doRegisterUpdateStrategy(id, updateStrategy));
 
-            } else if (ELEMENT_STYLE_MODIFIER.equals(element.getName())) {
+            } else if (ELEMENT_STYLE_MODIFIER.equals(elementName)) {
                 doRegisterExtension(element, IStyleModifier.class,
                         styleModifier -> idStyleModifierMapping.put(id, styleModifier));
 
-            } else if (ELEMENT_ACTION.equals(element.getName())) {
+            } else if (ELEMENT_ACTION.equals(elementName)) {
                 doRegisterExtension(element, IAction.class,
                         action -> idActionMapping.put(id, action));
 
-            } else if (ELEMENT_EXPORTER.equals(element.getName())) {
+            } else if (ELEMENT_EXPORTER.equals(elementName)) {
                 registerExporter(id, element);
 
-            } else if (ELEMENT_EXPORT_BRANDING.equals(element.getName())) {
+            } else if (ELEMENT_EXPORT_BRANDING.equals(elementName)) {
                 checkFormatsAndRegisterWithSupplier(element, IExportBranding.class, 
                         (supportedFormatsSplit, supplier) -> idExportBrandingMapping.put(id,
                                 new ExportBrandingDescriptor(id, supportedFormatsSplit, supplier)));
 
-            } else if (ELEMENT_OFFSCREEN_RENDERER.equals(element.getName())) {
+            } else if (ELEMENT_OFFSCREEN_RENDERER.equals(elementName)) {
                 checkFormatsAndRegisterWithSupplier(element, IOffscreenRenderer.class, 
                         (supportedFormatsSplit, supplier) -> idOffscreenRendererMapping.put(id,
                                 new OffscreenRendererDescriptor(id, supportedFormatsSplit, supplier)));
 
-            } else if (ELEMENT_WRAPPER.equals(element.getName())) {
-                registerCustomFigureWrapper(element);
-
             } else {
-                final String msg = "KLighD: Found element with invalid name '" + element.getName()
+                final String msg = "KLighD: Found element with invalid name '" + elementName
                         + "' extending extension point '" + EXTP_ID_EXTENSIONS
                         + "', contributed by '" + element.getContributor().getName() + "'.";
                 Klighd.log(new Status(IStatus.ERROR, Klighd.PLUGIN_ID, msg));
@@ -672,10 +687,22 @@ public final class KlighdDataManager {
         if (wrapWithReinitializer)
             synthesis = GuiceBasedSynthesisFactory.getReinitializingDiagramSynthesisProxy(clazz);
         else {
+            final Constructor<? extends AbstractDiagramSynthesis<?>> constructor;
             try {
-                synthesis = clazz.newInstance();
+                constructor = clazz.getConstructor();
 
-            } catch (final InstantiationException | IllegalAccessException | Error e) {
+            } catch (final NoSuchMethodException | SecurityException e) {
+                final String msg =
+                        NO_VALID_CONSTRUCTOR_FAILURE_MSG.replace("<<CLAZZ>>", clazz.getCanonicalName());
+                Klighd.handle(new Status(IStatus.ERROR, Klighd.PLUGIN_ID, msg, e));
+                
+                return;
+            }
+            try {
+                synthesis = constructor.newInstance();
+
+            } catch (final InstantiationException | IllegalAccessException
+                    | IllegalArgumentException | InvocationTargetException e) {
                 final String msg =
                         INSTANTIATION_FAILURE_MSG.replace("<<CLAZZ>>", clazz.getCanonicalName());
                 Klighd.handle(new Status(IStatus.ERROR, Klighd.PLUGIN_ID, msg, e));
@@ -688,7 +715,8 @@ public final class KlighdDataManager {
         inferInputType(synthesis, nonNullId, typeSynthesisMapping);
     }
 
-    private void inferInputType(ISynthesis synthesis, String id, Multimap<Class<?>, ISynthesis> typeSynthesisMapping) {
+    private void inferInputType(ISynthesis synthesis, String id,
+            Multimap<Class<?>, ISynthesis> typeSynthesisMapping) {
         try {
             final Class<?> inputDataType = synthesis.getInputDataType();
             if (inputDataType != null) {

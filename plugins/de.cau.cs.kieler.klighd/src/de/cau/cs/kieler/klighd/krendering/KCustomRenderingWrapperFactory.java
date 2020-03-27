@@ -13,6 +13,8 @@
  */
 package de.cau.cs.kieler.klighd.krendering;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -218,17 +220,9 @@ public final class KCustomRenderingWrapperFactory {
      * @return an instance of the wrapping frameworkType.
      */
     public <S, T> T getWrapperInstance(final Class<S> renderingType, final Class<T> frameworkType) {
-        S figure = null;
-        try {
-            figure = renderingType.newInstance();
-        } catch (final Exception e) {
-            final String msg = "KLighD custom rendering wrapper factory: An error occured while "
-                    + "instantiating the requested custom figure type " + renderingType.getName() + ".";
-            Klighd.log(new Status(IStatus.ERROR, Klighd.PLUGIN_ID, msg, e));
-            
-            return null;
-        }
-        return this.getWrapperInstance(renderingType, figure, frameworkType);
+        final S figure = getInstance(renderingType);
+
+        return figure == null ? null : this.getWrapperInstance(renderingType, figure, frameworkType);
     }
     
     
@@ -291,7 +285,7 @@ public final class KCustomRenderingWrapperFactory {
 
             try {
                 // ... create an instance, otherwise, and return that one
-                return frameworkType.cast(renderingType.newInstance());
+                return frameworkType.cast(getInstance(renderingType));
             } catch (final Exception e) {
                 final String msg = "KLighD custom rendering wrapper factory: An error occured while "
                         + "instantiating the requested custom figure type "
@@ -318,12 +312,37 @@ public final class KCustomRenderingWrapperFactory {
                 return frameworkType.cast(
                         entry.getValue().getConstructor(entry.getKey()).newInstance(figure));
             } catch (final Exception e) {
-                final String msg = "KLighD custom rendering wrapper factory: An error occured while "
+                final String msg = "KLighD custom rendering wrapper factory: An exception occured while "
                         + "instantiating the required wrapper figure for the requested figure type "
                         + renderingType.getName() + ".";
                 Klighd.log(new Status(IStatus.ERROR, Klighd.PLUGIN_ID, msg, e));
             }
         }
         return null;
+    }
+
+    private <S> S getInstance(Class<S> renderingType) {
+        final Constructor<S> constructor;
+        try {
+            constructor = renderingType.getConstructor();
+
+        } catch (final NoSuchMethodException | SecurityException e) {
+            final String msg = "KLighD custom rendering wrapper factory: An exception occured while "
+                    + "revealing the required no-arg constructor of the requested custom figure type "
+                    + renderingType.getName() + ".";
+            Klighd.handle(new Status(IStatus.ERROR, Klighd.PLUGIN_ID, msg, e));
+            
+            return null;
+        }
+        try {
+            return constructor.newInstance();
+
+        } catch (final InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+            final String msg = "KLighD custom rendering wrapper factory: An exception occured while "
+                    + "instantiating the requested custom figure type " + renderingType.getName() + ".";
+            Klighd.log(new Status(IStatus.ERROR, Klighd.PLUGIN_ID, msg, e));
+
+            return null;
+        }
     }
 }
