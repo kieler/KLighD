@@ -15,6 +15,7 @@ package de.cau.cs.kieler.klighd.lsp.interactive.rectpack
 import org.eclipse.xtend.lib.annotations.Data
 
 /**
+ * Data class for a position constraint sent from client to server for the rectpacking algorithm.
  * @author sdo
  * 
  */

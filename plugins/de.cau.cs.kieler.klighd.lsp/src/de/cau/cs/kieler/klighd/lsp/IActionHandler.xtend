@@ -17,7 +17,6 @@ import org.eclipse.sprotty.xtext.LanguageAwareDiagramServer
 
 /**
  * Service Interface for ActionHandler.
- * TODO Use it as a service interface
  * 
  * @author sdo
  *

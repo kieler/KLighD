@@ -25,6 +25,7 @@ import org.eclipse.elk.core.options.CoreOptions
 import org.eclipse.elk.alg.rectpacking.options.RectPackingOptions
 
 /**
+ * Provides utility methods for interactive layout.
  * @author sdo
  *
  */
@@ -46,10 +47,11 @@ class InteractiveUtil {
      * Calculates the nodes that are in the layer based on the layer ID. The nodes are sorted by their pos id. 
      * @param layer the layer which containing nodes should be calculated
      * @param nodes all nodes the graph contains
+     * @return sorted list of nodes in the specified layer
      */
     def static List<KNode> getNodesOfLayer(int layer, List<KNode> nodes) {
 
-        var ArrayList<KNode> temp = newArrayList()
+        var ArrayList<KNode> sortedNodes = newArrayList()
 
         // layer <= maxLayerId: Collect all nodes with the fitting layer id in a list
         var nodeCount = 0
@@ -57,18 +59,18 @@ class InteractiveUtil {
         for (n : nodes) {
             val layerID = n.getProperty(LayeredOptions.LAYERING_LAYER_I_D)
             if (layerID === layer) {
-                temp.add(n)
+                sortedNodes.add(n)
                 nodeCount++
             }
         }
 
         // sort them based on their position id - this is used for speeding up future reevaluation
-        temp.sort([ a, b |
+        sortedNodes.sort([ a, b |
             a.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_I_D) -
                 b.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_I_D)
         ])
 
-        return temp
+        return sortedNodes
     }
 
     /**

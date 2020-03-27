@@ -26,7 +26,6 @@ import org.eclipse.sprotty.Action
 import org.eclipse.sprotty.SGraph
 import org.eclipse.sprotty.SModelRoot
 import org.eclipse.sprotty.layout.ElkLayoutEngine
-import de.cau.cs.kieler.klighd.ViewContext
 
 /**
  * Handles the server side layout of KGraphs.
@@ -49,22 +48,7 @@ class KGraphLayoutEngine extends ElkLayoutEngine {
     	    if (root instanceof SGraph) {
     	        // The layout is executed on the KGraph, not the SGraph. So get the KGraph belonging to this SGraph from
     	        // the KGraphContext.
-                val kGraphContext = diagramState.getKGraphContext(root.id)
-
-                // layout of KGraph
-                val lightDiagramLayoutConfig = new LightDiagramLayoutConfig(kGraphContext)
-
-                // Get the layout configurator.
-                val configurator = diagramState.getLayoutConfig(root.id)
-
-                var configurators = new ArrayList
-                configurators.add(configurator)
-                lightDiagramLayoutConfig.options(configurators)
-
-                synchronized (kGraphContext.viewModel) {
-                    lightDiagramLayoutConfig.performLayout
-                    RenderingPreparer.prepareRendering(kGraphContext.viewModel)
-                }
+                onlyLayoutOnKGraph(root.id)
 
                 // map layouted KGraph to SGraph
                 KGraphMappingUtil.mapLayout(diagramState.getKGraphToSModelElementMap(root.id))

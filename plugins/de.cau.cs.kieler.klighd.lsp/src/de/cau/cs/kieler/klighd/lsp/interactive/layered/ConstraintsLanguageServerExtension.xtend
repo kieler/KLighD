@@ -14,11 +14,12 @@ package de.cau.cs.kieler.klighd.lsp.interactive.layered
 
 import com.google.inject.Inject
 import com.google.inject.Injector
-import de.cau.cs.kieler.klighd.ViewContext
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties
 import de.cau.cs.kieler.klighd.kgraph.KNode
 import de.cau.cs.kieler.klighd.lsp.KGraphDiagramState
-import de.cau.cs.kieler.klighd.lsp.utils.KGraphElementIDGenerator
+import de.cau.cs.kieler.klighd.lsp.LSPUtil
+import de.cau.cs.kieler.klighd.lsp.interactive.ConstraintProperty
+import de.cau.cs.kieler.klighd.lsp.interactive.InteractiveUtil
 import java.util.List
 import javax.inject.Singleton
 import org.eclipse.elk.alg.layered.options.LayeredOptions
@@ -27,11 +28,9 @@ import org.eclipse.elk.graph.properties.IProperty
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.xtext.ide.server.ILanguageServerAccess
 import org.eclipse.xtext.ide.server.ILanguageServerExtension
-import de.cau.cs.kieler.klighd.lsp.LSPUtil
-import de.cau.cs.kieler.klighd.lsp.interactive.InteractiveUtil
-import de.cau.cs.kieler.klighd.lsp.interactive.ConstraintProperty
 
 /**
+ * Language server extension to change the layered algorithm in the interactive mode.
  * @author jet, cos, sdo
  * 
  */
@@ -49,11 +48,21 @@ class ConstraintsLanguageServerExtension implements ILanguageServerExtension {
     override initialize(ILanguageServerAccess access) {
     }
 
+    /**
+     * Sets a layer constraint.
+     * @param lc the layer constraint
+     * @param clientId the client id
+     */
     def setLayerConstraint(LayerConstraint lc, String clientId) {
         val uri = diagramState.getURIString(clientId)
         setConstraint(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT, uri, lc.id, lc.layer, lc.layerCons)
     }
 
+    /**
+     * Sets a position constraint.
+     * @param pc the position constraint
+     * @param clientId the client id
+     */
     def setPositionConstraint(PositionConstraint pc, String clientId) {
         val uri = diagramState.getURIString(clientId)
         setConstraint(LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT, uri, pc.id,
@@ -63,7 +72,8 @@ class ConstraintsLanguageServerExtension implements ILanguageServerExtension {
     /**
      * Sets a layer constraint and a positional constraint that 
      * are encapsulated in an instance of StaticConstraint.
-     * 
+     * @param sc the constraint
+     * @param clientId the client id
      */
     def setStaticConstraint(StaticConstraint sc, String clientId) {
         val uri = diagramState.getURIString(clientId)
@@ -93,12 +103,9 @@ class ConstraintsLanguageServerExtension implements ILanguageServerExtension {
             // Reevaluate insertion of node to target layer
             var reval = new LayeredConstraintReevaluation(kNode)
 
-            //TODO: As an option, look what it does
             if (reval.reevaluateAfterEmptyingALayer(kNode, newLayerCons, allNodes)) {
                 newLayerCons--
             }
-            // TODO: Shift reevaluation is not ready yet. 
-            // reval.shiftIfNec(kNode, newLayerId, newLayerCons, newPosId, newPosCons, oldLayerNodes, targetLayerNodes,allNodes)
             reval.reevaluatePositionConstraintsAfterLayerSwap(targetLayerNodes, oldLayerNodes, kNode, newPosId)
 
             var changedNodes = reval.changedNodes
@@ -110,6 +117,12 @@ class ConstraintsLanguageServerExtension implements ILanguageServerExtension {
         }
     }
 
+
+    /**
+     * Delete a constraint.
+     * @param dc the constraint o delete
+     * @param clientId the client id
+     */
     def deleteStaticConstraint(DeleteConstraint dc, String clientId) {
         val uri = diagramState.getURIString(clientId)
         val kNode = getKNode(uri, dc.id)
@@ -121,6 +134,11 @@ class ConstraintsLanguageServerExtension implements ILanguageServerExtension {
         }
     }
 
+    /**
+     * Delete a position constraint.
+     * @param dc the position constraint o delete
+     * @param clientId the client id
+     */
     def deletePositionConstraint(DeleteConstraint dc, String clientId) {
         val uri = diagramState.getURIString(clientId)
         val kNode = getKNode(uri, dc.id)
@@ -130,6 +148,11 @@ class ConstraintsLanguageServerExtension implements ILanguageServerExtension {
         }
     }
 
+    /**
+     * Delete a layer constraint.
+     * @param dc the layer constraint o delete
+     * @param clientId the client id
+     */
     def deleteLayerConstraint(DeleteConstraint dc, String clientId) {
         val uri = diagramState.getURIString(clientId)
         val kNode = getKNode(uri, dc.id)
@@ -188,7 +211,6 @@ class ConstraintsLanguageServerExtension implements ILanguageServerExtension {
      * Changes property changes defined by changedNodes to the resource
      * @param changedNodes list of all changes to nodes
      * @param uri uri of resource
-     * TODO use some kind of updateDocument mechanism and do not just modify the contents of the resource directly
      */
     def refreshModelInEditor(List<ConstraintProperty> changedNodes, String uri) {
         val resource = InteractiveUtil.getResourceFromUri(uri, injector)

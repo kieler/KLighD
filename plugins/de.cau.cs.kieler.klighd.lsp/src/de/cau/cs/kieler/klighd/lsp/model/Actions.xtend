@@ -203,12 +203,12 @@ class PerformActionAction implements Action {
 @Accessors
 @EqualsHashCode
 @ToString(skipNulls = true)
-public class RefreshLayoutAction implements Action {
-    public static val KIND = 'refreshLayout'
+public class RefreshDiagramAction implements Action {
+    public static val KIND = 'refreshDiagram'
     String kind = KIND
     
     new() {}
-    new(Consumer<RefreshLayoutAction> initializer) {
+    new(Consumer<RefreshDiagramAction> initializer) {
         initializer.accept(this)
     }
 }

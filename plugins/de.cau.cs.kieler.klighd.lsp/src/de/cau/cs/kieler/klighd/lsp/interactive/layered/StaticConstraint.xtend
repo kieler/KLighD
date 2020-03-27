@@ -15,6 +15,7 @@ package de.cau.cs.kieler.klighd.lsp.interactive.layered
 import org.eclipse.xtend.lib.annotations.Data
 
 /**
+ * Data class for a combined position and layer constraint.
  * @author jet, cos, sdo
  * 
  */

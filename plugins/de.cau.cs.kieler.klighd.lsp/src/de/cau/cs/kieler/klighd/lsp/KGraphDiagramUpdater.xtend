@@ -108,7 +108,6 @@ class KGraphDiagramUpdater extends DiagramUpdater {
     }
 
     override protected doUpdateDiagrams(String path, List<? extends ILanguageAwareDiagramServer> diagramServers) {
-        // doUpdateLayout aufrufen?
         if (diagramServers.empty) {
             return CompletableFuture.completedFuture(null)
         }

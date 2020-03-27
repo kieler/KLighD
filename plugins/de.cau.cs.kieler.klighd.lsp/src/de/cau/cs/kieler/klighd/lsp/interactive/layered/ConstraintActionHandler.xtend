@@ -19,6 +19,7 @@ import org.eclipse.sprotty.Action
 import org.eclipse.sprotty.xtext.LanguageAwareDiagramServer
 
 /**
+ * Handles all sprotty actions for the layered interactive algorithm.
  * @author sdo
  *
  */
@@ -26,7 +27,6 @@ class ConstraintActionHandler extends AbstractActionHandler {
     
     @Inject
     ConstraintsLanguageServerExtension constraintLS
-    
     
     new() {
         this.supportedMessages = newHashMap(

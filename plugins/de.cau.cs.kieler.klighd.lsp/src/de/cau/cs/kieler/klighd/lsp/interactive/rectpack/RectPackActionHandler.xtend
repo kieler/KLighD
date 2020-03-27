@@ -19,6 +19,7 @@ import org.eclipse.sprotty.Action
 import org.eclipse.sprotty.xtext.LanguageAwareDiagramServer
 
 /**
+ * This class handles all sprotty actions for the interactive rectpacking algorithm.
  * @author sdo
  *
  */

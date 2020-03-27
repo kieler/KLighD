@@ -17,6 +17,7 @@ import de.cau.cs.kieler.klighd.lsp.interactive.InteractiveLayout
 import org.eclipse.elk.alg.rectpacking.options.RectPackingOptions
 
 /**
+ * Provides utility methods for the interactive rectpacking algorithm.
  * @author sdo
  *
  */

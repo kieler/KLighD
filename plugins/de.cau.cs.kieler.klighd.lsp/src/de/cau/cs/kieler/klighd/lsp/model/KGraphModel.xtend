@@ -36,11 +36,6 @@ import org.eclipse.xtend.lib.annotations.Accessors
 class SKNode extends SNode {
     List<KGraphData> data
     HashMap<String, Object> properties = newHashMap
-    int layerId
-    int posId
-    int layerCons
-    int posCons 
-    boolean interactiveLayout
     Direction direction
     String tooltip
 }

@@ -187,7 +187,7 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
         postProcess()
 
         return if (cancelIndicator.canceled) 
-               null 
+               null
            else 
                diagramRoot
 	}
@@ -305,26 +305,9 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
         ].toList
 
         nodeElement.data = node.data.filter[KRenderingLibrary.isAssignableFrom(it.class)].toList
-        nodeElement.properties.put("layerId", node.getProperty(LayeredOptions.LAYERING_LAYER_I_D))
-        nodeElement.properties.put("positionId", node.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_I_D))
-        nodeElement.properties.put("layerConstraint", node.getProperty(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT))
-        nodeElement.properties.put("positionConstraint", node.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT))
-        nodeElement.properties.put("interactiveLayout", node.getProperty(CoreOptions.INTERACTIVE_LAYOUT))
-        nodeElement.properties.put("algorithm", node.getProperty(CoreOptions.ALGORITHM))
-        nodeElement.properties.put("desiredPosition", node.getProperty(RectPackingOptions.DESIRED_POSITION))
-        val currentPosition = node.getProperty(RectPackingOptions.CURRENT_POSITION)
-        nodeElement.properties.put("currentPosition", currentPosition)
-        nodeElement.properties.put("aspectRatio", node.getProperty(RectPackingOptions.ASPECT_RATIO))
+        
+        setProperties(nodeElement, node)
         findSpecialRenderings(filteredData)
-        
-        var parent = node
-        if (node.parent !== null) {
-            parent = node.parent
-        }
-        // FIXME this is bad
-        // The client expects every node to know what its direction is
-        nodeElement.direction = parent.getProperty(LayeredOptions.DIRECTION)
-        
         
         val renderingContextData = RenderingContextData.get(node)
         // activate the element by default if it does not have an active/inactive status yet.
@@ -348,6 +331,30 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
             renderingContextData.setProperty(KlighdInternalProperties.POPULATED, false)
         }
         return nodeElement
+    }
+    
+    /**
+     * Set all properties supported by the client.
+     */
+    def setProperties(SKNode nodeElement, KNode node) {
+        nodeElement.properties.put("layerId", node.getProperty(LayeredOptions.LAYERING_LAYER_I_D))
+        nodeElement.properties.put("positionId", node.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_I_D))
+        nodeElement.properties.put("layerConstraint", node.getProperty(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT))
+        nodeElement.properties.put("positionConstraint", node.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT))
+        nodeElement.properties.put("interactiveLayout", node.getProperty(CoreOptions.INTERACTIVE_LAYOUT))
+        nodeElement.properties.put("algorithm", node.getProperty(CoreOptions.ALGORITHM))
+        nodeElement.properties.put("desiredPosition", node.getProperty(RectPackingOptions.DESIRED_POSITION))
+        val currentPosition = node.getProperty(RectPackingOptions.CURRENT_POSITION)
+        nodeElement.properties.put("currentPosition", currentPosition)
+        nodeElement.properties.put("aspectRatio", node.getProperty(RectPackingOptions.ASPECT_RATIO))
+        
+        var parent = node
+        if (node.parent !== null) {
+            parent = node.parent
+        }
+        
+        // The client expects every node to know what its direction is
+        nodeElement.direction = parent.getProperty(LayeredOptions.DIRECTION)
     }
 
     /**

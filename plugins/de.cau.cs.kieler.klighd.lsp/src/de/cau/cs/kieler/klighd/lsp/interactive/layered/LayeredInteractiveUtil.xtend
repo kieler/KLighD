@@ -14,6 +14,7 @@ package de.cau.cs.kieler.klighd.lsp.interactive.layered
 
 import de.cau.cs.kieler.klighd.kgraph.KEdge
 import de.cau.cs.kieler.klighd.kgraph.KNode
+import de.cau.cs.kieler.klighd.lsp.interactive.InteractiveLayout
 import java.util.ArrayList
 import java.util.List
 import org.eclipse.elk.alg.layered.options.CrossingMinimizationStrategy
@@ -23,13 +24,18 @@ import org.eclipse.elk.alg.layered.options.LayeringStrategy
 import org.eclipse.elk.core.math.KVector
 import org.eclipse.elk.core.options.Direction
 import org.eclipse.emf.common.util.EList
-import de.cau.cs.kieler.klighd.lsp.interactive.InteractiveLayout
 
 /**
+ * Provides utility methods for the interactive layered algorithm.
  * @author sdo
  *
  */
 class LayeredInteractiveUtil {
+    
+    /**
+     * Constant help with node placement, since nodes should not overlap and the their width and height may not be final.
+     */
+    public static final int nodePlacementHelper = 100000
 
     /**
      * Sets the coordinates of the nodes in the graph, which root is the given node. 
@@ -114,7 +120,6 @@ class LayeredInteractiveUtil {
             if (currentLayer < layering.size) {
                 var nodesOfLayer = layering.get(currentLayer)
                 // edges in the same layer are not allowed
-                // TODO overthink whether this is always desired
                 shiftOtherNodes(node, currentLayer, layering, true)
                 shiftOtherNodes(node, currentLayer, layering, false)
                 nodesOfLayer.add(node)
@@ -215,9 +220,8 @@ class LayeredInteractiveUtil {
 
     /**
      * Sets the x coordinates of the nodes in {@code layers} according to their layer.
-     * TODO remove magic constants
-     * FIXME The problem is that the height and width of a node are determined by the height and width before the layout with constraints.
-     *      They are therefore potentially wrong
+     * The problem is that the height and width of a node are determined by the height and width before the layout with constraints.
+     * They are therefore potentially wrong. The placement has to be adjusted for this by a very high spacing.
      *  
      * @param layers The layers containing the associated nodes, already sorted regarding layers
      */
@@ -232,25 +236,25 @@ class LayeredInteractiveUtil {
                     case UNDEFINED, case RIGHT: {
                         node.xpos = position;
                         if (position + node.width / 2 >= nextPosition) {
-                            nextPosition = node.xpos + node.width + 100000
+                            nextPosition = node.xpos + node.width + nodePlacementHelper
                         }
                     }
                     case LEFT:  {
                         node.xpos = position
                         if (node.xpos <= nextPosition) {
-                            nextPosition = node.xpos - 100000
+                            nextPosition = node.xpos - nodePlacementHelper
                         }
                     }                    
                     case DOWN: {
                         node.ypos = position;
                         if (position + node.height >= nextPosition) {
-                            nextPosition = node.ypos + node.height + 100000
+                            nextPosition = node.ypos + node.height + nodePlacementHelper
                         }
                     }
                     case UP: {
                         node.ypos = position
                         if (node.ypos <= nextPosition) {
-                            nextPosition = node.ypos - 100000
+                            nextPosition = node.ypos - nodePlacementHelper
                         }
                     }
                 }
@@ -297,14 +301,14 @@ class LayeredInteractiveUtil {
                 var yPos = nodes.get(0).ypos
                 for (node : nodes) {
                     node.setProperty(LayeredOptions.POSITION, new KVector(node.xpos, yPos))
-                    yPos = yPos + node.height + 100000
+                    yPos = yPos + node.height + nodePlacementHelper
                 }
             }                   
             case DOWN, case UP: {
                 var xPos = nodes.get(0).xpos
                 for (node : nodes) {
                     node.setProperty(LayeredOptions.POSITION, new KVector(xPos, node.ypos))
-                    xPos = xPos + node.width + 100000
+                    xPos = xPos + node.width + nodePlacementHelper
                 }
             }
         }

@@ -28,6 +28,7 @@ import org.eclipse.elk.alg.rectpacking.options.RectPackingOptions
 import org.eclipse.elk.core.options.CoreOptions
 
 /**
+ * This class handles interactive layout and redirects to specific algorithms.
  * @author sdo, jet, cos
  * 
  */
@@ -51,7 +52,6 @@ class InteractiveLayout {
         }
         val root = viewContext.viewModel
         if (root.getProperty(CoreOptions.INTERACTIVE_LAYOUT)) {
-            // FIXME check for interactive mode in general to interactive layout from layered alg
             root.setRequiredNonInteractiveOptions
             // Initial layout
             layoutE.onlyLayoutOnKGraph(id)

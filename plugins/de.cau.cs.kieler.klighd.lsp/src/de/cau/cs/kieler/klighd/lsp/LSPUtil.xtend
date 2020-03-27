@@ -42,16 +42,16 @@ class LSPUtil {
     }
 
     /**
-     * Returns the {@code KNode of the node described by {@code ID}.
+     * Returns the {@code KNode} of the node described by {@code id}.
      * Returns null if the {@code ViewContext} of the resource described by {@code uri} is null.
-     * Returns null if the element behind the ID is no kNode.
+     * Returns null if the element behind the id is no kNode.
      */
-    public static def getKNode(KGraphDiagramState diagramState, String uri, String ID) {
+    public static def getKNode(KGraphDiagramState diagramState, String uri, String id) {
 
         val mapKToS = diagramState.getKGraphToSModelElementMap(uri)
 
-        // KGraphElement which corresponding SNode has the correct ID
-        val kGraphElement = KGraphElementIDGenerator.findElementById(mapKToS, ID)
+        // KGraphElement which corresponding SNode has the correct id
+        val kGraphElement = KGraphElementIDGenerator.findElementById(mapKToS, id)
 
         if (kGraphElement instanceof KNode) {
             return kGraphElement as KNode

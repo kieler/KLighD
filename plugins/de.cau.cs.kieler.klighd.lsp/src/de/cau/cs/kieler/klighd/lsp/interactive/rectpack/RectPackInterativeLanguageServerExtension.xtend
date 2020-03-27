@@ -34,6 +34,7 @@ import org.eclipse.xtext.ide.server.ILanguageServerExtension
 import org.eclipse.xtext.resource.XtextResourceSet
 
 /**
+ * Language server extension to change the rectpacking algorithm in the interactive mode.
  * @author sdo
  * 
  */
@@ -157,7 +158,8 @@ class RectPackInterativeLanguageServerExtension implements ILanguageServerExtens
      * Changes property changes defined by changedNodes to the resource
      * @param kNode just some kNode of the correct graph
      * @param uri uri of resource
-     * TODO use some kind of updateDocument mechanism and do not just modify the contents of the resource directly
+     * 
+     * This resource update does not applied as a normal text edit. Therefore, these changes cannot be reverted via ctrl+z.
      */
     def refreshModelInEditor(List<KNode> changedNodes, String uri) {
         val resource = injector.getInstance(XtextResourceSet).getResource(URI.createURI(uri), true)
