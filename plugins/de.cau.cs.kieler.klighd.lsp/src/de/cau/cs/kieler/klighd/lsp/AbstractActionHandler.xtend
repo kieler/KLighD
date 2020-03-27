@@ -16,6 +16,7 @@ import java.util.HashMap
 import org.eclipse.xtend.lib.annotations.Accessors
 
 /**
+ * Abstract class to handle sprotty-actions.
  * @author sdo
  *
  */

@@ -37,8 +37,6 @@ import org.eclipse.xtext.ide.server.ILanguageServerExtension
 @Singleton
 class ConstraintsLanguageServerExtension implements ILanguageServerExtension {
 
-    @Accessors ConstraintsLanguageClient client;
-
     @Inject
     KGraphDiagramState diagramState
 

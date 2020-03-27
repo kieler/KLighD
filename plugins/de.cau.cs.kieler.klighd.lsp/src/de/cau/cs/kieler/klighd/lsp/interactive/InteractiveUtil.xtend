@@ -135,36 +135,4 @@ class InteractiveUtil {
         }
         return parent
     }
-
-    /**
-     * Determines the root of the given node.
-     * 
-     * @param node KNode, which root should be returned.
-     */
-    static def getRootNodeOf(KNode node) {
-        var KNode parent = node
-        while (parent.parent !== null) {
-            parent = parent.parent
-        }
-        return parent
-    }
-
-    /**
-     * Collects the adjacent nodes of {@code node} in a list.
-     * @param node The node of which you want to know the adjacent nodes.
-     * @return 
-     */
-    static def getAdjacentNodes(KNode node) {
-        val inEdges = node.incomingEdges
-        val outEdges = node.outgoingEdges
-        var List<KNode> adjacentNodes = newArrayList()
-
-        for (e : inEdges) {
-            adjacentNodes.add(e.source)
-        }
-        for (e : outEdges) {
-            adjacentNodes.add(e.target)
-        }
-        return adjacentNodes
-    }
 }

@@ -42,17 +42,22 @@ class KGraphTypeAdapterUtil {
         gsonBuilder
         .registerTypeAdapterFactory(
             new ActionTypeAdapter.Factory => [
+                // General sprotty action
                 addActionKind(CheckedImagesAction.KIND, CheckedImagesAction)
                 addActionKind(ComputedTextBoundsAction.KIND, ComputedTextBoundsAction)
                 addActionKind(PerformActionAction.KIND, PerformActionAction)
                 addActionKind(SetSynthesisAction.KIND, SetSynthesisAction)
                 addActionKind(RefreshDiagramAction.KIND, RefreshDiagramAction)
+                
+                // Interactive layered actions
                 addActionKind(SetStaticConstraintAction.KIND, SetStaticConstraintAction)
                 addActionKind(SetPositionConstraintAction.KIND, SetPositionConstraintAction)
                 addActionKind(SetLayerConstraintAction.KIND, SetLayerConstraintAction)
                 addActionKind(DeleteStaticConstraintAction.KIND, DeleteStaticConstraintAction)
                 addActionKind(DeletePositionConstraintAction.KIND, DeletePositionConstraintAction)
                 addActionKind(DeleteLayerConstraintAction.KIND, DeleteLayerConstraintAction)
+                
+                // Interactive rectpacking actions
                 addActionKind(RectPackSetPositionConstraintAction.KIND, RectPackSetPositionConstraintAction)
                 addActionKind(RectPackDeletePositionConstraintAction.KIND, RectPackDeletePositionConstraintAction)
                 addActionKind(SetAspectRatioAction.KIND, SetAspectRatioAction)

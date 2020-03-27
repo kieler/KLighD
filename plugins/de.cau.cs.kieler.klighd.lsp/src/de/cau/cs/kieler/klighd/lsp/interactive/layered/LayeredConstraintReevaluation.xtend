@@ -13,9 +13,9 @@
 package de.cau.cs.kieler.klighd.lsp.interactive.layered
 
 import de.cau.cs.kieler.klighd.kgraph.KNode
+import de.cau.cs.kieler.klighd.kgraph.util.KGraphUtil
 import de.cau.cs.kieler.klighd.lsp.interactive.ConstraintProperty
 import de.cau.cs.kieler.klighd.lsp.interactive.InteractiveUtil
-import java.util.HashSet
 import java.util.LinkedList
 import java.util.List
 import org.eclipse.elk.alg.layered.options.LayeredOptions
@@ -144,7 +144,7 @@ class LayeredConstraintReevaluation {
     def void shiftIfNecessary(KNode insertedNode, int newLayerId, int layerCons, int newPosId, int posCons,
         List<KNode> oldLayerNodes, List<KNode> newLayerNodes, List<KNode> nodes) {
 
-        val adjacentNodes = InteractiveUtil.getAdjacentNodes(insertedNode)
+        val adjacentNodes = KGraphUtil.getAdjacentNodes(insertedNode)
 
         var List<KNode> shiftedNodes = newArrayList()
 
