@@ -1,6 +1,6 @@
 /*
  * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
- *
+ * 
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
  * Copyright 2018-2019 by
@@ -48,41 +48,48 @@ class KGraphLayoutEngine extends ElkLayoutEngine {
     	    if (root instanceof SGraph) {
     	        // The layout is executed on the KGraph, not the SGraph. So get the KGraph belonging to this SGraph from
     	        // the KGraphContext.
-                val kGraphContext = diagramState.getKGraphContext(root.id)
-                
-                // layout of KGraph
-                val lightDiagramLayoutConfig = new LightDiagramLayoutConfig(kGraphContext)
-                
-                // Get the layout configurator.
-                val configurator = diagramState.getLayoutConfig(root.id)
-                
-                var configurators = new ArrayList
-                configurators.add(configurator)
-                lightDiagramLayoutConfig.options(configurators)
-                
-                synchronized(kGraphContext.viewModel) {
-                    lightDiagramLayoutConfig.performLayout
-                    RenderingPreparer.prepareRendering(kGraphContext.viewModel)
-                }
-                
+                onlyLayoutOnKGraph(root.id)
+
                 // map layouted KGraph to SGraph
                 KGraphMappingUtil.mapLayout(diagramState.getKGraphToSModelElementMap(root.id))
-    	    }
-	    }
-	}
-    
-	override protected applyEngine(ElkNode elkGraph) {
-		if (LOG.isTraceEnabled)
-			LOG.info(elkGraph.toXMI)
-		super.applyEngine(elkGraph)
-	}
-	
-	private def toXMI(ElkNode elkGraph) {
-		val resourceSet = new ResourceSetImpl
-		val resource = resourceSet.createResource(URI.createFileURI('output.elkg'))
-		resource.contents += elkGraph
-		val outputStream = new ByteArrayOutputStream
-		resource.save(outputStream, emptyMap)
-		return outputStream.toString
-	}
+            }
+        }
+    }
+
+    /**
+     * Performs the layout only on the KGraph without mapping it to a SGraph
+     */
+    def onlyLayoutOnKGraph(String rootID) {
+        val kGraphContext = diagramState.getKGraphContext(rootID)
+
+        // layout of KGraph
+        val lightDiagramLayoutConfig = new LightDiagramLayoutConfig(kGraphContext)
+
+        // Get the layout configurator.
+        val configurator = diagramState.getLayoutConfig(rootID)
+
+        var configurators = new ArrayList
+        configurators.add(configurator)
+        lightDiagramLayoutConfig.options(configurators)
+
+        synchronized (kGraphContext.viewModel) {
+            lightDiagramLayoutConfig.performLayout
+            RenderingPreparer.prepareRendering(kGraphContext.viewModel)
+        }
+    }
+
+    override protected applyEngine(ElkNode elkGraph) {
+        if (LOG.isTraceEnabled)
+            LOG.info(elkGraph.toXMI)
+        super.applyEngine(elkGraph)
+    }
+
+    private def toXMI(ElkNode elkGraph) {
+        val resourceSet = new ResourceSetImpl
+        val resource = resourceSet.createResource(URI.createFileURI('output.elkg'))
+        resource.contents += elkGraph
+        val outputStream = new ByteArrayOutputStream
+        resource.save(outputStream, emptyMap)
+        return outputStream.toString
+    }
 }

@@ -12,7 +12,9 @@
  */
 package de.cau.cs.kieler.klighd.kgraph.util;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import org.eclipse.elk.core.math.KVector;
@@ -826,4 +828,35 @@ public final class KGraphUtil {
         return node1.getParent() == node2.getParent() && node1.getParent() != null;
     }
 
+    /**
+     * Determines the root of the given node.
+     * 
+     * @param node KNode, which root should be returned.
+     */
+    public static KNode getRootNodeOf(KNode node) {
+        KNode parent = node;
+        while (parent.getParent() != null) {
+            parent = parent.getParent();
+        }
+        return parent;
+    }
+
+    /**
+     * Collects the adjacent nodes of {@code node} in a list.
+     * @param node The node of which you want to know the adjacent nodes.
+     * @return 
+     */
+    public static List<KNode> getAdjacentNodes(KNode node) {
+        List<KEdge> inEdges = node.getIncomingEdges();
+        List<KEdge> outEdges = node.getOutgoingEdges();
+        List<KNode> adjacentNodes = new ArrayList<>();
+
+        for (KEdge e : inEdges) {
+            adjacentNodes.add(e.getSource());
+        }
+        for (KEdge e : outEdges) {
+            adjacentNodes.add(e.getTarget());
+        }
+        return adjacentNodes;
+    }
 }

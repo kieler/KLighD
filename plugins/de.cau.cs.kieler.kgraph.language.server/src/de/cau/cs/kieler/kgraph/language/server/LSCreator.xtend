@@ -3,7 +3,7 @@
  * 
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright 2019 by
+ * Copyright 2019, 2020 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -20,6 +20,8 @@ import de.cau.cs.kieler.klighd.lsp.KGraphDiagramModule
 import de.cau.cs.kieler.klighd.lsp.KGraphDiagramServerModule
 import de.cau.cs.kieler.klighd.lsp.SprottyViewer
 import de.cau.cs.kieler.klighd.lsp.gson_utils.KGraphTypeAdapterUtil
+import de.cau.cs.kieler.klighd.lsp.interactive.layered.ConstraintsLanguageServerExtension
+import de.cau.cs.kieler.klighd.lsp.interactive.rectpack.RectPackInterativeLanguageServerExtension
 import java.io.InputStream
 import java.io.OutputStream
 import java.util.Map
@@ -99,8 +101,11 @@ class LSCreator {
             KGraphTypeAdapterUtil.configureGson(gsonBuilder)
         ]
         // Get all LSExtensions to use them as local services
+        
+        var constraintsLSExt = injector.getInstance(ConstraintsLanguageServerExtension)
+        var rectPackLSExt = injector.getInstance(RectPackInterativeLanguageServerExtension)
         var iLanguageServerExtensions = <Object>newArrayList(ls,
-            injector.getInstance(RegistrationLanguageServerExtension))
+            injector.getInstance(RegistrationLanguageServerExtension), constraintsLSExt, rectPackLSExt)
         val launcher = new Builder<LanguageClient>()
                 .setLocalServices(iLanguageServerExtensions)
                 .setRemoteInterface(LanguageClient)

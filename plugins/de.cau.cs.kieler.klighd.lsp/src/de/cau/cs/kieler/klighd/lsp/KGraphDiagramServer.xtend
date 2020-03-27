@@ -21,6 +21,8 @@ import de.cau.cs.kieler.klighd.kgraph.KLabel
 import de.cau.cs.kieler.klighd.kgraph.KNode
 import de.cau.cs.kieler.klighd.krendering.KRendering
 import de.cau.cs.kieler.klighd.krendering.KText
+import de.cau.cs.kieler.klighd.lsp.interactive.layered.ConstraintActionHandler
+import de.cau.cs.kieler.klighd.lsp.interactive.rectpack.RectPackActionHandler
 import de.cau.cs.kieler.klighd.lsp.model.CheckImagesAction
 import de.cau.cs.kieler.klighd.lsp.model.CheckedImagesAction
 import de.cau.cs.kieler.klighd.lsp.model.ComputedTextBoundsAction
@@ -50,6 +52,8 @@ import org.eclipse.sprotty.SelectAllAction
 import org.eclipse.sprotty.SetModelAction
 import org.eclipse.sprotty.UpdateModelAction
 import org.eclipse.sprotty.xtext.LanguageAwareDiagramServer
+import org.eclipse.xtend.lib.annotations.Accessors
+import de.cau.cs.kieler.klighd.lsp.model.RefreshDiagramAction
 
 /**
  * Diagram server extension adding functionality to special actions needed for handling KGraphs.
@@ -58,6 +62,12 @@ import org.eclipse.sprotty.xtext.LanguageAwareDiagramServer
  */
 class KGraphDiagramServer extends LanguageAwareDiagramServer {
     static val LOG = Logger.getLogger(KGraphDiagramServer)
+    
+    @Inject
+    protected ConstraintActionHandler constraintActionHandler
+    
+    @Inject
+    protected RectPackActionHandler rectPackActionHandler
     
     @Inject 
     protected KGraphDiagramState diagramState
@@ -83,6 +93,7 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
      */
     protected boolean imagesUpdated = false
     
+    @Accessors(PUBLIC_GETTER)
     protected Object modelLock = new Object
     
     /**
@@ -146,7 +157,13 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
                 handle(action as SetSynthesisAction)
             } else if (action.getKind === CheckedImagesAction.KIND) {
                 handle(action as CheckedImagesAction)
-            } else{
+            } else if (action.getKind === RefreshDiagramAction.KIND) {
+                handle(action as RefreshDiagramAction)
+            } else if (constraintActionHandler.canHandleAction(action.getKind)) {
+                constraintActionHandler.handle(action, clientId, this)
+            } else if (rectPackActionHandler.canHandleAction(action.getKind)) {
+                rectPackActionHandler.handle(action, clientId, this)
+            } else {
                 super.accept(message)
             }
         }
@@ -237,19 +254,9 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
             val actionContext = new ActionContext(viewer, null, kGraphElement, kRendering)
             val actionResult = klighdAction.execute(actionContext)
             if (actionResult.needsSynthesis) {
-                val diagramUpdater = diagramLanguageServer.diagramUpdater
-                if (diagramUpdater instanceof KGraphDiagramUpdater) {
-                    diagramUpdater.updateDiagram(this)
-                } else {
-                    throw new IllegalStateException("The diagramUpdater was not initialized correctly")
-                }
+                updateDiagram()
             } else if (actionResult.actionPerformed) {
-                val diagramUpdater = diagramLanguageServer.diagramUpdater
-                if (diagramUpdater instanceof KGraphDiagramUpdater) {
-                    diagramUpdater.updateLayout(this)
-                } else {
-                    throw new IllegalStateException("The diagramUpdater was not initialized correctly")
-                }
+                updateLayout()
             }
         }
     }
@@ -264,7 +271,7 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
             val sourceUrl = diagramState.getURIString(clientId)
             diagramState.putSynthesisId(sourceUrl, action.id)
             this.newModel = true
-            diagramLanguageServer.diagramUpdater.updateDiagram(this)
+            updateDiagram()
         }
     }
     
@@ -306,6 +313,11 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
         }
     }
     
+    protected def handle(RefreshDiagramAction action) {
+        updateDiagram()
+        return
+    }
+    
     /**
      * Selects the SGraph elements mapped by the given selectable KGraph elements.
      * 
@@ -332,6 +344,34 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
         val selectAction = new SelectAction
         selectAction.selectedElementsIDs = toBeSelectedSModelElementIDs
         dispatch(selectAction)
+    }
+    
+    /**
+     * Updates the current diagram.
+     */
+    public def updateDiagram() {
+        synchronized (diagramState) {
+            val diagramUpdater = diagramLanguageServer.diagramUpdater
+            if (diagramUpdater instanceof KGraphDiagramUpdater) {
+                diagramUpdater.updateDiagram(this)
+            } else {
+                throw new IllegalStateException("The diagramUpdater was not initialized correctly")
+            }
+        }
+    }
+    
+    /**
+     * Updates the layout of the current diagram.
+     */
+    public def updateLayout() {
+        synchronized (diagramState) {
+            val diagramUpdater = diagramLanguageServer.diagramUpdater
+            if (diagramUpdater instanceof KGraphDiagramUpdater) {
+                diagramUpdater.updateLayout(this)
+            } else {
+                throw new IllegalStateException("The diagramUpdater was not initialized correctly")
+            }
+        }
     }
     
     /**
