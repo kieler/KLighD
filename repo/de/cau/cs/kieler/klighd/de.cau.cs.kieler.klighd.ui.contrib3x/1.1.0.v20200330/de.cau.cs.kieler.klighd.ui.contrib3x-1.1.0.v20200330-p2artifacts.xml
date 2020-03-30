@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<?artifactRepository version='1.1.0'?>
+<artifacts size='1'>
+  <artifact classifier='osgi.bundle' id='de.cau.cs.kieler.klighd.ui.contrib3x' version='1.1.0.v20200330'>
+    <properties size='5'>
+      <property name='artifact.size' value='3939'/>
+      <property name='download.size' value='3939'/>
+      <property name='maven-groupId' value='de.cau.cs.kieler.klighd'/>
+      <property name='maven-artifactId' value='de.cau.cs.kieler.klighd.ui.contrib3x'/>
+      <property name='maven-version' value='1.1.0.v20200330'/>
+    </properties>
+  </artifact>
+</artifacts>

@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<?artifactRepository version='1.1.0'?>
+<artifacts size='2'>
+  <artifact classifier='osgi.bundle' id='de.cau.cs.kieler.klighd.piccolo.test' version='1.1.0.v20200330'>
+    <properties size='5'>
+      <property name='artifact.size' value='70279'/>
+      <property name='download.size' value='70279'/>
+      <property name='maven-groupId' value='de.cau.cs.kieler.klighd'/>
+      <property name='maven-artifactId' value='de.cau.cs.kieler.klighd.piccolo.test'/>
+      <property name='maven-version' value='1.1.0.v20200330'/>
+    </properties>
+  </artifact>
+  <artifact classifier='osgi.bundle' id='de.cau.cs.kieler.klighd.piccolo.test.source' version='1.1.0.v20200330'>
+    <properties size='6'>
+      <property name='artifact.size' value='41997'/>
+      <property name='download.size' value='41997'/>
+      <property name='maven-groupId' value='de.cau.cs.kieler.klighd'/>
+      <property name='maven-artifactId' value='de.cau.cs.kieler.klighd.piccolo.test'/>
+      <property name='maven-version' value='1.1.0.v20200330'/>
+      <property name='maven-classifier' value='sources'/>
+    </properties>
+  </artifact>
+</artifacts>

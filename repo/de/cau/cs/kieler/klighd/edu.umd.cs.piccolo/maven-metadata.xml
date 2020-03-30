@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>de.cau.cs.kieler.klighd</groupId>
+  <artifactId>edu.umd.cs.piccolo</artifactId>
+  <versioning>
+    <release>1.3.4.v20200330</release>
+    <versions>
+      <version>1.3.4.v20200330</version>
+    </versions>
+    <lastUpdated>20200330133308</lastUpdated>
+  </versioning>
+</metadata>

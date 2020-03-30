@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <artifactId>de.cau.cs.kieler.klighd.repository</artifactId>
+  <packaging>eclipse-repository</packaging>
+  <name>KLighD Repository</name>
+
+  <parent>
+    <groupId>de.cau.cs.kieler.klighd</groupId>
+    <artifactId>parent</artifactId>
+    <version>1.1.0.v20200330</version>
+    <relativePath>../../pom.xml</relativePath>
+  </parent>
+
+  <pluginRepositories>
+    <pluginRepository>
+      <id>jboss-releases</id>
+      <name>JBoss Releases Maven Repository</name>
+      <url>https://repository.jboss.org/nexus/content/repositories/releases/</url>
+    </pluginRepository>
+  </pluginRepositories>
+
+  <build>
+    <plugins>
+      <!-- This plug-in generates a nice index.html for our update site and adds associate update
+           sites, which is at the time of writing not possible with Tycho alone. For how this stuff
+           works, see the bottom two links in comment 6 on this ticket:
+           https://bugs.eclipse.org/bugs/show_bug.cgi?id=391033-->
+      <!-- Update: unfortunately, the tycho way for registering additional repositories,
+            which has been built meanwhile, doesn't work properly yet,
+            see https://bugs.eclipse.org/bugs/show_bug.cgi?id=453708#c34
+            so we have to stick to this plug-in -->
+      <plugin>
+        <groupId>org.jboss.tools.tycho-plugins</groupId>
+        <artifactId>repository-utils</artifactId>
+        <version>1.0.0</version>
+        <executions>
+          <execution>
+            <id>generate-facade</id>
+            <phase>package</phase>
+            <goals>
+              <goal>generate-repository-facade</goal>
+            </goals>
+            <configuration>
+              <associateSites>
+                <!-- Eclipse -->
+                <associateSite>http://download.eclipse.org/eclipse/updates/4.9/</associateSite>
+                <associateSite>http://download.eclipse.org/releases/photon</associateSite>
+                <!-- Eclipse Layout Kernel -->
+                <!-- associateSite>http://build.eclipse.org/modeling/elk/updates/nightly/</associateSite -->
+                <associateSite>http://download.eclipse.org/elk/updates/releases/0.6.0/</associateSite>>
+                <!-- Xtext -->
+                <associateSite>http://download.eclipse.org/modeling/tmf/xtext/updates/releases/2.16.0/</associateSite>>
+                <associateSite>http://xtext.github.io/download/updates/releases/2.1.1/</associateSite>>
+                <!-- Eclipse Orbit for Google Guave, Apache Batik, ... -->
+                <associateSite>http://download.eclipse.org/tools/orbit/downloads/drops/R20180606145124/repository</associateSite>
+                <!-- UML2 Tools (Meta Model Implemenetation, ...) -->
+                <associateSite>http://download.eclipse.org/modeling/mdt/uml2/updates/5.4/</associateSite>
+              </associateSites>
+              <siteTemplateFolder>siteTemplate</siteTemplateFolder>
+              <symbols>
+                <update.site.name>KIELER Lightweight Diagrams</update.site.name>
+                <update.site.description>v1.1.0</update.site.description>
+                <update.site.version>${unqualifiedVersion}.${buildQualifier}</update.site.version>
+              </symbols>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+</project>

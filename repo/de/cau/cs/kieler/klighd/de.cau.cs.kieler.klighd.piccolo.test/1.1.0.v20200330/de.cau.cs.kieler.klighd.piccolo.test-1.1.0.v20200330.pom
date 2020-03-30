@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>de.cau.cs.kieler.klighd</groupId>
+    <artifactId>test</artifactId>
+    <version>1.1.0.v20200330</version>
+  </parent>
+  <groupId>de.cau.cs.kieler.klighd</groupId>
+  <artifactId>de.cau.cs.kieler.klighd.piccolo.test</artifactId>
+  <version>1.1.0.v20200330</version>
+  <packaging>eclipse-test-plugin</packaging>
+  <build>
+    <sourceDirectory>src</sourceDirectory>
+    <plugins>
+      <plugin>
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>target-platform-configuration</artifactId>
+        <version>${tycho-version}</version>
+        <configuration>
+          <dependency-resolution>
+            <extraRequirements>
+              <requirement>
+                <!-- include elk layered in the classpath, as otherwise the diagram layout operations won't complete properly yielding test failures -->
+                <type>eclipse-plugin</type>
+                <id>org.eclipse.elk.alg.layered</id>
+                <versionRange>${elk-version}</versionRange>
+              </requirement>
+            </extraRequirements>
+          </dependency-resolution>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.eclipse.xtend</groupId>
+        <artifactId>xtend-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>compile</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+</project>

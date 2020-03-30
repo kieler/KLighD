@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>de.cau.cs.kieler.klighd</groupId>
+  <artifactId>edu.umd.cs.piccolo</artifactId>
+  <version>1.3.4.v20200330</version>
+  <packaging>jar</packaging>
+  
+  <properties>
+    <tycho-version>1.2.0</tycho-version>
+    <targetJdk>1.8</targetJdk>
+    <SWT-version>3.113.0</SWT-version>
+  </properties>
+
+  <!-- while deploying, put the compiled artifact into the following (local) repository -->
+  <build>
+    <sourceDirectory>src</sourceDirectory>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>2.4</version>
+        <configuration>
+          <archive>
+            <manifestFile>META-INF/MANIFEST.MF</manifestFile>
+          </archive>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+  
+  <!-- while deploying, put the compiled artifact into the following (local) repository -->
+  <distributionManagement>
+    <repository>
+     <id>internal-repo-for-downstream-usage</id>
+     <url>file://klighd-piccolo2d</url>
+    </repository>
+  </distributionManagement>
+</project>

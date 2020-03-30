@@ -1,0 +1,77 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<units size='2'>
+  <unit id='de.cau.cs.kieler.klighd.piccolo.draw2d' version='1.1.0.v20200330' generation='2'>
+    <update id='de.cau.cs.kieler.klighd.piccolo.draw2d' range='[0.0.0,1.1.0.v20200330)' severity='0'/>
+    <properties size='5'>
+      <property name='org.eclipse.equinox.p2.name' value='KLighD Piccolo Binding Extension Supporting Draw2d Figures'/>
+      <property name='org.eclipse.equinox.p2.provider' value='Kiel University'/>
+      <property name='maven-groupId' value='de.cau.cs.kieler.klighd'/>
+      <property name='maven-artifactId' value='de.cau.cs.kieler.klighd.piccolo.draw2d'/>
+      <property name='maven-version' value='1.1.0.v20200330'/>
+    </properties>
+    <provides size='5'>
+      <provided namespace='org.eclipse.equinox.p2.iu' name='de.cau.cs.kieler.klighd.piccolo.draw2d' version='1.1.0.v20200330'/>
+      <provided namespace='osgi.bundle' name='de.cau.cs.kieler.klighd.piccolo.draw2d' version='1.1.0.v20200330'/>
+      <provided namespace='osgi.identity' name='de.cau.cs.kieler.klighd.piccolo.draw2d' version='1.1.0.v20200330'>
+        <properties size='1'>
+          <property name='type' value='osgi.fragment'/>
+        </properties>
+      </provided>
+      <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
+      <provided namespace='osgi.fragment' name='de.cau.cs.kieler.klighd.piccolo' version='1.1.0.v20200330'/>
+    </provides>
+    <requires size='4'>
+      <required namespace='osgi.bundle' name='de.cau.cs.kieler.klighd.piccolo' range='0.0.0'/>
+      <required namespace='osgi.bundle' name='com.google.guava' range='10.0.0'/>
+      <required namespace='osgi.bundle' name='org.eclipse.draw2d' range='3.7.0'/>
+      <requiredProperties namespace='osgi.ee' match='(&amp;(osgi.ee=JavaSE)(version=1.8))'/>
+    </requires>
+    <artifacts size='1'>
+      <artifact classifier='osgi.bundle' id='de.cau.cs.kieler.klighd.piccolo.draw2d' version='1.1.0.v20200330'/>
+    </artifacts>
+    <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+    <touchpointData size='1'>
+      <instructions size='1'>
+        <instruction key='manifest'>
+          Bundle-SymbolicName: de.cau.cs.kieler.klighd.piccolo.draw2d;singleton:=true&#xA;Bundle-Version: 1.1.0.v20200330&#xA;Fragment-Host: de.cau.cs.kieler.klighd.piccolo&#xA;
+        </instruction>
+      </instructions>
+    </touchpointData>
+  </unit>
+  <unit id='de.cau.cs.kieler.klighd.piccolo.draw2d.source' version='1.1.0.v20200330' singleton='false'>
+    <update id='de.cau.cs.kieler.klighd.piccolo.draw2d.source' range='[0.0.0,1.1.0.v20200330)' severity='0'/>
+    <properties size='9'>
+      <property name='df_LT.bundleVendor' value='Kiel University'/>
+      <property name='df_LT.bundleName' value='KLighD Piccolo Binding Extension Supporting Draw2d Figures Source'/>
+      <property name='org.eclipse.equinox.p2.name' value='%bundleName'/>
+      <property name='org.eclipse.equinox.p2.provider' value='%bundleVendor'/>
+      <property name='org.eclipse.equinox.p2.bundle.localization' value='OSGI-INF/l10n/bundle-src'/>
+      <property name='maven-groupId' value='de.cau.cs.kieler.klighd'/>
+      <property name='maven-artifactId' value='de.cau.cs.kieler.klighd.piccolo.draw2d'/>
+      <property name='maven-version' value='1.1.0.v20200330'/>
+      <property name='maven-classifier' value='sources'/>
+    </properties>
+    <provides size='5'>
+      <provided namespace='org.eclipse.equinox.p2.iu' name='de.cau.cs.kieler.klighd.piccolo.draw2d.source' version='1.1.0.v20200330'/>
+      <provided namespace='osgi.bundle' name='de.cau.cs.kieler.klighd.piccolo.draw2d.source' version='1.1.0.v20200330'/>
+      <provided namespace='osgi.identity' name='de.cau.cs.kieler.klighd.piccolo.draw2d.source' version='1.1.0.v20200330'>
+        <properties size='1'>
+          <property name='type' value='osgi.bundle'/>
+        </properties>
+      </provided>
+      <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='source' version='1.0.0'/>
+      <provided namespace='org.eclipse.equinox.p2.localization' name='df_LT' version='1.0.0'/>
+    </provides>
+    <artifacts size='1'>
+      <artifact classifier='osgi.bundle' id='de.cau.cs.kieler.klighd.piccolo.draw2d.source' version='1.1.0.v20200330'/>
+    </artifacts>
+    <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+    <touchpointData size='1'>
+      <instructions size='1'>
+        <instruction key='manifest'>
+          Bundle-SymbolicName: de.cau.cs.kieler.klighd.piccolo.draw2d.source&#xA;Bundle-Version: 1.1.0.v20200330&#xA;
+        </instruction>
+      </instructions>
+    </touchpointData>
+  </unit>
+</units>
