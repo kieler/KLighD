@@ -219,7 +219,7 @@ litigation.
    </license>
 
    <url>
-      <update label="KIELER Nightly Builds" url="http://rtsys.informatik.uni-kiel.de/~kieler/updatesite/nightly/"/>
+      <update label="KIELER Lightweight Diagrams" url="https://kieler.github.io/KLighD/"/>
    </url>
 
    <requires>
