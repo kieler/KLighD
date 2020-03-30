@@ -55,7 +55,7 @@
 
    <repository-reference location="http://download.eclipse.org/eclipse/updates/4.9/" enabled="true" />
    <repository-reference location="http://download.eclipse.org/releases/photon" enabled="true" />
-   <repository-reference location="http://download.eclipse.org/elk/updates/releases/0.6.0/" enabled="true" />
+   <repository-reference location="http://download.eclipse.org/elk/updates/releases/0.6.1/" enabled="true" />
    <repository-reference location="http://download.eclipse.org/modeling/tmf/xtext/updates/releases/2.16.0/" enabled="true" />
    <repository-reference location="http://xtext.github.io/download/updates/releases/2.1.1/" enabled="true" />
    <repository-reference location="http://download.eclipse.org/tools/orbit/downloads/drops/R20180606145124/repository" enabled="true" />
