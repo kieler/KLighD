@@ -5,12 +5,12 @@
   <parent>
     <groupId>de.cau.cs.kieler.klighd</groupId>
     <artifactId>plugins</artifactId>
-    <version>1.1.0-SNAPSHOT</version>
+    <version>1.1.0.v20200330</version>
   </parent>
 
   <groupId>de.cau.cs.kieler.klighd</groupId>
   <artifactId>de.cau.cs.kieler.klighd.ui</artifactId>
-  <version>1.1.0-SNAPSHOT</version>
+  <version>1.1.0.v20200330</version>
   <packaging>eclipse-plugin</packaging>
 
   <build>
