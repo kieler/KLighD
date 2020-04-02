@@ -91,14 +91,21 @@
           <name>!not-typefox-jenkins</name>
         </property>
       </activation>
-      <repositories>
+      <!-- repositories>
         <repository>
           <id>klighd-piccolo2d</id>
           <url>http://services.typefox.io/open-source/jenkins/job/KLighD.Piccolo2d/lastSuccessfulBuild/artifact/klighd-piccolo2d</url>
         </repository>
-      </repositories>
+      </repositories -->
     </profile>
   </profiles>
+
+  <repositories>
+    <repository>
+      <id>klighd</id>
+      <url>http://kieler.github.io/KLighD/repo</url>
+    </repository>
+  </repositories>
 
   <dependencies>
     <!-- the dependency to piccolo is required by roughly half of the bundles so I put it in here
@@ -106,7 +113,7 @@
     <dependency>
       <groupId>de.cau.cs.kieler.klighd</groupId>
       <artifactId>edu.umd.cs.piccolo</artifactId>
-      <version>1.3.4-SNAPSHOT</version>
+      <version>1.3.4.v20200330</version>
     </dependency>
   </dependencies>
 
