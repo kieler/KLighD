@@ -13,7 +13,10 @@
  */
 package de.cau.cs.kieler.klighd;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 
 import org.eclipse.elk.core.util.Pair;
 
@@ -65,6 +68,24 @@ public final class SynthesisOption {
             final boolean initiallyExpanded) {
         return new SynthesisOption(label, TransformationOptionType.CATEGORY, initiallyExpanded);
     }
+    
+    /**
+     * Static factory method providing a 'Category' pseudo {@link SynthesisOption}.<br>
+     * 
+     * This option has no semantic meaning, it will result in a collapsable section in the options
+     * view, containing all other {@link SynthesisOption} configured with this category.<br>
+     * 
+     * The section will display the given label and the given initial expansion state.
+     * 
+     * @param id the id of the option.  
+     * @param label the label text of the category.
+     * @param initiallyExpanded the initial expansion state
+     * @return a 'Category' {@link SynthesisOption}.
+     */
+    public static SynthesisOption createCategory(final String id, final String label,
+            final boolean initiallyExpanded) {
+        return new SynthesisOption(id, label, TransformationOptionType.CATEGORY, initiallyExpanded);
+    }
 
     /**
      * Static factory method providing a 'Category' pseudo {@link SynthesisOption}.<br>
@@ -80,6 +101,22 @@ public final class SynthesisOption {
      */
     public static SynthesisOption createCategory(final String label) {
         return new SynthesisOption(label, TransformationOptionType.CATEGORY, true);
+    }
+    
+    /**
+     * Static factory method providing a 'Category' pseudo {@link SynthesisOption}.<br>
+     * 
+     * This option has no semantic meaning, it will result in a collapsable section in the options
+     * view, containing all other {@link SynthesisOption} configured with this category.<br>
+     * 
+     * The section will display the given label and will be initially expanded.
+     * 
+     * @param id the id of the option.  
+     * @param label the label text of the category.
+     * @return a 'Category' {@link SynthesisOption}.
+     */
+    public static SynthesisOption createCategory(final String id, final String label) {
+        return new SynthesisOption(id, label, TransformationOptionType.CATEGORY, true);
     }
     
     /**
@@ -109,6 +146,23 @@ public final class SynthesisOption {
     public static SynthesisOption createCheckOption(final String name,
             final Boolean initiallyChecked) {
         return new SynthesisOption(name, TransformationOptionType.CHECK, initiallyChecked);
+    }
+    
+    /**
+     * Static factory method providing an 'OnOff' {@link SynthesisOption}.<br>
+     * <br>
+     * Hint: Declare {@link SynthesisOption TransformationOptions} by means of static fields if
+     * the transformation is a re-initialized one (determined in the registration).
+     * 
+     * @param id the id of the option.
+     * @param name the name of the option.
+     * @param initiallyChecked true is the option shall be set initially.
+     * @return an 'OnOff' {@link SynthesisOption}
+     */
+    public static SynthesisOption createCheckOption(final String id, final String name,
+            final Boolean initiallyChecked) {
+        return new SynthesisOption(id,
+                name, TransformationOptionType.CHECK, initiallyChecked);
     }
     
     /**
@@ -148,6 +202,26 @@ public final class SynthesisOption {
     }
     
     /**
+     * Static factory method providing a 'Choice' {@link SynthesisOption}.<br>
+     * <br>
+     * Hint: Declare {@link SynthesisOption TransformationOptions} by means of static fields if
+     * the transformation is a re-initialized one (determined in the registration).
+     * 
+     * @param id the id of the option.
+     * @param name the name of the option.
+     * @param values the available option values.
+     * @param initialValue the initially selected option value.
+     * @return the desired 'Choice' {@link SynthesisOption}
+     */
+    public static SynthesisOption createChoiceOption(final String id, final String name, final List<?> values,
+            final Object initialValue) {
+        final SynthesisOption option = new SynthesisOption(id, name,
+                TransformationOptionType.CHOICE, initialValue);
+        option.setValues(values);
+        return option;
+    }
+    
+    /**
      * Static factory method providing a 'Range' {@link SynthesisOption}.<br>
      * <br>
      * Hint: Declare {@link SynthesisOption TransformationOptions} by means of static fields if
@@ -172,6 +246,39 @@ public final class SynthesisOption {
     public static <T extends Number> SynthesisOption createRangeOption(
             final String name, final T lowerBound, final T upperBound, final T initialValue) {
         final SynthesisOption option = new SynthesisOption(name,
+                TransformationOptionType.RANGE, initialValue);
+        option.setValues(Pair.of(lowerBound, upperBound));
+        if (!lowerBound.equals(lowerBound.intValue())
+                || !upperBound.equals(upperBound.intValue())
+                || !initialValue.equals(initialValue.intValue())) {
+            option.setStepSize(DEFAULT_STEP_SIZE_FLOAT);
+        } else {
+            option.setStepSize(DEFAULT_STEP_SIZE_INTEGER);
+        }
+        return option;
+    }
+    
+    /**
+     * Static factory method providing a 'Range' {@link SynthesisOption}.<br>
+     * <br>
+     * Hint: Declare {@link SynthesisOption TransformationOptions} by means of static fields if
+     * the transformation is a re-initialized one (determined in the registration).<br>
+     * <br>
+     * <b>Note:</b> Use <<OPTION_NAME>>.<code>optionFloatValue</code> while testing the option value
+     * if at least one of the parameters is a floating point value, and <<OPTION_NAME>>.
+     * <code>optionIntValue</code> otherwise (in Xtend).
+     * 
+     * @param <T> concrete type of the range's end value
+     * @param id the id of the option.
+     * @param name the name of the option.
+     * @param lowerBound the range's lower bound.
+     * @param upperBound the range's upper bound.
+     * @param initialValue the initially selected option value.
+     * @return the desired 'Range' {@link SynthesisOption}
+     */
+    public static <T extends Number> SynthesisOption createRangeOption(final String id,
+            final String name, final T lowerBound, final T upperBound, final T initialValue) {
+        final SynthesisOption option = new SynthesisOption(id, name,
                 TransformationOptionType.RANGE, initialValue);
         option.setValues(Pair.of(lowerBound, upperBound));
         if (!lowerBound.equals(lowerBound.intValue())
@@ -222,6 +329,43 @@ public final class SynthesisOption {
     public static <T extends Number> SynthesisOption createRangeOption(final String name,
             final T lowerBound, final T upperBound, final T stepSize, final T initialValue) {
         final SynthesisOption option = new SynthesisOption(name,
+                TransformationOptionType.RANGE, initialValue);
+        option.setValues(Pair.of(lowerBound, upperBound));
+        if (!lowerBound.equals(lowerBound.intValue())
+                || !upperBound.equals(upperBound.intValue())
+                || !stepSize.equals(stepSize.intValue())
+                || !initialValue.equals(initialValue.intValue())) {
+            option.setStepSize(stepSize.floatValue());
+        } else {
+            option.setStepSize(Math.round(stepSize.floatValue()));
+        }
+        return option;
+    }
+
+    
+    /**
+     * Static factory method providing a 'Range' {@link SynthesisOption}.<br>
+     * <br>
+     * Hint: Declare {@link SynthesisOption TransformationOptions} by means of static fields if
+     * the transformation is a re-initialized one (determined in the registration).<br>
+     * <br>
+     * <b>Note:</b> Use <<OPTION_NAME>>.<code>optionFloatValue</code> while testing the option value
+     * if at least one of the parameters is a floating point value, and <<OPTION_NAME>>.
+     * <code>optionIntValue</code> otherwise (in Xtend).
+     * 
+     * 
+     * @param <T> concrete type of the range's end value
+     * @param id the id of the option.
+     * @param name the name of the option.
+     * @param lowerBound the range's lower bound.
+     * @param upperBound the range's upper bound.
+     * @param stepSize the step size determining the option value granularity.
+     * @param initialValue the initially selected option value.
+     * @return an 'Choice' {@link SynthesisOption}
+     */
+    public static <T extends Number> SynthesisOption createRangeOption(final String id, final String name,
+            final T lowerBound, final T upperBound, final T stepSize, final T initialValue) {
+        final SynthesisOption option = new SynthesisOption(id, name,
                 TransformationOptionType.RANGE, initialValue);
         option.setValues(Pair.of(lowerBound, upperBound));
         if (!lowerBound.equals(lowerBound.intValue())
@@ -285,6 +429,10 @@ public final class SynthesisOption {
         CATEGORY;
     }
     
+    /**
+     * Used to identify option if used in language server.
+     */
+    private final String id;
     private final String name;    
     private final TransformationOptionType type;
     private final Object initialValue;
@@ -300,9 +448,22 @@ public final class SynthesisOption {
     
     /**
      * Constructor.
+     * Sets the id to an empty string.
      */
     private SynthesisOption(final String theName, final TransformationOptionType theType,
             final Object theInitialValue) {
+        this.id = "";
+        this.name = theName;
+        this.type = theType;
+        this.initialValue = theInitialValue;
+    }
+    
+    /**
+     * Constructor.
+     */
+    private SynthesisOption(final String id, final String theName, final TransformationOptionType theType,
+            final Object theInitialValue) {
+        this.id = id;
         this.name = theName;
         this.type = theType;
         this.initialValue = theInitialValue;
