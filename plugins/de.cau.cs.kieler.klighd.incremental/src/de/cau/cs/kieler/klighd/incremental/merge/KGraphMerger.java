@@ -326,6 +326,9 @@ public class KGraphMerger {
                 updatePort(basePort, newPort);
             }
         }
+        if (baseNode != null) {
+            baseNode.getPorts().removeAll(oldPorts);
+        }
         
     }
 
