@@ -196,7 +196,7 @@ class PerformActionAction implements Action {
 }
 
 /**
- * Refreshes the layout.
+ * Refreshes the diagram.
  * 
  * @author sdo
  */
@@ -209,6 +209,24 @@ public class RefreshDiagramAction implements Action {
     
     new() {}
     new(Consumer<RefreshDiagramAction> initializer) {
+        initializer.accept(this)
+    }
+}
+
+/**
+ * Refreshes the layout.
+ * 
+ * @author sdo
+ */
+@Accessors
+@EqualsHashCode
+@ToString(skipNulls = true)
+public class RefreshLayoutAction implements Action {
+    public static val KIND = 'refreshLayout'
+    String kind = KIND
+    
+    new() {}
+    new(Consumer<RefreshLayoutAction> initializer) {
         initializer.accept(this)
     }
 }

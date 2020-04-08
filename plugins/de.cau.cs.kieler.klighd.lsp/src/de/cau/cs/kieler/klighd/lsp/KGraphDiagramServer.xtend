@@ -27,6 +27,8 @@ import de.cau.cs.kieler.klighd.lsp.model.CheckImagesAction
 import de.cau.cs.kieler.klighd.lsp.model.CheckedImagesAction
 import de.cau.cs.kieler.klighd.lsp.model.ComputedTextBoundsAction
 import de.cau.cs.kieler.klighd.lsp.model.PerformActionAction
+import de.cau.cs.kieler.klighd.lsp.model.RefreshDiagramAction
+import de.cau.cs.kieler.klighd.lsp.model.RefreshLayoutAction
 import de.cau.cs.kieler.klighd.lsp.model.RequestTextBoundsAction
 import de.cau.cs.kieler.klighd.lsp.model.SKGraph
 import de.cau.cs.kieler.klighd.lsp.model.SetSynthesisAction
@@ -53,7 +55,6 @@ import org.eclipse.sprotty.SetModelAction
 import org.eclipse.sprotty.UpdateModelAction
 import org.eclipse.sprotty.xtext.LanguageAwareDiagramServer
 import org.eclipse.xtend.lib.annotations.Accessors
-import de.cau.cs.kieler.klighd.lsp.model.RefreshDiagramAction
 
 /**
  * Diagram server extension adding functionality to special actions needed for handling KGraphs.
@@ -159,6 +160,8 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
                 handle(action as CheckedImagesAction)
             } else if (action.getKind === RefreshDiagramAction.KIND) {
                 handle(action as RefreshDiagramAction)
+            } else if (action.getKind === RefreshLayoutAction.KIND) {
+                handle(action as RefreshLayoutAction)
             } else if (constraintActionHandler.canHandleAction(action.getKind)) {
                 constraintActionHandler.handle(action, clientId, this)
             } else if (rectPackActionHandler.canHandleAction(action.getKind)) {
@@ -312,9 +315,22 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
             }
         }
     }
-    
+
+    /**
+     * Called when a {@link RefreshDiagramAction} is received.
+     * Tells the server that the diagram should be refreshed.
+     */
     protected def handle(RefreshDiagramAction action) {
         updateDiagram()
+        return
+    }
+    
+    /**
+     * Called when a {@link RefreshLayoutAction} is received.
+     * Tells the server that the diagram layout should be refreshed.
+     */
+    protected def handle(RefreshLayoutAction action) {
+        updateLayout()
         return
     }
     

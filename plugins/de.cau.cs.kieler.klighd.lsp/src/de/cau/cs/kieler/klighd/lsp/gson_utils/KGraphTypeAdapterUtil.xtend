@@ -22,15 +22,16 @@ import de.cau.cs.kieler.klighd.lsp.interactive.layered.SetPositionConstraintActi
 import de.cau.cs.kieler.klighd.lsp.interactive.layered.SetStaticConstraintAction
 import de.cau.cs.kieler.klighd.lsp.interactive.rectpack.RectPackDeletePositionConstraintAction
 import de.cau.cs.kieler.klighd.lsp.interactive.rectpack.RectPackSetPositionConstraintAction
+import de.cau.cs.kieler.klighd.lsp.interactive.rectpack.SetAspectRatioAction
 import de.cau.cs.kieler.klighd.lsp.model.CheckedImagesAction
 import de.cau.cs.kieler.klighd.lsp.model.ComputedTextBoundsAction
 import de.cau.cs.kieler.klighd.lsp.model.PerformActionAction
+import de.cau.cs.kieler.klighd.lsp.model.RefreshDiagramAction
+import de.cau.cs.kieler.klighd.lsp.model.RefreshLayoutAction
 import de.cau.cs.kieler.klighd.lsp.model.SetSynthesisAction
 import java.awt.geom.Point2D
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.sprotty.server.json.ActionTypeAdapter
-import de.cau.cs.kieler.klighd.lsp.interactive.rectpack.SetAspectRatioAction
-import de.cau.cs.kieler.klighd.lsp.model.RefreshDiagramAction
 
 /**
  * Static util class to configure needed gson type adapters for KGraph serialization.
@@ -48,6 +49,7 @@ class KGraphTypeAdapterUtil {
                 addActionKind(PerformActionAction.KIND, PerformActionAction)
                 addActionKind(SetSynthesisAction.KIND, SetSynthesisAction)
                 addActionKind(RefreshDiagramAction.KIND, RefreshDiagramAction)
+                addActionKind(RefreshLayoutAction.KIND, RefreshLayoutAction)
                 
                 // Interactive layered actions
                 addActionKind(SetStaticConstraintAction.KIND, SetStaticConstraintAction)
