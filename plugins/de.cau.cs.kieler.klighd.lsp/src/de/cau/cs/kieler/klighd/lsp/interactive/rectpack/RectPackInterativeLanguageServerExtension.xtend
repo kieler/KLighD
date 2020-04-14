@@ -79,7 +79,7 @@ class RectPackInterativeLanguageServerExtension implements ILanguageServerExtens
             }
 
             // Change desired position of nodes that are influenced by the movement
-            val modifier = previousPosition < desiredPosition ? 1 : -1
+            val modifier = if (previousPosition < desiredPosition) 1 else -1
             for (var int position = previousPosition; position != desiredPosition + modifier; position += modifier) {
                 val node = clonedChildren.get(position)
                 if (node.hasProperty(RectPackingOptions.DESIRED_POSITION)) {
@@ -116,7 +116,7 @@ class RectPackInterativeLanguageServerExtension implements ILanguageServerExtens
             val int previousPosition = kNode.getProperty(RectPackingOptions.CURRENT_POSITION)
 
             // Change desired position of nodes that are influenced by the movement
-            val modifier = previousPosition < desiredPosition ? 1 : -1
+            val modifier = if (previousPosition < desiredPosition) 1 else -1
             for (var int position = previousPosition; position != desiredPosition; position += modifier) {
                 val node = clonedChildren.get(position)
                 if (node.hasProperty(RectPackingOptions.DESIRED_POSITION)) {
