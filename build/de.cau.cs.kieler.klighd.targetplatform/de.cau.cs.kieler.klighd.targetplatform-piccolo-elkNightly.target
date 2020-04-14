@@ -32,8 +32,8 @@
       <repository location="http://xtext.github.io/download/updates/releases/2.1.1/"/>
     </location>
     <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-      <unit id="edu.umd.cs.piccolo" version="1.3.4.qualifier"/>
-      <repository location="http://kieler.github.io/KLighD/v1.0.0/"/>
+      <unit id="edu.umd.cs.piccolo" version="1.3.4.v20200330"/>
+      <repository location="http://kieler.github.io/KLighD/v1.1.0/"/>
     </location>
     <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
       <unit id="javax.xml.bind" version="0.0.0"/>

@@ -19,7 +19,6 @@ import java.util.List;
 
 import org.eclipse.elk.core.LayoutConfigurator;
 import org.eclipse.elk.core.math.KVector;
-import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.graphics.Point;
 
 import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
@@ -208,7 +207,7 @@ public interface IAction {
      */
     public static final class ActionResult {
 
-        private static final IPreferenceStore STORE = KlighdPlugin.getDefault().getPreferenceStore();
+        private static final IKlighdPreferenceStore STORE = KlighdPreferences.getPreferenceStore();
 
         private List<LayoutConfigurator> layoutConfigs = null;
 

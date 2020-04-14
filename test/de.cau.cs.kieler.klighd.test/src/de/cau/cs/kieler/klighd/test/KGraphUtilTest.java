@@ -15,15 +15,9 @@ package de.cau.cs.kieler.klighd.test;
 
 import static com.google.common.collect.Iterables.getLast;
 
-import java.net.URL;
 import java.util.Iterator;
 
-import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.junit.Assert;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.google.common.collect.Iterators;
@@ -40,25 +34,7 @@ import de.cau.cs.kieler.klighd.test.ModelingUtilTest.IsIteratorWithSize;
  */
 public class KGraphUtilTest {
 
-    private static KNode testModel;
-
-    /**
-     * Loads 'circuit.kgx' from within this bundle.
-     */
-    @BeforeClass
-    public static void loadTestModel() {
-        final ResourceSet set = new ResourceSetImpl();
-
-        final Iterator<URL> it = Iterators.forEnumeration(
-                KlighdTestPlugin.getDefault().getBundle().findEntries("/", "circuit.kgx", true));
-
-        if (!it.hasNext()) {
-            Assert.fail("Test model 'circuit.kgx' could not be found!");
-        }
-
-        final Resource res = set.getResource(URI.createURI(it.next().toString(), true), true);
-        testModel = (KNode) res.getContents().get(0);
-    }
+    private static KNode testModel = KlighdTestPlugin.loadTestModel();
 
     // CHECKSTYLEOFF MagicNumber|Method
 

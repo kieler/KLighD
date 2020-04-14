@@ -32,9 +32,9 @@ import org.eclipse.swt.graphics.ImageLoader;
 import de.cau.cs.kieler.klighd.DiagramExportConfig;
 import de.cau.cs.kieler.klighd.IExportBranding;
 import de.cau.cs.kieler.klighd.IExportBranding.Trim;
+import de.cau.cs.kieler.klighd.Klighd;
 import de.cau.cs.kieler.klighd.KlighdDataManager;
-import de.cau.cs.kieler.klighd.KlighdPlugin;
-import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;
+import de.cau.cs.kieler.klighd.piccolo.KlighdPiccolo;
 import de.cau.cs.kieler.klighd.piccolo.internal.KlighdCanvas;
 import de.cau.cs.kieler.klighd.piccolo.internal.KlighdSWTGraphicsImpl;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
@@ -69,8 +69,8 @@ public class BitmapExporter extends KlighdCanvasExporter {
         // ... and determine the bounds of the diagram to be exported
         final Rectangle2D bounds = getExportedBounds(camera, data.cameraViewport());
 
-        final Iterable<IExportBranding> brandings =
-               KlighdDataManager.getExportBrandingByFormat(data.format(), data.viewContext());
+        final Iterable<IExportBranding> brandings = KlighdDataManager.getInstance()
+                .getExportBrandingByFormat(data.format(), data.viewContext());
 
         final TilingData tilingInfo = data.tilingInfo();
 
@@ -157,25 +157,25 @@ public class BitmapExporter extends KlighdCanvasExporter {
             final String msg = ERROR_MSG_PREFIX + "Out of heap space memory!";
             // a more detailed message is be provided by the UI integration
             //  (SaveAsImageHandler in de.cau.cs.kieler.klighd.ui)
-            return new Status(IStatus.ERROR, KlighdPiccoloPlugin.PLUGIN_ID, msg, e);
+            return new Status(IStatus.ERROR, KlighdPiccolo.PLUGIN_ID, msg, e);
 
         } catch (final SWTError e) {
-            final String hint = KlighdPlugin.LINE_SEPARATOR
+            final String hint = Klighd.LINE_SEPARATOR
                     + "This may be due to a too large image. Try a tiled export with smaller tiles.";
 
             final String msg = ERROR_MSG_PREFIX + "Export failed." + (
-                    !KlighdPlugin.IS_WINDOWS && e.code == SWT.ERROR_NO_HANDLES ? "" : hint);
+                    !Klighd.IS_WINDOWS && e.code == SWT.ERROR_NO_HANDLES ? "" : hint);
 
             final String msg2 = "Got an SWT Error while allocating the image buffer. "
                     + "Error code is" + e.code + ":";
 
             final IStatus[] detailStatus = new IStatus[] {
-                    new Status(IStatus.ERROR, KlighdPiccoloPlugin.PLUGIN_ID, msg2, e)
+                    new Status(IStatus.ERROR, KlighdPiccolo.PLUGIN_ID, msg2, e)
             };
 
             // the multiStatus improves the error pop-up dialog: the detailStatus information
             //  will be hidden until the user hits the details button
-            return new MultiStatus(KlighdPiccoloPlugin.PLUGIN_ID, 0, detailStatus, msg, null);
+            return new MultiStatus(KlighdPiccolo.PLUGIN_ID, 0, detailStatus, msg, null);
         }
 
         // initialize a GC and graphics object that 'collects' all the drawing instructions
@@ -205,7 +205,7 @@ public class BitmapExporter extends KlighdCanvasExporter {
             final String msg = ERROR_MSG_PREFIX + "Out of heap space memory!";
             // a more detailed message is be provided by the UI integration
             //  (SaveAsImageHandler in de.cau.cs.kieler.klighd.ui)
-            return new Status(IStatus.ERROR, KlighdPiccoloPlugin.PLUGIN_ID, msg, e);
+            return new Status(IStatus.ERROR, KlighdPiccolo.PLUGIN_ID, msg, e);
 
         } finally {
             image.dispose();
@@ -241,10 +241,10 @@ public class BitmapExporter extends KlighdCanvasExporter {
             if (stream != null) {
                 msg += " into the provided OutputStream of type "
                         + stream.getClass().getCanonicalName()
-                        + KlighdPlugin.LINE_SEPARATOR + " the stream instance is "
+                        + Klighd.LINE_SEPARATOR + " the stream instance is "
                         + stream.toString();
             }
-            status = new Status(IStatus.ERROR, KlighdPiccoloPlugin.PLUGIN_ID, msg, e);
+            status = new Status(IStatus.ERROR, KlighdPiccolo.PLUGIN_ID, msg, e);
 
         } catch (final IOException e) {
             final String msg;
@@ -253,10 +253,10 @@ public class BitmapExporter extends KlighdCanvasExporter {
             } else {
                 msg = ERROR_MSG_PREFIX + "Closing the employed output stream failed.";
             }
-            status = new Status(IStatus.ERROR, KlighdPiccoloPlugin.PLUGIN_ID, msg, e);
+            status = new Status(IStatus.ERROR, KlighdPiccolo.PLUGIN_ID, msg, e);
 
         } catch (final Throwable t) {
-            status = new Status(IStatus.ERROR, KlighdPiccoloPlugin.PLUGIN_ID, t.getMessage(), t);
+            status = new Status(IStatus.ERROR, KlighdPiccolo.PLUGIN_ID, t.getMessage(), t);
         }
 
         return status;

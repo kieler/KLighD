@@ -24,18 +24,12 @@ import static de.cau.cs.kieler.klighd.piccolo.test.DiagramClipPortLabelVisibilit
 import static de.cau.cs.kieler.klighd.util.KlighdProperties.SHOW_CLIPPED_LABELS;
 import static de.cau.cs.kieler.klighd.util.KlighdProperties.SHOW_CLIPPED_PORTS;
 
-import java.net.URL;
 import java.util.Arrays;
 import java.util.EnumSet;
-import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.elk.core.math.KVector;
 import org.eclipse.elk.core.util.Pair;
-import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
@@ -55,7 +49,6 @@ import org.junit.runners.Parameterized.Parameter;
 import org.junit.runners.Parameterized.Parameters;
 
 import com.google.common.collect.Iterables;
-import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 
 import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
@@ -63,7 +56,6 @@ import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.kgraph.KNode;
 import de.cau.cs.kieler.klighd.kgraph.KShapeLayout;
-import de.cau.cs.kieler.klighd.kgraph.util.KGraphDataUtil;
 import de.cau.cs.kieler.klighd.kgraph.util.KGraphUtil;
 import de.cau.cs.kieler.klighd.krendering.Colors;
 import de.cau.cs.kieler.klighd.piccolo.viewer.PiccoloViewer;
@@ -95,7 +87,7 @@ public class DiagramClipPortLabelVisibilityTest {
 
     private static final int A_MOMENT = 500;
 
-    private static final Object testModel = loadTestModel();
+    private static final Object testModel = KlighdTestPlugin.loadTestModel();
     private static final ColorMatcher<Pair<Control, KVector>> IS_BLACK =
             ColorMatcher.acceptingPairsOfControlAndKVectorExpecting(Colors.BLACK);
     private static final ColorMatcher<Pair<Control, KVector>> IS_WHITE =
@@ -108,28 +100,6 @@ public class DiagramClipPortLabelVisibilityTest {
     private static int heightDelta = 0;
 
     // CHECKSTYLEOFF MagicNumber
-
-    /**
-     * Loads 'circuit.kgx' from within this bundle.
-     *
-     * @return the runtime representation of the test model.
-     */
-    private static EObject loadTestModel() {
-        final ResourceSet set = new ResourceSetImpl();
-
-        final Iterator<URL> it =
-                Iterators.forEnumeration(KlighdTestPlugin.getDefault().getBundle()
-                        .findEntries("/", "circuit.kgx", true));
-        if (!it.hasNext()) {
-            Assert.fail("Test model 'circuit.kgx' could not be found!");
-        }
-
-        final KNode model = (KNode) set.getResource(
-                URI.createURI(it.next().toString(), true), true
-            ).getContents().get(0);
-        KGraphDataUtil.loadDataElements(model);
-        return model;
-    }
 
     static enum Instruction {
         HIDE_PORTS,

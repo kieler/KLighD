@@ -24,12 +24,12 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.statushandlers.StatusManager;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 
+import de.cau.cs.kieler.klighd.Klighd;
 import de.cau.cs.kieler.klighd.ui.view.DiagramView;
 import de.cau.cs.kieler.klighd.ui.view.KlighdViewPlugin;
 
@@ -109,8 +109,7 @@ public final class ViewUpdateControllerFactory {
             instance.loadControllerExtension();
             instance.loadEditorExtension();
         } catch (final Exception e) {
-            StatusManager.getManager()
-                    .handle(new Status(IStatus.ERROR, KlighdViewPlugin.PLUGIN_ID,
+            Klighd.handle(new Status(IStatus.ERROR, KlighdViewPlugin.PLUGIN_ID,
                             ViewUpdateControllerFactory.class.getName()
                                     + ": Unexptected failure while loading registered controllers.",
                             e));
@@ -165,11 +164,10 @@ public final class ViewUpdateControllerFactory {
                     }
                     idControllerMapping.put(controller.getID(), controller.getClass());
                 } catch (final Exception exception) {
-                    StatusManager.getManager()
-                            .handle(new Status(IStatus.ERROR, KlighdViewPlugin.PLUGIN_ID,
-                                    this.getClass().getName()
-                                            + ": Error while parsing controller extension point",
-                                    exception));
+                    Klighd.handle(new Status(IStatus.ERROR, KlighdViewPlugin.PLUGIN_ID,
+                            this.getClass().getName()
+                                    + ": Error while parsing controller extension point",
+                            exception));
                 }
             }
         }
@@ -196,8 +194,8 @@ public final class ViewUpdateControllerFactory {
                         if (editorControllerMapping.containsKey(editor)) {
                             String otherControllerID = editorControllerMapping.get(editor);
                             if (otherControllerID != null) {
-                                StatusManager.getManager()
-                                .handle(new Status(IStatus.WARNING, KlighdViewPlugin.PLUGIN_ID,
+                                Klighd.handle(new Status(IStatus.WARNING,
+                                        KlighdViewPlugin.PLUGIN_ID,
                                         this.getClass().getName()
                                                 + ": Multiple controllers are registered for the editor "
                                                 + editor + "! The controller "
@@ -208,15 +206,13 @@ public final class ViewUpdateControllerFactory {
                         editorControllerMapping.put(editor, controller);
                     } else {
                         // Log error if controller id is not registered
-                        StatusManager.getManager().handle(
-                                new Status(IStatus.ERROR, KlighdViewPlugin.PLUGIN_ID,
-                                        this.getClass().getName() + ": Given controller id ["
-                                                + controller + "] is not registered"),
-                                StatusManager.LOG);
+                        Klighd.log(new Status(IStatus.ERROR, KlighdViewPlugin.PLUGIN_ID,
+                                this.getClass().getName() + ": Given controller id [" + controller
+                                        + "] is not registered"));
                     }
                 } catch (final Exception exception) {
-                    StatusManager.getManager()
-                            .handle(new Status(IStatus.ERROR, KlighdViewPlugin.PLUGIN_ID,
+                    Klighd.handle(
+                            new Status(IStatus.ERROR, KlighdViewPlugin.PLUGIN_ID,
                                     this.getClass().getName()
                                             + ": Error while parsing editor extension point",
                                     exception));
@@ -233,8 +229,8 @@ public final class ViewUpdateControllerFactory {
                         if (fallbackControllerMapping.containsKey(editorClass)) {
                             String otherControllerID = fallbackControllerMapping.get(editorClass);
                             if (otherControllerID != null) {
-                                StatusManager.getManager()
-                                .handle(new Status(IStatus.WARNING, KlighdViewPlugin.PLUGIN_ID,
+                                Klighd.handle(new Status(IStatus.WARNING,
+                                        KlighdViewPlugin.PLUGIN_ID,
                                         this.getClass().getName()
                                                 + ": Multiple fallback controllers are registered for the editor class "
                                                 + editorClass.getName() + "! The controller "
@@ -245,18 +241,15 @@ public final class ViewUpdateControllerFactory {
                         fallbackControllerMapping.put(editorClass, controller);
                     } else {
                         // Log error if controller id is not registered
-                        StatusManager.getManager().handle(
-                                new Status(IStatus.ERROR, KlighdViewPlugin.PLUGIN_ID,
-                                        this.getClass().getName() + ": Given controller id ["
-                                                + controller + "] is not registered"),
-                                StatusManager.LOG);
+                        Klighd.log(new Status(IStatus.ERROR, KlighdViewPlugin.PLUGIN_ID,
+                                this.getClass().getName() + ": Given controller id [" + controller
+                                        + "] is not registered"));
                     }
                 } catch (final Exception exception) {
-                    StatusManager.getManager()
-                            .handle(new Status(IStatus.ERROR, KlighdViewPlugin.PLUGIN_ID,
-                                    this.getClass().getName()
-                                            + ": Error while parsing editor fallback extension point",
-                                    exception));
+                    Klighd.handle(new Status(IStatus.ERROR, KlighdViewPlugin.PLUGIN_ID,
+                            this.getClass().getName()
+                                    + ": Error while parsing editor fallback extension point",
+                            exception));
                 }
             }
         }
@@ -331,12 +324,10 @@ public final class ViewUpdateControllerFactory {
                     newInstance.initialize(diagramView);
                     return newInstance;
                 } catch (Exception e) {
-                    StatusManager.getManager().handle(
-                            new Status(IStatus.ERROR, KlighdViewPlugin.PLUGIN_ID,
-                                    ViewUpdateControllerFactory.class.getName()
-                                            + ": Cannot instanciate controller",
-                                    e),
-                            StatusManager.LOG);
+                    Klighd.log(new Status(IStatus.ERROR, KlighdViewPlugin.PLUGIN_ID,
+                            ViewUpdateControllerFactory.class.getName()
+                                    + ": Cannot instanciate controller",
+                            e));
                 }
             }
         }

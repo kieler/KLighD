@@ -37,7 +37,6 @@ import org.eclipse.ui.part.ViewPart;
 
 import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.IViewer;
-import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.LightDiagramLayoutConfig;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.internal.ILayoutConfigProvider;
@@ -310,7 +309,7 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart,
     protected void addButtons() {
         final IToolBarManager toolBar = getViewSite().getActionBars().getToolBarManager();
         toolBar.add(new Action("Refresh diagram",
-                KlighdPlugin.getImageDescriptor("icons/full/elcl16/refresh.gif")) {
+                KlighdUIPlugin.getImageDescriptorFromKlighdBase("icons/full/elcl16/refresh.gif")) {
 
             @Override
             public void run() {

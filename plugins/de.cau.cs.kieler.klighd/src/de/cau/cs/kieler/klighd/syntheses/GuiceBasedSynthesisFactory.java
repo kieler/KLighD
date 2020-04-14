@@ -42,6 +42,21 @@ public class GuiceBasedSynthesisFactory implements IExecutableExtension,
     /** The fully qualified name of this class, to be used in error messages, for example. */
     public static final String CLASS_NAME = GuiceBasedSynthesisFactory.class.getCanonicalName();
 
+    /**
+     * Factory methods creating a {@link ReinitializingDiagramSynthesisProxy} instance of the
+     * diagram synthesis type {@code clazz}.
+     * 
+     * @param <S>
+     *            the type argument of {@code clazz}
+     * @param clazz
+     *            the diagram synthesis implementation type
+     * @return the desired {@link ReinitializingDiagramSynthesisProxy} instance
+     */
+    public static <S> ReinitializingDiagramSynthesisProxy<S> getReinitializingDiagramSynthesisProxy(
+            final Class<? extends AbstractDiagramSynthesis<S>> clazz) {
+        return new ReinitializingDiagramSynthesisProxy<S>(clazz);
+    }
+
     /** This bundleId is a {@link Long} value in shape of a String.
      * It must not be confused with the bundle id determined in the bundles' manifests. */
     private String contributingBundleId;
@@ -80,10 +95,9 @@ public class GuiceBasedSynthesisFactory implements IExecutableExtension,
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     public Object create() throws CoreException {
         try {
-            Class<?> clazz = null;
+            final Class<?> clazz;
             // chsch: noticed bug, need to explore the duality of 'contributingBundleId' and
             //  'contributingBundleName'; should be due to some API shortcomings
             //  is tracked in KIELER-2166
@@ -95,8 +109,12 @@ public class GuiceBasedSynthesisFactory implements IExecutableExtension,
                 clazz = Platform.getBundle(contributingBundleName).loadClass(
                         transformationClassName);
             }
-            
-            return new ReinitializingDiagramSynthesisProxy(clazz);
+
+            @SuppressWarnings({ "unchecked" })
+            final Object proxy = new ReinitializingDiagramSynthesisProxy<>(
+                    (Class<AbstractDiagramSynthesis<Object>>) clazz);
+            return proxy;
+
         } catch (final ClassNotFoundException e) {
             throw new WrappedException(
                 "KLighD: Registered diagram synthesis class could not be loaded properly via the "

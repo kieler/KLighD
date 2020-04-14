@@ -34,7 +34,7 @@ import org.eclipse.elk.graph.properties.Property;
 public interface IOffscreenRenderer {
 
     /** Export format id denoting the Bitmap (.bmp) format. */
-    String BMP = "bmb";
+    String BMP = "bmp";
 
     /** Export format id denoting the JPEG compressed raster image (.jpeg) format. */
     String JPEG = "jpeg";

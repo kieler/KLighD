@@ -17,6 +17,8 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
+import de.cau.cs.kieler.klighd.Klighd;
+
 /**
  * The activator class controls the plug-in life cycle.
  * 
@@ -25,7 +27,7 @@ import org.osgi.framework.BundleContext;
 public class KlighdUIPlugin extends AbstractUIPlugin {
 
     /** The plug-in ID. */
-    public static final String PLUGIN_ID = "de.cau.cs.kieler.klighd.ui"; //$NON-NLS-1$
+    public static final String PLUGIN_ID = Klighd.PLUGIN_ID + ".ui"; //$NON-NLS-1$
 
     /** Menu id of the floating text widget's context menu. */
     public static final String FLOATING_TEXT_MENU_ID = PLUGIN_ID + ".popupMenu.floatingText";
@@ -70,5 +72,17 @@ public class KlighdUIPlugin extends AbstractUIPlugin {
      */
     public static ImageDescriptor getImageDescriptor(final String path) {
         return imageDescriptorFromPlugin(PLUGIN_ID, path);
+    }
+
+    /**
+     * Returns an image descriptor for the image file at the given plug-in
+     * relative path.
+     * 
+     * @param path
+     *            the path
+     * @return the image descriptor
+     */
+    public static ImageDescriptor getImageDescriptorFromKlighdBase(final String path) {
+        return imageDescriptorFromPlugin(Klighd.PLUGIN_ID, path);
     }
 }

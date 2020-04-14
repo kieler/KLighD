@@ -17,15 +17,15 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.RGB;
-import org.eclipse.ui.statushandlers.StatusManager;
 
 import com.google.common.base.Strings;
 
+import de.cau.cs.kieler.klighd.Klighd;
 import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.krendering.KText;
 import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
 import de.cau.cs.kieler.klighd.piccolo.KlighdNode;
-import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;
+import de.cau.cs.kieler.klighd.piccolo.KlighdPiccolo;
 import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.KlighdPaintContext;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.RGBGradient;
@@ -242,9 +242,7 @@ public class KlighdStyledText extends KlighdNode.KlighdFigureNode<KText> {
      * @param gradient gradient that this node should use drawing the text.
      */
     public void setPenColor(final RGBGradient gradient) {
-        StatusManager.getManager().handle(
-                new Status(IStatus.WARNING, KlighdPiccoloPlugin.PLUGIN_ID, TEXT_GRADIENT_MESSAGE),
-                StatusManager.LOG);
+        Klighd.log(new Status(IStatus.WARNING, KlighdPiccolo.PLUGIN_ID, TEXT_GRADIENT_MESSAGE));
     }
 
     /**

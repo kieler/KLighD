@@ -43,7 +43,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Spinner;
 
-import de.cau.cs.kieler.klighd.KlighdPlugin;
+import de.cau.cs.kieler.klighd.Klighd;
 import de.cau.cs.kieler.klighd.ui.KlighdUIPlugin;
 import de.cau.cs.kieler.klighd.ui.printing.KlighdUIPrintingMessages;
 import de.cau.cs.kieler.klighd.ui.printing.PrintOptions;
@@ -146,7 +146,7 @@ final class CopiesBlock {
             }
         });
 
-        if (KlighdPlugin.IS_MACOSX) {
+        if (Klighd.IS_MACOSX) {
             // I deactivated 'copies' block as this information can be changed in the native dialog
             //  but (on OSX) it is not delivered back within the returned PrinterData.
             // Thus, 'copies' cannot be updated properly.

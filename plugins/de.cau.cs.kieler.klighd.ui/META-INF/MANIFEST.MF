@@ -2,22 +2,23 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: KIELER Lightweight Diagrams UI Components
 Bundle-SymbolicName: de.cau.cs.kieler.klighd.ui;singleton:=true
-Bundle-Version: 1.0.1.qualifier
+Bundle-Version: 1.1.1.qualifier
 Bundle-Activator: de.cau.cs.kieler.klighd.ui.KlighdUIPlugin
 Require-Bundle: org.eclipse.core.expressions;bundle-version="3.4.400",
  org.eclipse.core.resources;bundle-version="3.8.0",
  org.eclipse.emf.edit;bundle-version="2.9.0",
  org.eclipse.jface.text;bundle-version="3.8.100";visibility:=reexport,
+ org.eclipse.ui;bundle-version="3.103.0",
  org.eclipse.ui.forms;bundle-version="3.5.200",
  org.eclipse.ui.ide;bundle-version="3.8.0",
  org.eclipse.ui.views;bundle-version="3.6.100";visibility:=reexport,
  de.cau.cs.kieler.klighd;bundle-version="0.3.0";visibility:=reexport,
+ de.cau.cs.kieler.klighd.kgraph,
  de.cau.cs.kieler.klighd.piccolo;bundle-version="0.3.0";visibility:=reexport,
  org.eclipse.core.databinding;bundle-version="1.4.1",
  org.eclipse.core.databinding.beans;bundle-version="1.2.200",
  org.eclipse.jface.databinding;bundle-version="1.6.200",
- org.eclipse.elk.core.service;bundle-version="0.1.0",
- de.cau.cs.kieler.klighd.kgraph
+ org.eclipse.elk.core.service;bundle-version="0.1.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-Vendor: Kiel University
@@ -25,6 +26,7 @@ Export-Package: de.cau.cs.kieler.klighd.ui,
  de.cau.cs.kieler.klighd.ui.internal;x-friends:="de.cau.cs.kieler.klighd.ui.contrib3x",
  de.cau.cs.kieler.klighd.ui.internal.handlers;x-friends:="de.cau.cs.kieler.klighd.ui.contrib3x,de.cau.cs.kieler.klighd.ui.view",
  de.cau.cs.kieler.klighd.ui.internal.options;x-internal:=true,
+ de.cau.cs.kieler.klighd.ui.internal.preferences;x-internal:=true,
  de.cau.cs.kieler.klighd.ui.modifymodel,
  de.cau.cs.kieler.klighd.ui.parts,
  de.cau.cs.kieler.klighd.ui.printing,

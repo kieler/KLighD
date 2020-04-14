@@ -26,19 +26,22 @@ import org.eclipse.elk.core.service.DiagramLayoutEngine;
 import org.eclipse.elk.core.service.DiagramLayoutEngine.Parameters;
 import org.eclipse.elk.core.service.ElkServicePlugin;
 import org.eclipse.elk.core.util.IElkCancelIndicator;
+import org.eclipse.elk.core.util.IElkProgressMonitor;
+import org.eclipse.elk.core.util.NullElkProgressMonitor;
 import org.eclipse.elk.core.util.Pair;
 import org.eclipse.elk.graph.properties.IProperty;
 import org.eclipse.elk.graph.properties.IPropertyHolder;
 import org.eclipse.elk.graph.properties.MapPropertyHolder;
-import org.eclipse.ui.statushandlers.StatusManager;
 
 import com.google.common.base.Predicates;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 
+import de.cau.cs.kieler.klighd.KlighdDataManager.OffscreenRendererDescriptor;
 import de.cau.cs.kieler.klighd.internal.ILayoutConfigProvider;
 import de.cau.cs.kieler.klighd.internal.ILayoutRecorder;
+import de.cau.cs.kieler.klighd.internal.macrolayout.KlighdLayoutSetup;
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
 import de.cau.cs.kieler.klighd.kgraph.KNode;
 import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties;
@@ -135,8 +138,7 @@ public final class LightDiagramServices {
         if (config == null) {
             final String msg = "KlighD LightDiagramServices: Could not perform layout since no"
                     + "configuration has been specified.";
-            StatusManager.getManager()
-                    .handle(new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID, msg));
+            Klighd.handle(new Status(IStatus.ERROR, Klighd.PLUGIN_ID, msg));
             return;
         }
 
@@ -148,8 +150,7 @@ public final class LightDiagramServices {
                     + "ViewContext could be determined for IDiagramWorkbenchPart "
                     + config.workbenchPart() + ". "
                     + "Is the diagram correctly and completely initialized?";
-            StatusManager.getManager()
-                    .handle(new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID, msg));
+            Klighd.handle(new Status(IStatus.ERROR, Klighd.PLUGIN_ID, msg));
             return;
         }
 
@@ -189,8 +190,7 @@ public final class LightDiagramServices {
     
             // Animation
             final boolean doAnimate = config.animate() != null ? config.animate().booleanValue()
-                    : KlighdPlugin.getDefault().getPreferenceStore()
-                            .getBoolean(KlighdPreferences.ANIMATE_LAYOUT);
+                    : KlighdPreferences.isAnimateLayout();
             layoutParameters.getGlobalSettings().setProperty(CoreOptions.ANIMATE, doAnimate);
     
             // Animation time properties
@@ -233,19 +233,34 @@ public final class LightDiagramServices {
     
             final Object diagramPart = recorder != null ? recorder : theViewContext;
     
-            final IElkCancelIndicator cancelationIndicator =
-                    thePart != null ? new DispositionAwareCancelationHandle(thePart) : null;
-    
-            if (additionalConfigs.isEmpty()) {
-                DiagramLayoutEngine.invokeLayout(thePart, diagramPart, cancelationIndicator,
-                        layoutParameters);
+            for (LayoutConfigurator c : additionalConfigs) {
+                layoutParameters.addLayoutRun(c);
+            }
+
+            // instantiating 'KlighdLayoutSetup' and asking for the DiagramLayoutEngine instance
+            //  is probably not in the spirit of the ELK Service API,
+            // but is required for non-eclipse-platform-based usages
+            // for the sake of simplicity I decided to go that way in both scenarios
+            //  (with _and_ without a running eclipse platform)
+            final DiagramLayoutEngine engine = new KlighdLayoutSetup().getDiagramLayoutEngine();
+            final IStatus status;
+
+            if (Klighd.IS_PLATFORM_RUNNING) {
+                final IElkCancelIndicator cancelationIndicator =
+                        thePart != null ? new DispositionAwareCancelationHandle(thePart) : null;
+
+                status = engine.layout(thePart, diagramPart, cancelationIndicator, layoutParameters)
+                        .getProperty(DiagramLayoutEngine.MAPPING_STATUS);
+
             } else {
-                for (LayoutConfigurator c : additionalConfigs) {
-                    layoutParameters.addLayoutRun(c);
-                }
-    
-                DiagramLayoutEngine.invokeLayout(thePart, diagramPart, cancelationIndicator,
-                        layoutParameters);
+                final IElkProgressMonitor progressMonitor = new NullElkProgressMonitor();
+
+                status = engine.layout(thePart, diagramPart, progressMonitor, layoutParameters)
+                        .getProperty(DiagramLayoutEngine.MAPPING_STATUS);
+            }
+
+            if (status != null && !status.isOK()) {
+                Klighd.log(status);
             }
         } else {
             if (recorder != null) {
@@ -395,14 +410,13 @@ public final class LightDiagramServices {
                     + "ViewContext could be determined for IDiagramWorkbenchPart "
                     + workbenchPart + ". "
                     + "Is the diagram correctly and completely initialized?";
-            StatusManager.getManager().handle(
-                    new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID, msg));
+            Klighd.handle(new Status(IStatus.ERROR, Klighd.PLUGIN_ID, msg));
             return;
         }
 
         final ViewContext theViewContext = pair.getSecond();
         final boolean doAnimate = animate != null
-                ? animate.booleanValue() : KlighdPlugin.getDefault()
+                ? animate.booleanValue() : KlighdPreferences
                         .getPreferenceStore().getBoolean(KlighdPreferences.ANIMATE_LAYOUT);
 
         if (theViewContext.getZoomStyle() != ZoomStyle.NONE) {
@@ -511,9 +525,9 @@ public final class LightDiagramServices {
             output = new FileOutputStream(targetFileName);
         } catch (final Exception e) {
             final String msg = "KLighD: Target image file " + targetFileName
-                    + " cannot be created or accessed." + KlighdPlugin.LINE_SEPARATOR
+                    + " cannot be created or accessed." + Klighd.LINE_SEPARATOR
                     + "Is the (absolute or relative) path correct? Are the permissions sufficient?";
-            return new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID, msg, e);
+            return new Status(IStatus.ERROR, Klighd.PLUGIN_ID, msg, e);
         }
 
         final IStatus result = renderOffScreen(model, format, output, properties);
@@ -523,7 +537,7 @@ public final class LightDiagramServices {
         } catch (final IOException e) {
             final String msg = "KLighD: Error occurred while closing the output stream employed "
                     + "for writing file " + targetFileName + ".";
-            return new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID, msg, e);
+            return new Status(IStatus.ERROR, Klighd.PLUGIN_ID, msg, e);
         }
 
         return result;
@@ -582,23 +596,31 @@ public final class LightDiagramServices {
         }
 
         // look for a matching IOffscreeenRenderer
-        final IOffscreenRenderer renderer = Iterables.getFirst(
+        final OffscreenRendererDescriptor rendererDescriptor = Iterables.getFirst(
                 KlighdDataManager.getInstance().getOffscreenRenderersByFormat(format), null);
 
         // if none exists ...
-        if (renderer == null) {
+        if (rendererDescriptor == null) {
             // omit the translation and return
-            return null;
+            return new Status(IStatus.WARNING, Klighd.PLUGIN_ID,
+                    "No suitable offscreen renderer found for output format " + format + ".");
         }
 
         // otherwise try to build up a corresponding view context
-        final ViewContext viewContext = translateModel2(model, null, properties);
+        final ViewContext viewContext;
+        try {
+            viewContext = translateModel2(model, null, properties);
 
-        // if no corresponding diagram synthesis is available and, thus, no diagram has been created...
-        if (viewContext.getViewModel() == null
-                || viewContext.getViewModel().getChildren().isEmpty()) {
-            // skip the rendering call and return
-            return null;
+            // if no corresponding diagram synthesis is available and, thus, no diagram has been created...
+            if (viewContext.getViewModel() == null
+                    || viewContext.getViewModel().getChildren().isEmpty()) {
+                // skip the rendering call and return
+                return new Status(IStatus.WARNING, Klighd.PLUGIN_ID,
+                        "Input model couldn't be translated, got an empty view model.");
+            }
+        } catch (Throwable t) {
+            return new Status(IStatus.ERROR, Klighd.PLUGIN_ID,
+                    "Input model couldn't be translated, see attached trace.", t);
         }
 
         final IPropertyHolder theProperties;
@@ -610,9 +632,17 @@ public final class LightDiagramServices {
 
         theProperties.setProperty(IOffscreenRenderer.OUTPUT_FORMAT, format);
 
-        // finally render the diagram and return the result
-        final IStatus result = renderer.render(viewContext, output, theProperties);
+        final IOffscreenRenderer renderer = rendererDescriptor.supplier.get();
+        if (renderer == null) {
+            return new Status(IStatus.ERROR, Klighd.PLUGIN_ID,
+                    "Instantiation of offscreen renderer '" + rendererDescriptor.id
+                            + "' failed, see log for more information.");
 
-        return result;
+        } else {
+            // finally instantiate the renderer, render the diagram and return the result
+            final IStatus result = renderer.render(viewContext, output, theProperties);
+
+            return result;
+        }
     }
 }

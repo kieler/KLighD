@@ -14,8 +14,8 @@ package de.cau.cs.kieler.klighd.ui.view;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.ui.statushandlers.StatusManager;
 
+import de.cau.cs.kieler.klighd.Klighd;
 import de.cau.cs.kieler.klighd.SynthesisOption;
 
 /**
@@ -56,7 +56,7 @@ final class SynthesisOptionsPersistence {
                 }
             }
         } catch (Exception e) {
-            StatusManager.getManager().handle(new Status(IStatus.WARNING,
+            Klighd.handle(new Status(IStatus.WARNING,
                     KlighdViewPlugin.PLUGIN_ID,
                     SynthesisOptionsPersistence.class.getName() + ": Can not serialze value '"
                             + value.toString() + "' for synthesis option with name '"
@@ -94,12 +94,11 @@ final class SynthesisOptionsPersistence {
                 }
             }
         } catch (Exception e) {
-            StatusManager.getManager()
-                    .handle(new Status(IStatus.WARNING, KlighdViewPlugin.PLUGIN_ID,
-                            SynthesisOptionsPersistence.class.getName() + ": Can not parse value '"
-                                    + value.toString() + "' for synthesis option with name '"
-                                    + option.getName() + "'.",
-                            e));
+            Klighd.handle(new Status(IStatus.WARNING, KlighdViewPlugin.PLUGIN_ID,
+                    SynthesisOptionsPersistence.class.getName() + ": Can not parse value '"
+                            + value.toString() + "' for synthesis option with name '"
+                            + option.getName() + "'.",
+                    e));
         }
         return null;
     }

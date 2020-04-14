@@ -12,6 +12,9 @@
  */
 package de.cau.cs.kieler.klighd.internal.macrolayout;
 
+import org.eclipse.elk.core.IGraphLayoutEngine;
+import org.eclipse.elk.core.RecursiveGraphLayoutEngine;
+import org.eclipse.elk.core.service.DiagramLayoutEngine;
 import org.eclipse.elk.core.service.IDiagramLayoutConnector;
 import org.eclipse.elk.core.service.ILayoutConfigurationStore;
 import org.eclipse.elk.core.service.ILayoutSetup;
@@ -20,7 +23,6 @@ import com.google.inject.Binder;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Module;
-import com.google.inject.util.Modules;
 
 import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.IViewer;
@@ -33,6 +35,19 @@ import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
  * @author cds
  */
 public final class KlighdLayoutSetup implements ILayoutSetup {
+
+    /**
+     * Some shortcut for requesting the {@link DiagramLayoutEngine} being called for computing the
+     * diagram layout.
+     * 
+     * Enables the layout computation without relying on ELK extensions contributed via
+     *  Eclipse extension points, which are unavailable in the no eclipse platform scenario.
+     * 
+     * @return the requested {@link DiagramLayoutEngine} instance
+     */
+    public DiagramLayoutEngine getDiagramLayoutEngine() {
+        return createInjector(null).getInstance(DiagramLayoutEngine.class);
+    }
 
     /**
      * {@inheritDoc}
@@ -60,7 +75,7 @@ public final class KlighdLayoutSetup implements ILayoutSetup {
      */
     @Override
     public Injector createInjector(final Module defaultModule) {
-        return Guice.createInjector(Modules.override(defaultModule).with(new KlighdLayoutModule()));
+        return Guice.createInjector(new KlighdLayoutModule());
     }
     
     /**
@@ -70,6 +85,9 @@ public final class KlighdLayoutSetup implements ILayoutSetup {
 
         @Override
         public void configure(final Binder binder) {
+            // TODO extend "org.eclipse.elk.core.service.internal.DefaultModule()"
+            //  and replace the first line by "super.configure(binder);"
+            binder.bind(IGraphLayoutEngine.class).to(RecursiveGraphLayoutEngine.class);
             binder.bind(IDiagramLayoutConnector.class).to(KlighdDiagramLayoutConnector.class);
             binder.bind(ILayoutConfigurationStore.Provider.class)
                     .to(KlighdLayoutConfigurationStore.Provider.class);

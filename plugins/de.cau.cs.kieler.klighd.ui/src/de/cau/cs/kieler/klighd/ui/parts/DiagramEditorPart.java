@@ -57,11 +57,11 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.part.EditorActionBarContributor;
 import org.eclipse.ui.part.EditorPart;
-import org.eclipse.ui.statushandlers.StatusManager;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
 import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.IViewer;
+import de.cau.cs.kieler.klighd.Klighd;
 import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.LightDiagramLayoutConfig;
 import de.cau.cs.kieler.klighd.ViewContext;
@@ -70,6 +70,7 @@ import de.cau.cs.kieler.klighd.internal.IDiagramOutlinePage;
 import de.cau.cs.kieler.klighd.internal.ILayoutConfigProvider;
 import de.cau.cs.kieler.klighd.kgraph.KNode;
 import de.cau.cs.kieler.klighd.krendering.SimpleUpdateStrategy;
+import de.cau.cs.kieler.klighd.ui.KlighdUIPlugin;
 import de.cau.cs.kieler.klighd.ui.internal.options.DiagramSideBar;
 import de.cau.cs.kieler.klighd.ui.printing.PrintAction;
 import de.cau.cs.kieler.klighd.ui.viewers.UiContextViewer;
@@ -675,7 +676,7 @@ public class DiagramEditorPart extends EditorPart implements
             try {
                 event.getDelta().accept(new DeltaVisitor());
             } catch (final CoreException exception) {
-                StatusManager.getManager().handle(exception, KlighdPlugin.PLUGIN_ID);
+                Klighd.handle(exception, KlighdUIPlugin.PLUGIN_ID);
             }
         }
 
@@ -748,8 +749,8 @@ public class DiagramEditorPart extends EditorPart implements
                                         + resource.getURI().toString()
                                         + " after it has been changed.";
 
-                        StatusManager.getManager().handle(
-                                new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID, msg, exception));
+                        Klighd.handle(
+                                new Status(IStatus.ERROR, KlighdUIPlugin.PLUGIN_ID, msg, exception));
                     }
                 }
             }

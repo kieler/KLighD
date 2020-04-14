@@ -45,6 +45,7 @@ import com.google.common.collect.Iterators;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
+import de.cau.cs.kieler.klighd.Klighd;
 import de.cau.cs.kieler.klighd.KlighdOptions;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.ZoomStyle;
@@ -1951,9 +1952,7 @@ public class DiagramController {
         public void notifyChanged(final Notification notification) {
 
             if (notification.getFeature() == KGraphPackage.Literals.KNODE__CHILDREN) {
-                if (UIExecRequired()) {
-                    throw new RuntimeException(UI_REQUIRED_ERROR_MSG_NODES);
-                }
+                checkValidThread(UI_REQUIRED_ERROR_MSG_NODES);
 
                 switch (notification.getEventType()) {
                 case Notification.ADD: {
@@ -2028,9 +2027,7 @@ public class DiagramController {
 
             if (feature == KGraphPackage.Literals.KNODE__OUTGOING_EDGES
                     || feature == KGraphPackage.Literals.KNODE__INCOMING_EDGES) {
-                if (UIExecRequired()) {
-                    throw new RuntimeException(UI_REQUIRED_ERROR_MSG_EDGES);
-                }
+                checkValidThread(UI_REQUIRED_ERROR_MSG_EDGES);
 
                 final boolean releaseChildrenAndControllers =
                         feature == KGraphPackage.Literals.KNODE__OUTGOING_EDGES;
@@ -2092,9 +2089,7 @@ public class DiagramController {
         @Override
         public void notifyChanged(final Notification notification) {
             if (notification.getFeature() == KGraphPackage.Literals.KNODE__PORTS) {
-                if (UIExecRequired()) {
-                    throw new RuntimeException(UI_REQUIRED_ERROR_MSG_PORTS);
-                }
+                checkValidThread(UI_REQUIRED_ERROR_MSG_PORTS);
 
                 switch (notification.getEventType()) {
                 case Notification.ADD: {
@@ -2155,9 +2150,7 @@ public class DiagramController {
         public void notifyChanged(final Notification notification) {
 
             if (notification.getFeature() == KGraphPackage.Literals.KLABELED_GRAPH_ELEMENT__LABELS) {
-                if (UIExecRequired()) {
-                    throw new RuntimeException(UI_REQUIRED_ERROR_MSG_LABELS);
-                }
+                checkValidThread(UI_REQUIRED_ERROR_MSG_LABELS);
 
                 switch (notification.getEventType()) {
                 case Notification.ADD: {
@@ -2259,7 +2252,9 @@ public class DiagramController {
 
             // apply new label text, if necessary
             if (foundNewText) {
-                if (UIExecRequired()) {
+                if (isValidThread()) {
+                    labelRep.setText(newText);
+                } else {
                     // Since changing the label text is no structural modification we support the
                     // automatic switching the Display thread here! (several potentially concurrent
                     // modifications of the diagram's structure might lead to chaos...)
@@ -2269,8 +2264,6 @@ public class DiagramController {
                             labelRep.setText(finalNewText);
                         }
                     });
-                } else {
-                    labelRep.setText(newText);
                 }
             }
         }
@@ -2311,16 +2304,24 @@ public class DiagramController {
     //  Helper methods
 
     /**
-     * Checks whether the delegation to the Display thread is required for performing UI-relevant
-     * executions.
+     * Checks whether the current (UI-relevant) execution is performed by the Display thread. This
+     * check is only done in case of a running Eclipse workbench, otherwise the result is
+     * <code>true</code>.
      *
-     * @return <code>true</code> if an Eclipse workbench is available and the current thread is not
-     *         the UI thread ( {@link Display#getCurrent()} <code>== null</code>) indicating that
-     *         calling {@link PlatformUI#getWorkbench()}.{@link org.eclipse.ui.IWorkbench#getDisplay()
+     * @return <code>false</code> if an Eclipse workbench is available and the current thread is not
+     *         the UI thread ( {@link Display#getCurrent()} <code>== null</code>), indicating that
+     *         calling
+     *         {@link PlatformUI#getWorkbench()}.{@link org.eclipse.ui.IWorkbench#getDisplay()
      *         getDisplay()}.{@link Display#asyncExec(Runnable)
-     *         asyncExec(Runnable)}/{@link Display#syncExec(Runnable) syncExec(Runnable)} is required.
+     *         asyncExec(Runnable)}/{@link Display#syncExec(Runnable) syncExec(Runnable)} is
+     *         required. Returns <code>true</code> otherwise.
      */
-    public static boolean UIExecRequired() { // SUPPRESS CHECKSTYLE MethodName
-        return PlatformUI.isWorkbenchRunning() && Display.getCurrent() == null;
+    private static boolean isValidThread() {
+        return Klighd.IS_PLATFORM_RUNNING && PlatformUI.isWorkbenchRunning() ? Display.getCurrent() != null : true;
+    }
+    
+    private static void checkValidThread(String msg) {
+        if (!isValidThread())
+            throw new RuntimeException(msg);
     }
 }

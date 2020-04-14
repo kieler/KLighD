@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
 
-   <description name="KIELER Pragmatics (Nightly Builds)" url="http://rtsys.informatik.uni-kiel.de/~kieler/updatesite/nightly/">
-      Update site for the KIELER Pragmatics project nightly builds.
+   <description name="KIELER Lightweight Diagrams" url="http://services.typefox.io/open-source/jenkins/job/KLighD/job/master/lastSuccessfulBuild/artifact/updatesite/">
+      Update site for KIELER Lightweight Diagrams nightly builds.
    </description>
 
    <category-def name="kieler-klighd" label="KIELER Lightweight Diagrams">
@@ -11,45 +11,45 @@
       </description>
    </category-def>
 
-   <feature url="features/de.cau.cs.kieler.klighd.feature_1.0.1.qualifier.jar" id="de.cau.cs.kieler.klighd.feature" version="1.0.1.qualifier">
+   <feature url="features/de.cau.cs.kieler.klighd.feature_1.1.1.qualifier.jar" id="de.cau.cs.kieler.klighd.feature" version="1.1.1.qualifier">
       <category name="kieler-klighd"/>
    </feature>
-   <feature url="features/de.cau.cs.kieler.klighd.feature.source_1.0.1.qualifier.jar" id="de.cau.cs.kieler.klighd.feature.source" version="1.0.1.qualifier">
-      <category name="kieler-klighd"/>
-   </feature>
-
-   <feature url="features/de.cau.cs.kieler.klighd.batik.feature_1.0.1.qualifier.jar" id="de.cau.cs.kieler.klighd.batik.feature" version="1.0.1.qualifier">
-      <category name="kieler-klighd"/>
-   </feature>
-   <feature url="features/de.cau.cs.kieler.klighd.batik.feature.source_1.0.1.qualifier.jar" id="de.cau.cs.kieler.klighd.batik.feature.source" version="1.0.1.qualifier">
+   <feature url="features/de.cau.cs.kieler.klighd.feature.source_1.1.1.qualifier.jar" id="de.cau.cs.kieler.klighd.feature.source" version="1.1.1.qualifier">
       <category name="kieler-klighd"/>
    </feature>
 
-   <feature url="features/de.cau.cs.kieler.klighd.freehep.feature_1.0.1.qualifier.jar" id="de.cau.cs.kieler.klighd.freehep.feature" version="1.0.1.qualifier">
+   <feature url="features/de.cau.cs.kieler.klighd.batik.feature_1.1.1.qualifier.jar" id="de.cau.cs.kieler.klighd.batik.feature" version="1.1.1.qualifier">
       <category name="kieler-klighd"/>
    </feature>
-   <feature url="features/de.cau.cs.kieler.klighd.freehep.feature.source_1.0.1.qualifier.jar" id="de.cau.cs.kieler.klighd.freehep.feature.source" version="1.0.1.qualifier">
-      <category name="kieler-klighd"/>
-   </feature>
-
-   <feature url="features/de.cau.cs.kieler.klighd.draw2d.feature_1.0.1.qualifier.jar" id="de.cau.cs.kieler.klighd.draw2d.feature" version="1.0.1.qualifier">
-      <category name="kieler-klighd"/>
-   </feature>
-   <feature url="features/de.cau.cs.kieler.klighd.draw2d.feature.source_1.0.1.qualifier.jar" id="de.cau.cs.kieler.klighd.draw2d.feature.source" version="1.0.1.qualifier">
+   <feature url="features/de.cau.cs.kieler.klighd.batik.feature.source_1.1.1.qualifier.jar" id="de.cau.cs.kieler.klighd.batik.feature.source" version="1.1.1.qualifier">
       <category name="kieler-klighd"/>
    </feature>
 
-   <feature url="features/de.cau.cs.kieler.klighd.view.feature_1.0.1.qualifier.jar" id="de.cau.cs.kieler.klighd.view.feature" version="1.0.1.qualifier">
+   <feature url="features/de.cau.cs.kieler.klighd.freehep.feature_1.1.1.qualifier.jar" id="de.cau.cs.kieler.klighd.freehep.feature" version="1.1.1.qualifier">
       <category name="kieler-klighd"/>
    </feature>
-   <feature url="features/de.cau.cs.kieler.klighd.view.feature.source_1.0.1.qualifier.jar" id="de.cau.cs.kieler.klighd.view.feature.source" version="1.0.1.qualifier">
+   <feature url="features/de.cau.cs.kieler.klighd.freehep.feature.source_1.1.1.qualifier.jar" id="de.cau.cs.kieler.klighd.freehep.feature.source" version="1.1.1.qualifier">
       <category name="kieler-klighd"/>
    </feature>
 
-   <feature url="features/de.cau.cs.kieler.klighd.sdk.feature_1.0.1.qualifier.jar" id="de.cau.cs.kieler.klighd.sdk.feature" version="1.0.1.qualifier">
+   <feature url="features/de.cau.cs.kieler.klighd.draw2d.feature_1.1.1.qualifier.jar" id="de.cau.cs.kieler.klighd.draw2d.feature" version="1.1.1.qualifier">
       <category name="kieler-klighd"/>
    </feature>
-   <feature url="features/de.cau.cs.kieler.klighd.sdk.feature.source_1.0.1.qualifier.jar" id="de.cau.cs.kieler.klighd.sdk.feature.source" version="1.0.1.qualifier">
+   <feature url="features/de.cau.cs.kieler.klighd.draw2d.feature.source_1.1.1.qualifier.jar" id="de.cau.cs.kieler.klighd.draw2d.feature.source" version="1.1.1.qualifier">
+      <category name="kieler-klighd"/>
+   </feature>
+
+   <feature url="features/de.cau.cs.kieler.klighd.view.feature_1.1.1.qualifier.jar" id="de.cau.cs.kieler.klighd.view.feature" version="1.1.1.qualifier">
+      <category name="kieler-klighd"/>
+   </feature>
+   <feature url="features/de.cau.cs.kieler.klighd.view.feature.source_1.1.1.qualifier.jar" id="de.cau.cs.kieler.klighd.view.feature.source" version="1.1.1.qualifier">
+      <category name="kieler-klighd"/>
+   </feature>
+
+   <feature url="features/de.cau.cs.kieler.klighd.sdk.feature_1.1.1.qualifier.jar" id="de.cau.cs.kieler.klighd.sdk.feature" version="1.1.1.qualifier">
+      <category name="kieler-klighd"/>
+   </feature>
+   <feature url="features/de.cau.cs.kieler.klighd.sdk.feature.source_1.1.1.qualifier.jar" id="de.cau.cs.kieler.klighd.sdk.feature.source" version="1.1.1.qualifier">
       <category name="kieler-klighd"/>
    </feature>
 
@@ -58,7 +58,7 @@
 
    <repository-reference location="http://download.eclipse.org/eclipse/updates/4.9/" enabled="true" />
    <repository-reference location="http://download.eclipse.org/releases/photon" enabled="true" />
-   <repository-reference location="http://download.eclipse.org/elk/updates/releases/0.6.0/" enabled="true" />
+   <repository-reference location="http://download.eclipse.org/elk/updates/releases/0.6.1/" enabled="true" />
    <repository-reference location="http://download.eclipse.org/modeling/tmf/xtext/updates/releases/2.16.0/" enabled="true" />
    <repository-reference location="http://xtext.github.io/download/updates/releases/2.1.1/" enabled="true" />
    <repository-reference location="http://download.eclipse.org/tools/orbit/downloads/drops/R20180606145124/repository" enabled="true" />

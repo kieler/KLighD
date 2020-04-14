@@ -2,7 +2,7 @@
 <feature
       id="de.cau.cs.kieler.klighd.freehep.feature"
       label="KIELER Lightweight Diagrams Vector Graphics Export Powered by FreeHEP 2.1.1"
-      version="1.0.1.qualifier"
+      version="1.1.1.qualifier"
       provider-name="Kiel University">
 
    <description url="http://www.informatik.uni-kiel.de/rtsys/kieler">
@@ -219,7 +219,7 @@ litigation.
    </license>
 
    <url>
-      <update label="KIELER Nightly Builds" url="http://rtsys.informatik.uni-kiel.de/~kieler/updatesite/nightly/"/>
+      <update label="KIELER Lightweight Diagrams" url="https://kieler.github.io/KLighD/"/>
    </url>
 
    <requires>

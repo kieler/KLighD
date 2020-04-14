@@ -57,7 +57,7 @@ public final class PrintExporter extends AbstractDiagramExporter {
      */
     public PrintExporter(final PiccoloViewer viewer) {
         this.viewer = viewer;
-        this.exportBrandings = KlighdDataManager.getExportBrandingByFormat(
+        this.exportBrandings = KlighdDataManager.getInstance().getExportBrandingByFormat(
                 KlighdConstants.EXPORT_PRINTOUT, viewer.getViewContext());
     }
 

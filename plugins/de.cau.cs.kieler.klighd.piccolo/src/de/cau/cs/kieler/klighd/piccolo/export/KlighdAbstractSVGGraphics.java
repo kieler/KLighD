@@ -509,12 +509,12 @@ public abstract class KlighdAbstractSVGGraphics extends Graphics2D implements Kl
         // SVG 1.2 supports a textArea with automatic wrapping, however this is not supported by all
         // browsers.
         if (!canHandleMultiline) {
-            int y = 0;
+            float y = 0;
             
             // Space separate lines by the font's overall height, i.e 
             // ascent + descent + leading
-            int fontHeight = graphics.getFontMetrics().getHeight();
-    
+            float fontHeight = getAbsoluteFontHeight();
+            
             for (final String line : string.split("\\r?\\n|\\r")) {
                 graphics.drawString(line, 0, y);
                 y += fontHeight;
@@ -523,6 +523,13 @@ public abstract class KlighdAbstractSVGGraphics extends Graphics2D implements Kl
         } else {
             graphics.drawString(string, 0, 0);
         }
+    }
+
+    /**
+     * Customization hook providing the currently requested font's absolute height in floating point numbers.
+     */
+    protected float getAbsoluteFontHeight() {
+        return graphics.getFontMetrics().getHeight();
     }
 
     /*------------------------------------------------ 

@@ -13,14 +13,18 @@
  */
 package de.cau.cs.kieler.klighd;
 
-import org.eclipse.jface.preference.IPreferenceStore;
-import org.eclipse.jface.util.IPropertyChangeListener;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.preferences.IEclipsePreferences.IPreferenceChangeListener;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.widgets.Widget;
+import org.osgi.framework.Bundle;
 
 import com.google.common.base.Strings;
 
+import de.cau.cs.kieler.klighd.internal.preferences.KlighdPlainPreferenceStore;
 
 /**
  * IDs and default values of preferences defined by KLighD and stored in the preference store.
@@ -138,13 +142,44 @@ public final class KlighdPreferences {
     public static final Number USER_ZOOMING_MAXIMAL_LEVEL_DEFAULT = null;
 
 
-    /** The {@link IPreferenceStore} used for KLighD-specific preferences. */
-    public static final IPreferenceStore STORE = KlighdPlugin.getDefault().getPreferenceStore();
+    /** The {@link IKlighdPreferenceStore} used for KLighD-specific preferences. */
+    public static final IKlighdPreferenceStore STORE;
 
+    static {
+        IKlighdPreferenceStore theStore = new KlighdPlainPreferenceStore();
+        if (Klighd.IS_PLATFORM_RUNNING) {
+            final Bundle klighdUi = Platform.getBundle(Klighd.UI_PLUGIN_ID);
+            if (klighdUi != null) {
+                try {
+                    final Class<?> clazz = klighdUi.loadClass(
+                            Klighd.UI_PLUGIN_ID + ".internal.preferences.KlighdPlatformPreferenceStore");
+                    theStore = (IKlighdPreferenceStore) clazz.getDeclaredField("INSTANCE").get(null);
+                    
+                } catch (ClassNotFoundException | IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException e) {
+                    Klighd.log(new Status(IStatus.ERROR, Klighd.PLUGIN_ID, "Accessing the JFace-based preference store failed with an exception.", e));
+                }
+            }
+        }
+        STORE = theStore;
+    }
+    
     /**
      * This class cannot be instantiated.
      */
     private KlighdPreferences() {
+    }
+
+    public static IKlighdPreferenceStore getPreferenceStore() {
+        return STORE;
+    }
+
+    /**
+     * Getter.
+     *
+     * @return <code>true</code> if 'animated layout' is active, <code>false</code> otherwise.
+     */
+    public static boolean isAnimateLayout() {
+        return STORE.getBoolean(ANIMATE_LAYOUT);
     }
 
     /**
@@ -243,17 +278,18 @@ public final class KlighdPreferences {
 
 
     /**
+     * Registers the given {@link IPreferenceChangeListener}.
      *
      * @param widget
      *            an SWT {@link Widget} onto which a {@link DisposeListener} is installed to for
      *            properly removing the preference change listener once it is not required anymore,
      *            may be <code>null</code>
      * @param listener
-     *            an {@link IPropertyChangeListener} performing internal updates
+     *            an {@link IPreferenceChangeListener} performing internal updates
      */
     public static void registerPrefChangeListener(final Widget widget,
-            final IPropertyChangeListener listener) {
-        KlighdPreferences.STORE.addPropertyChangeListener(listener);
+            final IPreferenceChangeListener listener) {
+        KlighdPreferences.STORE.addPreferenceChangeListener(listener);
 
         if (widget == null) {
             return;
@@ -261,8 +297,9 @@ public final class KlighdPreferences {
 
         widget.addDisposeListener(new DisposeListener() {
 
+            @Override
             public void widgetDisposed(final DisposeEvent e) {
-                KlighdPreferences.STORE.removePropertyChangeListener(listener);
+                KlighdPreferences.STORE.removePreferenceChangeListener(listener);
                 e.widget.removeDisposeListener(this);
             }
         });

@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>de.cau.cs.kieler.klighd</groupId>
   <artifactId>parent</artifactId>
-  <version>1.0.1-SNAPSHOT</version>
+  <version>1.1.1-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <modules>
@@ -22,6 +22,7 @@
     <module>plugins/de.cau.cs.kieler.klighd.krendering.extensions</module>
     <module>plugins/de.cau.cs.kieler.klighd.lsp</module>
     <module>plugins/de.cau.cs.kieler.klighd.piccolo</module>
+    <module>plugins/de.cau.cs.kieler.klighd.standalone</module>
     <module>test/de.cau.cs.kieler.klighd.test</module>
     <module>test/de.cau.cs.kieler.klighd.piccolo.test</module>
     <module>plugins/de.cau.cs.kieler.klighd.piccolo.batik</module>
@@ -92,14 +93,21 @@
           <name>!not-typefox-jenkins</name>
         </property>
       </activation>
-      <repositories>
+      <!-- repositories>
         <repository>
           <id>klighd-piccolo2d</id>
           <url>http://services.typefox.io/open-source/jenkins/job/KLighD.Piccolo2d/lastSuccessfulBuild/artifact/klighd-piccolo2d</url>
         </repository>
-      </repositories>
+      </repositories -->
     </profile>
   </profiles>
+
+  <repositories>
+    <repository>
+      <id>klighd</id>
+      <url>http://kieler.github.io/KLighD/repo</url>
+    </repository>
+  </repositories>
 
   <dependencies>
     <!-- the dependency to piccolo is required by roughly half of the bundles so I put it in here
@@ -107,9 +115,20 @@
     <dependency>
       <groupId>de.cau.cs.kieler.klighd</groupId>
       <artifactId>edu.umd.cs.piccolo</artifactId>
-      <version>1.3.4-SNAPSHOT</version>
+      <version>1.3.4.v20200330</version>
     </dependency>
   </dependencies>
+
+  <distributionManagement>
+    <snapshotRepository>
+      <id>localSnapshot</id>
+      <url>file://klighd-snapshots</url>
+    </snapshotRepository>
+    <repository>
+      <id>localSnapshot</id>
+      <url>file://klighd</url>
+    </repository>
+  </distributionManagement>
 
   <!-- Modify the build process to add Tycho and configure some utility plug-ins. -->
   <build>
@@ -149,7 +168,7 @@
             <artifact>
               <groupId>de.cau.cs.kieler.klighd</groupId>
               <artifactId>de.cau.cs.kieler.klighd.targetplatform</artifactId>
-              <version>1.0.1-SNAPSHOT</version>
+              <version>1.1.1-SNAPSHOT</version>
             </artifact>
           </target>
 

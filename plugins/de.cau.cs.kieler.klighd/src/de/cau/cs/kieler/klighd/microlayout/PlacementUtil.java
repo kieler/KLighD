@@ -48,6 +48,7 @@ import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
+import de.cau.cs.kieler.klighd.Klighd;
 import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.KlighdOptions;
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
@@ -977,7 +978,8 @@ public final class PlacementUtil {
      */
     private static GC gc = null;
     private static GC asyncGC = null;
-    
+    private static Point displayScale = null;
+
     private static BufferedImage bi = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
     private static Graphics2D fmg = bi.createGraphics();
 
@@ -1016,8 +1018,15 @@ public final class PlacementUtil {
             // Create (identical) GC for asynchronous threads
             asyncGC = new GC(display);
             asyncGC.setAntialias(SWT.OFF);
+
+            // determine the current display scale, used below for compensating the text bounds
+            //  see 
+            org.eclipse.swt.graphics.Point dpi = display.getDPI();
+            displayScale = new Point(
+                KlighdConstants.DEFAULT_DISPLAY_DPI / dpi.x,
+                KlighdConstants.DEFAULT_DISPLAY_DPI / dpi.y);
         }
-        
+
         // Find the GC suitable for this thread.
         // The main/UI thread has direct access to the Display, 
         // so we use that check as the distinguishing feature
@@ -1040,10 +1049,15 @@ public final class PlacementUtil {
         } else {
             textBounds = new Bounds(myGC.textExtent(text));
         }
-        
+
+        if (!Klighd.isSuppressDisplayScaleCompensationWhileHandlingText()) {
+            textBounds.width  *= displayScale.x;
+            textBounds.height *= displayScale.y;
+        }
+
         return textBounds;
     }
-    
+
     private static Bounds estimateTextSizeAWT(final FontData fontData, final String text) {
         fmg.setFont(new java.awt.Font(fontData.getName(), 
                 KTextUtil.swtFontStyle2Awt(fontData.getStyle()), 

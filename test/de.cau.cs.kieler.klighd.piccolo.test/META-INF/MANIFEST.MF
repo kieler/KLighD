@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: KLighD Piccolo2D Binding Tests
 Bundle-SymbolicName: de.cau.cs.kieler.klighd.piccolo.test
-Bundle-Version: 1.0.1.qualifier
+Bundle-Version: 1.1.1.qualifier
 Bundle-Vendor: Kiel University
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.junit;bundle-version="4.8.0",
@@ -16,4 +16,3 @@ Require-Bundle: org.junit;bundle-version="4.8.0",
  de.cau.cs.kieler.kgraph.text,
  de.cau.cs.kieler.klighd.krendering.extensions
 Bundle-ActivationPolicy: lazy
-Bundle-Activator: de.cau.cs.kieler.klighd.piccolo.test.KlighdTestPlugin

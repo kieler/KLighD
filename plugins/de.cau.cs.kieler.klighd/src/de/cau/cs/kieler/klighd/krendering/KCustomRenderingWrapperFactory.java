@@ -13,26 +13,24 @@
  */
 package de.cau.cs.kieler.klighd.krendering;
 
-import java.util.Iterator;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.InvalidRegistryObjectException;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.spi.RegistryContributor;
-import org.eclipse.ui.statushandlers.StatusManager;
 import org.osgi.framework.Bundle;
 
 import com.google.common.base.Predicate;
 import com.google.common.base.Strings;
 import com.google.common.collect.Iterables;
-import com.google.common.collect.Iterators;
 import com.google.common.collect.Maps;
 
+import de.cau.cs.kieler.klighd.Klighd;
 import de.cau.cs.kieler.klighd.KlighdDataManager;
+import de.cau.cs.kieler.klighd.KlighdDataManager.CustomFigureWrapperDescriptor;
 import de.cau.cs.kieler.klighd.KlighdPlugin;
 
 /**
@@ -51,13 +49,6 @@ import de.cau.cs.kieler.klighd.KlighdPlugin;
  * @kieler.rating proposed yellow by chsch
  */
 public final class KCustomRenderingWrapperFactory {
-    
-    /** The related extensions' name. */
-    private static final String EXTENSION_NAME = "wrapper";
-    /** The wrapped type field's name. */
-    private static final String FIGURE_CLASS_ENTRY_NAME = "figureClass";
-    /** The wrapper type field's name. */
-    private static final String WRAPPER_CLASS_ENTRY_NAME = "wrapperClass";
     
     private static KCustomRenderingWrapperFactory instance = null;
     
@@ -87,57 +78,35 @@ public final class KCustomRenderingWrapperFactory {
      * Hidden default constructor: examines the 'customFigureWrapper' extension point.
      */
     private KCustomRenderingWrapperFactory() {
-        // get the extensions
-        final IConfigurationElement[] configurations = Platform.getExtensionRegistry()
-                .getConfigurationElementsFor(KlighdDataManager.EXTP_ID_EXTENSIONS);
-
-        // filter them, retain the ones named like EXTENSION_NAME
-        //  this is actually not necessary right now but might be
-        //  if the extension point definition will be extended in future
-        final Iterable<IConfigurationElement> wrappers = new Iterable<IConfigurationElement>() {
-            public Iterator<IConfigurationElement> iterator() {
-                return Iterators.filter(Iterators.forArray(configurations),
-                        new Predicate<IConfigurationElement>() {
-                            public boolean apply(final IConfigurationElement input) {
-                                return input.getName().equals(EXTENSION_NAME);
-                            }
-                        });
-            }
-        };
-
-        // examine the extensions and register the data in the 'typeWrapperMap'
-        for (final IConfigurationElement element : wrappers) {
+        for (final CustomFigureWrapperDescriptor descriptor : KlighdDataManager.getInstance()
+                .getCustomFigureWrapperDescriptors()) {
             Class<?> figureClass = null;
             Class<?> wrapperClass = null;
-            Bundle host = null;
-            try {
 
-                // there is only that one implementation of IContributor and since it's providing
-                //  more data the returned contributor is casted without a type check
-                host = Platform.getBundle(((RegistryContributor) element.getContributor()).getName());
-                figureClass = host.loadClass(element.getAttribute(FIGURE_CLASS_ENTRY_NAME));
-                wrapperClass = host.loadClass(element.getAttribute(WRAPPER_CLASS_ENTRY_NAME));
+            try {
+                if (Klighd.IS_PLATFORM_RUNNING) {
+                    final Bundle host = Platform.getBundle(descriptor.contributor);
+                    figureClass = host.loadClass(descriptor.customFigureType);
+                    wrapperClass = host.loadClass(descriptor.wrapperType);
+
+                } else {
+                    figureClass = Klighd.class.getClassLoader().loadClass(descriptor.customFigureType);
+                    wrapperClass = Klighd.class.getClassLoader().loadClass(descriptor.wrapperType);
+                }
+
                 this.registerWrapper(figureClass, wrapperClass);
 
-            } catch (final InvalidRegistryObjectException e) {
-                // I hope this will never happen ;-)
-                final String msg = "An extension of " + KlighdDataManager.EXTP_ID_EXTENSIONS + " in "
-                    + host + " could not be examined properly and appears to be invalid in some way.";
-                StatusManager.getManager().handle(
-                        new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID, msg, e),
-                        StatusManager.LOG);
             } catch (final ClassNotFoundException e) {
-                String msg;
+                final String msgSuffix = Klighd.IS_PLATFORM_RUNNING ?
+                        "' via bundle '" + descriptor.contributor + "'." : "'.";
+                
+                final String msg;
                 if (figureClass == null) {
-                    msg = "Failed to load figure class "
-                            + element.getAttribute(FIGURE_CLASS_ENTRY_NAME) + ".";
+                    msg = "Failed to load figure class '" + descriptor.customFigureType + msgSuffix;
                 } else {
-                    msg = "Failed to load wrapper class "
-                            + element.getAttribute(WRAPPER_CLASS_ENTRY_NAME) + ".";
+                    msg = "Failed to load wrapper class '" + descriptor.wrapperType + msgSuffix;
                 }
-                StatusManager.getManager().handle(
-                        new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID, msg, e),
-                        StatusManager.LOG);
+                Klighd.log(new Status(IStatus.ERROR, Klighd.PLUGIN_ID, msg, e));
             }
         }
     }
@@ -185,40 +154,44 @@ public final class KCustomRenderingWrapperFactory {
         if (Strings.isNullOrEmpty(renderingTypeName)) {
             final String msg =
                     "KLighD custom rendering wrapper factory: Rendering type name not specified.";
-            StatusManager.getManager().handle(
-                    new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID, msg), StatusManager.LOG);
+            Klighd.log(new Status(IStatus.ERROR, Klighd.PLUGIN_ID, msg));
+            
             return null;
         }
-        
-        Bundle bundle;
-        // first get the denoted bundle by ... 
-        if (!Strings.isNullOrEmpty(bundleName)) {
-        
-            // ... trimming the leading and trailing quotation marks and asking the platform or ...
-            bundle = Platform.getBundle(bundleName.replace("\"", ""));
-            if (bundle == null) {
-                final String msg = "KLighD custom rendering wrapper factory: Bundle named "
-                        + bundleName + " was not found.";
-                StatusManager.getManager().handle(
-                        new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID, msg), StatusManager.LOG);
-                return null;
+
+        final Bundle bundle;
+        if (Klighd.IS_PLATFORM_RUNNING) {
+            // first get the denoted bundle by ... 
+            if (!Strings.isNullOrEmpty(bundleName)) {
+            
+                // ... trimming the leading and trailing quotation marks and asking the platform or ...
+                bundle = Platform.getBundle(bundleName.replace("\"", ""));
+                if (bundle == null) {
+                    final String msg = "KLighD custom rendering wrapper factory: Bundle named "
+                            + bundleName + " was not found.";
+                    Klighd.log(new Status(IStatus.ERROR, Klighd.PLUGIN_ID, msg));
+                    
+                    return null;
+                }
+            } else {
+                // ... by taking the KLighD bundle if none is given
+                bundle = KlighdPlugin.getDefault().getBundle();
             }
         } else {
-            // ... by taking the KLighD bundle if none is given
-            bundle = KlighdPlugin.getDefault().getBundle();
+            bundle = null;
         }
-        
+
         Class<?> clazz = null;
         try {
             // load the figure class 
-            clazz = bundle.loadClass(renderingTypeName);
+            clazz = bundle != null ? bundle.loadClass(renderingTypeName)
+                    : Klighd.class.getClassLoader().loadClass(renderingTypeName);
         } catch (final ClassNotFoundException e) {
             final String msg = "KLighD custom rendering wrapper factory: Error occurred while"
                     + "loading the custom rendering class " + renderingTypeName
                     + ((bundle != null) ? (" in bundle " + bundleName) : "") + ".";
-            StatusManager.getManager().handle(
-                    new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID, msg, e),
-                    StatusManager.LOG);
+            Klighd.log(new Status(IStatus.ERROR, Klighd.PLUGIN_ID, msg, e));
+            
             return null;
         }
         
@@ -247,17 +220,9 @@ public final class KCustomRenderingWrapperFactory {
      * @return an instance of the wrapping frameworkType.
      */
     public <S, T> T getWrapperInstance(final Class<S> renderingType, final Class<T> frameworkType) {
-        S figure = null;
-        try {
-            figure = renderingType.newInstance();
-        } catch (final Exception e) {
-            final String msg = "KLighD custom rendering wrapper factory: An error occured while "
-                    + "instantiating the requested custom figure type " + renderingType.getName() + ".";
-            StatusManager.getManager().handle(
-                    new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID, msg, e), StatusManager.LOG);
-            return null;
-        }
-        return this.getWrapperInstance(renderingType, figure, frameworkType);
+        final S figure = getInstance(renderingType);
+
+        return figure == null ? null : this.getWrapperInstance(renderingType, figure, frameworkType);
     }
     
     
@@ -307,7 +272,6 @@ public final class KCustomRenderingWrapperFactory {
      *            the figure type required by the rendering framework
      * @return an instance of the wrapping frameworkType.
      */
-    @SuppressWarnings("unchecked")
     private <S, T> T getWrapperInstance(final Class<S> renderingType, final S figure,
             final Class<T> frameworkType) {
         
@@ -316,19 +280,18 @@ public final class KCustomRenderingWrapperFactory {
         
             // ... and is already instantiated just return it,
             if (renderingType.isInstance(figure)) {
-                return (T) figure;
+                return frameworkType.cast(figure);
             }
 
             try {
                 // ... create an instance, otherwise, and return that one
-                return (T) renderingType.newInstance();
+                return frameworkType.cast(getInstance(renderingType));
             } catch (final Exception e) {
                 final String msg = "KLighD custom rendering wrapper factory: An error occured while "
                         + "instantiating the requested custom figure type "
                         + renderingType.getName() + ".";
-                StatusManager.getManager().handle(
-                        new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID, msg, e),
-                        StatusManager.LOG);
+                Klighd.log(new Status(IStatus.ERROR, Klighd.PLUGIN_ID, msg, e));
+                
                 return null;
             }
         }
@@ -346,16 +309,40 @@ public final class KCustomRenderingWrapperFactory {
             try {
                 // due to the 2nd part of the filter condition
                 // the cast in the next line is generally valid
-                return (T) entry.getValue().getConstructor(entry.getKey()).newInstance(figure);
+                return frameworkType.cast(
+                        entry.getValue().getConstructor(entry.getKey()).newInstance(figure));
             } catch (final Exception e) {
-                final String msg = "KLighD custom rendering wrapper factory: An error occured while "
+                final String msg = "KLighD custom rendering wrapper factory: An exception occured while "
                         + "instantiating the required wrapper figure for the requested figure type "
                         + renderingType.getName() + ".";
-                StatusManager.getManager().handle(
-                        new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID, msg, e),
-                        StatusManager.LOG);
+                Klighd.log(new Status(IStatus.ERROR, Klighd.PLUGIN_ID, msg, e));
             }
         }
         return null;
+    }
+
+    private <S> S getInstance(Class<S> renderingType) {
+        final Constructor<S> constructor;
+        try {
+            constructor = renderingType.getConstructor();
+
+        } catch (final NoSuchMethodException | SecurityException e) {
+            final String msg = "KLighD custom rendering wrapper factory: An exception occured while "
+                    + "revealing the required no-arg constructor of the requested custom figure type "
+                    + renderingType.getName() + ".";
+            Klighd.handle(new Status(IStatus.ERROR, Klighd.PLUGIN_ID, msg, e));
+            
+            return null;
+        }
+        try {
+            return constructor.newInstance();
+
+        } catch (final InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+            final String msg = "KLighD custom rendering wrapper factory: An exception occured while "
+                    + "instantiating the requested custom figure type " + renderingType.getName() + ".";
+            Klighd.log(new Status(IStatus.ERROR, Klighd.PLUGIN_ID, msg, e));
+
+            return null;
+        }
     }
 }
