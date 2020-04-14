@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: KIELER Language Server for KGraph language with diagram features
 Bundle-SymbolicName: de.cau.cs.kieler.kgraph.language.server;singleton:=true
-Bundle-Version: 1.0.1.qualifier
+Bundle-Version: 1.1.1.qualifier
 Bundle-ClassPath: .
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-Vendor: Kiel University
