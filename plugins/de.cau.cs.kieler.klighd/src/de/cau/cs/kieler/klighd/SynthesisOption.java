@@ -66,7 +66,7 @@ public final class SynthesisOption {
      */
     public static SynthesisOption createCategory(final String label,
             final boolean initiallyExpanded) {
-        return new SynthesisOption(label, TransformationOptionType.CATEGORY, initiallyExpanded);
+        return createCategory(label, label, initiallyExpanded);
     }
     
     /**
@@ -100,7 +100,7 @@ public final class SynthesisOption {
      * @return a 'Category' {@link SynthesisOption}.
      */
     public static SynthesisOption createCategory(final String label) {
-        return new SynthesisOption(label, TransformationOptionType.CATEGORY, true);
+        return createCategory(label, label);
     }
     
     /**
@@ -145,7 +145,7 @@ public final class SynthesisOption {
      */
     public static SynthesisOption createCheckOption(final String name,
             final Boolean initiallyChecked) {
-        return new SynthesisOption(name, TransformationOptionType.CHECK, initiallyChecked);
+        return createCheckOption(name, name, initiallyChecked);
     }
     
     /**
@@ -176,8 +176,22 @@ public final class SynthesisOption {
      * @return the desired 'Choice' {@link SynthesisOption}
      */
     public static SynthesisOption createChoiceOption(final String name) {
-        return new SynthesisOption(name, TransformationOptionType.CHOICE, null);
-    }    
+        return createChoiceOption(name, name);
+    }
+    
+    /**
+     * Static factory method providing a 'Choice' {@link SynthesisOption}.<br>
+     * <br>
+     * Hint: Declare {@link SynthesisOption TransformationOptions} by means of static fields if
+     * the transformation is a re-initialized one (determined in the registration).
+     * 
+     * @param name
+     *            the name of the option
+     * @return the desired 'Choice' {@link SynthesisOption}
+     */
+    public static SynthesisOption createChoiceOption(final String id, final String name) {
+        return new SynthesisOption(id, name, TransformationOptionType.CHOICE, null);
+    }
 
     /**
      * Static factory method providing a 'Choice' {@link SynthesisOption}.<br>
@@ -195,10 +209,7 @@ public final class SynthesisOption {
      */
     public static SynthesisOption createChoiceOption(final String name, final List<?> values,
             final Object initialValue) {
-        final SynthesisOption option = new SynthesisOption(name,
-                TransformationOptionType.CHOICE, initialValue);
-        option.setValues(values);
-        return option;
+        return createChoiceOption(name, name, values, initialValue);
     }
     
     /**
@@ -245,17 +256,7 @@ public final class SynthesisOption {
      */
     public static <T extends Number> SynthesisOption createRangeOption(
             final String name, final T lowerBound, final T upperBound, final T initialValue) {
-        final SynthesisOption option = new SynthesisOption(name,
-                TransformationOptionType.RANGE, initialValue);
-        option.setValues(Pair.of(lowerBound, upperBound));
-        if (!lowerBound.equals(lowerBound.intValue())
-                || !upperBound.equals(upperBound.intValue())
-                || !initialValue.equals(initialValue.intValue())) {
-            option.setStepSize(DEFAULT_STEP_SIZE_FLOAT);
-        } else {
-            option.setStepSize(DEFAULT_STEP_SIZE_INTEGER);
-        }
-        return option;
+        return createRangeOption(name, name, lowerBound, upperBound, initialValue);
     }
     
     /**
@@ -328,18 +329,7 @@ public final class SynthesisOption {
      */
     public static <T extends Number> SynthesisOption createRangeOption(final String name,
             final T lowerBound, final T upperBound, final T stepSize, final T initialValue) {
-        final SynthesisOption option = new SynthesisOption(name,
-                TransformationOptionType.RANGE, initialValue);
-        option.setValues(Pair.of(lowerBound, upperBound));
-        if (!lowerBound.equals(lowerBound.intValue())
-                || !upperBound.equals(upperBound.intValue())
-                || !stepSize.equals(stepSize.intValue())
-                || !initialValue.equals(initialValue.intValue())) {
-            option.setStepSize(stepSize.floatValue());
-        } else {
-            option.setStepSize(Math.round(stepSize.floatValue()));
-        }
-        return option;
+        return createRangeOption(name, name, lowerBound, upperBound, stepSize, initialValue);
     }
 
     
@@ -389,7 +379,20 @@ public final class SynthesisOption {
      * @return The desired 'Text' {@link SynthesisOption}
      */
     public static SynthesisOption createTextOption(final String name) {
-        return new SynthesisOption(name, TransformationOptionType.TEXT, "");
+        return createTextOptionWithId(name, name);
+    }
+    
+    /**
+     * Static factory method providing a 'Text' {@link SynthesisOption}.<br>
+     * <br>
+     * Hint: Declare {@link SynthesisOption TransformationOptions} by means of static fields if
+     * the transformation is a re-initialized one (determined in the registration).
+     * 
+     * @param name The name of the option.
+     * @return The desired 'Text' {@link SynthesisOption}
+     */
+    public static SynthesisOption createTextOptionWithId(final String id, final String name) {
+        return new SynthesisOption(id, name, TransformationOptionType.TEXT, "");
     }
     
     /**
@@ -403,6 +406,20 @@ public final class SynthesisOption {
      * @return The desired 'Text' {@link SynthesisOption}
      */
     public static SynthesisOption createTextOption(final String name, final String initialValue) {
+        return createTextOptionWithId(name, name, initialValue);
+    }
+    
+    /**
+     * Static factory method providing a 'Text' {@link SynthesisOption}.<br>
+     * <br>
+     * Hint: Declare {@link SynthesisOption TransformationOptions} by means of static fields if
+     * the transformation is a re-initialized one (determined in the registration).
+     * 
+     * @param name The name of the option.
+     * @param initialValue The initial value of the option.
+     * @return The desired 'Text' {@link SynthesisOption}
+     */
+    public static SynthesisOption createTextOptionWithId(final String id, final String name, final String initialValue) {
         return new SynthesisOption(name, TransformationOptionType.TEXT, initialValue);
     }
 
