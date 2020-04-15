@@ -3,7 +3,7 @@
  *
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright 2019 by
+ * Copyright 2019, 2020 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -13,7 +13,6 @@
 package de.cau.cs.kieler.klighd.lsp
 
 import org.eclipse.sprotty.Action
-import org.eclipse.sprotty.xtext.LanguageAwareDiagramServer
 
 /**
  * Service Interface for ActionHandler.
@@ -30,7 +29,9 @@ interface IActionHandler {
     
     /**
      * Handles an action if of the kind specified by canHandleAction.
-     * @param action Action to handle
+     * @param action Action to handle.
+     * @param clientId The id of the client.
+     * @param server The diagram server.
      */
-    def void handle(Action action, String clientId, LanguageAwareDiagramServer server)
+    def void handle(Action action, String clientId, KGraphDiagramServer server)
 }

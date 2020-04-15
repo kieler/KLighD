@@ -3,7 +3,7 @@
  *
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright 2019 by
+ * Copyright 2019, 2020 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -25,5 +25,4 @@ import de.cau.cs.kieler.klighd.kgraph.KNode
 class ConstraintProperty {
     KNode kNode
     IProperty<Integer> property
-    Integer value
 }

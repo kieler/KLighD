@@ -16,7 +16,6 @@ import com.google.inject.Inject
 import de.cau.cs.kieler.klighd.lsp.AbstractActionHandler
 import de.cau.cs.kieler.klighd.lsp.KGraphDiagramServer
 import org.eclipse.sprotty.Action
-import org.eclipse.sprotty.xtext.LanguageAwareDiagramServer
 
 /**
  * This class handles all sprotty actions for the interactive rectpacking algorithm.
@@ -35,7 +34,7 @@ class RectPackActionHandler extends AbstractActionHandler {
         SetAspectRatioAction.KIND -> SetAspectRatioAction)
     }
     
-    override handle(Action action, String clientId, LanguageAwareDiagramServer server) {
+    override handle(Action action, String clientId, KGraphDiagramServer server) {
         if (action instanceof RectPackSetPositionConstraintAction) {
             synchronized((server as KGraphDiagramServer).modelLock) {
                 lsExtension.setPositionConstraint(action.constraint, clientId)

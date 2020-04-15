@@ -3,7 +3,7 @@
  * 
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright 2019 by
+ * Copyright 2019, 2020 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -16,7 +16,7 @@ import de.cau.cs.kieler.klighd.kgraph.KNode
 import de.cau.cs.kieler.klighd.kgraph.util.KGraphUtil
 import de.cau.cs.kieler.klighd.lsp.interactive.ConstraintProperty
 import de.cau.cs.kieler.klighd.lsp.interactive.InteractiveUtil
-import java.util.LinkedList
+import java.util.HashMap
 import java.util.List
 import org.eclipse.elk.alg.layered.options.LayeredOptions
 import org.eclipse.xtend.lib.annotations.Accessors
@@ -30,7 +30,7 @@ import org.eclipse.xtend.lib.annotations.Accessors
 class LayeredConstraintReevaluation {
 
     @Accessors(PUBLIC_GETTER)
-    LinkedList<ConstraintProperty> changedNodes = newLinkedList()
+    HashMap<ConstraintProperty, Integer> changedNodes = newHashMap()
     
     @Accessors(PUBLIC_GETTER)
     KNode target
@@ -119,7 +119,7 @@ class LayeredConstraintReevaluation {
             for (node : nodes) {
                 val layerCons = ConstraintsUtils.getLayerConstraint(node)
                 if (layerCons >= origLayer) {
-                    changedNodes.add(new ConstraintProperty(node, LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT, layerCons - 1))
+                    changedNodes.put(new ConstraintProperty(node, LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT), layerCons - 1)
                 }
             }
 
@@ -153,7 +153,7 @@ class LayeredConstraintReevaluation {
                 // If the shifted node has a layer constraint. It needs to be incremented else the shift would have no effect.
                 shiftedNodes.add(n)
                 if (ConstraintsUtils.getLayerConstraint(n) !== -1 && false) { // TODO
-                    changedNodes.add(new ConstraintProperty(n, LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT, layerCons + 1))
+                    changedNodes.put(new ConstraintProperty(n, LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT), layerCons + 1)
 
                 }
                 // Test whether the shift leads to more shifts in the next layer.
@@ -192,7 +192,7 @@ class LayeredConstraintReevaluation {
         // Reevaluate the position constraints in the source and target layer accordingly
         // Also examine the position constraint of the target node
         if (posCons > 0 && posCons >= posIndexOfShifted) {
-            changedNodes.add(new ConstraintProperty(targetNode, LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT, posCons - 1))
+            changedNodes.put(new ConstraintProperty(targetNode, LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT), posCons - 1)
         }
 
     }
@@ -217,7 +217,7 @@ class LayeredConstraintReevaluation {
                 val posChoiceCons = ConstraintsUtils.getPosConstraint(node)
 
                 if (node != target && posChoiceCons !== -1) {
-                    changedNodes.add(new ConstraintProperty(node, LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT, posChoiceCons + offset))
+                    changedNodes.put(new ConstraintProperty(node, LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT), posChoiceCons + offset)
                 }
             }
         }
