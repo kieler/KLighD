@@ -50,8 +50,12 @@ class InteractiveLayout {
         synchronized (diagramState) {
             viewContext = diagramState.getKGraphContext(id)
         }
-        val root = viewContext.viewModel
-        if (root.getProperty(CoreOptions.INTERACTIVE_LAYOUT)) {
+        var root = viewContext.viewModel
+        if (root.children.size == 1) {
+            root = root.children.head
+        }
+        if (root.getProperty(CoreOptions.INTERACTIVE_LAYOUT) ||
+            (!root.children.empty && root.children.head.getProperty(CoreOptions.INTERACTIVE_LAYOUT))) {
             root.setRequiredNonInteractiveOptions
             // Initial layout
             layoutE.onlyLayoutOnKGraph(id)
@@ -67,12 +71,12 @@ class InteractiveLayout {
      */
     private def void setRequiredNonInteractiveOptions(KNode root) {
         val algorithm = root.getProperty(CoreOptions.ALGORITHM)
-        if (("layered".equals(algorithm) || algorithm === null) && !root.children.empty) {
+        if ((algorithm === null || algorithm.endsWith("layered")) && root.children !== null && !root.children.empty) {
             root.setProperty(LayeredOptions.SEPARATE_CONNECTED_COMPONENTS, false)
             root.setProperty(LayeredOptions.LAYERING_STRATEGY, LayeringStrategy.NETWORK_SIMPLEX)
             root.setProperty(LayeredOptions.CYCLE_BREAKING_STRATEGY, CycleBreakingStrategy.DEPTH_FIRST)
             root.setProperty(LayeredOptions.CROSSING_MINIMIZATION_STRATEGY, CrossingMinimizationStrategy.LAYER_SWEEP)
-        } else if ("rectpacking".equals(algorithm) && !root.children.empty) {
+        } else if (algorithm.endsWith("rectpacking") && !root.children.empty) {
             root.setProperty(RectPackingOptions.INTERACTIVE, false)
         } else {
             // Add more cases for different algorithms
@@ -90,9 +94,9 @@ class InteractiveLayout {
      */
     public static def void setRequiredInteractiveOptions(KNode root) {
         val algorithm = root.getProperty(CoreOptions.ALGORITHM)
-        if (("layered".equals(algorithm) || algorithm === null) && !root.children.empty) {
+        if ((algorithm === null || algorithm.endsWith("layered") ) && !root.children.empty) {
             LayeredInteractiveUtil.setCoordinatesDepthFirst(root)
-        } else if ("rectpacking".equals(algorithm) && !root.children.empty) {
+        } else if (algorithm.endsWith("rectpacking") && !root.children.empty) {
             RectPackInteractiveUtil.setRequiredInteractiveOptions(root)
         } else {
             // Add more cases for different algorithms

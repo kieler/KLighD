@@ -48,7 +48,7 @@ class LayeredInteractiveUtil {
                 InteractiveLayout.setRequiredInteractiveOptions(n)
             }
         }
-        if (!root.children.empty && root.getProperty(LayeredOptions.INTERACTIVE_LAYOUT)) {
+        if (!root.children.empty) {
             setCoordinates(root)
             setInteractiveStrategies(root)
         }
