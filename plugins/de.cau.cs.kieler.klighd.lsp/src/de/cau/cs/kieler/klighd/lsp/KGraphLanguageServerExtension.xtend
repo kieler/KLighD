@@ -47,6 +47,7 @@ import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.lsp4j.DocumentHighlight
 import org.eclipse.lsp4j.InitializeParams
 import org.eclipse.lsp4j.TextDocumentPositionParams
+import org.eclipse.lsp4j.services.LanguageClient
 import org.eclipse.sprotty.ActionMessage
 import org.eclipse.sprotty.DiagramOptions
 import org.eclipse.sprotty.IDiagramServer
@@ -94,6 +95,8 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
     KGraphDiagramState diagramState
     
     @Inject extension UriExtensions
+    
+    KGraphLanguageClient kgraphLanguageClient
     
     override initialize(InitializeParams params) {
         // Close all diagram servers still open from a previous session.
@@ -542,5 +545,56 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
     def Resource getResource(URI uri) {
         val ws = this.workspaceManager as KeithWorkspaceManager
         return ws.getResource(uri)
+    }
+    
+    /**
+     * Connect the language client. Allows to send kgraph specific notification to the client if the given client is
+     * indeed a {@code KGraphLanguageClient}.
+     * @param client The language client.
+     */
+    override connect(LanguageClient client) {
+        if (client instanceof KGraphLanguageClient) {
+            this.kgraphLanguageClient = client as KGraphLanguageClient
+        }
+        super.connect(client)
+    }
+    
+    /**
+     * Send a message that will be displayed as an error to the client.
+     * @param message The message to the client.
+     * @return true if the language client that supports this message is connected.
+     */
+    def boolean sendError(String message) {
+        if (this.kgraphLanguageClient !== null) {
+            this.kgraphLanguageClient.sendMessage(message, "error")
+            return true
+        }
+        return false
+    }
+    
+    /**
+     * Send a message that will be displayed as a warning to the client.
+     * @param message The message to the client.
+     * @return true if the language client that supports this message is connected.
+     */
+    def boolean sendWarning(String message) {
+        if (this.kgraphLanguageClient !== null) {
+            this.kgraphLanguageClient.sendMessage(message, "warn")
+            return true
+        }
+        return false
+    }
+    
+    /**
+     * Send a message that will be displayed as an info message to the client.
+     * @param message The message to the client.
+     * @return true if the language client that supports this message is connected.
+     */
+    def boolean sendInfo(String message) {
+        if (this.kgraphLanguageClient !== null) {
+            this.kgraphLanguageClient.sendMessage(message, "info")
+            return true
+        }
+        return false
     }
 }
