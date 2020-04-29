@@ -284,12 +284,14 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
         // The real model element that can be traced is the EObject that got synthesized in the
         // {@link translateModel} function. That model element has to be stored in the properties during the 
         // synthesis. Otherwise the tracing will not work
-        val modelKElement = kElement.properties.get(KlighdInternalProperties.MODEL_ELEMEMT)
-        if (modelKElement instanceof EObject) {
-            if (modelKElement.eResource instanceof XtextResource) {
-                traceProvider.trace(sElement, modelKElement)
-            }
-        }
+        // FIXME: This is commented out for now, as for large diagrams (expanded railway environment) the tracing alone
+        // requires an additional 40s (almost 50% of the generation time), which is not acceptable.
+//        val modelKElement = kElement.properties.get(KlighdInternalProperties.MODEL_ELEMEMT)
+//        if (modelKElement instanceof EObject) {
+//            if (modelKElement.eResource instanceof XtextResource) {
+//                traceProvider.trace(sElement, modelKElement)
+//            }
+//        }
     }
 
     /**
