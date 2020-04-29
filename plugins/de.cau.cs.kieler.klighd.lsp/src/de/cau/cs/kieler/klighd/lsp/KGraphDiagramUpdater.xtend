@@ -92,6 +92,7 @@ class KGraphDiagramUpdater extends DiagramUpdater {
     protected def CompletableFuture<Void> doUpdateLayout(KGraphDiagramServer diagramServer) {
         return (languageServer as KGraphLanguageServerExtension).doRead(diagramServer.sourceUri) [ resource, ci |
             // Just update the SGraph from the already existing KGraph.
+            System.out.println(System.currentTimeMillis + ": Server: doUpdateLayout starting (pre KGraph->SKGraph).")
             var ViewContext viewContext = null
             val id = resource.URI.toString
             synchronized(diagramState) {
@@ -100,6 +101,7 @@ class KGraphDiagramUpdater extends DiagramUpdater {
             
             return diagramServer -> createModel(viewContext, id, ci)
         ].thenAccept [
+            System.out.println(System.currentTimeMillis + ": Server: doUpdateLayout (post KGraph->SKGraph).")
             key.prepareUpdateModel(value)
         ].exceptionally [ throwable |
             println("ERROR: " + throwable)
@@ -111,7 +113,9 @@ class KGraphDiagramUpdater extends DiagramUpdater {
         if (diagramServers.empty) {
             return CompletableFuture.completedFuture(null)
         }
+            System.out.println(System.currentTimeMillis + ": Server: doUpdateDiagrams starting.")
         return (languageServer as KGraphLanguageServerExtension).doRead(path) [ resource, ci |
+            System.out.println(System.currentTimeMillis + ": Server: doUpdateDiagrams continuing async. (resource available)")
             var Object snapshotModel = null
             synchronized (diagramState) {
                 snapshotModel = diagramState.getSnapshotModel(path)
@@ -139,6 +143,7 @@ class KGraphDiagramUpdater extends DiagramUpdater {
      * @param key The key to access the diagram state maps.
      */
     synchronized def void prepareModel(KGraphDiagramServer server, Object model, String key) {
+        System.out.println(System.currentTimeMillis + ": Server: prepareModel starting.")
 
         val properties = new KlighdSynthesisProperties()
         var SprottyViewer viewer = null
@@ -197,7 +202,9 @@ class KGraphDiagramUpdater extends DiagramUpdater {
             viewer.diagramServer = server as KGraphDiagramServer
             viewer.viewContext = viewContext
             // Update the model and with that call the diagram synthesis.
+            System.out.println(System.currentTimeMillis + ": Server: prepareModel pre synthesis.")
             viewContext.update(model)
+            System.out.println(System.currentTimeMillis + ": Server: prepareModel post synthesis.")
         } else {
             viewContext.copyProperties(properties)
             viewContext.update(model)

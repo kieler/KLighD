@@ -166,6 +166,7 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
 	 * @param cancelIndicator Indicates, if the action requesting this translation has already been canceled.
 	 */
 	def SGraph toSGraph(KNode parentNode, String identifier, CancelIndicator cancelIndicator) {
+        System.out.println(System.currentTimeMillis + ": Server: toSNode starting.")
         LOG.info("Generating diagram for input: '" + identifier + "'")
 
         kGraphToSModelElementMap = new HashMap
@@ -184,8 +185,10 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
 
         diagramRoot.children.addAll(createNodesAndPrepareEdges(#[parentNode], diagramRoot))
         // Do post processing.
+        System.out.println(System.currentTimeMillis + ": Server: toSNode pre-postProcess call.")
         postProcess()
 
+        System.out.println(System.currentTimeMillis + ": Server: toSNode finished.")
         return if (cancelIndicator.canceled) 
                null
            else 

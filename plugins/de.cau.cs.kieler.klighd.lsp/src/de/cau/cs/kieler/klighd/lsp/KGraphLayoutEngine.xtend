@@ -44,6 +44,7 @@ class KGraphLayoutEngine extends ElkLayoutEngine {
 	public static val LOG = Logger.getLogger(KGraphLayoutEngine)
 	
 	override layout(SModelRoot root, Action cause) {
+        System.out.println(System.currentTimeMillis + ": Server: layout starting.")
 	    synchronized (diagramState) {
     	    if (root instanceof SGraph) {
     	        // The layout is executed on the KGraph, not the SGraph. So get the KGraph belonging to this SGraph from
@@ -54,6 +55,7 @@ class KGraphLayoutEngine extends ElkLayoutEngine {
                 KGraphMappingUtil.mapLayout(diagramState.getKGraphToSModelElementMap(root.id))
             }
         }
+        System.out.println(System.currentTimeMillis + ": Server: layout finished.")
     }
 
     /**

@@ -107,6 +107,7 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
      * @param newRoot the diagram to request the text sizes for.
      */
     protected def prepareUpdateModel(SModelRoot newRoot) {
+        System.out.println(System.currentTimeMillis + ": Server: prepareUpdateModel starting.")
         synchronized (modelLock) {
             currentRoot = newRoot
             if (newRoot !== null) {
@@ -120,7 +121,9 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
                 } else if (texts.empty) {
                     textsUpdated = true
                 } else {
+                    System.out.println(System.currentTimeMillis + ": Server: generating text diagram.")
                     val textDiagram = KGraphDiagramGenerator.generateTextDiagram(texts, newRoot.id)
+                    System.out.println(System.currentTimeMillis + ": Server: requesting text bounds.")
                     dispatch(new RequestTextBoundsAction(textDiagram))
                     // the setOrUpdateModel is then executed after the client returns with its ComputedTextBoundsAction
                 }
@@ -178,6 +181,7 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
      * and updates the model on the client.
      */
     protected def handle(ComputedTextBoundsAction action) {
+        System.out.println(System.currentTimeMillis + ": Server: handle computedTextBounds starting.")
         synchronized (modelLock) {
             // assume the model is still stored in 'currentRoot', since the ComputedTextBoundsAction only gets issued
             // after a RequestTextBoundsAction, where it got stored before.
@@ -233,6 +237,7 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
                 text.properties.put(SprottyProperties.CALCULATED_TEXT_LINE_HEIGHTS, textHeights.get(text))
             }
             textsUpdated = true
+            System.out.println(System.currentTimeMillis + ": Server: handle computed text bounds finished.")
             if (imagesUpdated) {
                 setOrUpdateModel
             }
@@ -404,11 +409,18 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
     
     /** Sets or updates the {@code currentRoot} as the model. */
     protected def void setOrUpdateModel() {
+        System.out.println(System.currentTimeMillis + ": Server: setOrUpdateModel starting (images and texts are updated).")
         if (newModel) {
             setModel(currentRoot)                
         } else {
             updateModel(currentRoot)
         }
         newModel = false
+    }
+    
+    override void ^dispatch(Action action) {
+        System.out.println(System.currentTimeMillis + ": Server: dispatching an action: " + action.kind)
+        super.dispatch(action)
+        System.out.println(System.currentTimeMillis + ": Server: action dispatch completed: " + action.kind)
     }
 }

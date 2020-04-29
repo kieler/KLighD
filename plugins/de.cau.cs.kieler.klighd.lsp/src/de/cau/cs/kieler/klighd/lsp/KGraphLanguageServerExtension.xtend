@@ -19,6 +19,7 @@ import de.cau.cs.kieler.klighd.IAction.ActionContext
 import de.cau.cs.kieler.klighd.KlighdDataManager
 import de.cau.cs.kieler.klighd.SynthesisOption
 import de.cau.cs.kieler.klighd.ViewContext
+import de.cau.cs.kieler.klighd.lsp.model.ComputedTextBoundsAction
 import de.cau.cs.kieler.klighd.lsp.model.GetOptionParam
 import de.cau.cs.kieler.klighd.lsp.model.GetOptionsResult
 import de.cau.cs.kieler.klighd.lsp.model.LayoutOptionUIData
@@ -115,6 +116,7 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
     
     override accept(ActionMessage message) {
         if (message.action instanceof RequestModelAction) {
+            System.out.println(System.currentTimeMillis + ": Server: Request Model Action received.")
             val action = message.action as RequestModelAction
             val diagramType = action.diagramType
                     ?: action.options.get(DiagramOptions.OPTION_DIAGRAM_TYPE)
@@ -130,8 +132,11 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
             // After a new server has been initialized, also send the available syntheses to the client.
             val path = action.options.get("sourceUri")
             val newServer = diagramServerManager.getDiagramServer(diagramType, message.clientId)
+            System.out.println(System.currentTimeMillis + ": Server: Sending available syntheses (asynchronous).")
             sendAvailableSyntheses(path, newServer)
-        }
+        } else if (message.action instanceof ComputedTextBoundsAction) {
+            System.out.println(System.currentTimeMillis + ": Server: received ComputedTextBoundsAction.")
+        } 
         super.accept(message)
     }
     
