@@ -116,6 +116,7 @@ class DiagramViewEditorAdapter implements IPartListener2 {
     public void partBroughtToTop(final IWorkbenchPartReference partRef) {
         IWorkbenchPart part = partRef.getPart(false);
         if (diagramView.isLinkedWithActiveEditor() && part instanceof IEditorPart) {
+            System.out.println(System.currentTimeMillis() + ": User switched editor: update diagram");
             diagramView.setEditor((IEditorPart) part);
         }
     }

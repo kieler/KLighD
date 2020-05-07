@@ -398,7 +398,9 @@ public class KlighdCanvas extends Composite implements PComponent {
     private void installPaintListener() {
         addPaintListener(new PaintListener() {
             public void paintControl(final PaintEvent pe) {
+                System.out.println(System.currentTimeMillis() + ": start painting.");
                 paintComponent(pe.gc, pe.x, pe.y, pe.width, pe.height);
+                System.out.println(System.currentTimeMillis() + ": painting done.");
             }
         });
     }

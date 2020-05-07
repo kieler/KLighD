@@ -88,7 +88,9 @@ public class SimpleUpdateStrategy implements IUpdateStrategy {
         baseModel.getChildren().clear();
         baseModel.getData().removeAll(obsoleteData);
         baseModel.getData().addAll(newData);
+        System.out.println(System.currentTimeMillis() + ": Start to create rendering model");
         baseModel.getChildren().addAll(newChildren);
+        System.out.println(System.currentTimeMillis() + ": Finished creating rendering model");
 
         // Note: no update of the source element associated with the baseModel (the root node) is
         //  required since the source element/view element tracking for KGraphElements is performed

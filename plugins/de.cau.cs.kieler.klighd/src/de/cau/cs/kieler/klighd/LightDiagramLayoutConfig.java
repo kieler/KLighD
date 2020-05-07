@@ -407,7 +407,9 @@ public class LightDiagramLayoutConfig {
      * <code>LightDiagramServices.layoutDiagram(config)</code>.
      */
     public void performLayout() {
+        System.out.println(System.currentTimeMillis() + ": Layout started.");
         LightDiagramServices.layoutDiagram(this);
+        System.out.println(System.currentTimeMillis() + ": Layout finished.");
     }
 
     /**

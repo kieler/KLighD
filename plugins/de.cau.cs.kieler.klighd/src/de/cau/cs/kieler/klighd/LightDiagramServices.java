@@ -180,6 +180,7 @@ public final class LightDiagramServices {
                     config.focusElement());
             theViewContext.setProperty(KlighdInternalProperties.PREVIOUS_POSITION,
                     config.previousPosition());
+            config.animate(false);
     
             // Activate the ELK Service plug-in so all layout options are loaded
             ElkServicePlugin.getInstance();
