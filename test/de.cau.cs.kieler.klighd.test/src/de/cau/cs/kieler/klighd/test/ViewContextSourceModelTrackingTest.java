@@ -40,6 +40,7 @@ import com.google.common.collect.Multimap;
 import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.IUpdateStrategy;
 import de.cau.cs.kieler.klighd.ViewContext;
+import de.cau.cs.kieler.klighd.incremental.IncrementalUpdateStrategy;
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
 import de.cau.cs.kieler.klighd.internal.util.SourceModelTrackingAdapter;
 import de.cau.cs.kieler.klighd.kgraph.KEdge;
@@ -60,6 +61,8 @@ public class ViewContextSourceModelTrackingTest {
     // CHECKSTYLEOFF MagicNumber
 
     private static final IUpdateStrategy UPDATE_STRATEGY = new SimpleUpdateStrategy();
+    
+    private static final IUpdateStrategy INCREMENTAL_UPDATE_STRATEGY = new IncrementalUpdateStrategy();
     
     private ViewContext createViewContext() {
         return new ViewContext((IDiagramWorkbenchPart) null, null);
@@ -462,5 +465,46 @@ public class ViewContextSourceModelTrackingTest {
        
        Assert.assertSame(source2, viewContext.getSourceElement(text));
 
-    }    
+    }
+    
+    /**
+     * Tests if the SourceModelTrackingAdapter works with the incremental update.
+     * 
+     * Tests issue #6.
+     */
+    @Test
+    public void testIncrementalUpdate() {
+        final KNode rootNode = createSimpleNetwork();
+        final KNode childNode = rootNode.getChildren().get(1);
+
+        final EObject rootSource = new EObjectImpl() { };
+        final EObject childSource = new EObjectImpl() { };
+
+        rootNode.setProperty(KlighdInternalProperties.MODEL_ELEMEMT, rootSource);
+        childNode.setProperty(KlighdInternalProperties.MODEL_ELEMEMT, childSource);
+
+        final ViewContext viewContext = createViewContext();
+        INCREMENTAL_UPDATE_STRATEGY.update(viewContext.getViewModel(), rootNode, viewContext);
+
+        // The two elements we set the property for.
+        checkTracerMaps(viewContext, 2);
+
+        Assert.assertSame(childSource, viewContext.getSourceElement(childNode));
+
+        final KNode newRoot = createSimpleNetwork();
+        final KNode newChildNode = newRoot.getChildren().get(1);
+
+        newRoot.setProperty(KlighdInternalProperties.MODEL_ELEMEMT, rootSource);
+        newChildNode.setProperty(KlighdInternalProperties.MODEL_ELEMEMT, childSource);
+
+        final ViewContext newViewContext = createViewContext();
+        INCREMENTAL_UPDATE_STRATEGY.update(newViewContext.getViewModel(), newRoot, newViewContext);
+
+        INCREMENTAL_UPDATE_STRATEGY.update(viewContext.getViewModel(), newViewContext.getViewModel(), viewContext);
+
+        // The same two elements as above.
+        checkTracerMaps(viewContext, 2);
+
+        Assert.assertSame(childSource, viewContext.getSourceElement(childNode));
+    }
 }
