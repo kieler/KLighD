@@ -324,11 +324,12 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
             // If the expanded property does not exist yet, use the initial expansion.
             isExpanded = node.getProperty(KlighdProperties.EXPAND)
         }
-        if ((!node.children.empty || !node.labels.empty || !node.ports.empty) && isExpanded) {
+        
+        nodeElement.children.addAll(createPorts(node.ports))
+        nodeElement.children.addAll(createLabels(node.labels))
+        if ((!node.children.empty) && isExpanded) {
             renderingContextData.setProperty(KlighdInternalProperties.POPULATED, true)
-            nodeElement.children.addAll(createPorts(node.ports))
             nodeElement.children.addAll(createNodesAndPrepareEdges(node.children, nodeElement))
-            nodeElement.children.addAll(createLabels(node.labels))
         } else {
             renderingContextData.setProperty(KlighdInternalProperties.POPULATED, false)
         }
