@@ -23,6 +23,8 @@ import org.eclipse.elk.graph.ElkGraphElement;
 import org.eclipse.elk.graph.ElkNode;
 
 /**
+ * Sets layout options to prepare a graph for an interactive layout run following this one.
+ * 
  * @author sdo
  *
  */
@@ -43,6 +45,11 @@ public class NonInteractiveLayoutConfigurator implements IGraphElementVisitor {
         }
     }
 
+    /**
+     * Recursively sets options to prepare for interactive layout for different algorithms.
+     * 
+     * @param root
+     */
     private static void setRequiredNonInteractiveOptions(final ElkNode root) {
         String algorithm = root.getProperty(CoreOptions.ALGORITHM);
         if ((algorithm == null || algorithm.endsWith("layered")) && root.getChildren() != null

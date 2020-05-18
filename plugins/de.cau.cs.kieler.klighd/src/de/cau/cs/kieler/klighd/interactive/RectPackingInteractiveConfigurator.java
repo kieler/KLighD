@@ -27,8 +27,9 @@ final class RectPackingInteractiveConfigurator {
     private RectPackingInteractiveConfigurator() {
         
     }
+
      /**
-     * Sets the required options for the non interactive layout run.
+     * Sets the required options for the interactive layout run with the {@code rectpacking} algorithm.
      */
     public static void setRequiredInteractiveOptions(final ElkNode root) {
         root.setProperty(RectPackingOptions.INTERACTIVE, true);

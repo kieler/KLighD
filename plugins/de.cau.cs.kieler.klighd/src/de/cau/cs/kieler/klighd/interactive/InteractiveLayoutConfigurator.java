@@ -40,6 +40,11 @@ public class InteractiveLayoutConfigurator implements IGraphElementVisitor {
         }
     }
 
+    /**
+     * Recursively sets interactive options for several layout algorithms.
+     * 
+     * @param root The root node of the graph.
+     */
     static void setRequiredInteractiveOptions(final ElkNode root) {
         String algorithm = root.getProperty(CoreOptions.ALGORITHM);
         if ((algorithm == null || algorithm.endsWith("layered")) && !root.getChildren().isEmpty()) {
