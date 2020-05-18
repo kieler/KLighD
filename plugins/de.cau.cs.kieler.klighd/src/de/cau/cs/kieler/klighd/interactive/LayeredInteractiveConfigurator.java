@@ -17,12 +17,15 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.elk.alg.layered.options.CycleBreakingStrategy;
+import org.eclipse.elk.alg.layered.options.LayerConstraint;
 import org.eclipse.elk.alg.layered.options.LayeredOptions;
 import org.eclipse.elk.alg.layered.options.LayeringStrategy;
 import org.eclipse.elk.core.math.KVector;
 import org.eclipse.elk.core.options.Direction;
 import org.eclipse.elk.graph.ElkEdge;
 import org.eclipse.elk.graph.ElkNode;
+
+import com.google.common.base.CaseFormat;
 
 /**
  * Provides methods for the @code layered} algorithm to set interactive or non-interactive options
@@ -49,6 +52,25 @@ public final class LayeredInteractiveConfigurator {
      *            Root of the graph
      */
     public static void setCoordinatesDepthFirst(final ElkNode root) {
+
+        for (ElkNode node : root.getChildren()) {
+            if (node.hasProperty(LayeredOptions.LAYERING_LAYER_CONSTRAINT)) {
+                LayerConstraint constraint = node.getProperty(LayeredOptions.LAYERING_LAYER_CONSTRAINT);
+                node.setProperty(LayeredOptions.LAYERING_LAYER_CONSTRAINT, LayerConstraint.NONE);
+                switch (constraint) {
+                case FIRST:
+                    if (!node.hasProperty(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT)) {
+                        node.setProperty(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT, 0);
+                    }
+                    break;
+                case LAST:
+                    if (!node.hasProperty(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT)) {
+                        node.setProperty(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT, Integer.MAX_VALUE);
+                    }
+                    break;
+                }
+            }
+        }
         for (ElkNode n : root.getChildren()) {
             if (!n.getChildren().isEmpty()) {
                 InteractiveLayoutConfigurator.setRequiredInteractiveOptions(n);
