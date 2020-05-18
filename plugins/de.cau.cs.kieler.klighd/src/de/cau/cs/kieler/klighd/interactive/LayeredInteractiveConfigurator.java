@@ -46,10 +46,9 @@ public final class LayeredInteractiveConfigurator {
     }
 
     /**
-     * Sets the coordinates of the nodes in the graph, which root is the given node.
+     * Sets the coordinates of the nodes in the graph.
      * 
-     * @param root
-     *            Root of the graph
+     * @param root Root of the graph
      */
     public static void setCoordinatesDepthFirst(final ElkNode root) {
 
@@ -86,8 +85,7 @@ public final class LayeredInteractiveConfigurator {
     /**
      * Sets the coordinates of the nodes in the graph {@code root} according to the set constraints.
      * 
-     * @param root
-     *            The root of the graph that should be layouted.
+     * @param root The root of the graph that should be layouted.
      */
     private static void setCoordinates(final ElkNode root) {
         List<List<ElkNode>> layers = calcLayerNodes(root.getChildren());
@@ -104,14 +102,12 @@ public final class LayeredInteractiveConfigurator {
     /**
      * Calculates the layers the {@code nodes} belong to.
      * 
-     * @param nodes
-     *            The nodes of the graph for which the layers should be calculated.
+     * @param nodes The nodes of the graph for which the layers should be calculated.
      */
     private static List<List<ElkNode>> calcLayerNodes(final List<ElkNode> nodes) {
         ArrayList<ElkNode> allNodes = new ArrayList<ElkNode>();
         ArrayList<ElkNode> nodesWithLayerConstraint = new ArrayList<ElkNode>();
-        // copy all nodes in another list
-        // save the nodes which layer constraint are set in a separate list
+        // Save the nodes which layer constraint are set in a separate list
         for (ElkNode node : nodes) {
             allNodes.add(node);
             if (node.getProperty(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT) != -1) {
@@ -119,47 +115,46 @@ public final class LayeredInteractiveConfigurator {
             }
         }
 
-        // calculate layers for nodes without constraints
+        // Calculate layers for nodes without constraints based on their layerID,
+        // which is set by the previous layout run.
         List<List<ElkNode>> layerNodes = initialLayers(allNodes);
 
-        // add the nodes with constraints
+        // Assign layers to nodes with constraints.
         assignLayersToNodesWithProperty(nodesWithLayerConstraint, layerNodes);
 
         return layerNodes;
     }
 
     /**
-     * Adds the nodes in {@code propNs} to {@code layerNodes} based on their layer constraint.
+     * Adds the nodes with a layer constraint to the already assigned layered nodes based on their layer constraint.
      * 
-     * @param propNs
-     *            Nodes with set layer constraint that should be added to the layers.
-     * @param layerNodes
-     *            List that contains the layers with their corresponding nodes.
+     * @param nodesWithLayerConstraint Nodes with set layer constraint that should be added to the layers.
+     * @param layering List that contains the layers with their corresponding nodes.
      */
     private static void assignLayersToNodesWithProperty(
             final List<ElkNode> nodesWithLayerConstraint, final List<List<ElkNode>> layering) {
-        // sorting based on layer the node should be in
+        // Sort nodes with constraint based on their layer.
         nodesWithLayerConstraint.sort((ElkNode a, ElkNode b) -> {
             return a.getProperty(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT)
                     - b.getProperty(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT);
         });
 
-        // add the nodes with constraints in the correct layer
+        // Add the nodes with constraints to the their desired layer.
+
+        // diff keeps track of the difference between the layer the node should
+        // be in and the layer the node is really in.
+        // This way nodes with the same layer constraint go in the same layer
+        // although it may not be the layer that is specified by the constraint.
         int diff = 0;
         for (ElkNode node : nodesWithLayerConstraint) {
-            int currentLayer =
-                    node.getProperty(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT) - diff;
+            int currentLayer = node.getProperty(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT) - diff;
             if (currentLayer < layering.size()) {
                 List<ElkNode> nodesOfLayer = layering.get(currentLayer);
-                // edges in the same layer are not allowed
+                // Shift nodes to remove in-layer edges.
                 shiftOtherNodes(node, currentLayer, layering, true);
                 shiftOtherNodes(node, currentLayer, layering, false);
                 nodesOfLayer.add(node);
             } else {
-                // diff keeps track of the difference between the layer the node should
-                // be in and the layer the node is really in.
-                // In this way nodes with the same layer constraint go in the same layer
-                // although it may not be the layer that is specified by the constraint
                 diff = diff + currentLayer - layering.size();
                 layering.add(Arrays.asList(node));
             }
@@ -224,7 +219,7 @@ public final class LayeredInteractiveConfigurator {
      *            The nodes of the graph which layers should be calculated.
      */
     private static List<List<ElkNode>> initialLayers(final ArrayList<ElkNode> nodes) {
-        // sorting based on layer ID position
+        // Sort by layerID.
         nodes.sort((ElkNode a, ElkNode b) -> {
             return a.getProperty(LayeredOptions.LAYERING_LAYER_I_D)
                     - b.getProperty(LayeredOptions.LAYERING_LAYER_I_D);
@@ -233,11 +228,11 @@ public final class LayeredInteractiveConfigurator {
         List<List<ElkNode>> layerNodes = new ArrayList<List<ElkNode>>();
         List<ElkNode> nodesOfLayer = new ArrayList<ElkNode>();
         int currentLayer = -1;
-        // assign the nodes to layers
+        // Assign nodes to layers.
         for (ElkNode node : nodes) {
             int layer = node.getProperty(LayeredOptions.LAYERING_LAYER_I_D);
             if (layer > currentLayer) {
-                // node is in a new layer
+                // Check if a node is added to a new layer.
                 if (!nodesOfLayer.isEmpty()) {
                     layerNodes.add(nodesOfLayer);
                 }
@@ -245,13 +240,13 @@ public final class LayeredInteractiveConfigurator {
                 currentLayer = layer;
             }
 
+            // Nodes with layer constraint should be ignored, since they are added later.
             if (node.getProperty(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT) == -1) {
-                // nodes with layer constraint should be ignored
                 nodesOfLayer.add(node);
             }
         }
         if (!nodesOfLayer.isEmpty()) {
-            // add the last layer
+            // Add the last layer nodes.
             layerNodes.add(nodesOfLayer);
         }
         return layerNodes;
@@ -261,7 +256,7 @@ public final class LayeredInteractiveConfigurator {
      * Sets the x coordinates of the nodes in {@code layers} according to their layer. The problem
      * is that the height and width of a node are determined by the height and width before the
      * layout with constraints. They are therefore potentially wrong. The placement has to be
-     * adjusted for this by a very high spacing.
+     * adjusted for this by a very high spacing between nodes.
      * 
      * @param layers
      *            The layers containing the associated nodes, already sorted regarding layers
@@ -273,8 +268,7 @@ public final class LayeredInteractiveConfigurator {
         double position = 0;
         double nextPosition = 0;
         // Assign x (RIGHT, LEFT)/y (UP, DOWN) coordinate such that all nodes get a pseudo position
-        // that assigns them to
-        // the correct layer when using interactive mode
+        // that assigns them to the correct layer if interactive mode is used.
         for (List<ElkNode> nodesOfLayer : layers) {
             for (ElkNode node : nodesOfLayer) {
                 switch (direction) {
@@ -311,14 +305,14 @@ public final class LayeredInteractiveConfigurator {
     }
 
     /**
-     * Sets the positions of the nodes in {@code nodesOfLayer}.
+     * Sets the positions of the nodes in their layer.
      * 
-     * @param nodesOfLayer
-     *            The list containing nodes that are in the same layer.
+     * @param nodesOfLayer The list containing nodes that are in the same layer.
+     * @param direction The layout direction.
      */
     private static void setCoordinatesOrthogonalToLayoutDirection(final List<ElkNode> nodesOfLayer,
             final Direction direction) {
-        // separate node with and without position constraint
+        // Separate nodes with and without position constraints.
         List<ElkNode> nodesWithPositionConstraint = new ArrayList<ElkNode>();
         List<ElkNode> nodes = new ArrayList<ElkNode>();
         for (ElkNode node : nodesOfLayer) {
@@ -330,9 +324,9 @@ public final class LayeredInteractiveConfigurator {
             }
         }
 
-        // determine the order of the nodes
+        // Determine the order of the nodes.
         sortNodesInLayer(nodesWithPositionConstraint, nodes, direction);
-        // add the nodes with position constraint at the desired position in the nodes list
+        // Add the nodes with position constraint at the desired position in their layer.
         for (ElkNode node : nodesWithPositionConstraint) {
             int pos = node
                     .getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT);
@@ -343,7 +337,7 @@ public final class LayeredInteractiveConfigurator {
             }
         }
 
-        // set the y positions according to the order of the nodes
+        // Set the y/x positions according to the order of the nodes.
         switch (direction) {
         case UNDEFINED:
         case RIGHT:
@@ -366,23 +360,22 @@ public final class LayeredInteractiveConfigurator {
     }
 
     /**
-     * Sorts the {@code propNodes} according their position constraint and {@code nodes} according
+     * Sorts the {@code nodesWithPositionConstraint} according their position constraint and {@code nodes} according
      * to relevant coordinate (y for left, right, x for up, down).
      * 
-     * @param propNodes
-     *            The nodes which position constraint is set
-     * @param nodes
-     *            The nodes without position constraints
+     * @param nodesWithPositionConstraint The nodes which position constraint is set.
+     * @param nodes The nodes without position constraints.
+     * @param direction The layout direction.
      */
     private static void sortNodesInLayer(final List<ElkNode> nodesWithPositionConstraint,
             final List<ElkNode> nodes, final Direction direction) {
-        // sorting based on position the nodes should have
+        // Sort nodes with constraint by their position constraint.
         nodesWithPositionConstraint.sort((ElkNode a, ElkNode b) -> {
             return a.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT)
                     - b.getProperty(
                             LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT);
         });
-        // sorting based on the y(RIGHT/LEFT)/x(DOWN/UP) coordinates
+        // Sort other nodes based on their y(RIGHT/LEFT)/x(DOWN/UP) coordinate.
         nodes.sort((ElkNode a, ElkNode b) -> {
             switch (direction) {
             case UNDEFINED:
@@ -399,14 +392,13 @@ public final class LayeredInteractiveConfigurator {
 
     /**
      * Sets the (semi) interactive strategies in the phases crossing minimization, layer assignment,
-     * cycle breaking for the graph {@code root}.
+     * cycle breaking for the given parent node.
      * 
-     * @param root
-     *            The graph which strategies should be set.
+     * @param parent The graph which strategies should be set.
      */
-    private static void setInteractiveStrategies(final ElkNode root) {
-        root.setProperty(LayeredOptions.CROSSING_MINIMIZATION_SEMI_INTERACTIVE, true);
-        root.setProperty(LayeredOptions.LAYERING_STRATEGY, LayeringStrategy.INTERACTIVE);
-        root.setProperty(LayeredOptions.CYCLE_BREAKING_STRATEGY, CycleBreakingStrategy.INTERACTIVE);
+    private static void setInteractiveStrategies(final ElkNode parent) {
+        parent.setProperty(LayeredOptions.CROSSING_MINIMIZATION_SEMI_INTERACTIVE, true);
+        parent.setProperty(LayeredOptions.LAYERING_STRATEGY, LayeringStrategy.INTERACTIVE);
+        parent.setProperty(LayeredOptions.CYCLE_BREAKING_STRATEGY, CycleBreakingStrategy.INTERACTIVE);
     }
 }
