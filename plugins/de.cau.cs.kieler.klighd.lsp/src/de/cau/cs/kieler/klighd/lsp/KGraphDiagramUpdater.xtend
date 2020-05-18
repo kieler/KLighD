@@ -19,7 +19,6 @@ import de.cau.cs.kieler.klighd.KlighdDataManager
 import de.cau.cs.kieler.klighd.SynthesisOption
 import de.cau.cs.kieler.klighd.ViewContext
 import de.cau.cs.kieler.klighd.kgraph.KNode
-import de.cau.cs.kieler.klighd.lsp.interactive.InteractiveLayout
 import de.cau.cs.kieler.klighd.lsp.model.SKGraph
 import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties
 import java.util.HashSet
@@ -63,9 +62,6 @@ class KGraphDiagramUpdater extends DiagramUpdater {
 
     @Inject
     ILayoutEngine layoutEngine
-
-    @Inject
-    InteractiveLayout interactiveLayout
 
     override initialize(DiagramLanguageServer languageServer) {
         this.languageServer = languageServer
@@ -224,10 +220,6 @@ class KGraphDiagramUpdater extends DiagramUpdater {
      * @param cancelIndicator The {@link CancelIndicator} used to tell the diagram translation to stop.
      */
     synchronized def SGraph createModel(ViewContext viewContext, String id, CancelIndicator cancelIndicator) {
-        // Do interactive layout
-        if (layoutEngine instanceof KGraphLayoutEngine) {
-            interactiveLayout.calcLayout(id, layoutEngine as KGraphLayoutEngine)
-        }
         // Generate the SGraph model from the KGraph model and store every later relevant part in the
         // diagram state.
         val diagramGenerator = diagramGeneratorProvider.get

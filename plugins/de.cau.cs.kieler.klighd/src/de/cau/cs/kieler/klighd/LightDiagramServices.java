@@ -39,6 +39,7 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 
 import de.cau.cs.kieler.klighd.KlighdDataManager.OffscreenRendererDescriptor;
+import de.cau.cs.kieler.klighd.interactive.InteractiveLayoutConfigurator;
 import de.cau.cs.kieler.klighd.internal.ILayoutConfigProvider;
 import de.cau.cs.kieler.klighd.internal.ILayoutRecorder;
 import de.cau.cs.kieler.klighd.internal.macrolayout.KlighdLayoutSetup;
@@ -186,7 +187,7 @@ public final class LightDiagramServices {
     
             // Our parameters for the layout run
             Parameters layoutParameters = new Parameters();
-            final LayoutConfigurator extendedConfigurator = layoutParameters.addLayoutRun();
+            final LayoutConfigurator extendedConfigurator = (LayoutConfigurator) layoutParameters.addLayoutRun();
     
             // Animation
             final boolean doAnimate = config.animate() != null ? config.animate().booleanValue()
@@ -245,6 +246,12 @@ public final class LightDiagramServices {
             final DiagramLayoutEngine engine = new KlighdLayoutSetup().getDiagramLayoutEngine();
             final IStatus status;
 
+            // Add interactive Layout run.
+            if (viewModel.getProperty(CoreOptions.INTERACTIVE_LAYOUT) ||
+                    (!viewModel.getChildren().isEmpty() && viewModel.getChildren().get(0).getProperty(CoreOptions.INTERACTIVE_LAYOUT))) {
+                layoutParameters.addLayoutRun(new InteractiveLayoutConfigurator());
+            }
+            
             if (Klighd.IS_PLATFORM_RUNNING) {
                 final IElkCancelIndicator cancelationIndicator =
                         thePart != null ? new DispositionAwareCancelationHandle(thePart) : null;
