@@ -158,7 +158,7 @@ public final class LayeredInteractiveConfigurator {
                 nodesOfLayer.add(node);
             } else {
                 diff = diff + currentLayer - layering.size();
-                layering.add(Arrays.asList(node));
+                layering.add(new ArrayList<>(Arrays.asList(node)));
             }
         }
     }
@@ -230,9 +230,7 @@ public final class LayeredInteractiveConfigurator {
                     shiftOtherNodes(node, layer + 1, layerNodes, false);
                     shiftOtherNodes(node, layer + 1, layerNodes, true);
                 } else {
-                    newLayer = new ArrayList<ElkNode>();
-                    newLayer.add(node);
-                    layerNodes.add(newLayer);
+                    layerNodes.add(new ArrayList<>(Arrays.asList(node)));
                 }
             }
         }
