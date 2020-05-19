@@ -22,10 +22,10 @@ import org.eclipse.elk.alg.layered.options.LayeredOptions;
 import org.eclipse.elk.alg.layered.options.LayeringStrategy;
 import org.eclipse.elk.core.math.KVector;
 import org.eclipse.elk.core.options.Direction;
+import org.eclipse.elk.graph.ElkConnectableShape;
 import org.eclipse.elk.graph.ElkEdge;
 import org.eclipse.elk.graph.ElkNode;
-
-import com.google.common.base.CaseFormat;
+import org.eclipse.elk.graph.ElkPort;
 
 /**
  * Provides methods for the @code layered} algorithm to set interactive or non-interactive options
@@ -58,13 +58,13 @@ public final class LayeredInteractiveConfigurator {
                 node.setProperty(LayeredOptions.LAYERING_LAYER_CONSTRAINT, LayerConstraint.NONE);
                 switch (constraint) {
                 case FIRST:
-                    if (!node.hasProperty(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT)) {
+                    if (node.getProperty(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT) == -1) {
                         node.setProperty(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT, 0);
                     }
                     break;
                 case LAST:
-                    if (!node.hasProperty(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT)) {
-                        node.setProperty(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT, Integer.MAX_VALUE);
+                    if (node.getProperty(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT) == -1) {
+                        node.setProperty(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT, 100000);
                     }
                     break;
                 }
@@ -91,9 +91,11 @@ public final class LayeredInteractiveConfigurator {
         List<List<ElkNode>> layers = calcLayerNodes(root.getChildren());
         Direction direction = root.getProperty(LayeredOptions.DIRECTION);
         setCoordinateInLayoutDirection(layers, direction);
+        int layerId = 0;
         for (List<ElkNode> layer : layers) {
             if (layer.size() > 0) {
-                setCoordinatesOrthogonalToLayoutDirection(layer, direction);
+                setCoordinatesOrthogonalToLayoutDirection(layer, layerId, direction);
+                layerId++;
             }
         }
         return;
@@ -178,20 +180,44 @@ public final class LayeredInteractiveConfigurator {
             final List<List<ElkNode>> layerNodes, final boolean incoming) {
         List<ElkNode> nodesOfLayer = layerNodes.get(layer);
         // get edges
-        List<ElkEdge> edges = null;
+        List<ElkEdge> edges = new ArrayList<>();
         if (incoming) {
-            edges = movedNode.getIncomingEdges();
+            ElkNode root = movedNode.getParent();
+            for (ElkEdge edge : root.getContainedEdges()) {
+                for (ElkConnectableShape target : edge.getTargets()) {
+                    if (target.equals(movedNode)
+                            || (target instanceof ElkPort && target.eContainer().equals(movedNode))) {
+                        edges.add(edge);
+                    }
+                }
+            }
         } else {
-            edges = movedNode.getOutgoingEdges();
+            ElkNode root = movedNode.getParent();
+            for (ElkEdge edge : root.getContainedEdges()) {
+                for (ElkConnectableShape target : edge.getSources()) {
+                    if (target.equals(movedNode)
+                            || (target instanceof ElkPort && target.eContainer().equals(movedNode))) {
+                        edges.add(edge);
+                    }
+                }
+            }
         }
 
         for (ElkEdge edge : edges) {
             // get connected node
             ElkNode node = null;
             if (incoming) {
-                node = (ElkNode) edge.getSources().get(0);
+                if (edge.getSources().get(0) instanceof ElkPort) {
+                    node = (ElkNode) edge.getSources().get(0).eContainer();
+                } else if (edge.getSources().get(0) instanceof ElkNode) {
+                    node = (ElkNode) edge.getSources().get(0);
+                }
             } else {
-                node = (ElkNode) edge.getTargets().get(0);
+                if (edge.getTargets().get(0) instanceof ElkPort) {
+                    node = (ElkNode) edge.getTargets().get(0).eContainer();
+                } else if (edge.getTargets().get(0) instanceof ElkNode) {
+                    node = (ElkNode) edge.getTargets().get(0);
+                }
             }
             // shift node to the next layer
             if (nodesOfLayer.contains(node)) {
@@ -311,7 +337,7 @@ public final class LayeredInteractiveConfigurator {
      * @param direction The layout direction.
      */
     private static void setCoordinatesOrthogonalToLayoutDirection(final List<ElkNode> nodesOfLayer,
-            final Direction direction) {
+            final int layerId, final Direction direction) {
         // Separate nodes with and without position constraints.
         List<ElkNode> nodesWithPositionConstraint = new ArrayList<ElkNode>();
         List<ElkNode> nodes = new ArrayList<ElkNode>();
@@ -349,13 +375,13 @@ public final class LayeredInteractiveConfigurator {
             }
             break;
         case DOWN:
-        case UP: {
-            double xPos = nodes.get(0).getX();
+        case UP:
+            double xPos = nodes.get(0).getX() + 2 * layerId * NODE_PLACEMENT_HELPER;
             for (ElkNode node : nodes) {
                 node.setProperty(LayeredOptions.POSITION, new KVector(xPos, node.getY()));
                 xPos += node.getWidth() + NODE_PLACEMENT_HELPER;
             }
-        }
+            break;
         }
     }
 
