@@ -3,7 +3,7 @@
  *
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright 2018-2019 by
+ * Copyright 2018, 2020 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -23,6 +23,7 @@ import org.eclipse.sprotty.SModelRoot
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.xtend.lib.annotations.EqualsHashCode
 import org.eclipse.xtend.lib.annotations.ToString
+import org.eclipse.sprotty.UpdateModelAction
 
 /**
  * Sent from the server to the client to request bounds for the given texts. The texts are rendered
@@ -230,3 +231,35 @@ public class RefreshLayoutAction implements Action {
         initializer.accept(this)
     }
 }
+
+/**
+ * Updates the model and sends the cause to the client.
+ * Extends to UpdateModelAction.
+ * FIXME Remove this if the UpdateModelAction includes a cause.
+ * 
+ * @author sdo
+ */
+@Accessors
+@EqualsHashCode
+@ToString(skipNulls = true)
+public class KeithUpdateModelAction extends UpdateModelAction {
+    public static val KIND = 'updateModel'
+    String kind = KIND
+    
+    
+    SModelRoot newRoot
+    Boolean animate
+    Action cause
+    
+    new() {}
+    new(Consumer<KeithUpdateModelAction> initializer) {
+        initializer.accept(this)
+    }
+    
+    new(SModelRoot newRoot, Action cause) {
+        this.newRoot = newRoot
+        this.cause = cause
+    }
+}
+
+
