@@ -10,7 +10,8 @@ Export-Package: de.cau.cs.kieler.klighd.lsp,
  de.cau.cs.kieler.klighd.lsp.interactive,
  de.cau.cs.kieler.klighd.lsp.interactive.layered,
  de.cau.cs.kieler.klighd.lsp.interactive.rectpack,
- de.cau.cs.kieler.klighd.lsp.setup
+ de.cau.cs.kieler.klighd.lsp.setup,
+ de.cau.cs.kieler.klighd.lsp.utils
 Bundle-Vendor: Kiel University
 Bundle-Localization: plugin
 Bundle-ActivationPolicy: lazy
