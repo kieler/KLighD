@@ -39,6 +39,7 @@ import org.eclipse.xtext.ide.server.LanguageServerImpl
 import org.eclipse.xtext.ide.server.ServerLauncher
 import org.eclipse.xtext.resource.IResourceServiceProvider
 import org.eclipse.xtext.util.Modules2
+import de.cau.cs.kieler.klighd.lsp.KGraphLanguageClient
 
 /** 
  * Provides methods to create a LS.
@@ -118,6 +119,8 @@ class LSCreator {
                 .create();
         val client = launcher.remoteProxy
         ls.connect(client)
+        constraintsLSExt.client = client as KGraphLanguageClient
+        rectPackLSExt.client = client as KGraphLanguageClient
         val future = launcher.startListening
         if (socket) {
         } else { // case stdio

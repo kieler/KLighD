@@ -3,7 +3,7 @@
  * 
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright 2019 by
+ * Copyright 2019, 2020 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -26,6 +26,7 @@ import java.util.List
 import java.util.Map
 import java.util.concurrent.CompletableFuture
 import org.eclipse.emf.common.util.URI
+import org.eclipse.emf.ecore.EObject
 import org.eclipse.sprotty.IDiagramServer
 import org.eclipse.sprotty.ILayoutEngine
 import org.eclipse.sprotty.SGraph
@@ -113,14 +114,16 @@ class KGraphDiagramUpdater extends DiagramUpdater {
                 snapshotModel = diagramState.getSnapshotModel(path)
             }
             val model = if (snapshotModel === null) {
-                            resource.contents.head
-                        } else {
-                            snapshotModel
-                        }
-            (diagramServers as List<KGraphDiagramServer>).forEach [ server |
-                prepareModel(server, model, path)
-                updateLayout(server)
-            ]
+                    resource.contents.head
+                } else {
+                    snapshotModel
+                }
+            if (!(model instanceof EObject) || (model as EObject).eResource.errors.empty) {
+                (diagramServers as List<KGraphDiagramServer>).forEach [ server |
+                    prepareModel(server, model, path)
+                    updateLayout(server)
+                ]
+            }
             return null as Void
         ]
         

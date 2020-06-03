@@ -17,17 +17,24 @@ import com.google.inject.Injector
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties
 import de.cau.cs.kieler.klighd.kgraph.KNode
 import de.cau.cs.kieler.klighd.lsp.KGraphDiagramState
+import de.cau.cs.kieler.klighd.lsp.KGraphLanguageClient
 import de.cau.cs.kieler.klighd.lsp.LSPUtil
 import de.cau.cs.kieler.klighd.lsp.interactive.InteractiveUtil
+import java.io.ByteArrayOutputStream
 import java.util.Arrays
 import java.util.List
+import java.util.Map
 import javax.inject.Singleton
 import org.eclipse.elk.alg.rectpacking.options.RectPackingOptions
 import org.eclipse.elk.core.options.CoreOptions
 import org.eclipse.elk.graph.ElkNode
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.util.EcoreUtil
-import org.eclipse.lsp4j.services.LanguageClient
+import org.eclipse.lsp4j.ApplyWorkspaceEditParams
+import org.eclipse.lsp4j.Position
+import org.eclipse.lsp4j.Range
+import org.eclipse.lsp4j.TextEdit
+import org.eclipse.lsp4j.WorkspaceEdit
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.xtext.ide.server.ILanguageServerAccess
 import org.eclipse.xtext.ide.server.ILanguageServerExtension
@@ -41,7 +48,7 @@ import org.eclipse.xtext.resource.XtextResourceSet
 @Singleton
 class RectPackInterativeLanguageServerExtension implements ILanguageServerExtension {
 
-    @Accessors LanguageClient client;
+    @Accessors KGraphLanguageClient client;
 
     @Inject
     KGraphDiagramState diagramState
@@ -172,9 +179,26 @@ class RectPackInterativeLanguageServerExtension implements ILanguageServerExtens
         val elkNode = changedNodes.get(0).getProperty(KlighdInternalProperties.MODEL_ELEMEMT)
         if (elkNode instanceof ElkNode) {
             val elkGraph = EcoreUtil.getRootContainer(elkNode)
+            val Map<String, List<TextEdit>> changes = newHashMap
+            
+            // Get previous file content as String
+            var outputStream = new ByteArrayOutputStream
+            resource.save(outputStream, emptyMap)
+            val codeBefore = outputStream.toString
+            
+            // Get changed file as String
+            outputStream = new ByteArrayOutputStream
             resource.contents.clear
             resource.contents += elkGraph
-            resource.save(emptyMap)
+            resource.save(outputStream, emptyMap)
+            val codeAfter = outputStream.toString
+            
+            // The range is the length of the previous file.
+            val Range range = new Range(new Position(0, 0), new Position(codeBefore.lines.count as int, 0))
+            val TextEdit textEdit = new TextEdit(range, codeAfter)
+            changes.put(uri, #[textEdit]);
+            this.client.replaceContentInFile(uri, codeAfter, range)
+            return
         }
 
     }

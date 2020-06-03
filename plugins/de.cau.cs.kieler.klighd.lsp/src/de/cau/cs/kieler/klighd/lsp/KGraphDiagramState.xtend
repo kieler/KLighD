@@ -108,20 +108,20 @@ class KGraphDiagramState {
     /**
      * Getter to access the value stored in the kGraphContext map.
      * 
-     * @param key The key to access the value in the map.
+     * @param uri The key to access the value in the map.
      */
-    def ViewContext getKGraphContext(String key) {
-        kGraphContexts.get(URLDecoder.decode(key, "UTF-8"))
+    def ViewContext getKGraphContext(String uri) {
+        kGraphContexts.get(URLDecoder.decode(uri, "UTF-8"))
     }
     
     /**
      * Put method to put a new value in the kGraphConcext map under the given key.
      * 
-     * @param key The key to access the map.
+     * @param uri The uri to access the map.
      * @param value The value to be stored in the map.
      */
-    def putKGraphContext(String key, ViewContext value) {
-        kGraphContexts.put(URLDecoder.decode(key, "UTF-8"), value)
+    def putKGraphContext(String uri, ViewContext value) {
+        kGraphContexts.put(URLDecoder.decode(uri, "UTF-8"), value)
     }
     
     /**
@@ -203,10 +203,10 @@ class KGraphDiagramState {
     /**
      * Getter to access the value stored in the uriString map.
      * 
-     * @param key The key to access the value in the map.
+     * @param clientId The clientId of the diagram view.
      */
-    def String getURIString(String key) {
-        uriStringMap.get(key)
+    def String getURIString(String clientId) {
+        uriStringMap.get(clientId)
     }
     
     /**

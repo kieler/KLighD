@@ -12,6 +12,7 @@
  */
 package de.cau.cs.kieler.klighd.lsp
 
+import com.google.common.base.Strings
 import com.google.common.io.ByteStreams
 import com.google.inject.Inject
 import de.cau.cs.kieler.klighd.IAction
@@ -42,11 +43,18 @@ import java.util.ArrayList
 import java.util.Base64
 import java.util.List
 import java.util.Map
+import java.util.concurrent.CompletableFuture
 import org.apache.log4j.Logger
 import org.eclipse.core.runtime.Platform
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.sprotty.Action
 import org.eclipse.sprotty.ActionMessage
+import org.eclipse.sprotty.ILayoutEngine
+import org.eclipse.sprotty.IModelUpdateListener
+import org.eclipse.sprotty.LayoutAction
+import org.eclipse.sprotty.RequestBoundsAction
+import org.eclipse.sprotty.RequestModelAction
+import org.eclipse.sprotty.SModelCloner
 import org.eclipse.sprotty.SModelElement
 import org.eclipse.sprotty.SModelRoot
 import org.eclipse.sprotty.SelectAction
@@ -96,6 +104,31 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
     
     @Accessors(PUBLIC_GETTER)
     protected Object modelLock = new Object
+    
+    /**
+     * Needed for KeithUpdateModelAction
+     * 
+     * FIXME Remove this if UpdateModelAction has a cause.
+     */
+    protected String lastSubmittedModelType
+    
+    /**
+     * Needed for KeithUpdateModelAction
+     * 
+     * FIXME Remove this if UpdateModelAction has a cause.
+     */
+    protected int revision = 0
+    
+    /**
+     * Needed for KeithUpdateModelAction
+     * 
+     * FIXME Remove this if UpdateModelAction has a cause.
+     */
+    new() {
+        currentRoot = new SModelRoot();
+        currentRoot.setType("NONE");
+        currentRoot.setId("ROOT");
+    }
     
     /**
      * Prepares the client side update of the model by processing the potentially needed text sizes and images on the 
@@ -171,6 +204,111 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
             }
         }
     }
+        
+    /**
+     * Submit a new or updated model to the client. If client layout is required, a {@link RequestBoundsAction}
+     * is sent, otherwise either a {@link SetModelAction} or an {@link UpdateModelAction} is sent depending on
+     * the {@code update} parameter.
+     * Needed for KeithUpdateModelAction
+     * 
+     * FIXME Remove this if UpdateModelAction has a cause.
+     */
+    override CompletableFuture<Void> submitModel(SModelRoot newRoot, boolean update, Action cause) {
+        if (needsClientLayout(newRoot)) {
+            if (!needsServerLayout(newRoot, cause)) {
+                // In this case the client won't send us the computed bounds
+                dispatch(new RequestBoundsAction(newRoot));
+                val IModelUpdateListener listener = getModelUpdateListener();
+                if (listener !== null) {
+                    listener.modelSubmitted(newRoot, this);
+                }
+            } else {
+                return request(new RequestBoundsAction(newRoot)).handle([response, exception | {
+                    if (exception !== null) {
+                        LOG.error("RequestBoundsAction failed with an exception.", exception);
+                    } else {
+                        try {
+                            var SModelRoot model = handle(response);
+                            if (model !== null)
+                                doSubmitModel(model, true, cause);
+                        } catch (Exception exc) {
+                            LOG.error("Exception while processing ComputedBoundsAction.", exc);
+                        }
+                    }
+                    return null;
+                }])
+            }
+        } else {
+            doSubmitModel(newRoot, update, cause);
+        }
+        return CompletableFuture.completedFuture(null);
+    }
+    
+    /**
+     * Needed for KeithUpdateModelAction
+     * 
+     * FIXME Remove this if UpdateModelAction has a cause.
+     */
+    override CompletableFuture<Void> setModel(SModelRoot newRoot) {
+        if (newRoot === null)
+            throw new NullPointerException();
+        synchronized(modelLock) {
+            newRoot.setRevision(revision + 1);
+            revision++
+            currentRoot = newRoot;
+        }
+        return submitModel(newRoot, false, null);
+    }
+    
+    /**
+     * Needed for KeithUpdateModelAction
+     * 
+     * FIXME Remove this if UpdateModelAction has a cause.
+     */
+    override CompletableFuture<Void> updateModel(SModelRoot newRoot) {
+        if (newRoot === null)
+            throw new IllegalArgumentException("updateModel() cannot be called with null");
+        synchronized(modelLock) {
+            currentRoot = newRoot;
+            newRoot.setRevision(revision + 1);
+            revision++
+        }
+        return submitModel(newRoot, true, null);
+    }
+    
+    
+    /**
+     * Needed for KeithUpdateModelAction
+     * 
+     * FIXME Remove this if UpdateModelAction has a cause.
+     */
+    def void doSubmitModel(SModelRoot newRoot, boolean update, Action cause) {
+        var ILayoutEngine layoutEngine = getLayoutEngine();
+        if (needsServerLayout(newRoot, cause)) {
+            layoutEngine.layout(newRoot, cause);
+        }
+        synchronized (modelLock) {
+            if (newRoot.getRevision() == revision) {
+                var String modelType = newRoot.getType();
+                if (cause instanceof RequestModelAction
+                        && !Strings.isNullOrEmpty((cause as RequestModelAction).getRequestId())) {
+                    var RequestModelAction request = cause as RequestModelAction;
+                    var SetModelAction response = new SetModelAction(newRoot);
+                    response.setResponseId(request.getRequestId());
+                    dispatch(response);
+                } else if (update && modelType !== null && modelType.equals(lastSubmittedModelType)) {
+                    dispatch(new UpdateModelAction(newRoot));
+                } else {
+                    dispatch(new SetModelAction(newRoot));
+                }
+                lastSubmittedModelType = modelType;
+                var IModelUpdateListener listener = getModelUpdateListener();
+                if (listener !== null) {
+                    listener.modelSubmitted(newRoot, this);
+                }
+            }
+        }
+    }
     
     /**
      * Called when a {@link ComputedTextBoundsAction} is received.
@@ -236,6 +374,44 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
             if (imagesUpdated) {
                 setOrUpdateModel
             }
+        }
+    }
+    
+    /**
+     * Taken from {@code DefaultDiagramServer.handle(RequestModelAction)} to use this getModel.
+     * Needed for KeithUpdateModelAction
+     * 
+     * FIXME Remove this if UpdateModelAction has a cause.
+     */
+    override protected handle(RequestModelAction request) {
+        if (model.type == 'NONE' && diagramLanguageServer !== null) {
+            if (!request.requestId.nullOrEmpty)
+                LOG.warn("Model requests are not supported by the Xtext diagram server.")
+            copyOptions(request)
+            diagramLanguageServer.diagramUpdater.updateDiagram(this)
+        } else {
+            super.handle(request)
+        }
+    }
+    
+    /**
+     * Taken from {@code DefaultDiagramServer.handle(LayoutAction)} to use this getModel.
+     * Needed for KeithUpdateModelAction
+     * 
+     * FIXME Remove this if UpdateModelAction has a cause.
+     */
+    override void handle(LayoutAction action) {
+        if (needsServerLayout(model,action)) {
+            // Clone the current model, as it has already been sent to the client with the old revision
+            val SModelCloner cloner = getSModelCloner();
+            val SModelRoot newRoot = cloner.clone(model);
+            synchronized(modelLock) {
+                newRoot.setRevision(revision + 1);
+                revision++
+                currentRoot = newRoot;
+            }
+            // the actual layout is performed in doSubmitModel
+            doSubmitModel(newRoot, true, action);
         }
     }
     
@@ -410,5 +586,14 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
             updateModel(currentRoot)
         }
         newModel = false
+    }
+
+    /**
+     * Needed for KeithUpdateModelAction
+     * 
+     * FIXME Remove this if UpdateModelAction has a cause.
+     */
+    override SModelRoot getModel() {
+        return currentRoot;
     }
 }
