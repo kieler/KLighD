@@ -75,6 +75,9 @@ class KGraphElementIDGenerator {
      * generates a unique ID for any {@link KGraphElement}. Returns the same ID for the element if called a second time.
      */
     def String getId(KGraphElement element) {
+        if (element === null) {
+            return ""
+        }
         var String id = null
         
         // if the ID was already calculated, use that

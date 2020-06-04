@@ -213,13 +213,15 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
             // to be generated previously. Because hierarchical edges could connect to any arbitrary parent or child node,
             // they can only be generated safely in the end.
             for (edge : node.outgoingEdges) {
-                // if target node is directly or indirectly contained by the source node
-                if (KGraphUtil.isDescendant(edge.target, node)) {
-                    // then generated element of node (add to its children)
-                    edgesToGenerate.add(edge -> nodeElement.children)
-                } else {
-                    // otherwise the source node's parent generated element (add to its children)
-                    edgesToGenerate.add(edge -> parent.children)
+                if (edge.target !== null) {
+                    // if target node is directly or indirectly contained by the source node
+                    if (KGraphUtil.isDescendant(edge.target, node)) {
+                        // then generated element of node (add to its children)
+                        edgesToGenerate.add(edge -> nodeElement.children)
+                    } else {
+                        // otherwise the source node's parent generated element (add to its children)
+                        edgesToGenerate.add(edge -> parent.children)
+                    }
                 }
             }
         }

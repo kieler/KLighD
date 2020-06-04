@@ -751,7 +751,8 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
         final List<KEdge> excludedEdges = mapping.getProperty(EXCLUDED_EDGES);
         if (excludedEdges != null) {
             for (final KEdge edge : excludedEdges) {
-                handleExcludedEdge(edge);
+                if (edge != null && edge.getTarget() != null)
+                    handleExcludedEdge(edge);
             }
         }
 
@@ -1205,6 +1206,7 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
         final KNode targetNode = edge.getTarget();
         final KPort sourcePort = edge.getSourcePort();
         final KPort targetPort = edge.getTargetPort();
+//        if (targetNode == null && targetPort == null) return;
         final boolean targetInSource = KGraphUtil.isDescendant(targetNode, sourceNode);
 
         // determine the source point
