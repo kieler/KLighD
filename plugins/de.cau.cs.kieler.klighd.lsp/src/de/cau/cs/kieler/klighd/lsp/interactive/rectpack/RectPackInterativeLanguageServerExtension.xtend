@@ -194,7 +194,7 @@ class RectPackInterativeLanguageServerExtension implements ILanguageServerExtens
             val codeAfter = outputStream.toString
             
             // The range is the length of the previous file.
-            val Range range = new Range(new Position(0, 0), new Position(codeBefore.lines.count as int, 0))
+            val Range range = new Range(new Position(0, 0), new Position(codeBefore.split("\r\n|\r|\n").length, 0))
             val TextEdit textEdit = new TextEdit(range, codeAfter)
             changes.put(uri, #[textEdit]);
             this.client.replaceContentInFile(uri, codeAfter, range)
