@@ -109,7 +109,7 @@ class LSCreator {
             injector.getInstance(RegistrationLanguageServerExtension), constraintsLSExt, rectPackLSExt)
         val launcher = new Builder<LanguageClient>()
                 .setLocalServices(iLanguageServerExtensions)
-                .setRemoteInterface(LanguageClient)
+                .setRemoteInterface(KGraphLanguageClient)
                 .setInput(in)
                 .setOutput(out)
                 .setExecutorService(threadPool)
