@@ -19,5 +19,5 @@ package de.cau.cs.kieler.klighd.ide;
 public class KlighdIdePlugin {
 
     /** The plug-in ID. */
-    public static final String UI_VIEW_PLUGIN_ID = "de.cau.cs.kieler.klighd.ui.view"; //$NON-NLS-1$
+    public static final String PLUGIN_ID = "de.cau.cs.kieler.klighd.ide"; //$NON-NLS-1$
 }

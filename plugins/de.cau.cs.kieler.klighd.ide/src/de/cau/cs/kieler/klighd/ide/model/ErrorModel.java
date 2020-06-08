@@ -55,7 +55,7 @@ public class ErrorModel extends MessageModel {
      */
     public ErrorModel(final String message, final String reason, final String stacktrace) {
         // CHECKSTYLEOFF MagicNumber NEXT
-        super(message, reason, KlighdIdePlugin.UI_VIEW_PLUGIN_ID, "icons/full/model/error_sign.png", 250);
+        super(message, reason, KlighdIdePlugin.PLUGIN_ID, "icons/full/model/error_sign.png", 250);
         // reason
         String reasonToSet = "Unkown";
         if (reason == null) {
