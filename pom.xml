@@ -16,6 +16,7 @@
     <module>features</module>
 
     <module>plugins/de.cau.cs.kieler.klighd</module>
+    <module>plugins/de.cau.cs.kieler.klighd.ide</module>
     <module>plugins/de.cau.cs.kieler.klighd.incremental</module>
     <module>plugins/de.cau.cs.kieler.klighd.kgraph</module>
     <module>plugins/de.cau.cs.kieler.klighd.krendering</module>
