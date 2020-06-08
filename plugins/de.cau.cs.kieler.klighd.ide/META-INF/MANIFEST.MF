@@ -3,6 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: KIELER Lightweight Diagrams Ide Components
 Bundle-SymbolicName: de.cau.cs.kieler.klighd.ide;singleton:=true
 Bundle-Version: 1.1.1.qualifier
+Automatic-Module-Name: de.cau.cs.kieler.klighd.ide
 Require-Bundle: de.cau.cs.kieler.klighd;visibility:=reexport,
  de.cau.cs.kieler.klighd.kgraph,
  org.eclipse.xtext.xbase,
@@ -12,6 +13,7 @@ Require-Bundle: de.cau.cs.kieler.klighd;visibility:=reexport,
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-Vendor: Kiel University
-Export-Package: de.cau.cs.kieler.klighd.ide.model,
+Export-Package: de.cau.cs.kieler.klighd.ide,
+ de.cau.cs.kieler.klighd.ide.model,
  de.cau.cs.kieler.klighd.ide.syntheses,
  de.cau.cs.kieler.klighd.ide.syntheses.action

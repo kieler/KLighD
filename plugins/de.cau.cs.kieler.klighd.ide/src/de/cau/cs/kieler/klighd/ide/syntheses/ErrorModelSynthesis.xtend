@@ -11,7 +11,7 @@
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
-package de.cau.cs.kieler.klighd.ui.view.syntheses
+package de.cau.cs.kieler.klighd.ide.syntheses
 
 import de.cau.cs.kieler.klighd.ide.model.MessageModel
 import de.cau.cs.kieler.klighd.ide.syntheses.MessageModelSynthesis
@@ -22,8 +22,8 @@ import de.cau.cs.kieler.klighd.krendering.KRoundedRectangle
 import de.cau.cs.kieler.klighd.krendering.extensions.KContainerRenderingExtensions
 import de.cau.cs.kieler.klighd.krendering.extensions.KRenderingExtensions
 import de.cau.cs.kieler.klighd.syntheses.AbstractDiagramSynthesis
-import de.cau.cs.kieler.klighd.ui.view.model.ErrorModel
-import de.cau.cs.kieler.klighd.ui.view.syntheses.action.ErrorModelShowExceptionAction
+import de.cau.cs.kieler.klighd.ide.model.ErrorModel
+import de.cau.cs.kieler.klighd.ide.syntheses.action.AbstractErrorModelShowExceptionAction
 import javax.inject.Inject
 
 /**
@@ -68,8 +68,8 @@ class ErrorModelSynthesis extends AbstractDiagramSynthesis<ErrorModel> {
                     messageRect.addText("[Show Exception]") => [
                         foreground = Colors.BLUE;
                         fontSize = 9;
-                        addSingleClickAction(ErrorModelShowExceptionAction.ID);
-                        addDoubleClickAction(ErrorModelShowExceptionAction.ID);
+                        addSingleClickAction(AbstractErrorModelShowExceptionAction.ID);
+                        addDoubleClickAction(AbstractErrorModelShowExceptionAction.ID);
                         setGridPlacementData().from(LEFT, 8, 0, TOP, 4, 0).to(RIGHT, 8, 0, BOTTOM, 8, 0);
                     ]
                 }

@@ -17,8 +17,8 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.ErrorDialog;
 
-import de.cau.cs.kieler.klighd.IAction;
-import de.cau.cs.kieler.klighd.ui.view.model.ErrorModel;
+import de.cau.cs.kieler.klighd.ide.model.ErrorModel;
+import de.cau.cs.kieler.klighd.ide.syntheses.action.AbstractErrorModelShowExceptionAction;
 
 /**
  * Action to open an ErrorDialog to show additional exception information of {@link ErrorModel}.
@@ -28,11 +28,7 @@ import de.cau.cs.kieler.klighd.ui.view.model.ErrorModel;
  * @kieler.rating 2014-07-30 proposed yellow
  * 
  */
-public class ErrorModelShowExceptionAction implements IAction {
-
-    /** The action ID. */
-    public static final String ID =
-            "de.cau.cs.kieler.klighd.ui.view.syntheses.action.ErrorModelShowExceptionAction";
+public class ErrorModelShowExceptionAction extends AbstractErrorModelShowExceptionAction {
 
     /**
      * {@inheritDoc}

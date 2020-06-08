@@ -21,10 +21,6 @@
             class="de.cau.cs.kieler.klighd.ui.view.syntheses.action.ErrorModelShowExceptionAction"
             id="de.cau.cs.kieler.klighd.ui.view.syntheses.action.ErrorModelShowExceptionAction">
       </action>
-      <action
-            class="de.cau.cs.kieler.klighd.ui.view.syntheses.action.EcoreModelExpandDetailsAction"
-            id="de.cau.cs.kieler.klighd.ui.view.syntheses.action.EcoreModelExpandDetailsAction">
-      </action>
    </extension>
    <extension
          point="de.cau.cs.kieler.klighd.ui.view.controller">
@@ -34,14 +30,6 @@
       <controller
             class="de.cau.cs.kieler.klighd.ui.view.controllers.EcoreXtextSaveUpdateController">
       </controller>
-   </extension>
-   <extension
-         point="de.cau.cs.kieler.klighd.diagramSyntheses">
-      <diagramSynthesis
-            class="de.cau.cs.kieler.klighd.syntheses.GuiceBasedSynthesisFactory:de.cau.cs.kieler.klighd.ui.view.syntheses.ErrorModelSynthesis"
-            id="de.cau.cs.kieler.klighd.ui.view.syntheses.ErrorModelSynthesis">
-      </diagramSynthesis>
-         
    </extension>
    <extension
          point="org.eclipse.ui.commands">
