@@ -74,6 +74,7 @@ import de.cau.cs.kieler.klighd.KlighdDataManager;
 import de.cau.cs.kieler.klighd.LightDiagramLayoutConfig;
 import de.cau.cs.kieler.klighd.SynthesisOption;
 import de.cau.cs.kieler.klighd.ViewContext;
+import de.cau.cs.kieler.klighd.ide.model.MessageModel;
 import de.cau.cs.kieler.klighd.internal.ISynthesis;
 import de.cau.cs.kieler.klighd.kgraph.KNode;
 import de.cau.cs.kieler.klighd.ui.KlighdUIPlugin;
@@ -82,7 +83,6 @@ import de.cau.cs.kieler.klighd.ui.view.controller.AbstractViewUpdateController;
 import de.cau.cs.kieler.klighd.ui.view.controller.ViewUpdateControllerFactory;
 import de.cau.cs.kieler.klighd.ui.view.menu.SynthesisSelectionMenu;
 import de.cau.cs.kieler.klighd.ui.view.model.ErrorModel;
-import de.cau.cs.kieler.klighd.ui.view.model.MessageModel;
 import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties;
 import de.cau.cs.kieler.klighd.viewers.ContextViewer;
 

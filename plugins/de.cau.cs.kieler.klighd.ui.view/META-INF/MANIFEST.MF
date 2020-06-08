@@ -12,7 +12,8 @@ Require-Bundle: org.eclipse.emf,
  de.cau.cs.kieler.klighd.ui,
  de.cau.cs.kieler.klighd.krendering.extensions,
  org.eclipse.elk.alg.layered,
- de.cau.cs.kieler.klighd.kgraph
+ de.cau.cs.kieler.klighd.kgraph,
+ de.cau.cs.kieler.klighd.ide
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: Kiel University

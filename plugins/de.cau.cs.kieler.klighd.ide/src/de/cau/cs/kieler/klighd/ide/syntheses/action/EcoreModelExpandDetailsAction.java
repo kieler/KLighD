@@ -10,13 +10,13 @@
  * 
  * This code is provided under the terms of the Eclipse Public License (EPL).
  */
-package de.cau.cs.kieler.klighd.ui.view.syntheses.action;
+package de.cau.cs.kieler.klighd.ide.syntheses.action;
 
 import java.util.Iterator;
 
 import de.cau.cs.kieler.klighd.IAction;
+import de.cau.cs.kieler.klighd.ide.syntheses.EObjectFallbackSynthesis;
 import de.cau.cs.kieler.klighd.kgraph.KNode;
-import de.cau.cs.kieler.klighd.ui.view.syntheses.EObjectFallbackSynthesis;
 import de.cau.cs.kieler.klighd.util.ModelingUtil;
 
 /**

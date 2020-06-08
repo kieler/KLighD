@@ -18,6 +18,7 @@ import java.io.StringWriter;
 
 import org.eclipse.core.runtime.Platform;
 
+import de.cau.cs.kieler.klighd.ide.model.MessageModel;
 import de.cau.cs.kieler.klighd.ui.view.KlighdViewPlugin;
 
 /**

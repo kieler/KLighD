@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="de.cau.cs.kieler.klighd.diagramSyntheses">
+      <diagramSynthesis
+            class="de.cau.cs.kieler.klighd.syntheses.GuiceBasedSynthesisFactory:de.cau.cs.kieler.klighd.ide.syntheses.MessageModelSynthesis"
+            id="de.cau.cs.kieler.klighd.ide.syntheses.MessageModelSynthesis">
+      </diagramSynthesis>
+      <diagramSynthesis
+            class="de.cau.cs.kieler.klighd.syntheses.GuiceBasedSynthesisFactory:de.cau.cs.kieler.klighd.ide.syntheses.EObjectFallbackSynthesis"
+            id="de.cau.cs.kieler.klighd.ide.syntheses.EObjectFallbackSynthesis">
+      </diagramSynthesis>
+   </extension>
+</plugin>
