@@ -11,7 +11,7 @@
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
-package de.cau.cs.kieler.klighd.ui.view.syntheses
+package de.cau.cs.kieler.klighd.ide.syntheses
 
 import com.google.common.collect.HashBasedTable
 import com.google.common.collect.Table
@@ -32,7 +32,7 @@ import de.cau.cs.kieler.klighd.krendering.extensions.KPortExtensions
 import de.cau.cs.kieler.klighd.krendering.extensions.KRenderingExtensions
 import de.cau.cs.kieler.klighd.microlayout.PlacementUtil
 import de.cau.cs.kieler.klighd.syntheses.AbstractDiagramSynthesis
-import de.cau.cs.kieler.klighd.ui.view.syntheses.action.EcoreModelExpandDetailsAction
+import de.cau.cs.kieler.klighd.ide.syntheses.action.EcoreModelExpandDetailsAction
 import de.cau.cs.kieler.klighd.util.KlighdProperties
 import java.util.List
 import java.util.Map
