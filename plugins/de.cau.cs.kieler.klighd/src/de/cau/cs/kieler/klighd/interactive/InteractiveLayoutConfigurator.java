@@ -52,7 +52,11 @@ public class InteractiveLayoutConfigurator implements IGraphElementVisitor {
         } else if (algorithm.endsWith("rectpacking") && !root.getChildren().isEmpty()) {
             RectPackingInteractiveConfigurator.setRequiredInteractiveOptions(root);
         } else {
-            // Add more cases for different algorithms
+            for (ElkNode n : root.getChildren()) {
+                if (!n.getChildren().isEmpty()) {
+                    InteractiveLayoutConfigurator.setRequiredInteractiveOptions(n);
+                }
+            }
         }
     }
 

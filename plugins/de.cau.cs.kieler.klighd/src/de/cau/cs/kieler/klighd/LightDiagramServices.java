@@ -27,6 +27,7 @@ import org.eclipse.elk.core.service.DiagramLayoutEngine.Parameters;
 import org.eclipse.elk.core.service.ElkServicePlugin;
 import org.eclipse.elk.core.util.IElkCancelIndicator;
 import org.eclipse.elk.core.util.IElkProgressMonitor;
+import org.eclipse.elk.core.util.IGraphElementVisitor;
 import org.eclipse.elk.core.util.NullElkProgressMonitor;
 import org.eclipse.elk.core.util.Pair;
 import org.eclipse.elk.graph.properties.IProperty;
@@ -39,7 +40,6 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 
 import de.cau.cs.kieler.klighd.KlighdDataManager.OffscreenRendererDescriptor;
-import de.cau.cs.kieler.klighd.interactive.InteractiveLayoutConfigurator;
 import de.cau.cs.kieler.klighd.internal.ILayoutConfigProvider;
 import de.cau.cs.kieler.klighd.internal.ILayoutRecorder;
 import de.cau.cs.kieler.klighd.internal.macrolayout.KlighdLayoutSetup;
@@ -229,12 +229,12 @@ public final class LightDiagramServices {
                 }
             }
     
-            final List<? extends LayoutConfigurator> additionalConfigs =
+            final List<? extends IGraphElementVisitor> additionalConfigs =
                     theViewContext.getAdditionalLayoutConfigs();
     
             final Object diagramPart = recorder != null ? recorder : theViewContext;
     
-            for (LayoutConfigurator c : additionalConfigs) {
+            for (IGraphElementVisitor c : additionalConfigs) {
                 layoutParameters.addLayoutRun(c);
             }
 
@@ -245,12 +245,6 @@ public final class LightDiagramServices {
             //  (with _and_ without a running eclipse platform)
             final DiagramLayoutEngine engine = new KlighdLayoutSetup().getDiagramLayoutEngine();
             final IStatus status;
-
-            // Add interactive Layout run.
-            if (viewModel.getProperty(CoreOptions.INTERACTIVE_LAYOUT) ||
-                    (!viewModel.getChildren().isEmpty() && viewModel.getChildren().get(0).getProperty(CoreOptions.INTERACTIVE_LAYOUT))) {
-                layoutParameters.addLayoutRun(new InteractiveLayoutConfigurator());
-            }
             
             if (Klighd.IS_PLATFORM_RUNNING) {
                 final IElkCancelIndicator cancelationIndicator =

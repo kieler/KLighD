@@ -21,6 +21,7 @@ import java.util.Map;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.elk.core.LayoutConfigurator;
+import org.eclipse.elk.core.util.IGraphElementVisitor;
 import org.eclipse.elk.core.util.Pair;
 import org.eclipse.elk.core.util.WrappedException;
 import org.eclipse.elk.graph.properties.IProperty;
@@ -862,9 +863,9 @@ public class ViewContext extends MapPropertyHolder {
      *
      * @return a map of options (map keys) and related values (map values)
      */
-    public List<? extends LayoutConfigurator> getAdditionalLayoutConfigs() {
+    public List<? extends IGraphElementVisitor> getAdditionalLayoutConfigs() {
         if (this.diagramSynthesis != null) {
-            return this.diagramSynthesis.getAdditionalLayoutConfigs();
+            return this.diagramSynthesis.getAdditionalLayoutConfigs(viewModel);
         } else {
             return Collections.emptyList();
         }
