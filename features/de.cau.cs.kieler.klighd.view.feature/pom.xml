@@ -5,10 +5,10 @@
   <parent>
     <groupId>de.cau.cs.kieler.klighd</groupId>
     <artifactId>features</artifactId>
-    <version>1.1.1-SNAPSHOT</version>
+    <version>1.1.1.v20200611</version>
   </parent>
   <groupId>de.cau.cs.kieler.klighd</groupId>
   <artifactId>de.cau.cs.kieler.klighd.view.feature</artifactId>
-  <version>1.1.1-SNAPSHOT</version>
+  <version>1.1.1.v20200611</version>
   <packaging>eclipse-feature</packaging>
 </project>

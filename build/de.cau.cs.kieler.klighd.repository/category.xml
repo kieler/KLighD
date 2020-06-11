@@ -11,45 +11,45 @@
       </description>
    </category-def>
 
-   <feature url="features/de.cau.cs.kieler.klighd.feature_1.1.1.qualifier.jar" id="de.cau.cs.kieler.klighd.feature" version="1.1.1.qualifier">
+   <feature url="features/de.cau.cs.kieler.klighd.feature_1.1.1.v20200611.jar" id="de.cau.cs.kieler.klighd.feature" version="1.1.1.v20200611">
       <category name="kieler-klighd"/>
    </feature>
-   <feature url="features/de.cau.cs.kieler.klighd.feature.source_1.1.1.qualifier.jar" id="de.cau.cs.kieler.klighd.feature.source" version="1.1.1.qualifier">
-      <category name="kieler-klighd"/>
-   </feature>
-
-   <feature url="features/de.cau.cs.kieler.klighd.batik.feature_1.1.1.qualifier.jar" id="de.cau.cs.kieler.klighd.batik.feature" version="1.1.1.qualifier">
-      <category name="kieler-klighd"/>
-   </feature>
-   <feature url="features/de.cau.cs.kieler.klighd.batik.feature.source_1.1.1.qualifier.jar" id="de.cau.cs.kieler.klighd.batik.feature.source" version="1.1.1.qualifier">
+   <feature url="features/de.cau.cs.kieler.klighd.feature.source_1.1.1.v20200611.jar" id="de.cau.cs.kieler.klighd.feature.source" version="1.1.1.v20200611">
       <category name="kieler-klighd"/>
    </feature>
 
-   <feature url="features/de.cau.cs.kieler.klighd.freehep.feature_1.1.1.qualifier.jar" id="de.cau.cs.kieler.klighd.freehep.feature" version="1.1.1.qualifier">
+   <feature url="features/de.cau.cs.kieler.klighd.batik.feature_1.1.1.v20200611.jar" id="de.cau.cs.kieler.klighd.batik.feature" version="1.1.1.v20200611">
       <category name="kieler-klighd"/>
    </feature>
-   <feature url="features/de.cau.cs.kieler.klighd.freehep.feature.source_1.1.1.qualifier.jar" id="de.cau.cs.kieler.klighd.freehep.feature.source" version="1.1.1.qualifier">
-      <category name="kieler-klighd"/>
-   </feature>
-
-   <feature url="features/de.cau.cs.kieler.klighd.draw2d.feature_1.1.1.qualifier.jar" id="de.cau.cs.kieler.klighd.draw2d.feature" version="1.1.1.qualifier">
-      <category name="kieler-klighd"/>
-   </feature>
-   <feature url="features/de.cau.cs.kieler.klighd.draw2d.feature.source_1.1.1.qualifier.jar" id="de.cau.cs.kieler.klighd.draw2d.feature.source" version="1.1.1.qualifier">
+   <feature url="features/de.cau.cs.kieler.klighd.batik.feature.source_1.1.1.v20200611.jar" id="de.cau.cs.kieler.klighd.batik.feature.source" version="1.1.1.v20200611">
       <category name="kieler-klighd"/>
    </feature>
 
-   <feature url="features/de.cau.cs.kieler.klighd.view.feature_1.1.1.qualifier.jar" id="de.cau.cs.kieler.klighd.view.feature" version="1.1.1.qualifier">
+   <feature url="features/de.cau.cs.kieler.klighd.freehep.feature_1.1.1.v20200611.jar" id="de.cau.cs.kieler.klighd.freehep.feature" version="1.1.1.v20200611">
       <category name="kieler-klighd"/>
    </feature>
-   <feature url="features/de.cau.cs.kieler.klighd.view.feature.source_1.1.1.qualifier.jar" id="de.cau.cs.kieler.klighd.view.feature.source" version="1.1.1.qualifier">
+   <feature url="features/de.cau.cs.kieler.klighd.freehep.feature.source_1.1.1.v20200611.jar" id="de.cau.cs.kieler.klighd.freehep.feature.source" version="1.1.1.v20200611">
       <category name="kieler-klighd"/>
    </feature>
 
-   <feature url="features/de.cau.cs.kieler.klighd.sdk.feature_1.1.1.qualifier.jar" id="de.cau.cs.kieler.klighd.sdk.feature" version="1.1.1.qualifier">
+   <feature url="features/de.cau.cs.kieler.klighd.draw2d.feature_1.1.1.v20200611.jar" id="de.cau.cs.kieler.klighd.draw2d.feature" version="1.1.1.v20200611">
       <category name="kieler-klighd"/>
    </feature>
-   <feature url="features/de.cau.cs.kieler.klighd.sdk.feature.source_1.1.1.qualifier.jar" id="de.cau.cs.kieler.klighd.sdk.feature.source" version="1.1.1.qualifier">
+   <feature url="features/de.cau.cs.kieler.klighd.draw2d.feature.source_1.1.1.v20200611.jar" id="de.cau.cs.kieler.klighd.draw2d.feature.source" version="1.1.1.v20200611">
+      <category name="kieler-klighd"/>
+   </feature>
+
+   <feature url="features/de.cau.cs.kieler.klighd.view.feature_1.1.1.v20200611.jar" id="de.cau.cs.kieler.klighd.view.feature" version="1.1.1.v20200611">
+      <category name="kieler-klighd"/>
+   </feature>
+   <feature url="features/de.cau.cs.kieler.klighd.view.feature.source_1.1.1.v20200611.jar" id="de.cau.cs.kieler.klighd.view.feature.source" version="1.1.1.v20200611">
+      <category name="kieler-klighd"/>
+   </feature>
+
+   <feature url="features/de.cau.cs.kieler.klighd.sdk.feature_1.1.1.v20200611.jar" id="de.cau.cs.kieler.klighd.sdk.feature" version="1.1.1.v20200611">
+      <category name="kieler-klighd"/>
+   </feature>
+   <feature url="features/de.cau.cs.kieler.klighd.sdk.feature.source_1.1.1.v20200611.jar" id="de.cau.cs.kieler.klighd.sdk.feature.source" version="1.1.1.v20200611">
       <category name="kieler-klighd"/>
    </feature>
 
