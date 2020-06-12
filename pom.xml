@@ -41,6 +41,7 @@
     <module>features/de.cau.cs.kieler.klighd.batik.feature</module>
     <module>features/de.cau.cs.kieler.klighd.draw2d.feature</module>
     <module>features/de.cau.cs.kieler.klighd.freehep.feature</module>
+    <module>features/de.cau.cs.kieler.klighd.ide.feature</module>
     <module>features/de.cau.cs.kieler.klighd.view.feature</module>
     <module>features/de.cau.cs.kieler.klighd.sdk.feature</module>
 
