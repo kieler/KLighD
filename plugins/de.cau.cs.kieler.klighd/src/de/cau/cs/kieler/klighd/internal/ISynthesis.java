@@ -126,6 +126,8 @@ public interface ISynthesis {
      * Returns a list of {@link LayoutConfigurator LayoutConfigurators} to be handed over to ELK in
      * order to cause additional layout runs corresponding to the provided configurations.
      * 
+     * @param model
+     *            the view model
      * @return a {@link List} of {@link LayoutConfigurator LayoutConfigurators}
      */
     List<? extends IGraphElementVisitor> getAdditionalLayoutConfigs(KNode viewModel);

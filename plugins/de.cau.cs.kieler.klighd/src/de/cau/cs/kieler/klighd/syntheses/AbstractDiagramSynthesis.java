@@ -21,7 +21,10 @@ import java.util.Map;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.elk.alg.layered.graphvisitors.InteractiveLayeredGraphVisitor;
+import org.eclipse.elk.alg.rectpacking.graphvisitors.InteractiveRectPackingGraphVisitor;
 import org.eclipse.elk.core.options.CoreOptions;
+import org.eclipse.elk.core.service.graphvisitors.CompoundGraphElementVisitor;
 import org.eclipse.elk.core.util.IGraphElementVisitor;
 import org.eclipse.elk.core.util.Pair;
 import org.eclipse.elk.graph.properties.IProperty;
@@ -33,7 +36,6 @@ import de.cau.cs.kieler.klighd.DisplayedActionData;
 import de.cau.cs.kieler.klighd.Klighd;
 import de.cau.cs.kieler.klighd.SynthesisOption;
 import de.cau.cs.kieler.klighd.ViewContext;
-import de.cau.cs.kieler.klighd.interactive.InteractiveLayoutConfigurator;
 import de.cau.cs.kieler.klighd.internal.ISynthesis;
 import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
 import de.cau.cs.kieler.klighd.kgraph.KNode;
@@ -395,9 +397,12 @@ public abstract class AbstractDiagramSynthesis<S> implements ISynthesis {
     public List<? extends IGraphElementVisitor> getAdditionalLayoutConfigs(KNode viewModel) {
         List<IGraphElementVisitor> additionalLayoutRuns = new LinkedList<>();
         // Add interactive Layout run.
-        if (viewModel.getProperty(CoreOptions.INTERACTIVE_LAYOUT) ||
-                (!viewModel.getChildren().isEmpty() && viewModel.getChildren().get(0).getProperty(CoreOptions.INTERACTIVE_LAYOUT))) {
-            additionalLayoutRuns.add(new InteractiveLayoutConfigurator());
+        if (viewModel.getProperty(CoreOptions.INTERACTIVE_LAYOUT)
+                || (!viewModel.getChildren().isEmpty() && viewModel.getChildren().get(0)
+                        .getProperty(CoreOptions.INTERACTIVE_LAYOUT))) {
+            additionalLayoutRuns.add(new CompoundGraphElementVisitor(
+                    new InteractiveRectPackingGraphVisitor(),
+                    new InteractiveLayeredGraphVisitor()));
         }
         return additionalLayoutRuns;
     }
