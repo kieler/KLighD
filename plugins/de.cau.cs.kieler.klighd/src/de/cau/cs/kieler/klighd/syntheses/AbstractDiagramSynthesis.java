@@ -21,10 +21,10 @@ import java.util.Map;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.elk.alg.layered.graphvisitors.InteractiveLayeredGraphVisitor;
-import org.eclipse.elk.alg.rectpacking.graphvisitors.InteractiveRectPackingGraphVisitor;
+import org.eclipse.elk.alg.layered.InteractiveLayeredGraphVisitor;
+import org.eclipse.elk.alg.rectpacking.InteractiveRectPackingGraphVisitor;
 import org.eclipse.elk.core.options.CoreOptions;
-import org.eclipse.elk.core.service.graphvisitors.CompoundGraphElementVisitor;
+import org.eclipse.elk.core.service.util.CompoundGraphElementVisitor;
 import org.eclipse.elk.core.util.IGraphElementVisitor;
 import org.eclipse.elk.core.util.Pair;
 import org.eclipse.elk.graph.properties.IProperty;
