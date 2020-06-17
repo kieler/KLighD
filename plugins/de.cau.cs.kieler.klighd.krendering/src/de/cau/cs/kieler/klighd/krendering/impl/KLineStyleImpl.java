@@ -27,7 +27,7 @@ import org.eclipse.emf.ecore.EClass;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
-import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
+import org.eclipse.emf.ecore.util.EDataTypeEList;
 
 /**
  * <!-- begin-user-doc -->
@@ -142,7 +142,7 @@ public class KLineStyleImpl extends KStyleImpl implements KLineStyle {
      */
     public EList<Float> getDashPattern() {
         if (dashPattern == null) {
-            dashPattern = new EDataTypeUniqueEList<Float>(Float.class, this, KRenderingPackage.KLINE_STYLE__DASH_PATTERN);
+            dashPattern = new EDataTypeEList<Float>(Float.class, this, KRenderingPackage.KLINE_STYLE__DASH_PATTERN);
         }
         return dashPattern;
     }

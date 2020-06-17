@@ -79,7 +79,7 @@ public interface KLineStyle extends KStyle {
      * <!-- end-user-doc -->
      * @return the value of the '<em>Dash Pattern</em>' attribute list.
      * @see de.cau.cs.kieler.klighd.krendering.KRenderingPackage#getKLineStyle_DashPattern()
-     * @model
+     * @model unique="false"
      * @generated
      */
     EList<Float> getDashPattern();
