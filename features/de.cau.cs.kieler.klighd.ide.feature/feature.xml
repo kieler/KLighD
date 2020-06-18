@@ -1,19 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="de.cau.cs.kieler.klighd.view.feature"
-      label="KIELER Lightweight Diagrams Generic Diagram View"
+      id="de.cau.cs.kieler.klighd.ide.feature"
+      label="KIELER Lightweight Diagrams IDE"
       version="1.1.2.qualifier"
       provider-name="Kiel University"
-      plugin="de.cau.cs.kieler.klighd.ui.view">
+      plugin="de.cau.cs.kieler.klighd.ide">
 
    <description url="http://www.informatik.uni-kiel.de/rtsys/kieler">
-      The KLighD Generic Diagram View offers an Eclipse view that displays
-the active editor&apos;s content as a diagram, if a proper diagram synthesis
-is installed.
+      The KLighD IDE offers diagram syntheses and models used by diagram syntheses.
    </description>
 
    <copyright>
-      Copyright 2016 by Real-Time and Embedded Systems Group, Department
+      Copyright 2020 by Real-Time and Embedded Systems Group, Department
 of Computer Science, Kiel University
    </copyright>
 
@@ -221,12 +219,11 @@ litigation.
    </url>
 
    <requires>
-      <import feature="de.cau.cs.kieler.klighd.feature" version="1.0.0.v20200217" match="compatible"/>
-      <import feature="de.cau.cs.kieler.klighd.ide.feature"/>
+      <import feature="de.cau.cs.kieler.klighd.feature"/>
    </requires>
 
    <plugin
-         id="de.cau.cs.kieler.klighd.ui.view"
+         id="de.cau.cs.kieler.klighd.ide"
          download-size="0"
          install-size="0"
          version="0.0.0"

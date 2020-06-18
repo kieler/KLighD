@@ -38,6 +38,12 @@
    <feature url="features/de.cau.cs.kieler.klighd.draw2d.feature.source_1.1.2.qualifier.jar" id="de.cau.cs.kieler.klighd.draw2d.feature.source" version="1.1.2.qualifier">
       <category name="kieler-klighd"/>
    </feature>
+   <feature url="features/de.cau.cs.kieler.klighd.ide.feature_1.1.2.qualifier.jar" id="de.cau.cs.kieler.klighd.ide.feature" version="1.1.2.qualifier">
+      <category name="kieler-klighd"/>
+   </feature>
+   <feature url="features/de.cau.cs.kieler.klighd.ide.feature.source_1.1.2.qualifier.jar" id="de.cau.cs.kieler.klighd.ide.feature.source" version="1.1.2.qualifier">
+      <category name="kieler-klighd"/>
+   </feature>
 
    <feature url="features/de.cau.cs.kieler.klighd.view.feature_1.1.2.qualifier.jar" id="de.cau.cs.kieler.klighd.view.feature" version="1.1.2.qualifier">
       <category name="kieler-klighd"/>
