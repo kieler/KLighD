@@ -57,7 +57,7 @@ class InteractiveUtil {
         var nodeCount = 0
 
         for (n : nodes) {
-            val layerID = n.getProperty(LayeredOptions.LAYERING_LAYER_I_D)
+            val layerID = n.getProperty(LayeredOptions.LAYERING_LAYER_ID)
             if (layerID === layer) {
                 sortedNodes.add(n)
                 nodeCount++
@@ -66,8 +66,8 @@ class InteractiveUtil {
 
         // sort them based on their position id - this is used for speeding up future reevaluation
         sortedNodes.sort([ a, b |
-            a.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_I_D) -
-                b.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_I_D)
+            a.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_ID) -
+                b.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_ID)
         ])
 
         return sortedNodes

@@ -27,6 +27,7 @@ import de.cau.cs.kieler.klighd.krendering.KRendering
 import de.cau.cs.kieler.klighd.krendering.KRenderingFactory
 import de.cau.cs.kieler.klighd.krendering.KText
 import de.cau.cs.kieler.klighd.krendering.ViewSynthesisShared
+import java.util.EnumSet
 import javax.inject.Inject
 import org.eclipse.elk.core.options.CoreOptions
 import org.eclipse.elk.core.options.EdgeLabelPlacement
@@ -737,7 +738,7 @@ class KLabelExtensions {
      * in a {@link KNode} in order to let the configuration be performed properly.
      */
     def KLabel configureInsidePortLabel(KLabel label, String labelText) {
-        label.parent?.parent.setLayoutOption(CoreOptions::PORT_LABELS_PLACEMENT, PortLabelPlacement.INSIDE)
+        label.parent?.parent.setLayoutOption(CoreOptions::PORT_LABELS_PLACEMENT, EnumSet.of(PortLabelPlacement.INSIDE))
         return label.basicConfigureLabel(labelText);
     }
 
@@ -747,7 +748,7 @@ class KLabelExtensions {
      * in a {@link KNode} in order to let the configuration be performed properly.
      */
     def KLabel configureInsidePortLabel(KLabel label, String labelText, int fontSize) {
-        label.parent?.parent.setLayoutOption(CoreOptions::PORT_LABELS_PLACEMENT, PortLabelPlacement.INSIDE)
+        label.parent?.parent.setLayoutOption(CoreOptions::PORT_LABELS_PLACEMENT, EnumSet.of(PortLabelPlacement.INSIDE))
         return label.basicConfigureLabel(labelText, fontSize);
     }
 
@@ -757,7 +758,7 @@ class KLabelExtensions {
      * in a {@link KNode} in order to let the configuration be performed properly.
      */
     def KLabel configureInsidePortLabel(KLabel label, String labelText, int fontSize, String fontName) {
-        label.parent?.parent.setLayoutOption(CoreOptions::PORT_LABELS_PLACEMENT, PortLabelPlacement.INSIDE)
+        label.parent?.parent.setLayoutOption(CoreOptions::PORT_LABELS_PLACEMENT, EnumSet.of(PortLabelPlacement.INSIDE))
         return label.basicConfigureLabel(labelText, fontSize, fontName);
     }
 
@@ -794,7 +795,7 @@ class KLabelExtensions {
      * in a {@link KNode} in order to let the configuration be performed properly.
      */
     def KLabel configureOutsidePortLabel(KLabel label, String labelText) {
-        label.parent?.parent.setLayoutOption(CoreOptions::PORT_LABELS_PLACEMENT, PortLabelPlacement.OUTSIDE)
+        label.parent?.parent.setLayoutOption(CoreOptions::PORT_LABELS_PLACEMENT, EnumSet.of(PortLabelPlacement.OUTSIDE))
         return label.basicConfigureLabel(labelText);
     }
 
@@ -804,7 +805,7 @@ class KLabelExtensions {
      * in a {@link KNode} in order to let the configuration be performed properly.
      */
     def KLabel configureOutsidePortLabel(KLabel label, String labelText, int fontSize) {
-        label.parent?.parent.setLayoutOption(CoreOptions::PORT_LABELS_PLACEMENT, PortLabelPlacement.OUTSIDE)
+        label.parent?.parent.setLayoutOption(CoreOptions::PORT_LABELS_PLACEMENT, EnumSet.of(PortLabelPlacement.OUTSIDE))
         return label.basicConfigureLabel(labelText, fontSize);
     }
 
@@ -814,7 +815,7 @@ class KLabelExtensions {
      * in a {@link KNode} in order to let the configuration be performed properly.
      */
     def KLabel configureOutsidePortLabel(KLabel label, String labelText, int fontSize, String fontName) {
-        label.parent?.parent.setLayoutOption(CoreOptions::PORT_LABELS_PLACEMENT, PortLabelPlacement.OUTSIDE)
+        label.parent?.parent.setLayoutOption(CoreOptions::PORT_LABELS_PLACEMENT, EnumSet.of(PortLabelPlacement.OUTSIDE))
         return label.basicConfigureLabel(labelText, fontSize, fontName);
     }
 

@@ -188,7 +188,7 @@ class LayeredInteractiveUtil {
     private static def initialLayers(ArrayList<KNode> nodes) {
         // sorting based on layer ID position
         nodes.sort([ a, b |
-            a.getProperty(LayeredOptions.LAYERING_LAYER_I_D) - b.getProperty(LayeredOptions.LAYERING_LAYER_I_D)
+            a.getProperty(LayeredOptions.LAYERING_LAYER_ID) - b.getProperty(LayeredOptions.LAYERING_LAYER_ID)
         ])
 
         var layerNodes = newArrayList()
@@ -196,7 +196,7 @@ class LayeredInteractiveUtil {
         var currentLayer = -1
         // assign the nodes to layers
         for (node : nodes) {
-            var layer = node.getProperty(LayeredOptions.LAYERING_LAYER_I_D)
+            var layer = node.getProperty(LayeredOptions.LAYERING_LAYER_ID)
             if (layer > currentLayer) {
                 // node is in a new layer
                 if (!nodesOfLayer.isEmpty) {
