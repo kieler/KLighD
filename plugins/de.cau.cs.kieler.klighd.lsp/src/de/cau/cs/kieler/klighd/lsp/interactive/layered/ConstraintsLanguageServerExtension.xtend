@@ -107,7 +107,7 @@ class ConstraintsLanguageServerExtension implements ILanguageServerExtension {
             val newPosCons = sc.posCons
             var newLayerCons = sc.layerCons
 
-            val layerId = kNode.getProperty(LayeredOptions.LAYERING_LAYER_I_D)
+            val layerId = kNode.getProperty(LayeredOptions.LAYERING_LAYER_ID)
 
             var targetLayerNodes = InteractiveUtil.getNodesOfLayer(newLayerId, allNodes)
             var oldLayerNodes = InteractiveUtil.getNodesOfLayer(layerId, allNodes)
@@ -192,7 +192,7 @@ class ConstraintsLanguageServerExtension implements ILanguageServerExtension {
         val parentOfNode = kNode.parent
 
         if (kNode !== null && parentOfNode !== null) {
-            var layerID = kNode.getProperty(LayeredOptions.LAYERING_LAYER_I_D)
+            var layerID = kNode.getProperty(LayeredOptions.LAYERING_LAYER_ID)
             var List<KNode> residingLayer
             residingLayer = InteractiveUtil.getNodesOfLayer(layerID, parentOfNode.children)
 

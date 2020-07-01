@@ -265,8 +265,8 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
      * 
      * It is used for the Intentional Layout in Sprotty Diagrams
      */
-    private static final IProperty<Integer> LAYERING_LAYER_I_D = new Property<Integer>(
-            "org.eclipse.elk.layered.layering.layerID",
+    private static final IProperty<Integer> LAYERING_LAYER_ID = new Property<Integer>(
+            "org.eclipse.elk.layered.layering.layerId",
             (-1),
             (-1),
             null);
@@ -277,8 +277,8 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
      * 
      * It is used for the Intentional Layout in Sprotty Diagrams
      */
-    private static final IProperty<Integer> CROSSING_MINIMIZATION_POSITION_I_D = new Property<Integer>(
-            "org.eclipse.elk.layered.crossingMinimization.positionID",
+    private static final IProperty<Integer> CROSSING_MINIMIZATION_POSITION_ID = new Property<Integer>(
+            "org.eclipse.elk.layered.crossingMinimization.positionId",
             (-1),
             (-1),
             null);
@@ -692,14 +692,12 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
                 public Boolean caseElkNode(final ElkNode layoutNode) {
                     final KNode node = (KNode) element;
                     
-                    //Apply the nodeID and layerId that were set on the LGraph on the ElkGraph
-                    if (layoutNode.hasProperty(LAYERING_LAYER_I_D) 
-                            && layoutNode.hasProperty(CROSSING_MINIMIZATION_POSITION_I_D)) {
-                        
-                        final int nodeID = layoutNode.getProperty(CROSSING_MINIMIZATION_POSITION_I_D);
-                        final int layerID = layoutNode.getProperty(LAYERING_LAYER_I_D);
-                        node.setProperty(CROSSING_MINIMIZATION_POSITION_I_D, nodeID);
-                        node.setProperty(LAYERING_LAYER_I_D, layerID);
+                    // Apply the nodeId and layerId that were set on the LGraph on the ElkGraph
+                    if (layoutNode.hasProperty(LAYERING_LAYER_ID) 
+                            && layoutNode.hasProperty(CROSSING_MINIMIZATION_POSITION_ID)) {
+                        node.setProperty(CROSSING_MINIMIZATION_POSITION_ID,
+                                layoutNode.getProperty(CROSSING_MINIMIZATION_POSITION_ID));
+                        node.setProperty(LAYERING_LAYER_ID, layoutNode.getProperty(LAYERING_LAYER_ID));
                     }
                     
                     if (layoutNode.hasProperty(CURRENT_POSITION)) {

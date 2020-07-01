@@ -201,7 +201,7 @@ public final class DiagramLayoutOptions {
     /**
      * @see CoreOptions#PORT_LABEL_PLACEMENT
      */
-    public static final IProperty<PortLabelPlacement> PORT_LABEL_PLACEMENT =
+    public static final IProperty<EnumSet<PortLabelPlacement>> PORT_LABEL_PLACEMENT =
             CoreOptions.PORT_LABELS_PLACEMENT;
 
     /**
