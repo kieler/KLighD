@@ -180,7 +180,7 @@ public class KGraphMerger {
         }
         for (KEdge newEdge : Lists.newLinkedList(newNode.getOutgoingEdges())) {
             KEdge baseEdge = comparison.lookupBaseEdge(newEdge);
-            if (baseEdge == null) {
+            if (baseEdge == null || baseEdge.getTarget() == null) {
                 baseEdge = EcoreUtil.copy(newEdge);
                 updateEdge(baseEdge, newEdge);
             } else {

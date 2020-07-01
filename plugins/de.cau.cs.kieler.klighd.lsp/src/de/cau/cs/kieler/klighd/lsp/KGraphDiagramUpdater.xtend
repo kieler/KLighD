@@ -118,7 +118,9 @@ class KGraphDiagramUpdater extends DiagramUpdater {
                 } else {
                     snapshotModel
                 }
-            if (!(model instanceof EObject) || (model as EObject).eResource.errors.empty) {
+            if (!(model instanceof EObject) || (model as EObject).eResource  === null ||
+                (model as EObject).eResource.errors.isEmpty
+            ) {
                 (diagramServers as List<KGraphDiagramServer>).forEach [ server |
                     prepareModel(server, model, path)
                     updateLayout(server)

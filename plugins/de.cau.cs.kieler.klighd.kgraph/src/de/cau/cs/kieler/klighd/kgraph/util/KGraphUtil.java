@@ -774,6 +774,7 @@ public final class KGraphUtil {
      */
     public static boolean isDescendant(final KNode child, final KNode parent) {
         KNode current = child;
+        if (current == null) return false;
         while (current.getParent() != null) {
             current = current.getParent();
             if (current == parent) {
