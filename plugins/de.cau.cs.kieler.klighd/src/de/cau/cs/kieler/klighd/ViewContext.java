@@ -865,7 +865,7 @@ public class ViewContext extends MapPropertyHolder {
      */
     public List<? extends IGraphElementVisitor> getAdditionalLayoutConfigs() {
         if (this.diagramSynthesis != null) {
-            return this.diagramSynthesis.getAdditionalLayoutConfigs(viewModel);
+            return this.diagramSynthesis.getAdditionalLayoutConfigs(viewModel, this);
         } else {
             return Collections.emptyList();
         }

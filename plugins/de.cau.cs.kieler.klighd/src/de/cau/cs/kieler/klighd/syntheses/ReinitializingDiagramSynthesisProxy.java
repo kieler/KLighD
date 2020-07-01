@@ -337,11 +337,11 @@ public class ReinitializingDiagramSynthesisProxy<S> implements ISynthesis {
     /**
      * {@inheritDoc}
      */
-    public List<? extends IGraphElementVisitor> getAdditionalLayoutConfigs(KNode viewModel) {
+    public List<? extends IGraphElementVisitor> getAdditionalLayoutConfigs(KNode viewModel, ViewContext viewContext) {
         if (this.transformationDelegate == null) {
             this.transformationDelegate = getNewDelegateInstance();
         }
-        return this.transformationDelegate.getAdditionalLayoutConfigs(viewModel);
+        return this.transformationDelegate.getAdditionalLayoutConfigs(viewModel, viewContext);
     }
 
     /**
