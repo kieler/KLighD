@@ -3,7 +3,7 @@
  *
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright 2018-2019 by
+ * Copyright 2018, 2020 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -331,8 +331,12 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
     }
     
     /**
-     * configures the {@code option} of the {@code viewContext} with the new {@code value} while regarding some special
+     * Configures the {@code option} of the {@code viewContext} with the new {@code value} while regarding some special
      * cases that arise when using an arbitrary Object as the value.
+     * 
+     * @param option The synthesis option
+     * @param value The value for that option
+     * @param viewContext The current {@code ViewContext} in which the option is configured
      */
     def void configureOption(SynthesisOption option, Object value, ViewContext viewContext) {
         if (option.isChoiceOption) {
@@ -397,6 +401,9 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
     /**
      * Creates and sends the diagram for an arbitrary snapshot object for any source model to the client.
      * 
+     * @param uri The uri of the original model file
+     * @param clientId The id of the corresponding diagram.
+     * @param cancelIndicator The cancel indicator
      * @param update Indicates if this call should update the same snapshot model.
      */
     def showSnapshot(String uri, String clientId, Object model, CancelIndicator cancelIndicator, boolean update) {

@@ -261,5 +261,3 @@ public class KeithUpdateModelAction extends UpdateModelAction {
         this.cause = cause
     }
 }
-
-

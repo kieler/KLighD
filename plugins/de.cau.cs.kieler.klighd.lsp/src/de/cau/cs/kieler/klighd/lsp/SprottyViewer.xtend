@@ -204,5 +204,4 @@ class SprottyViewer extends AbstractViewer implements ILayoutRecorder {
         val List<EObject> toBeSelected = newArrayList(filter(diagramElements, isSelectable))
         this.diagramServer.selectElements(toBeSelected)
     }
-    
 }

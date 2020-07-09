@@ -18,8 +18,8 @@ import de.cau.cs.kieler.klighd.kgraph.KNode
 
 /**
  * A data class for the layered interactive constraints sent from client to server.
+ * 
  * @author sdo
- *
  */
 @Data
 class ConstraintProperty {

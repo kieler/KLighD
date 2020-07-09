@@ -833,6 +833,7 @@ public final class KGraphUtil {
      * Determines the root of the given node.
      * 
      * @param node KNode, which root should be returned.
+     * @return The root of the given node.
      */
     public static KNode getRootNodeOf(KNode node) {
         KNode parent = node;
@@ -845,7 +846,7 @@ public final class KGraphUtil {
     /**
      * Collects the adjacent nodes of {@code node} in a list.
      * @param node The node of which you want to know the adjacent nodes.
-     * @return 
+     * @return The adjacent nodes of the given node
      */
     public static List<KNode> getAdjacentNodes(KNode node) {
         List<KEdge> inEdges = node.getIncomingEdges();

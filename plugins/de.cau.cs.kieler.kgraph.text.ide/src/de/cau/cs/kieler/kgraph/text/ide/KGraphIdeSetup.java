@@ -31,7 +31,6 @@ import de.cau.cs.kieler.kgraph.text.KGraphStandaloneSetup;
  * Initialization support for running Xtext languages as language servers.
  * 
  * @author sdo
- * 
  */
 public class KGraphIdeSetup extends KGraphStandaloneSetup {
 

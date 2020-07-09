@@ -35,6 +35,7 @@ import org.eclipse.sprotty.SModelElement
  * @author nre
  */
 class KGraphElementIDGenerator {
+    
     /**
      * Internal map to remember the ID for all {@link KGraphElement}s for that IDs already have been generated.
      */
@@ -49,18 +50,22 @@ class KGraphElementIDGenerator {
      * The character used to separate levels of hierarchy in the ID of {@link KGraphElement}s or unnamed elements.
      */
     public static final char ID_SEPARATOR = '$'
+    
     /**
      * The character used to indicate a {@link KNode} in the ID of a {@link KGraphElement}.
      */
     public static final char NODE_SEPARATOR = 'N'
+    
     /**
      * The character used to indicate a {@link KEdge} in the ID of a {@link KGraphElement}.
      */
     public static final char EDGE_SEPARATOR = 'E'
+    
     /**
      * The character used to indicate a {@link KPort} in the ID of a {@link KGraphElement}.
      */
     public static final char PORT_SEPARATOR = 'P'
+    
     /**
      * The character used to indicate a {@link KLabel} in the ID of a {@link KGraphElement}.
      */
@@ -72,7 +77,10 @@ class KGraphElementIDGenerator {
     }
     
     /**
-     * generates a unique ID for any {@link KGraphElement}. Returns the same ID for the element if called a second time.
+     * Generates a unique ID for any {@link KGraphElement}. Returns the same ID for the element if called a second time.
+     * 
+     * @param element The graph element to generate the id for.
+     * @return The id string or empty string if the element is null
      */
     def String getId(KGraphElement element) {
         if (element === null) {
@@ -162,14 +170,17 @@ class KGraphElementIDGenerator {
  * @author nre
  */
 class KRenderingIDGenerator {
+    
     /**
      * The character used to separate levels of hierarchy in the ID of {@link KRendering}s.
      */
     public static final char ID_SEPARATOR = '$'
+    
     /**
      * The character used to indicate a child {@link KRendering} in the ID of another {@link KRendering}.
      */
     public static final char RENDERING_SEPERATOR = 'R'
+    
     /**
      * The character used to indicate a junction point rendering in the ID of a {@link KPolyline}.
      */
@@ -178,7 +189,9 @@ class KRenderingIDGenerator {
     /**
      * Generates a new unique ID for this rendering (if necessary) and all child elements of this rendering (if any)
      * and writes it in their ID fields.
-     * If the given rendering already has an id, it has to bee unique and not contain the character '$'.
+     * If the given rendering already has an id, it has to be unique and not contain the character '$'.
+     * 
+     * @param rendering The rendering
      */
     static def void generateIdsRecursive(KStyleHolder rendering) {
         if (rendering !== null) {

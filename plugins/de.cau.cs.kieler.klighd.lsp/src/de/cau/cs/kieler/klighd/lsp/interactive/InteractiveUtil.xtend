@@ -26,11 +26,10 @@ import org.eclipse.elk.alg.rectpacking.options.RectPackingOptions
 
 /**
  * Provides utility methods for interactive layout.
- * @author sdo
  *
+ * @author sdo
  */
 class InteractiveUtil {
-    
 
     /**
      * Returns the Resource that is specified by a given uri.
@@ -39,7 +38,6 @@ class InteractiveUtil {
      * @return The Resource
      */
     def static getResourceFromUri(String uri, Injector injector) {
-
         return injector.getInstance(XtextResourceSet).getResource(URI.createURI(uri), true)
     }
 
@@ -90,10 +88,8 @@ class InteractiveUtil {
                 elkNode.setProperty(prop, null)
             } else {
                 elkNode.setProperty(prop, kNodeValue)
-
             }
         }
-
     }
 
     /**
@@ -120,13 +116,13 @@ class InteractiveUtil {
         for (prop : props) {
             copyConstraintProp(elkNode, kNode, prop)
         }
-
     }
 
     /**
      * Determines the root of the given node.
      * 
      * @param node ElkNode, which root should be returned.
+     * @return The root node of a node. If the node itself has no parent the original node is returned.
      */
     static def getRootNodeOf(ElkNode node) {
         var ElkNode parent = node

@@ -15,8 +15,9 @@ package de.cau.cs.kieler.kgraph.text.ide
 import com.google.inject.Injector
 
 /**
+ * Registers the KGraph language in a language server setup.
+ * 
  * @author sdo
- *
  */
 class KGraphLSSetup {
     def static Injector doLSSetup() {

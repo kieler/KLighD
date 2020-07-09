@@ -58,6 +58,7 @@ class ConstraintsLanguageServerExtension implements ILanguageServerExtension {
     Injector injector
 
     override initialize(ILanguageServerAccess access) {
+        // Not implemented, since it is not needed.
     }
 
     /**
@@ -125,7 +126,6 @@ class ConstraintsLanguageServerExtension implements ILanguageServerExtension {
             changedNodes.put(new ConstraintProperty(kNode, LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT), newLayerCons)
             // Update source code of the model
             refreshModelInEditor(changedNodes, uri)
-
         }
     }
 
@@ -143,7 +143,6 @@ class ConstraintsLanguageServerExtension implements ILanguageServerExtension {
             changedNodes.put(new ConstraintProperty(kNode, LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT), null)
             changedNodes.put(new ConstraintProperty(kNode, LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT), null)
             refreshModelInEditor(changedNodes, uri)
-
         }
     }
 
@@ -215,15 +214,18 @@ class ConstraintsLanguageServerExtension implements ILanguageServerExtension {
      * Returns null if the {@code INTERACTIVE_LAYOUT} IProperty is not set on the root of the resource.
      * This version of getKNode retrieves the root itself. If you already have retrieved the root, 
      * then you should use the other variant.
+     * 
      * @param uri The resource's uri
      * @param ID The Id of the requested KNode
+     * @return The requested node
      */
     private def getKNode(String uri, String ID) {
         return LSPUtil.getKNode(diagramState, uri, ID)
     }
     
     /**
-     * Changes property changes defined by changedNodes to the resource
+     * Sends request to the client to update the file according to the property changes.
+     * 
      * @param changedNodes list of all changes to nodes
      * @param uri uri of resource
      */

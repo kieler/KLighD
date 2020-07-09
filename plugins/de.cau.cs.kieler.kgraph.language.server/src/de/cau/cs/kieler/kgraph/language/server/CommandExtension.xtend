@@ -20,7 +20,6 @@ import org.eclipse.lsp4j.jsonrpc.services.JsonSegment
  * Interface to the LSP extension commands for language registration
  * 
  * @author sdo
- *
  */
 @JsonSegment('keith/registration')
 interface LanguageRegistrationExtension {

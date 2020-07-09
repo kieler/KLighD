@@ -20,10 +20,8 @@ import org.eclipse.lsp4j.Range
  * Register all server to client notifications and requests.
  * 
  * @author sdo
- *
  */
 interface KGraphLanguageClient extends LanguageClient {
-    
     
     /**
      * Send to client if some message should be displayed. Type is one of "info", "warn", and "error".
@@ -31,7 +29,9 @@ interface KGraphLanguageClient extends LanguageClient {
     @JsonNotification("general/sendMessage")
     def void sendMessage(String message, String type)
     
+    /**
+     * Send to the client to replace the given range of the file given by the uri by the code string.
+     */
     @JsonNotification("general/replaceContentInFile")
     def void replaceContentInFile(String uri, String code, Range range)
-    
 }

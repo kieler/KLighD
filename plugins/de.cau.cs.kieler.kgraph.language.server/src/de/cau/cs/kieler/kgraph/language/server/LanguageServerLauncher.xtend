@@ -29,7 +29,6 @@ import org.eclipse.xtext.ide.server.ServerLauncher
  * Defines static methods used by the LangaugeServer to create an injector and a LS.
  * 
  * @author sdo
- *
  */
 class LanguageServerLauncher extends ServerLauncher {
     

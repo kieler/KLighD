@@ -36,9 +36,12 @@ import org.eclipse.sprotty.SShapeElement
  * 
  * @author nre
  */
-class KGraphMappingUtil {    
+class KGraphMappingUtil {
+    
     /**
      * Map the layout of each KGraph element in the map to their corresponding SGraph elements.
+     * 
+     * @param mapping The mapping between KGraph and SGraph elements
      */
     static def mapLayout(Map<KGraphElement, SModelElement> mapping) {
         mapping.forEach[kGraphElement, sModelElement |
@@ -58,6 +61,12 @@ class KGraphMappingUtil {
         ]
     }
     
+    /**
+     * Maps an edge from KGraph to SGraph
+     * 
+     * @param kedge The KGraph edge
+     * @param skedge The SkGraph edge
+     */
     private static def mapLayout(KEdgeLayout kedge, SKEdge skedge) {
         // Copy all routing points.
         var ArrayList<Point> routingPoints = new ArrayList<Point>
@@ -76,9 +85,14 @@ class KGraphMappingUtil {
         
         // Copy the bend points.
         skedge.junctionPoints = kedge.getProperty(CoreOptions.JUNCTION_POINTS)
-        
     }
     
+    /**
+     * Map shape layout from KGraph to SGraph
+     * 
+     * @param kElement The KGraph shape
+     * @param sElement The SGraph shape
+     */
     private static def mapLayout(KShapeLayout kElement, SShapeElement sElement) {
         sElement.position = new Point(kElement.xpos, kElement.ypos)
         sElement.size = new Dimension(kElement.width, kElement.height)

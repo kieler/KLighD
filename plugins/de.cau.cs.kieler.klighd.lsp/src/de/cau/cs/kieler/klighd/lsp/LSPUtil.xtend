@@ -14,12 +14,12 @@ package de.cau.cs.kieler.klighd.lsp
 
 import de.cau.cs.kieler.klighd.ViewContext
 import de.cau.cs.kieler.klighd.kgraph.KNode
-import org.eclipse.elk.graph.properties.IProperty
 import de.cau.cs.kieler.klighd.lsp.utils.KGraphElementIDGenerator
 
 /**
- * @author sdo
+ * Utility methods for graphs in a language server context.
  * 
+ * @author sdo
  */
 class LSPUtil {
 
@@ -38,11 +38,15 @@ class LSPUtil {
         }
 
         return viewContext?.viewModel
-
     }
 
     /**
-     * Returns the {@code KNode} of the node described by {@code id}.
+     * Get a {@code KNode} based by id.
+     * 
+     * @param diagramState The state of the diagram
+     * @param uri The uri of the model file
+     * @param id The id of the node element
+     * @return the {@code KNode} of the node described by {@code id}.
      * Returns null if the {@code ViewContext} of the resource described by {@code uri} is null.
      * Returns null if the element behind the id is no kNode.
      */

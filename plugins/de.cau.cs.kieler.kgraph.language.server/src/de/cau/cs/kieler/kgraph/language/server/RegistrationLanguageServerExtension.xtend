@@ -25,7 +25,6 @@ import org.eclipse.xtext.ide.server.concurrent.RequestManager
  * Implements methods to extend the LSP to allow language registration.
  * 
  * @author sdo
- * 
  */
  @Singleton
 class RegistrationLanguageServerExtension implements LanguageRegistrationExtension {
@@ -33,7 +32,6 @@ class RegistrationLanguageServerExtension implements LanguageRegistrationExtensi
     /**
      * Will be written to after the Language Server connects
      */
-     
     public static List<String> registeredLanguageExtensions = newArrayList
 
     protected static val LOG = Logger.getLogger(RegistrationLanguageServerExtension)

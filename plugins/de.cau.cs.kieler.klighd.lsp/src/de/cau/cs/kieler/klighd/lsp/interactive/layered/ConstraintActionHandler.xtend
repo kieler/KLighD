@@ -19,8 +19,8 @@ import org.eclipse.sprotty.Action
 
 /**
  * Handles all sprotty actions for the layered interactive algorithm.
- * @author sdo
  *
+ * @author sdo
  */
 class ConstraintActionHandler extends AbstractActionHandler {
     
@@ -68,5 +68,4 @@ class ConstraintActionHandler extends AbstractActionHandler {
                 this.class.simpleName)
         }
     }
-    
 }

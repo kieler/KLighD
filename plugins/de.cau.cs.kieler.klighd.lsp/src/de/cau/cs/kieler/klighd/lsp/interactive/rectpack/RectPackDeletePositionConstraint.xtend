@@ -19,7 +19,6 @@ import org.eclipse.xtend.lib.annotations.Data
  * Only the node id is requiered to do so, since it has its previous position saved together with its actual position.
  * 
  * @author sdo
- * 
  */
 @Data
 class RectPackDeletePositionConstraint {

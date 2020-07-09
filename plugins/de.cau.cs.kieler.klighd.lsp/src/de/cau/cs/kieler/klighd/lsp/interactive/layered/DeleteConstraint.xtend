@@ -16,8 +16,8 @@ import org.eclipse.xtend.lib.annotations.Data
 
 /**
  * Data class for a delete constraint.
- * @author jet, cos, sdo
  * 
+ * @author jet, cos, sdo
  */
 @Data
 class DeleteConstraint {

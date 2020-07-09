@@ -18,8 +18,9 @@ import org.eclipse.xtext.workspace.FileProjectConfig
 import org.eclipse.xtext.workspace.WorkspaceConfig
 
 /**
+ * Overrides default workspace configuration to not create an xtext folder workspace.
+ * 
  * @author sdo
- *
  */
 class KeithProjectWorkspaceConfigFactory implements IWorkspaceConfigFactory {
     

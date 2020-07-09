@@ -23,9 +23,10 @@ import org.eclipse.xtext.resource.IResourceServiceProvider
 import org.eclipse.xtext.resource.ResourceServiceProviderServiceLoader
 import org.eclipse.xtext.resource.containers.ProjectDescriptionBasedContainerManager
 
-/** 
+/**
+ * Bind necessary classes for a language server setup.
+ * 
  * @author sdo
- *
  */
 class KeithServerModule extends AbstractModule {
     

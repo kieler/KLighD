@@ -53,6 +53,7 @@ import static com.google.common.collect.Iterables.filter
  * @author nre
  */
 final class RenderingPreparer {
+
     /**
      * Prepares a KGraphElement to be rendered in an external viewer.
      * Calculates the position, width and height of each rendering of the parameters {@code element} from KLighD's 
@@ -64,7 +65,6 @@ final class RenderingPreparer {
      * For example: <id of the rendering in the library: bounds in this instance>
      * Furthermore, for every rendering a unique ID is generated.
      * Finally, modifiable styles defined by the synthesis are processed for the rendering.
-     * 
      * 
      * @param element The parent element containing the graph to calculate all rendering bounds for.
      */

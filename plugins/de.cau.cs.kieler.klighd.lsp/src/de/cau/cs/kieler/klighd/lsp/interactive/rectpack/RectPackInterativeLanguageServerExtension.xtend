@@ -30,11 +30,9 @@ import org.eclipse.elk.core.options.CoreOptions
 import org.eclipse.elk.graph.ElkNode
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.util.EcoreUtil
-import org.eclipse.lsp4j.ApplyWorkspaceEditParams
 import org.eclipse.lsp4j.Position
 import org.eclipse.lsp4j.Range
 import org.eclipse.lsp4j.TextEdit
-import org.eclipse.lsp4j.WorkspaceEdit
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.xtext.ide.server.ILanguageServerAccess
 import org.eclipse.xtext.ide.server.ILanguageServerExtension
@@ -42,8 +40,8 @@ import org.eclipse.xtext.resource.XtextResourceSet
 
 /**
  * Language server extension to change the rectpacking algorithm in the interactive mode.
- * @author sdo
  * 
+ * @author sdo
  */
 @Singleton
 class RectPackInterativeLanguageServerExtension implements ILanguageServerExtension {
@@ -106,6 +104,12 @@ class RectPackInterativeLanguageServerExtension implements ILanguageServerExtens
         }
     }
 
+    /**
+     * Delete a position constraint.
+     * 
+     * @param constraint The deletion constraint
+     * @param clientId The client id of the corresponding  diagram view.
+     */
     def deletePositionConstraint(RectPackDeletePositionConstraint constraint, String clientId) {
         val uri = diagramState.getURIString(clientId)
         val kNode = LSPUtil.getKNode(diagramState, uri, constraint.id)
@@ -145,6 +149,9 @@ class RectPackInterativeLanguageServerExtension implements ILanguageServerExtens
     
     /**
      * Sets the aspect ratio.
+     * 
+     * @param constraint The aspect ratio constraint.
+     * @param The client id of the corresponding diagram view.
      */
     def setAspectRatio(SetAspectRatio constraint, String clientId) {
         val uri = diagramState.getURIString(clientId)
@@ -162,11 +169,10 @@ class RectPackInterativeLanguageServerExtension implements ILanguageServerExtens
     }
 
     /**
-     * Changes property changes defined by changedNodes to the resource
-     * @param kNode just some kNode of the correct graph
-     * @param uri uri of resource
+     * Applies property changes to the file given by the uri by sending by notifying the client to execute the changes.
      * 
-     * This resource update does not applied as a normal text edit. Therefore, these changes cannot be reverted via ctrl+z.
+     * @param changedNodes The KNodes that changed.
+     * @param uri uri of resource
      */
     def refreshModelInEditor(List<KNode> changedNodes, String uri) {
         val resource = injector.getInstance(XtextResourceSet).getResource(URI.createURI(uri), true)

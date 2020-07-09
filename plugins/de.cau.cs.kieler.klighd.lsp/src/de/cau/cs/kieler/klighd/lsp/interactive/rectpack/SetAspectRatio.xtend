@@ -16,8 +16,8 @@ import org.eclipse.xtend.lib.annotations.Data
 
 /**
  * Data class to set a new aspect ratio which is sent from client to server for the rectpacking algorithm.
- * @author sdo
  * 
+ * @author sdo
  */
 @Data
 class SetAspectRatio {

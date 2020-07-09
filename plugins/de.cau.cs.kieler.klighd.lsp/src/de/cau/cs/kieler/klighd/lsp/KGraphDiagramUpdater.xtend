@@ -132,7 +132,6 @@ class KGraphDiagramUpdater extends DiagramUpdater {
             }
             return null as Void
         ]
-        
     }
 
     /**
@@ -227,6 +226,7 @@ class KGraphDiagramUpdater extends DiagramUpdater {
      * @param id The identifier used in the SGraph model generation and that is used to store diagram generation
      * relevant data in the {@link KGraphDiagramState}.
      * @param cancelIndicator The {@link CancelIndicator} used to tell the diagram translation to stop.
+     * @return The generated SGraph
      */
     synchronized def SGraph createModel(ViewContext viewContext, String id, CancelIndicator cancelIndicator) {
         // Do interactive layout

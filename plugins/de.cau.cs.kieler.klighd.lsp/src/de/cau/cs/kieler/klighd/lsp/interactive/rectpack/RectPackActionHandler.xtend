@@ -19,8 +19,8 @@ import org.eclipse.sprotty.Action
 
 /**
  * This class handles all sprotty actions for the interactive rectpacking algorithm.
- * @author sdo
  *
+ * @author sdo
  */
 class RectPackActionHandler extends AbstractActionHandler {
     
@@ -51,5 +51,4 @@ class RectPackActionHandler extends AbstractActionHandler {
             throw new IllegalArgumentException("Action " + action.kind + " not supported by handler " + this.class.simpleName)
         }
     }
-    
 }

@@ -155,7 +155,6 @@ class ValuedSynthesisOption {
     /**
      * The synthesisOption.
      */
-     
     SynthesisOption synthesisOption
     /**
      * The current value of the synthesisOption.
