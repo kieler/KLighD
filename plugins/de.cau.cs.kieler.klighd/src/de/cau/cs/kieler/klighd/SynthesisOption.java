@@ -888,9 +888,7 @@ public final class SynthesisOption {
      * @return An id string.
      */
     private static String createId(final Class<?> clazz, final String name, final TransformationOptionType type) {
-        String test =  clazz.getName() + "." + createIdFromName(name, type);
-        System.out.println(test);
-        return test;
+        return clazz.getName() + "." + createIdFromName(name, type);
     }
 
     
