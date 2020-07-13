@@ -93,10 +93,10 @@ class EObjectFallbackSynthesis extends AbstractDiagramSynthesis<EObject> {
 
     // Options
     public static val SynthesisOption EXPAND_DETAILS = SynthesisOption::createCheckOption(
-            "eobjectFallback.expandDetails", "Expand all Details",
+            EObjectFallbackSynthesis, "Expand all Details",
         false).setUpdateAction(EcoreModelExpandDetailsAction.ID);
     public static val SynthesisOption SHOW_REFERENCES = SynthesisOption::createCheckOption(
-        "eobjectFallback.showReferences", "Show References", false);
+        EObjectFallbackSynthesis, "Show References", false);
         
     // Sidebar
     override getDisplayedSynthesisOptions() {
