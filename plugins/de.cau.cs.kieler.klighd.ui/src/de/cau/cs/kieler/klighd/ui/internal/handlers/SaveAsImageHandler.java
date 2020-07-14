@@ -61,7 +61,8 @@ public class SaveAsImageHandler extends AbstractHandler {
         final SaveAsImageDialog dialog = new SaveAsImageDialog(viewer.getViewContext(), shell);
         final int code = dialog.open();
 
-        if (code != Dialog.OK) {
+        if (code != Dialog.OK
+                || dialog.getCurrentExporter() == null /* may happen when closing the app before closing the dialog */) {
             return null;
         }
 

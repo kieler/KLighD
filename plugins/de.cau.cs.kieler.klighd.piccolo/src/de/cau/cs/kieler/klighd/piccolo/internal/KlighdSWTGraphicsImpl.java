@@ -1364,4 +1364,9 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
 
     public void endGroup() {
     }
+    /* --------------------- TextLength    ---------------------*/
+
+    // unsupported for the SWT graphics
+    public void setNextTextLength(double textLength) {
+    }
 }

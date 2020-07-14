@@ -21,6 +21,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.elk.graph.properties.IProperty;
 import org.eclipse.elk.graph.properties.IPropertyHolder;
 import org.eclipse.elk.graph.properties.Property;
+import org.eclipse.swt.graphics.RGB;
 
 /**
  * Implementations of this interface are able to render diagram formats like PNG or SVG without
@@ -78,6 +79,14 @@ public interface IOffscreenRenderer {
     IProperty<Integer> IMAGE_SCALE = new Property<Integer>(
             "de.cau.cs.kieler.klighd.offscreenRendering.imageScale", 1);
 
+    /** Property definition for defining the diagram background color. */
+    IProperty<RGB> BACKGROUND_COLOR = new Property<RGB>(
+            "de.cau.cs.kieler.klighd.offscreenRendering.backgroundColor", KlighdConstants.WHITE);
+
+    /** Property definition for defining transparent diagram background. */
+    IProperty<Boolean> TRANSPARENT_BACKGROUND = new Property<Boolean>(
+            "de.cau.cs.kieler.klighd.offscreenRendering.transparentBackground", false);
+
     /**
      * Property definition for instructing vector image exporters to render text strings as polyline
      * shapes.
@@ -91,6 +100,14 @@ public interface IOffscreenRenderer {
     IProperty<Boolean> EMBED_FONTS = new Property<Boolean>(
             "de.cau.cs.kieler.klighd.offscreenRendering.embedFonts", false);
 
+    /**
+     * Property definition for instructing vector image exporters to set the {@code textLength}
+     * properties of text elements to the expected values. May reduce rendering mismatches among
+     * browsers and compared to SWT's pixel drawings.
+     */
+    IProperty<Boolean> SET_TEXT_LENGTHS = new Property<Boolean>(
+            "de.cau.cs.kieler.klighd.offscreenRendering.setTextLengths", false);
+    
     /**
      * Property definition for embedding a predefined description in the output.
      */

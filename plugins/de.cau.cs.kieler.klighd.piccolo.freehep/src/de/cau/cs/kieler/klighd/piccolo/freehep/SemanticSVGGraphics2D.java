@@ -768,6 +768,12 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
                 .toString()))));
     }
 
+    private Double nextTextLength = null;
+
+    public void setNextTextLength(double textLength) {
+        this.nextTextLength = Double.valueOf(textLength);
+    }
+
     /**
      * Copied from {@link AbstractVectorGraphicsIO} to change the handling of text as shapes.
      * 
@@ -877,6 +883,16 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
         resetSemanticData();
     }
 
+    protected String textLength() {
+        if (this.nextTextLength == null)
+            return "";
+        else {
+            final float textLength = this.nextTextLength.floatValue();
+            this.nextTextLength = null;
+            return " textLength=\"" + textLength + "px\" lengthAdjust=\"spacingAndGlyphs\"";
+        }
+    }
+
     /**
      * Insert TSpan elements into a multiline text string.
      * @param text string where lines are indicated by "\n"
@@ -915,6 +931,8 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
                 content.append(first ? firstLineHeight : lineHeight);
                 content.append("\"");
                 content.append(tSpanAttributes(line, i++));
+                if (lines.length < 2)
+                    content.append(textLength());
                 content.append(">");
                 content.append(line);
                 content.append("</tspan>" + Klighd.LINE_SEPARATOR);

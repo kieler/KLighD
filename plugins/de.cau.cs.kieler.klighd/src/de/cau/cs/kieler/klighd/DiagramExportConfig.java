@@ -88,6 +88,13 @@ public class DiagramExportConfig {
      */
     public boolean exportSemanticData = false;
 
+    /**
+     * Determines whether the @{code textLength} information shall be added to text fields while
+     * exporting.<br>
+     * This available for SVG exports only.
+     */
+    public boolean setTextLengths = false;
+    
     /** The list of {@link IExportBranding}s being enabled for the current diagram export. */
     public Iterable<IExportBranding> exportBrandings = Collections.emptyList();
 
@@ -249,6 +256,7 @@ public class DiagramExportConfig {
         this.exportViewport = original.exportViewport;
         this.applyCameraZoomLevel = original.applyCameraZoomLevel;
         this.exportSemanticData = original.exportSemanticData;
+        this.setTextLengths = original.setTextLengths;
 
         this.pages = original.pages;
         this.pageNo = original.pageNo;
@@ -313,12 +321,30 @@ public class DiagramExportConfig {
      * KlighdSemanticDiagramData} to the export, if supported by the exporter.
      *
      * @param exportSemanticData
-     *            {@code true} if just the view port shall be exported
+     *            <code>true</code> if semantic data shall be added to the diagram while drawing,
+     *            <code>false</code> otherwise.
      *
      * @return this {@link DiagramExportConfig} for convenience
      */
     public DiagramExportConfig setExportSemanticData(final boolean exportSemanticData) {
         this.exportSemanticData = exportSemanticData;
+
+        return this;
+    }
+
+    /**
+     * Instructs the exporter to add any semantic information attached to the view model elements by
+     * means of {@link de.cau.cs.kieler.klighd.util.KlighdSemanticDiagramData
+     * KlighdSemanticDiagramData} to the export, if supported by the exporter.
+     *
+     * @param setTextLength
+     *            if the expected text length values shall be added to the diagram while exporting
+     *            an SVG based image, <code>false</code> otherwise.
+     *
+     * @return this {@link DiagramExportConfig} for convenience
+     */
+    public DiagramExportConfig setTextLengths(final boolean setTextLengths) {
+        this.setTextLengths = setTextLengths;
 
         return this;
     }

@@ -481,6 +481,10 @@ public class KlighdStyledText extends KlighdNode.KlighdFigureNode<KText> {
 
         addSemanticData(kpc);
 
+        if (kpc.isSetTextLengths()) {
+            graphics.setNextTextLength(this.getWidth());
+        }
+
         graphics.drawText(text);
 
         graphics.setAlpha(currentAlpha);
