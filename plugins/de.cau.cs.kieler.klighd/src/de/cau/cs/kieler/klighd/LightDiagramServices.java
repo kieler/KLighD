@@ -27,6 +27,7 @@ import org.eclipse.elk.core.service.DiagramLayoutEngine.Parameters;
 import org.eclipse.elk.core.service.ElkServicePlugin;
 import org.eclipse.elk.core.util.IElkCancelIndicator;
 import org.eclipse.elk.core.util.IElkProgressMonitor;
+import org.eclipse.elk.core.util.IGraphElementVisitor;
 import org.eclipse.elk.core.util.NullElkProgressMonitor;
 import org.eclipse.elk.core.util.Pair;
 import org.eclipse.elk.graph.properties.IProperty;
@@ -186,7 +187,7 @@ public final class LightDiagramServices {
     
             // Our parameters for the layout run
             Parameters layoutParameters = new Parameters();
-            final LayoutConfigurator extendedConfigurator = layoutParameters.addLayoutRun();
+            final LayoutConfigurator extendedConfigurator = (LayoutConfigurator) layoutParameters.addLayoutRun();
     
             // Animation
             final boolean doAnimate = config.animate() != null ? config.animate().booleanValue()
@@ -228,12 +229,12 @@ public final class LightDiagramServices {
                 }
             }
     
-            final List<? extends LayoutConfigurator> additionalConfigs =
+            final List<? extends IGraphElementVisitor> additionalConfigs =
                     theViewContext.getAdditionalLayoutConfigs();
     
             final Object diagramPart = recorder != null ? recorder : theViewContext;
     
-            for (LayoutConfigurator c : additionalConfigs) {
+            for (IGraphElementVisitor c : additionalConfigs) {
                 layoutParameters.addLayoutRun(c);
             }
 
@@ -244,7 +245,7 @@ public final class LightDiagramServices {
             //  (with _and_ without a running eclipse platform)
             final DiagramLayoutEngine engine = new KlighdLayoutSetup().getDiagramLayoutEngine();
             final IStatus status;
-
+            
             if (Klighd.IS_PLATFORM_RUNNING) {
                 final IElkCancelIndicator cancelationIndicator =
                         thePart != null ? new DispositionAwareCancelationHandle(thePart) : null;

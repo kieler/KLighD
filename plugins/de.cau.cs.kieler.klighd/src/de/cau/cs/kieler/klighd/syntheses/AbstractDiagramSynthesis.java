@@ -14,6 +14,7 @@
 package de.cau.cs.kieler.klighd.syntheses;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +22,7 @@ import java.util.Map;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.elk.core.LayoutConfigurator;
+import org.eclipse.elk.core.util.IGraphElementVisitor;
 import org.eclipse.elk.core.util.Pair;
 import org.eclipse.elk.graph.properties.IProperty;
 import org.eclipse.emf.ecore.EObject;
@@ -388,9 +390,36 @@ public abstract class AbstractDiagramSynthesis<S> implements ISynthesis {
 
     /**
      * {@inheritDoc}
+     * May be overridden by concrete implementations in order to incorporate property settings of
+     * the <code>viewContext</code> into the decision.
      */
-    public List<? extends LayoutConfigurator> getAdditionalLayoutConfigs() {
-        return Collections.emptyList();
+    public List<? extends IGraphElementVisitor> getAdditionalLayoutConfigs(final KNode viewModel,
+            final ViewContext viewContext) {
+        return getAdditionalLayoutConfigs(viewModel);
+    }
+    
+    /**
+     * Returns a list of {@link LayoutConfigurator LayoutConfigurators} to be handed over to ELK in
+     * order to cause additional layout runs corresponding to the provided configurations.
+     * May be overridden by concrete implementations.
+     * 
+     * @param viewModel
+     *            the view model
+     * @return a {@link List} of {@link LayoutConfigurator LayoutConfigurators}
+     */
+    public List<? extends IGraphElementVisitor> getAdditionalLayoutConfigs(final KNode viewModel) {
+        return getAdditionalLayoutConfigs();
+    }
+
+    /**
+     * Returns a list of {@link LayoutConfigurator LayoutConfigurators} to be handed over to ELK in
+     * order to cause additional layout runs corresponding to the provided configurations.
+     * May be overridden by concrete implementations.
+     * 
+     * @return a {@link List} of {@link LayoutConfigurator LayoutConfigurators}
+     */
+    public List<? extends IGraphElementVisitor> getAdditionalLayoutConfigs() {
+        return new ArrayList<IGraphElementVisitor>();
     }
 
 
