@@ -119,9 +119,14 @@ public class KGraphMerger {
      * Add new from the new model to the base model.
      */
     private void handleAddedNodes() {
-        for (KNode node : comparison.getAddedNodes()) {
-            addNode(node);
-        }
+        // Before adding the nodes we have to make sure they are added in the same order as they appear in the
+        // containment list of their parent to ensure correct generation and mapping of ID-less elements.
+        comparison.getAddedNodes().stream().sorted(
+            (KNode n1, KNode n2) -> n1.getParent().getChildren().indexOf(n1)
+                                  - n2.getParent().getChildren().indexOf(n2)
+        ).forEachOrdered(
+            (KNode node) -> addNode(node)
+        );
         // Add edges after adding the nodes to ensure that all targets are available.
         for (KNode node : comparison.getAddedNodes()) {
             handleEdges(comparison.lookupBaseNode(node), node);
@@ -160,7 +165,6 @@ public class KGraphMerger {
      */
     private void handleMatchedNodes() {
         for (ValueDifference<KNode> diff : comparison.getMatchedNodes()) {
-            // TODO Maybe check if update is really necessary
             updateKnode(diff.leftValue(), diff.rightValue());
         }
     }

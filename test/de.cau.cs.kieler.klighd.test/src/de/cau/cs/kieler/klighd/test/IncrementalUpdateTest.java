@@ -158,6 +158,62 @@ public class IncrementalUpdateTest {
     }
     
     /**
+     * Tests adding multiple nodes. Checks if the nodes are added and if they are added at the correct positions.
+     */
+    @Test
+    public void testAddMultipleNodes() {
+        final KNode baseGraph = KGraphUtil.createInitializedNode();
+        final KNode nodeA0 = KGraphUtil.createInitializedNode();
+        addIdentifier(nodeA0, "nodeA");
+        nodeA0.setParent(baseGraph);
+        final KNode newGraph = KGraphUtil.createInitializedNode();
+        final KNode nodeA1 = KGraphUtil.createInitializedNode();
+        addIdentifier(nodeA1, "nodeA");
+        nodeA1.setParent(newGraph);
+
+        final KNode newNode0 = KGraphUtil.createInitializedNode();
+        final KNode newNode1 = KGraphUtil.createInitializedNode();
+        final KNode newNode2 = KGraphUtil.createInitializedNode();
+        final EObject newNodeSource0 = new EObjectImpl() { };
+        final EObject newNodeSource1 = new EObjectImpl() { };
+        final EObject newNodeSource2 = new EObjectImpl() { };
+        newNode0.setProperty(KlighdInternalProperties.MODEL_ELEMEMT, newNodeSource0);
+        newNode1.setProperty(KlighdInternalProperties.MODEL_ELEMEMT, newNodeSource1);
+        newNode2.setProperty(KlighdInternalProperties.MODEL_ELEMEMT, newNodeSource2);
+        final int newNode0Position = 0;
+        final int newNode1Position = 1;
+        final int newNode2Position = 2;
+
+        newGraph.getChildren().add(newNode0Position, newNode0);
+        newGraph.getChildren().add(newNode1Position, newNode1);
+        newGraph.getChildren().add(newNode2Position, newNode2);
+        
+        final ViewContext viewContext = createViewContext();
+        // Initialize the view context with the base graph.
+        INCREMENTAL_UPDATE_STRATEGY.update(viewContext.getViewModel(), baseGraph, viewContext);
+        // Update with the new graph.
+        INCREMENTAL_UPDATE_STRATEGY.update(viewContext.getViewModel(), newGraph, viewContext);
+        
+        // Assert the new nodes are in the updated base model.
+        EObject baseNewNode0 = viewContext.getTargetElements(newNodeSource0).stream().findFirst().orElse(null);
+        EObject baseNewNode1 = viewContext.getTargetElements(newNodeSource1).stream().findFirst().orElse(null);
+        EObject baseNewNode2 = viewContext.getTargetElements(newNodeSource2).stream().findFirst().orElse(null);
+        Assert.assertNotNull(baseNewNode0);
+        Assert.assertNotNull(baseNewNode1);
+        Assert.assertNotNull(baseNewNode2);
+        Assert.assertTrue(baseNewNode0 instanceof KNode);
+        Assert.assertTrue(baseNewNode1 instanceof KNode);
+        Assert.assertTrue(baseNewNode2 instanceof KNode);
+        // Assert that the new nodes are in the same position in the updated base graph as they are in the new graph.
+        int baseNode0Position = viewContext.getViewModel().getChildren().indexOf(baseNewNode0);
+        int baseNode1Position = viewContext.getViewModel().getChildren().indexOf(baseNewNode1);
+        int baseNode2Position = viewContext.getViewModel().getChildren().indexOf(baseNewNode2);
+        Assert.assertSame(newNode0Position, baseNode0Position);
+        Assert.assertSame(newNode1Position, baseNode1Position);
+        Assert.assertSame(newNode2Position, baseNode2Position);
+    }
+    
+    /**
      * Tests removing a node.
      */
     @Test
@@ -677,6 +733,122 @@ public class IncrementalUpdateTest {
         edge.setTarget(null);
         edge.setSourcePort(null);
         edge.setTargetPort(null);
+    }
+    
+    /**
+     * Tests adding connected nodes without IDs as in KLighD issue 48.
+     * See https://github.com/kieler/KLighD/issues/48
+     */
+    @Test
+    public void testIssue48() {
+        // Create the base graph with two connected nodes.
+        final KNode baseGraph = KGraphUtil.createInitializedNode();
+        final KNode baseNode3 = KGraphUtil.createInitializedNode();
+        final KNode baseNode2 = KGraphUtil.createInitializedNode();
+        baseNode3.setParent(baseGraph);
+        baseNode2.setParent(baseGraph);
+        
+        final KPort basePort2In = KGraphUtil.createInitializedPort();
+        basePort2In.setNode(baseNode2);
+        final KPort basePort2Out = KGraphUtil.createInitializedPort();
+        basePort2Out.setNode(baseNode2);
+
+        final KPort basePort3In = KGraphUtil.createInitializedPort();
+        basePort3In.setNode(baseNode3);
+        final KPort basePort3Out = KGraphUtil.createInitializedPort();
+        basePort3Out.setNode(baseNode3);
+        
+        final KEdge baseEdge23 = KGraphUtil.createInitializedEdge();
+        baseEdge23.setSource(baseNode2);
+        baseEdge23.setTarget(baseNode3);
+        
+        // Create the new graph with five connected nodes and ports.
+        final KNode newGraph = KGraphUtil.createInitializedNode();
+        final KNode newNodeC = KGraphUtil.createInitializedNode();
+        final KNode newNode1 = KGraphUtil.createInitializedNode();
+        final KNode newNode3 = KGraphUtil.createInitializedNode();
+        final KNode newNodeL = KGraphUtil.createInitializedNode();
+        final KNode newNode2 = KGraphUtil.createInitializedNode();
+        newNodeC.setParent(newGraph);
+        newNode1.setParent(newGraph);
+        newNode3.setParent(newGraph);
+        newNodeL.setParent(newGraph);
+        newNode2.setParent(newGraph);
+        final EObject newNodeSourceC = new EObjectImpl() { };
+        final EObject newNodeSource1 = new EObjectImpl() { };
+        final EObject newNodeSource3 = new EObjectImpl() { };
+        final EObject newNodeSourceL = new EObjectImpl() { };
+        final EObject newNodeSource2 = new EObjectImpl() { };
+        newNodeC.setProperty(KlighdInternalProperties.MODEL_ELEMEMT, newNodeSourceC);
+        newNode1.setProperty(KlighdInternalProperties.MODEL_ELEMEMT, newNodeSource1);
+        newNode3.setProperty(KlighdInternalProperties.MODEL_ELEMEMT, newNodeSource3);
+        newNodeL.setProperty(KlighdInternalProperties.MODEL_ELEMEMT, newNodeSourceL);
+        newNode2.setProperty(KlighdInternalProperties.MODEL_ELEMEMT, newNodeSource2);
+
+        final KPort newPortCOut = KGraphUtil.createInitializedPort();
+        newPortCOut.setNode(newNodeC);
+        final KPort newPort1In = KGraphUtil.createInitializedPort();
+        newPort1In.setNode(newNode1);
+        final KPort newPort1Out = KGraphUtil.createInitializedPort();
+        newPort1Out.setNode(newNode1);
+        final KPort newPort3In = KGraphUtil.createInitializedPort();
+        newPort3In.setNode(newNode3);
+        final KPort newPort3Out = KGraphUtil.createInitializedPort();
+        newPort3Out.setNode(newNode3);
+        final KPort newPortLIn = KGraphUtil.createInitializedPort();
+        newPortLIn.setNode(newNodeL);
+        final KPort newPortLOut = KGraphUtil.createInitializedPort();
+        newPortLOut.setNode(newNodeL);
+        final KPort newPort2In = KGraphUtil.createInitializedPort();
+        newPort2In.setNode(newNode2);
+        final KPort newPort2Out = KGraphUtil.createInitializedPort();
+        newPort2Out.setNode(newNode2);
+        
+        final KEdge newEdgeC1 = KGraphUtil.createInitializedEdge();
+        newEdgeC1.setSource(newNodeC);
+        newEdgeC1.setSourcePort(newPortCOut);
+        newEdgeC1.setTarget(newNode1);
+        newEdgeC1.setTargetPort(newPort1In);
+        final KEdge newEdge1L = KGraphUtil.createInitializedEdge();
+        newEdge1L.setSource(newNode1);
+        newEdge1L.setSourcePort(newPort1Out);
+        newEdge1L.setTarget(newNodeL);
+        newEdge1L.setTargetPort(newPortLIn);
+        final KEdge newEdge3L = KGraphUtil.createInitializedEdge();
+        newEdge3L.setSource(newNode3);
+        newEdge3L.setSourcePort(newPort3Out);
+        newEdge3L.setTarget(newNodeL);
+        newEdge3L.setTargetPort(newPortLIn);
+        final KEdge newEdgeL2 = KGraphUtil.createInitializedEdge();
+        newEdgeL2.setSource(newNodeL);
+        newEdgeL2.setSourcePort(newPortLOut);
+        newEdgeL2.setTarget(newNode2);
+        newEdgeL2.setTargetPort(newPort2In);
+        
+        // The test for these graphs.
+        
+        final ViewContext viewContext = createViewContext();
+        // Initialize the view context with the base graph.
+        INCREMENTAL_UPDATE_STRATEGY.update(viewContext.getViewModel(), baseGraph, viewContext);
+        // Update with the new graph.
+        INCREMENTAL_UPDATE_STRATEGY.update(viewContext.getViewModel(), newGraph, viewContext);
+        
+        // Assert the new nodes are in the updated base model.
+        EObject baseNewNodeC = viewContext.getTargetElements(newNodeSourceC).stream().findFirst().orElse(null);
+        EObject baseNewNode1 = viewContext.getTargetElements(newNodeSource1).stream().findFirst().orElse(null);
+        EObject baseNewNode3 = viewContext.getTargetElements(newNodeSource3).stream().findFirst().orElse(null);
+        EObject baseNewNodeL = viewContext.getTargetElements(newNodeSourceL).stream().findFirst().orElse(null);
+        EObject baseNewNode2 = viewContext.getTargetElements(newNodeSource2).stream().findFirst().orElse(null);
+        Assert.assertNotNull(baseNewNodeC);
+        Assert.assertNotNull(baseNewNode1);
+        Assert.assertNotNull(baseNewNode3); // This one failed before the fix because of the ordering.
+        Assert.assertNotNull(baseNewNodeL);
+        Assert.assertNotNull(baseNewNode2);
+        Assert.assertTrue(baseNewNodeC instanceof KNode);
+        Assert.assertTrue(baseNewNode1 instanceof KNode);
+        Assert.assertTrue(baseNewNode3 instanceof KNode);
+        Assert.assertTrue(baseNewNodeL instanceof KNode);
+        Assert.assertTrue(baseNewNode2 instanceof KNode);
     }
     
 }
