@@ -72,6 +72,7 @@ public interface IDiagramExporter {
         private final int scale;
         private final boolean isTextAsShapes;
         private final boolean isEmbedFonts;
+        private final boolean isSetTextLengths;
         private final String description;
         private final String css;
         private final String additionalRootData;
@@ -90,6 +91,7 @@ public interface IDiagramExporter {
             this.scale = builder.scale;
             this.isTextAsShapes = builder.isTextAsShapes;
             this.isEmbedFonts = builder.isEmbedFonts;
+            this.isSetTextLengths = builder.isSetTextLengths;
             this.description = builder.description;
             this.css = builder.css;
             this.additionalRootData = builder.additionalRootData;
@@ -162,6 +164,14 @@ public interface IDiagramExporter {
          */
         public boolean embedFonts() {
             return isEmbedFonts;
+        }
+
+        /**
+         * @return <code>true</code> if the expected text length values shall be added to the
+         *         diagram while exporting an SVG based image, <code>false</code> otherwise.
+         */
+        public boolean setTextLengths() {
+            return isSetTextLengths;
         }
 
         /**
@@ -352,6 +362,7 @@ public interface IDiagramExporter {
         private int scale = 1;
         private boolean isTextAsShapes = false;
         private boolean isEmbedFonts = false;
+        private boolean isSetTextLengths = false;
         private String description = null;
         private String css = null;
         private String additionalRootData = null;
@@ -464,6 +475,19 @@ public interface IDiagramExporter {
          */
         public ExportDataBuilder embedFonts(final boolean embedFonts) {
             this.isEmbedFonts = embedFonts;
+            return this;
+        }
+
+        /**
+         * Configures the export to PDF to embed the used fonts in PDF.
+         * 
+         * @param setTextLengths
+         *            <code>true</code> if the expected text length values shall be added to the
+         *            diagram while exporting an SVG based image, <code>false</code> otherwise.
+         * @return The current builder for comfortable usage
+         */
+        public ExportDataBuilder setTextLengths(final boolean setTextLengths) {
+            this.isSetTextLengths = setTextLengths;
             return this;
         }
 

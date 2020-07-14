@@ -74,7 +74,8 @@ public abstract class AbstractDiagramExporter {
     protected KlighdPaintContext createPaintContext(final KlighdSWTGraphics graphics,
             final DiagramExportConfig exportConfig) {
         return KlighdPaintContext.createExportDiagramPaintContext(graphics,
-                exportConfig.applyCameraZoomLevel, exportConfig.exportSemanticData);
+                exportConfig.applyCameraZoomLevel, exportConfig.exportSemanticData,
+                exportConfig.setTextLengths);
     }
 
 

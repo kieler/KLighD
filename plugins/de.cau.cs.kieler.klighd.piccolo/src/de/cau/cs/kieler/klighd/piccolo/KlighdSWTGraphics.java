@@ -379,6 +379,18 @@ public interface KlighdSWTGraphics {
     void drawImage(final ImageData imageData, final double width, final double height);
 
     /**
+     * If supported, add the passed text length value to the text element that is drawn by the next
+     * call of {@link #drawText(String)}.
+     * 
+     * For example for an SVG exporter, create the subsequent {@code <text>} or {@code <tspan>}
+     * element with the {@code textLength} property set to the given value.
+     * 
+     * @param textLength
+     *            the textLength value to be set.
+     */
+    void setNextTextLength(final double textLength);
+
+    /**
      * Draws the provided string while respecting the recently set font & text style settings.<br>
      * Its position can be determined by means of {@link #setTransform(AffineTransform)}.
      * 

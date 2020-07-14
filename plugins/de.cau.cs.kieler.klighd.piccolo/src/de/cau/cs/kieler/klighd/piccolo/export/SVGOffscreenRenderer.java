@@ -24,7 +24,6 @@ import org.eclipse.swt.graphics.RGB;
 
 import de.cau.cs.kieler.klighd.IDiagramExporter.ExportData;
 import de.cau.cs.kieler.klighd.IDiagramExporter.ExportDataBuilder;
-import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.piccolo.KlighdPiccolo;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
@@ -49,16 +48,7 @@ public class SVGOffscreenRenderer extends AbstractOffscreenRenderer {
 
     /** Property definition for declaring the desired SVG generator. */
     public static final IProperty<String> GENERATOR = new Property<String>(
-            "de.cau.cs.kieler.klighd.piccolo.svg.generator",
-            GENERATOR_SVG_FREEHEP_EXTENDED);
-
-    /** Property definition for defining transparent diagram background. */
-    public static final IProperty<Boolean> SVG_EXPORT_TRANSPARENT_BACKGROUND = new Property<Boolean>(
-              "de.cau.cs.kieler.klighd.svgExport.transparentBackground", false);
-
-    /** Property definition for defining the diagram background color. */
-    public static final IProperty<RGB> SVG_EXPORT_BACKGROUND_COLOR = new Property<RGB>(
-              "de.cau.cs.kieler.klighd.svgExport.backgroundColor", KlighdConstants.WHITE);
+            "de.cau.cs.kieler.klighd.piccolo.svg.generator", GENERATOR_SVG_FREEHEP_EXTENDED);
 
     /**
      * {@inheritDoc}
@@ -66,24 +56,24 @@ public class SVGOffscreenRenderer extends AbstractOffscreenRenderer {
     public IStatus render(final ViewContext viewContext, final OutputStream output,
             final IPropertyHolder properties) {
 
+        final RGB backgroundColor = properties != null
+                ? properties.getProperty(BACKGROUND_COLOR) : BACKGROUND_COLOR.getDefault();
+        final boolean transparentBackground = properties != null
+                ? properties.getProperty(TRANSPARENT_BACKGROUND) : TRANSPARENT_BACKGROUND.getDefault();
         final boolean textAsShapes = properties != null
                 ? properties.getProperty(TEXT_AS_SHAPES) : TEXT_AS_SHAPES.getDefault();
         final boolean embedFonts = properties != null
                 ? properties.getProperty(EMBED_FONTS) : EMBED_FONTS.getDefault();
+        final boolean setTextLengths = properties != null
+                ? properties.getProperty(SET_TEXT_LENGTHS) : SET_TEXT_LENGTHS.getDefault();
         final String generator = properties != null
                 ? properties.getProperty(GENERATOR) : GENERATOR.getDefault();
         final String description = properties != null
                 ? properties.getProperty(DESCRIPTION) : DESCRIPTION.getDefault();
-                final String additionalRootData = properties != null
-                        ? properties.getProperty(ADDITIONAL_ROOT_DATA) : ADDITIONAL_ROOT_DATA.getDefault();
+        final String additionalRootData = properties != null
+                ? properties.getProperty(ADDITIONAL_ROOT_DATA) : ADDITIONAL_ROOT_DATA.getDefault();
         final String css = properties != null
                 ? properties.getProperty(CSS) : CSS.getDefault();
-        final boolean transparentBackground =
-                properties != null ? properties.getProperty(SVG_EXPORT_TRANSPARENT_BACKGROUND)
-                        : SVG_EXPORT_TRANSPARENT_BACKGROUND.getDefault();
-        final RGB backgroundColor =
-                properties != null ? properties.getProperty(SVG_EXPORT_BACKGROUND_COLOR)
-                        : SVG_EXPORT_BACKGROUND_COLOR.getDefault();
 
         // Construct a KLighD main camera ...
         //  (the basic PRoot is sufficient here, as this canvas doesn't rely on any SWT stuff)
@@ -99,11 +89,12 @@ public class SVGOffscreenRenderer extends AbstractOffscreenRenderer {
 
         try {
             ExportData data = new ExportDataBuilder(viewContext, generator, output)
-                    .textAsShapes(textAsShapes)
-                    .embedFonts(embedFonts)
                     .description(description)
                     .backgroundColor(backgroundColor)
                     .transparentBackground(transparentBackground)
+                    .textAsShapes(textAsShapes)
+                    .embedFonts(embedFonts)
+                    .setTextLengths(setTextLengths)
                     .additionalRootData(additionalRootData)
                     .css(css)
                     .build();

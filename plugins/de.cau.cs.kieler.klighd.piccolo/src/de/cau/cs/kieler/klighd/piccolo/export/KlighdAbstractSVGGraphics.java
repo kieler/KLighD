@@ -1053,6 +1053,14 @@ public abstract class KlighdAbstractSVGGraphics extends Graphics2D implements Kl
     }
     
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setNextTextLength(double textLength) {
+        // do nothing, to be overridden by implementations
+    }
+
+    /**
      * Set if this exporter can handle multiline strings themself or needs fallback.
      * 
      * @param canHandleMultiline

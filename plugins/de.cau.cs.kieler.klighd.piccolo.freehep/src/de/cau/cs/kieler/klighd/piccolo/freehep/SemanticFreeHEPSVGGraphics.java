@@ -166,6 +166,14 @@ public class SemanticFreeHEPSVGGraphics extends KlighdAbstractSVGGraphics {
      * {@inheritDoc}
      */
     @Override
+    public void setNextTextLength(double textLength) {
+        graphicsDelegate.setNextTextLength(textLength);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     protected float getAbsoluteFontHeight() {
         return graphicsDelegate.getAdjustedFontHeight();
     }

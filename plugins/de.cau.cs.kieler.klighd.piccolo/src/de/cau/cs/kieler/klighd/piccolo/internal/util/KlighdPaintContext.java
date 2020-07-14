@@ -42,7 +42,7 @@ public class KlighdPaintContext extends PPaintContext {
      * @return the desired {@link KlighdPaintContext}
      */
     public static KlighdPaintContext createDiagramPaintContext(final KlighdSWTGraphics graphics) {
-        return new KlighdPaintContext(graphics, false, false, false, true, false);
+        return new KlighdPaintContext(graphics, false, false, false, true, false, false);
     }
 
     /**
@@ -54,7 +54,7 @@ public class KlighdPaintContext extends PPaintContext {
      * @return the desired {@link KlighdPaintContext}
      */
     public static KlighdPaintContext createOutlinePaintContext(final KlighdSWTGraphics graphics) {
-        return new KlighdPaintContext(graphics, true, false, false, true, false);
+        return new KlighdPaintContext(graphics, true, false, false, true, false, false);
     }
 
     /**
@@ -68,11 +68,19 @@ public class KlighdPaintContext extends PPaintContext {
      *            {@link KlighdMainCamera}'s view transform will be used while evaluating the
      *            visibility of the particular diagram elements and diagram element figure parts, if
      *            <code>false</code> a diagram zoom level of <code>1.0<code> is assumed.
+     * @param addSemanticData
+     *            flag determining whether semantic data shall be added to the diagram while
+     *            exporting an SVG based image, should be <code>false</code> in other cases (no effect)
+     * @param setTextLength
+     *            flag determining whether the expected text length shall be added to the diagram while
+     *            exporting an SVG based image, should be <code>false</code> in other cases (no effect)
      * @return the desired {@link KlighdPaintContext}
      */
     public static KlighdPaintContext createExportDiagramPaintContext(
-            final KlighdSWTGraphics graphics, boolean applyCameraZoomLevel, boolean addSemanticData) {
-        return new KlighdPaintContext(graphics, false, true, false, applyCameraZoomLevel, addSemanticData);
+            final KlighdSWTGraphics graphics, boolean applyCameraZoomLevel, boolean addSemanticData,
+            boolean setTextLength) {
+        return new KlighdPaintContext(graphics, false, true, false, applyCameraZoomLevel,
+                addSemanticData, setTextLength);
     }
 
     /**
@@ -89,7 +97,7 @@ public class KlighdPaintContext extends PPaintContext {
      */
     public static KlighdPaintContext createPrintoutPaintContext(final KlighdSWTGraphics graphics,
             boolean applyCameraZoomLevel) {
-        return new KlighdPaintContext(graphics, false, false, true, applyCameraZoomLevel, false);
+        return new KlighdPaintContext(graphics, false, false, true, applyCameraZoomLevel, false, false);
     }
 
 
@@ -110,12 +118,17 @@ public class KlighdPaintContext extends PPaintContext {
      *            visibility of the particular diagram elements and diagram element figure parts, if
      *            <code>false</code> a diagram zoom level of <code>1.0<code> is assumed.
      * @param addSemanticData
-     *            flag determining whether semantic data shall be added to the diagram, e.g. while
-     *            exporting an SVG based image
+     *            flag determining whether semantic data shall be added to the diagram while
+     *            exporting an SVG based image, should be <code>false</code> in other cases (no
+     *            effect)
+     * @param setTextLengths
+     *            flag determining whether the expected text length values shall be added to the
+     *            diagram while exporting an SVG based image, should be <code>false</code> in other
+     *            cases (no effect)
      */
     protected KlighdPaintContext(final KlighdSWTGraphics graphics, final boolean outline,
             final boolean export, final boolean printout, boolean applyCameraZoomLevel,
-            final boolean addSemanticData) {
+            final boolean addSemanticData, final boolean setTextLengths) {
         super((Graphics2D) graphics);
         this.mainDiagram = !(outline || export || printout);
         this.outline = outline;
@@ -123,6 +136,7 @@ public class KlighdPaintContext extends PPaintContext {
         this.printout = printout;
         this.applyCameraZoomLevel = applyCameraZoomLevel;
         this.addSemanticData = addSemanticData;
+        this.setTextLengths = setTextLengths;
     }
 
     private double cameraZoomScale = 1d;
@@ -132,6 +146,7 @@ public class KlighdPaintContext extends PPaintContext {
     private final boolean printout;
     private final boolean applyCameraZoomLevel;
     private final boolean addSemanticData;
+    private final boolean setTextLengths;
 
     private final Stack<Double> cameraScales = new Stack<Double>();
 
@@ -197,6 +212,17 @@ public class KlighdPaintContext extends PPaintContext {
      */
     public boolean isAddSemanticData() {
         return this.addSemanticData;
+    }
+
+    /**
+     * Returns <code>true</code> if the expected text length values shall be added to the diagram
+     * while exporting an SVG based image, should be <code>false</code> in other cases (no effect).
+     *
+     * @return <code>true</code> if the expected text length values shall be added to the diagram
+     *         while exporting an SVG based image, <code>false</code> otherwise.
+     */
+    public boolean isSetTextLengths() {
+        return this.setTextLengths;
     }
 
     /**
