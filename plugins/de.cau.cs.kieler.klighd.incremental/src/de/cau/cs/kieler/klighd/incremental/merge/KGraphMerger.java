@@ -12,9 +12,13 @@
  */
 package de.cau.cs.kieler.klighd.incremental.merge;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.function.Predicate;
 
@@ -50,6 +54,9 @@ public class KGraphMerger {
     private KComparison comparison;
     /** The filter to determine, which KGraphData to merge. */
     private Predicate<KGraphData> filter;
+    
+    /** A map that gets filled with all updated elements for post-processing. */
+    private Map<KGraphElement, KGraphElement> updatedElements = new HashMap<>();
 
     /**
      * Create a new merger working with the given comparison.
@@ -71,6 +78,7 @@ public class KGraphMerger {
         handleRemovedNodes();
         handleAddedNodes();
         handleMatchedNodes();
+        updatePositions();
     }
 
     /**
@@ -89,11 +97,20 @@ public class KGraphMerger {
      *            the node to remove.
      */
     private void removeNode(final KNode node) {
-        for (KEdge edge : node.getOutgoingEdges()) {
-            edge.setTarget(null);
-        }
-        for (KEdge edge : node.getIncomingEdges()) {
+        for (KEdge edge : new ArrayList<KEdge>(node.getOutgoingEdges())) {
             edge.setSource(null);
+            edge.setTarget(null);
+            edge.setSourcePort(null);
+            edge.setTargetPort(null);
+        }
+        for (KEdge edge : new ArrayList<KEdge>(node.getIncomingEdges())) {
+            edge.setSource(null);
+            edge.setTarget(null);
+            edge.setSourcePort(null);
+            edge.setTargetPort(null);
+        }
+        for (KPort port : node.getPorts()) {
+            port.getEdges().clear();
         }
         node.getParent().getChildren().remove(node);
     }
@@ -102,9 +119,14 @@ public class KGraphMerger {
      * Add new from the new model to the base model.
      */
     private void handleAddedNodes() {
-        for (KNode node : comparison.getAddedNodes()) {
-            addNode(node);
-        }
+        // Before adding the nodes we have to make sure they are added in the same order as they appear in the
+        // containment list of their parent to ensure correct generation and mapping of ID-less elements.
+        comparison.getAddedNodes().stream().sorted(
+            (KNode n1, KNode n2) -> n1.getParent().getChildren().indexOf(n1)
+                                  - n2.getParent().getChildren().indexOf(n2)
+        ).forEachOrdered(
+            (KNode node) -> addNode(node)
+        );
         // Add edges after adding the nodes to ensure that all targets are available.
         for (KNode node : comparison.getAddedNodes()) {
             handleEdges(comparison.lookupBaseNode(node), node);
@@ -130,8 +152,9 @@ public class KGraphMerger {
             addNode(node.getParent());
         } else {
             if (comparison.lookupBaseNode(node) == null) {
+                int oldPosition = node.getParent().getChildren().indexOf(node);
                 KNode copiedNode = EcoreUtil.copy(node);
-                baseParent.getChildren().add(copiedNode);
+                baseParent.getChildren().add(oldPosition, copiedNode);
                 comparison.getBaseAdapter().generateIDs(copiedNode);
             }
         }
@@ -142,9 +165,30 @@ public class KGraphMerger {
      */
     private void handleMatchedNodes() {
         for (ValueDifference<KNode> diff : comparison.getMatchedNodes()) {
-            // TODO Maybe check if update is really necessary
             updateKnode(diff.leftValue(), diff.rightValue());
         }
+    }
+    
+    /**
+     * Updates the positions of all nodes, edges, ports and labels in their containment and reference lists to match the
+     * new model.
+     */
+    private void updatePositions() {
+        for (Entry<KGraphElement, KGraphElement> entry : updatedElements.entrySet()) {
+            if (entry.getKey() instanceof KNode) {
+                updatePosition((KNode) entry.getKey(), (KNode) entry.getValue());
+            }
+            if (entry.getKey() instanceof KEdge) {
+                updatePosition((KEdge) entry.getKey(), (KEdge) entry.getValue());
+            }
+            if (entry.getKey() instanceof KPort) {
+                updatePosition((KPort) entry.getKey(), (KPort) entry.getValue());
+            }
+            if (entry.getKey() instanceof KLabel) {
+                updatePosition((KLabel) entry.getKey(), (KLabel) entry.getValue());
+            }
+        }
+        updatedElements.clear();
     }
 
     /**
@@ -162,6 +206,7 @@ public class KGraphMerger {
         handleLabels(baseNode, newNode);
         handlePorts(baseNode, newNode);
         handleEdges(baseNode, newNode);
+        updatedElements.put(baseNode, newNode);
     }
 
     /**
@@ -191,7 +236,12 @@ public class KGraphMerger {
             }
         }
         if (baseNode != null) {
-            baseNode.getOutgoingEdges().removeAll(oldEdges);
+            for (KEdge oldEdge : oldEdges) {
+                oldEdge.setSource(null);
+                oldEdge.setTarget(null);
+                oldEdge.setSourcePort(null);
+                oldEdge.setTargetPort(null);
+            }
         }
     }
 
@@ -236,6 +286,7 @@ public class KGraphMerger {
         }
         comparison.getBaseAdapter().generateIDs(baseEdge);
         handleLabels(baseEdge, newEdge);
+        updatedElements.put(baseEdge, newEdge);
     }
 
     /**
@@ -298,6 +349,7 @@ public class KGraphMerger {
         baseLabel.setText(newLabel.getText());
         copyInsets(newLabel.getInsets(), baseLabel.getInsets());
         comparison.getBaseAdapter().generateIDs(baseLabel);
+        updatedElements.put(baseLabel, newLabel);
     }
 
     /**
@@ -352,6 +404,7 @@ public class KGraphMerger {
         copyInsets(newPort.getInsets(), basePort.getInsets());
         comparison.getBaseAdapter().generateIDs(basePort);
         handleLabels(basePort, newPort);
+        updatedElements.put(basePort, newPort);
     }
 
     /**
@@ -376,6 +429,92 @@ public class KGraphMerger {
                 Sets.difference(baseProperties.keySet(), newElement.getProperties().keySet()));
         for (IProperty<?> property : removedProperties) {
             baseProperties.removeKey(property);
+        }
+    }
+
+    /**
+     * Updates the position of this node in the child list of its parent.
+     * 
+     * @param baseNode the node to update to.
+     * @param newNode the node to update from.
+     */
+    private void updatePosition(KNode baseNode, KNode newNode) {
+        if (baseNode.getParent() != null && newNode.getParent() != null) {
+            int newPosition = newNode.getParent().getChildren().indexOf(newNode);
+            int oldPosition = baseNode.getParent().getChildren().indexOf(baseNode);
+            if (newPosition != oldPosition) {
+                baseNode.getParent().getChildren().move(newPosition, oldPosition);
+            }
+        }
+    }
+
+    /**
+     * Updates the position of this port in the ports list of its parent node.
+     * 
+     * @param basePort the port to update to.
+     * @param newPort the port to update from.
+     */
+    private void updatePosition(KPort basePort, KPort newPort) {
+        if (basePort.getNode() != null && newPort.getNode() != null) {
+            int newPosition = newPort.getNode().getPorts().indexOf(newPort);
+            int oldPosition = basePort.getNode().getPorts().indexOf(basePort);
+            if (newPosition != oldPosition) {
+                basePort.getNode().getPorts().move(newPosition, oldPosition);
+            }
+        }
+    }
+
+    /**
+     * Updates the position of this label in the labels list of its parent node.
+     * 
+     * @param baseLabel the label to update to.
+     * @param newLabel the label to update from.
+     */
+    private void updatePosition(KLabel baseLabel, KLabel newLabel) {
+        if (baseLabel.getParent() != null && newLabel.getParent() != null) {
+            int newPosition = newLabel.getParent().getLabels().indexOf(newLabel);
+            int oldPosition = baseLabel.getParent().getLabels().indexOf(baseLabel);
+            if (newPosition != oldPosition) {
+                baseLabel.getParent().getLabels().move(newPosition, oldPosition);
+            }
+        }
+    }
+
+    /**
+     * Updates the position of this edge in the outgoingEdges list of its source node. Also updates the position in the
+     * edges list of source port.
+     * 
+     * @param baseEdge the edge to update to.
+     * @param newEdge the edge to update from.
+     */
+    private void updatePosition(KEdge baseEdge, KEdge newEdge) {
+        if (baseEdge.getSource() != null && newEdge.getSource() != null) {
+            int newPosition = newEdge.getSource().getOutgoingEdges().indexOf(newEdge);
+            int oldPosition = baseEdge.getSource().getOutgoingEdges().indexOf(baseEdge);
+            if (newPosition != oldPosition) {
+                baseEdge.getSource().getOutgoingEdges().move(newPosition, oldPosition);
+            }
+        }
+        if (baseEdge.getTarget() != null && newEdge.getTarget() != null) {
+            int newPosition = newEdge.getTarget().getIncomingEdges().indexOf(newEdge);
+            int oldPosition = baseEdge.getTarget().getIncomingEdges().indexOf(baseEdge);
+            if (newPosition != oldPosition) {
+                baseEdge.getTarget().getIncomingEdges().move(newPosition, oldPosition);
+            }
+        }
+        if (baseEdge.getSourcePort() != null && newEdge.getSourcePort() != null) {
+            int newPosition = newEdge.getSourcePort().getEdges().indexOf(newEdge);
+            int oldPosition = baseEdge.getSourcePort().getEdges().indexOf(baseEdge);
+            if (newPosition != oldPosition) {
+                baseEdge.getSourcePort().getEdges().move(newPosition, oldPosition);
+            }
+        }
+        if (baseEdge.getTargetPort() != null && newEdge.getTargetPort() != null) {
+            int newPosition = newEdge.getTargetPort().getEdges().indexOf(newEdge);
+            int oldPosition = baseEdge.getTargetPort().getEdges().indexOf(baseEdge);
+            if (newPosition != oldPosition) {
+                baseEdge.getTargetPort().getEdges().move(newPosition, oldPosition);
+            }
         }
     }
 

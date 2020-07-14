@@ -11,14 +11,14 @@
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
-package de.cau.cs.kieler.klighd.ui.view.model;
+package de.cau.cs.kieler.klighd.ide.model;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
 import org.eclipse.core.runtime.Platform;
 
-import de.cau.cs.kieler.klighd.ui.view.KlighdViewPlugin;
+import de.cau.cs.kieler.klighd.ide.KlighdIdePlugin;
 
 /**
  * Represents errors and exceptions. Displayed as error message with a huge error sign.
@@ -55,7 +55,7 @@ public class ErrorModel extends MessageModel {
      */
     public ErrorModel(final String message, final String reason, final String stacktrace) {
         // CHECKSTYLEOFF MagicNumber NEXT
-        super(message, reason, KlighdViewPlugin.PLUGIN_ID, "icons/full/model/error_sign.png", 250);
+        super(message, reason, KlighdIdePlugin.PLUGIN_ID, "icons/full/model/error_sign.png", 250);
         // reason
         String reasonToSet = "Unkown";
         if (reason == null) {
