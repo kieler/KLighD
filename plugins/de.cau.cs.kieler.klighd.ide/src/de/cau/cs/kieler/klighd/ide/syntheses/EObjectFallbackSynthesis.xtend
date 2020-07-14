@@ -92,10 +92,11 @@ class EObjectFallbackSynthesis extends AbstractDiagramSynthesis<EObject> {
     public static val String ID = "de.cau.cs.kieler.klighd.ui.view.syntheses.EObjectFallbackSynthesis";
 
     // Options
-    public static val SynthesisOption EXPAND_DETAILS = SynthesisOption::createCheckOption("Expand all Details",
+    public static val SynthesisOption EXPAND_DETAILS = SynthesisOption::createCheckOption(
+        EObjectFallbackSynthesis, "Expand all Details",
         false).setUpdateAction(EcoreModelExpandDetailsAction.ID);
-    public static val SynthesisOption SHOW_REFERENCES = SynthesisOption::createCheckOption("Show References",
-        false);
+    public static val SynthesisOption SHOW_REFERENCES = SynthesisOption::createCheckOption(
+        EObjectFallbackSynthesis, "Show References", false);
         
     // Sidebar
     override getDisplayedSynthesisOptions() {
