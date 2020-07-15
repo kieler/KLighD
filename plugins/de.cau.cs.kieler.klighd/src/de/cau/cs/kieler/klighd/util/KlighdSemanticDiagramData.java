@@ -208,7 +208,7 @@ public class KlighdSemanticDiagramData implements Iterable<Map.Entry<String, Str
         }
 
         if (strStr == null && value != null) {
-            strStr = Maps.newHashMap();
+            strStr = Maps.newLinkedHashMap();
         }
 
         if (strFun != null && strFun.containsKey(key)) {
@@ -259,7 +259,7 @@ public class KlighdSemanticDiagramData implements Iterable<Map.Entry<String, Str
         }
 
         if (strFun == null && fun != null) {
-            strFun =  Maps.newHashMap();
+            strFun =  Maps.newLinkedHashMap();
         }
 
         if (strStr != null && strStr.containsKey(key)) {
@@ -319,7 +319,7 @@ public class KlighdSemanticDiagramData implements Iterable<Map.Entry<String, Str
         }
 
         if (strFunTextLine == null && fun != null) {
-            strFunTextLine = Maps.newHashMap();
+            strFunTextLine = Maps.newLinkedHashMap();
         }
 
         if (strFunTextLine != null) {

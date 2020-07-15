@@ -27,6 +27,13 @@
                 <id>org.eclipse.elk.alg.layered</id>
                 <versionRange>${elk-version}</versionRange>
               </requirement>
+              <requirement>
+                <!-- unfortunately the fragments are not automatically included in the class-path,
+                      hence we need to add our freeHEP-based generator for the SVG generation test to work -->
+                <type>eclipse-plugin</type>
+                <id>de.cau.cs.kieler.klighd.piccolo.freehep</id>
+                <versionRange>0.0.0</versionRange>
+              </requirement>
             </extraRequirements>
           </dependency-resolution>
         </configuration>
