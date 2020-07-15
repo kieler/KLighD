@@ -931,6 +931,25 @@ public final class PlacementUtil {
      * @return the minimal bounds for the string
      */
     public static Bounds estimateTextSize(final KText kText, final String text) {
+        final Bounds testSize = getTestingTextSize(kText);
+
+        if (testSize != null)
+            return testSize;
+        else
+            return estimateTextSize(fontDataFor(kText, null), text);
+    }
+    
+    /**
+     * Returns the testing size data if such are assigned to the given {@link KText}, or
+     * <code>null</code>.
+     * 
+     * @param kText
+     *            the KText potentially carrying testing width and height data, maybe
+     *            <code>null</code>
+     * @return the testing bounds assigned to {@code kText}, or <code>null</code> if {@code kText}
+     *         is <code>null</code> or if no testing width or testing height is assigned.
+     */
+    public static Bounds getTestingTextSize(final KText kText) {
         if (kText != null) {
             // special handling required for the regression tests
             // I don't trust in the different SWT implementations to
@@ -951,8 +970,7 @@ public final class PlacementUtil {
                 }
             }
         }
-
-        return estimateTextSize(fontDataFor(kText, null), text);
+        return null;
     }
 
     /**

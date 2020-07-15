@@ -127,7 +127,11 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
 
     public static final String TITLE = rootKey + "." + InfoConstants.TITLE;
 
-    private BasicStroke defaultStroke = new BasicStroke();
+    private BasicStroke defaultStroke =
+            new BasicStroke(
+                    KlighdConstants.DEFAULT_LINE_ATTRIBUTES.width,
+                    KlighdConstants.DEFAULT_LINE_ATTRIBUTES.cap - 1,
+                    KlighdConstants.DEFAULT_LINE_ATTRIBUTES.join - 1);
 
     public static final String EMBED_FONTS = rootKey + "."
             + FontConstants.EMBED_FONTS;
@@ -862,23 +866,25 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
             // general transformation
             getTransform(),
             // general clip
-            getClippedString(
+//            getClippedString(
                 getTransformedString(
                     // text offset
                     new AffineTransform(1, 0, 0, 1, x, y),
                     getTransformedString(
                         // font transformation and text
                         getFont().getTransform(),
-                        "<text "
+                        "  <text x=\"0\" y=\"0\" "
                             // style
                             + style(style)
                             // semantic data
                             + attributes(false)
                             // Coordinates
-                            + " x=\"0\" y=\"0\">"
+                            + ">\n"
                             // text
                             + insertTSpan(str)
-                            + "</text>")))));
+                            + "  </text>")))
+//            )
+        );
 
         resetSemanticData();
     }
@@ -927,7 +933,7 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
             // use tspans to emulate multiline text
             boolean first = true;
             for (final String line : lines) {
-                content.append("<tspan x=\"0\" dy=\"");
+                content.append("    <tspan x=\"0\" dy=\"");
                 content.append(first ? firstLineHeight : lineHeight);
                 content.append("\"");
                 content.append(tSpanAttributes(line, i++));
@@ -935,7 +941,7 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
                     content.append(textLength());
                 content.append(">");
                 content.append(line);
-                content.append("</tspan>" + Klighd.LINE_SEPARATOR);
+                content.append("</tspan>\n");
                 first = false;
             }
             
@@ -944,13 +950,13 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
 
             // use tspans to emulate multiline text
             for (final String line : lines) {
-                content.append("<tspan x=\"0\" dy=\"");
+                content.append("    <tspan x=\"0\" dy=\"");
                 content.append(getFont().getSize());
                 content.append("\"");
                 content.append(tSpanAttributes(line, i++));
                 content.append(">");
                 content.append(line);
-                content.append("</tspan>" + Klighd.LINE_SEPARATOR);
+                content.append("</tspan>\n");
             }
         }
 
@@ -1545,25 +1551,23 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
             return "";
         }
 
-        final StringBuffer sb = new StringBuffer(" ");
+        final StringBuffer sb = new StringBuffer();
 
         for (final Entry<String, String> e : semanticData) {
 
             // special tags
             if (e.getKey().equals(KlighdConstants.SEMANTIC_DATA_ID)) {
-                sb.append("id" + "=\"" + e.getValue() + "\"");
+                sb.append(" id" + "=\"" + e.getValue() + "\"");
 
             } else if (e.getKey().equals(KlighdConstants.SEMANTIC_DATA_CLASS)) {
-                sb.append("class" + "=\"" + e.getValue() + "\"");
+                sb.append(" class" + "=\"" + e.getValue() + "\"");
 
             } else if (e.getKey().equals(KlighdConstants.SEMANTIC_DATA_RAW)) {
-                sb.append(e.getValue());
+                sb.append(" " + e.getValue());
                 
             } else {
-                sb.append("klighd:" + e.getKey() + "=\"" + e.getValue() + "\"");
+                sb.append(" klighd:" + e.getKey() + "=\"" + e.getValue() + "\"");
             }
-
-            sb.append(" ");
         }
 
         if (resetSemData) {
@@ -1577,22 +1581,20 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
             return "";
         }
 
-        final StringBuffer sb = new StringBuffer(" ");
+        final StringBuffer sb = new StringBuffer();
 
         for (final Entry<String, String> e : semanticData.textLineIterable(textLine, noOfLine)) {
 
             // special tags
             if (e.getKey().equals(KlighdConstants.SEMANTIC_DATA_ID)) {
-                sb.append("id" + "=\"" + e.getValue() + "\"");
+                sb.append(" id" + "=\"" + e.getValue() + "\"");
 
             } else if (e.getKey().equals(KlighdConstants.SEMANTIC_DATA_RAW)) {
-                sb.append(e.getValue());
+                sb.append(" " + e.getValue());
 
             } else {
-                sb.append("klighd:" + e.getKey() + "=\"" + e.getValue() + "\"");
+                sb.append(" klighd:" + e.getKey() + "=\"" + e.getValue() + "\"");
             }
-
-            sb.append(" ");
         }
 
         return sb.toString();
@@ -1609,9 +1611,9 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
     public void startGroup(KlighdSemanticDiagramData nextSemanticData) {
         this.semanticData = nextSemanticData;
         if ((this.semanticData != null && this.semanticData.iterator().hasNext())) {
-            os.write("<g ");
+            os.write("<g");
             os.write(attributes(true));
-            os.write(" >\n");
+            os.write(">\n");
             groupsStack.push(true);
         } else {
             groupsStack.push(false);
