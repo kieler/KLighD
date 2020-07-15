@@ -65,9 +65,7 @@ class FreeHEPSVGOffscreenRenderingTest {
 			</g>
 			</g>
 		'''.equalsSVGof[
-			children += createInitializedNode() => [
-				setSize(100, 100)
-			]
+			addKNodeWithSizeOf(100, 100)
 		]
 	}
 	
@@ -85,11 +83,10 @@ class FreeHEPSVGOffscreenRenderingTest {
 			</g>
 			</g>
 		'''.equalsSVGof[
-			children += createInitializedNode() => [
-				setSize(100, 100)
+			addKNodeWithSizeOf(100, 100) => [
 				setProperty(PORT_CONSTRAINTS, PortConstraints.FIXED_SIDE)
-				ports += createInitializedPort => [
-					setSize(5, 5)
+				
+				addKPortWithSizeOf(5, 5) => [
 					setProperty(PORT_SIDE, PortSide.EAST)
 					addKRectangleWithStrokeOnlyColoring
 				]
@@ -113,11 +110,10 @@ class FreeHEPSVGOffscreenRenderingTest {
 			</g>
 			</g>
 		'''.equalsSVGof[
-			children += createInitializedNode() => [
-				setSize(100, 100)
+			addKNodeWithSizeOf(100, 100) => [
 				setProperty(PORT_CONSTRAINTS, PortConstraints.FIXED_SIDE)
-				ports += createInitializedPort => [
-					setSize(5, 5)
+				
+				addKPortWithSizeOf(5, 5) => [
 					setProperty(PORT_SIDE, PortSide.WEST)
 					addKRectangleWithStrokeOnlyColoring
 				]
@@ -132,13 +128,10 @@ class FreeHEPSVGOffscreenRenderingTest {
 			<g fill="none" stroke-opacity="1" stroke="#000000">
 			  <path d="M 0.5 0.5 L 99.5 0.5 L 99.5 99.5 L 0.5 99.5 L 0.5 0.5 z"/>
 			</g>
-			  <text x="0" y="0" fill-opacity="1" font-style="normal" font-family="Helvetica" font-weight="normal" stroke="none" fill="#000000" font-size="<FONT_SIZE>">
-			    <tspan x="0" dy="<Y>" textLength="50.0px" lengthAdjust="spacingAndGlyphs">NodeLabel</tspan>
-			  </text>
+			<text x="0" y="<Y>" fill-opacity="1" font-style="normal" font-family="Helvetica" font-weight="normal" stroke="none" fill="#000000" font-size="<FONT_SIZE>" textLength="50.0px" lengthAdjust="spacingAndGlyphs">NodeLabel</text>
 			</g>
 		'''.equalsSVGwithTextLengthsOf[
-			children += createInitializedNode() => [
-				setSize(100, 100)
+			addKNodeWithSizeOf(100, 100) => [
 				createInitializedLabel(it) => [
 					text = "NodeLabel"
 					addKTextWithAssumedSizeOf(50, 10)
@@ -148,7 +141,7 @@ class FreeHEPSVGOffscreenRenderingTest {
 	}
 	
 	@Test
-	def void test04a_singleKNodeWithEastPortWithInsideLabel() {
+	def void test04a_singleKNodeWithEastPortWithOutsideLabel() {
 		'''
 			<g stroke-linejoin="miter" stroke-dashoffset="0" stroke-dasharray="none" stroke-width="1" stroke-miterlimit="10" stroke-linecap="butt">
 			<g fill="none" stroke-opacity="1" stroke="#000000">
@@ -160,19 +153,16 @@ class FreeHEPSVGOffscreenRenderingTest {
 			</g>
 			</g>
 			<g transform="matrix(1, 0, 0, 1, 106, 45)">
-			  <text x="0" y="0" fill-opacity="1" font-style="normal" font-family="Helvetica" font-weight="normal" stroke="none" fill="#000000" font-size="<FONT_SIZE>">
-			    <tspan x="0" dy="<Y>" textLength="50.0px" lengthAdjust="spacingAndGlyphs">PortLabel</tspan>
-			  </text>
+			  <text x="0" y="<Y>" fill-opacity="1" font-style="normal" font-family="Helvetica" font-weight="normal" stroke="none" fill="#000000" font-size="<FONT_SIZE>" textLength="50.0px" lengthAdjust="spacingAndGlyphs">PortLabel</text>
 			</g>
 			</g>
 		'''.equalsSVGwithTextLengthsOf[
-			children += createInitializedNode() => [
+			addKNodeWithSizeOf(100, 100) => [
 				setProperty(PORT_CONSTRAINTS, PortConstraints.FIXED_SIDE)
 				setProperty(PORT_LABELS_PLACEMENT, PortLabelPlacement.OUTSIDE)
 				setProperty(PORT_LABELS_NEXT_TO_PORT_IF_POSSIBLE, Boolean.TRUE)
-				setSize(100, 100)
-				ports += createInitializedPort => [
-					setSize(5, 5)
+				
+				addKPortWithSizeOf(5, 5) => [
 					setProperty(PORT_SIDE, PortSide.EAST)
 					addKRectangleWithStrokeOnlyColoring
 					createInitializedLabel(it) => [
@@ -185,7 +175,7 @@ class FreeHEPSVGOffscreenRenderingTest {
 	}
 	
 	@Test
-	def void test04b_singleKNodeWithWestPortWithInsideLabel() {
+	def void test04b_singleKNodeWithWestPortWithOutsideLabel() {
 		'''
 			<g stroke-linejoin="miter" stroke-dashoffset="0" stroke-dasharray="none" stroke-width="1" stroke-miterlimit="10" stroke-linecap="butt">
 			<g transform="matrix(1, 0, 0, 1, 56, 0)">
@@ -199,19 +189,16 @@ class FreeHEPSVGOffscreenRenderingTest {
 			</g>
 			</g>
 			<g transform="matrix(1, 0, 0, 1, 0, 45)">
-			  <text x="0" y="0" fill-opacity="1" font-style="normal" font-family="Helvetica" font-weight="normal" stroke="none" fill="#000000" font-size="<FONT_SIZE>">
-			    <tspan x="0" dy="<Y>" textLength="50.0px" lengthAdjust="spacingAndGlyphs">PortLabel</tspan>
-			  </text>
+			  <text x="0" y="<Y>" fill-opacity="1" font-style="normal" font-family="Helvetica" font-weight="normal" stroke="none" fill="#000000" font-size="<FONT_SIZE>" textLength="50.0px" lengthAdjust="spacingAndGlyphs">PortLabel</text>
 			</g>
 			</g>
 		'''.equalsSVGwithTextLengthsOf[
-			children += createInitializedNode() => [
+			addKNodeWithSizeOf(100, 100) => [
 				setProperty(PORT_CONSTRAINTS, PortConstraints.FIXED_SIDE)
 				setProperty(PORT_LABELS_PLACEMENT, PortLabelPlacement.OUTSIDE)
 				setProperty(PORT_LABELS_NEXT_TO_PORT_IF_POSSIBLE, Boolean.TRUE)
-				setSize(100, 100)
-				ports += createInitializedPort => [
-					setSize(5, 5)
+				
+				addKPortWithSizeOf(5, 5) => [
 					setProperty(PORT_SIDE, PortSide.WEST)
 					addKRectangleWithStrokeOnlyColoring
 					createInitializedLabel(it) => [
@@ -234,8 +221,7 @@ class FreeHEPSVGOffscreenRenderingTest {
 			</g>
 			</g>
 		'''.equalsSVGof[
-			children += createInitializedNode() => [
-				setSize(100, 100)
+			addKNodeWithSizeOf(100, 100) => [
 				semanticData = KlighdSemanticDiagramData.of(it).putID("MyNode").put(KlighdConstants.SEMANTIC_DATA_CLASS, "MyNodeClass").put("MyKey", "MyValue").put("My2ndKey") [
 					viewModelElement.eClass.name + ":" + (viewModelElement as KNode).parent.children.indexOf(viewModelElement)
 				]
@@ -259,11 +245,10 @@ class FreeHEPSVGOffscreenRenderingTest {
 			</g>
 			</g>
 		'''.equalsSVGof[
-			children += createInitializedNode() => [
-				setSize(100, 100)
+			addKNodeWithSizeOf(100, 100) => [
 				setProperty(PORT_CONSTRAINTS, PortConstraints.FIXED_SIDE)
-				ports += createInitializedPort => [
-					setSize(5, 5)
+				
+				addKPortWithSizeOf(5, 5) => [
 					setProperty(PORT_SIDE, PortSide.EAST)
 					addKRectangleWithStrokeOnlyColoring
 					semanticData = KlighdSemanticDiagramData.of(it).putID("MyPort").put(KlighdConstants.SEMANTIC_DATA_CLASS, "MyPortClass").put("MyKey", "MyValue").put("My2ndKey") [
@@ -275,28 +260,23 @@ class FreeHEPSVGOffscreenRenderingTest {
 	}
 	
 	@Test
-	def void test13_singleKNodeWithLabelWithSemanticData() {
+	def void test13a_singleKNodeWithLabelWithSemanticData() {
 		'''
 			<g stroke-linejoin="miter" stroke-dashoffset="0" stroke-dasharray="none" stroke-width="1" stroke-miterlimit="10" stroke-linecap="butt">
 			<g fill="none" stroke-opacity="1" stroke="#000000">
 			  <path d="M 0.5 0.5 L 99.5 0.5 L 99.5 99.5 L 0.5 99.5 L 0.5 0.5 z"/>
 			</g>
 			<g id="MyLabel" class="MyLabelClass" klighd:MyKey="MyValue" klighd:My2ndKey="KLabel:0">
-			  <text x="0" y="0" fill-opacity="1" font-style="normal" font-family="Helvetica" font-weight="normal" stroke="none" fill="#000000" font-size="<FONT_SIZE>">
-			    <tspan x="0" dy="<Y>" textLength="50.0px" lengthAdjust="spacingAndGlyphs">NodeLabel</tspan>
-			  </text>
+			<text x="0" y="<Y>" fill-opacity="1" font-style="normal" font-family="Helvetica" font-weight="normal" stroke="none" fill="#000000" font-size="<FONT_SIZE>" textLength="50.0px" lengthAdjust="spacingAndGlyphs">NodeLabel</text>
 			</g>
 			</g>
 		'''.equalsSVGwithTextLengthsOf[
-			children += createInitializedNode() => [
-				setSize(100, 100)
+			addKNodeWithSizeOf(100, 100) => [
 				createInitializedLabel(it) => [
 					text = "NodeLabel"
 					addKTextWithAssumedSizeOf(50, 10)
 					semanticData = KlighdSemanticDiagramData.of(it).putID("MyLabel").put(KlighdConstants.SEMANTIC_DATA_CLASS, "MyLabelClass").put("MyKey", "MyValue").put("My2ndKey") [
 						viewModelElement.eClass.name + ":" + (viewModelElement as KLabel).parent.labels.indexOf(viewModelElement)
-					].putAtTextLine("MyTextLineKey")[
-						noOfLine.toString
 					]
 				]
 			]
@@ -304,25 +284,54 @@ class FreeHEPSVGOffscreenRenderingTest {
 	}
 	
 	@Test
-	def void test13b_singleKNodeWithLabelWithMultiLineTextWithSemanticData() {
+	def void test13b_singleKNodeWithLabelWithSemanticDataWithMultiLineText() {
 		'''
 			<g stroke-linejoin="miter" stroke-dashoffset="0" stroke-dasharray="none" stroke-width="1" stroke-miterlimit="10" stroke-linecap="butt">
 			<g fill="none" stroke-opacity="1" stroke="#000000">
 			  <path d="M 0.5 0.5 L 99.5 0.5 L 99.5 99.5 L 0.5 99.5 L 0.5 0.5 z"/>
 			</g>
-			  <text x="0" y="0" fill-opacity="1" font-style="normal" font-family="Helvetica" font-weight="normal" stroke="none" fill="#000000" font-size="<FONT_SIZE>" id="MyText" class="MyTextClass" klighd:MyKey="MyValue" klighd:My2ndKey="KLabel:0">
-			    <tspan x="0" dy="<Y>"klighd:MyTextLineKey="0">NodeLabel:</tspan>
-			    <tspan x="0" dy="<Y>"klighd:MyTextLineKey="1">Some additional info</tspan>
-			  </text>
+			<g fill-opacity="1" font-style="normal" font-family="Helvetica" font-weight="normal" stroke="none" fill="#000000" font-size="<FONT_SIZE>" id="MyText" class="MyTextClass" klighd:MyKey="MyValue" klighd:My2ndKey="KText:0">
+			  <text x="0" y="<Y>">NodeLabel:</text>
+			  <text x="0" y="<Y>">Some additional info</text>
 			</g>
-		'''.equalsSVGwithTextLengthsOf[
-			children += createInitializedNode() => [
-				setSize(100, 100)
+			</g>
+        '''.equalsSVGof[ // cs: deactivated generation of 'textLength' property settings on purpose, as we cannot inject reliable test size data per text line as of now
+			addKNodeWithSizeOf(100, 100) => [
 				createInitializedLabel(it) => [
 					text = "NodeLabel:\nSome additional info"
 					addKTextWithAssumedSizeOf(50, 10)
-						.semanticData = KlighdSemanticDiagramData.of(it).putID("MyText").put(KlighdConstants.SEMANTIC_DATA_CLASS, "MyTextClass").put("MyKey", "MyValue").put("My2ndKey") [
-							viewModelElement.eClass.name + ":" + (viewModelElement as KLabel).parent.labels.indexOf(viewModelElement)
+						.semanticData = KlighdSemanticDiagramData.of(it.data.head).putID("MyText").put(KlighdConstants.SEMANTIC_DATA_CLASS, "MyTextClass").put("MyKey", "MyValue").put("My2ndKey") [
+							viewModelElement.eClass.name + ":" + (viewModelElement.eContainer as KGraphElement).data.indexOf(viewModelElement)
+						]
+				]
+			]
+		]
+	}
+	
+	@Test
+	def void test13c_singleKNodeWithLabelWithSemanticData_And_MultiLineTextWithSemanticData() {
+		'''
+			<g stroke-linejoin="miter" stroke-dashoffset="0" stroke-dasharray="none" stroke-width="1" stroke-miterlimit="10" stroke-linecap="butt">
+			<g fill="none" stroke-opacity="1" stroke="#000000">
+			  <path d="M 0.5 0.5 L 99.5 0.5 L 99.5 99.5 L 0.5 99.5 L 0.5 0.5 z"/>
+			</g>
+			<g id="MyLabel" class="MyLabelClass" klighd:MyKey="MyValue" klighd:My2ndKey="KLabel:0">
+			<g fill-opacity="1" font-style="normal" font-family="Helvetica" font-weight="normal" stroke="none" fill="#000000" font-size="<FONT_SIZE>" id="MyText" class="MyTextClass" klighd:MyKey="MyValue" klighd:My2ndKey="KText:0">
+			  <text x="0" y="<Y>" klighd:MyTextLineKey="0">NodeLabel:</text>
+			  <text x="0" y="<Y>" klighd:MyTextLineKey="1">Some additional info</text>
+			</g>
+			</g>
+			</g>
+        '''.equalsSVGof[ // cs: deactivated generation of 'textLength' property settings on purpose, as we cannot inject reliable test size data per text line as of now
+			addKNodeWithSizeOf(100, 100) => [
+				createInitializedLabel(it) => [
+					text = "NodeLabel:\nSome additional info"
+					semanticData = KlighdSemanticDiagramData.of(it).putID("MyLabel").put(KlighdConstants.SEMANTIC_DATA_CLASS, "MyLabelClass").put("MyKey", "MyValue").put("My2ndKey") [
+						viewModelElement.eClass.name + ":" + (viewModelElement as KLabel).parent.labels.indexOf(viewModelElement)
+					]
+					addKTextWithAssumedSizeOf(50, 10)
+						.semanticData = KlighdSemanticDiagramData.of(it.data.head).putID("MyText").put(KlighdConstants.SEMANTIC_DATA_CLASS, "MyTextClass").put("MyKey", "MyValue").put("My2ndKey") [
+							viewModelElement.eClass.name + ":" + (viewModelElement.eContainer as KGraphElement).data.indexOf(viewModelElement)
 						].putAtTextLine("MyTextLineKey")[
 							noOfLine.toString
 						]
@@ -331,7 +340,151 @@ class FreeHEPSVGOffscreenRenderingTest {
 		]
 	}
 	
+	@Test
+	def void test14a_singleKNodeWithEastPortWithSemanticData_And_WithOutsideLabelWithSemanticData() {
+		'''
+			<g stroke-linejoin="miter" stroke-dashoffset="0" stroke-dasharray="none" stroke-width="1" stroke-miterlimit="10" stroke-linecap="butt">
+			<g fill="none" stroke-opacity="1" stroke="#000000">
+			  <path d="M 0.5 0.5 L 99.5 0.5 L 99.5 99.5 L 0.5 99.5 L 0.5 0.5 z"/>
+			</g>
+			<g id="MyPort" class="MyPortClass" klighd:MyKey="MyValue" klighd:My2ndKey="KPort:0">
+			<g transform="matrix(1, 0, 0, 1, 100, 47.5)">
+			<g fill="none" stroke-opacity="1" stroke="#000000">
+			  <path d="M 0.5 0.5 L 4.5 0.5 L 4.5 4.5 L 0.5 4.5 L 0.5 0.5 z"/>
+			</g>
+			</g>
+			<g id="MyLabel" class="MyLabelClass" klighd:MyKey="MyValue" klighd:My2ndKey="KLabel:0">
+			<g transform="matrix(1, 0, 0, 1, 106, 45)">
+			  <text x="0" y="<Y>" fill-opacity="1" font-style="normal" font-family="Helvetica" font-weight="normal" stroke="none" fill="#000000" font-size="<FONT_SIZE>" textLength="50.0px" lengthAdjust="spacingAndGlyphs">PortLabel</text>
+			</g>
+			</g>
+			</g>
+			</g>
+		'''.equalsSVGwithTextLengthsOf[
+			addKNodeWithSizeOf(100, 100) => [
+				setProperty(PORT_CONSTRAINTS, PortConstraints.FIXED_SIDE)
+				setProperty(PORT_LABELS_PLACEMENT, PortLabelPlacement.OUTSIDE)
+				setProperty(PORT_LABELS_NEXT_TO_PORT_IF_POSSIBLE, Boolean.TRUE)
+				
+				addKPortWithSizeOf(5, 5) => [
+					setProperty(PORT_SIDE, PortSide.EAST)
+					addKRectangleWithStrokeOnlyColoring
+					semanticData = KlighdSemanticDiagramData.of(it).putID("MyPort").put(KlighdConstants.SEMANTIC_DATA_CLASS, "MyPortClass").put("MyKey", "MyValue").put("My2ndKey") [
+						viewModelElement.eClass.name + ":" + (viewModelElement as KPort).node.ports.indexOf(viewModelElement)
+					]
+					createInitializedLabel(it) => [
+						text = "PortLabel"
+						semanticData = KlighdSemanticDiagramData.of(it).putID("MyLabel").put(KlighdConstants.SEMANTIC_DATA_CLASS, "MyLabelClass").put("MyKey", "MyValue").put("My2ndKey") [
+							viewModelElement.eClass.name + ":" + (viewModelElement as KLabel).parent.labels.indexOf(viewModelElement)
+						]
+						addKTextWithAssumedSizeOf(50, 10)
+					]
+				]
+			]
+		]
+	}
 	
+	@Test
+	def void test14b_singleKNodeWithEastPortWithSemanticData_And_WithOutsideLabelWithSemanticData_And_SingleLineTextWithSemanticData() {
+		'''
+			<g stroke-linejoin="miter" stroke-dashoffset="0" stroke-dasharray="none" stroke-width="1" stroke-miterlimit="10" stroke-linecap="butt">
+			<g fill="none" stroke-opacity="1" stroke="#000000">
+			  <path d="M 0.5 0.5 L 99.5 0.5 L 99.5 99.5 L 0.5 99.5 L 0.5 0.5 z"/>
+			</g>
+			<g id="MyPort" class="MyPortClass" klighd:MyKey="MyValue" klighd:My2ndKey="KPort:0">
+			<g transform="matrix(1, 0, 0, 1, 100, 47.5)">
+			<g fill="none" stroke-opacity="1" stroke="#000000">
+			  <path d="M 0.5 0.5 L 4.5 0.5 L 4.5 4.5 L 0.5 4.5 L 0.5 0.5 z"/>
+			</g>
+			</g>
+			<g id="MyLabel" class="MyLabelClass" klighd:MyKey="MyValue" klighd:My2ndKey="KLabel:0">
+			<g transform="matrix(1, 0, 0, 1, 106, 45)">
+			  <text x="0" y="<Y>" fill-opacity="1" font-style="normal" font-family="Helvetica" font-weight="normal" stroke="none" fill="#000000" font-size="<FONT_SIZE>" textLength="50.0px" lengthAdjust="spacingAndGlyphs" id="MyText" class="MyTextClass" klighd:MyKey="MyValue" klighd:My2ndKey="KText:0">PortLabel</text>
+			</g>
+			</g>
+			</g>
+			</g>
+		'''.equalsSVGwithTextLengthsOf[
+			addKNodeWithSizeOf(100, 100) => [
+				setProperty(PORT_CONSTRAINTS, PortConstraints.FIXED_SIDE)
+				setProperty(PORT_LABELS_PLACEMENT, PortLabelPlacement.OUTSIDE)
+				setProperty(PORT_LABELS_NEXT_TO_PORT_IF_POSSIBLE, Boolean.TRUE)
+				
+				addKPortWithSizeOf(5, 5) => [
+					setProperty(PORT_SIDE, PortSide.EAST)
+					addKRectangleWithStrokeOnlyColoring
+					semanticData = KlighdSemanticDiagramData.of(it).putID("MyPort").put(KlighdConstants.SEMANTIC_DATA_CLASS, "MyPortClass").put("MyKey", "MyValue").put("My2ndKey") [
+						viewModelElement.eClass.name + ":" + (viewModelElement as KPort).node.ports.indexOf(viewModelElement)
+					]
+					createInitializedLabel(it) => [
+						text = "PortLabel"
+						semanticData = KlighdSemanticDiagramData.of(it).putID("MyLabel").put(KlighdConstants.SEMANTIC_DATA_CLASS, "MyLabelClass").put("MyKey", "MyValue").put("My2ndKey") [
+							viewModelElement.eClass.name + ":" + (viewModelElement as KLabel).parent.labels.indexOf(viewModelElement)
+						]
+						addKTextWithAssumedSizeOf(50, 10)
+							.semanticData = KlighdSemanticDiagramData.of(it.data.head).putID("MyText").put(KlighdConstants.SEMANTIC_DATA_CLASS, "MyTextClass").put("MyKey", "MyValue").put("My2ndKey") [
+								viewModelElement.eClass.name + ":" + (viewModelElement.eContainer as KGraphElement).data.indexOf(viewModelElement)
+							].putAtTextLine("MyTextLineKey")[
+								noOfLine.toString
+							]
+					]
+				]
+			]
+		]
+	}
+	
+	@Test
+	def void test14c_singleKNodeWithEastPortWithSemanticData_And_WithOutsideLabelWithSemanticData_And_MultiLineTextWithSemanticData() {
+		'''
+			<g stroke-linejoin="miter" stroke-dashoffset="0" stroke-dasharray="none" stroke-width="1" stroke-miterlimit="10" stroke-linecap="butt">
+			<g fill="none" stroke-opacity="1" stroke="#000000">
+			  <path d="M 0.5 0.5 L 99.5 0.5 L 99.5 99.5 L 0.5 99.5 L 0.5 0.5 z"/>
+			</g>
+			<g id="MyPort" class="MyPortClass" klighd:MyKey="MyValue" klighd:My2ndKey="KPort:0">
+			<g transform="matrix(1, 0, 0, 1, 100, 47.5)">
+			<g fill="none" stroke-opacity="1" stroke="#000000">
+			  <path d="M 0.5 0.5 L 4.5 0.5 L 4.5 4.5 L 0.5 4.5 L 0.5 0.5 z"/>
+			</g>
+			</g>
+			<g id="MyLabel" class="MyLabelClass" klighd:MyKey="MyValue" klighd:My2ndKey="KLabel:0">
+			<g transform="matrix(1, 0, 0, 1, 106, 45)" fill-opacity="1" font-style="normal" font-family="Helvetica" font-weight="normal" stroke="none" fill="#000000" font-size="<FONT_SIZE>" id="MyText" class="MyTextClass" klighd:MyKey="MyValue" klighd:My2ndKey="KText:0">
+			  <text x="0" y="<Y>" klighd:MyTextLineKey="0">PortLabel:</text>
+			  <text x="0" y="<Y>" klighd:MyTextLineKey="1">Some additional info</text>
+			</g>
+			</g>
+			</g>
+			</g>
+		'''.equalsSVGof[ // cs: deactivated generation of 'textLength' property settings on purpose, as we cannot inject reliable test size data per text line as of now
+			addKNodeWithSizeOf(100, 100) => [
+				setProperty(PORT_CONSTRAINTS, PortConstraints.FIXED_SIDE)
+				setProperty(PORT_LABELS_PLACEMENT, PortLabelPlacement.OUTSIDE)
+				setProperty(PORT_LABELS_NEXT_TO_PORT_IF_POSSIBLE, Boolean.TRUE)
+				
+				addKPortWithSizeOf(5, 5) => [
+					setProperty(PORT_SIDE, PortSide.EAST)
+					addKRectangleWithStrokeOnlyColoring
+					semanticData = KlighdSemanticDiagramData.of(it).putID("MyPort").put(KlighdConstants.SEMANTIC_DATA_CLASS, "MyPortClass").put("MyKey", "MyValue").put("My2ndKey") [
+						viewModelElement.eClass.name + ":" + (viewModelElement as KPort).node.ports.indexOf(viewModelElement)
+					]
+					createInitializedLabel(it) => [
+						text = "PortLabel:\nSome additional info"
+						semanticData = KlighdSemanticDiagramData.of(it).putID("MyLabel").put(KlighdConstants.SEMANTIC_DATA_CLASS, "MyLabelClass").put("MyKey", "MyValue").put("My2ndKey") [
+							viewModelElement.eClass.name + ":" + (viewModelElement as KLabel).parent.labels.indexOf(viewModelElement)
+						]
+						addKTextWithAssumedSizeOf(50, 10)
+							.semanticData = KlighdSemanticDiagramData.of(it.data.head).putID("MyText").put(KlighdConstants.SEMANTIC_DATA_CLASS, "MyTextClass").put("MyKey", "MyValue").put("My2ndKey") [
+								viewModelElement.eClass.name + ":" + (viewModelElement.eContainer as KGraphElement).data.indexOf(viewModelElement)
+							].putAtTextLine("MyTextLineKey")[
+								noOfLine.toString
+							]
+					]
+				]
+			]
+		]
+	}
+	
+	
+
 	def equalsSVGof(CharSequence expectation, (KNode) => void viewModelBuilder) {
 		expectation.equalsSVGof(viewModelBuilder, false)
 	}
@@ -351,6 +504,9 @@ class FreeHEPSVGOffscreenRenderingTest {
 				.setProperty(IOffscreenRenderer.TRANSPARENT_BACKGROUND, Boolean.TRUE)
 				.setProperty(IOffscreenRenderer.SET_TEXT_LENGTHS, Boolean.valueOf(withTextLength))
 		)
+		
+		if (status.exception !== null)
+			throw status.exception
 		
 		OK_STATUS.assertEquals(status)
 		
@@ -373,10 +529,26 @@ class FreeHEPSVGOffscreenRenderingTest {
 	
 	static val P_FONT_SIZE = Pattern.compile('(font-size=")[^"]*(")')
 	static val P_DY = Pattern.compile('(dy=")[^"]*(")')
+	static val P_TEXT_Y = Pattern.compile('(<text[^y]*y=")[^"]*(")')
 	
 	def maskFontSizeAndTextYPos(String input) {
 		val fontSizeMasked = P_FONT_SIZE.matcher(input).replaceAll('$1<FONT_SIZE>$2')
-		P_DY.matcher(fontSizeMasked).replaceAll('$1<Y>$2')
+		val textYMasked = P_TEXT_Y.matcher(fontSizeMasked).replaceAll('$1<Y>$2')
+		P_DY.matcher(textYMasked).replaceAll('$1<Y>$2')
+	}
+	
+	def addKNodeWithSizeOf(KNode parent, float width, float height) {
+		val node = createInitializedNode
+		node.setSize(width, height)
+		parent.children += node
+		node
+	}
+	
+	def addKPortWithSizeOf(KNode parent, float width, float height) {
+		val port = createInitializedPort
+		port.setSize(width, height)
+		parent.ports += port
+		port
 	}
 	
 	def addKRectangleWithStrokeOnlyColoring(KGraphElement kge) {
