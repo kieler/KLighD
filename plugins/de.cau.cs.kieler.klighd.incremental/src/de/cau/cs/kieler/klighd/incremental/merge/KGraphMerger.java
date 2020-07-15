@@ -42,6 +42,7 @@ import de.cau.cs.kieler.klighd.kgraph.KNode;
 import de.cau.cs.kieler.klighd.kgraph.KPoint;
 import de.cau.cs.kieler.klighd.kgraph.KPort;
 import de.cau.cs.kieler.klighd.kgraph.KShapeLayout;
+import de.cau.cs.kieler.klighd.util.KlighdProperties;
 
 /**
  * Recursively merge two KGraphs.
@@ -427,6 +428,11 @@ public class KGraphMerger {
         EMap<IProperty<?>, Object> baseProperties = baseElement.getProperties();
         LinkedList<IProperty<?>> removedProperties = Lists.newLinkedList(
                 Sets.difference(baseProperties.keySet(), newElement.getProperties().keySet()));
+        // Do not remove properties that are set by the layout algorithm to save the position of a node.
+        removedProperties.remove(KlighdProperties.LAYERING_LAYER_ID);
+        removedProperties.remove(KlighdProperties.CROSSING_MINIMIZATION_POSITION_ID);
+        removedProperties.remove(KlighdProperties.CURRENT_POSITION);
+        
         for (IProperty<?> property : removedProperties) {
             baseProperties.removeKey(property);
         }
