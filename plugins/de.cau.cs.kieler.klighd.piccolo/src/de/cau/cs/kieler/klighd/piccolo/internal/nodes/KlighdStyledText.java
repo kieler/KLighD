@@ -150,7 +150,7 @@ public class KlighdStyledText extends KlighdNode.KlighdFigureNode<KText> {
      *            The text string to be displayed.
      */
     public void setText(final String theText) {
-        this.text = theText;
+        this.text = theText == null ? "" : theText;
         updateBounds();
     }
 
