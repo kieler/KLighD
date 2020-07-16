@@ -28,7 +28,6 @@ import java.util.concurrent.CompletableFuture
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.sprotty.IDiagramServer
-import org.eclipse.sprotty.ILayoutEngine
 import org.eclipse.sprotty.SGraph
 import org.eclipse.sprotty.xtext.ILanguageAwareDiagramServer
 import org.eclipse.sprotty.xtext.ls.DiagramLanguageServer
@@ -60,9 +59,6 @@ class KGraphDiagramUpdater extends DiagramUpdater {
      */
     @Inject
     KGraphDiagramState diagramState
-
-    @Inject
-    ILayoutEngine layoutEngine
 
     override initialize(DiagramLanguageServer languageServer) {
         this.languageServer = languageServer
@@ -179,7 +175,8 @@ class KGraphDiagramUpdater extends DiagramUpdater {
             if (viewContext.inputModel === null || viewContext.inputModel.class !== model.class) {
                 modelTypeChanged = true
             }
-            if (!KlighdDataManager.instance.getSynthesisID(viewContext.getDiagramSynthesis()).equals(synthesisId)) {
+            if (viewContext.getDiagramSynthesis() !== null
+                && !KlighdDataManager.instance.getSynthesisID(viewContext.getDiagramSynthesis()).equals(synthesisId)) {
                 // In case the synthesis changed the sidebar should be updated
                 modelTypeChanged = true
             }
@@ -257,7 +254,9 @@ class KGraphDiagramUpdater extends DiagramUpdater {
                 diagramState.addUsedSynthesis(usedRootSynthesis)
 
                 // Find all available synthesis options for the currently used syntheses.
-                allUsedSynthesisOptions.addAll(usedRootSynthesis.displayedSynthesisOptions)
+                if (usedRootSynthesis !== null) {
+                    allUsedSynthesisOptions.addAll(usedRootSynthesis.displayedSynthesisOptions)
+                }
                 for (childVC : viewContext.getChildViewContexts(true)) {
                     diagramState.addUsedSynthesis(childVC.diagramSynthesis)
                     allUsedSynthesisOptions.addAll(childVC.diagramSynthesis.displayedSynthesisOptions)

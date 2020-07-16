@@ -3,7 +3,7 @@
  *
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright 2019 by
+ * Copyright 2019, 2020 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -18,8 +18,6 @@ import java.nio.channels.AsynchronousServerSocketChannel
 import java.nio.channels.Channels
 import java.util.concurrent.Executors
 import org.apache.log4j.Logger
-import org.eclipse.equinox.app.IApplication
-import org.eclipse.equinox.app.IApplicationContext
 import org.eclipse.xtext.ide.server.LanguageServerImpl
 
 /**
@@ -29,13 +27,16 @@ import org.eclipse.xtext.ide.server.LanguageServerImpl
  * is provided it will be interpreted as port and host will be localhost<br>
  * <br>
  * <b>Note:</b> On MacOS X make sure to add "-Djava.awt.headless=true" to the vmargs!
- * Otherwise the application will freeze! 
+ * Otherwise the application will freeze!<br>
+ * <br>
+ * To start this as a plain Java Application together with other Plug-Ins, make sure to add those projects and their
+ * project folders into the Classpath.
  * 
  * @see LanguageServerLauncher
  * 
- * @author sdo
+ * @author sdo, nre
  */
-class LanguageServer implements IApplication {
+class LanguageServer implements Runnable {
     
     static val defaultHost = "localhost"
     
@@ -45,10 +46,15 @@ class LanguageServer implements IApplication {
     
     extension LSCreator creator = new LSCreator
     
+    def static main(String[] args) {
+        val runnable = new LanguageServer
+        runnable.run
+    }
+    
     /**
      * Starts the language server.
      */
-    override start(IApplicationContext context) throws Exception {
+    override run() {
         var host = System.getProperty("host")
         var portArg = System.getProperty("port")
         if (portArg !== null) {
@@ -61,39 +67,26 @@ class LanguageServer implements IApplication {
                 port = Integer.parseInt(portArg)
             } catch (NumberFormatException e) {
                 println(e.stackTrace)
-                return 1
+                return
             }
             println("Connection to: " + host + ":" + port)
             // Register all languages
             println("Starting language server socket")
             bindAndRegisterLanguages()
             
-            this.run(host, port)
-            return EXIT_OK 
+            val serverSocket = AsynchronousServerSocketChannel.open.bind(new InetSocketAddress(host, port))
+            val threadPool = Executors.newCachedThreadPool()
+            while (true) {
+                val socketChannel = serverSocket.accept.get            
+                val in = Channels.newInputStream(socketChannel)
+                val out = Channels.newOutputStream(socketChannel)
+                val injector = Guice.createInjector(createLSModules(true))
+                val ls = injector.getInstance(LanguageServerImpl)
+                buildAndStartLS(injector, ls, in, out, threadPool, [it], true)
+                LOG.info("Started language server for client " + socketChannel.remoteAddress)
+            }
         } else {
             LanguageServerLauncher.main(#[])
-            return EXIT_OK
-        }
-    }
-    
-    override stop() {
-        // implementation not needed
-    }
-    
-    /**
-     * Starts the language server (has to be separate method, since start method must have a "reachable" return
-     */
-    def run(String host,  int port) {
-        val serverSocket = AsynchronousServerSocketChannel.open.bind(new InetSocketAddress(host, port))
-        val threadPool = Executors.newCachedThreadPool()
-        while (true) {
-            val socketChannel = serverSocket.accept.get            
-            val in = Channels.newInputStream(socketChannel)
-            val out = Channels.newOutputStream(socketChannel)
-            val injector = Guice.createInjector(createLSModules(true))
-            val ls = injector.getInstance(LanguageServerImpl)
-            buildAndStartLS(injector, ls, in, out, threadPool, [it], true)
-            LOG.info("Started language server for client " + socketChannel.remoteAddress)
         }
     }
     
