@@ -68,8 +68,6 @@ public class KlighdStandaloneSetup {
         );
 
         KlighdDataManager.getInstance()
-                .registerUpdateStrategy(SimpleUpdateStrategy.ID, new SimpleUpdateStrategy())
-                .registerViewer(PiccoloViewer.ID, new PiccoloViewer.Provider())
                 .registerOffscreenRenderer(BitmapOffscreenRenderer.ID, new BitmapOffscreenRenderer(),
                         IOffscreenRenderer.BMP, IOffscreenRenderer.JPEG, IOffscreenRenderer.PNG)
                 .registerOffscreenRenderer(SVGOffscreenRenderer.ID, new SVGOffscreenRenderer(),

@@ -226,6 +226,7 @@ public final class KlighdDataManager {
             
         } else {
             loadDiagramSynthesesViaServiceLoader(id2Synthesis, type2Syntheses);
+            loadKlighdExtensionsViaServiceLoader();
         }
         
         this.idSynthesisMapping = id2Synthesis;
@@ -320,6 +321,32 @@ public final class KlighdDataManager {
                         + "', contributed by '" + element.getContributor().getName() + "'.";
                 Klighd.log(new Status(IStatus.ERROR, Klighd.PLUGIN_ID, msg));
             }
+        }
+    }
+
+    /**
+     * Loads the registered {@link IViewerProvider}, {@link IUpdateStrategy}, {@link IAction},
+     * and {@link IStyleModifier} via Java {@link ServiceLoader}.
+     * This does not load the extensions for exporters via {@link IConfigurationElement}, {@link IExportBranding},
+     * and {@link IOffscreenRenderer}, as they need further information for registration other than the class and an ID.
+     * They need to be registered manually when extension points are not used.
+     */
+    private void loadKlighdExtensionsViaServiceLoader() {
+        for (IViewerProvider viewerProvider : ServiceLoader.load(IViewerProvider.class,
+                KlighdDataManager.class.getClassLoader())) {
+            registerViewer(viewerProvider.getClass().getName(), viewerProvider);
+        }
+        for (IUpdateStrategy updateStrategy : ServiceLoader.load(IUpdateStrategy.class,
+                KlighdDataManager.class.getClassLoader())) {
+            registerUpdateStrategy(updateStrategy.getClass().getName(), updateStrategy);
+        }
+        for (IStyleModifier styleModifier : ServiceLoader.load(IStyleModifier.class,
+                KlighdDataManager.class.getClassLoader())) {
+            registerStyleModifier(styleModifier.getClass().getName(), styleModifier);
+        }
+        for (IAction action : ServiceLoader.load(IAction.class,
+                KlighdDataManager.class.getClassLoader())) {
+            registerAction(action.getClass().getName(), action);
         }
     }
 
