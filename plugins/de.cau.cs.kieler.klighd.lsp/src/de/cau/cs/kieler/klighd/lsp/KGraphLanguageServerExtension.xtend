@@ -45,8 +45,8 @@ import org.eclipse.elk.graph.properties.IProperty
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.lsp4j.DocumentHighlight
+import org.eclipse.lsp4j.DocumentHighlightParams
 import org.eclipse.lsp4j.InitializeParams
-import org.eclipse.lsp4j.TextDocumentPositionParams
 import org.eclipse.lsp4j.services.LanguageClient
 import org.eclipse.sprotty.ActionMessage
 import org.eclipse.sprotty.DiagramOptions
@@ -446,7 +446,7 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
         return "ERR"
     }
     
-    override documentHighlight(TextDocumentPositionParams params) {
+    override documentHighlight(DocumentHighlightParams params) {
         // This skips the direct super implementation because we do not want the DiagramHighlightService to only look in
         // the language registry for an instance, but use the default injector used for this class to provide the
         // service, as all languages are registered in this injector. Prevents a NullPointerException in the super

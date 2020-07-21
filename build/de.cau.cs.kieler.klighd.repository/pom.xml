@@ -46,18 +46,19 @@
             <configuration>
               <associateSites>
                 <!-- Eclipse -->
-                <associateSite>http://download.eclipse.org/eclipse/updates/4.9/</associateSite>
-                <associateSite>http://download.eclipse.org/releases/photon</associateSite>
+                <associateSite>https://download.eclipse.org/releases/2020-03/</associateSite>
+                <!-- UML2 Tools (Meta Model Implemenetation, ...) -->
+                <associateSite>https://download.eclipse.org/modeling/mdt/uml2/updates/5.4/</associateSite>
                 <!-- Eclipse Layout Kernel -->
                 <!-- associateSite>http://build.eclipse.org/modeling/elk/updates/nightly/</associateSite -->
-                <associateSite>http://download.eclipse.org/elk/updates/releases/0.6.1/</associateSite>>
+                <associateSite>https://download.eclipse.org/elk/updates/releases/0.6.1/</associateSite>>
                 <!-- Xtext -->
-                <associateSite>http://download.eclipse.org/modeling/tmf/xtext/updates/releases/2.16.0/</associateSite>>
-                <associateSite>http://xtext.github.io/download/updates/releases/2.1.1/</associateSite>>
+                <associateSite>https://download.eclipse.org/modeling/tmf/xtext/updates/releases/2.21.0/</associateSite>>
+                <associateSite>https://xtext.github.io/download/updates/releases/2.1.1/</associateSite>>
                 <!-- Eclipse Orbit for Google Guave, Apache Batik, ... -->
-                <associateSite>http://download.eclipse.org/tools/orbit/downloads/drops/R20180606145124/repository</associateSite>
-                <!-- UML2 Tools (Meta Model Implemenetation, ...) -->
-                <associateSite>http://download.eclipse.org/modeling/mdt/uml2/updates/5.4/</associateSite>
+                <associateSite>https://download.eclipse.org/tools/orbit/downloads/drops/R20200224183213/repository/</associateSite>
+                <!-- Sprotty ... -->
+                <associateSite>https://rtsys.informatik.uni-kiel.de/~kieler/updatesite/sprotty/0.8.0/</associateSite>
               </associateSites>
               <siteTemplateFolder>siteTemplate</siteTemplateFolder>
               <symbols>
