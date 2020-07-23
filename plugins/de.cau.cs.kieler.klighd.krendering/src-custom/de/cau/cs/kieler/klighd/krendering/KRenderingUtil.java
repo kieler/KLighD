@@ -22,6 +22,11 @@ import java.util.Iterator;
 
 import com.google.common.base.Function;
 
+import de.cau.cs.kieler.klighd.kgraph.KEdge;
+import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
+import de.cau.cs.kieler.klighd.kgraph.KLabel;
+import de.cau.cs.kieler.klighd.kgraph.KNode;
+import de.cau.cs.kieler.klighd.kgraph.KPort;
 
 /**
  * Collection of KRendering related convenience methods and singleton fields.
@@ -803,5 +808,35 @@ public final class KRenderingUtil {
         }
 
         return null;
+    }
+    
+    /**
+     * Creates default @{link KRendering} corresponding to the type of {@link #element} for elements without attached rendering
+     * data.
+     *
+     * @return The default {@link KRendering} model.
+     */
+    public static KRendering createDefaultRendering(KGraphElement element) {
+        if (KNode.class.isAssignableFrom(element.getClass())) {
+            return KRenderingFactory.eINSTANCE.createKRectangle();
+        } else if (KPort.class.isAssignableFrom(element.getClass())) {
+            final KRenderingFactory factory = KRenderingFactory.eINSTANCE;
+            final KRectangle rect = factory.createKRectangle();
+
+            final KForeground foreground = factory.createKForeground().setColor(0, 0, 0);
+            final KBackground background = factory.createKBackground().setColor(0, 0, 0);
+
+            rect.getStyles().add(foreground);
+            rect.getStyles().add(background);
+            return rect;
+        } else if (KLabel.class.isAssignableFrom(element.getClass())) {
+            return KRenderingFactory.eINSTANCE.createKText();
+        } else if (KEdge.class.isAssignableFrom(element.getClass())) {
+            return KRenderingFactory.eINSTANCE.createKPolyline();
+        } else {
+            // Case not possible, there are no more types of KGraphElement.
+            final String type = element == null ? "null" : element.getClass().toGenericString();
+            throw new IllegalArgumentException("Unknown KGraphElement passed to this method: " + type);
+        }
     }
 }

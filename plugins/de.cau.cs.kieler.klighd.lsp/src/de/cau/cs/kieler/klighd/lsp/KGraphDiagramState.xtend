@@ -3,7 +3,7 @@
  *
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright 2018-2019 by
+ * Copyright 2018,2019 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -31,7 +31,7 @@ import org.eclipse.elk.core.LayoutConfigurator
 import org.eclipse.sprotty.SModelElement
 
 /**
- * Singleton class to map a graph id (String) found in SGraphs to their various parts needed for handling KGraph models
+ * Singleton class to map a URI identifying a graph to their various parts needed for handling KGraph models
  * 
  * @author nre
  */
@@ -39,47 +39,47 @@ import org.eclipse.sprotty.SModelElement
 class KGraphDiagramState {
     
     /**
-     * A map mapping the id of a graph to the {@link ViewContext} containing that graph.
+     * A map mapping the URI identifying a graph to the {@link ViewContext} containing that graph.
      */
     Map<String, ViewContext> kGraphContexts = new HashMap
     
     /**
      * A map that contains a key-value pair for each KGraphElement and its translated SModelElement counterpart.
      * Convenient for finding a specific key KGraphElement faster.
-     * Mapped by the url this map belongs to.
+     * Mapped by the URI this map belongs to.
      */
     Map<String, Map<KGraphElement, SModelElement>> kGraphToSModelElementMap = new HashMap
     
     /**
      * A list containing all {@link KImage}s from the source KGraph.
-     * Mapped by the url this map belongs to.
+     * Mapped by the URI this map belongs to.
      */
     Map<String, List<KImage>> images = new HashMap
     
     /**
      * A list containing all texts from the source KGraph in Sprotty labels.
-     * Mapped by the url this map belongs to.
+     * Mapped by the URI this map belongs to.
      */
     Map<String, List<SKLabel>> texts = new HashMap
     
     /**
      * A map containing all KTexts from the source KGraph under the key of their id.
-     * Mapped by the url this map belongs to.
+     * Mapped by the URI this map belongs to.
      */
     Map<String, Map<String, KText>> textMapping = new HashMap
     
     /**
-     * Contains the model of the currently drawn snapshot for the url of the model, if available.
+     * Contains the model of the currently drawn snapshot for the URI of the model, if available.
      */
     Map<String, Object> snapshotModelMapping = new HashMap
     
     /**
-     * Contains the layout configurator for the url of the model.
+     * Contains the layout configurator for the URI of the model.
      */
     Map<String, LayoutConfigurator> layoutConfigMapping = new HashMap
     
     /**
-     * Contains the current synthesis ID for the url of the model.
+     * Contains the current synthesis ID for the URI of the model.
      */
     Map<String, String> synthesisIdMapping = new HashMap
 
@@ -94,12 +94,12 @@ class KGraphDiagramState {
     Set<ISynthesis> usedSyntheses = new HashSet
     
     /**
-     * Map containing all recently used {@link SynthesisOption} and current value
+     * Map containing all recently used {@link SynthesisOption}s and their current values.
      */
     Map<SynthesisOption, Object> recentSynthesisOptions = new HashMap
     
     /**
-     * A map to map the sprotty client id to the uri leading to the resource.
+     * A map to map the Sprotty client id to the URI leading to the resource.
      */
     Map<String, String> uriStringMap = new HashMap
     
@@ -108,16 +108,16 @@ class KGraphDiagramState {
     /**
      * Getter to access the value stored in the kGraphContext map.
      * 
-     * @param uri The key to access the value in the map.
+     * @param uri The identifying URI of the graph to access the value in the map.
      */
     def ViewContext getKGraphContext(String uri) {
         kGraphContexts.get(URLDecoder.decode(uri, "UTF-8"))
     }
     
     /**
-     * Put method to put a new value in the kGraphConcext map under the given key.
+     * Put method to put a new value in the kGraphContext map.
      * 
-     * @param uri The uri to access the map.
+     * @param uri The identifying URI of the graph to access the map.
      * @param value The value to be stored in the map.
      */
     def putKGraphContext(String uri, ViewContext value) {
@@ -127,77 +127,139 @@ class KGraphDiagramState {
     /**
      * Getter to access the value stored in the kGraphToSModelElement map.
      * 
-     * @param key The key to access the value in the map.
+     * @param uri The identifying URI of the graph to access the value in the map.
      */
-    def Map<KGraphElement, SModelElement> getKGraphToSModelElementMap(String key) {
-        kGraphToSModelElementMap.get(key)
+    def Map<KGraphElement, SModelElement> getKGraphToSModelElementMap(String uri) {
+        kGraphToSModelElementMap.get(uri)
     }
     
     /**
-     * Put method to put a new value in the kGraphToSModelElement map under the given key.
+     * Put method to put a new value in the kGraphToSModelElement map.
      * 
-     * @param key The key to access the map.
+     * @param uri The identifying URI of the graph to access the map.
      * @param value The value to be stored in the map.
      */
-    def putKGraphToSModelElementMap(String key, Map<KGraphElement, SModelElement> value) {
-        kGraphToSModelElementMap.put(key, value)
+    def putKGraphToSModelElementMap(String uri, Map<KGraphElement, SModelElement> value) {
+        kGraphToSModelElementMap.put(uri, value)
     }
     
     /**
      * Getter to access the value stored in the images map.
      * 
-     * @param key The key to access the value in the map.
+     * @param uri The identifying URI of the graph to access the value in the map.
      */
-    def List<KImage> getImages(String key) {
-        images.get(key)
+    def List<KImage> getImages(String uri) {
+        images.get(uri)
     }
     
     /**
-     * Put method to put a new value in the images map under the given key.
+     * Put method to put a new value in the images map.
      * 
-     * @param key The key to access the map.
+     * @param uri The identifying URI of the graph to access the map.
      * @param value The value to be stored in the map.
      */
-    def putImages(String key, List<KImage> value) {
-        images.put(key, value)
+    def putImages(String uri, List<KImage> value) {
+        images.put(uri, value)
     }
     
     /**
      * Getter to access the value stored in the texts map.
      * 
-     * @param key The key to access the value in the map.
+     * @param uri The identifying URI of the graph to access the value in the map.
      */
-    def List<SKLabel> getTexts(String key) {
-        texts.get(key)
+    def List<SKLabel> getTexts(String uri) {
+        texts.get(uri)
     }
     
     /**
-     * Put method to put a new value in the texts map under the given key.
+     * Put method to put a new value in the texts map.
      * 
-     * @param key The key to access the map.
+     * @param uri The identifying URI of the graph to access the map.
      * @param value The value to be stored in the map.
      */
-    def putTexts(String key, List<SKLabel> value) {
-        texts.put(key, value)
+    def putTexts(String uri, List<SKLabel> value) {
+        texts.put(uri, value)
     }
     
     /**
      * Getter to access the value stored in the textMapping map.
      * 
-     * @param key The key to access the value in the map.
+     * @param uri The identifying URI of the graph to access the value in the map.
      */
-    def Map<String, KText> getTextMapping(String key) {
-        textMapping.get(key)
+    def Map<String, KText> getTextMapping(String uri) {
+        textMapping.get(uri)
     }
     
     /**
-     * Put method to put a new value in the textMapping map under the given key.
+     * Put method to put a new value in the textMapping map.
      * 
-     * @param key The key to access the map.
+     * @param uri The identifying URI of the graph to access the map.
      * @param value The value to be stored in the map.
      */
-    def putTextMapping(String key, Map<String, KText> value) {
-        textMapping.put(key, value)
+    def putTextMapping(String uri, Map<String, KText> value) {
+        textMapping.put(uri, value)
+    }
+    
+    /**
+     * Getter to access the value stored in the snapshotModel map.
+     * 
+     * @param uri The identifying URI of the graph to access the value in the map.
+     */
+    def Object getSnapshotModel(String uri) {
+        snapshotModelMapping.get(uri)
+    }
+    
+    /**
+     * Put method to put a new value in the uriString map.
+     * 
+     * @param uri The identifying URI of the graph to access the map.
+     * @param value The value to be stored in the map.
+     */
+    def putSnapshotModel(String uri, Object value) {
+        snapshotModelMapping.put(uri, value)
+    }
+    
+    /**
+     * Getter to access the value stored in the layoutConfig mapping.
+     * 
+     * @param uri They identifying URI of the graph to access the value in the map.
+     */
+    def getLayoutConfig(String uri) {
+        var configurator = layoutConfigMapping.get(uri)
+        if (configurator === null) {
+            configurator = new LayoutConfigurator
+            layoutConfigMapping.put(uri, configurator)
+        }
+        return configurator
+    }
+    
+    /**
+     * Put method to put a new value in the layoutConfig mapping.
+     * 
+     * @param uri The identifying URI of the graph to access the map.
+     * @param value The value to be stored in the map.
+     */
+    def putLayoutConfig(String uri, LayoutConfigurator value) {
+        layoutConfigMapping.put(uri, value)
+    }
+    
+    /**
+     * Getter to access the value stored in the synthesisId mapping.
+     * 
+     * @param uri They identifying URI of the graph to access the value in the map.
+     */
+    def getSynthesisId(String uri) {
+        synthesisIdMapping.get(uri)
+    }
+    
+    /**
+     * Put method to put a new value in the synthesisId mapping.
+     * 
+     * @param uri The identifying URI of the graph to access the map.
+     * @param value The value to be stored in the map.
+     */
+    def putSynthesisId(String uri, String value) {
+        synthesisIdMapping.put(uri, value)
     }
     
     /**
@@ -210,94 +272,29 @@ class KGraphDiagramState {
     }
     
     /**
-     * Put method to put a new value in the uriString map under the given key.
+     * Put method to put a new value in the uriString map.
      * 
-     * @param key The key to access the map.
-     * @param value The value to be stored in the map.
+     * @param clientId The client ID of the diagram viewer.
+     * @param uri The identifying URI of the graph to be stored in the map.
      */
     def putURIString(String clientId, String uri) {
         uriStringMap.put(clientId, uri)
     }
     
     /**
-     * Getter to access the value stored in the snapshotModel map.
-     * 
-     * @param key The key to access the value in the map.
-     */
-    def Object getSnapshotModel(String key) {
-        snapshotModelMapping.get(key)
-    }
-    
-    /**
-     * Put method to put a new value in the uriString map under the given key.
-     * 
-     * @param key The key to access the map.
-     * @param value The value to be stored in the map.
-     */
-    def putSnapshotModel(String key, Object value) {
-        snapshotModelMapping.put(key, value)
-    }
-    
-    /**
-     * Getter to access the value stored in the layoutConfig mapping.
-     * 
-     * @param key They key to access the value in the map.
-     */
-    def getLayoutConfig(String key) {
-        var configurator = layoutConfigMapping.get(key)
-        if (configurator === null) {
-            configurator = new LayoutConfigurator
-            layoutConfigMapping.put(key, configurator)
-        }
-        return configurator
-    }
-    
-    /**
-     * Put method to put a new value in the layoutConfig mapping.
-     * 
-     * @param key The key to access the map.
-     * @param value The value to be stored in the map.
-     */
-    def putLayoutConfig(String key, LayoutConfigurator value) {
-        layoutConfigMapping.put(key, value)
-    }
-    
-    /**
-     * Getter to access the value stored in the synthesisId mapping.
-     * 
-     * @param key They key to access the value in the map.
-     */
-    def getSynthesisId(String key) {
-        synthesisIdMapping.get(key)
-    }
-    
-    /**
-     * Put method to put a new value in the synthesisId mapping.
-     * 
-     * @param key The key to access the map.
-     * @param value The value to be stored in the map.
-     */
-    def putSynthesisId(String key, String value) {
-        synthesisIdMapping.put(key, value)
-    }
-    
-    /**
-     * Getter to access the value stored in the viewer map.
-     * 
-     * @param key The key to access the value in the map.
+     * Getter to access the used viewer.
      */
     def IViewer getViewer() {
         return viewer
     }
     
     /**
-     * Put method to put a new value in the viewer map under the given key.
+     * Set method to set a new viewer.
      * 
-     * @param key The key to access the map.
-     * @param value The value to be stored in the map.
+     * @param viewer The new viewer.
      */
-    def putViewer(IViewer value) {
-        viewer = value
+    def setViewer(IViewer viewer) {
+        this.viewer = viewer
     }
     
     /**
@@ -315,34 +312,37 @@ class KGraphDiagramState {
     }
     
     /**
-     * Default put method for the {@code recentSynthesisOptions} map.
+     * Add an option with its current value to the recently used options to be retreivable later via
+     * {@link #getRecentSynthesisOptions()}.
      */
-    def putRecentSynthesisOption(SynthesisOption option, Object value) {
+    def addRecentSynthesisOption(SynthesisOption option, Object value) {
         recentSynthesisOptions.put(option, value)
     }
     
     /**
-     * Default getter.
+     * Returns all values of options recently used on this server added via
+     * {@link #addRecentSynthesisOption(SynthesisOption, Object)}.
      */
     def getRecentSynthesisOptions() {
         return recentSynthesisOptions
     }
     
     /**
-     * Removes the key for this client ID from all stored maps. Should be called when the diagram view is closed.
+     * Removes the identifying URI string of the graph for this client ID from all stored maps. Should be called when
+     * the diagram view is closed.
      * 
      * @param clientId The client ID of the diagram server for that no map should store any data anymore.
      */
     def remove(String clientId) {
-        val key = uriStringMap.get(clientId)
-        if (key !== null) {
-            kGraphContexts.remove(URLDecoder.decode(key, "UTF-8"))
-            kGraphToSModelElementMap.remove(key)
-            texts.remove(key)
-            textMapping.remove(key)
-            snapshotModelMapping.remove(key)
-            layoutConfigMapping.remove(key)
-            synthesisIdMapping.remove(key)
+        val uri = uriStringMap.get(clientId)
+        if (uri !== null) {
+            kGraphContexts.remove(URLDecoder.decode(uri, "UTF-8"))
+            kGraphToSModelElementMap.remove(uri)
+            texts.remove(uri)
+            textMapping.remove(uri)
+            snapshotModelMapping.remove(uri)
+            layoutConfigMapping.remove(uri)
+            synthesisIdMapping.remove(uri)
             viewer = null
             uriStringMap.remove(clientId)
         }

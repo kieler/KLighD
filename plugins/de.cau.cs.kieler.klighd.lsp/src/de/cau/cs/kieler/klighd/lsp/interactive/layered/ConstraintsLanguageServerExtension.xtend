@@ -40,8 +40,8 @@ import org.eclipse.xtext.ide.server.ILanguageServerExtension
 
 /**
  * Language server extension to change the layered algorithm in the interactive mode.
- * @author jet, cos, sdo
  * 
+ * @author jet, cos, sdo
  */
 @Singleton
 class ConstraintsLanguageServerExtension implements ILanguageServerExtension {
@@ -129,7 +129,6 @@ class ConstraintsLanguageServerExtension implements ILanguageServerExtension {
         }
     }
 
-
     /**
      * Delete a constraint.
      * @param dc the constraint o delete
@@ -183,11 +182,11 @@ class ConstraintsLanguageServerExtension implements ILanguageServerExtension {
      * @param PropID the type of constraint that should be set (LayerConstraint or PositionConstraint) 
      * The IProperty class is expected.
      * @param uri The uri of the diagram/file.
-     * @param targetID The id of the node on which the constraint should be set.
+     * @param targetId The id of the node on which the constraint should be set.
      * @param value Either the id of the position or the id of the layer.
      */
-    private def setConstraint(IProperty<Integer> property, String uri, String targetID, int valueId, int valueCons) {
-        val kNode = LSPUtil.getKNode(diagramState, uri, targetID)
+    private def setConstraint(IProperty<Integer> property, String uri, String targetId, int valueId, int valueCons) {
+        val kNode = LSPUtil.getKNode(diagramState, uri, targetId)
         val parentOfNode = kNode.parent
 
         if (kNode !== null && parentOfNode !== null) {
@@ -216,11 +215,11 @@ class ConstraintsLanguageServerExtension implements ILanguageServerExtension {
      * then you should use the other variant.
      * 
      * @param uri The resource's uri
-     * @param ID The Id of the requested KNode
+     * @param nodeId The Id of the requested KNode
      * @return The requested node
      */
-    private def getKNode(String uri, String ID) {
-        return LSPUtil.getKNode(diagramState, uri, ID)
+    private def getKNode(String uri, String nodeId) {
+        return LSPUtil.getKNode(diagramState, uri, nodeId)
     }
     
     /**

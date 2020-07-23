@@ -25,7 +25,7 @@ import org.eclipse.xtend.lib.annotations.Data
  * @author nre
  */
 @Data
-class GetOptionParam {
+class GetOptionsParam {
     /**
      * The {@code uri} pointing towards the resource of which the {@link SynthesisOption}s should be sent back.
      */

@@ -14,7 +14,7 @@ package de.cau.cs.kieler.klighd.lsp
 
 import de.cau.cs.kieler.klighd.ViewContext
 import de.cau.cs.kieler.klighd.kgraph.KNode
-import de.cau.cs.kieler.klighd.lsp.utils.KGraphElementIDGenerator
+import de.cau.cs.kieler.klighd.lsp.utils.KGraphElementIdGenerator
 
 /**
  * Utility methods for graphs in a language server context.
@@ -30,7 +30,7 @@ class LSPUtil {
      * @param uri The uri that points at the desired resource.
      * @return The root node of the resource's model
      */
-    public static def getRoot(KGraphDiagramState diagramState, String uri) {
+    static def getRoot(KGraphDiagramState diagramState, String uri) {
 
         var ViewContext viewContext = null
         synchronized (diagramState) {
@@ -45,17 +45,17 @@ class LSPUtil {
      * 
      * @param diagramState The state of the diagram
      * @param uri The uri of the model file
-     * @param id The id of the node element
+     * @param nodeId The id of the node element
      * @return the {@code KNode} of the node described by {@code id}.
      * Returns null if the {@code ViewContext} of the resource described by {@code uri} is null.
      * Returns null if the element behind the id is no kNode.
      */
-    public static def getKNode(KGraphDiagramState diagramState, String uri, String id) {
+    static def getKNode(KGraphDiagramState diagramState, String uri, String nodeId) {
 
         val mapKToS = diagramState.getKGraphToSModelElementMap(uri)
 
         // KGraphElement which corresponding SNode has the correct id
-        val kGraphElement = KGraphElementIDGenerator.findElementById(mapKToS, id)
+        val kGraphElement = KGraphElementIdGenerator.findElementById(mapKToS, nodeId)
 
         if (kGraphElement instanceof KNode) {
             return kGraphElement as KNode

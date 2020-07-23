@@ -76,7 +76,7 @@ final class RenderingPreparer {
                     // The library needs to generate ids for all later KRenderingRefs to refer to, but no own bounds,
                     // since these are generic renderings.
                     for (rendering : data.renderings) {
-                        KRenderingIDGenerator.generateIdsRecursive(rendering)
+                        KRenderingIdGenerator.generateIdsRecursive(rendering)
                     }
                 }
                 KRenderingRef: {
@@ -95,7 +95,7 @@ final class RenderingPreparer {
                 }
                 KRendering: {
                     // every rendering needs an ID, generate it here
-                    KRenderingIDGenerator.generateIdsRecursive(data)
+                    KRenderingIdGenerator.generateIdsRecursive(data)
                     handleKRendering(element, data, null, null)
                 }
             }
@@ -361,6 +361,9 @@ final class RenderingPreparer {
     
     /**
      * Calculates the bounding box of a KEdge.
+     * 
+     * @param edge The edge to calculate the bounds for.
+     * @return The bounding box.
      */
     private static def Bounds edgeBounds(KEdge edge) {
         var float minX = Float.MAX_VALUE
@@ -393,14 +396,20 @@ final class RenderingPreparer {
     }
     
     /**
-     * Convenience method to set the calculated bounds property of the given rendering
+     * Convenience method to set the calculated bounds property of the given rendering.
+     * 
+     * @param rendering The rendering to configure the bounds for.
+     * @param bounds The bounds to set.
      */
     private static def setBounds(KRendering rendering, Bounds bounds) {
         rendering.properties.put(SprottyProperties.CALCULATED_BOUNDS, bounds)
     }
     
     /**
-     * Convenience method to set the calculated decoration property of the given rendering
+     * Convenience method to set the calculated decoration property of the given rendering.
+     * 
+     * @param rendering The rendering to configure the decoration for.
+     * @param bounds The decoration to set.
      */
     private static def setDecoration(KRendering rendering, Decoration decoration) {
         rendering.properties.put(SprottyProperties.CALCULATED_DECORATION, decoration)

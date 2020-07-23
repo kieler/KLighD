@@ -42,7 +42,7 @@ import static de.cau.cs.kieler.klighd.util.KlighdPredicates.isSelectable
 class SprottyViewer extends AbstractViewer implements ILayoutRecorder {
     
     /** The identifier of this viewer type as specified in the extension. */
-    public static final String ID = "de.cau.cs.kieler.klighd.lsp.SprottyViewer"
+    public static final String ID = SprottyViewer.name
     
     ViewContext viewContext
     
@@ -98,7 +98,6 @@ class SprottyViewer extends AbstractViewer implements ILayoutRecorder {
     
     override getControl() {
 //        println("is Visible called")
-        // TODO: Remove once KlighD has no more SWT dependency.
         // cannot return any SWT element, as there is none. Cannot create any either, as SWT always needs a parent
         // element.
         return null

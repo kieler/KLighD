@@ -3,7 +3,7 @@
  *
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright 2018-2019 by
+ * Copyright 2018,2019 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -31,6 +31,8 @@ import org.eclipse.xtend.lib.annotations.Accessors
 /**
  * Sprotty node with additional fields needed by the translation from a
  * {@link KNode KNode}.
+ * 
+ * @author nre
  */
 @Accessors
 class SKNode extends SNode {
@@ -43,6 +45,8 @@ class SKNode extends SNode {
 /**
  * Sprotty label with additional fields needed by the translation from a
  * {@link KLabel KLabel}.
+ * 
+ * @author nre
  */
 @Accessors
 class SKLabel extends SLabel {
@@ -53,6 +57,8 @@ class SKLabel extends SLabel {
 /**
  * Sprotty edge with additional fields needed by the translation from a
  * {@link KEdge KEdge}.
+ * 
+ * @author nre
  */
 @Accessors
 class SKEdge extends SEdge {
@@ -64,6 +70,8 @@ class SKEdge extends SEdge {
 /**
  * Sprotty port with additional fields needed by the translation from a
  * {@link KPort KPort}.
+ * 
+ * @author nre
  */
 @Accessors
 class SKPort extends SPort {
@@ -74,6 +82,8 @@ class SKPort extends SPort {
 /**
  * Sprotty graph with additional fields needed by the translation from a parent 
  * {@link KNode KNode}.
+ * 
+ * @author nre
  */
 @Accessors
 class SKGraph extends SGraph {

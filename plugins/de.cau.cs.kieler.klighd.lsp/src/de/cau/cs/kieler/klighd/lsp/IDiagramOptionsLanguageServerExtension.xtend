@@ -13,7 +13,7 @@
 package de.cau.cs.kieler.klighd.lsp
 
 import de.cau.cs.kieler.klighd.SynthesisOption
-import de.cau.cs.kieler.klighd.lsp.model.GetOptionParam
+import de.cau.cs.kieler.klighd.lsp.model.GetOptionsParam
 import de.cau.cs.kieler.klighd.lsp.model.GetOptionsResult
 import de.cau.cs.kieler.klighd.lsp.model.PerformActionParam
 import de.cau.cs.kieler.klighd.lsp.model.SetLayoutOptionsParam
@@ -32,15 +32,16 @@ import org.eclipse.lsp4j.jsonrpc.services.JsonSegment
 interface IDiagramOptionsLanguageServerExtension {
     
     /**
-     * Method called by a client to get a list of all {@link ValuedSynthesisOption}s defined for a diagram handled by 
-     * the {@link KGraphLanguageServerExtension}.
+     * Method called by a client to get all options to modify a diagram via the sidebar. This includes all
+     * {@link ValuedSynthesisOption}s, all layout options, and the actions defined in an {@link IDiagramSynthesis}
+     * to be shown to the user.
      * 
      * @param param Defines the {@code param.path} to the source model of that diagram.
-     * @return A list of all synthesis options with their current values, if the diagram for {@code param.path} is
-     * opened, {@code null} otherwise.
+     * @return All synthesis options, layout options with their current values, and the actions if the diagram for
+     * {@code param.path} is opened, {@code null} otherwise.
      */
     @JsonRequest('getOptions')
-    def CompletableFuture<GetOptionsResult> getOptions(GetOptionParam param)
+    def CompletableFuture<GetOptionsResult> getOptions(GetOptionsParam param)
     
     /**
      * Method called by a client to set the {@link SynthesisOption}s of the diagram resolved by {@code param.uri} to 

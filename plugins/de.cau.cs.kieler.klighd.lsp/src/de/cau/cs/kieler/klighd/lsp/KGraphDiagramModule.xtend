@@ -3,7 +3,7 @@
  *
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright 2018-2019 by
+ * Copyright 2018,2019 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -12,6 +12,7 @@
  */
 package de.cau.cs.kieler.klighd.lsp
 
+import com.google.inject.Module
 import de.cau.cs.kieler.klighd.lsp.utils.KeithDiagramSelectionListener
 import de.cau.cs.kieler.klighd.lsp.utils.SimpleTraceRegionProvider
 import org.eclipse.sprotty.IDiagramSelectionListener
@@ -22,14 +23,16 @@ import org.eclipse.sprotty.xtext.tracing.TextRegionProvider
 import org.eclipse.xtext.ide.server.WorkspaceManager
 import org.eclipse.xtext.naming.IQualifiedNameProvider
 import org.eclipse.xtext.naming.SimpleNameProvider
+import org.eclipse.xtext.service.AbstractGenericModule
 
 /**
- * Allows to bind all needed modules for KGraph diagram generation via Guice.
+ * Guice {@link Module} that binds all needed modules for KGraph diagram generation via Guice.
  * Based on the yang-lsp implementation by TypeFox.
  * 
  * @author nre
  * @see <a href="https://github.com/theia-ide/yang-lsp/blob/master/yang-lsp/io.typefox.yang.diagram/src/main/java/io/typefox/yang/diagram/YangDiagramModule.xtend">
  *      YangDiagramModule</a>
+ * @see AbstractGenericModule
  */
 class KGraphDiagramModule extends DefaultDiagramModule {
 	

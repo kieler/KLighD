@@ -82,6 +82,12 @@ class SynthesisOptionSerializer implements JsonSerializer<SynthesisOption> {
         return jsonObject
     }
     
+    /**
+     * Indicates if the given field should be skipped by default serialization.
+     * 
+     * @param f The field to be checked.
+     * @return if the field should be skipped during default serialization.
+     */
     def shouldSkipField(Field f) {
         return Modifier.isStatic(f.modifiers)
         || SynthesisOption.isAssignableFrom(f.declaringClass) && 

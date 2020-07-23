@@ -3,7 +3,7 @@
  *
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright 2018-2019 by
+ * Copyright 2018,2019 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -34,7 +34,7 @@ import org.eclipse.sprotty.SModelElement
  * 
  * @author nre
  */
-class KGraphElementIDGenerator {
+class KGraphElementIdGenerator {
     
     /**
      * Internal map to remember the ID for all {@link KGraphElement}s for that IDs already have been generated.
@@ -169,7 +169,7 @@ class KGraphElementIDGenerator {
  * 
  * @author nre
  */
-class KRenderingIDGenerator {
+class KRenderingIdGenerator {
     
     /**
      * The character used to separate levels of hierarchy in the ID of {@link KRendering}s.
@@ -202,6 +202,12 @@ class KRenderingIDGenerator {
         }
     }
     
+    /**
+     * Recursive method implementing the behavior described in {@link #generateIdsRecursive(KStyleHolder)}.
+     * 
+     * @param rendering The rendering that should currently get an ID.
+     * @paran parentRendering The parent rendering of the current rendering, for convenience.
+     */
     private static def void generateIdsRecursive(KStyleHolder rendering, KContainerRendering parentRendering) {
         if (rendering === null) {
             return
@@ -246,7 +252,7 @@ class KRenderingIDGenerator {
      * @return The {@link KRendering} with the given ID.
      */
     static def findRenderingById(KGraphElement element, String id) {
-        val ids = id.split("\\" + KRenderingIDGenerator.ID_SEPARATOR)
+        val ids = id.split("\\" + ID_SEPARATOR)
         // Every rendering ID is built hierarchically, separated by the RENDERING_SEPERATOR symbol.
         
         val renderings = element.data.filter(KRendering) + element.data.filter(KRenderingRef)

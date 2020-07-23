@@ -20,13 +20,17 @@ import org.eclipse.elk.graph.text.ide.ElkGraphIdeModule
 import org.eclipse.xtext.util.Modules2
 
 /**
+ * Helper class to setup the injectors and register the languages used in this setup, i.e., for the KGraph and ElkGraph
+ * languages.
+ * 
  * @author sdo
- *
  */
 class LanguageRegistration {
     
+    /**
+     * Binds and registers the KGraph and ElkGraph languages.
+     */
     def bindAndRegisterLanguages() {        
-        // Bind and register the KGraph and ElkGraph languages.
         KGraphLSSetup.doLSSetup
         new ElkGraphStandaloneSetup {
             

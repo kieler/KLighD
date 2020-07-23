@@ -16,9 +16,9 @@ import java.util.HashMap
 import org.eclipse.xtend.lib.annotations.Accessors
 
 /**
- * Abstract class to handle sprotty-actions.
+ * Abstract class to handle Sprotty actions.
+ * 
  * @author sdo
- *
  */
 abstract class AbstractActionHandler implements IActionHandler {
     

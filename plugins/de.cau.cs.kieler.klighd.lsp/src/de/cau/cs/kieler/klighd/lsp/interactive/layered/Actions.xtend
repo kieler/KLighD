@@ -26,7 +26,7 @@ import org.eclipse.xtend.lib.annotations.ToString
 @Accessors
 @EqualsHashCode
 @ToString(skipNulls = true)
-public class SetStaticConstraintAction implements Action {
+class SetStaticConstraintAction implements Action {
     public static val KIND = 'setStaticConstraint'
     String kind = KIND
     
@@ -46,7 +46,7 @@ public class SetStaticConstraintAction implements Action {
 @Accessors
 @EqualsHashCode
 @ToString(skipNulls = true)
-public class SetPositionConstraintAction implements Action {
+class SetPositionConstraintAction implements Action {
     public static val KIND = 'setPositionConstraint'
     String kind = KIND
     
@@ -66,7 +66,7 @@ public class SetPositionConstraintAction implements Action {
 @Accessors
 @EqualsHashCode
 @ToString(skipNulls = true)
-public class SetLayerConstraintAction implements Action {
+class SetLayerConstraintAction implements Action {
     public static val KIND = 'setLayerConstraint'
     String kind = KIND
     
@@ -86,7 +86,7 @@ public class SetLayerConstraintAction implements Action {
 @Accessors
 @EqualsHashCode
 @ToString(skipNulls = true)
-public class DeleteStaticConstraintAction implements Action {
+class DeleteStaticConstraintAction implements Action {
     public static val KIND = 'deleteStaticConstraint'
     String kind = KIND
     
@@ -106,7 +106,7 @@ public class DeleteStaticConstraintAction implements Action {
 @Accessors
 @EqualsHashCode
 @ToString(skipNulls = true)
-public class DeletePositionConstraintAction implements Action {
+class DeletePositionConstraintAction implements Action {
     public static val KIND = 'deletePositionConstraint'
     String kind = KIND
     
@@ -126,7 +126,7 @@ public class DeletePositionConstraintAction implements Action {
 @Accessors
 @EqualsHashCode
 @ToString(skipNulls = true)
-public class DeleteLayerConstraintAction implements Action {
+class DeleteLayerConstraintAction implements Action {
     public static val KIND = 'deleteLayerConstraint'
     String kind = KIND
     

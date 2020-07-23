@@ -3,7 +3,7 @@
  *
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright 2018-2019 by
+ * Copyright 2018,2019 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -34,8 +34,8 @@ import de.cau.cs.kieler.klighd.lsp.model.RequestTextBoundsAction
 import de.cau.cs.kieler.klighd.lsp.model.SKGraph
 import de.cau.cs.kieler.klighd.lsp.model.SetSynthesisAction
 import de.cau.cs.kieler.klighd.lsp.model.StoreImagesAction
-import de.cau.cs.kieler.klighd.lsp.utils.KGraphElementIDGenerator
-import de.cau.cs.kieler.klighd.lsp.utils.KRenderingIDGenerator
+import de.cau.cs.kieler.klighd.lsp.utils.KGraphElementIdGenerator
+import de.cau.cs.kieler.klighd.lsp.utils.KRenderingIdGenerator
 import de.cau.cs.kieler.klighd.lsp.utils.SprottyProperties
 import de.cau.cs.kieler.klighd.microlayout.Bounds
 import de.cau.cs.kieler.klighd.util.KlighdProperties
@@ -350,7 +350,7 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
                     } else {
                         text = kText.text
                     }
-                    var lines = text.split("\n", -1).size
+                    var lines = text.split("\\r?\\n", -1).size
                     texts.add(kText)
                     val widths = newFloatArrayOfSize(lines)
                     widths.set(index, newSize.width as float)
@@ -423,10 +423,10 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
     protected def handle(PerformActionAction action) {
         synchronized (diagramState) {
             
-            val sourceUrl = diagramState.getURIString(clientId)
-            val k2sMap = diagramState.getKGraphToSModelElementMap(sourceUrl)
-            val kGraphElement = KGraphElementIDGenerator.findElementById(k2sMap, action.KGraphElementId)
-            val kRendering = KRenderingIDGenerator.findRenderingById(kGraphElement, action.KRenderingId)
+            val sourceUri = diagramState.getURIString(clientId)
+            val k2sMap = diagramState.getKGraphToSModelElementMap(sourceUri)
+            val kGraphElement = KGraphElementIdGenerator.findElementById(k2sMap, action.KGraphElementId)
+            val kRendering = KRenderingIdGenerator.findRenderingById(kGraphElement, action.KRenderingId)
             
             val klighdAction = KlighdDataManager.instance.getActionById(action.actionId)
             val viewer = diagramState.viewer
@@ -447,8 +447,8 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
      */
     protected def handle(SetSynthesisAction action) {
         synchronized (diagramState) {
-            val sourceUrl = diagramState.getURIString(clientId)
-            diagramState.putSynthesisId(sourceUrl, action.id)
+            val uri = diagramState.getURIString(clientId)
+            diagramState.putSynthesisId(uri, action.id)
             this.newModel = true
             updateDiagram()
         }
@@ -479,6 +479,7 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
                         val imageString = Base64.encoder.encodeToString(imageBytes)
                         images.add(notCached -> imageString)
                     } catch (Exception e) {
+                        throw e
                         // TODO: make the user notice this image has failed to load.
                         // Either send a message that the image has not loaded with a reason or place a dummy image instead.
                     }
@@ -541,7 +542,7 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
     /**
      * Updates the current diagram.
      */
-    public def updateDiagram() {
+    def updateDiagram() {
         synchronized (diagramState) {
             val diagramUpdater = diagramLanguageServer.diagramUpdater
             if (diagramUpdater instanceof KGraphDiagramUpdater) {
@@ -555,7 +556,7 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
     /**
      * Updates the layout of the current diagram.
      */
-    public def updateLayout() {
+    def updateLayout() {
         synchronized (diagramState) {
             val diagramUpdater = diagramLanguageServer.diagramUpdater
             if (diagramUpdater instanceof KGraphDiagramUpdater) {

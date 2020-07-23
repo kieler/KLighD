@@ -19,7 +19,7 @@ import de.cau.cs.kieler.klighd.IAction.ActionContext
 import de.cau.cs.kieler.klighd.KlighdDataManager
 import de.cau.cs.kieler.klighd.SynthesisOption
 import de.cau.cs.kieler.klighd.ViewContext
-import de.cau.cs.kieler.klighd.lsp.model.GetOptionParam
+import de.cau.cs.kieler.klighd.lsp.model.GetOptionsParam
 import de.cau.cs.kieler.klighd.lsp.model.GetOptionsResult
 import de.cau.cs.kieler.klighd.lsp.model.LayoutOptionUIData
 import de.cau.cs.kieler.klighd.lsp.model.PerformActionParam
@@ -28,6 +28,7 @@ import de.cau.cs.kieler.klighd.lsp.model.SetSynthesesAction
 import de.cau.cs.kieler.klighd.lsp.model.SetSynthesesActionData
 import de.cau.cs.kieler.klighd.lsp.model.SetSynthesisOptionsParam
 import de.cau.cs.kieler.klighd.lsp.model.ValuedSynthesisOption
+import de.cau.cs.kieler.klighd.syntheses.ReinitializingDiagramSynthesisProxy
 import java.net.URLDecoder
 import java.util.ArrayList
 import java.util.Collection
@@ -120,15 +121,15 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
                     ?: action.options.get(DiagramOptions.OPTION_DIAGRAM_TYPE)
             val server = diagramServerManager.getDiagramServer(diagramType, message.clientId)
             // If a diagram server is requested for the same client, but a different source file, then close the old server.
-            if (!server.options.empty // If the server does not have options yet, the server has not been used yet and
-                // does not need to be relaunched.
-                && !action.options.get("sourceUri")
-                    .equals(server.options.get("sourceUri"))) {
+            // If the server does not have options yet, the server has not been used yet and does not need to be relaunched.
+            if (!server.options.empty
+                && !action.options.get(DiagramOptions.OPTION_SOURCE_URI)
+                    .equals(server.options.get(DiagramOptions.OPTION_SOURCE_URI))) {
 
                 didClose(message.clientId)
             }
             // After a new server has been initialized, also send the available syntheses to the client.
-            val path = action.options.get("sourceUri")
+            val path = action.options.get(DiagramOptions.OPTION_SOURCE_URI)
             val newServer = diagramServerManager.getDiagramServer(diagramType, message.clientId)
             sendAvailableSyntheses(path, newServer)
         }
@@ -155,22 +156,24 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
     /**
      * Calculates ready-to-send data for the {@link SetSynthesesAction}.
      * 
-     * @param currentModelClass the class for which the available syntheses should be evaluated.
+     * @param currentModelClass The class for which the available syntheses should be evaluated.
+     * @return A list of the IDs and displayable names of all available syntheses.
      */
     def List<SetSynthesesActionData> getAvailableSynthesesData(Class<?> currentModelClass) {
         val KlighdDataManager kdm = KlighdDataManager.instance
         return kdm.getAvailableSyntheses(currentModelClass).map [
-            val id = kdm.getSynthesisID(it)
-            val displayedName = if (id.contains(".") && !id.endsWith(".")) {
-                    id.substring(id.lastIndexOf('.') + 1);
-                } else {
-                    id
-                }
-            return new SetSynthesesActionData(id, displayedName)
+            val synthesisId = kdm.getSynthesisID(it)
+            var displayedName = ""
+            if (it instanceof ReinitializingDiagramSynthesisProxy) {
+                displayedName = it.delegate.class.simpleName
+            } else {
+                displayedName = it.class.simpleName
+            }
+            return new SetSynthesesActionData(synthesisId, displayedName)
         ].toList
     }
     
-    override getOptions(GetOptionParam param) {
+    override getOptions(GetOptionsParam param) {
         return doRead(param.uri) [ resource, ci |
             synchronized (diagramState) {
                 val ViewContext viewContext = diagramState.getKGraphContext(resource.URI.toString)
@@ -192,6 +195,12 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
         ]
     }
     
+    /**
+     * Packs all data needed to display the layout options in any user interface into a single list of
+     * {@link LayoutOptionUIData}.
+     * 
+     * @param displayedLayoutOptions The layout options that should be displayed. 
+     */
     def calculateLayoutOptionUIData(List<Pair<IProperty<?>, List<?>>> displayedLayoutOptions) {
         val List<LayoutOptionUIData> layoutOptionUIData = new ArrayList
         for (pair : displayedLayoutOptions) {
@@ -201,9 +210,6 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
                 val iterator = (pair.second as Collection<?>).iterator
                 first = if (iterator.hasNext) iterator.next else null
                 second = if (iterator.hasNext) iterator.next else null
-            } else {
-                first = null
-                second = null
             }
 
             val LayoutOptionData optionData = LayoutMetaDataService.instance.getOptionData(pair.first.id)
@@ -211,8 +217,6 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
                 if (first instanceof Number && second instanceof Number) {
                     layoutOptionUIData.add(new LayoutOptionUIData(optionData, (first as Number).floatValue,
                         (second as Number).floatValue, null))
-                } else if (pair.second === null) {
-                    layoutOptionUIData.add(new LayoutOptionUIData(optionData, null, null, null))
                 } else {
                     layoutOptionUIData.add(new LayoutOptionUIData(optionData, null, null, pair.second))
                 }
@@ -257,8 +261,8 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
     override setLayoutOptions(SetLayoutOptionsParam param) {
         return doRead(param.uri) [ resource, ci |
             synchronized (diagramState) {
-                val key = resource.URI.toString
-                val LayoutConfigurator layoutConfig = diagramState.getLayoutConfig(key)
+                val uri = resource.URI.toString
+                val LayoutConfigurator layoutConfig = diagramState.getLayoutConfig(uri)
                 if (layoutConfig === null) {
                     // The diagram has already been closed
                     return "ERR"
@@ -281,10 +285,10 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
                         layoutConfig.configure(ElkGraphElement).setProperty(optionData, layoutOption.value);
                     }
                 }
-                diagramState.putLayoutConfig(key, layoutConfig)
+                diagramState.putLayoutConfig(uri, layoutConfig)
                 
                 // Update the layout of the diagram.
-                val diagramServer = this.diagramServerManager.findDiagramServersByUri(key).head
+                val diagramServer = this.diagramServerManager.findDiagramServersByUri(uri).head
                 if (diagramUpdater instanceof KGraphDiagramUpdater && diagramServer instanceof KGraphDiagramServer) {
                     (diagramUpdater as KGraphDiagramUpdater).updateLayout(diagramServer as KGraphDiagramServer)
                 } else {
@@ -297,16 +301,18 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
     
     override performAction(PerformActionParam param) {
         synchronized (diagramState) {
+            // Find the action and execute it.
             val klighdAction = KlighdDataManager.instance.getActionById(param.actionId)
             val viewer = diagramState.viewer
             val actionContext = new ActionContext(viewer, null, null, null)
             val actionResult = klighdAction.execute(actionContext)
             if (actionResult.needsSynthesis) {
+                // If the action requires a synthesis re-run, do that by invoking the diagram updater.
                 if (diagramUpdater instanceof KGraphDiagramUpdater) {
                     val diagramServer = this.diagramServerManager.findDiagramServersByUri(param.uri)
                         .filter(KGraphDiagramServer).head
                     if (diagramServer !== null) {
-                        (diagramUpdater as KGraphDiagramUpdater).updateDiagram(diagramServer)
+                        diagramUpdater.updateDiagram(diagramServer)
                     } else {
                         return CompletableFuture.completedFuture("ERR")
                     }
@@ -314,6 +320,8 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
                     return CompletableFuture.completedFuture("ERR")
                 }
             } else if (actionResult.actionPerformed) {
+                // If the action does not require a new synthesis, but only a new layout, do that again by invoking the
+                // diagram updater.
                 if (diagramUpdater instanceof KGraphDiagramUpdater) {
                     val diagramServer = this.diagramServerManager.findDiagramServersByUri(param.uri)
                         .filter(KGraphDiagramServer).head

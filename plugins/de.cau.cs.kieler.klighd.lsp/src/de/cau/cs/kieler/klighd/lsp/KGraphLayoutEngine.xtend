@@ -3,7 +3,7 @@
  * 
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright 2018-2019 by
+ * Copyright 2018,2019 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -58,15 +58,17 @@ class KGraphLayoutEngine extends ElkLayoutEngine {
 
     /**
      * Performs the layout only on the KGraph without mapping it to a SGraph
+     * 
+     * @param uri The identifying URI of the graph.
      */
-    def onlyLayoutOnKGraph(String rootID) {
-        val kGraphContext = diagramState.getKGraphContext(rootID)
+    def onlyLayoutOnKGraph(String uri) {
+        val kGraphContext = diagramState.getKGraphContext(uri)
 
         // layout of KGraph
         val lightDiagramLayoutConfig = new LightDiagramLayoutConfig(kGraphContext)
 
         // Get the layout configurator.
-        val configurator = diagramState.getLayoutConfig(rootID)
+        val configurator = diagramState.getLayoutConfig(uri)
 
         var configurators = new ArrayList
         configurators.add(configurator)

@@ -344,7 +344,9 @@ public abstract class AbstractKGERenderingController
      *
      * @return a default {@link KRendering}
      */
-    protected abstract KRendering createDefaultRendering();
+    protected KRendering createDefaultRendering() {
+        return KRenderingUtil.createDefaultRendering(element);
+    }
 
     /**
      * Performs the actual update of the rendering.

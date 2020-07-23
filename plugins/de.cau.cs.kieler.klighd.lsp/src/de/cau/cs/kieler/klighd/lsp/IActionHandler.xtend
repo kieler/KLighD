@@ -18,7 +18,6 @@ import org.eclipse.sprotty.Action
  * Service Interface for ActionHandler.
  * 
  * @author sdo
- *
  */
 interface IActionHandler {
     /**

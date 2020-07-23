@@ -26,7 +26,7 @@ import org.eclipse.xtend.lib.annotations.ToString
 @Accessors
 @EqualsHashCode
 @ToString(skipNulls = true)
-public class RectPackSetPositionConstraintAction implements Action {
+class RectPackSetPositionConstraintAction implements Action {
     public static val KIND = 'rectPackSetPositionConstraint'
     String kind = KIND
     
@@ -46,7 +46,7 @@ public class RectPackSetPositionConstraintAction implements Action {
 @Accessors
 @EqualsHashCode
 @ToString(skipNulls = true)
-public class RectPackDeletePositionConstraintAction implements Action {
+class RectPackDeletePositionConstraintAction implements Action {
     public static val KIND = 'rectPackDeletePositionConstraint'
     String kind = KIND
     
@@ -66,7 +66,7 @@ public class RectPackDeletePositionConstraintAction implements Action {
 @Accessors
 @EqualsHashCode
 @ToString(skipNulls = true)
-public class SetAspectRatioAction implements Action {
+class SetAspectRatioAction implements Action {
     public static val KIND = 'setAspectRatio'
     String kind = KIND
     

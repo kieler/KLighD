@@ -46,7 +46,6 @@ import org.eclipse.xtext.util.Modules2
  */
 class LSCreator {
     
-    
     /**
      * Binds all necessary classes to start the LS.
      * @param socket boolean whether modules for socket or stdio case are generated.

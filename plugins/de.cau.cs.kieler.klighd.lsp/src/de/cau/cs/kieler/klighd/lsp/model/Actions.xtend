@@ -115,6 +115,8 @@ class StoreImagesAction implements Action {
 
 /**
  * Sent from the client to the server to inform it whether images need to be sent to the client before accepting the next diagram.
+ * 
+ * @author nre
  */
 @Accessors
 @EqualsHashCode
@@ -204,7 +206,7 @@ class PerformActionAction implements Action {
 @Accessors
 @EqualsHashCode
 @ToString(skipNulls = true)
-public class RefreshDiagramAction implements Action {
+class RefreshDiagramAction implements Action {
     public static val KIND = 'refreshDiagram'
     String kind = KIND
     
@@ -222,7 +224,7 @@ public class RefreshDiagramAction implements Action {
 @Accessors
 @EqualsHashCode
 @ToString(skipNulls = true)
-public class RefreshLayoutAction implements Action {
+class RefreshLayoutAction implements Action {
     public static val KIND = 'refreshLayout'
     String kind = KIND
     

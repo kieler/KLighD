@@ -21,11 +21,19 @@ import org.eclipse.xtend.lib.annotations.Data
 
 /**
  * Data class holding a representation of all necessary data for some arbitrary UI displaying layout options.
+ * This is similar to the {@link LayoutOptionData}, just in a serializable form for transmission to clients.
  * 
  * @author nre
  */
 @Data
 class LayoutOptionUIData {
+    
+    /** The default value for the lower bound. */
+    static final int DEFAULT_MIN = 0
+
+    /** The default value for the upper bound. */
+    static final int DEFAULT_MAX = 100
+    
     /** identifier of the layout option. */
     String optionId
     /** the default value of this option and its human-readable form. */
@@ -64,10 +72,10 @@ class LayoutOptionUIData {
     }
     
     /**
-     * Get a user-friendly value for the given object.
+     * Get a human-readable name value for the given object.
      *
-     * @param object an object, e.g. an enumeration value
-     * @return a user-friendly string to display in the UI
+     * @param object An object, e.g. an enumeration value.
+     * @return A human-readable string to display in the UI.
      */
     private static def String userValue(Object object) {
         val string = object.toString();
@@ -86,9 +94,6 @@ class LayoutOptionUIData {
         }
         return builder.toString()
     }
-    
-    /** The default value for the lower bound. */
-    static final int DEFAULT_MIN = 0
 
     /**
      * Get a lower bound for values of the given option.
@@ -107,9 +112,6 @@ class LayoutOptionUIData {
         }
         return DEFAULT_MIN;
     }
-
-    /** The default value for the upper bound. */
-    static final int DEFAULT_MAX = 100
 
     /**
      * Get an upper bound for values of the given option.

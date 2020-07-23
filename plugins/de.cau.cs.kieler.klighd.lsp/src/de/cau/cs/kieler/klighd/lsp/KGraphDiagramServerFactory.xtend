@@ -15,6 +15,8 @@ package de.cau.cs.kieler.klighd.lsp
 import org.eclipse.sprotty.xtext.DiagramServerFactory
 
 /**
+ * The factory for creating diagram servers for KLighD purposes.
+ * 
  * @author nre
  */
 class KGraphDiagramServerFactory extends DiagramServerFactory {
