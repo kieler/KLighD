@@ -14,9 +14,11 @@ package de.cau.cs.kieler.klighd.lsp
 
 import com.google.common.base.Strings
 import com.google.common.io.ByteStreams
+import com.google.common.reflect.ClassPath
 import com.google.inject.Inject
 import de.cau.cs.kieler.klighd.IAction
 import de.cau.cs.kieler.klighd.IAction.ActionContext
+import de.cau.cs.kieler.klighd.Klighd
 import de.cau.cs.kieler.klighd.KlighdDataManager
 import de.cau.cs.kieler.klighd.kgraph.KLabel
 import de.cau.cs.kieler.klighd.kgraph.KNode
@@ -39,6 +41,7 @@ import de.cau.cs.kieler.klighd.lsp.utils.KRenderingIdGenerator
 import de.cau.cs.kieler.klighd.lsp.utils.SprottyProperties
 import de.cau.cs.kieler.klighd.microlayout.Bounds
 import de.cau.cs.kieler.klighd.util.KlighdProperties
+import java.io.InputStream
 import java.util.ArrayList
 import java.util.Base64
 import java.util.List
@@ -465,19 +468,54 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
             if (action.notCached.empty) {
                 imagesUpdated = true
             } else {
-                val images = new ArrayList<Pair<String, String>>
+                val images = new ArrayList<Pair<Pair<String, String>, String>>
+                val platformIsRunning = Klighd.IS_PLATFORM_RUNNING;
                 for (notCached : action.notCached) {
                     try {
-                        val bundleAndPath = notCached.split(":", 2)
-                        val bundle = bundleAndPath.get(0)
-                        val path = bundleAndPath.get(1)
-                        val imageStream = Platform.getBundle(bundle)
-                            .getResource(path)
-                            .openStream
-                        val imageBytes = ByteStreams.toByteArray(imageStream)
-                        imageStream.close
-                        val imageString = Base64.encoder.encodeToString(imageBytes)
-                        images.add(notCached -> imageString)
+                        val bundle = notCached.key
+                        val path = notCached.value
+                        val InputStream imageStream =
+                            if (platformIsRunning) {
+                                // If the platform is running, the image can be found in the bundle under the resource path.
+                                Platform.getBundle(bundle)
+                                    ?.getResource(path)
+                                    ?.openStream
+                            } else {
+                                // If there is no platform, we have to use the class loader to find the resource.
+                                // With the help of Guava, look for any class from a package with the same name as the
+                                // searched bundle.
+                                val classPath = ClassPath.from(ClassLoader.systemClassLoader)
+                                var class = classPath.getTopLevelClasses(bundle).head?.load
+                                if (class === null) {
+                                    // If there is no such class, try again with packages starting with the bundle name
+                                    class = classPath.getTopLevelClassesRecursive(bundle).head?.load
+                                }
+                                if (class !== null) {
+                                    // Where the class was found, look for the given path in the jar local to that class.
+                                    class.getResourceAsStream("/" + path)
+                                } else {
+                                    null
+                                }
+                                
+                                // Other solution, if the above one does not work in built jars: 
+                                // If the bundle path is added to the classpath, this following line will just work
+                                // without explicitly looking for the bundle (which does not exist as a 'bundle' in the 
+                                // non-Platform-case anyway).
+//                                ClassLoader.getSystemClassLoader.getResourceAsStream(path)
+
+                                // For more information, see
+                                // https://stackoverflow.com/questions/9864267/loading-image-resource
+                                // and
+                                // https://stackoverflow.com/questions/676250/different-ways-of-loading-a-file-as-an-inputstream/676273#676273
+                            }
+                        if (imageStream !== null) {
+                            val imageBytes = ByteStreams.toByteArray(imageStream)
+                            imageStream.close
+                            val imageString = Base64.encoder.encodeToString(imageBytes)
+                            images.add(notCached -> imageString)
+                        } else {
+                            // TODO: exception handling (image not found)
+                        }
                     } catch (Exception e) {
                         throw e
                         // TODO: make the user notice this image has failed to load.

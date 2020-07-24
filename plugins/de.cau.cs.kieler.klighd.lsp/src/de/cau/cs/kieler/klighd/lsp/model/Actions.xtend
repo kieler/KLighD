@@ -106,9 +106,9 @@ class StoreImagesAction implements Action {
     public static val KIND = 'storeImages'
     String kind = KIND
     
-    List<Pair<String, String>> images
+    List<Pair<Pair<String, String>, String>> images
     
-    new(List<Pair<String, String>> images) {
+    new(List<Pair<Pair<String, String>, String>> images) {
         this.images = images
     }
 }
@@ -125,7 +125,7 @@ class CheckedImagesAction implements Action {
     public static val KIND = 'checkedImages'
     String kind = KIND
     
-    List<String> notCached
+    List<Pair<String, String>> notCached
 
     new() {}
     new(Consumer<CheckedImagesAction> initializer) {
