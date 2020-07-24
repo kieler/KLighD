@@ -56,7 +56,7 @@ class LayoutOptionUIData {
     new(LayoutOptionData layoutOptionData, Float minValue, Float maxValue, Collection<?> availableValues) {
         this.optionId = layoutOptionData.id
         val defaultValue = layoutOptionData.^default
-        this.defaultValue = defaultValue -> defaultValue.userValue
+        this.defaultValue = defaultValue -> defaultValue?.userValue
         this.type = layoutOptionData.type
         this.name = layoutOptionData.name
         this.description = layoutOptionData.description

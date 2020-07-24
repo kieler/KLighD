@@ -271,7 +271,7 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
                 // Set the new option.
                 for (layoutOption : param.layoutOptions) {
                     val LayoutOptionData optionData = LayoutMetaDataService.instance.getOptionData(layoutOption.optionId)
-                    if (optionData.type === Type.ENUM || optionData.type === Type.ENUMSET) {
+                    if (optionData.type === Type.ENUM) {
                         // Sending it to the server via Json, the Enum will be transformed to a number, which is always
                         // interpreted as a Double back in Java. So convert it back to its enum here.
                         val value = optionData.getEnumValue((layoutOption.value as Double).intValue)
@@ -281,7 +281,7 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
                             Double.parseDouble(layoutOption.value.toString))
                     } else if (optionData.type === Type.BOOLEAN) {
                         layoutConfig.configure(ElkGraphElement).setProperty(optionData, layoutOption.value)
-                    } else { // TODO: implement the other cases, if necessary.
+                    } else {
                         layoutConfig.configure(ElkGraphElement).setProperty(optionData, layoutOption.value);
                     }
                 }
