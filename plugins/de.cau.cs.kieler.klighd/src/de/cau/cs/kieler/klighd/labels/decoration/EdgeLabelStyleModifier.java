@@ -144,7 +144,7 @@ public class EdgeLabelStyleModifier implements IStyleModifier {
         // Center edge labels, in particular
         EdgeLabelPlacement placement = context.getGraphElement().getProperty(
                 CoreOptions.EDGE_LABELS_PLACEMENT);
-        if (placement != EdgeLabelPlacement.CENTER && placement != EdgeLabelPlacement.UNDEFINED) {
+        if (placement != EdgeLabelPlacement.CENTER) {
             return false;
         }
         

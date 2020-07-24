@@ -100,7 +100,6 @@ public abstract class AbstractTypeDependentLabelManager extends AbstractKlighdLa
         if (labeledElement instanceof ElkEdge) {
             switch (label.getProperty(CoreOptions.EDGE_LABELS_PLACEMENT)) {
             case CENTER:
-            case UNDEFINED:
                 return doResizeEdgeCenterLabel(label, targetWidth);
                 
             case HEAD:

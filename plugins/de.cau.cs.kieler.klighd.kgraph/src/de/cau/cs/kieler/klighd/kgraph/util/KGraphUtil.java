@@ -211,11 +211,6 @@ public final class KGraphUtil {
                             NodeLabelPlacement.insideTopCenter());
                 }
             }
-        } else if (ele instanceof KEdge) {
-            EdgeLabelPlacement elp = ele.getProperty(CoreOptions.EDGE_LABELS_PLACEMENT);
-            if (elp == EdgeLabelPlacement.UNDEFINED) {
-                ele.setProperty(CoreOptions.EDGE_LABELS_PLACEMENT, EdgeLabelPlacement.CENTER);
-            }
         }
     }
     
@@ -297,19 +292,6 @@ public final class KGraphUtil {
         }
         
         ensureLabel(port);
-    }
-
-    /**
-     * Configures the {@link EdgeLabelPlacement} of the passed edge to be center of the edge.
-     * 
-     * @param edge
-     *            an edge of a graph
-     */
-    public static void configureWithDefaultValues(final KEdge edge) {
-        EdgeLabelPlacement elp = edge.getProperty(CoreOptions.EDGE_LABELS_PLACEMENT);
-        if (elp == EdgeLabelPlacement.UNDEFINED) {
-            edge.setProperty(CoreOptions.EDGE_LABELS_PLACEMENT, EdgeLabelPlacement.CENTER);
-        }
     }
 
     /**
