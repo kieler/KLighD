@@ -60,6 +60,7 @@ import org.eclipse.sprotty.SPort
 import org.eclipse.sprotty.xtext.IDiagramGenerator
 import org.eclipse.sprotty.xtext.tracing.ITraceProvider
 import org.eclipse.xtend.lib.annotations.Accessors
+import org.eclipse.xtext.resource.XtextResource
 import org.eclipse.xtext.util.CancelIndicator
 
 /**
@@ -121,6 +122,12 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
 	 */
 	@Inject
 	ITraceProvider traceProvider
+	
+	/**
+	 * Indicates if elements should be traced back to the lines of code in their resource.
+	 */
+	@Accessors(PUBLIC_GETTER, PUBLIC_SETTER)
+	var boolean activeTracing
     
     /**
      * Generates unique IDs for any KGraphElement.
@@ -284,14 +291,17 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
         // The real model element that can be traced is the EObject that got synthesized in the
         // {@link translateModel} function. That model element has to be stored in the properties during the 
         // synthesis. Otherwise the tracing will not work
-        // FIXME: This is commented out for now, as for large diagrams (expanded railway environment) the tracing alone
+        // FIXME: For large diagrams (expanded railway environment) the tracing alone
         // requires an additional 40s (almost 50% of the generation time), which is not acceptable.
-//        val modelKElement = kElement.properties.get(KlighdInternalProperties.MODEL_ELEMEMT)
-//        if (modelKElement instanceof EObject) {
-//            if (modelKElement.eResource instanceof XtextResource) {
-//                traceProvider.trace(sElement, modelKElement)
-//            }
-//        }
+        // This should be done just in time when tracing is requested instead of statically for every element.
+        if (activeTracing) {
+            val modelKElement = kElement.properties.get(KlighdInternalProperties.MODEL_ELEMEMT)
+            if (modelKElement instanceof EObject) {
+                if (modelKElement.eResource instanceof XtextResource) {
+                    traceProvider.trace(sElement, modelKElement)
+                }
+            }
+        }
     }
 
     /**
