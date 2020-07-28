@@ -28,4 +28,8 @@ class KGraphDiagramServerModule extends DiagramServerModule {
     override Class<? extends IDiagramServerManager> bindIDiagramServerManager() {
         KGraphDiagramServerManager
     }
+    
+    def Class<? extends INotificationHandler> bindINotificationHandler() {
+        KGraphLanguageServerExtension
+    }
 }

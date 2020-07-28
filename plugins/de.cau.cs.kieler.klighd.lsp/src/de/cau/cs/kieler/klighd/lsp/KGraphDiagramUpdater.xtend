@@ -12,6 +12,7 @@
  */
 package de.cau.cs.kieler.klighd.lsp
 
+import com.google.common.base.Throwables
 import com.google.inject.Inject
 import com.google.inject.Provider
 import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart
@@ -59,6 +60,12 @@ class KGraphDiagramUpdater extends DiagramUpdater {
      */
     @Inject
     KGraphDiagramState diagramState
+    
+    /**
+     * The handler for sending info, warnings, or errors to the user.
+     */
+    @Inject
+    INotificationHandler notificationHandler
 
     override initialize(DiagramLanguageServer languageServer) {
         this.languageServer = languageServer
@@ -95,7 +102,7 @@ class KGraphDiagramUpdater extends DiagramUpdater {
         ].thenAccept [
             key.prepareUpdateModel(value)
         ].exceptionally [ throwable |
-            println("ERROR: " + throwable)
+            notificationHandler.sendError(Throwables.getStackTraceAsString(throwable))
             return null
         ]
     }

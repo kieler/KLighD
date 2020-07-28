@@ -13,6 +13,7 @@
 package de.cau.cs.kieler.klighd.lsp
 
 import com.google.common.base.Strings
+import com.google.common.base.Throwables
 import com.google.common.io.ByteStreams
 import com.google.common.reflect.ClassPath
 import com.google.inject.Inject
@@ -41,6 +42,7 @@ import de.cau.cs.kieler.klighd.lsp.utils.KRenderingIdGenerator
 import de.cau.cs.kieler.klighd.lsp.utils.SprottyProperties
 import de.cau.cs.kieler.klighd.microlayout.Bounds
 import de.cau.cs.kieler.klighd.util.KlighdProperties
+import java.io.FileNotFoundException
 import java.io.InputStream
 import java.util.ArrayList
 import java.util.Base64
@@ -83,6 +85,9 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
     
     @Inject 
     protected KGraphDiagramState diagramState
+    
+    @Inject
+    INotificationHandler notificationHandler
     
     /**
      * Indicates if the stored model is a completely new model and should therefore cause a SetModelAction instead of 
@@ -182,29 +187,35 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
     }
     
     override void accept(ActionMessage message) {
-        val clientId = getClientId();
-        if (clientId !== null && clientId.equals(message.getClientId())) {
-            // call the handle function for the ComputedTextBoundsAction or forward the call to the super implementation
-            val Action action = message.getAction();
-            if (action.getKind() === ComputedTextBoundsAction.KIND) {
-                handle(action as ComputedTextBoundsAction)
-            } else if (action.getKind() === PerformActionAction.KIND) {
-                handle(action as PerformActionAction)
-            } else if (action.getKind() === SetSynthesisAction.KIND) {
-                handle(action as SetSynthesisAction)
-            } else if (action.getKind === CheckedImagesAction.KIND) {
-                handle(action as CheckedImagesAction)
-            } else if (action.getKind === RefreshDiagramAction.KIND) {
-                handle(action as RefreshDiagramAction)
-            } else if (action.getKind === RefreshLayoutAction.KIND) {
-                handle(action as RefreshLayoutAction)
-            } else if (constraintActionHandler.canHandleAction(action.getKind)) {
-                constraintActionHandler.handle(action, clientId, this)
-            } else if (rectPackActionHandler.canHandleAction(action.getKind)) {
-                rectPackActionHandler.handle(action, clientId, this)
-            } else {
-                super.accept(message)
+        try {
+            val clientId = getClientId();
+            if (clientId !== null && clientId.equals(message.getClientId())) {
+                // call the handle function for the ComputedTextBoundsAction or forward the call to the super implementation
+                val Action action = message.getAction();
+                if (action.getKind() === ComputedTextBoundsAction.KIND) {
+                    handle(action as ComputedTextBoundsAction)
+                } else if (action.getKind() === PerformActionAction.KIND) {
+                    handle(action as PerformActionAction)
+                } else if (action.getKind() === SetSynthesisAction.KIND) {
+                    handle(action as SetSynthesisAction)
+                } else if (action.getKind === CheckedImagesAction.KIND) {
+                    handle(action as CheckedImagesAction)
+                } else if (action.getKind === RefreshDiagramAction.KIND) {
+                    handle(action as RefreshDiagramAction)
+                } else if (action.getKind === RefreshLayoutAction.KIND) {
+                    handle(action as RefreshLayoutAction)
+                } else if (constraintActionHandler.canHandleAction(action.getKind)) {
+                    constraintActionHandler.handle(action, clientId, this)
+                } else if (rectPackActionHandler.canHandleAction(action.getKind)) {
+                    rectPackActionHandler.handle(action, clientId, this)
+                } else {
+                    super.accept(message)
+                }
             }
+        } catch (Exception e) {
+            // Any exception that happened during some request is displayed to the user on the client.
+            notificationHandler.sendError(Throwables.getStackTraceAsString(e))
+            throw e
         }
     }
         
@@ -514,12 +525,17 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
                             val imageString = Base64.encoder.encodeToString(imageBytes)
                             images.add(notCached -> imageString)
                         } else {
-                            // TODO: exception handling (image not found)
+                            throw new FileNotFoundException("The image for bundle "
+                                + bundle
+                                + " and path "
+                                + path
+                                + " has not been found.")
                         }
                     } catch (Exception e) {
-                        throw e
-                        // TODO: make the user notice this image has failed to load.
-                        // Either send a message that the image has not loaded with a reason or place a dummy image instead.
+                        // Do not re-throw the exception here, we can still show the diagram, just without the images.
+                        // Do notify the user about the exception, though.
+                        notificationHandler.sendError(Throwables.getStackTraceAsString(e))
+                        e.printStackTrace
                     }
                 }
                 dispatch(new StoreImagesAction(images))

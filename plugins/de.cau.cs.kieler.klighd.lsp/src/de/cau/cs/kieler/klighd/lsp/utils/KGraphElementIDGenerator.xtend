@@ -279,7 +279,7 @@ class KRenderingIdGenerator {
                 }
             }
             if (nextRendering === null) {
-                throw new IllegalArgumentException("Misformed ID")
+                throw new IllegalArgumentException("Misformed rendering ID: " + id)
             }
             rendering = nextRendering
         }

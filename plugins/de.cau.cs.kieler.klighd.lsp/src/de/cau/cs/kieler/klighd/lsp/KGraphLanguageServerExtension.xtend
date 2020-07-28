@@ -12,6 +12,8 @@
  */
 package de.cau.cs.kieler.klighd.lsp
 
+import com.google.common.base.Throwables
+import com.google.common.html.HtmlEscapers
 import com.google.inject.Inject
 import com.google.inject.Provider
 import com.google.inject.Singleton
@@ -71,7 +73,8 @@ import org.eclipse.xtext.util.CancelIndicator
  */
 @Singleton
 class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
-    implements IDiagramOptionsLanguageServerExtension, IPreferencesExtension {
+    implements IDiagramOptionsLanguageServerExtension, INotificationHandler, IPreferencesExtension {
+        
     @Inject
     Provider<DiagramHighlightService> diagramHighlightServiceProvider
     
@@ -546,8 +549,13 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
      */
     def <T> CompletableFuture<T> doRead(String path, (Resource, CancelIndicator)=>T work) {
         return requestManager.runRead [ ci |
-            val resource = getResource(_uriExtensions.toUri(path))
-            work.apply(resource, ci)
+            try {
+                val resource = getResource(_uriExtensions.toUri(path))
+                return work.apply(resource, ci)
+            } catch (Exception e) {
+                sendError(Throwables.getStackTraceAsString(e))
+                throw e
+            }
         ]
     }
     
@@ -563,8 +571,9 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
     }
     
     /**
-     * Connect the language client. Allows to send kgraph specific notification to the client if the given client is
+     * Connect the language client. Allows to send KGraph specific notification to the client if the given client is
      * indeed a {@code KGraphLanguageClient}.
+     * 
      * @param client The language client.
      */
     override connect(LanguageClient client) {
@@ -574,42 +583,42 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
         super.connect(client)
     }
     
-    /**
-     * Send a message that will be displayed as an error to the client.
-     * @param message The message to the client.
-     * @return true if the language client that supports this message is connected.
-     */
-    def boolean sendError(String message) {
+    override sendError(String message) {
         if (this.kgraphLanguageClient !== null) {
-            this.kgraphLanguageClient.sendMessage(message, "error")
+            this.kgraphLanguageClient.sendMessage(escapeHtml(message), "error")
+            return true
+        }
+        return false
+    }
+    
+    override sendWarning(String message) {
+        if (this.kgraphLanguageClient !== null) {
+            this.kgraphLanguageClient.sendMessage(escapeHtml(message), "warn")
+            return true
+        }
+        return false
+    }
+    
+    override sendInfo(String message) {
+        if (this.kgraphLanguageClient !== null) {
+            this.kgraphLanguageClient.sendMessage(escapeHtml(message), "info")
             return true
         }
         return false
     }
     
     /**
-     * Send a message that will be displayed as a warning to the client.
-     * @param message The message to the client.
-     * @return true if the language client that supports this message is connected.
+     * Escapes the given message to be safely displayable in a client context putting this message into an HTML page
+     * to avoid possibilities of XSS attacks and a clearly readable message. Uses Google Guava's {@link HtmlEscapers}
+     * for making the message safe and custom String replacement to replace line breaks and tabulators with HTML
+     * counterparts.
+     * 
+     * @param message The unescaped and possibly unsafe message String.
+     * @return An escaped and safe String to display in HTML.
      */
-    def boolean sendWarning(String message) {
-        if (this.kgraphLanguageClient !== null) {
-            this.kgraphLanguageClient.sendMessage(message, "warn")
-            return true
-        }
-        return false
-    }
-    
-    /**
-     * Send a message that will be displayed as an info message to the client.
-     * @param message The message to the client.
-     * @return true if the language client that supports this message is connected.
-     */
-    def boolean sendInfo(String message) {
-        if (this.kgraphLanguageClient !== null) {
-            this.kgraphLanguageClient.sendMessage(message, "info")
-            return true
-        }
-        return false
+    private def String escapeHtml(String message) {
+        return HtmlEscapers.htmlEscaper.escape(message)
+            .replace("\n", "<br>\n")
+            .replace("\t", "&nbsp;&nbsp;&nbsp;&nbsp;")
     }
 }

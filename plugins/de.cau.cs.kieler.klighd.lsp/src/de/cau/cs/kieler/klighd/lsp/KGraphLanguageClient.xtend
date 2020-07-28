@@ -24,13 +24,13 @@ import org.eclipse.lsp4j.Range
 interface KGraphLanguageClient extends LanguageClient {
     
     /**
-     * Send to client if some message should be displayed. Type is one of "info", "warn", and "error".
+     * Send to client if some message should be displayed. {@code type} is one of "info", "warn", and "error".
      */
     @JsonNotification("general/sendMessage")
     def void sendMessage(String message, String type)
     
     /**
-     * Send to the client to replace the given range of the file given by the uri by the code string.
+     * Send to the client to replace the given range of the file given by the URI by the code string.
      */
     @JsonNotification("general/replaceContentInFile")
     def void replaceContentInFile(String uri, String code, Range range)
