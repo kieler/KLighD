@@ -593,8 +593,11 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
                 findSpecialRenderings(childData)
             }
         } else if (data instanceof KRenderingLibrary) {
-            // TODO: add all texts and images in the KRenderingLibrary and don't add any from KRenderingRefs
-            // I don't have an example of used texts/images in KRenderingLibraries yet (construct one)
+            for (libraryEntry : data.renderings) {
+                if (libraryEntry instanceof KRendering) {
+                    findSpecialRenderings(libraryEntry)
+                }
+            }
         }
         if (!dataLabels.empty) {
             modelLabels.addAll(dataLabels)
