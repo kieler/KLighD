@@ -238,6 +238,7 @@ class KGraphDiagramUpdater extends DiagramUpdater {
         val sGraph = diagramGenerator.toSGraph(viewContext.viewModel, uri, cancelIndicator)
         synchronized (diagramState) {
             diagramState.putKGraphToSModelElementMap(uri, diagramGenerator.getKGraphToSModelElementMap)
+            diagramState.putIdToKGraphElementMap(uri, diagramGenerator.idToKGraphElementMap)
             diagramState.putTexts(uri, diagramGenerator.getModelLabels)
             diagramState.putTextMapping(uri, diagramGenerator.getTextMapping)
             diagramState.putImages(uri, diagramGenerator.images)

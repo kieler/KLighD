@@ -25,7 +25,7 @@ import de.cau.cs.kieler.klighd.krendering.KRenderingRef
 import de.cau.cs.kieler.klighd.krendering.KStyleHolder
 import java.util.HashMap
 import java.util.Map
-import org.eclipse.sprotty.SModelElement
+import org.eclipse.xtend.lib.annotations.Accessors
 
 /**
  * Class for generating unique IDs for any {@link KGraphElement}. Use a single instance of this and call getId() for all
@@ -42,8 +42,9 @@ class KGraphElementIdGenerator {
     Map<KGraphElement, String> elementToIdMap
     
     /**
-     * Internal map to remember the {@link KGraphElement} for all IDs for that IDs already have been generated.
+     * Map to remember the {@link KGraphElement} for all IDs for that IDs already have been generated.
      */
+    @Accessors(PUBLIC_GETTER)
     Map<String, KGraphElement> idToElementMap
     
     /**
@@ -145,22 +146,6 @@ class KGraphElementIdGenerator {
         return id
     }
     
-    /**
-     * Utility method to find a {@link KGraphElement} from a map between KGraphElements and {@link SModelElement}s by
-     * the ID stored in the target SModelElement.
-     * 
-     * @param k2sMap The map between KGraphElements and SModelElements.
-     * @param id The unique ID of one SModelElement in the map.
-     * @return The KGraphElement that is the key in the given map with a matching ID in its value.
-     */
-    static def findElementById(Map<KGraphElement, SModelElement> k2sMap, String id) {
-        // TODO: maybe store the map also the other way, so this can be done more efficiently.
-        // Or have a map from IDs to their originating KGraphElements.
-        val filteredMap = k2sMap.filter [ kge, sme |
-            id.equals(sme.id)
-        ]
-        return filteredMap.keySet.findFirst[true]
-    }
 }
 
 /**

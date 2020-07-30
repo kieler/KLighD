@@ -603,6 +603,15 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
             images.add(dataImage)
         }
     }
+    
+    /**
+     * Get method for the mapping from generated IDs to their corresponding {@link KGraphElement}s.
+     * 
+     * @return The mapping.
+     */
+    def getIdToKGraphElementMap() {
+        return idGen.idToElementMap
+    }
 
     /**
      * Returns a String describing the type of the {@link SModelElement}.

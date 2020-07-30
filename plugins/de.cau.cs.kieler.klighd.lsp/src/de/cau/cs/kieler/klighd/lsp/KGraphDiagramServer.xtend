@@ -37,7 +37,6 @@ import de.cau.cs.kieler.klighd.lsp.model.RequestTextBoundsAction
 import de.cau.cs.kieler.klighd.lsp.model.SKGraph
 import de.cau.cs.kieler.klighd.lsp.model.SetSynthesisAction
 import de.cau.cs.kieler.klighd.lsp.model.StoreImagesAction
-import de.cau.cs.kieler.klighd.lsp.utils.KGraphElementIdGenerator
 import de.cau.cs.kieler.klighd.lsp.utils.KRenderingIdGenerator
 import de.cau.cs.kieler.klighd.lsp.utils.SprottyProperties
 import de.cau.cs.kieler.klighd.microlayout.Bounds
@@ -438,8 +437,7 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
         synchronized (diagramState) {
             
             val sourceUri = diagramState.getURIString(clientId)
-            val k2sMap = diagramState.getKGraphToSModelElementMap(sourceUri)
-            val kGraphElement = KGraphElementIdGenerator.findElementById(k2sMap, action.KGraphElementId)
+            val kGraphElement = diagramState.getIdToKGraphMap(sourceUri).get(action.KGraphElementId)
             val kRendering = KRenderingIdGenerator.findRenderingById(kGraphElement, action.KRenderingId)
             
             val klighdAction = KlighdDataManager.instance.getActionById(action.actionId)

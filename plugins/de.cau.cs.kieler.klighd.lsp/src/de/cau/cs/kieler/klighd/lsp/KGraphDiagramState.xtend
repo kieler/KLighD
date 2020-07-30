@@ -51,6 +51,12 @@ class KGraphDiagramState {
     Map<String, Map<KGraphElement, SModelElement>> kGraphToSModelElementMap = new HashMap
     
     /**
+     * A map that contains a key-value pair for each ID of a graph element and the {@link KGraphElement} it identifies.
+     * Mapped by the URI this map belongs to.
+     */
+    Map<String, Map<String, KGraphElement>> idToKGraphElementMap = new HashMap
+    
+    /**
      * A list containing all {@link KImage}s from the source KGraph.
      * Mapped by the URI this map belongs to.
      */
@@ -141,6 +147,25 @@ class KGraphDiagramState {
      */
     def putKGraphToSModelElementMap(String uri, Map<KGraphElement, SModelElement> value) {
         kGraphToSModelElementMap.put(uri, value)
+    }
+    
+    /**
+     * Getter to access the value stored in the idToKGraphElement map.
+     * 
+     * @param uri The identifying URI of the graph to access the value in the map.
+     */
+    def Map<String, KGraphElement> getIdToKGraphMap(String uri) {
+        idToKGraphElementMap.get(uri)
+    }
+    
+    /**
+     * Put method to put a new value in the idToKGraphElement map.
+     * 
+     * @param uri The identifying URI of the graph to access the map.
+     * @param value The value to be stored in the map.
+     */
+    def putIdToKGraphElementMap(String uri, Map<String, KGraphElement> value) {
+        idToKGraphElementMap.put(uri, value)
     }
     
     /**
@@ -338,6 +363,7 @@ class KGraphDiagramState {
         if (uri !== null) {
             kGraphContexts.remove(URLDecoder.decode(uri, "UTF-8"))
             kGraphToSModelElementMap.remove(uri)
+            idToKGraphElementMap.remove(uri)
             texts.remove(uri)
             textMapping.remove(uri)
             snapshotModelMapping.remove(uri)

@@ -14,7 +14,6 @@ package de.cau.cs.kieler.klighd.lsp
 
 import de.cau.cs.kieler.klighd.ViewContext
 import de.cau.cs.kieler.klighd.kgraph.KNode
-import de.cau.cs.kieler.klighd.lsp.utils.KGraphElementIdGenerator
 
 /**
  * Utility methods for graphs in a language server context.
@@ -51,11 +50,7 @@ class LSPUtil {
      * Returns null if the element behind the id is no kNode.
      */
     static def getKNode(KGraphDiagramState diagramState, String uri, String nodeId) {
-
-        val mapKToS = diagramState.getKGraphToSModelElementMap(uri)
-
-        // KGraphElement which corresponding SNode has the correct id
-        val kGraphElement = KGraphElementIdGenerator.findElementById(mapKToS, nodeId)
+        val kGraphElement = diagramState.getIdToKGraphMap(uri).get(nodeId)
 
         if (kGraphElement instanceof KNode) {
             return kGraphElement as KNode
