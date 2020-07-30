@@ -241,7 +241,6 @@ class KRenderingIdGenerator {
         // Every rendering ID is built hierarchically, separated by the RENDERING_SEPERATOR symbol.
         
         val renderings = element.data.filter(KRendering) + element.data.filter(KRenderingRef)
-        // TODO: There could also be multiple renderings in the element, check for the currently displayed rendering.
         var rendering = renderings.findFirst [
             id.startsWith(it.id)
         ]
