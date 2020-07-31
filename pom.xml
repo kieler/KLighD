@@ -54,8 +54,8 @@
   <properties>
     <tycho-version>1.5.0</tycho-version>
     <targetJdk>1.8</targetJdk>
-    <xtext-version>2.16.0</xtext-version>
-    <elk-version>0.6.1</elk-version>
+    <xtext-version>2.21.0</xtext-version>
+    <elk-version>0.7.0</elk-version>
 
     <!-- chsch: copied from https://eclipse.googlesource.com/recommenders/org.eclipse.recommenders/+/3dae4575d3370da2da25a1cbce3dfcff198f0611/features/pom.xml -->
     <!-- Non-breakable space, as normal spaces are trimmed. -->
@@ -169,7 +169,7 @@
           <target>
             <artifact>
               <groupId>de.cau.cs.kieler.klighd</groupId>
-              <artifactId>de.cau.cs.kieler.klighd.targetplatform-elkNightly</artifactId>
+              <artifactId>de.cau.cs.kieler.klighd.targetplatform</artifactId>
               <version>1.1.2-SNAPSHOT</version>
             </artifact>
           </target>
