@@ -20,6 +20,15 @@ package de.cau.cs.kieler.klighd.lsp
 interface INotificationHandler {
     
     /**
+     * Sends the error message and stack trace of the Throwable to the client and re-throws again.
+     * 
+     * @param <T> Used to allow arbitrary return type for the Java compiler, as the compiler will not notice that calls
+     * to this method will always throw.
+     * @param t The throwable to send and throw.
+     */
+    def <T> T sendErrorAndThrow(Throwable t) throws Throwable
+    
+    /**
      * Send a message that will be displayed as an <b>error</b> to the client.
      * 
      * @param message The message to the client.

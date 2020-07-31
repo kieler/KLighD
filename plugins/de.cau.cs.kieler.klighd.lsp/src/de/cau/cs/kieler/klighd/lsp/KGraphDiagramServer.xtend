@@ -213,8 +213,7 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
             }
         } catch (Exception e) {
             // Any exception that happened during some request is displayed to the user on the client.
-            notificationHandler.sendError(Throwables.getStackTraceAsString(e))
-            throw e
+            notificationHandler.sendErrorAndThrow(e)
         }
     }
         

@@ -3,7 +3,7 @@
  *
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright 2018 by
+ * Copyright 2018,2020 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -20,6 +20,7 @@ import de.cau.cs.kieler.klighd.lsp.model.SetLayoutOptionsParam
 import de.cau.cs.kieler.klighd.lsp.model.SetSynthesisOptionsParam
 import de.cau.cs.kieler.klighd.lsp.model.ValuedSynthesisOption
 import java.util.concurrent.CompletableFuture
+import org.eclipse.lsp4j.jsonrpc.services.JsonNotification
 import org.eclipse.lsp4j.jsonrpc.services.JsonRequest
 import org.eclipse.lsp4j.jsonrpc.services.JsonSegment
 
@@ -48,20 +49,18 @@ interface IDiagramOptionsLanguageServerExtension {
      * the options given in {@code param.synthesisOptions}. Also updates the diagram.
      * 
      * @param param The {@code uri} to resolve the diagram and the new options given by {@code synthesisOption}.
-     * @return "OK", if the diagram was found and the new options have been set, "ERR" otherwise.
      */
-    @JsonRequest('setSynthesisOptions')
-    def CompletableFuture<String> setSynthesisOptions(SetSynthesisOptionsParam param)
+    @JsonNotification('setSynthesisOptions')
+    def void setSynthesisOptions(SetSynthesisOptionsParam param)
     
     /**
      * Method called by a client to set the layout options of the diagram resolved by {@code param.uri} to 
      * the options given in {@code param.layoutOptions}. Also updates the layout of the diagram.
      * 
      * @param param The {@code uri} to resolve the diagram and the new options given by {@code synthesisOption}.
-     * @return "OK", if the diagram was found and the new options have been set, "ERR" otherwise.
      */
-    @JsonRequest('setLayoutOptions')
-    def CompletableFuture<String> setLayoutOptions(SetLayoutOptionsParam param)
+    @JsonNotification('setLayoutOptions')
+    def void setLayoutOptions(SetLayoutOptionsParam param)
     
     /**
      * Method called by a client to perform an action on the diagram resolved by {@code param.uri}. The diagram may be
@@ -69,8 +68,7 @@ interface IDiagramOptionsLanguageServerExtension {
      * 
      * @param param The {@code uri} to resolve the diagram and the {@code actionId} that identifies the action to be
      * executed.
-     * @return "OK", if the diagram was found and the action has been executed, "ERR" otherwise.
      */
-    @JsonRequest('performAction')
-    def CompletableFuture<String> performAction(PerformActionParam param)
+    @JsonNotification('performAction')
+    def void performAction(PerformActionParam param)
 }

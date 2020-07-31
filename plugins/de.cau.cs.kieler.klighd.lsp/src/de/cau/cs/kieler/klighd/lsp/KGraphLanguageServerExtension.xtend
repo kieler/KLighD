@@ -229,12 +229,11 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
     }
     
     override setSynthesisOptions(SetSynthesisOptionsParam param) {
-        return doRead(param.uri) [ resource, ci |
+        doRead(param.uri) [ resource, ci |
             synchronized (diagramState) {
                 val ViewContext viewContext = diagramState.getKGraphContext(resource.URI.toString)
                 if (viewContext === null) {
-                    // The diagram has already been closed
-                    return "ERR"
+                    sendErrorAndThrow(new IllegalStateException("The diagram has already been closed."))
                 }
                 val synthesisOptions = viewContext.displayedSynthesisOptions
                 for (paramSynthesisOption : param.synthesisOptions) {
@@ -244,8 +243,7 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
                         System.identityHashCode(it) === paramSynthesisOption.sourceHash
                     ]
                     if (synthesisOption === null) {
-                        // A changed option cannot be found.
-                        return "ERR"
+                    throw new IllegalStateException("A changed option cannot be found.")
                     }
                     else {
                         configureOption(synthesisOption, paramSynthesisOption.currentValue, viewContext)
@@ -254,21 +252,20 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
                 // Update the diagram.
                 if (diagramUpdater instanceof KGraphDiagramUpdater) {
                     (diagramUpdater as KGraphDiagramUpdater).updateDiagrams2(#[resource.URI])
-                    return "OK"
+                    return null
                 }
-                return "ERR"
+                throw new IllegalStateException("The diagramUpdater is not setup correctly.")
             }
         ]
     }
     
     override setLayoutOptions(SetLayoutOptionsParam param) {
-        return doRead(param.uri) [ resource, ci |
+        doRead(param.uri) [ resource, ci |
             synchronized (diagramState) {
                 val uri = resource.URI.toString
                 val LayoutConfigurator layoutConfig = diagramState.getLayoutConfig(uri)
                 if (layoutConfig === null) {
-                    // The diagram has already been closed
-                    return "ERR"
+                    throw new IllegalStateException("The diagram has already been closed")
                 }
                 
                 // Set the new option.
@@ -295,50 +292,53 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
                 if (diagramUpdater instanceof KGraphDiagramUpdater && diagramServer instanceof KGraphDiagramServer) {
                     (diagramUpdater as KGraphDiagramUpdater).updateLayout(diagramServer as KGraphDiagramServer)
                 } else {
-                    return "ERR"
+                    throw new IllegalStateException("The diagram server or diagram updater are not set up correctly.")
                 }
             }
-            return "OK"
+            return null
         ]
     }
     
     override performAction(PerformActionParam param) {
-        synchronized (diagramState) {
-            // Find the action and execute it.
-            val klighdAction = KlighdDataManager.instance.getActionById(param.actionId)
-            val viewer = diagramState.viewer
-            val actionContext = new ActionContext(viewer, null, null, null)
-            val actionResult = klighdAction.execute(actionContext)
-            if (actionResult.needsSynthesis) {
-                // If the action requires a synthesis re-run, do that by invoking the diagram updater.
-                if (diagramUpdater instanceof KGraphDiagramUpdater) {
-                    val diagramServer = this.diagramServerManager.findDiagramServersByUri(param.uri)
-                        .filter(KGraphDiagramServer).head
-                    if (diagramServer !== null) {
-                        diagramUpdater.updateDiagram(diagramServer)
+        try {
+            synchronized (diagramState) {
+                // Find the action and execute it.
+                val klighdAction = KlighdDataManager.instance.getActionById(param.actionId)
+                val viewer = diagramState.viewer
+                val actionContext = new ActionContext(viewer, null, null, null)
+                val actionResult = klighdAction.execute(actionContext)
+                if (actionResult.needsSynthesis) {
+                    // If the action requires a synthesis re-run, do that by invoking the diagram updater.
+                    if (diagramUpdater instanceof KGraphDiagramUpdater) {
+                        val diagramServer = this.diagramServerManager.findDiagramServersByUri(param.uri)
+                            .filter(KGraphDiagramServer).head
+                        if (diagramServer !== null) {
+                            diagramUpdater.updateDiagram(diagramServer)
+                        } else {
+                            throw new IllegalStateException("The diagram server is not set up correctly.")
+                        }
                     } else {
-                        return CompletableFuture.completedFuture("ERR")
+                        throw new IllegalStateException("The diagram updater is not set up correctly.")
                     }
-                } else {
-                    return CompletableFuture.completedFuture("ERR")
-                }
-            } else if (actionResult.actionPerformed) {
-                // If the action does not require a new synthesis, but only a new layout, do that again by invoking the
-                // diagram updater.
-                if (diagramUpdater instanceof KGraphDiagramUpdater) {
-                    val diagramServer = this.diagramServerManager.findDiagramServersByUri(param.uri)
-                        .filter(KGraphDiagramServer).head
-                    if (diagramServer !== null) {
-                        (diagramUpdater as KGraphDiagramUpdater).updateLayout(diagramServer)
+                } else if (actionResult.actionPerformed) {
+                    // If the action does not require a new synthesis, but only a new layout, do that again by invoking the
+                    // diagram updater.
+                    if (diagramUpdater instanceof KGraphDiagramUpdater) {
+                        val diagramServer = this.diagramServerManager.findDiagramServersByUri(param.uri)
+                            .filter(KGraphDiagramServer).head
+                        if (diagramServer !== null) {
+                            (diagramUpdater as KGraphDiagramUpdater).updateLayout(diagramServer)
+                        } else {
+                            throw new IllegalStateException("The diagram server is not set up correctly.")
+                        }
                     } else {
-                        return CompletableFuture.completedFuture("ERR")
+                        throw new IllegalStateException("The diagram updater is not set up correctly.")
                     }
-                } else {
-                    return CompletableFuture.completedFuture("ERR")
                 }
             }
+        } catch (Exception e) {
+            sendErrorAndThrow(e)
         }
-        return CompletableFuture.completedFuture("OK")
     }
     
     /**
@@ -553,8 +553,7 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
                 val resource = getResource(_uriExtensions.toUri(path))
                 return work.apply(resource, ci)
             } catch (Exception e) {
-                sendError(Throwables.getStackTraceAsString(e))
-                throw e
+                sendErrorAndThrow(e)
             }
         ]
     }
@@ -581,6 +580,11 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
             this.kgraphLanguageClient = client as KGraphLanguageClient
         }
         super.connect(client)
+    }
+    
+    override <T> T sendErrorAndThrow(Throwable t) throws Throwable {
+        sendError(Throwables.getStackTraceAsString(t))
+        throw t
     }
     
     override sendError(String message) {
