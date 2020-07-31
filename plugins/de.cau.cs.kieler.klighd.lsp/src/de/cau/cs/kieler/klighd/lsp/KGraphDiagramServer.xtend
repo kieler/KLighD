@@ -329,8 +329,12 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
      */
     protected def handle(ComputedTextBoundsAction action) {
         synchronized (modelLock) {
-            // assume the model is still stored in 'currentRoot', since the ComputedTextBoundsAction only gets issued
-            // after a RequestTextBoundsAction, where it got stored before.
+            if (currentRoot.getRevision() !== action.getRevision()) {
+                return
+            }
+            // Assume the model is still stored in 'currentRoot', since the ComputedTextBoundsAction only gets issued
+            // after a RequestTextBoundsAction, where it got stored before. Only applies if no other diagram revision
+            // is issued first.
             
             val textMapping = diagramState.getTextMapping(currentRoot.id)
             // Add the bounds for each label to the text's properties and remember which KTexts have been modified.
