@@ -556,12 +556,10 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
             } else {
                 text = data.text
             }
-            if (text === null) {
-                throw new IllegalStateException("Neither the KText nor its containing KLabel have a text!")
-            }
-            // Found the original text, split it up into individual labels for each line
-            val lines = text.split("\\r?\\n", -1)
-            lines.forEach [ line, index |
+            // Found the original text, split it up into individual labels for each line.
+            // If there is no text, ignore this KText.
+            val lines = text?.split("\\r?\\n", -1)
+            lines?.forEach [ line, index |
                 val newLabel = KGraphFactory.eINSTANCE.createKLabel
                 newLabel.text = line
                 // need to put a copy of the text inside the new label because otherwise inserting it into the label will
@@ -581,8 +579,6 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
                 
                 dataLabels += sKLabel
             ]
-            
-            
         } else if (data instanceof KContainerRendering) {
             // KImages are container renderings themselves, so also look for their child renderings.
             if (data instanceof KImage) {
