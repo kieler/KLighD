@@ -562,11 +562,21 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
      * Returns the resource in this workspace that is located by the given URI.
      * 
      * @param uri The URI.
-     * @return The resource created by the file located by the URI
+     * @return The resource created by the file located by the URI.
      */
     def Resource getResource(URI uri) {
         val ws = this.workspaceManager as KeithWorkspaceManager
         return ws.getResource(uri)
+    }
+    
+    /**
+     * Returns the resource in this workspace that is located by the given URI path.
+     * 
+     * @param uriPath The path of the URI.
+     * @return The resource created by the file located by the URI's path.
+     */
+    def Resource getResource(String uriPath) {
+        return getResource(_uriExtensions.toUri(uriPath))
     }
     
     /**

@@ -12,17 +12,14 @@
  */
 package de.cau.cs.kieler.klighd.lsp.interactive
 
-import com.google.inject.Injector
 import de.cau.cs.kieler.klighd.kgraph.KNode
 import java.util.ArrayList
 import java.util.List
 import org.eclipse.elk.alg.layered.options.LayeredOptions
+import org.eclipse.elk.alg.rectpacking.options.RectPackingOptions
+import org.eclipse.elk.core.options.CoreOptions
 import org.eclipse.elk.graph.ElkNode
 import org.eclipse.elk.graph.properties.IProperty
-import org.eclipse.emf.common.util.URI
-import org.eclipse.xtext.resource.XtextResourceSet
-import org.eclipse.elk.core.options.CoreOptions
-import org.eclipse.elk.alg.rectpacking.options.RectPackingOptions
 
 /**
  * Provides utility methods for interactive layout.
@@ -30,16 +27,6 @@ import org.eclipse.elk.alg.rectpacking.options.RectPackingOptions
  * @author sdo
  */
 class InteractiveUtil {
-
-    /**
-     * Returns the Resource that is specified by a given uri.
-     * @param uri The uri that points to the resource.
-     * @param injector The injector that is used for getting the resource.
-     * @return The Resource
-     */
-    def static getResourceFromUri(String uri, Injector injector) {
-        return injector.getInstance(XtextResourceSet).getResource(URI.createURI(uri), true)
-    }
 
     /**
      * Calculates the nodes that are in the layer based on the layer ID. The nodes are sorted by their pos id. 

@@ -13,7 +13,6 @@
 package de.cau.cs.kieler.klighd.lsp.interactive.layered
 
 import com.google.inject.Inject
-import com.google.inject.Injector
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties
 import de.cau.cs.kieler.klighd.kgraph.KNode
 import de.cau.cs.kieler.klighd.lsp.KGraphDiagramState
@@ -30,7 +29,6 @@ import javax.inject.Singleton
 import org.eclipse.elk.alg.layered.options.LayeredOptions
 import org.eclipse.elk.graph.ElkNode
 import org.eclipse.elk.graph.properties.IProperty
-import org.eclipse.emf.ecore.util.EcoreUtil
 import org.eclipse.lsp4j.Position
 import org.eclipse.lsp4j.Range
 import org.eclipse.lsp4j.TextEdit
@@ -53,9 +51,6 @@ class ConstraintsLanguageServerExtension implements ILanguageServerExtension {
     
     @Inject
     KGraphLanguageServerExtension languageServer
-
-    @Inject
-    Injector injector
 
     override initialize(ILanguageServerAccess access) {
         // Not implemented, since it is not needed.
@@ -229,7 +224,13 @@ class ConstraintsLanguageServerExtension implements ILanguageServerExtension {
      * @param uri uri of resource
      */
     def refreshModelInEditor(HashMap<ConstraintProperty, Integer> changedNodes, String uri) {
-        val resource = InteractiveUtil.getResourceFromUri(uri, injector)
+        val resource = languageServer.getResource(uri)
+            
+        // Get previous file content as String
+        var outputStream = new ByteArrayOutputStream
+        resource.save(outputStream, emptyMap)
+        val codeBefore = outputStream.toString
+        
         var changed = false
         for (entry : changedNodes.keySet) {
             // set Property of corresponding elkNode 
@@ -248,18 +249,10 @@ class ConstraintsLanguageServerExtension implements ILanguageServerExtension {
 
         val elkNode = changedNodes.keySet().head.KNode.getProperty(KlighdInternalProperties.MODEL_ELEMEMT)
         if (elkNode instanceof ElkNode && changed) {
-            val elkGraph = EcoreUtil.getRootContainer(elkNode as ElkNode)
             val Map<String, List<TextEdit>> changes = newHashMap
-            
-            // Get previous file content as String
-            var outputStream = new ByteArrayOutputStream
-            resource.save(outputStream, emptyMap)
-            val codeBefore = outputStream.toString
             
             // Get changed file as String
             outputStream = new ByteArrayOutputStream
-            resource.contents.clear
-            resource.contents += elkGraph
             resource.save(outputStream, emptyMap)
             val String codeAfter = outputStream.toString
             // The range is the length of the previous file.
