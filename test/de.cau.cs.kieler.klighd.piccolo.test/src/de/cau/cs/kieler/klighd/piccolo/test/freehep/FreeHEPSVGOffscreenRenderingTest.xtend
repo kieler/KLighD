@@ -128,7 +128,7 @@ class FreeHEPSVGOffscreenRenderingTest {
 			<g fill="none" stroke-opacity="1" stroke="#000000">
 			  <path d="M 0.5 0.5 L 99.5 0.5 L 99.5 99.5 L 0.5 99.5 L 0.5 0.5 z"/>
 			</g>
-			<text x="0" y="<Y>" fill-opacity="1" font-style="normal" font-family="Helvetica" font-weight="normal" stroke="none" fill="#000000" font-size="<FONT_SIZE>" textLength="50.0px" lengthAdjust="spacingAndGlyphs">NodeLabel</text>
+			<text x="0" y="<Y>" fill-opacity="1" font-style="normal" font-family="Helvetica" style="white-space: pre" font-weight="normal" stroke="none" fill="#000000" font-size="<FONT_SIZE>" textLength="50.0px" lengthAdjust="spacingAndGlyphs">NodeLabel</text>
 			</g>
 		'''.equalsSVGwithTextLengthsOf[
 			addKNodeWithSizeOf(100, 100) => [
@@ -153,7 +153,7 @@ class FreeHEPSVGOffscreenRenderingTest {
 			</g>
 			</g>
 			<g transform="matrix(1, 0, 0, 1, 106, 45)">
-			  <text x="0" y="<Y>" fill-opacity="1" font-style="normal" font-family="Helvetica" font-weight="normal" stroke="none" fill="#000000" font-size="<FONT_SIZE>" textLength="50.0px" lengthAdjust="spacingAndGlyphs">PortLabel</text>
+			  <text x="0" y="<Y>" fill-opacity="1" font-style="normal" font-family="Helvetica" style="white-space: pre" font-weight="normal" stroke="none" fill="#000000" font-size="<FONT_SIZE>" textLength="50.0px" lengthAdjust="spacingAndGlyphs">PortLabel</text>
 			</g>
 			</g>
 		'''.equalsSVGwithTextLengthsOf[
@@ -189,7 +189,7 @@ class FreeHEPSVGOffscreenRenderingTest {
 			</g>
 			</g>
 			<g transform="matrix(1, 0, 0, 1, 0, 45)">
-			  <text x="0" y="<Y>" fill-opacity="1" font-style="normal" font-family="Helvetica" font-weight="normal" stroke="none" fill="#000000" font-size="<FONT_SIZE>" textLength="50.0px" lengthAdjust="spacingAndGlyphs">PortLabel</text>
+			  <text x="0" y="<Y>" fill-opacity="1" font-style="normal" font-family="Helvetica" style="white-space: pre" font-weight="normal" stroke="none" fill="#000000" font-size="<FONT_SIZE>" textLength="50.0px" lengthAdjust="spacingAndGlyphs">PortLabel</text>
 			</g>
 			</g>
 		'''.equalsSVGwithTextLengthsOf[
@@ -267,7 +267,7 @@ class FreeHEPSVGOffscreenRenderingTest {
 			  <path d="M 0.5 0.5 L 99.5 0.5 L 99.5 99.5 L 0.5 99.5 L 0.5 0.5 z"/>
 			</g>
 			<g id="MyLabel" class="MyLabelClass" klighd:MyKey="MyValue" klighd:My2ndKey="KLabel:0">
-			<text x="0" y="<Y>" fill-opacity="1" font-style="normal" font-family="Helvetica" font-weight="normal" stroke="none" fill="#000000" font-size="<FONT_SIZE>" textLength="50.0px" lengthAdjust="spacingAndGlyphs">NodeLabel</text>
+			<text x="0" y="<Y>" fill-opacity="1" font-style="normal" font-family="Helvetica" style="white-space: pre" font-weight="normal" stroke="none" fill="#000000" font-size="<FONT_SIZE>" textLength="50.0px" lengthAdjust="spacingAndGlyphs">NodeLabel</text>
 			</g>
 			</g>
 		'''.equalsSVGwithTextLengthsOf[
@@ -290,7 +290,7 @@ class FreeHEPSVGOffscreenRenderingTest {
 			<g fill="none" stroke-opacity="1" stroke="#000000">
 			  <path d="M 0.5 0.5 L 99.5 0.5 L 99.5 99.5 L 0.5 99.5 L 0.5 0.5 z"/>
 			</g>
-			<g fill-opacity="1" font-style="normal" font-family="Helvetica" font-weight="normal" stroke="none" fill="#000000" font-size="<FONT_SIZE>" id="MyText" class="MyTextClass" klighd:MyKey="MyValue" klighd:My2ndKey="KText:0">
+			<g fill-opacity="1" font-style="normal" font-family="Helvetica" style="white-space: pre" font-weight="normal" stroke="none" fill="#000000" font-size="<FONT_SIZE>" id="MyText" class="MyTextClass" klighd:MyKey="MyValue" klighd:My2ndKey="KText:0">
 			  <text x="0" y="<Y>">NodeLabel:</text>
 			  <text x="0" y="<Y>">Some additional info</text>
 			</g>
@@ -316,7 +316,7 @@ class FreeHEPSVGOffscreenRenderingTest {
 			  <path d="M 0.5 0.5 L 99.5 0.5 L 99.5 99.5 L 0.5 99.5 L 0.5 0.5 z"/>
 			</g>
 			<g id="MyLabel" class="MyLabelClass" klighd:MyKey="MyValue" klighd:My2ndKey="KLabel:0">
-			<g fill-opacity="1" font-style="normal" font-family="Helvetica" font-weight="normal" stroke="none" fill="#000000" font-size="<FONT_SIZE>" id="MyText" class="MyTextClass" klighd:MyKey="MyValue" klighd:My2ndKey="KText:0">
+			<g fill-opacity="1" font-style="normal" font-family="Helvetica" style="white-space: pre" font-weight="normal" stroke="none" fill="#000000" font-size="<FONT_SIZE>" id="MyText" class="MyTextClass" klighd:MyKey="MyValue" klighd:My2ndKey="KText:0">
 			  <text x="0" y="<Y>" klighd:MyTextLineKey="0">NodeLabel:</text>
 			  <text x="0" y="<Y>" klighd:MyTextLineKey="1">Some additional info</text>
 			</g>
@@ -355,7 +355,7 @@ class FreeHEPSVGOffscreenRenderingTest {
 			</g>
 			<g id="MyLabel" class="MyLabelClass" klighd:MyKey="MyValue" klighd:My2ndKey="KLabel:0">
 			<g transform="matrix(1, 0, 0, 1, 106, 45)">
-			  <text x="0" y="<Y>" fill-opacity="1" font-style="normal" font-family="Helvetica" font-weight="normal" stroke="none" fill="#000000" font-size="<FONT_SIZE>" textLength="50.0px" lengthAdjust="spacingAndGlyphs">PortLabel</text>
+			  <text x="0" y="<Y>" fill-opacity="1" font-style="normal" font-family="Helvetica" style="white-space: pre" font-weight="normal" stroke="none" fill="#000000" font-size="<FONT_SIZE>" textLength="50.0px" lengthAdjust="spacingAndGlyphs">PortLabel</text>
 			</g>
 			</g>
 			</g>
@@ -399,7 +399,7 @@ class FreeHEPSVGOffscreenRenderingTest {
 			</g>
 			<g id="MyLabel" class="MyLabelClass" klighd:MyKey="MyValue" klighd:My2ndKey="KLabel:0">
 			<g transform="matrix(1, 0, 0, 1, 106, 45)">
-			  <text x="0" y="<Y>" fill-opacity="1" font-style="normal" font-family="Helvetica" font-weight="normal" stroke="none" fill="#000000" font-size="<FONT_SIZE>" textLength="50.0px" lengthAdjust="spacingAndGlyphs" id="MyText" class="MyTextClass" klighd:MyKey="MyValue" klighd:My2ndKey="KText:0">PortLabel</text>
+			  <text x="0" y="<Y>" fill-opacity="1" font-style="normal" font-family="Helvetica" style="white-space: pre" font-weight="normal" stroke="none" fill="#000000" font-size="<FONT_SIZE>" textLength="50.0px" lengthAdjust="spacingAndGlyphs" id="MyText" class="MyTextClass" klighd:MyKey="MyValue" klighd:My2ndKey="KText:0" klighd:MyTextLineKey="0">PortLabel</text>
 			</g>
 			</g>
 			</g>
@@ -447,7 +447,7 @@ class FreeHEPSVGOffscreenRenderingTest {
 			</g>
 			</g>
 			<g id="MyLabel" class="MyLabelClass" klighd:MyKey="MyValue" klighd:My2ndKey="KLabel:0">
-			<g transform="matrix(1, 0, 0, 1, 106, 45)" fill-opacity="1" font-style="normal" font-family="Helvetica" font-weight="normal" stroke="none" fill="#000000" font-size="<FONT_SIZE>" id="MyText" class="MyTextClass" klighd:MyKey="MyValue" klighd:My2ndKey="KText:0">
+			<g transform="matrix(1, 0, 0, 1, 106, 45)" fill-opacity="1" font-style="normal" font-family="Helvetica" style="white-space: pre" font-weight="normal" stroke="none" fill="#000000" font-size="<FONT_SIZE>" id="MyText" class="MyTextClass" klighd:MyKey="MyValue" klighd:My2ndKey="KText:0">
 			  <text x="0" y="<Y>" klighd:MyTextLineKey="0">PortLabel:</text>
 			  <text x="0" y="<Y>" klighd:MyTextLineKey="1">Some additional info</text>
 			</g>

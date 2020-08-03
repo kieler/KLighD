@@ -403,9 +403,6 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
             os.println("     xmlns:xlink=\"http://www.w3.org/1999/xlink\"");
             os.println("     xmlns:ev=\"http://www.w3.org/2001/xml-events\"");
             os.println("     xmlns:klighd=\"http://de.cau.cs.kieler/klighd\"");
-            // KIPRA-1637: preserve multiple spaces when displaying an svg
-            //  this affects all <text> elements of the document
-            os.println("     xml:space=\"preserve\"");
         }
         os.println("     x=\"" + x + "px\"");
         os.println("     y=\"" + y + "px\"");
@@ -858,13 +855,17 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
         }
         style.put("stroke", "none");
 
+        // related to KIPRA-1637: preserve multiple spaces when displaying text strings
+        if (isProperty(STYLABLE))
+            style.put("white-space", "pre");
+        else
+            // avoid using the deprecated property 'xml:space' (https://docs.w3cub.com/svg/attribute/xml:space/)
+            //  and sneak in the (css-based) replacement (https://www.w3schools.com/cssref/pr_text_white-space.asp)
+            //  via a 'style' property definition
+            style.put("style", "white-space: pre");
+
         // convert tags to string values
         str = XMLWriter.normalizeText(str);
-
-        // replace leading space by &#00a0; otherwise firefox 1.5 fails
-        if (str.startsWith(" ")) {
-            str = "&#x00a0;" + str.substring(1);
-        }
 
         final AffineTransform textOffset = new AffineTransform(1, 0, 0, 1, x, y);
         textOffset.concatenate(getTransform());
@@ -907,7 +908,7 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
 
     private String getTextsString(String text, Properties style, String indentation) {
         final String[] lines = text.split("\\r?\\n|\\r");
-        final boolean isMultiLine = lines.length > 1;
+        final boolean isSingleLine = lines.length <= 1;
         final StringBuffer content = new StringBuffer();
         
         int i = 0;
@@ -933,7 +934,7 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
             // if we have a multi-line text and a configured nextTextLength
             //  we need to recalculate the designated textLength per line
             // otherwise we can stick to the given 'nextTextLength' value
-            boolean noTextLengthPerLineCalcRequired = nextLength == null || !isMultiLine;
+            boolean noTextLengthPerLineCalcRequired = nextLength == null || isSingleLine;
             final FontData fontData = noTextLengthPerLineCalcRequired ? null : getFontData(getFont());
             
             float y = firstLineHeight;
@@ -941,7 +942,7 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
                 content.append("\n" + indentation);
                 content.append("<text x=\"0\" y=\"").append(y).append("\"");
                 // style
-                content.append(isMultiLine ? "" : " " + style(style));
+                content.append(isSingleLine ? " " + style(style) : "");
                 
                 final Double nextLineLength = noTextLengthPerLineCalcRequired ? nextLength :
                     // need to box the result here as the type of the ternary operation would be 'double' otherwise
@@ -951,7 +952,8 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
                 // text length
                 content.append(textLength(nextLineLength));
                 // semantic data
-                content.append(isMultiLine ? tSpanAttributes(line, i++) : attributes(false));
+                content.append(isSingleLine ? attributes(false) : "");
+                content.append(textLineAttributes(line, i++));
                 content.append(">");
                 content.append(line);
                 content.append("</text>");
@@ -962,18 +964,18 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
         } else {
             // without a display just use the pt size as line height for multiline text
 
-            // use tspans to emulate multiline text
             final int fontSize = getFont().getSize();
             float y = fontSize;
             for (final String line : lines) {
                 content.append("\n" + indentation);
                 content.append("<text x=\"0\" y=\"").append(y).append("\"");
-                content.append(isMultiLine ? tSpanAttributes(line, i++) : " "
+                content.append(isSingleLine ? " "
                     // style
                     + style(style)
                     // semantic data
-                    + attributes(false)
+                    + attributes(false) : ""
                 );
+                content.append(textLineAttributes(line, i++));
                 content.append(">");
                 content.append(line);
                 content.append("</text>");
@@ -1626,7 +1628,7 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
         return sb.toString();
     }
 
-    private String tSpanAttributes(final String textLine, final int noOfLine) {
+    private String textLineAttributes(final String textLine, final int noOfLine) {
         if (semanticData == null) {
             return "";
         }
