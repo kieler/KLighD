@@ -148,6 +148,9 @@ public class DiagramController {
     /** whether edges are drawn before nodes, i.e. nodes have priority over edges. */
     private final boolean edgesFirst;
 
+    /** whether figure descriptions of KLabels may contain multiple KTexts. */
+    private final boolean multipleKTextsPerKLabel;
+
     /** whether to record layout changes, will be set to true by the KlighdLayoutManager. */
     private boolean record = false;
 
@@ -175,6 +178,7 @@ public class DiagramController {
             final ViewContext viewContext) {
         this(graph, camera, sync,
                 getProperty(viewContext, KlighdProperties.EDGES_FIRST).booleanValue(),
+                getProperty(viewContext, KlighdProperties.MULTIPLE_KTEXTS_PER_KLABEL).booleanValue(),
                 getProperty(viewContext, KlighdProperties.ZOOM_TO_FIT_CONTENT_SPACING));
 
         camera.initClipsPortAndLabelsVisibility(
@@ -199,13 +203,22 @@ public class DiagramController {
      * @param edgesFirst
      *            determining whether edges are drawn before nodes, i.e. nodes have priority over
      *            edges
+     * @param multipleKTextsPerKLabel
+     *            whether figure descriptions of KLabels may contain multiple KTexts.
+     * @param defaultZoomToFitContentSpacing
+     *            default spacing to be applied if {@link ZoomStyle#ZOOM_TO_FIT_CONTENT} is
+     *            demanded, see also
+     *            {@link de.cau.cs.kieler.klighd.util.KlighdProperties#ZOOM_TO_FIT_CONTENT_SPACING},
+     *            may be <code>null</code>
      */
-    protected DiagramController(final KNode graph, final KlighdMainCamera camera, final boolean sync,
-            final boolean edgesFirst, final Spacing defaultZoomToFitContentSpacing) {
+    protected DiagramController(final KNode graph, final KlighdMainCamera camera,
+            final boolean sync, final boolean edgesFirst, final boolean multipleKTextsPerKLabel,
+            final Spacing defaultZoomToFitContentSpacing) {
         DiagramControllerHelper.resetGraphElement(graph);
 
         this.sync = sync;
         this.edgesFirst = edgesFirst;
+        this.multipleKTextsPerKLabel = multipleKTextsPerKLabel;
 
         this.canvasCamera = camera;
 
@@ -1884,7 +1897,7 @@ public class DiagramController {
         if (renderingController == null) {
             // the new rendering controller is attached to nodeRep in the constructor of
             //  AbstractRenderingController
-            renderingController = new KLabelRenderingController(labelRep);
+            renderingController = new KLabelRenderingController(labelRep, multipleKTextsPerKLabel);
             // labelRep.addAttribute(RENDERING_KEY, renderingController);
             renderingController.initialize(this, sync);
         } else {

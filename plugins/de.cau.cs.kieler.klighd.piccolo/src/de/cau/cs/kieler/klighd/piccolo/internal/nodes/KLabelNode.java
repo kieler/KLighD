@@ -34,7 +34,7 @@ public class KLabelNode extends KGraphElementNode<KLabel> {
     private KLabelRenderingController renderingController;
 
     /** the text. */
-    private String text = "";
+    private String text = null;
 
     /**
      * Constructs a Piccolo2D node for representing a {@code KLabel}.

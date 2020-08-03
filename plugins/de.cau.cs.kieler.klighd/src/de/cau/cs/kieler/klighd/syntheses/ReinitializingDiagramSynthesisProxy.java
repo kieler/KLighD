@@ -233,6 +233,9 @@ public class ReinitializingDiagramSynthesisProxy<S> implements ISynthesis {
      * @return the delegate
      */
     public AbstractDiagramSynthesis<S> getDelegate() {
+        if (this.transformationDelegate == null) {
+            this.transformationDelegate = getNewDelegateInstance();
+        }
         return this.transformationDelegate;
     }
     
