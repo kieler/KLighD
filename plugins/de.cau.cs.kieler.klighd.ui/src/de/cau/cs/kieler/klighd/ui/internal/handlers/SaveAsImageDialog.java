@@ -33,7 +33,6 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -72,11 +71,6 @@ import de.cau.cs.kieler.klighd.ui.internal.Messages;
  * @author csp
  */
 public class SaveAsImageDialog extends Dialog {
-
-    /** the default dialog width. */
-    private static final int DEFAULT_WIDTH = 500;
-    /** the default dialog height. */
-    private static final int DEFAULT_HEIGHT = 400;
 
     /** the preference key for the file path. */
     private static final String PREFERENCE_FILE_PATH = "saveAsImageDialog.filePath"; //$NON-NLS-1$
@@ -644,14 +638,6 @@ public class SaveAsImageDialog extends Dialog {
     protected void configureShell(final Shell shell) {
         super.configureShell(shell);
         shell.setText(Messages.SaveAsImageDialog_title);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected Point getInitialSize() {
-        return new Point(DEFAULT_WIDTH, DEFAULT_HEIGHT);
     }
 
     /**
