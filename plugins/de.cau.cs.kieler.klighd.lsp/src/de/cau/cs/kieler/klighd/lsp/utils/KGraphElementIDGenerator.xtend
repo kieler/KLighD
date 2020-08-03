@@ -100,7 +100,10 @@ class KGraphElementIdGenerator {
         if (parent !== null) {
             parentId = getId(parent)
         } else {
-            return ID_SEPARATOR + 'root'
+            id = ID_SEPARATOR + 'root'
+            elementToIdMap.put(element, id)
+            idToElementMap.put(id, element)
+            return id
         }
         
         // use a prefix depending on the class of the element + the {@link KIdentifier} as id if an identifier is
