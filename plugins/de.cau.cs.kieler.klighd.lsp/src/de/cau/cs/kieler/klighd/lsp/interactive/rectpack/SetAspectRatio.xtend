@@ -22,5 +22,5 @@ import org.eclipse.xtend.lib.annotations.Data
 @Data
 class SetAspectRatio {
     String id
-    Double aspectRatio
+    double aspectRatio
 }
