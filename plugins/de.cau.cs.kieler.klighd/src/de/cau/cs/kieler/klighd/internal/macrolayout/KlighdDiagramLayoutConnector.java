@@ -75,6 +75,8 @@ import de.cau.cs.kieler.klighd.krendering.KRendering;
 import de.cau.cs.kieler.klighd.krendering.KRenderingFactory;
 import de.cau.cs.kieler.klighd.krendering.KRenderingOptions;
 import de.cau.cs.kieler.klighd.krendering.KRenderingRef;
+import de.cau.cs.kieler.klighd.krendering.KRenderingUtil;
+import de.cau.cs.kieler.klighd.krendering.KText;
 import de.cau.cs.kieler.klighd.labels.management.LabelManagementResult;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
 import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
@@ -552,9 +554,19 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
             final ElkGraphElement layoutLabeledElement, final boolean estimateSize,
             final boolean setFontLayoutOptions) {
         
+        final KText kText = Iterators.getNext(
+                Iterators.filter(
+                        KRenderingUtil.selfAndAllChildren(label.getData(KRendering.class)),
+                        KText.class),
+                null);
+
+        final String labelText =
+                label.getText() != null ? label.getText()
+                        : kText != null ? kText.getText() : "";
+
         final ElkLabel layoutLabel =
-                ElkGraphUtil.createLabel(label.getText(), layoutLabeledElement);
-        
+                ElkGraphUtil.createLabel(labelText, layoutLabeledElement);
+
         KIdentifier id = label.getData(KIdentifier.class);
         if (id != null && !Strings.isNullOrEmpty(id.getId())) {
             layoutLabel.setIdentifier(id.getId());
