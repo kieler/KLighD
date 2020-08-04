@@ -20,6 +20,7 @@ import de.cau.cs.kieler.klighd.kgraph.KEdge
 import de.cau.cs.kieler.klighd.kgraph.KGraphData
 import de.cau.cs.kieler.klighd.kgraph.KGraphElement
 import de.cau.cs.kieler.klighd.kgraph.KGraphFactory
+import de.cau.cs.kieler.klighd.kgraph.KIdentifier
 import de.cau.cs.kieler.klighd.kgraph.KLabel
 import de.cau.cs.kieler.klighd.kgraph.KNode
 import de.cau.cs.kieler.klighd.kgraph.KPort
@@ -421,7 +422,8 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
      * @param isMainGraphElement Describes, if the generated label will be part of the main generated {@link SGraph}.
      */
     private def SKLabel generateLabel(KLabel label, boolean isMainGraphElement) {
-        val SKLabel labelElement = configSElement(SKLabel, idGen.getId(label))
+        val id = isMainGraphElement ? idGen.getId(label) : label.data.filter(KIdentifier).head.id
+        val SKLabel labelElement = configSElement(SKLabel, id)
         labelElement.tooltip = label.getProperty(KlighdProperties.TOOLTIP)
         labelElement.text = label.text
 
@@ -567,12 +569,14 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
                 val newData = EcoreUtil.copy(data)
                 newData.text = line
                 newLabel.data += newData
+                val identifier = KGraphFactory.eINSTANCE.createKIdentifier
+                identifier.id = diagramRoot.id + KGraphElementIdGenerator.ID_SEPARATOR + "texts-only" + 
+                    KGraphElementIdGenerator.ID_SEPARATOR + KGraphElementIdGenerator.LABEL_SEPARATOR 
+                    + newLabel.hashCode + KGraphElementIdGenerator.ID_SEPARATOR + index
+                newLabel.data += identifier
                 
                 // generate a new Label as if it would belong to the main model
                 val sKLabel = generateLabel(newLabel, false)
-                sKLabel.id = diagramRoot.id + KGraphElementIdGenerator.ID_SEPARATOR + "texts-only" + 
-                    KGraphElementIdGenerator.ID_SEPARATOR + KGraphElementIdGenerator.LABEL_SEPARATOR 
-                    + newLabel.hashCode + KGraphElementIdGenerator.ID_SEPARATOR + index
                 // All lines point towards the same original data. For matching, the index in the ID has to be taken
                 // into account as well to match it to its line.
                 textMapping.put(sKLabel.id, data)

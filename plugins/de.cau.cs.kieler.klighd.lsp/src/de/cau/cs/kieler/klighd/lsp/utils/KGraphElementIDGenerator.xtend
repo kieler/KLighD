@@ -102,7 +102,10 @@ class KGraphElementIdGenerator {
         } else {
             id = ID_SEPARATOR + 'root'
             elementToIdMap.put(element, id)
-            idToElementMap.put(id, element)
+            val oldElement = idToElementMap.put(id, element)
+            if (oldElement !== null) {
+                throw new IllegalStateException("The graph contains multiple roots!")
+            }
             return id
         }
         
