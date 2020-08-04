@@ -103,6 +103,7 @@ class KGraphDiagramUpdater extends DiagramUpdater {
             key.prepareUpdateModel(value)
         ].exceptionally [ throwable |
             notificationHandler.sendError(Throwables.getStackTraceAsString(throwable))
+            throwable.printStackTrace
             return null
         ]
     }
