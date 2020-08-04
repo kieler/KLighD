@@ -59,6 +59,7 @@
       <category name="kieler-klighd"/>
    </feature>
 
+   <bundle id="de.cau.cs.kieler.klighd.standalone" version="1.1.2.qualifier"/>
    <bundle id="de.cau.cs.kieler.klighd.lsp" version="1.1.2.qualifier"/>
    <bundle id="de.cau.cs.kieler.kgraph.language.server" version="1.1.2.qualifier"/>
 
