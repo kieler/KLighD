@@ -13,25 +13,37 @@
 package de.cau.cs.kieler.klighd.incremental.merge;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.ServiceLoader;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.function.Predicate;
 
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.elk.graph.properties.IProperty;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.EMap;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.MapDifference.ValueDifference;
 import com.google.common.collect.Sets;
 
+import de.cau.cs.kieler.klighd.IPreservedProperties;
+import de.cau.cs.kieler.klighd.Klighd;
+import de.cau.cs.kieler.klighd.KlighdDataManager;
 import de.cau.cs.kieler.klighd.incremental.diff.KComparison;
+import de.cau.cs.kieler.klighd.internal.macrolayout.KlighdDiagramLayoutConnector;
 import de.cau.cs.kieler.klighd.kgraph.KEdge;
 import de.cau.cs.kieler.klighd.kgraph.KGraphData;
 import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
@@ -429,9 +441,41 @@ public class KGraphMerger {
         LinkedList<IProperty<?>> removedProperties = Lists.newLinkedList(
                 Sets.difference(baseProperties.keySet(), newElement.getProperties().keySet()));
         // Do not remove properties that are set by the layout algorithm to save the position of a node.
-        removedProperties.remove(KlighdProperties.LAYERING_LAYER_ID);
-        removedProperties.remove(KlighdProperties.CROSSING_MINIMIZATION_POSITION_ID);
-        removedProperties.remove(KlighdProperties.CURRENT_POSITION);
+     // Get properties that shall be preserved from ElkGraph to KGraph
+        List<IProperty<Object>> propertiesToPreserve = new ArrayList<>();
+        if (Klighd.IS_PLATFORM_RUNNING) {
+            final Iterable<IConfigurationElement> extensions = Iterables.filter(
+                    Arrays.asList(
+                            Platform.getExtensionRegistry().getConfigurationElementsFor(IPreservedProperties.EXTENSION_POINT_ID)
+                    ),
+                    element -> true
+            );
+            for (IConfigurationElement element : extensions) {
+                try {
+                    propertiesToPreserve.addAll(
+                            ((IPreservedProperties<Object>) element.createExecutableExtension(IPreservedProperties.ATTRIBUTE_ID))
+                            .getProperties());
+                } catch (CoreException e) {
+                    Klighd.handle(
+                            new Status(IStatus.ERROR, Klighd.PLUGIN_ID,
+                                    KlighdDataManager.CORE_EXCEPTION_ERROR_MSG.replace("<<CLAZZ>>",
+                                            element.getAttribute("id")), e));
+                }
+            }
+        } else {
+            final Iterable<IPreservedProperties<Object>> listOfPropertyLists = Iterables.transform(
+                    ServiceLoader.load(IPreservedProperties.class, KGraphMerger.class.getClassLoader()),
+                    s -> s
+            );
+            for (IPreservedProperties<Object> propertyList : listOfPropertyLists) {
+                propertiesToPreserve.addAll(propertyList.getProperties());
+            }
+        }
+        
+        // Preserve properties
+        for (IProperty<Object> property : propertiesToPreserve) {
+            removedProperties.remove(property);
+        }
         
         for (IProperty<?> property : removedProperties) {
             baseProperties.removeKey(property);
