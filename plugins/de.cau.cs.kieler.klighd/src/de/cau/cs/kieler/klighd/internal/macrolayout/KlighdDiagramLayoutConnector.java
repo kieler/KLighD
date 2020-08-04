@@ -12,12 +12,20 @@
  */
 package de.cau.cs.kieler.klighd.internal.macrolayout;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map.Entry;
+import java.util.ServiceLoader;
 import java.util.Set;
 
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.elk.core.math.KVector;
 import org.eclipse.elk.core.options.CoreOptions;
 import org.eclipse.elk.core.service.IDiagramLayoutConnector;
@@ -52,8 +60,11 @@ import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 
 import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
+import de.cau.cs.kieler.klighd.IPreservedProperties;
 import de.cau.cs.kieler.klighd.IViewer;
+import de.cau.cs.kieler.klighd.Klighd;
 import de.cau.cs.kieler.klighd.KlighdConstants;
+import de.cau.cs.kieler.klighd.KlighdDataManager;
 import de.cau.cs.kieler.klighd.KlighdOptions;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.internal.ILayoutRecorder;
@@ -655,20 +666,43 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
                 public Boolean caseElkNode(final ElkNode layoutNode) {
                     final KNode node = (KNode) element;
                     
-                    // Apply the nodeId and layerId that were set on the LGraph on the ElkGraph
-                    if (layoutNode.hasProperty(KlighdProperties.LAYERING_LAYER_ID) 
-                            && layoutNode.hasProperty(KlighdProperties.CROSSING_MINIMIZATION_POSITION_ID)) {
-                        node.setProperty(KlighdProperties.CROSSING_MINIMIZATION_POSITION_ID,
-                                layoutNode.getProperty(KlighdProperties.CROSSING_MINIMIZATION_POSITION_ID));
-                        node.setProperty(KlighdProperties.LAYERING_LAYER_ID,
-                                layoutNode.getProperty(KlighdProperties.LAYERING_LAYER_ID));
+                    // Get properties that shall be preserved from ElkGraph to KGraph
+                    List<IProperty<Object>> propertiesToPreserve = new ArrayList<>();
+                    if (Klighd.IS_PLATFORM_RUNNING) {
+                        final Iterable<IConfigurationElement> extensions = Iterables.filter(
+                                Arrays.asList(
+                                        Platform.getExtensionRegistry().getConfigurationElementsFor(IPreservedProperties.EXTENSION_POINT_ID)
+                                ),
+                                element -> true
+                        );
+                        for (IConfigurationElement element : extensions) {
+                            try {
+                                propertiesToPreserve.addAll(
+                                        ((IPreservedProperties<Object>) element.createExecutableExtension(IPreservedProperties.ATTRIBUTE_ID))
+                                        .getProperties());
+                            } catch (CoreException e) {
+                                Klighd.handle(
+                                        new Status(IStatus.ERROR, Klighd.PLUGIN_ID,
+                                                KlighdDataManager.CORE_EXCEPTION_ERROR_MSG.replace("<<CLAZZ>>",
+                                                        element.getAttribute("id")), e));
+                            }
+                        }
+                    } else {
+                        final Iterable<IPreservedProperties<Object>> listOfPropertyLists = Iterables.transform(
+                                ServiceLoader.load(IPreservedProperties.class, KlighdDiagramLayoutConnector.class.getClassLoader()),
+                                s -> s
+                        );
+                        for (IPreservedProperties<Object> propertyList : listOfPropertyLists) {
+                            propertiesToPreserve.addAll(propertyList.getProperties());
+                        }
                     }
                     
-                    if (layoutNode.hasProperty(KlighdProperties.CURRENT_POSITION)) {
-                        final int position = layoutNode.getProperty(KlighdProperties.CURRENT_POSITION);
-                        node.setProperty(KlighdProperties.CURRENT_POSITION, position);
-                    }
-                  
+                    // Preserve properties
+                    for (IProperty<Object> property : propertiesToPreserve) {
+                        if (layoutNode.hasProperty(property)) {
+                            node.setProperty(property, layoutNode.getProperty(property));
+                        }
+                    }                  
                     
                     shapeToViewModel(mapping, layoutNode, node, true, true);
                     node.setProperty(INITIAL_NODE_SIZE, false);

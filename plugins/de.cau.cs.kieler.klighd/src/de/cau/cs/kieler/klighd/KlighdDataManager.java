@@ -114,7 +114,7 @@ public final class KlighdDataManager {
     private static final String NEW_LINE = Klighd.LINE_SEPARATOR;
 
     /** error message if registered class cannot be found. */
-    private static final String CORE_EXCEPTION_ERROR_MSG =
+    public static final String CORE_EXCEPTION_ERROR_MSG =
             "The class definition <<CLAZZ>> cannot be found. " + NEW_LINE
             + "Are there any typing mistakes in the registration? " + NEW_LINE
             + "Is the (maybe generated) code available? " + NEW_LINE

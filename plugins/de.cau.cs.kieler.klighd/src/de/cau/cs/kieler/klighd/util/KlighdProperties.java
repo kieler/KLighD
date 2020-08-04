@@ -347,40 +347,4 @@ public final class KlighdProperties {
      */
     public static final IProperty<Bounds> CALCULATED_TEXT_BOUNDS =
             new Property<Bounds>("klighd.calculated.text.bounds", null);
-    
-    /**
-     * This internal property serves as a vehicle to apply the layerID 
-     * that was set during ELK Layered back on the KGraph.
-     * 
-     * It is used for the interactive layout in Sprotty Diagrams
-     */
-    public static final IProperty<Integer> LAYERING_LAYER_ID = new Property<Integer>(
-            "org.eclipse.elk.layered.layering.layerId",
-            (-1),
-            (-1),
-            null);
-    
-    /**
-     * This internal property serves as a vehicle to apply the positionID 
-     * that was set during ELK Layered back on the KGraph.
-     * 
-     * It is used for the interactive layout in Sprotty Diagrams
-     */
-    public static final IProperty<Integer> CROSSING_MINIMIZATION_POSITION_ID = new Property<Integer>(
-            "org.eclipse.elk.layered.crossingMinimization.positionId",
-            (-1),
-            (-1),
-            null);
-    
-    /**
-     * This internal property serves as a vehicle to apply the positionID 
-     * that was set during ELK RectPacking back on the KGraph.
-     * 
-     * It is used for the Intentional Layout in Sprotty Diagrams
-     */
-    public static final IProperty<Integer> CURRENT_POSITION = new Property<Integer>(
-            "org.eclipse.elk.rectpacking.currentPosition",
-            (-1),
-            (-1),
-            null);
 }
