@@ -15,6 +15,7 @@ package de.cau.cs.kieler.klighd;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -35,6 +36,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.elk.core.util.WrappedException;
+import org.eclipse.elk.graph.properties.IProperty;
 
 import com.google.common.base.Predicate;
 import com.google.common.base.Strings;
@@ -50,6 +52,7 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 
 import de.cau.cs.kieler.klighd.internal.ISynthesis;
+import de.cau.cs.kieler.klighd.internal.macrolayout.KlighdDiagramLayoutConnector;
 import de.cau.cs.kieler.klighd.syntheses.AbstractDiagramSynthesis;
 import de.cau.cs.kieler.klighd.syntheses.GuiceBasedSynthesisFactory;
 import de.cau.cs.kieler.klighd.syntheses.ReinitializingDiagramSynthesisProxy;
@@ -1092,5 +1095,38 @@ public final class KlighdDataManager {
      */
     public List<CustomFigureWrapperDescriptor> getCustomFigureWrapperDescriptors() {
         return Collections.unmodifiableList(customFigureWrapperMapping);
+    }
+    
+    public List<IProperty<Object>> getPreservedProperties() {
+        List<IProperty<Object>> propertiesToPreserve = new ArrayList<>();
+        if (Klighd.IS_PLATFORM_RUNNING) {
+            final Iterable<IConfigurationElement> extensions = Iterables.filter(
+                    Arrays.asList(
+                            Platform.getExtensionRegistry().getConfigurationElementsFor(IPreservedProperties.EXTENSION_POINT_ID)
+                    ),
+                    element -> true
+            );
+            for (IConfigurationElement element : extensions) {
+                try {
+                    propertiesToPreserve.addAll(
+                            ((IPreservedProperties<Object>) element.createExecutableExtension(IPreservedProperties.ATTRIBUTE_ID))
+                            .getProperties());
+                } catch (CoreException e) {
+                    Klighd.handle(
+                            new Status(IStatus.ERROR, Klighd.PLUGIN_ID,
+                                    KlighdDataManager.CORE_EXCEPTION_ERROR_MSG.replace("<<CLAZZ>>",
+                                            element.getAttribute("id")), e));
+                }
+            }
+        } else {
+            final Iterable<IPreservedProperties<Object>> listOfPropertyLists = Iterables.transform(
+                    ServiceLoader.load(IPreservedProperties.class, KlighdDiagramLayoutConnector.class.getClassLoader()),
+                    s -> s
+            );
+            for (IPreservedProperties<Object> propertyList : listOfPropertyLists) {
+                propertiesToPreserve.addAll(propertyList.getProperties());
+            }
+        }
+        return propertiesToPreserve;
     }
 }

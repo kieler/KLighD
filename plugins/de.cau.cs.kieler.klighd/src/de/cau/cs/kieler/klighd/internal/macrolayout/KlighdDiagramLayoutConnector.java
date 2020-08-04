@@ -667,35 +667,7 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
                     final KNode node = (KNode) element;
                     
                     // Get properties that shall be preserved from ElkGraph to KGraph
-                    List<IProperty<Object>> propertiesToPreserve = new ArrayList<>();
-                    if (Klighd.IS_PLATFORM_RUNNING) {
-                        final Iterable<IConfigurationElement> extensions = Iterables.filter(
-                                Arrays.asList(
-                                        Platform.getExtensionRegistry().getConfigurationElementsFor(IPreservedProperties.EXTENSION_POINT_ID)
-                                ),
-                                element -> true
-                        );
-                        for (IConfigurationElement element : extensions) {
-                            try {
-                                propertiesToPreserve.addAll(
-                                        ((IPreservedProperties<Object>) element.createExecutableExtension(IPreservedProperties.ATTRIBUTE_ID))
-                                        .getProperties());
-                            } catch (CoreException e) {
-                                Klighd.handle(
-                                        new Status(IStatus.ERROR, Klighd.PLUGIN_ID,
-                                                KlighdDataManager.CORE_EXCEPTION_ERROR_MSG.replace("<<CLAZZ>>",
-                                                        element.getAttribute("id")), e));
-                            }
-                        }
-                    } else {
-                        final Iterable<IPreservedProperties<Object>> listOfPropertyLists = Iterables.transform(
-                                ServiceLoader.load(IPreservedProperties.class, KlighdDiagramLayoutConnector.class.getClassLoader()),
-                                s -> s
-                        );
-                        for (IPreservedProperties<Object> propertyList : listOfPropertyLists) {
-                            propertiesToPreserve.addAll(propertyList.getProperties());
-                        }
-                    }
+                    List<IProperty<Object>> propertiesToPreserve = KlighdDataManager.getInstance().getPreservedProperties();
                     
                     // Preserve properties
                     for (IProperty<Object> property : propertiesToPreserve) {
