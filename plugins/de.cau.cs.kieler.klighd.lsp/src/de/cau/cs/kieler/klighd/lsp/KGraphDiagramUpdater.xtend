@@ -100,7 +100,13 @@ class KGraphDiagramUpdater extends DiagramUpdater {
             
             return diagramServer -> createModel(viewContext, uri, ci)
         ].thenAccept [
-            key.prepareUpdateModel(value)
+            if (value !== null) {
+                key.prepareUpdateModel(value)
+            } else {
+                // The value is null if the layout was cancelled.
+                // null should never be saved as a model therefore nothing is done.
+            }
+            
         ].exceptionally [ throwable |
             notificationHandler.sendError(Throwables.getStackTraceAsString(throwable))
             throwable.printStackTrace
