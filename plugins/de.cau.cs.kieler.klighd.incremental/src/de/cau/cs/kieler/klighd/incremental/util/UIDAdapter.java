@@ -61,6 +61,7 @@ public class UIDAdapter extends EContentAdapter {
     private static final Predicate<Object> CANDIDATES =
             KlighdPredicates.instanceOf(KNode.class, KLabel.class, KEdge.class, KPort.class);
     private static final String ID_SEPARATOR = "$";
+    private static final String DANGLING_ELEMENT = "dangling";
     private BiMap<String, KNode> nodes = HashBiMap.create();
     private BiMap<String, KEdge> edges = HashBiMap.create();
     private BiMap<String, KLabel> labels = HashBiMap.create();
@@ -343,8 +344,8 @@ public class UIDAdapter extends EContentAdapter {
         }
         id = parentId + ID_SEPARATOR + localId;
         if (localId == "root" && nodes.containsKey(id)) {
-            // This is a dangling node and should not be included in the graph.
-            return null;
+            // This is a dangling element and should not be included in the graph. Give it a unique ID anyway.
+            id = DANGLING_ELEMENT + node.hashCode();
         }
         id = resolveIDClash(id, nodes);
         nodes.put(id, node);
@@ -365,31 +366,36 @@ public class UIDAdapter extends EContentAdapter {
             return id;
         }
         KNode parent = edge.getSource();
-        String parentId = getId(parent);
-        String localId = "";
-        KIdentifier identifier = edge.getData(KIdentifier.class);
-        if (identifier != null) {
-            localId = identifier.getId();
+        if (parent == null) {
+            // This is a dangling element and should not be included in the graph. Give it a unique ID anyway.
+            id = DANGLING_ELEMENT + edge.hashCode();
         } else {
-            localId = "E";
-            KPort sourcePort = edge.getSourcePort();
-            if (sourcePort != null) {
-                localId += addId(sourcePort);
+            String parentId = getId(parent);
+            String localId = "";
+            KIdentifier identifier = edge.getData(KIdentifier.class);
+            if (identifier != null) {
+                localId = identifier.getId();
+            } else {
+                localId = "E";
+                KPort sourcePort = edge.getSourcePort();
+                if (sourcePort != null) {
+                    localId += addId(sourcePort);
+                }
+                localId += "->";
+                
+                KNode targetNode = edge.getTargetPort() == null ? edge.getTarget() : edge.getTargetPort().getNode();
+                if (targetNode != null) {
+                    localId += addId(targetNode);
+                }
+                localId += ":";
+                
+                KPort targetPort = edge.getTargetPort();
+                if (targetPort != null) {
+                    localId += addId(targetPort);
+                }
             }
-            localId += "->";
-            
-            KNode targetNode = edge.getTargetPort() == null ? edge.getTarget() : edge.getTargetPort().getNode();
-            if (targetNode != null) {
-                localId += addId(targetNode);
-            }
-            localId += ":";
-            
-            KPort targetPort = edge.getTargetPort();
-            if (targetPort != null) {
-                localId += addId(targetPort);
-            }
+            id = parentId + ID_SEPARATOR + localId;
         }
-        id = parentId + ID_SEPARATOR + localId;
         id = resolveIDClash(id, edges);
         edges.put(id, edge);
         return id;
@@ -409,22 +415,27 @@ public class UIDAdapter extends EContentAdapter {
             return id;
         }
         KLabeledGraphElement parent = label.getParent();
-        String parentId = "";
-        if (parent instanceof KNode) {
-            parentId = getId((KNode) parent);
-        } else if (parent instanceof KEdge) {
-            parentId = getId((KEdge) parent);
-        } else if (parent instanceof KPort) {
-            parentId = getId((KPort) parent);
-        }
-        String localId;
-        KIdentifier identifier = label.getData(KIdentifier.class);
-        if (identifier != null) {
-            localId = identifier.getId();
+        if (parent == null) {
+            // This is a dangling element and should not be included in the graph. Give it a unique ID anyway.
+            id = DANGLING_ELEMENT + label.hashCode();
         } else {
-            localId = "L" + parent.getLabels().indexOf(label);
+            String parentId = "";
+            if (parent instanceof KNode) {
+                parentId = getId((KNode) parent);
+            } else if (parent instanceof KEdge) {
+                parentId = getId((KEdge) parent);
+            } else if (parent instanceof KPort) {
+                parentId = getId((KPort) parent);
+            }
+            String localId;
+            KIdentifier identifier = label.getData(KIdentifier.class);
+            if (identifier != null) {
+                localId = identifier.getId();
+            } else {
+                localId = "L" + parent.getLabels().indexOf(label);
+            }
+            id = parentId + ID_SEPARATOR + localId;
         }
-        id = parentId + ID_SEPARATOR + localId;
         id = resolveIDClash(id, labels);
         labels.put(id, label);
         return id;
@@ -444,15 +455,20 @@ public class UIDAdapter extends EContentAdapter {
             return id;
         }
         KNode parent = port.getNode();
-        String parentId = addId(parent);
-        String localId = "";
-        KIdentifier identifier = port.getData(KIdentifier.class);
-        if (identifier != null) {
-            localId = identifier.getId();
+        if (parent == null) {
+            // This is a dangling element and should not be included in the graph. Give it a unique ID anyway.
+            id = DANGLING_ELEMENT + port.hashCode();
         } else {
-            localId = "P" + parent.getPorts().indexOf(port);
+            String parentId = addId(parent);
+            String localId = "";
+            KIdentifier identifier = port.getData(KIdentifier.class);
+            if (identifier != null) {
+                localId = identifier.getId();
+            } else {
+                localId = "P" + parent.getPorts().indexOf(port);
+            }
+            id = parentId + ID_SEPARATOR + localId;
         }
-        id = parentId + ID_SEPARATOR + localId;
         id = resolveIDClash(id, ports);
         ports.put(id, port);
         return id;
