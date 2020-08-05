@@ -30,6 +30,7 @@ import org.eclipse.sprotty.Dimension
 import org.eclipse.sprotty.Point
 import org.eclipse.sprotty.SModelElement
 import org.eclipse.sprotty.SShapeElement
+import de.cau.cs.kieler.klighd.KlighdDataManager
 
 /**
  * A helper class containing static methods for mapping of KGraph and SGraph bounds.
@@ -85,6 +86,20 @@ class KGraphMappingUtil {
         
         // Copy the bend points.
         skedge.junctionPoints = kedge.getProperty(CoreOptions.JUNCTION_POINTS)
+    }
+    
+    /**
+     * Map node layout from KGraph to SGraph
+     * 
+     * @param kNode The KGraph node
+     * @param skNode The SGraph node
+     */
+    private static def mapLayout(KNode kNode, SKNode skNode) {
+        skNode.position = new Point(kNode.xpos, kNode.ypos)
+        skNode.size = new Dimension(kNode.width, kNode.height)
+        for (property : KlighdDataManager.instance.preservedProperties) {
+            skNode.properties.put(property.id.substring(property.id.lastIndexOf('.') + 1), kNode.getProperty(property))
+        }
     }
     
     /**
