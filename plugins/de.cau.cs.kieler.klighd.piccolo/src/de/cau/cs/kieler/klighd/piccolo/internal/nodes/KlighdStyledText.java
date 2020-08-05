@@ -150,7 +150,7 @@ public class KlighdStyledText extends KlighdNode.KlighdFigureNode<KText> {
      *            The text string to be displayed.
      */
     public void setText(final String theText) {
-        this.text = theText;
+        this.text = theText == null ? "" : theText;
         updateBounds();
     }
 
@@ -361,7 +361,7 @@ public class KlighdStyledText extends KlighdNode.KlighdFigureNode<KText> {
     protected void updateBounds() {
         // do the (re-)computation of the figure's (local) bounds lazily during the next request,
         //  the indication to do so is done by setting the local bounds 'empty'!
-        getBoundsReference().resetToZero();
+        super.getBoundsReference().resetToZero();
 
         // CAUTION: I intentionally do no call 'invalidateFullBounds'
         //  as this will traverse up the parents and flag all as 'childBoundsInvalid',

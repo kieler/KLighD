@@ -100,7 +100,7 @@ public final class KlighdProperties {
      * {@link de.cau.cs.kieler.klighd.kgraph.KGraphElement KGraphElement} (kge) into the corresponding
      * diagram if the value is true.<br>
      * This property is currently to be attached to the kge's
-     * {@link de.cau.cs.kieler.kiml.klayoutdata.KLayoutData } data during the view synthesis process.
+     * {@link de.cau.cs.kieler.klighd.kgraph.KLayoutData KLayoutData} data during the view synthesis process.
      * If it is absent the kge is incorporated, anyway.
      */
     public static final IProperty<Boolean> SHOW = new Property<Boolean>(
@@ -258,8 +258,8 @@ public final class KlighdProperties {
      * Property determining whether the diagram zoom scale-based visibility configurations of the
      * {@link de.cau.cs.kieler.klighd.krendering.KRendering KRendering} it is defined on shall apply
      * to its children, as well. Configuring this property on {@link KGraphElement KGraphElements}
-     * (' {@link KLayoutData}) will have no effect, {@link KGraphElement KGraphElements'} children
-     * are automatically skipped by default.
+     * (' {@link de.cau.cs.kieler.klighd.kgraph.KLayoutData KLayoutData}) will have no effect,
+     * {@link KGraphElement KGraphElements'} children are automatically skipped by default.
      */
     public static final IProperty<Boolean> VISIBILITY_PROPAGATE_TO_CHILDREN = new Property<Boolean>(
             "de.cau.cs.kieler.klighd.visibilityPropagateToChildren", false);
@@ -309,6 +309,16 @@ public final class KlighdProperties {
      */
     public static final IProperty<Boolean> EDGES_FIRST = new Property<Boolean>(
             "klighd.edgesFirst", false);
+
+    /**
+     * Property for globally determining whether figure descriptions of
+     * {@link de.cau.cs.kieler.klighd.kgraph.KLabel KLabel}s may contain multiple KTexts. Enabling
+     * this has implications on the applicability of layout algorithms performing the computation of
+     * the label size on their own, as well as the on the applicability of
+     * {@link org.eclipse.elk.core.labels.ILabelManager ILabelManager}s.
+     */
+    public static final IProperty<Boolean> MULTIPLE_KTEXTS_PER_KLABEL = new Property<Boolean>(
+            "klighd.multipleKTextsPerKLabel", false);
 
     /**
      * Determines whether the ports and port labels of clipped nodes should be shown or not.

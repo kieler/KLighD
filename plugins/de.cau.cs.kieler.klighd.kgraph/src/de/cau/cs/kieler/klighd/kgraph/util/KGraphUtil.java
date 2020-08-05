@@ -155,12 +155,6 @@ public final class KGraphUtil {
                 if (node.getInsets() == null) {
                     node.setInsets(FACTORY.createKInsets());
                 }
-            // Make sure labels are OK
-            } else if (element instanceof KLabel) {
-                KLabel label = (KLabel) element;
-                if (label.getText() == null) {
-                    label.setText("");
-                }
             // Make sure edges are OK
             } else if (element instanceof KEdge) {
                 KEdge edge = (KEdge) element;

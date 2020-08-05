@@ -29,7 +29,6 @@ import de.cau.cs.kieler.klighd.microlayout.Bounds;
 import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KLabelNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdStyledText;
-import de.cau.cs.kieler.klighd.util.KlighdProperties;
 import edu.umd.cs.piccolo.PNode;
 
 /**
@@ -37,14 +36,20 @@ import edu.umd.cs.piccolo.PNode;
  */
 public class KLabelRenderingController extends AbstractKGERenderingController<KLabel, KLabelNode> {
 
+    /** whether figure descriptions shall be checked for at most one {@link KText} element. */
+    private final boolean validateSingleKText;
+
     /**
      * Constructs a rendering controller for a label.
      * 
      * @param label
      *            the Piccolo node representing a label
+     * @param multipleKTextsPerKLabel
+     *            whether figure descriptions of KLabels may contain multiple KTexts.
      */
-    public KLabelRenderingController(final KLabelNode label) {
+    public KLabelRenderingController(final KLabelNode label, final boolean multipleKTextsPerKLabel) {
         super(label.getViewModelElement(), label);
+        this.validateSingleKText = !multipleKTextsPerKLabel;
     }
 
     /**
@@ -88,17 +93,9 @@ public class KLabelRenderingController extends AbstractKGERenderingController<KL
         
         final KText kText = Iterators.getNext(kTexts, null); 
         
-        if (kText == null || kTexts.hasNext()) {
+        if (kText == null || validateSingleKText && kTexts.hasNext()) {
             throw new RuntimeException("KLabel " + getGraphElement()
                     + " must (deeply) contain exactly 1 KText element.");
-        }
-        
-        // Transfer selectability from KLabel to KText to properly handle the selection handlers
-        // Should only apply if the KText is not configured but KLabel is configured  
-        if (!kText.getProperties().contains(KlighdProperties.NOT_SELECTABLE)
-                && getGraphElement().getProperties().contains(KlighdProperties.NOT_SELECTABLE)) {
-            kText.setProperty(KlighdProperties.NOT_SELECTABLE,
-                    getGraphElement().getProperty(KlighdProperties.NOT_SELECTABLE));
         }
         
         // create the rendering
@@ -113,14 +110,16 @@ public class KLabelRenderingController extends AbstractKGERenderingController<KL
             // the opposite should never happen (see test above), this test is just for preventing
             //  null pointer exceptions
             
-            textController.getNode().setText(parent.getText());
+            textController.getNode().setText(
+                    parent.getText() != null ? parent.getText() : kText.getText());
             
             // add a listener on the parent's bend points
             addListener(KLabelNode.PROPERTY_TEXT, parent, controller.getNode(),
                     new PropertyChangeListener() {
 
                         public void propertyChange(final PropertyChangeEvent e) {
-                            textController.getNode().setText(parent.getText());
+                            textController.getNode().setText(
+                                    parent.getText() != null ? parent.getText() : kText.getText());
                             textController.getNode().repaint();
                         }
                     });
