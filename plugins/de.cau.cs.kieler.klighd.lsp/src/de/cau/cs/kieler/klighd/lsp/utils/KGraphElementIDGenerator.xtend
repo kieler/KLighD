@@ -248,7 +248,7 @@ class KRenderingIdGenerator {
         
         val renderings = element.data.filter(KRendering) + element.data.filter(KRenderingRef)
         var rendering = renderings.findFirst [
-            id.startsWith(it.id)
+            id !== null && it.id !== null && id.startsWith(it.id)
         ]
         if (rendering === null) {
             throw new IllegalArgumentException("Misformed ID or element")
