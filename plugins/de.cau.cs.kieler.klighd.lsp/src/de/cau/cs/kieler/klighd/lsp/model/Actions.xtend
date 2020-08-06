@@ -191,6 +191,7 @@ class PerformActionAction implements Action {
     String actionId
     String kGraphElementId
     String kRenderingId
+    int revision
     
     new() {}
     new(Consumer<PerformActionAction> initializer) {
