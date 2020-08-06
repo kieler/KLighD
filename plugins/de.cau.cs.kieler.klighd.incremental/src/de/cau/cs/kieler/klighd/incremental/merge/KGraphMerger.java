@@ -3,7 +3,7 @@
  *
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright 2016 by
+ * Copyright 2016,2020 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -13,37 +13,27 @@
 package de.cau.cs.kieler.klighd.incremental.merge;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.ServiceLoader;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.function.Predicate;
+import java.util.stream.Stream;
 
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Platform;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.elk.graph.properties.IProperty;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.EMap;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 
-import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.MapDifference.ValueDifference;
 import com.google.common.collect.Sets;
 
-import de.cau.cs.kieler.klighd.IPreservedProperties;
-import de.cau.cs.kieler.klighd.Klighd;
 import de.cau.cs.kieler.klighd.KlighdDataManager;
 import de.cau.cs.kieler.klighd.incremental.diff.KComparison;
-import de.cau.cs.kieler.klighd.internal.macrolayout.KlighdDiagramLayoutConnector;
 import de.cau.cs.kieler.klighd.kgraph.KEdge;
 import de.cau.cs.kieler.klighd.kgraph.KGraphData;
 import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
@@ -54,14 +44,17 @@ import de.cau.cs.kieler.klighd.kgraph.KNode;
 import de.cau.cs.kieler.klighd.kgraph.KPoint;
 import de.cau.cs.kieler.klighd.kgraph.KPort;
 import de.cau.cs.kieler.klighd.kgraph.KShapeLayout;
-import de.cau.cs.kieler.klighd.util.KlighdProperties;
 
 /**
  * Recursively merge two KGraphs.
  * 
- * @author csp
+ * @author csp, nre
  */
 public class KGraphMerger {
+    
+    private static String INVALID_MOVE_MESSAGE = "Cannot move element to an out of bounds position in the reference " + 
+    "list. Check if the synthesis leaves references to elements that are not in the graph via containment or if there "+
+    "is an error in this code. The graph may not be mapped correctly now.";
 
     /** The comparison to merge. */
     private KComparison comparison;
@@ -125,7 +118,9 @@ public class KGraphMerger {
         for (KPort port : node.getPorts()) {
             port.getEdges().clear();
         }
-        node.getParent().getChildren().remove(node);
+        if (node.getParent() != null) {
+            node.getParent().getChildren().remove(node);
+        }
     }
 
     /**
@@ -134,10 +129,13 @@ public class KGraphMerger {
     private void handleAddedNodes() {
         // Before adding the nodes we have to make sure they are added in the same order as they appear in the
         // containment list of their parent to ensure correct generation and mapping of ID-less elements.
-        comparison.getAddedNodes().stream().sorted(
+        // Add parent-less nodes first, then the sorted nodes with parents.
+        Stream<KNode> nodesWithoutParent = comparison.getAddedNodes().stream().filter((KNode n) -> n.getParent() == null);
+        Stream<KNode> nodesWithParent    = comparison.getAddedNodes().stream().filter((KNode n) -> n.getParent() != null);
+        Stream.concat(nodesWithoutParent, nodesWithParent.sorted(
             (KNode n1, KNode n2) -> n1.getParent().getChildren().indexOf(n1)
                                   - n2.getParent().getChildren().indexOf(n2)
-        ).forEachOrdered(
+        )).forEachOrdered(
             (KNode node) -> addNode(node)
         );
         // Add edges after adding the nodes to ensure that all targets are available.
@@ -155,14 +153,25 @@ public class KGraphMerger {
      */
     private void addNode(final KNode node) {
         if (node.getParent() == null) {
-            throw new RuntimeException(
-                    "Couldn't add new node " + node + "to base model:\nNode has no parent.");
+            // A connected node that is however not contained is added to the new model. Handle this in a special case
+            // and just copy the node and add it to the base adapter, without putting it into the base model directly.
+            if (comparison.lookupBaseNode(node) == null) {
+                KNode copiedNode = EcoreUtil.copy(node);
+                comparison.getBaseAdapter().generateIDs(copiedNode);
+            }
+            return;
         }
+        // Otherwise, the node has a parent, so add the node to that.
         KNode baseParent = comparison.lookupBaseNode(node.getParent());
         if (baseParent == null) {
-            // The new node's parent is missing in the base model as well.
-            // Add it and its children (including this node) first.
-            addNode(node.getParent());
+            if (!comparison.getAddedNodes().contains(node.getParent())) {
+                // The new node's parent is missing in the base model as well and is not scheduled to be added
+                // otherwise. Add it and its children (including this node), but leave a warning that there might be an
+                // issue.
+                System.err.println(this.getClass().getName() + ": There is a unknown node to be added to the base "
+                        + "graph. Trying to continue, but this may cause further errors.");
+                addNode(node.getParent());
+            }
         } else {
             if (comparison.lookupBaseNode(node) == null) {
                 int oldPosition = node.getParent().getChildren().indexOf(node);
@@ -466,6 +475,10 @@ public class KGraphMerger {
             int newPosition = newNode.getParent().getChildren().indexOf(newNode);
             int oldPosition = baseNode.getParent().getChildren().indexOf(baseNode);
             if (newPosition != oldPosition) {
+                if (newPosition >= baseNode.getParent().getChildren().size()) {
+                    newPosition = baseNode.getParent().getChildren().size() - 1;
+                    System.err.println(this.getClass().getName() + ": " + INVALID_MOVE_MESSAGE);
+                }
                 baseNode.getParent().getChildren().move(newPosition, oldPosition);
             }
         }
@@ -482,6 +495,10 @@ public class KGraphMerger {
             int newPosition = newPort.getNode().getPorts().indexOf(newPort);
             int oldPosition = basePort.getNode().getPorts().indexOf(basePort);
             if (newPosition != oldPosition) {
+                if (newPosition >= basePort.getNode().getPorts().size()) {
+                    newPosition = basePort.getNode().getPorts().size() - 1;
+                    System.err.println(this.getClass().getName() + ": " + INVALID_MOVE_MESSAGE);
+                }
                 basePort.getNode().getPorts().move(newPosition, oldPosition);
             }
         }
@@ -498,6 +515,10 @@ public class KGraphMerger {
             int newPosition = newLabel.getParent().getLabels().indexOf(newLabel);
             int oldPosition = baseLabel.getParent().getLabels().indexOf(baseLabel);
             if (newPosition != oldPosition) {
+                if (newPosition >= baseLabel.getParent().getLabels().size()) {
+                    newPosition = baseLabel.getParent().getLabels().size() - 1;
+                    System.err.println(this.getClass().getName() + ": " + INVALID_MOVE_MESSAGE);
+                }
                 baseLabel.getParent().getLabels().move(newPosition, oldPosition);
             }
         }
@@ -515,6 +536,10 @@ public class KGraphMerger {
             int newPosition = newEdge.getSource().getOutgoingEdges().indexOf(newEdge);
             int oldPosition = baseEdge.getSource().getOutgoingEdges().indexOf(baseEdge);
             if (newPosition != oldPosition) {
+                if (newPosition >= baseEdge.getSource().getOutgoingEdges().size()) {
+                    newPosition = baseEdge.getSource().getOutgoingEdges().size() - 1;
+                    System.err.println(this.getClass().getName() + ": " + INVALID_MOVE_MESSAGE);
+                }
                 baseEdge.getSource().getOutgoingEdges().move(newPosition, oldPosition);
             }
         }
@@ -522,6 +547,10 @@ public class KGraphMerger {
             int newPosition = newEdge.getTarget().getIncomingEdges().indexOf(newEdge);
             int oldPosition = baseEdge.getTarget().getIncomingEdges().indexOf(baseEdge);
             if (newPosition != oldPosition) {
+                if (newPosition >= baseEdge.getTarget().getIncomingEdges().size()) {
+                    newPosition = baseEdge.getTarget().getIncomingEdges().size() - 1;
+                    System.err.println(this.getClass().getName() + ": " + INVALID_MOVE_MESSAGE);
+                }
                 baseEdge.getTarget().getIncomingEdges().move(newPosition, oldPosition);
             }
         }
@@ -529,6 +558,10 @@ public class KGraphMerger {
             int newPosition = newEdge.getSourcePort().getEdges().indexOf(newEdge);
             int oldPosition = baseEdge.getSourcePort().getEdges().indexOf(baseEdge);
             if (newPosition != oldPosition) {
+                if (newPosition >= baseEdge.getSourcePort().getEdges().size()) {
+                    newPosition = baseEdge.getSourcePort().getEdges().size() - 1;
+                    System.err.println(this.getClass().getName() + ": " + INVALID_MOVE_MESSAGE);
+                }
                 baseEdge.getSourcePort().getEdges().move(newPosition, oldPosition);
             }
         }
@@ -536,6 +569,10 @@ public class KGraphMerger {
             int newPosition = newEdge.getTargetPort().getEdges().indexOf(newEdge);
             int oldPosition = baseEdge.getTargetPort().getEdges().indexOf(baseEdge);
             if (newPosition != oldPosition) {
+                if (newPosition >= baseEdge.getTargetPort().getEdges().size()) {
+                    newPosition = baseEdge.getTargetPort().getEdges().size() - 1;
+                    System.err.println(this.getClass().getName() + ": " + INVALID_MOVE_MESSAGE);
+                }
                 baseEdge.getTargetPort().getEdges().move(newPosition, oldPosition);
             }
         }
