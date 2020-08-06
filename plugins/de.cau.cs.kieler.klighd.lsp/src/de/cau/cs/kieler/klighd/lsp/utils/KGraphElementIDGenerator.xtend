@@ -47,6 +47,13 @@ class KGraphElementIdGenerator {
     @Accessors(PUBLIC_GETTER)
     Map<String, KGraphElement> idToElementMap
     
+    int danglingElements = 0
+    
+    /**
+     * Dangling elements are prefixed with this in their ID.
+     */
+    static final String DANGLING = "dangling"
+    
     /**
      * The character used to separate levels of hierarchy in the ID of {@link KGraphElement}s or unnamed elements.
      */
@@ -101,11 +108,13 @@ class KGraphElementIdGenerator {
             parentId = getId(parent)
         } else {
             id = ID_SEPARATOR + 'root'
-            elementToIdMap.put(element, id)
-            val oldElement = idToElementMap.put(id, element)
-            if (oldElement !== null) {
-                throw new IllegalStateException("The graph contains multiple roots!")
+            if (idToElementMap.get(id) !== null) {
+                // The graph already contains a root node, this is a connected node dangling without a parent and will
+                // therefore not be displayed in any graph. Generate a unique ID anyway.
+                id = ID_SEPARATOR + DANGLING + danglingElements++
             }
+            elementToIdMap.put(element, id)
+            idToElementMap.put(id, element)
             return id
         }
         
