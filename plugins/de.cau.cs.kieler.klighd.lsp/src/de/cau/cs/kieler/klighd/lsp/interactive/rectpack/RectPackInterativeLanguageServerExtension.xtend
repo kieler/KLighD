@@ -207,7 +207,7 @@ class RectPackInterativeLanguageServerExtension implements ILanguageServerExtens
             // Get changed file as String
             outputStream = new ByteArrayOutputStream
             resource.save(outputStream, emptyMap)
-            val codeAfter = outputStream.toString
+            val codeAfter = outputStream.toString().trim()
             
             // The range is the length of the previous file.
             val Range range = new Range(new Position(0, 0), new Position(codeBefore.split("\r\n|\r|\n").length, 0))

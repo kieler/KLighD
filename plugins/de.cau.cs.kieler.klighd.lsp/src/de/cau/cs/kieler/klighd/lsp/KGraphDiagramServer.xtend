@@ -366,14 +366,16 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
                     } else {
                         text = kText.text
                     }
-                    var lines = text.split("\\r?\\n", -1).size
-                    texts.add(kText)
-                    val widths = newFloatArrayOfSize(lines)
-                    widths.set(index, newSize.width as float)
-                    textWidths.put(kText, widths)
-                    val heights = newFloatArrayOfSize(lines)
-                    heights.set(index, newSize.height as float)
-                    textHeights.put(kText, heights)
+                    if (text !== null) {
+                        var lines = text.split("\\r?\\n", -1).size
+                        texts.add(kText)
+                        val widths = newFloatArrayOfSize(lines)
+                        widths.set(index, newSize.width as float)
+                        textWidths.put(kText, widths)
+                        val heights = newFloatArrayOfSize(lines)
+                        heights.set(index, newSize.height as float)
+                        textHeights.put(kText, heights)
+                    }
                 } else {
                     textWidths.get(kText).set(index, newSize.width as float)
                     textHeights.get(kText).set(index, newSize.height as float)
@@ -438,6 +440,9 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
      */
     protected def handle(PerformActionAction action) {
         synchronized (diagramState) {
+            if (currentRoot.getRevision() !== action.revision) {
+                return
+            }
             
             val sourceUri = diagramState.getURIString(clientId)
             val kGraphElement = diagramState.getIdToKGraphMap(sourceUri).get(action.KGraphElementId)
