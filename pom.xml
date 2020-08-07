@@ -34,7 +34,6 @@
     <module>plugins/de.cau.cs.kieler.klighd.ui.emf</module>
     <module>plugins/de.cau.cs.kieler.klighd.ui.view</module>
     <module>plugins/de.cau.cs.kieler.klighd.ui.wizard</module>
-    <module>plugins/de.cau.cs.kieler.kgraph.language.server</module>
     <module>plugins/de.cau.cs.kieler.kgraph.text</module>
     <module>plugins/de.cau.cs.kieler.kgraph.text.ide</module>
     <module>plugins/de.cau.cs.kieler.kgraph.text.ui</module>
