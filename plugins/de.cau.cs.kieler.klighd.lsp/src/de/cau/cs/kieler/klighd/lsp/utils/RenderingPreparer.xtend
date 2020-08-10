@@ -47,6 +47,8 @@ import java.util.Map
 
 import static com.google.common.collect.Iterables.filter
 
+import static extension de.cau.cs.kieler.klighd.lsp.utils.SprottyProperties.*
+
 /**
  * Utility class to provide some functionality to persist prepare the rendering of a {@link KGraphElement}.
  * 
@@ -76,7 +78,9 @@ final class RenderingPreparer {
                     // The library needs to generate ids for all later KRenderingRefs to refer to, but no own bounds,
                     // since these are generic renderings.
                     for (rendering : data.renderings) {
-                        KRenderingIdGenerator.generateIdsRecursive(rendering)
+                        if (rendering instanceof KRendering) {
+                            KRenderingIdGenerator.generateIdsRecursive(rendering)
+                        }
                     }
                 }
                 KRenderingRef: {
@@ -86,11 +90,11 @@ final class RenderingPreparer {
                     var decorationMap = new HashMap<String, Decoration>
                     handleKRendering(element, data.rendering, boundsMap, decorationMap)
                     // add new Property to contain the boundsMap
-                    data.properties.put(SprottyProperties.CALCULATED_BOUNDS_MAP, boundsMap)
+                    data.properties.put(CALCULATED_BOUNDS_MAP, boundsMap)
                     // and the decorationMap
-                    data.properties.put(SprottyProperties.CALCULATED_DECORATION_MAP, decorationMap)
+                    data.properties.put(CALCULATED_DECORATION_MAP, decorationMap)
                     // remember the id of the rendering in the reference
-                    data.id = data.rendering.id
+                    data.renderingId = data.rendering.renderingId
                     
                 }
                 KRendering: {
@@ -149,7 +153,7 @@ final class RenderingPreparer {
         if (boundsMap === null) {
             rendering.setBounds(bounds)
         } else {
-            boundsMap.put(rendering.id, bounds)
+            boundsMap.put(rendering.renderingId, bounds)
         }
         // Calculate the bounds and decorations of all child renderings.
         if (rendering instanceof KContainerRendering) {
@@ -212,9 +216,9 @@ final class RenderingPreparer {
                 usedDecorationMap = new HashMap<String, Decoration>
                 
                  // add new Property to contain the boundsMap
-                rendering.properties.put(SprottyProperties.CALCULATED_BOUNDS_MAP, usedBoundsMap)
+                rendering.properties.put(CALCULATED_BOUNDS_MAP, usedBoundsMap)
                 // and the decorationMap
-                rendering.properties.put(SprottyProperties.CALCULATED_DECORATION_MAP, usedDecorationMap)    
+                rendering.properties.put(CALCULATED_DECORATION_MAP, usedDecorationMap)    
             }
             
             val bounds = elementBounds.get(i)
@@ -222,7 +226,7 @@ final class RenderingPreparer {
             if (usedBoundsMap === null) {
                 rendering.setBounds(bounds)
             } else {
-                usedBoundsMap.put(rendering.id, bounds)
+                usedBoundsMap.put(rendering.renderingId, bounds)
             }
             // Process modifiable styles
             processModifiableStyles(rendering, parent)
@@ -261,9 +265,9 @@ final class RenderingPreparer {
             placementData = rendering.rendering.placementData
             
              // add new Property to contain the boundsMap
-            rendering.properties.put(SprottyProperties.CALCULATED_BOUNDS_MAP, usedBoundsMap)
+            rendering.properties.put(CALCULATED_BOUNDS_MAP, usedBoundsMap)
             // and the decorationMap
-            rendering.properties.put(SprottyProperties.CALCULATED_DECORATION_MAP, usedDecorationMap)
+            rendering.properties.put(CALCULATED_DECORATION_MAP, usedDecorationMap)
         }
         
         switch (placementData) {
@@ -340,9 +344,9 @@ final class RenderingPreparer {
                 rendering.setDecoration(decoration)
             }
         } else {
-            usedBoundsMap.put(rendering.id, bounds)
+            usedBoundsMap.put(rendering.renderingId, bounds)
             if (decoration !== null) {
-                usedDecorationMap.put(rendering.id, decoration)
+                usedDecorationMap.put(rendering.renderingId, decoration)
             }
         }
         // Process modifiable styles
@@ -402,7 +406,7 @@ final class RenderingPreparer {
      * @param bounds The bounds to set.
      */
     private static def setBounds(KRendering rendering, Bounds bounds) {
-        rendering.properties.put(SprottyProperties.CALCULATED_BOUNDS, bounds)
+        rendering.properties.put(CALCULATED_BOUNDS, bounds)
     }
     
     /**
@@ -412,7 +416,7 @@ final class RenderingPreparer {
      * @param bounds The decoration to set.
      */
     private static def setDecoration(KRendering rendering, Decoration decoration) {
-        rendering.properties.put(SprottyProperties.CALCULATED_DECORATION, decoration)
+        rendering.properties.put(CALCULATED_DECORATION, decoration)
     }
     
     /**

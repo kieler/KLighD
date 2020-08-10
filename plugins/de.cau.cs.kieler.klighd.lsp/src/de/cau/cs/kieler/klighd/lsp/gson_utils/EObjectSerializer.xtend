@@ -119,9 +119,14 @@ class EObjectSerializer implements JsonSerializer<EObject> {
                     }
                 }
             }
+            // All renderings may have tooltips and rendering IDs again.
             if (propertyHolder.hasProperty(KlighdProperties.TOOLTIP)) {
                 jsonObject.add("tooltip", context.serialize(
                     propertyHolder.getProperty(KlighdProperties.TOOLTIP)))
+            }
+            if (propertyHolder.hasProperty(SprottyProperties.RENDERING_ID)) {
+                jsonObject.add("renderingId", context.serialize(
+                    propertyHolder.getProperty(SprottyProperties.RENDERING_ID)))
             }
         }
         return jsonObject

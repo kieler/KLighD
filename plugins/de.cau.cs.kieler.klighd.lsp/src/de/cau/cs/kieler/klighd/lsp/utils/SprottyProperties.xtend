@@ -72,11 +72,39 @@ class SprottyProperties {
      * Property determining the pre-calculated widths of each line in a {@link KText}.
      */
     public static final IProperty<float[]> CALCULATED_TEXT_LINE_WIDTHS = 
-            new Property<float[]>("klighd.calculated.text.line.widths", null);
+        new Property<float[]>("klighd.calculated.text.line.widths", null);
     
     /**
      * Property determining the pre-calculated heights of each line in a {@link KText}.
      */
     public static final IProperty<float[]> CALCULATED_TEXT_LINE_HEIGHTS = 
-            new Property<float[]>("klighd.calculated.text.line.heights", null);
+        new Property<float[]>("klighd.calculated.text.line.heights", null);
+    
+    /**
+     * The unique identifier of a {@link KRendering}, built hierarchically from the root rendering of an element using
+     * the ID of the parent rendering, a separator "$" and a local ID for the child rendering.
+     */
+    public static final IProperty<String> RENDERING_ID = 
+        new Property<String>("klighd.lsp.rendering.id", null);
+    
+    /**
+     * Sets the unique rendering ID on the given rendering.
+     * 
+     * @param The rendering to set the new ID on.
+     * @param id The new ID.
+     * @return The previous ID set on this element, or null.
+     */
+    static def String setRenderingId(KRendering rendering, String id) {
+        return rendering.properties.put(SprottyProperties.RENDERING_ID, id) as String
+    }
+    
+    /**
+     * Gets the rendering ID of the given rendering.
+     * 
+     * @param rendering The rendering to get the ID from.
+     * @return The ID.
+     */
+    static def String getRenderingId(KRendering rendering) {
+        return rendering.properties.get(SprottyProperties.RENDERING_ID) as String
+    }
 }

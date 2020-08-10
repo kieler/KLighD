@@ -22,10 +22,11 @@ import de.cau.cs.kieler.klighd.krendering.KContainerRendering
 import de.cau.cs.kieler.klighd.krendering.KPolyline
 import de.cau.cs.kieler.klighd.krendering.KRendering
 import de.cau.cs.kieler.klighd.krendering.KRenderingRef
-import de.cau.cs.kieler.klighd.krendering.KStyleHolder
 import java.util.HashMap
 import java.util.Map
 import org.eclipse.xtend.lib.annotations.Accessors
+
+import static extension de.cau.cs.kieler.klighd.lsp.utils.SprottyProperties.*
 
 /**
  * Class for generating unique IDs for any {@link KGraphElement}. Use a single instance of this and call getId() for all
@@ -188,16 +189,13 @@ class KRenderingIdGenerator {
     
     /**
      * Generates a new unique ID for this rendering (if necessary) and all child elements of this rendering (if any)
-     * and writes it in their ID fields.
-     * If the given rendering already has an id, it has to be unique and not contain the character '$'.
+     * and puts it in the {@link SprottyProperties#RENDERING_ID} property. This ID can be used for uniquely identifying
+     * renderings between systems.
      * 
      * @param rendering The rendering
      */
-    static def void generateIdsRecursive(KStyleHolder rendering) {
+    static def void generateIdsRecursive(KRendering rendering) {
         if (rendering !== null) {
-            if (rendering.id === null) {
-                rendering.id = "" + RENDERING_SEPERATOR + rendering.hashCode
-            }
             generateIdsRecursive(rendering, null)
         }
     }
@@ -208,21 +206,22 @@ class KRenderingIdGenerator {
      * @param rendering The rendering that should currently get an ID.
      * @paran parentRendering The parent rendering of the current rendering, for convenience.
      */
-    private static def void generateIdsRecursive(KStyleHolder rendering, KContainerRendering parentRendering) {
+    private static def void generateIdsRecursive(KRendering rendering, KContainerRendering parentRendering) {
         if (rendering === null) {
             return
         }
         // KRenderingRefs need the ID of their reference to be identifiable on different systems.
         if (rendering instanceof KRenderingRef) {
-            rendering.id = rendering.rendering.id
+            rendering.renderingId = rendering.rendering.renderingId
             return
         }
         
-        val parentId = parentRendering?.id ?: ""
-        // If the rendering does not already have an ID matching the hierarchical ID scheme
-        if (parentRendering !== null && !rendering.id?.startsWith(parentId + ID_SEPARATOR)) {
+        if (parentRendering === null) {
+            rendering.renderingId = "" + RENDERING_SEPERATOR + rendering.hashCode
+        } else {
+            val parentId = parentRendering.renderingId
             // Generate a new ID based on the parent rendering's ID.
-            rendering.id = parentId
+            rendering.renderingId = parentId
                 + ID_SEPARATOR + RENDERING_SEPERATOR 
                 + rendering.hashCode
         }
@@ -231,7 +230,7 @@ class KRenderingIdGenerator {
             // Use a new separator and think of this as a new rendering hierarchy with possible children.
             val junctionPointRendering = rendering.junctionPointRendering
             if (junctionPointRendering !== null) {
-                junctionPointRendering.id = rendering.id
+                junctionPointRendering.renderingId = rendering.renderingId
                 + ID_SEPARATOR + JUNCTION_POINT_SEPARATOR
             } 
         }
@@ -257,7 +256,7 @@ class KRenderingIdGenerator {
         
         val renderings = element.data.filter(KRendering) + element.data.filter(KRenderingRef)
         var rendering = renderings.findFirst [
-            id !== null && it.id !== null && id.startsWith(it.id)
+            id !== null && it.renderingId !== null && id.startsWith(it.renderingId)
         ]
         if (rendering === null) {
             throw new IllegalArgumentException("Misformed ID or element")
@@ -271,7 +270,7 @@ class KRenderingIdGenerator {
             var KRendering nextRendering = null
             if (rendering instanceof KContainerRendering) {
                 // Look for the id in the child renderings
-                nextRendering = rendering.children.findFirst[ id.startsWith(it.id) ]
+                nextRendering = rendering.children.findFirst[ id.startsWith(it.renderingId) ]
                 if (nextRendering === null && rendering instanceof KPolyline) {
                     // Special case for KPolyline renderings, as they might have another rendering for junction points.
                     nextRendering = (rendering as KPolyline).junctionPointRendering
@@ -284,4 +283,5 @@ class KRenderingIdGenerator {
         }
         return rendering
     }
+    
 }
