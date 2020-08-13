@@ -27,7 +27,7 @@ import org.eclipse.swt.graphics.LineAttributes;
 import de.cau.cs.kieler.klighd.DiagramExportConfig;
 import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.ViewContext;
-import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
+import de.cau.cs.kieler.klighd.microlayout.PlacementUtilSWT;
 import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
 
 /**
@@ -186,7 +186,7 @@ public class AuthorConfidentialExportBranding extends AbstractExportBranding {
         // size & scale
         final String confidential = "Confidential";
         final Rectangle size =
-                PlacementUtil.estimateTextSize(font, confidential).setBoundsOf(new Rectangle());
+                PlacementUtilSWT.estimateTextSize(font, confidential).setBoundsOf(new Rectangle());
 
         final double scale = Math.sqrt(Math.pow(innerWidth, 2) + Math.pow(innerHeight, 2))
                 / size.width * WATERMARK_PADDING_FACTOR;

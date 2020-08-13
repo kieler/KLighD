@@ -17,6 +17,7 @@ import org.eclipse.elk.graph.ElkLabel;
 import org.eclipse.swt.graphics.FontData;
 
 import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
+import de.cau.cs.kieler.klighd.microlayout.PlacementUtilSWT;
 
 /**
  * Label manager which soft wraps the text so it fits a certain width. Soft wrapping only inserts
@@ -37,7 +38,7 @@ public class SoftWrappingLabelManager extends AbstractKlighdLabelManager {
     public Result doResizeLabel(final ElkLabel label, final double targetWidth) {
         final FontData font = LabelManagementUtil.fontDataFor(label);
         
-        if (PlacementUtil.estimateTextSize(font, label.getText()).getWidth() > targetWidth) {
+        if (PlacementUtilSWT.estimateTextSize(font, label.getText()).getWidth() > targetWidth) {
             String textWithoutLineBreaks = label.getText().replace("\n", " ");
 
             // Divide the text into "words"
@@ -63,7 +64,7 @@ public class SoftWrappingLabelManager extends AbstractKlighdLabelManager {
                         testText = " ";
                         currWordIndex++;
                     }
-                    lineWidth = PlacementUtil.estimateTextSize(font, testText).getWidth();
+                    lineWidth = PlacementUtilSWT.estimateTextSize(font, testText).getWidth();
                 } while (lineWidth < effectiveTargetWidth && currWordIndex < words.length);
 
                 // No more words fit so the line is added to the result

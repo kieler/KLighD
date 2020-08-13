@@ -12,20 +12,12 @@
  */
 package de.cau.cs.kieler.klighd.internal.macrolayout;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map.Entry;
-import java.util.ServiceLoader;
 import java.util.Set;
 
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Platform;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.elk.core.math.KVector;
 import org.eclipse.elk.core.options.CoreOptions;
 import org.eclipse.elk.core.service.IDiagramLayoutConnector;
@@ -60,9 +52,7 @@ import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 
 import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
-import de.cau.cs.kieler.klighd.IPreservedProperties;
 import de.cau.cs.kieler.klighd.IViewer;
-import de.cau.cs.kieler.klighd.Klighd;
 import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.KlighdDataManager;
 import de.cau.cs.kieler.klighd.KlighdOptions;
@@ -91,6 +81,7 @@ import de.cau.cs.kieler.klighd.krendering.KText;
 import de.cau.cs.kieler.klighd.labels.management.LabelManagementResult;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
 import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
+import de.cau.cs.kieler.klighd.microlayout.PlacementUtilSWT;
 import de.cau.cs.kieler.klighd.util.KlighdPredicates;
 import de.cau.cs.kieler.klighd.util.KlighdProperties;
 import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties;
@@ -607,7 +598,7 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
             }
             
             if (setFontLayoutOptions) {
-                PlacementUtil.fontDataFor(label, true);
+                PlacementUtilSWT.fontDataFor(label, true);
             }
 
             // attach a reference to the label's root rendering to the label so that our layout

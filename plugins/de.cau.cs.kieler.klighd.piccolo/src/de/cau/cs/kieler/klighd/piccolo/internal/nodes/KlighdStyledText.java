@@ -24,6 +24,7 @@ import de.cau.cs.kieler.klighd.Klighd;
 import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.krendering.KText;
 import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
+import de.cau.cs.kieler.klighd.microlayout.PlacementUtilSWT;
 import de.cau.cs.kieler.klighd.piccolo.KlighdNode;
 import de.cau.cs.kieler.klighd.piccolo.KlighdPiccolo;
 import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
@@ -390,7 +391,7 @@ public class KlighdStyledText extends KlighdNode.KlighdFigureNode<KText> {
 
         if (bounds.isEmpty()) {
             // lazy (re-)computation of the figure's (local) bounds if the bounds are set 'empty'
-            this.setBounds(PlacementUtil.estimateTextSize(this.fontData, this.text).toRectangle2D());
+            this.setBounds(PlacementUtilSWT.estimateTextSize(this.fontData, this.text).toRectangle2D());
 
             // update the scale-based visibility bounds (limits) according to specification defined
             //  on the corresponding KText element (either in absolute px or zoom scale fractions)

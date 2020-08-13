@@ -16,7 +16,7 @@ package de.cau.cs.kieler.klighd.labels.management;
 import org.eclipse.elk.graph.ElkLabel;
 import org.eclipse.swt.graphics.FontData;
 
-import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
+import de.cau.cs.kieler.klighd.microlayout.PlacementUtilSWT;
 
 /**
  * Label manager which hard wraps the text so it fits a certain width. Hard wrapping means that a
@@ -37,7 +37,7 @@ public class HardWrappingLabelManager extends AbstractKlighdLabelManager {
     public Result doResizeLabel(final ElkLabel label, final double targetWidth) {
         final FontData font = LabelManagementUtil.fontDataFor(label);
 
-        if (PlacementUtil.estimateTextSize(font, label.getText()).getWidth() > targetWidth) {
+        if (PlacementUtilSWT.estimateTextSize(font, label.getText()).getWidth() > targetWidth) {
             String textWithoutLineBreaks = label.getText().replace("\n", " ");
             String restText = textWithoutLineBreaks;
             StringBuilder resultText = new StringBuilder(label.getText().length());

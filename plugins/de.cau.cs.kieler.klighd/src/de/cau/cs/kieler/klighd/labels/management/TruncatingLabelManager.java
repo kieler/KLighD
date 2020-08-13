@@ -21,7 +21,7 @@ import org.eclipse.swt.graphics.FontData;
 import com.google.common.collect.Lists;
 
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
-import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
+import de.cau.cs.kieler.klighd.microlayout.PlacementUtilSWT;
 
 /**
  * Modifies the size of labels by truncating them once the truncation condition is met. The
@@ -211,7 +211,7 @@ public class TruncatingLabelManager extends AbstractKlighdLabelManager {
         
         // Size of three ellipses, if they should be added
         final float ellipseWidth = appendEllipsis
-                ? PlacementUtil.estimateTextSize(labelFontData, ELLIPSES).getWidth()
+                ? PlacementUtilSWT.estimateTextSize(labelFontData, ELLIPSES).getWidth()
                 : 0;
 
         // If there is enough space for some text and ellipses, calculate the fitting text
@@ -242,7 +242,7 @@ public class TruncatingLabelManager extends AbstractKlighdLabelManager {
         } else {
             // In all other cases whether we need to do stuff depends on whether the label exceeds
             // the supplied target width
-            Bounds textBounds = PlacementUtil.estimateTextSize(
+            Bounds textBounds = PlacementUtilSWT.estimateTextSize(
                     LabelManagementUtil.fontDataFor(label), label.getText());
             return textBounds.getWidth() > targetWidth;
         }

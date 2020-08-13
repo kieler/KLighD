@@ -26,6 +26,7 @@ import de.cau.cs.kieler.klighd.krendering.KRenderingUtil;
 import de.cau.cs.kieler.klighd.krendering.KText;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
 import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
+import de.cau.cs.kieler.klighd.microlayout.PlacementUtilSWT;
 
 /**
  * Label management utility methods.
@@ -69,7 +70,7 @@ public final class LabelManagementUtil {
      * @return the font data.
      */
     public static FontData fontDataFor(final ElkLabel label) {
-        return PlacementUtil.fontDataFor(ktextFor(label));
+        return PlacementUtilSWT.fontDataFor(ktextFor(label));
     }
 
     /**
@@ -87,7 +88,7 @@ public final class LabelManagementUtil {
             final double targetWidth) {
         
         String textWithoutWraps = text.replace("\n", " ");
-        Bounds newSize = PlacementUtil.estimateTextSize(fontData, textWithoutWraps);
+        Bounds newSize = PlacementUtilSWT.estimateTextSize(fontData, textWithoutWraps);
         String newText = "";
 
         // Guess how many characters will fit into the target width (and make sure it's not more
@@ -97,14 +98,14 @@ public final class LabelManagementUtil {
 
         // Shorten the text accordingly and calculate its bounds
         newText = textWithoutWraps.substring(0, newTextLength);
-        newSize = PlacementUtil.estimateTextSize(fontData, newText);
+        newSize = PlacementUtilSWT.estimateTextSize(fontData, newText);
 
         if (newSize.getWidth() > targetWidth) {
             // Text is still to long and some more characters have to go
             while (newSize.getWidth() > targetWidth && newTextLength > 1) {
                 newTextLength--;
                 newText = textWithoutWraps.substring(0, newTextLength);
-                newSize = PlacementUtil.estimateTextSize(fontData, newText);
+                newSize = PlacementUtilSWT.estimateTextSize(fontData, newText);
             }
         } else {
             // There is some space for more characters
@@ -113,7 +114,7 @@ public final class LabelManagementUtil {
                 
                 newTextLength++;
                 String newTextCandidate = textWithoutWraps.substring(0, newTextLength);
-                newSize = PlacementUtil.estimateTextSize(fontData, newTextCandidate);
+                newSize = PlacementUtilSWT.estimateTextSize(fontData, newTextCandidate);
                 
                 if (newSize.getWidth() <= targetWidth) {
                     newText = newTextCandidate;
@@ -134,11 +135,11 @@ public final class LabelManagementUtil {
      * @return biggest word.
      */
     public static float getWidthOfBiggestWord(final FontData font, final String[] words) {
-        Bounds bWSize = PlacementUtil.estimateTextSize(font, "");
+        Bounds bWSize = PlacementUtilSWT.estimateTextSize(font, "");
         Bounds textPartSize;
 
         for (String textpart : words) {
-            textPartSize = PlacementUtil.estimateTextSize(font, textpart);
+            textPartSize = PlacementUtilSWT.estimateTextSize(font, textpart);
             if (bWSize.getWidth() < textPartSize.getWidth()) {
                 bWSize = textPartSize;
             }
