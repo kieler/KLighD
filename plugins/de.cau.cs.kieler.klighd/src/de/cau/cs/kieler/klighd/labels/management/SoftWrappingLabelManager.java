@@ -13,10 +13,13 @@
  */
 package de.cau.cs.kieler.klighd.labels.management;
 
+import java.awt.Font;
+
 import org.eclipse.elk.graph.ElkLabel;
 import org.eclipse.swt.graphics.FontData;
 
 import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
+import de.cau.cs.kieler.klighd.microlayout.PlacementUtilAWT;
 import de.cau.cs.kieler.klighd.microlayout.PlacementUtilSWT;
 
 /**
@@ -36,9 +39,9 @@ public class SoftWrappingLabelManager extends AbstractKlighdLabelManager {
 
     @Override
     public Result doResizeLabel(final ElkLabel label, final double targetWidth) {
-        final FontData font = LabelManagementUtil.fontDataFor(label);
+        final Font font = PlacementUtilAWT.fontFor(label);
         
-        if (PlacementUtilSWT.estimateTextSize(font, label.getText()).getWidth() > targetWidth) {
+        if (PlacementUtilAWT.estimateTextSizeAWT(font, label.getText()).getWidth() > targetWidth) {
             String textWithoutLineBreaks = label.getText().replace("\n", " ");
 
             // Divide the text into "words"
@@ -46,7 +49,7 @@ public class SoftWrappingLabelManager extends AbstractKlighdLabelManager {
             StringBuilder resultText = new StringBuilder(label.getText().length());
             String currentLineText;
             double effectiveTargetWidth =
-                    Math.max(LabelManagementUtil.getWidthOfBiggestWord(font, words), targetWidth);
+                    Math.max(PlacementUtilAWT.getWidthOfBiggestWord(font, words), targetWidth);
 
             // iterate over the lines
             int currWordIndex = 0;
@@ -64,7 +67,7 @@ public class SoftWrappingLabelManager extends AbstractKlighdLabelManager {
                         testText = " ";
                         currWordIndex++;
                     }
-                    lineWidth = PlacementUtilSWT.estimateTextSize(font, testText).getWidth();
+                    lineWidth = PlacementUtilAWT.estimateTextSizeAWT(font, testText).getWidth();
                 } while (lineWidth < effectiveTargetWidth && currWordIndex < words.length);
 
                 // No more words fit so the line is added to the result

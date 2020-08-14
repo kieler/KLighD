@@ -201,9 +201,9 @@ public final class PlacementUtilSWT {
      * It is unclear if this solves the issue completely, but it should at least circumvent
      * the most common case.
      */
-    private static GC gc = null;
-    private static GC asyncGC = null;
-    private static Point displayScale = null;
+    // private static GC gc = null;
+    // private static GC asyncGC = null;
+    // private static Point displayScale = null;
     private static BufferedImage bi = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
     private static Graphics2D fmg = bi.createGraphics();
     
@@ -219,6 +219,7 @@ public final class PlacementUtilSWT {
      *            the text string whose size is to be estimated; maybe <code>null</code>
      * @return the minimal bounds for the string
      */
+    /*
     public static Bounds estimateTextSize(final FontData fontData, final String text) {
         final Display display = Display.getCurrent();
         // if a GC has been instantiated before or a display is available.
@@ -280,9 +281,9 @@ public final class PlacementUtilSWT {
         }
 
         return textBounds;
-    }
+    }*/
 
-    private static Bounds estimateTextSizeAWT(final FontData fontData, final String text) {
+    public static Bounds estimateTextSizeAWT(final FontData fontData, final String text) {
         fmg.setFont(new java.awt.Font(fontData.getName(), 
                 KTextUtil.swtFontStyle2Awt(fontData.getStyle()), 
                 fontData.getHeight()));

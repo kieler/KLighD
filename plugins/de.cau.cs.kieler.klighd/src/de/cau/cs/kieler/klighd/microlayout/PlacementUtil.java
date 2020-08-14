@@ -21,33 +21,20 @@ import static de.cau.cs.kieler.klighd.krendering.KRenderingUtil.toNonNullLeftPos
 import static de.cau.cs.kieler.klighd.krendering.KRenderingUtil.toNonNullRightPosition;
 import static de.cau.cs.kieler.klighd.krendering.KRenderingUtil.toNonNullTopPosition;
 
-import java.awt.FontMetrics;
-import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-import java.awt.image.BufferedImage;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 import org.eclipse.elk.core.math.KVector;
-import org.eclipse.elk.core.options.CoreOptions;
 import org.eclipse.elk.core.util.Pair;
 import org.eclipse.emf.ecore.EObject;
 
-import com.google.common.base.Predicate;
-import com.google.common.base.Strings;
 import com.google.common.collect.Iterables;
-import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 
-import de.cau.cs.kieler.klighd.Klighd;
-import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.KlighdOptions;
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
-import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
 import de.cau.cs.kieler.klighd.kgraph.KInsets;
 import de.cau.cs.kieler.klighd.kgraph.KLabel;
 import de.cau.cs.kieler.klighd.kgraph.KNode;
@@ -56,10 +43,6 @@ import de.cau.cs.kieler.klighd.kgraph.PersistentEntry;
 import de.cau.cs.kieler.klighd.krendering.KAreaPlacementData;
 import de.cau.cs.kieler.klighd.krendering.KChildArea;
 import de.cau.cs.kieler.klighd.krendering.KContainerRendering;
-import de.cau.cs.kieler.klighd.krendering.KFontBold;
-import de.cau.cs.kieler.klighd.krendering.KFontItalic;
-import de.cau.cs.kieler.klighd.krendering.KFontName;
-import de.cau.cs.kieler.klighd.krendering.KFontSize;
 import de.cau.cs.kieler.klighd.krendering.KGridPlacement;
 import de.cau.cs.kieler.klighd.krendering.KImage;
 import de.cau.cs.kieler.klighd.krendering.KLeftPosition;
@@ -71,17 +54,12 @@ import de.cau.cs.kieler.klighd.krendering.KPosition;
 import de.cau.cs.kieler.klighd.krendering.KRendering;
 import de.cau.cs.kieler.klighd.krendering.KRenderingPackage;
 import de.cau.cs.kieler.klighd.krendering.KRenderingRef;
-import de.cau.cs.kieler.klighd.krendering.KRenderingUtil;
-import de.cau.cs.kieler.klighd.krendering.KStyle;
 import de.cau.cs.kieler.klighd.krendering.KText;
-import de.cau.cs.kieler.klighd.krendering.KTextUtil;
 import de.cau.cs.kieler.klighd.krendering.KTopPosition;
 import de.cau.cs.kieler.klighd.krendering.KXPosition;
 import de.cau.cs.kieler.klighd.krendering.KYPosition;
 import de.cau.cs.kieler.klighd.krendering.util.KRenderingSwitch;
-import de.cau.cs.kieler.klighd.util.Iterables2;
 import de.cau.cs.kieler.klighd.util.KlighdProperties;
-import de.cau.cs.kieler.klighd.util.ModelingUtil;
 
 /**
  * A utility class for evaluating the micro layout of KRenderings.
@@ -837,7 +815,7 @@ public final class PlacementUtil {
             }
         }
 
-        return PlacementUtilSWT.estimateTextSize(PlacementUtilSWT.fontDataFor(kText, null), text);
+        return PlacementUtilAWT.estimateTextSizeAWT(PlacementUtilAWT.fontFor(kText, null), text);
     }
 
 

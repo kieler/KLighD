@@ -13,14 +13,15 @@
  */
 package de.cau.cs.kieler.klighd.labels.management;
 
+import java.awt.Font;
 import java.util.List;
 
 import org.eclipse.elk.graph.ElkLabel;
-import org.eclipse.swt.graphics.FontData;
 
 import com.google.common.collect.Lists;
 
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
+import de.cau.cs.kieler.klighd.microlayout.PlacementUtilAWT;
 import de.cau.cs.kieler.klighd.microlayout.PlacementUtilSWT;
 
 /**
@@ -206,12 +207,12 @@ public class TruncatingLabelManager extends AbstractKlighdLabelManager {
      * Implementation based on the target width.
      */
     private Result targetWidth(final ElkLabel label, final double targetWidth) {
-        final FontData labelFontData = LabelManagementUtil.fontDataFor(label);
+        final Font labelFontData = PlacementUtilAWT.fontFor(label);
         String calculatedText = "";
         
         // Size of three ellipses, if they should be added
         final float ellipseWidth = appendEllipsis
-                ? PlacementUtilSWT.estimateTextSize(labelFontData, ELLIPSES).getWidth()
+                ? PlacementUtilAWT.estimateTextSizeAWT(labelFontData, ELLIPSES).getWidth()
                 : 0;
 
         // If there is enough space for some text and ellipses, calculate the fitting text
@@ -242,8 +243,8 @@ public class TruncatingLabelManager extends AbstractKlighdLabelManager {
         } else {
             // In all other cases whether we need to do stuff depends on whether the label exceeds
             // the supplied target width
-            Bounds textBounds = PlacementUtilSWT.estimateTextSize(
-                    LabelManagementUtil.fontDataFor(label), label.getText());
+            Bounds textBounds = PlacementUtilAWT.estimateTextSizeAWT(
+                    PlacementUtilAWT.fontFor(label), label.getText());
             return textBounds.getWidth() > targetWidth;
         }
     }

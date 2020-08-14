@@ -13,9 +13,12 @@
  */
 package de.cau.cs.kieler.klighd.labels.management;
 
+import java.awt.Font;
+
 import org.eclipse.elk.graph.ElkLabel;
 import org.eclipse.swt.graphics.FontData;
 
+import de.cau.cs.kieler.klighd.microlayout.PlacementUtilAWT;
 import de.cau.cs.kieler.klighd.microlayout.PlacementUtilSWT;
 
 /**
@@ -35,9 +38,9 @@ public class HardWrappingLabelManager extends AbstractKlighdLabelManager {
 
     @Override
     public Result doResizeLabel(final ElkLabel label, final double targetWidth) {
-        final FontData font = LabelManagementUtil.fontDataFor(label);
+        final Font font = PlacementUtilAWT.fontFor(label);
 
-        if (PlacementUtilSWT.estimateTextSize(font, label.getText()).getWidth() > targetWidth) {
+        if (PlacementUtilAWT.estimateTextSizeAWT(font, label.getText()).getWidth() > targetWidth) {
             String textWithoutLineBreaks = label.getText().replace("\n", " ");
             String restText = textWithoutLineBreaks;
             StringBuilder resultText = new StringBuilder(label.getText().length());
@@ -47,7 +50,7 @@ public class HardWrappingLabelManager extends AbstractKlighdLabelManager {
                 restText = restText.trim();
                 
                 // Find the part of the rest of the string which fits the line
-                String fittingString = LabelManagementUtil.findFittingString(
+                String fittingString = PlacementUtilAWT.findFittingString(
                         restText, font, targetWidth);
 
                 // Break if the targetWidth is too small to find something

@@ -61,6 +61,7 @@ import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.xtext.ide.server.UriExtensions
 import org.eclipse.xtext.ide.server.occurrences.IDocumentHighlightService
 import org.eclipse.xtext.util.CancelIndicator
+import org.eclipse.swt.widgets.Display
 
 /**
  * Language server extension that implements functionality for the generation of diagrams and handling of their diagram
