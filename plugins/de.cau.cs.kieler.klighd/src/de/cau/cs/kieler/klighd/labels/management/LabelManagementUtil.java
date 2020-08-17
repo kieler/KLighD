@@ -87,7 +87,7 @@ public final class LabelManagementUtil {
             final double targetWidth) {
         
         String textWithoutWraps = text.replace("\n", " ");
-        Bounds newSize = PlacementUtilSWT.estimateTextSizeAWT(fontData, textWithoutWraps);
+        Bounds newSize = PlacementUtilSWT.estimateTextSize(fontData, textWithoutWraps);
         String newText = "";
 
         // Guess how many characters will fit into the target width (and make sure it's not more
@@ -97,14 +97,14 @@ public final class LabelManagementUtil {
 
         // Shorten the text accordingly and calculate its bounds
         newText = textWithoutWraps.substring(0, newTextLength);
-        newSize = PlacementUtilSWT.estimateTextSizeAWT(fontData, newText);
+        newSize = PlacementUtilSWT.estimateTextSize(fontData, newText);
 
         if (newSize.getWidth() > targetWidth) {
             // Text is still to long and some more characters have to go
             while (newSize.getWidth() > targetWidth && newTextLength > 1) {
                 newTextLength--;
                 newText = textWithoutWraps.substring(0, newTextLength);
-                newSize = PlacementUtilSWT.estimateTextSizeAWT(fontData, newText);
+                newSize = PlacementUtilSWT.estimateTextSize(fontData, newText);
             }
         } else {
             // There is some space for more characters
@@ -113,7 +113,7 @@ public final class LabelManagementUtil {
                 
                 newTextLength++;
                 String newTextCandidate = textWithoutWraps.substring(0, newTextLength);
-                newSize = PlacementUtilSWT.estimateTextSizeAWT(fontData, newTextCandidate);
+                newSize = PlacementUtilSWT.estimateTextSize(fontData, newTextCandidate);
                 
                 if (newSize.getWidth() <= targetWidth) {
                     newText = newTextCandidate;
