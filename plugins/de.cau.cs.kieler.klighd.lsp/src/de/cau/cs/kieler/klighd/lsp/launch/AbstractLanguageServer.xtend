@@ -13,6 +13,7 @@
 package de.cau.cs.kieler.klighd.lsp.launch
 
 import com.google.inject.Guice
+import de.cau.cs.kieler.klighd.Klighd
 import java.net.InetSocketAddress
 import java.nio.channels.AsynchronousServerSocketChannel
 import java.nio.channels.Channels
@@ -57,6 +58,7 @@ abstract class AbstractLanguageServer implements Runnable {
     def configureAndRun(ILanguageRegistration languageRegistration, ILsCreator lsCreator) {
         this.languageRegistration = languageRegistration
         this.creator = lsCreator
+        Klighd.IS_LANGUAGE_SERVER = true
         run
     }
     

@@ -12,7 +12,6 @@
  */
 package de.cau.cs.kieler.klighd.labels.management;
 
-import java.awt.Font;
 import java.util.Iterator;
 
 import org.eclipse.elk.graph.ElkLabel;
@@ -26,7 +25,6 @@ import de.cau.cs.kieler.klighd.krendering.KRenderingOptions;
 import de.cau.cs.kieler.klighd.krendering.KRenderingUtil;
 import de.cau.cs.kieler.klighd.krendering.KText;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
-import de.cau.cs.kieler.klighd.microlayout.PlacementUtilAWT;
 import de.cau.cs.kieler.klighd.microlayout.PlacementUtilSWT;
 
 /**
@@ -124,6 +122,29 @@ public final class LabelManagementUtil {
         }
         
         return newText;
+    }
+
+    /**
+     * Find the String with the biggest width according to a font in string array.
+     * 
+     * @param font
+     *            font of the text used to estimate the text size.
+     * @param words
+     *            words from which the biggest one is searched.
+     * @return biggest word.
+     */
+    public static float getWidthOfBiggestWord(final FontData font, final String[] words) {
+        Bounds bWSize = PlacementUtilSWT.estimateTextSize(font, "");
+        Bounds textPartSize;
+
+        for (String textpart : words) {
+            textPartSize = PlacementUtilSWT.estimateTextSize(font, textpart);
+            if (bWSize.getWidth() < textPartSize.getWidth()) {
+                bWSize = textPartSize;
+            }
+        }
+        
+        return bWSize.getWidth();
     }
     
 }

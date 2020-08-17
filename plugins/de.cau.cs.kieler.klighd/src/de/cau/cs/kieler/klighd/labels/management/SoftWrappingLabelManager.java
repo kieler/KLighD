@@ -18,8 +18,8 @@ import java.awt.Font;
 import org.eclipse.elk.graph.ElkLabel;
 import org.eclipse.swt.graphics.FontData;
 
+import de.cau.cs.kieler.klighd.Klighd;
 import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
-import de.cau.cs.kieler.klighd.microlayout.PlacementUtilAWT;
 import de.cau.cs.kieler.klighd.microlayout.PlacementUtilSWT;
 
 /**
@@ -39,17 +39,31 @@ public class SoftWrappingLabelManager extends AbstractKlighdLabelManager {
 
     @Override
     public Result doResizeLabel(final ElkLabel label, final double targetWidth) {
-        final Font font = PlacementUtilAWT.fontFor(label);
+        double width = 0;
         
-        if (PlacementUtilAWT.estimateTextSizeAWT(font, label.getText()).getWidth() > targetWidth) {
+        if (Klighd.IS_LANGUAGE_SERVER) {
+            // LS case
+            final Font font = PlacementUtil.fontFor(label);
+            width = PlacementUtil.estimateTextSizeMock(font, label.getText()).getWidth();
+        } else {
+            final FontData fontData = LabelManagementUtil.fontDataFor(label);
+            width = PlacementUtilSWT.estimateTextSize(fontData, label.getText()).getWidth();
+        }
+        
+        if (width > targetWidth) {
             String textWithoutLineBreaks = label.getText().replace("\n", " ");
 
             // Divide the text into "words"
             String[] words = textWithoutLineBreaks.split(" ");
             StringBuilder resultText = new StringBuilder(label.getText().length());
             String currentLineText;
-            double effectiveTargetWidth =
-                    Math.max(PlacementUtilAWT.getWidthOfBiggestWord(font, words), targetWidth);
+            double effectiveTargetWidth = 0;
+            if (Klighd.IS_LANGUAGE_SERVER) {
+                effectiveTargetWidth = Math.max(PlacementUtil.getWidthOfBiggestWord(PlacementUtil.fontFor(label), words), targetWidth);
+            } else {
+                effectiveTargetWidth = Math.max(LabelManagementUtil.getWidthOfBiggestWord(LabelManagementUtil.fontDataFor(label), words), targetWidth);
+            }
+                    
 
             // iterate over the lines
             int currWordIndex = 0;
@@ -67,7 +81,12 @@ public class SoftWrappingLabelManager extends AbstractKlighdLabelManager {
                         testText = " ";
                         currWordIndex++;
                     }
-                    lineWidth = PlacementUtilAWT.estimateTextSizeAWT(font, testText).getWidth();
+                    lineWidth = 0;
+                    if (Klighd.IS_LANGUAGE_SERVER) {
+                        lineWidth = PlacementUtil.estimateTextSizeMock(PlacementUtil.fontFor(label), testText).getWidth();
+                    } else {
+                        lineWidth = PlacementUtilSWT.estimateTextSize(LabelManagementUtil.fontDataFor(label), testText).getWidth();
+                    }
                 } while (lineWidth < effectiveTargetWidth && currWordIndex < words.length);
 
                 // No more words fit so the line is added to the result

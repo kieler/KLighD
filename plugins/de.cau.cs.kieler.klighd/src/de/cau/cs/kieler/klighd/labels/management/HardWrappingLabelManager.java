@@ -18,7 +18,8 @@ import java.awt.Font;
 import org.eclipse.elk.graph.ElkLabel;
 import org.eclipse.swt.graphics.FontData;
 
-import de.cau.cs.kieler.klighd.microlayout.PlacementUtilAWT;
+import de.cau.cs.kieler.klighd.Klighd;
+import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
 import de.cau.cs.kieler.klighd.microlayout.PlacementUtilSWT;
 
 /**
@@ -38,9 +39,18 @@ public class HardWrappingLabelManager extends AbstractKlighdLabelManager {
 
     @Override
     public Result doResizeLabel(final ElkLabel label, final double targetWidth) {
-        final Font font = PlacementUtilAWT.fontFor(label);
+        double width = 0;
+        
+        if (Klighd.IS_LANGUAGE_SERVER) {
+            // LS case
+            final Font font = PlacementUtil.fontFor(label);
+            width = PlacementUtil.estimateTextSizeMock(font, label.getText()).getWidth();
+        } else {
+            final FontData fontData = LabelManagementUtil.fontDataFor(label);
+            width = PlacementUtilSWT.estimateTextSize(fontData, label.getText()).getWidth();
+        }            
 
-        if (PlacementUtilAWT.estimateTextSizeAWT(font, label.getText()).getWidth() > targetWidth) {
+        if (width > targetWidth) {
             String textWithoutLineBreaks = label.getText().replace("\n", " ");
             String restText = textWithoutLineBreaks;
             StringBuilder resultText = new StringBuilder(label.getText().length());
@@ -50,8 +60,15 @@ public class HardWrappingLabelManager extends AbstractKlighdLabelManager {
                 restText = restText.trim();
                 
                 // Find the part of the rest of the string which fits the line
-                String fittingString = PlacementUtilAWT.findFittingString(
-                        restText, font, targetWidth);
+                String fittingString = null;
+                if (Klighd.IS_LANGUAGE_SERVER) {
+                    fittingString = PlacementUtil.findFittingString(
+                            restText, PlacementUtil.fontFor(label), targetWidth);
+                } else {
+                    fittingString = LabelManagementUtil.findFittingString(
+                            restText, LabelManagementUtil.fontDataFor(label), targetWidth);
+                }
+                
 
                 // Break if the targetWidth is too small to find something
                 if (fittingString.equals("")) {

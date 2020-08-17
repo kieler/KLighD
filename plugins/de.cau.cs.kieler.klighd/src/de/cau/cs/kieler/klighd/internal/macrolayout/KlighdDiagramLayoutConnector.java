@@ -53,6 +53,7 @@ import com.google.common.collect.Lists;
 
 import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.IViewer;
+import de.cau.cs.kieler.klighd.Klighd;
 import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.KlighdDataManager;
 import de.cau.cs.kieler.klighd.KlighdOptions;
@@ -81,7 +82,6 @@ import de.cau.cs.kieler.klighd.krendering.KText;
 import de.cau.cs.kieler.klighd.labels.management.LabelManagementResult;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
 import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
-import de.cau.cs.kieler.klighd.microlayout.PlacementUtilAWT;
 import de.cau.cs.kieler.klighd.microlayout.PlacementUtilSWT;
 import de.cau.cs.kieler.klighd.util.KlighdPredicates;
 import de.cau.cs.kieler.klighd.util.KlighdProperties;
@@ -598,8 +598,8 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
                 layoutLabel.setDimensions(minWidth, minHeight);
             }
             
-            if (false) {
-                PlacementUtilAWT.fontFor(label, true);
+            if (Klighd.IS_PLATFORM_RUNNING && setFontLayoutOptions) {
+                PlacementUtilSWT.fontDataFor(label, true);
             }
 
             // attach a reference to the label's root rendering to the label so that our layout

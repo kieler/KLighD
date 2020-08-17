@@ -43,6 +43,9 @@ public class Klighd {
     /** A Boolean flag indicating that the tool is running in an equinox setup. */
     public static final boolean IS_PLATFORM_RUNNING;
     
+    /** A Boolean flag indicating that the tool is running as a language server. */
+    public static boolean IS_LANGUAGE_SERVER;
+    
     private static IKlighdStatusManager statusManager;
     
     private static boolean suppressDisplayScaleCompensationWhileHandlingText = false;
