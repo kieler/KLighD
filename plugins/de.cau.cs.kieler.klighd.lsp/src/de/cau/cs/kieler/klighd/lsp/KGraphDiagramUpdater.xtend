@@ -209,11 +209,9 @@ class KGraphDiagramUpdater extends DiagramUpdater {
         } else {
             viewContext.copyProperties(properties)
         }
-        val vc = viewContext
         // Update the model and with that call the diagram synthesis.
-        //Display.getDefault().syncExec([
-            vc.update(model)
-        //])
+        viewContext.update(model)
+        
         synchronized (diagramState) {
             diagramState.putURIString(server.clientId, uri)
             diagramState.putKGraphContext(uri, viewContext)

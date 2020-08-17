@@ -186,7 +186,7 @@ public class AuthorConfidentialExportBranding extends AbstractExportBranding {
         // size & scale
         final String confidential = "Confidential";
         final Rectangle size =
-                PlacementUtilSWT.estimateTextSizeAWT(font, confidential).setBoundsOf(new Rectangle());
+                PlacementUtilSWT.estimateTextSize(font, confidential).setBoundsOf(new Rectangle());
 
         final double scale = Math.sqrt(Math.pow(innerWidth, 2) + Math.pow(innerHeight, 2))
                 / size.width * WATERMARK_PADDING_FACTOR;

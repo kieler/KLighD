@@ -391,7 +391,7 @@ public class KlighdStyledText extends KlighdNode.KlighdFigureNode<KText> {
 
         if (bounds.isEmpty()) {
             // lazy (re-)computation of the figure's (local) bounds if the bounds are set 'empty'
-            this.setBounds(PlacementUtilSWT.estimateTextSizeAWT(this.fontData, this.text).toRectangle2D());
+            this.setBounds(PlacementUtilSWT.estimateTextSize(this.fontData, this.text).toRectangle2D());
 
             // update the scale-based visibility bounds (limits) according to specification defined
             //  on the corresponding KText element (either in absolute px or zoom scale fractions)

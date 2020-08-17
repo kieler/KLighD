@@ -67,7 +67,6 @@ import org.eclipse.sprotty.SetModelAction
 import org.eclipse.sprotty.UpdateModelAction
 import org.eclipse.sprotty.xtext.LanguageAwareDiagramServer
 import org.eclipse.xtend.lib.annotations.Accessors
-import org.eclipse.swt.widgets.Display
 
 /**
  * Diagram server extension adding functionality to special actions needed for handling KGraphs.
