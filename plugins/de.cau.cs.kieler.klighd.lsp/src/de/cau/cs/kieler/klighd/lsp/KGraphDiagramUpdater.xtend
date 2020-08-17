@@ -211,7 +211,7 @@ class KGraphDiagramUpdater extends DiagramUpdater {
         }
         // Update the model and with that call the diagram synthesis.
         viewContext.update(model)
-        
+
         synchronized (diagramState) {
             diagramState.putURIString(server.clientId, uri)
             diagramState.putKGraphContext(uri, viewContext)

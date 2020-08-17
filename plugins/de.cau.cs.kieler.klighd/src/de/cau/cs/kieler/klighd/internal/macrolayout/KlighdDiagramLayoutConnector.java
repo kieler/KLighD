@@ -598,7 +598,7 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
                 layoutLabel.setDimensions(minWidth, minHeight);
             }
             
-            if (Klighd.IS_LANGUAGE_SERVER && setFontLayoutOptions) {
+            if (!Klighd.IS_LANGUAGE_SERVER && setFontLayoutOptions) {
                 PlacementUtilSWT.fontDataFor(label, true);
             }
 
