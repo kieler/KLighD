@@ -200,7 +200,6 @@ class KGraphDiagramUpdater extends DiagramUpdater {
         // otherwise the ViewContext can be simply updated.
         if (modelTypeChanged) {
             // Configure the ViewContext and the KlighD synthesis to generate the KGraph model correctly.
-            properties.useViewer(SprottyViewer.ID)
             // needs to be a IDiagramWorkbenchPart, as it calls the standard constructor.
             viewContext = new ViewContext(null as IDiagramWorkbenchPart, model).configure(properties)
             viewer = viewContext.createViewer(null, null) as SprottyViewer
