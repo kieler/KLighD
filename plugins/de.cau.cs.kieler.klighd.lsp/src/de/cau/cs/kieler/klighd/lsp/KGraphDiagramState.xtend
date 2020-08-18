@@ -117,7 +117,7 @@ class KGraphDiagramState {
      * @param uri The identifying URI of the graph to access the value in the map.
      */
     def ViewContext getKGraphContext(String uri) {
-        kGraphContexts.get(URLDecoder.decode(uri, "UTF-8"))
+        kGraphContexts.get(uri)
     }
     
     /**
@@ -127,7 +127,7 @@ class KGraphDiagramState {
      * @param value The value to be stored in the map.
      */
     def putKGraphContext(String uri, ViewContext value) {
-        kGraphContexts.put(URLDecoder.decode(uri, "UTF-8"), value)
+        kGraphContexts.put(uri, value)
     }
     
     /**

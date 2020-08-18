@@ -177,7 +177,8 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
     }
     
     override getOptions(GetOptionsParam param) {
-        return doRead(param.uri) [ resource, ci |
+        val decodedUri = URLDecoder.decode(param.uri, "UTF-8")
+        return doRead(decodedUri) [ resource, ci |
             synchronized (diagramState) {
                 val ViewContext viewContext = diagramState.getKGraphContext(resource.URI.toString)
                 if (viewContext === null) {
@@ -229,7 +230,8 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
     }
     
     override setSynthesisOptions(SetSynthesisOptionsParam param) {
-        doRead(param.uri) [ resource, ci |
+        val decodedUri = URLDecoder.decode(param.uri, "UTF-8")
+        doRead(decodedUri) [ resource, ci |
             synchronized (diagramState) {
                 val ViewContext viewContext = diagramState.getKGraphContext(resource.URI.toString)
                 if (viewContext === null) {
@@ -260,7 +262,8 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
     }
     
     override setLayoutOptions(SetLayoutOptionsParam param) {
-        doRead(param.uri) [ resource, ci |
+        val decodedUri = URLDecoder.decode(param.uri, "UTF-8")
+        doRead(decodedUri) [ resource, ci |
             synchronized (diagramState) {
                 val uri = resource.URI.toString
                 val LayoutConfigurator layoutConfig = diagramState.getLayoutConfig(uri)
@@ -300,6 +303,7 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
     }
     
     override performAction(PerformActionParam param) {
+        val decodedUri = URLDecoder.decode(param.uri, "UTF-8")
         try {
             synchronized (diagramState) {
                 // Find the action and execute it.
@@ -310,7 +314,7 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
                 if (actionResult.needsSynthesis) {
                     // If the action requires a synthesis re-run, do that by invoking the diagram updater.
                     if (diagramUpdater instanceof KGraphDiagramUpdater) {
-                        val diagramServer = this.diagramServerManager.findDiagramServersByUri(param.uri)
+                        val diagramServer = this.diagramServerManager.findDiagramServersByUri(decodedUri)
                             .filter(KGraphDiagramServer).head
                         if (diagramServer !== null) {
                             diagramUpdater.updateDiagram(diagramServer)
@@ -324,7 +328,7 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
                     // If the action does not require a new synthesis, but only a new layout, do that again by invoking the
                     // diagram updater.
                     if (diagramUpdater instanceof KGraphDiagramUpdater) {
-                        val diagramServer = this.diagramServerManager.findDiagramServersByUri(param.uri)
+                        val diagramServer = this.diagramServerManager.findDiagramServersByUri(decodedUri)
                             .filter(KGraphDiagramServer).head
                         if (diagramServer !== null) {
                             (diagramUpdater as KGraphDiagramUpdater).updateLayout(diagramServer)
