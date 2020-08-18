@@ -16,7 +16,10 @@ import com.google.inject.Guice
 import java.net.InetSocketAddress
 import java.nio.channels.AsynchronousServerSocketChannel
 import java.nio.channels.Channels
+import java.util.concurrent.BlockingQueue
 import java.util.concurrent.Executors
+import java.util.concurrent.LinkedBlockingQueue
+import java.util.function.Function
 import org.apache.log4j.Logger
 import org.eclipse.lsp4j.services.LanguageServer
 import org.eclipse.xtext.ide.server.LanguageServerImpl
@@ -46,6 +49,11 @@ abstract class AbstractLanguageServer implements Runnable {
     extension ILanguageRegistration languageRegistration
     
     extension ILsCreator creator
+    
+    /**
+     * Queue to execute SWT or AWT calls on the main Thread.
+     */
+    private static val BlockingQueue<Function> mainThreadQueue = new LinkedBlockingQueue<Function>()
 
     /**
      * Configure this the launch of this language server with the language registration, a language server creator and
@@ -57,7 +65,45 @@ abstract class AbstractLanguageServer implements Runnable {
     def configureAndRun(ILanguageRegistration languageRegistration, ILsCreator lsCreator) {
         this.languageRegistration = languageRegistration
         this.creator = lsCreator
-        run
+        // Start LS an new Thread to use this as UI Thread.
+        new Thread([
+            run
+        ]).start()
+        while (true) {
+            synchronized (mainThreadQueue) {
+                // Wait until a new function arrives
+                while (mainThreadQueue.isNullOrEmpty) {
+                    mainThreadQueue.wait
+                }
+                // Get new element of queue and only empty after it was processed to make sure that waiting clients
+                // are not able to continue before the function is executed.
+                val f = mainThreadQueue.peek
+                if (f !== null) {
+                    f.apply(null)
+                    mainThreadQueue.poll
+                    mainThreadQueue.notify
+                }
+            }
+        }
+    }
+    
+    /**
+     * Add a new function to be executed on the main Thread.
+     * This method will wait until the function is executed.
+     */
+    public static def addToMainThreadQueue(Function f) {
+
+        synchronized (mainThreadQueue) {
+            mainThreadQueue.add([
+                f.apply(null)
+                return null
+            ])
+            // Wait to continue
+            while (!mainThreadQueue.isNullOrEmpty) {
+                mainThreadQueue.notify
+                mainThreadQueue.wait
+            }
+        }
     }
     
     /**
