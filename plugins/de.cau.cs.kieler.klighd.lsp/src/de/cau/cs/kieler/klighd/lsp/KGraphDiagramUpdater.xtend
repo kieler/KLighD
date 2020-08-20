@@ -21,6 +21,7 @@ import de.cau.cs.kieler.klighd.SynthesisOption
 import de.cau.cs.kieler.klighd.ViewContext
 import de.cau.cs.kieler.klighd.ide.model.MessageModel
 import de.cau.cs.kieler.klighd.kgraph.KNode
+import de.cau.cs.kieler.klighd.lsp.launch.AbstractLanguageServer
 import de.cau.cs.kieler.klighd.lsp.model.SKGraph
 import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties
 import java.util.HashSet
@@ -213,8 +214,11 @@ class KGraphDiagramUpdater extends DiagramUpdater {
         } else {
             viewContext.copyProperties(properties)
         }
+        val vc = viewContext
         // Update the model and with that call the diagram synthesis.
-        viewContext.update(model)
+        AbstractLanguageServer.addToMainThreadQueue([
+            vc.update(model)
+        ])
 
         synchronized (diagramState) {
             diagramState.putURIString(server.clientId, uri)

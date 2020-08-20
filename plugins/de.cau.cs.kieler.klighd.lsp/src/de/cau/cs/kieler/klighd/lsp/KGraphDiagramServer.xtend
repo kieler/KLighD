@@ -27,6 +27,7 @@ import de.cau.cs.kieler.klighd.krendering.KRendering
 import de.cau.cs.kieler.klighd.krendering.KText
 import de.cau.cs.kieler.klighd.lsp.interactive.layered.ConstraintActionHandler
 import de.cau.cs.kieler.klighd.lsp.interactive.rectpack.RectPackActionHandler
+import de.cau.cs.kieler.klighd.lsp.launch.AbstractLanguageServer
 import de.cau.cs.kieler.klighd.lsp.model.CheckImagesAction
 import de.cau.cs.kieler.klighd.lsp.model.CheckedImagesAction
 import de.cau.cs.kieler.klighd.lsp.model.ComputedTextBoundsAction
@@ -295,9 +296,11 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
      * FIXME Remove this if UpdateModelAction has a cause.
      */
     def void doSubmitModel(SModelRoot newRoot, boolean update, Action cause) {
-        var ILayoutEngine layoutEngine = getLayoutEngine();
+        val ILayoutEngine layoutEngine = getLayoutEngine();
         if (needsServerLayout(newRoot, cause)) {
-            layoutEngine.layout(newRoot, cause);
+            AbstractLanguageServer.addToMainThreadQueue([
+                layoutEngine.layout(newRoot, cause)
+            ])
         }
         synchronized (modelLock) {
             if (newRoot.getRevision() == revision) {
