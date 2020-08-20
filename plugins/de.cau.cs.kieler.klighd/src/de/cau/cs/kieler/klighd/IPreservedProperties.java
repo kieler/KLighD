@@ -21,11 +21,13 @@ import org.eclipse.elk.graph.properties.IProperty;
  * 
  * @author sdo
  */
-public interface IPreservedProperties<T> {
+public interface IPreservedProperties {
     
-    public static final String EXTENSION_POINT_ID = "de.cau.cs.kieler.klighd.preservedProperties";
-    public static final String ATTRIBUTE_ID = "id";
-    
-    public List<IProperty<T>> getProperties();
+    /**
+     * A List of all properties that should be preserved.
+     * 
+     * @return The preserved properties.
+     */
+    public List<IProperty<?>> getProperties();
 
 }

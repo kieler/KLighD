@@ -149,9 +149,12 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
     def void sendAvailableSyntheses(String path, IDiagramServer server) {
         if (path !== null) {
             doRead(path) [ resource, ci |
-                val availableSynthesesData = getAvailableSynthesesData(resource.contents.head?.class)
-                
-                server.dispatch(new SetSynthesesAction(availableSynthesesData))
+                val currentModelClass = resource?.contents?.head?.class
+                if (currentModelClass !== null) {
+                    val availableSynthesesData = getAvailableSynthesesData(currentModelClass)
+                    
+                    server.dispatch(new SetSynthesesAction(availableSynthesesData))
+                }
                 return null
             ]
         }
@@ -178,9 +181,10 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
     }
     
     override getOptions(GetOptionsParam param) {
-        return doRead(param.uri) [ resource, ci |
+        val decodedUri = URLDecoder.decode(param.uri, "UTF-8")
+        return doRead(decodedUri) [ resource, ci |
             synchronized (diagramState) {
-                val ViewContext viewContext = diagramState.getKGraphContext(resource.URI.toString)
+                val ViewContext viewContext = diagramState.getKGraphContext(decodedUri)
                 if (viewContext === null) {
                     // A diagram for this file is currently not opened, so no options can be shown.
                     return null
@@ -230,9 +234,10 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
     }
     
     override setSynthesisOptions(SetSynthesisOptionsParam param) {
-        doRead(param.uri) [ resource, ci |
+        val decodedUri = URLDecoder.decode(param.uri, "UTF-8")
+        doRead(decodedUri) [ resource, ci |
             synchronized (diagramState) {
-                val ViewContext viewContext = diagramState.getKGraphContext(resource.URI.toString)
+                val ViewContext viewContext = diagramState.getKGraphContext(decodedUri)
                 if (viewContext === null) {
                     sendErrorAndThrow(new IllegalStateException("The diagram has already been closed."))
                 }
@@ -253,8 +258,7 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
                 // Update the diagram.
                 if (diagramUpdater instanceof KGraphDiagramUpdater) {
                     AbstractLanguageServer.addToMainThreadQueue([
-                        (diagramUpdater as KGraphDiagramUpdater).updateDiagrams2(#[resource.URI])
-                        return null
+                        (diagramUpdater as KGraphDiagramUpdater).updateDiagrams2(#[_uriExtensions.toUri(decodedUri)])
                     ])
                     return null
                 }
@@ -264,10 +268,10 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
     }
     
     override setLayoutOptions(SetLayoutOptionsParam param) {
-        doRead(param.uri) [ resource, ci |
+        val decodedUri = URLDecoder.decode(param.uri, "UTF-8")
+        doRead(decodedUri) [ resource, ci |
             synchronized (diagramState) {
-                val uri = resource.URI.toString
-                val LayoutConfigurator layoutConfig = diagramState.getLayoutConfig(uri)
+                val LayoutConfigurator layoutConfig = diagramState.getLayoutConfig(decodedUri)
                 if (layoutConfig === null) {
                     throw new IllegalStateException("The diagram has already been closed")
                 }
@@ -289,14 +293,13 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
                         layoutConfig.configure(ElkGraphElement).setProperty(optionData, layoutOption.value);
                     }
                 }
-                diagramState.putLayoutConfig(uri, layoutConfig)
+                diagramState.putLayoutConfig(decodedUri, layoutConfig)
                 
                 // Update the layout of the diagram.
-                val diagramServer = this.diagramServerManager.findDiagramServersByUri(uri).head
+                val diagramServer = this.diagramServerManager.findDiagramServersByUri(decodedUri).head
                 if (diagramUpdater instanceof KGraphDiagramUpdater && diagramServer instanceof KGraphDiagramServer) {
                     AbstractLanguageServer.addToMainThreadQueue([
                         (diagramUpdater as KGraphDiagramUpdater).updateLayout(diagramServer as KGraphDiagramServer)
-                        return null
                     ])
                 } else {
                     throw new IllegalStateException("The diagram server or diagram updater are not set up correctly.")
@@ -307,6 +310,7 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
     }
     
     override performAction(PerformActionParam param) {
+        val decodedUri = URLDecoder.decode(param.uri, "UTF-8")
         try {
             synchronized (diagramState) {
                 // Find the action and execute it.
@@ -317,12 +321,11 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
                 if (actionResult.needsSynthesis) {
                     // If the action requires a synthesis re-run, do that by invoking the diagram updater.
                     if (diagramUpdater instanceof KGraphDiagramUpdater) {
-                        val diagramServer = this.diagramServerManager.findDiagramServersByUri(param.uri)
+                        val diagramServer = this.diagramServerManager.findDiagramServersByUri(decodedUri)
                             .filter(KGraphDiagramServer).head
                         if (diagramServer !== null) {
                             AbstractLanguageServer.addToMainThreadQueue([
                                 diagramUpdater.updateDiagram(diagramServer)
-                                return null
                             ])
                         } else {
                             throw new IllegalStateException("The diagram server is not set up correctly.")
@@ -334,12 +337,11 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
                     // If the action does not require a new synthesis, but only a new layout, do that again by invoking the
                     // diagram updater.
                     if (diagramUpdater instanceof KGraphDiagramUpdater) {
-                        val diagramServer = this.diagramServerManager.findDiagramServersByUri(param.uri)
+                        val diagramServer = this.diagramServerManager.findDiagramServersByUri(decodedUri)
                             .filter(KGraphDiagramServer).head
                         if (diagramServer !== null) {
                             AbstractLanguageServer.addToMainThreadQueue([
                                 (diagramUpdater as KGraphDiagramUpdater).updateLayout(diagramServer)
-                                return null
                             ])
                         } else {
                             throw new IllegalStateException("The diagram server is not set up correctly.")
@@ -459,7 +461,6 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
                 (diagramUpdater as KGraphDiagramUpdater).prepareModel(diagramServer, model, uri)
                 AbstractLanguageServer.addToMainThreadQueue([
                     (diagramUpdater as KGraphDiagramUpdater).updateLayout(diagramServer)
-                    return null
                 ])
                 // Also, update the syntheses available for the given diagram.
                 if (!update) {

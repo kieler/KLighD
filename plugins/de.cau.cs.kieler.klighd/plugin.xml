@@ -3,7 +3,7 @@
 <plugin>
    <extension-point id="extensions" name="Compound extension point for all kinds of extensions" schema="schema/extensions.exsd"/>
    <extension-point id="diagramSyntheses" name="Diagram syntheses registering point" schema="schema/diagramSyntheses.exsd"/>
-   <extension-point id="de.cau.cs.kieler.klighd.preservedProperties" name="Preserved Properties" schema="schema/preservedProperties.exsd"/>
+   <extension-point id="klighdStartupHook" name="Startup Hook for KLighD" schema="schema/klighdStartupHook.exsd"/>
    <extension
          point="org.eclipse.core.runtime.preferences">
       <initializer

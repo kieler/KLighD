@@ -3,7 +3,7 @@
  *
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright 2019 by
+ * Copyright 2019,2020 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -23,7 +23,7 @@ import org.eclipse.emf.common.util.URI
  */
 class KeithWorkspaceManager extends WorkspaceManager {
     /**
-     * Returns the resource referenced by a file URI.
+     * Returns the resource referenced by a file URI, or null if no resource is available.
      * 
      * @param uri The uri.
      * @return The resource.
@@ -31,6 +31,11 @@ class KeithWorkspaceManager extends WorkspaceManager {
     def Resource getResource(URI uri) {
         val resourceURI = uri.trimFragment
         val projectMnr = getProjectManager(resourceURI)
-        return projectMnr?.getResource(resourceURI)
+        try {
+            return projectMnr?.getResource(resourceURI)
+        } catch (RuntimeException e) {
+            // Xtext just throws a generic RuntimeException when no resource for the URI is available.
+            return null
+        }
     }
 }

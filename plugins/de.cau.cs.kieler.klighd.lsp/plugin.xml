@@ -2,17 +2,13 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension
-         point="de.cau.cs.kieler.klighd.preservedProperties">
-      <propertyList
-            class="de.cau.cs.kieler.klighd.lsp.interactive.rectpack.RectPackingPreservedProperties"
-            id="de.cau.cs.kieler.klighd.lsp.interactive.rectpack.RectPackingPreservedProperties"
-            name="RectPackingPreservedProperties">
-      </propertyList>
-      <propertyList
-            class="de.cau.cs.kieler.klighd.lsp.interactive.layered.LayeredPreservedProperties"
-            id="de.cau.cs.kieler.klighd.lsp.interactive.layered.LayeredPreservedProperties"
-            name="LayeredPreservedProperties">
-      </propertyList>
+         point="de.cau.cs.kieler.klighd.extensions">
+      <preservedProperties
+            class="de.cau.cs.kieler.klighd.lsp.interactive.layered.LayeredPreservedProperties">
+      </preservedProperties>
+      <preservedProperties
+            class="de.cau.cs.kieler.klighd.lsp.interactive.rectpack.RectPackingPreservedProperties">
+      </preservedProperties>
    </extension>
 
 </plugin>

@@ -41,15 +41,15 @@ import static de.cau.cs.kieler.klighd.util.KlighdPredicates.isSelectable
  */
 class SprottyViewer extends AbstractViewer implements ILayoutRecorder {
     
-    /** The identifier of this viewer type as specified in the extension. */
-    public static final String ID = SprottyViewer.name
-    
     ViewContext viewContext
     
     @Accessors(PUBLIC_SETTER)
     KGraphDiagramServer diagramServer
     
     static class Provider implements IViewerProvider {
+        /** The identifier of this viewer type as specified in the extension. */
+        public static final String ID = Provider.name
+        
         override createViewer(ContextViewer parentViewer, Composite parent) {
             return new SprottyViewer()
         }

@@ -300,7 +300,6 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
         if (needsServerLayout(newRoot, cause)) {
             AbstractLanguageServer.addToMainThreadQueue([
                 layoutEngine.layout(newRoot, cause)
-                return null
             ])
         }
         synchronized (modelLock) {

@@ -15,7 +15,6 @@ package de.cau.cs.kieler.klighd;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -52,7 +51,6 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 
 import de.cau.cs.kieler.klighd.internal.ISynthesis;
-import de.cau.cs.kieler.klighd.internal.macrolayout.KlighdDiagramLayoutConnector;
 import de.cau.cs.kieler.klighd.syntheses.AbstractDiagramSynthesis;
 import de.cau.cs.kieler.klighd.syntheses.GuiceBasedSynthesisFactory;
 import de.cau.cs.kieler.klighd.syntheses.ReinitializingDiagramSynthesisProxy;
@@ -70,6 +68,9 @@ public final class KlighdDataManager {
 
     /** identifier of the extension point for model transformations. */
     private static final String EXTP_ID_DIAGRAM_SYNTHESES = "de.cau.cs.kieler.klighd.diagramSyntheses";
+
+    /** identifier of the extension point for startup hooks. */
+    private static final String EXTP_ID_STARTUP_HOOK = "de.cau.cs.kieler.klighd.klighdStartupHook";
 
     /** name of the 'viewer' element. */
     private static final String ELEMENT_VIEWER = "viewer";
@@ -94,6 +95,12 @@ public final class KlighdDataManager {
 
     /** name of the 'offscreenRenderer' element. */
     private static final String ELEMENT_OFFSCREEN_RENDERER = "offscreenRenderer";
+    
+    /** name of the 'preservedProperties' element. */
+    private static final String PRESERVED_PROPERTIES = "preservedProperties";
+
+    /** name of the 'startupHook' element. */
+    private static final String ELEMENT_STARTUP_HOOK = "startupHook";
 
     /** name of the 'id' attribute in the extension points. */
     private static final String ATTRIBUTE_ID = "id";
@@ -142,6 +149,9 @@ public final class KlighdDataManager {
     private static final String INSTANTIATION_FAILURE_MSG =
             "KLighD: An unexpected failure occured while instantiating "
             + "class <<CLAZZ>>. See attached trace for details." + NEW_LINE;
+    
+    private static final String STARTUP_HOOK_ERROR_MSG = 
+            "KLighD: an unexpected failure occured while executing a startup hook. See attached trace for details.";
 
     /** the singleton instance. */
     private static KlighdDataManager instance;
@@ -151,6 +161,12 @@ public final class KlighdDataManager {
      */
     static {
         instance = new KlighdDataManager();
+        // Load the startup hooks after creating the instance, as they should use this instance to hook into.
+        if (Klighd.IS_PLATFORM_RUNNING) {
+            loadStartupHooksViaExtensionPoint();
+        } else {
+            loadStartupHooksViaServiceLoader();
+        }
     }
 
     /**
@@ -206,7 +222,7 @@ public final class KlighdDataManager {
     private final List<CustomFigureWrapperDescriptor> customFigureWrapperMapping = Lists.newArrayList();
     
     /** the properties that shall be preserved from the layout graph to the kgraph */
-    private final List<IProperty<Object>> preservedProperties = Lists.newArrayList();
+    private final List<IProperty<?>> preservedProperties = Lists.newArrayList();
 
     /**
      * A private constructor to prevent instantiation.
@@ -218,7 +234,6 @@ public final class KlighdDataManager {
         if (Klighd.IS_PLATFORM_RUNNING) {
             // load the data from the extension points
             loadKlighdExtensionsViaExtensionPoint();
-            loadPreservedPropertiesViaExtensionPoint();
             try {
                 loadDiagramSynthesesViaExtensionPoint(id2Synthesis, type2Syntheses);
                 
@@ -234,7 +249,6 @@ public final class KlighdDataManager {
         } else {
             loadDiagramSynthesesViaServiceLoader(id2Synthesis, type2Syntheses);
             loadKlighdExtensionsViaServiceLoader();
-            loadPreservedPropertiesViaServiceLoader();
         }
         
         this.idSynthesisMapping = id2Synthesis;
@@ -282,10 +296,18 @@ public final class KlighdDataManager {
             final String elementName = element.getName();
             final String id = element.getAttribute(ATTRIBUTE_ID);
 
-            // 'wrapper' extensions don't define an 'id' so check for that type of extension first
-            //  before checking for a valid id
+            // 'wrapper' and 'preservedProperties' extensions don't define an 'id' so check for that type of extension
+            // first before checking for a valid id
             if (ELEMENT_WRAPPER.equals(elementName)) {
                 registerCustomFigureWrapper(element);
+
+            } else if (PRESERVED_PROPERTIES.equals(elementName)) {
+                doRegisterExtension(element, IPreservedProperties.class,
+                        (preservedProperties) -> {
+                            for (IProperty<?> property : preservedProperties.getProperties()) {
+                                registerPreservedProperty(property);
+                            }
+                        });
 
             } else if (Strings.isNullOrEmpty(id)) {
                 final String msg = "KLighD: Found element of type '" + elementName
@@ -355,6 +377,12 @@ public final class KlighdDataManager {
         for (IAction action : ServiceLoader.load(IAction.class,
                 KlighdDataManager.class.getClassLoader())) {
             registerAction(action.getClass().getName(), action);
+        }
+        for (IPreservedProperties preservedProperties : ServiceLoader.load(IPreservedProperties.class,
+                KlighdDataManager.class.getClassLoader())) {
+            for (IProperty<?> property : preservedProperties.getProperties()) {
+                registerPreservedProperty(property);
+            }
         }
     }
 
@@ -631,7 +659,7 @@ public final class KlighdDataManager {
         return this;
     }
     
-    public KlighdDataManager registerPreservedProperties(IProperty<Object> preservedProperty) {
+    public KlighdDataManager registerPreservedProperty(IProperty<?> preservedProperty) {
         this.preservedProperties.add(preservedProperty);
         return this;
     }
@@ -714,6 +742,62 @@ public final class KlighdDataManager {
 
         for (Class<? extends AbstractDiagramSynthesis<?>> clazz: extensions) {
             registerDiagramSynthesisClass(null, clazz, true, idSynthesisMapping, typeSynthesisMapping);
+        }
+    }
+
+    /**
+     * Loads the registered {@link de.cau.cs.kieler.klighd.IKlighdStartupHook} from the extension point.
+     */
+    private static final void loadStartupHooksViaExtensionPoint() {
+        final Iterable<IConfigurationElement> extensions = Iterables.filter(
+                Arrays.asList(
+                        Platform.getExtensionRegistry().getConfigurationElementsFor(EXTP_ID_STARTUP_HOOK)
+                ),
+                element -> ELEMENT_STARTUP_HOOK.equals(element.getName())
+        );
+
+        for (final IConfigurationElement element : extensions) {
+            final String id = element.getAttribute(ATTRIBUTE_ID);
+            if (Strings.isNullOrEmpty(id))
+                reportError(EXTP_ID_STARTUP_HOOK, element, ATTRIBUTE_ID, null, null);
+            
+            else {
+                    
+                // initialize model transformation from the extension point
+                IKlighdStartupHook startupHook = null;
+                try {
+                    startupHook = (IKlighdStartupHook) element.createExecutableExtension(ATTRIBUTE_CLASS);
+
+                } catch (final CoreException exception) {
+                    Klighd.handle(
+                            new Status(IStatus.ERROR, Klighd.PLUGIN_ID,
+                                    CORE_EXCEPTION_ERROR_MSG.replace("<<CLAZZ>>",
+                                            element.getAttribute(ATTRIBUTE_CLASS)), exception));
+                }
+
+                if (startupHook != null) {
+                    try {
+                        startupHook.execute();
+                    } catch (Throwable t) {
+                        Klighd.log(new Status(IStatus.ERROR, Klighd.PLUGIN_ID, STARTUP_HOOK_ERROR_MSG, t));
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Loads the registered {@link de.cau.cs.kieler.klighd.IKlighdStartupHook} via Java {@link ServiceLoader}.
+     */
+    private static void loadStartupHooksViaServiceLoader() {
+
+        for (IKlighdStartupHook startupHook : ServiceLoader.load(IKlighdStartupHook.class,
+                KlighdDataManager.class.getClassLoader())) {
+            try {
+                startupHook.execute();
+            } catch (Throwable t) {
+                Klighd.log(new Status(IStatus.ERROR, Klighd.PLUGIN_ID, STARTUP_HOOK_ERROR_MSG, t));
+            }
         }
     }
 
@@ -1112,45 +1196,8 @@ public final class KlighdDataManager {
      * 
      * @return the {@link List} of registered properties to preserve
      */
-    public List<IProperty<Object>> getPreservedProperties() {
+    public List<IProperty<?>> getPreservedProperties() {
         return this.preservedProperties;
     }
-    
-    /**
-     * Loads all registered extensions from the extension point 'preservedProperties' and builds up the
-     * corresponding list of properties.
-     */
-    private void loadPreservedPropertiesViaExtensionPoint() {
-        final Iterable<IConfigurationElement> extensions = Iterables.filter(
-                Arrays.asList(
-                        Platform.getExtensionRegistry().getConfigurationElementsFor(IPreservedProperties.EXTENSION_POINT_ID)
-                ),
-                element -> true
-        );
-        for (IConfigurationElement element : extensions) {
-            try {
-                preservedProperties.addAll(
-                        ((IPreservedProperties<Object>) element.createExecutableExtension(IPreservedProperties.ATTRIBUTE_ID))
-                        .getProperties());
-            } catch (CoreException e) {
-                Klighd.handle(
-                        new Status(IStatus.ERROR, Klighd.PLUGIN_ID,
-                                KlighdDataManager.CORE_EXCEPTION_ERROR_MSG.replace("<<CLAZZ>>",
-                                        element.getAttribute("id")), e));
-            }
-        }
-    }
 
-    /**
-     * Loads the registered properties to preserve from the layout graph via Java {@link ServiceLoader}.
-     */
-    private void loadPreservedPropertiesViaServiceLoader() {
-        final Iterable<IPreservedProperties<Object>> listOfPropertyLists = Iterables.transform(
-                ServiceLoader.load(IPreservedProperties.class, KlighdDataManager.class.getClassLoader()),
-                s -> s
-        );
-        for (IPreservedProperties<Object> propertyList : listOfPropertyLists) {
-            preservedProperties.addAll(propertyList.getProperties());
-        }
-    }
 }

@@ -14,6 +14,8 @@ package de.cau.cs.kieler.klighd;
 
 import org.eclipse.core.runtime.IStatus;
 
+import com.google.common.base.Throwables;
+
 public interface IKlighdStatusManager {
     
     // status handling styles, inspired by 'org.eclipse.ui.statushandlers.StatusManager.NONE', ...
@@ -56,8 +58,12 @@ public interface IKlighdStatusManager {
             }
             
             final String msg = status.getException() == null ? status.getMessage() : status.getException().getMessage();
-            if (msg != null && !msg.isEmpty())
+            if (msg != null && !msg.isEmpty()) {
                 System.out.println(prefix + msg);
+            }
+            if (status.getException() != null) {
+                System.out.println(Throwables.getStackTraceAsString(status.getException()));
+            }
         }
     }
 }

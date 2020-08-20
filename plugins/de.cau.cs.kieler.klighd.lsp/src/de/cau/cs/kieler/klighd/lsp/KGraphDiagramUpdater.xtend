@@ -19,6 +19,7 @@ import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart
 import de.cau.cs.kieler.klighd.KlighdDataManager
 import de.cau.cs.kieler.klighd.SynthesisOption
 import de.cau.cs.kieler.klighd.ViewContext
+import de.cau.cs.kieler.klighd.ide.model.MessageModel
 import de.cau.cs.kieler.klighd.kgraph.KNode
 import de.cau.cs.kieler.klighd.lsp.launch.AbstractLanguageServer
 import de.cau.cs.kieler.klighd.lsp.model.SKGraph
@@ -91,10 +92,10 @@ class KGraphDiagramUpdater extends DiagramUpdater {
      * @param diagramServer The diagram server that should update its layout.
      */
     protected def CompletableFuture<Void> doUpdateLayout(KGraphDiagramServer diagramServer) {
-        return (languageServer as KGraphLanguageServerExtension).doRead(diagramServer.sourceUri) [ resource, ci |
+        val uri = diagramServer.sourceUri
+        return (languageServer as KGraphLanguageServerExtension).doRead(uri) [ resource, ci |
             // Just update the SGraph from the already existing KGraph.
             var ViewContext viewContext = null
-            val uri = resource.URI.toString
             synchronized(diagramState) {
                 viewContext = diagramState.getKGraphContext(uri)
             }
@@ -125,7 +126,11 @@ class KGraphDiagramUpdater extends DiagramUpdater {
                 snapshotModel = diagramState.getSnapshotModel(uri)
             }
             val model = if (snapshotModel === null) {
-                    resource.contents.head
+                    if (resource === null) {
+                        new MessageModel("No model in editor")
+                    } else {
+                        resource.contents.head
+                    }
                 } else {
                     snapshotModel
                 }
@@ -201,7 +206,6 @@ class KGraphDiagramUpdater extends DiagramUpdater {
         // otherwise the ViewContext can be simply updated.
         if (modelTypeChanged) {
             // Configure the ViewContext and the KlighD synthesis to generate the KGraph model correctly.
-            properties.useViewer(SprottyViewer.ID)
             // needs to be a IDiagramWorkbenchPart, as it calls the standard constructor.
             viewContext = new ViewContext(null as IDiagramWorkbenchPart, model).configure(properties)
             viewer = viewContext.createViewer(null, null) as SprottyViewer
@@ -214,7 +218,6 @@ class KGraphDiagramUpdater extends DiagramUpdater {
         // Update the model and with that call the diagram synthesis.
         AbstractLanguageServer.addToMainThreadQueue([
             vc.update(model)
-            return null
         ])
 
         synchronized (diagramState) {

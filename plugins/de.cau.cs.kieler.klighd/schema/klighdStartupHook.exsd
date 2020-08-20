@@ -3,10 +3,10 @@
 <schema targetNamespace="de.cau.cs.kieler.klighd" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appinfo>
-         <meta.schema plugin="de.cau.cs.kieler.klighd" id="de.cau.cs.kieler.klighd.preservedProperties" name="Preserve Properties after layout run."/>
+         <meta.schema plugin="de.cau.cs.kieler.klighd" id="klighdStartupHook" name="Startup Hook extension point"/>
       </appinfo>
       <documentation>
-         This extension point is used to register properties, which are created during layout, that are not preserved in the model but shall be copied from the ELK graph to the KGraph after layout.
+         This extension point is to be used to programmatically register KLighD extensions during startup.
       </documentation>
    </annotation>
 
@@ -18,7 +18,7 @@
       </annotation>
       <complexType>
          <sequence minOccurs="1" maxOccurs="unbounded">
-            <element ref="propertyList"/>
+            <element ref="startupHook"/>
          </sequence>
          <attribute name="point" type="string" use="required">
             <annotation>
@@ -47,23 +47,23 @@
       </complexType>
    </element>
 
-   <element name="propertyList">
+   <element name="startupHook">
       <complexType>
-         <attribute name="class" type="string" use="required">
-            <annotation>
-               <documentation>
-                  Class that provides properties which shall be preserved.
-               </documentation>
-               <appinfo>
-                  <meta.attribute kind="java" basedOn=":de.cau.cs.kieler.klighd.IPreservedProperties"/>
-               </appinfo>
-            </annotation>
-         </attribute>
-         <attribute name="id" type="string">
+         <attribute name="id" type="string" use="required">
             <annotation>
                <documentation>
                   
                </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="class" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The implementation of this hook. May use public KLighD API to register other extensions in KLighD programmatically.
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="java" basedOn="de.cau.cs.kieler.klighd.IKlighdStartupHook"/>
+               </appinfo>
             </annotation>
          </attribute>
       </complexType>
@@ -74,7 +74,7 @@
          <meta.section type="since"/>
       </appinfo>
       <documentation>
-         [Enter the first release in which this extension point appears.]
+         2.0.0
       </documentation>
    </annotation>
 
@@ -105,5 +105,23 @@
       </documentation>
    </annotation>
 
+   <annotation>
+      <appinfo>
+         <meta.section type="copyright"/>
+      </appinfo>
+      <documentation>
+         KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
+
+http://rtsys.informatik.uni-kiel.de/kieler
+ 
+Copyright 2020 by
++ Kiel University
+  + Department of Computer Science
+    + Real-Time and Embedded Systems Group
+
+This code is provided under the terms of the Eclipse Public License (EPL).
+
+      </documentation>
+   </annotation>
 
 </schema>

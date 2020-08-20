@@ -23,6 +23,7 @@ import java.util.function.Function
 import org.apache.log4j.Logger
 import org.eclipse.lsp4j.services.LanguageServer
 import org.eclipse.xtext.ide.server.LanguageServerImpl
+import java.util.function.Consumer
 
 /**
  * Extensible entry point for the language server applications for the projects based around KLighD diagrams.<br>
@@ -53,7 +54,7 @@ abstract class AbstractLanguageServer implements Runnable {
     /**
      * Queue to execute SWT or AWT calls on the main Thread.
      */
-    private static val BlockingQueue<Function> mainThreadQueue = new LinkedBlockingQueue<Function>()
+    private static val BlockingQueue<Consumer<Void>> mainThreadQueue = new LinkedBlockingQueue<Consumer<Void>>()
 
     /**
      * Configure this the launch of this language server with the language registration, a language server creator and
@@ -79,7 +80,7 @@ abstract class AbstractLanguageServer implements Runnable {
                 // are not able to continue before the function is executed.
                 val f = mainThreadQueue.peek
                 if (f !== null) {
-                    f.apply(null)
+                    f.accept(null)
                     mainThreadQueue.poll
                     mainThreadQueue.notify
                 }
@@ -91,12 +92,11 @@ abstract class AbstractLanguageServer implements Runnable {
      * Add a new function to be executed on the main Thread.
      * This method will wait until the function is executed.
      */
-    public static def addToMainThreadQueue(Function f) {
+    public static def addToMainThreadQueue(Consumer<Object> f) {
 
         synchronized (mainThreadQueue) {
             mainThreadQueue.add([
-                f.apply(null)
-                return null
+                f.accept(null)
             ])
             // Wait to continue
             while (!mainThreadQueue.isNullOrEmpty) {

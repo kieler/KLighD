@@ -14,8 +14,10 @@ package de.cau.cs.kieler.klighd.lsp.launch
 
 import com.google.gson.GsonBuilder
 import com.google.inject.Injector
+import de.cau.cs.kieler.klighd.KlighdDataManager
 import de.cau.cs.kieler.klighd.lsp.KGraphDiagramModule
 import de.cau.cs.kieler.klighd.lsp.KGraphDiagramServerModule
+import de.cau.cs.kieler.klighd.lsp.SprottyViewer
 import de.cau.cs.kieler.klighd.lsp.gson_utils.KGraphTypeAdapterUtil
 import de.cau.cs.kieler.klighd.standalone.KlighdStandaloneSetup
 import java.io.InputStream
@@ -99,6 +101,9 @@ abstract class AbstractLsCreator implements ILsCreator {
         this.injector = injector
         // Setup KLighD.
         KlighdStandaloneSetup.initialize
+        // Programmatically register the SprottyViewer. It is not registered via service, as it will only ever be used
+        // in this language server case.
+        KlighdDataManager.instance.registerViewer(SprottyViewer$Provider.ID, new SprottyViewer$Provider)
         
         // TypeAdapter is needed to be able to send recursive data in json
         val Consumer<GsonBuilder> configureGson = [ gsonBuilder |
