@@ -22,10 +22,10 @@ import org.eclipse.sprotty.Action
  *
  * @author sdo
  */
-class ConstraintActionHandler extends AbstractActionHandler {
+class LayeredInteractiveActionHandler extends AbstractActionHandler {
     
     @Inject
-    ConstraintsLanguageServerExtension constraintLS
+    LayeredInteractiveLanguageServerExtension constraintLS
     
     new() {
         this.supportedMessages = newHashMap(

@@ -10,7 +10,7 @@
  * 
  * This code is provided under the terms of the Eclipse Public License (EPL).
  */
-package de.cau.cs.kieler.klighd.lsp.interactive.rectpack;
+package de.cau.cs.kieler.klighd.lsp.interactive.rectpacking;
 
 import java.util.Arrays;
 import java.util.List;
@@ -26,7 +26,7 @@ import de.cau.cs.kieler.klighd.IPreservedProperties;
  * 
  * @author sdo
  */
-public class RectPackingPreservedProperties implements IPreservedProperties {
+public class RectpackingPreservedProperties implements IPreservedProperties {
 
     /**
      * {@inheritDoc}

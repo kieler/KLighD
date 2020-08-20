@@ -10,7 +10,7 @@
  * 
  * This code is provided under the terms of the Eclipse Public License (EPL).
  */
-package de.cau.cs.kieler.klighd.lsp.interactive.rectpack
+package de.cau.cs.kieler.klighd.lsp.interactive.rectpacking
 
 import com.google.inject.Inject
 import de.cau.cs.kieler.klighd.lsp.AbstractActionHandler
@@ -22,24 +22,24 @@ import org.eclipse.sprotty.Action
  *
  * @author sdo
  */
-class RectPackActionHandler extends AbstractActionHandler {
+class RectpackingInteractiveActionHandler extends AbstractActionHandler {
     
     @Inject
-    RectPackInterativeLanguageServerExtension lsExtension
+    RectpackingInteractiveLanguageServerExtension lsExtension
     
     new() {
         this.supportedMessages = newHashMap(
-        RectPackSetPositionConstraintAction.KIND -> RectPackSetPositionConstraintAction,
-        RectPackDeletePositionConstraintAction.KIND -> RectPackDeletePositionConstraintAction,
+        RectpackingSetPositionConstraintAction.KIND -> RectpackingSetPositionConstraintAction,
+        RectpackingDeletePositionConstraintAction.KIND -> RectpackingDeletePositionConstraintAction,
         SetAspectRatioAction.KIND -> SetAspectRatioAction)
     }
     
     override handle(Action action, String clientId, KGraphDiagramServer server) {
-        if (action instanceof RectPackSetPositionConstraintAction) {
+        if (action instanceof RectpackingSetPositionConstraintAction) {
             synchronized((server as KGraphDiagramServer).modelLock) {
                 lsExtension.setPositionConstraint(action.constraint, clientId)
             }
-        } else if (action instanceof RectPackDeletePositionConstraintAction) {
+        } else if (action instanceof RectpackingDeletePositionConstraintAction) {
             synchronized((server as KGraphDiagramServer).modelLock) {
                 lsExtension.deletePositionConstraint(action.constraint, clientId)
             }

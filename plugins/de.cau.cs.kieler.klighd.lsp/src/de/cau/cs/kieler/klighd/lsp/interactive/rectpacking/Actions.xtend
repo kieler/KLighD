@@ -10,7 +10,7 @@
  * 
  * This code is provided under the terms of the Eclipse Public License (EPL).
  */
-package de.cau.cs.kieler.klighd.lsp.interactive.rectpack
+package de.cau.cs.kieler.klighd.lsp.interactive.rectpacking
 
 import java.util.function.Consumer
 import org.eclipse.sprotty.Action
@@ -26,14 +26,14 @@ import org.eclipse.xtend.lib.annotations.ToString
 @Accessors
 @EqualsHashCode
 @ToString(skipNulls = true)
-class RectPackSetPositionConstraintAction implements Action {
+class RectpackingSetPositionConstraintAction implements Action {
     public static val KIND = 'rectPackSetPositionConstraint'
     String kind = KIND
     
-    RectPackSetPositionConstraint constraint
+    RectpackingSetPositionConstraint constraint
     
     new() {}
-    new(Consumer<RectPackSetPositionConstraintAction> initializer) {
+    new(Consumer<RectpackingSetPositionConstraintAction> initializer) {
         initializer.accept(this)
     }
 }
@@ -46,14 +46,14 @@ class RectPackSetPositionConstraintAction implements Action {
 @Accessors
 @EqualsHashCode
 @ToString(skipNulls = true)
-class RectPackDeletePositionConstraintAction implements Action {
+class RectpackingDeletePositionConstraintAction implements Action {
     public static val KIND = 'rectPackDeletePositionConstraint'
     String kind = KIND
     
-    RectPackDeletePositionConstraint constraint
+    RectpackingDeletePositionConstraint constraint
     
     new() {}
-    new(Consumer<RectPackDeletePositionConstraintAction> initializer) {
+    new(Consumer<RectpackingDeletePositionConstraintAction> initializer) {
         initializer.accept(this)
     }
 }

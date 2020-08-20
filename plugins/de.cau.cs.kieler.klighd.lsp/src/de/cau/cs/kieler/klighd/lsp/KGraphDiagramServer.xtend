@@ -25,8 +25,8 @@ import de.cau.cs.kieler.klighd.kgraph.KLabel
 import de.cau.cs.kieler.klighd.kgraph.KNode
 import de.cau.cs.kieler.klighd.krendering.KRendering
 import de.cau.cs.kieler.klighd.krendering.KText
-import de.cau.cs.kieler.klighd.lsp.interactive.layered.ConstraintActionHandler
-import de.cau.cs.kieler.klighd.lsp.interactive.rectpack.RectPackActionHandler
+import de.cau.cs.kieler.klighd.lsp.interactive.layered.LayeredInteractiveActionHandler
+import de.cau.cs.kieler.klighd.lsp.interactive.rectpacking.RectpackingInteractiveActionHandler
 import de.cau.cs.kieler.klighd.lsp.launch.AbstractLanguageServer
 import de.cau.cs.kieler.klighd.lsp.model.CheckImagesAction
 import de.cau.cs.kieler.klighd.lsp.model.CheckedImagesAction
@@ -78,10 +78,10 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
     static val LOG = Logger.getLogger(KGraphDiagramServer)
     
     @Inject
-    protected ConstraintActionHandler constraintActionHandler
+    protected LayeredInteractiveActionHandler constraintActionHandler
     
     @Inject
-    protected RectPackActionHandler rectPackActionHandler
+    protected RectpackingInteractiveActionHandler rectpackingActionHandler
     
     @Inject 
     protected KGraphDiagramState diagramState
@@ -206,8 +206,8 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
                     handle(action as RefreshLayoutAction)
                 } else if (constraintActionHandler.canHandleAction(action.getKind)) {
                     constraintActionHandler.handle(action, clientId, this)
-                } else if (rectPackActionHandler.canHandleAction(action.getKind)) {
-                    rectPackActionHandler.handle(action, clientId, this)
+                } else if (rectpackingActionHandler.canHandleAction(action.getKind)) {
+                    rectpackingActionHandler.handle(action, clientId, this)
                 } else {
                     super.accept(message)
                 }

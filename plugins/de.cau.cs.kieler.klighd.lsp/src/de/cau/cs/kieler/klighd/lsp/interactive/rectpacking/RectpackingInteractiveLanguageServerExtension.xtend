@@ -10,7 +10,7 @@
  * 
  * This code is provided under the terms of the Eclipse Public License (EPL).
  */
-package de.cau.cs.kieler.klighd.lsp.interactive.rectpack
+package de.cau.cs.kieler.klighd.lsp.interactive.rectpacking
 
 import com.google.inject.Inject
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties
@@ -41,7 +41,7 @@ import org.eclipse.xtext.ide.server.ILanguageServerExtension
  * @author sdo
  */
 @Singleton
-class RectPackInterativeLanguageServerExtension implements ILanguageServerExtension {
+class RectpackingInteractiveLanguageServerExtension implements ILanguageServerExtension {
 
     @Accessors KGraphLanguageClient client;
 
@@ -61,7 +61,7 @@ class RectPackInterativeLanguageServerExtension implements ILanguageServerExtens
      * @param constraint constraint to be set
      * @param clientId identifier of diagram
      */
-    def setPositionConstraint(RectPackSetPositionConstraint constraint, String clientId) {
+    def setPositionConstraint(RectpackingSetPositionConstraint constraint, String clientId) {
         val uri = diagramState.getURIString(clientId)
         val kNode = LSPUtil.getKNode(diagramState, uri, constraint.id)
         val parent = kNode.parent;
@@ -107,7 +107,7 @@ class RectPackInterativeLanguageServerExtension implements ILanguageServerExtens
      * @param constraint The deletion constraint
      * @param clientId The client id of the corresponding  diagram view.
      */
-    def deletePositionConstraint(RectPackDeletePositionConstraint constraint, String clientId) {
+    def deletePositionConstraint(RectpackingDeletePositionConstraint constraint, String clientId) {
         val uri = diagramState.getURIString(clientId)
         val kNode = LSPUtil.getKNode(diagramState, uri, constraint.id)
         val parent = kNode.parent

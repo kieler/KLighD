@@ -10,7 +10,7 @@
  * 
  * This code is provided under the terms of the Eclipse Public License (EPL).
  */
-package de.cau.cs.kieler.klighd.lsp.interactive.rectpack
+package de.cau.cs.kieler.klighd.lsp.interactive.rectpacking
 
 import org.eclipse.xtend.lib.annotations.Data
 
@@ -20,7 +20,7 @@ import org.eclipse.xtend.lib.annotations.Data
  * @author sdo
  */
 @Data
-class RectPackSetPositionConstraint {
+class RectpackingSetPositionConstraint {
     String id
     int order
 }

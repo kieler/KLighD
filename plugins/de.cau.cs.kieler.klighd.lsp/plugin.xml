@@ -7,7 +7,7 @@
             class="de.cau.cs.kieler.klighd.lsp.interactive.layered.LayeredPreservedProperties">
       </preservedProperties>
       <preservedProperties
-            class="de.cau.cs.kieler.klighd.lsp.interactive.rectpack.RectPackingPreservedProperties">
+            class="de.cau.cs.kieler.klighd.lsp.interactive.rectpacking.RectpackingPreservedProperties">
       </preservedProperties>
    </extension>
 

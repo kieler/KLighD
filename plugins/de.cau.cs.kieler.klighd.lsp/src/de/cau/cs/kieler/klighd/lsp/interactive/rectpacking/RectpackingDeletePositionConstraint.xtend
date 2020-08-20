@@ -10,17 +10,17 @@
  * 
  * This code is provided under the terms of the Eclipse Public License (EPL).
  */
-package de.cau.cs.kieler.klighd.lsp.interactive.rectpack
+package de.cau.cs.kieler.klighd.lsp.interactive.rectpacking
 
 import org.eclipse.xtend.lib.annotations.Data
 
 /**
  * Message send if an order constraint is deleted.
- * Only the node id is requiered to do so, since it has its previous position saved together with its actual position.
+ * Only the node id is required to do so, since it has its previous position saved together with its actual position.
  * 
  * @author sdo
  */
 @Data
-class RectPackDeletePositionConstraint {
+class RectpackingDeletePositionConstraint {
     String id
 }

@@ -42,7 +42,7 @@ import org.eclipse.xtext.ide.server.ILanguageServerExtension
  * @author jet, cos, sdo
  */
 @Singleton
-class ConstraintsLanguageServerExtension implements ILanguageServerExtension {
+class LayeredInteractiveLanguageServerExtension implements ILanguageServerExtension {
 
     @Accessors KGraphLanguageClient client;
 
