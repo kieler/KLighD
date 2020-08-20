@@ -679,12 +679,12 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
                     final KNode node = (KNode) element;
                     
                     // Get properties that shall be preserved from ElkGraph to KGraph
-                    List<IProperty<Object>> propertiesToPreserve = KlighdDataManager.getInstance().getPreservedProperties();
+                    List<IProperty<?>> propertiesToPreserve = KlighdDataManager.getInstance().getPreservedProperties();
                     
                     // Preserve properties
-                    for (IProperty<Object> property : propertiesToPreserve) {
+                    for (IProperty<?> property : propertiesToPreserve) {
                         if (layoutNode.hasProperty(property)) {
-                            node.setProperty(property, layoutNode.getProperty(property));
+                            node.setProperty((IProperty<Object>) property, (Object) layoutNode.getProperty(property));
                         }
                     }                  
                     

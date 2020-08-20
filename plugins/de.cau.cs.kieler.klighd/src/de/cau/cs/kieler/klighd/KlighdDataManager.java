@@ -95,6 +95,9 @@ public final class KlighdDataManager {
 
     /** name of the 'offscreenRenderer' element. */
     private static final String ELEMENT_OFFSCREEN_RENDERER = "offscreenRenderer";
+    
+    /** name of the 'preservedProperties' element. */
+    private static final String PRESERVED_PROPERTIES = "preservedProperties";
 
     /** name of the 'startupHook' element. */
     private static final String ELEMENT_STARTUP_HOOK = "startupHook";
@@ -219,7 +222,7 @@ public final class KlighdDataManager {
     private final List<CustomFigureWrapperDescriptor> customFigureWrapperMapping = Lists.newArrayList();
     
     /** the properties that shall be preserved from the layout graph to the kgraph */
-    private final List<IProperty<Object>> preservedProperties = Lists.newArrayList();
+    private final List<IProperty<?>> preservedProperties = Lists.newArrayList();
 
     /**
      * A private constructor to prevent instantiation.
@@ -231,7 +234,6 @@ public final class KlighdDataManager {
         if (Klighd.IS_PLATFORM_RUNNING) {
             // load the data from the extension points
             loadKlighdExtensionsViaExtensionPoint();
-            loadPreservedPropertiesViaExtensionPoint();
             try {
                 loadDiagramSynthesesViaExtensionPoint(id2Synthesis, type2Syntheses);
                 
@@ -247,7 +249,6 @@ public final class KlighdDataManager {
         } else {
             loadDiagramSynthesesViaServiceLoader(id2Synthesis, type2Syntheses);
             loadKlighdExtensionsViaServiceLoader();
-            loadPreservedPropertiesViaServiceLoader();
         }
         
         this.idSynthesisMapping = id2Synthesis;
@@ -295,10 +296,18 @@ public final class KlighdDataManager {
             final String elementName = element.getName();
             final String id = element.getAttribute(ATTRIBUTE_ID);
 
-            // 'wrapper' extensions don't define an 'id' so check for that type of extension first
-            //  before checking for a valid id
+            // 'wrapper' and 'preservedProperties' extensions don't define an 'id' so check for that type of extension
+            // first before checking for a valid id
             if (ELEMENT_WRAPPER.equals(elementName)) {
                 registerCustomFigureWrapper(element);
+
+            } else if (PRESERVED_PROPERTIES.equals(elementName)) {
+                doRegisterExtension(element, IPreservedProperties.class,
+                        (preservedProperties) -> {
+                            for (IProperty<?> property : preservedProperties.getProperties()) {
+                                registerPreservedProperty(property);
+                            }
+                        });
 
             } else if (Strings.isNullOrEmpty(id)) {
                 final String msg = "KLighD: Found element of type '" + elementName
@@ -368,6 +377,12 @@ public final class KlighdDataManager {
         for (IAction action : ServiceLoader.load(IAction.class,
                 KlighdDataManager.class.getClassLoader())) {
             registerAction(action.getClass().getName(), action);
+        }
+        for (IPreservedProperties preservedProperties : ServiceLoader.load(IPreservedProperties.class,
+                KlighdDataManager.class.getClassLoader())) {
+            for (IProperty<?> property : preservedProperties.getProperties()) {
+                registerPreservedProperty(property);
+            }
         }
     }
 
@@ -644,7 +659,7 @@ public final class KlighdDataManager {
         return this;
     }
     
-    public KlighdDataManager registerPreservedProperties(IProperty<Object> preservedProperty) {
+    public KlighdDataManager registerPreservedProperty(IProperty<?> preservedProperty) {
         this.preservedProperties.add(preservedProperty);
         return this;
     }
@@ -1181,45 +1196,8 @@ public final class KlighdDataManager {
      * 
      * @return the {@link List} of registered properties to preserve
      */
-    public List<IProperty<Object>> getPreservedProperties() {
+    public List<IProperty<?>> getPreservedProperties() {
         return this.preservedProperties;
     }
-    
-    /**
-     * Loads all registered extensions from the extension point 'preservedProperties' and builds up the
-     * corresponding list of properties.
-     */
-    private void loadPreservedPropertiesViaExtensionPoint() {
-        final Iterable<IConfigurationElement> extensions = Iterables.filter(
-                Arrays.asList(
-                        Platform.getExtensionRegistry().getConfigurationElementsFor(IPreservedProperties.EXTENSION_POINT_ID)
-                ),
-                element -> true
-        );
-        for (IConfigurationElement element : extensions) {
-            try {
-                preservedProperties.addAll(
-                        ((IPreservedProperties<Object>) element.createExecutableExtension(IPreservedProperties.ATTRIBUTE_ID))
-                        .getProperties());
-            } catch (CoreException e) {
-                Klighd.handle(
-                        new Status(IStatus.ERROR, Klighd.PLUGIN_ID,
-                                KlighdDataManager.CORE_EXCEPTION_ERROR_MSG.replace("<<CLAZZ>>",
-                                        element.getAttribute("id")), e));
-            }
-        }
-    }
 
-    /**
-     * Loads the registered properties to preserve from the layout graph via Java {@link ServiceLoader}.
-     */
-    private void loadPreservedPropertiesViaServiceLoader() {
-        final Iterable<IPreservedProperties<Object>> listOfPropertyLists = Iterables.transform(
-                ServiceLoader.load(IPreservedProperties.class, KlighdDataManager.class.getClassLoader()),
-                s -> s
-        );
-        for (IPreservedProperties<Object> propertyList : listOfPropertyLists) {
-            preservedProperties.addAll(propertyList.getProperties());
-        }
-    }
 }

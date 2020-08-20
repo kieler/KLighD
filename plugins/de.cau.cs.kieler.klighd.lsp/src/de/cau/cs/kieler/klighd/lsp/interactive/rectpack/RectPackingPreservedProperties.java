@@ -26,13 +26,13 @@ import de.cau.cs.kieler.klighd.IPreservedProperties;
  * 
  * @author sdo
  */
-public class RectPackingPreservedProperties implements IPreservedProperties<Integer> {
+public class RectPackingPreservedProperties implements IPreservedProperties {
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public List<IProperty<Integer>> getProperties() {
+    public List<IProperty<?>> getProperties() {
         return Arrays.asList(RectPackingOptions.CURRENT_POSITION);
     }
 

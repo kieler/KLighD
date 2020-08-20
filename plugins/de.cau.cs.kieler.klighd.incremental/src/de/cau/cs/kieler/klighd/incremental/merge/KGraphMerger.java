@@ -452,10 +452,10 @@ public class KGraphMerger {
         // Do not remove properties that are set by the layout algorithm to save the position of a node.
         
         // Get properties that shall be preserved from ElkGraph to KGraph
-        List<IProperty<Object>> propertiesToPreserve = KlighdDataManager.getInstance().getPreservedProperties();
+        List<IProperty<?>> propertiesToPreserve = KlighdDataManager.getInstance().getPreservedProperties();
         
         // Preserve properties
-        for (IProperty<Object> property : propertiesToPreserve) {
+        for (IProperty<?> property : propertiesToPreserve) {
             removedProperties.remove(property);
         }
         

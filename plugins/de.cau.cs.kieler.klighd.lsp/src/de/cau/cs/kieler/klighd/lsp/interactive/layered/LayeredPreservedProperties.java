@@ -26,13 +26,13 @@ import de.cau.cs.kieler.klighd.IPreservedProperties;
  * 
  * @author sdo
  */
-public class LayeredPreservedProperties implements IPreservedProperties<Integer> {
+public class LayeredPreservedProperties implements IPreservedProperties {
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public List<IProperty<Integer>> getProperties() {
+    public List<IProperty<?>> getProperties() {
         return Arrays.asList(LayeredOptions.LAYERING_LAYER_ID, LayeredOptions.CROSSING_MINIMIZATION_POSITION_ID);
     }
 
