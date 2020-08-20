@@ -21,6 +21,7 @@ import de.cau.cs.kieler.klighd.IAction.ActionContext
 import de.cau.cs.kieler.klighd.KlighdDataManager
 import de.cau.cs.kieler.klighd.SynthesisOption
 import de.cau.cs.kieler.klighd.ViewContext
+import de.cau.cs.kieler.klighd.lsp.launch.AbstractLanguageServer
 import de.cau.cs.kieler.klighd.lsp.model.GetOptionsParam
 import de.cau.cs.kieler.klighd.lsp.model.GetOptionsResult
 import de.cau.cs.kieler.klighd.lsp.model.LayoutOptionUIData
@@ -256,7 +257,9 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
                 }
                 // Update the diagram.
                 if (diagramUpdater instanceof KGraphDiagramUpdater) {
-                    (diagramUpdater as KGraphDiagramUpdater).updateDiagrams2(#[_uriExtensions.toUri(decodedUri)])
+                    AbstractLanguageServer.addToMainThreadQueue([
+                        (diagramUpdater as KGraphDiagramUpdater).updateDiagrams2(#[_uriExtensions.toUri(decodedUri)])
+                    ])
                     return null
                 }
                 throw new IllegalStateException("The diagramUpdater is not setup correctly.")
@@ -295,7 +298,9 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
                 // Update the layout of the diagram.
                 val diagramServer = this.diagramServerManager.findDiagramServersByUri(decodedUri).head
                 if (diagramUpdater instanceof KGraphDiagramUpdater && diagramServer instanceof KGraphDiagramServer) {
-                    (diagramUpdater as KGraphDiagramUpdater).updateLayout(diagramServer as KGraphDiagramServer)
+                    AbstractLanguageServer.addToMainThreadQueue([
+                        (diagramUpdater as KGraphDiagramUpdater).updateLayout(diagramServer as KGraphDiagramServer)
+                    ])
                 } else {
                     throw new IllegalStateException("The diagram server or diagram updater are not set up correctly.")
                 }
@@ -319,7 +324,9 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
                         val diagramServer = this.diagramServerManager.findDiagramServersByUri(decodedUri)
                             .filter(KGraphDiagramServer).head
                         if (diagramServer !== null) {
-                            diagramUpdater.updateDiagram(diagramServer)
+                            AbstractLanguageServer.addToMainThreadQueue([
+                                diagramUpdater.updateDiagram(diagramServer)
+                            ])
                         } else {
                             throw new IllegalStateException("The diagram server is not set up correctly.")
                         }
@@ -333,7 +340,9 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
                         val diagramServer = this.diagramServerManager.findDiagramServersByUri(decodedUri)
                             .filter(KGraphDiagramServer).head
                         if (diagramServer !== null) {
-                            (diagramUpdater as KGraphDiagramUpdater).updateLayout(diagramServer)
+                            AbstractLanguageServer.addToMainThreadQueue([
+                                (diagramUpdater as KGraphDiagramUpdater).updateLayout(diagramServer)
+                            ])
                         } else {
                             throw new IllegalStateException("The diagram server is not set up correctly.")
                         }
@@ -450,7 +459,9 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
             // use the 'model' as its model.
             if (diagramUpdater instanceof KGraphDiagramUpdater) {
                 (diagramUpdater as KGraphDiagramUpdater).prepareModel(diagramServer, model, uri)
-                (diagramUpdater as KGraphDiagramUpdater).updateLayout(diagramServer)
+                AbstractLanguageServer.addToMainThreadQueue([
+                    (diagramUpdater as KGraphDiagramUpdater).updateLayout(diagramServer)
+                ])
                 // Also, update the syntheses available for the given diagram.
                 if (!update) {
                     val availableSynthesesData = getAvailableSynthesesData(model.class)
