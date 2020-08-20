@@ -148,9 +148,12 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
     def void sendAvailableSyntheses(String path, IDiagramServer server) {
         if (path !== null) {
             doRead(path) [ resource, ci |
-                val availableSynthesesData = getAvailableSynthesesData(resource.contents.head?.class)
-                
-                server.dispatch(new SetSynthesesAction(availableSynthesesData))
+                val currentModelClass = resource?.contents?.head?.class
+                if (currentModelClass !== null) {
+                    val availableSynthesesData = getAvailableSynthesesData(currentModelClass)
+                    
+                    server.dispatch(new SetSynthesesAction(availableSynthesesData))
+                }
                 return null
             ]
         }
@@ -180,7 +183,7 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
         val decodedUri = URLDecoder.decode(param.uri, "UTF-8")
         return doRead(decodedUri) [ resource, ci |
             synchronized (diagramState) {
-                val ViewContext viewContext = diagramState.getKGraphContext(resource.URI.toString)
+                val ViewContext viewContext = diagramState.getKGraphContext(decodedUri)
                 if (viewContext === null) {
                     // A diagram for this file is currently not opened, so no options can be shown.
                     return null
@@ -233,7 +236,7 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
         val decodedUri = URLDecoder.decode(param.uri, "UTF-8")
         doRead(decodedUri) [ resource, ci |
             synchronized (diagramState) {
-                val ViewContext viewContext = diagramState.getKGraphContext(resource.URI.toString)
+                val ViewContext viewContext = diagramState.getKGraphContext(decodedUri)
                 if (viewContext === null) {
                     sendErrorAndThrow(new IllegalStateException("The diagram has already been closed."))
                 }
@@ -253,7 +256,7 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
                 }
                 // Update the diagram.
                 if (diagramUpdater instanceof KGraphDiagramUpdater) {
-                    (diagramUpdater as KGraphDiagramUpdater).updateDiagrams2(#[resource.URI])
+                    (diagramUpdater as KGraphDiagramUpdater).updateDiagrams2(#[_uriExtensions.toUri(decodedUri)])
                     return null
                 }
                 throw new IllegalStateException("The diagramUpdater is not setup correctly.")
@@ -265,8 +268,7 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
         val decodedUri = URLDecoder.decode(param.uri, "UTF-8")
         doRead(decodedUri) [ resource, ci |
             synchronized (diagramState) {
-                val uri = resource.URI.toString
-                val LayoutConfigurator layoutConfig = diagramState.getLayoutConfig(uri)
+                val LayoutConfigurator layoutConfig = diagramState.getLayoutConfig(decodedUri)
                 if (layoutConfig === null) {
                     throw new IllegalStateException("The diagram has already been closed")
                 }
@@ -288,10 +290,10 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
                         layoutConfig.configure(ElkGraphElement).setProperty(optionData, layoutOption.value);
                     }
                 }
-                diagramState.putLayoutConfig(uri, layoutConfig)
+                diagramState.putLayoutConfig(decodedUri, layoutConfig)
                 
                 // Update the layout of the diagram.
-                val diagramServer = this.diagramServerManager.findDiagramServersByUri(uri).head
+                val diagramServer = this.diagramServerManager.findDiagramServersByUri(decodedUri).head
                 if (diagramUpdater instanceof KGraphDiagramUpdater && diagramServer instanceof KGraphDiagramServer) {
                     (diagramUpdater as KGraphDiagramUpdater).updateLayout(diagramServer as KGraphDiagramServer)
                 } else {

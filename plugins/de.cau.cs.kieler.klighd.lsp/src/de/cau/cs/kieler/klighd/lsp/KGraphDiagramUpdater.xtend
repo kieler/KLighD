@@ -19,6 +19,7 @@ import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart
 import de.cau.cs.kieler.klighd.KlighdDataManager
 import de.cau.cs.kieler.klighd.SynthesisOption
 import de.cau.cs.kieler.klighd.ViewContext
+import de.cau.cs.kieler.klighd.ide.model.MessageModel
 import de.cau.cs.kieler.klighd.kgraph.KNode
 import de.cau.cs.kieler.klighd.lsp.model.SKGraph
 import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties
@@ -90,10 +91,10 @@ class KGraphDiagramUpdater extends DiagramUpdater {
      * @param diagramServer The diagram server that should update its layout.
      */
     protected def CompletableFuture<Void> doUpdateLayout(KGraphDiagramServer diagramServer) {
-        return (languageServer as KGraphLanguageServerExtension).doRead(diagramServer.sourceUri) [ resource, ci |
+        val uri = diagramServer.sourceUri
+        return (languageServer as KGraphLanguageServerExtension).doRead(uri) [ resource, ci |
             // Just update the SGraph from the already existing KGraph.
             var ViewContext viewContext = null
-            val uri = resource.URI.toString
             synchronized(diagramState) {
                 viewContext = diagramState.getKGraphContext(uri)
             }
@@ -124,7 +125,11 @@ class KGraphDiagramUpdater extends DiagramUpdater {
                 snapshotModel = diagramState.getSnapshotModel(uri)
             }
             val model = if (snapshotModel === null) {
-                    resource.contents.head
+                    if (resource === null) {
+                        new MessageModel("No model in editor")
+                    } else {
+                        resource.contents.head
+                    }
                 } else {
                     snapshotModel
                 }

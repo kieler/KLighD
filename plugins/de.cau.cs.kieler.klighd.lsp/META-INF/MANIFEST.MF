@@ -19,6 +19,7 @@ Bundle-Localization: plugin
 Bundle-ActivationPolicy: lazy
 Require-Bundle: de.cau.cs.kieler.kgraph.text,
  de.cau.cs.kieler.klighd,
+ de.cau.cs.kieler.klighd.ide,
  de.cau.cs.kieler.klighd.kgraph,
  de.cau.cs.kieler.klighd.krendering.extensions,
  de.cau.cs.kieler.klighd.standalone,
