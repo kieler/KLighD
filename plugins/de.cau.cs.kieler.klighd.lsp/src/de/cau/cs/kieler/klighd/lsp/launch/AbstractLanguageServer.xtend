@@ -19,11 +19,10 @@ import java.nio.channels.Channels
 import java.util.concurrent.BlockingQueue
 import java.util.concurrent.Executors
 import java.util.concurrent.LinkedBlockingQueue
-import java.util.function.Function
+import java.util.function.Consumer
 import org.apache.log4j.Logger
 import org.eclipse.lsp4j.services.LanguageServer
 import org.eclipse.xtext.ide.server.LanguageServerImpl
-import java.util.function.Consumer
 
 /**
  * Extensible entry point for the language server applications for the projects based around KLighD diagrams.<br>
