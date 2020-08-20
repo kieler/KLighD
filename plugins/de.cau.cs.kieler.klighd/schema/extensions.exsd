@@ -28,6 +28,7 @@
             <element ref="offscreenRenderer"/>
             <element ref="handler"/>
             <element ref="preservedProperties"/>
+            <element ref="startupHook"/>
          </choice>
          <attribute name="point" type="string" use="required">
             <annotation>
@@ -313,6 +314,21 @@ Note: Implementations should not directly implement the required interface but s
                </documentation>
                <appinfo>
                   <meta.attribute kind="java" basedOn=":de.cau.cs.kieler.klighd.IPreservedProperties"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="startupHook">
+      <complexType>
+         <attribute name="class" type="string" use="required">
+            <annotation>
+               <documentation>
+                  Class that is to be used to programmatically register KLighD extensions during startup.
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="java" basedOn=":de.cau.cs.kieler.klighd.IKlighdStartupHook"/>
                </appinfo>
             </annotation>
          </attribute>

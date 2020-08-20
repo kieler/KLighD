@@ -69,9 +69,6 @@ public final class KlighdDataManager {
     /** identifier of the extension point for model transformations. */
     private static final String EXTP_ID_DIAGRAM_SYNTHESES = "de.cau.cs.kieler.klighd.diagramSyntheses";
 
-    /** identifier of the extension point for startup hooks. */
-    private static final String EXTP_ID_STARTUP_HOOK = "de.cau.cs.kieler.klighd.klighdStartupHook";
-
     /** name of the 'viewer' element. */
     private static final String ELEMENT_VIEWER = "viewer";
 
@@ -161,11 +158,25 @@ public final class KlighdDataManager {
      */
     static {
         instance = new KlighdDataManager();
-        // Load the startup hooks after creating the instance, as they should use this instance to hook into.
+
         if (Klighd.IS_PLATFORM_RUNNING) {
-            loadStartupHooksViaExtensionPoint();
+            // load the data from the extension points
+            instance.loadKlighdExtensionsViaExtensionPoint();
+            try {
+                instance.loadDiagramSynthesesViaExtensionPoint(instance.idSynthesisMapping, instance.typeSynthesisMapping);
+                
+            } catch (final Exception e) {
+                instance.idSynthesisMapping.clear();
+                instance.typeSynthesisMapping.clear();
+                
+                Klighd.handle(
+                        new Status(IStatus.ERROR, Klighd.PLUGIN_ID,
+                                "KLighD: Unexptected failure while loading registered diagram syntheses.", e));
+            }
+            
         } else {
-            loadStartupHooksViaServiceLoader();
+            instance.loadDiagramSynthesesViaServiceLoader(instance.idSynthesisMapping, instance.typeSynthesisMapping);
+            instance.loadKlighdExtensionsViaServiceLoader();
         }
     }
 
@@ -179,10 +190,10 @@ public final class KlighdDataManager {
     }
 
     /** the mapping of ids to the corresponding instances of {@link ISynthesis}. */
-    private final Map<String, ISynthesis> idSynthesisMapping;
+    private final Map<String, ISynthesis> idSynthesisMapping = Maps.newLinkedHashMap();
 
     /** the mapping of types to the corresponding instances of {@link ISynthesis}. */
-    private final Multimap<Class<?>, ISynthesis> typeSynthesisMapping;
+    private final Multimap<Class<?>, ISynthesis> typeSynthesisMapping = ArrayListMultimap.create();
 
     /**
      * A caching map that avoids the effort of determining the correct syntheses for a given type
@@ -227,33 +238,7 @@ public final class KlighdDataManager {
     /**
      * A private constructor to prevent instantiation.
      */
-    private KlighdDataManager() {
-        final Map<String, ISynthesis> id2Synthesis = Maps.newLinkedHashMap();
-        final Multimap<Class<?>, ISynthesis> type2Syntheses = ArrayListMultimap.create();
-        
-        if (Klighd.IS_PLATFORM_RUNNING) {
-            // load the data from the extension points
-            loadKlighdExtensionsViaExtensionPoint();
-            try {
-                loadDiagramSynthesesViaExtensionPoint(id2Synthesis, type2Syntheses);
-                
-            } catch (final Exception e) {
-                id2Synthesis.clear();
-                type2Syntheses.clear();
-                
-                Klighd.handle(
-                        new Status(IStatus.ERROR, Klighd.PLUGIN_ID,
-                                "KLighD: Unexptected failure while loading registered diagram syntheses.", e));
-            }
-            
-        } else {
-            loadDiagramSynthesesViaServiceLoader(id2Synthesis, type2Syntheses);
-            loadKlighdExtensionsViaServiceLoader();
-        }
-        
-        this.idSynthesisMapping = id2Synthesis;
-        this.typeSynthesisMapping = type2Syntheses;
-    }
+    private KlighdDataManager() {}
 
     /**
      * Reports an error that occurred while reading extensions.
@@ -296,8 +281,8 @@ public final class KlighdDataManager {
             final String elementName = element.getName();
             final String id = element.getAttribute(ATTRIBUTE_ID);
 
-            // 'wrapper' and 'preservedProperties' extensions don't define an 'id' so check for that type of extension
-            // first before checking for a valid id
+            // 'wrapper', 'preservedProperties', and 'startupHook' extensions don't define an 'id' so check for that
+            // type of extension first before checking for a valid id
             if (ELEMENT_WRAPPER.equals(elementName)) {
                 registerCustomFigureWrapper(element);
 
@@ -309,6 +294,16 @@ public final class KlighdDataManager {
                             }
                         });
 
+            } else if (ELEMENT_STARTUP_HOOK.equals(elementName)) {
+                doRegisterExtension(element, IKlighdStartupHook.class,
+                        (startupHook) -> {
+                            try {
+                                startupHook.execute();
+                            } catch (Throwable t) {
+                                Klighd.log(new Status(IStatus.ERROR, Klighd.PLUGIN_ID, STARTUP_HOOK_ERROR_MSG, t));
+                            }
+                        });
+                
             } else if (Strings.isNullOrEmpty(id)) {
                 final String msg = "KLighD: Found element of type '" + elementName
                         + "' extending extension point '" + EXTP_ID_EXTENSIONS
@@ -382,6 +377,14 @@ public final class KlighdDataManager {
                 KlighdDataManager.class.getClassLoader())) {
             for (IProperty<?> property : preservedProperties.getProperties()) {
                 registerPreservedProperty(property);
+            }
+        }
+        for (IKlighdStartupHook startupHook : ServiceLoader.load(IKlighdStartupHook.class,
+                KlighdDataManager.class.getClassLoader())) {
+            try {
+                startupHook.execute();
+            } catch (Throwable t) {
+                Klighd.log(new Status(IStatus.ERROR, Klighd.PLUGIN_ID, STARTUP_HOOK_ERROR_MSG, t));
             }
         }
     }
@@ -742,62 +745,6 @@ public final class KlighdDataManager {
 
         for (Class<? extends AbstractDiagramSynthesis<?>> clazz: extensions) {
             registerDiagramSynthesisClass(null, clazz, true, idSynthesisMapping, typeSynthesisMapping);
-        }
-    }
-
-    /**
-     * Loads the registered {@link de.cau.cs.kieler.klighd.IKlighdStartupHook} from the extension point.
-     */
-    private static final void loadStartupHooksViaExtensionPoint() {
-        final Iterable<IConfigurationElement> extensions = Iterables.filter(
-                Arrays.asList(
-                        Platform.getExtensionRegistry().getConfigurationElementsFor(EXTP_ID_STARTUP_HOOK)
-                ),
-                element -> ELEMENT_STARTUP_HOOK.equals(element.getName())
-        );
-
-        for (final IConfigurationElement element : extensions) {
-            final String id = element.getAttribute(ATTRIBUTE_ID);
-            if (Strings.isNullOrEmpty(id))
-                reportError(EXTP_ID_STARTUP_HOOK, element, ATTRIBUTE_ID, null, null);
-            
-            else {
-                    
-                // initialize model transformation from the extension point
-                IKlighdStartupHook startupHook = null;
-                try {
-                    startupHook = (IKlighdStartupHook) element.createExecutableExtension(ATTRIBUTE_CLASS);
-
-                } catch (final CoreException exception) {
-                    Klighd.handle(
-                            new Status(IStatus.ERROR, Klighd.PLUGIN_ID,
-                                    CORE_EXCEPTION_ERROR_MSG.replace("<<CLAZZ>>",
-                                            element.getAttribute(ATTRIBUTE_CLASS)), exception));
-                }
-
-                if (startupHook != null) {
-                    try {
-                        startupHook.execute();
-                    } catch (Throwable t) {
-                        Klighd.log(new Status(IStatus.ERROR, Klighd.PLUGIN_ID, STARTUP_HOOK_ERROR_MSG, t));
-                    }
-                }
-            }
-        }
-    }
-
-    /**
-     * Loads the registered {@link de.cau.cs.kieler.klighd.IKlighdStartupHook} via Java {@link ServiceLoader}.
-     */
-    private static void loadStartupHooksViaServiceLoader() {
-
-        for (IKlighdStartupHook startupHook : ServiceLoader.load(IKlighdStartupHook.class,
-                KlighdDataManager.class.getClassLoader())) {
-            try {
-                startupHook.execute();
-            } catch (Throwable t) {
-                Klighd.log(new Status(IStatus.ERROR, Klighd.PLUGIN_ID, STARTUP_HOOK_ERROR_MSG, t));
-            }
         }
     }
 
