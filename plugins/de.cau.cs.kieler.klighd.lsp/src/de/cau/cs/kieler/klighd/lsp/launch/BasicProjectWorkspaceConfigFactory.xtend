@@ -29,12 +29,6 @@ import org.eclipse.xtext.workspace.WorkspaceConfig
 class BasicProjectWorkspaceConfigFactory implements IMultiRootWorkspaceConfigFactory {
     
     @Inject extension UriExtensions
-    
-    override getWorkspaceConfig(URI workspaceBaseURI) {
-        val workspaceConfig = new WorkspaceConfig
-        workspaceConfig.findProjects(workspaceBaseURI)
-        return workspaceConfig
-    }
 
     def void findProjects(WorkspaceConfig workspaceConfig, URI uri) {
         if (uri !== null) {

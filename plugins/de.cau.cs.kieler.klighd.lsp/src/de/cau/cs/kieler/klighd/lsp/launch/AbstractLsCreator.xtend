@@ -34,7 +34,7 @@ import org.eclipse.lsp4j.jsonrpc.MessageConsumer
 import org.eclipse.lsp4j.services.LanguageClient
 import org.eclipse.sprotty.xtext.launch.DiagramServerLauncher.LanguageClientAppender
 import org.eclipse.xtext.ide.server.ILanguageServerExtension
-import org.eclipse.xtext.ide.server.IWorkspaceConfigFactory
+import org.eclipse.xtext.ide.server.IMultiRootWorkspaceConfigFactory
 import org.eclipse.xtext.ide.server.LanguageServerImpl
 import org.eclipse.xtext.ide.server.ServerLauncher
 import org.eclipse.xtext.resource.IResourceServiceProvider
@@ -74,8 +74,7 @@ abstract class AbstractLsCreator implements ILsCreator {
                 bind(IResourceServiceProvider.Registry).toProvider(IResourceServiceProvider.Registry.RegistryProvider)
     
                 // the WorkspaceConfigFactory is overridden to disable the creation of a folder with Xtext nature.
-                // TODO: replace with IMultiRootWorkspaceConfigFactory when using Xtext 2.22.
-                bind(IWorkspaceConfigFactory).to(BasicProjectWorkspaceConfigFactory)
+                bind(IMultiRootWorkspaceConfigFactory).to(BasicProjectWorkspaceConfigFactory)
             ],
             // Diagram related bindings
             new KGraphDiagramModule(),
