@@ -21,6 +21,7 @@ import java.util.concurrent.Executors
 import java.util.concurrent.LinkedBlockingQueue
 import java.util.function.Consumer
 import org.apache.log4j.Logger
+import org.eclipse.elk.core.util.Maybe
 import org.eclipse.lsp4j.services.LanguageServer
 import org.eclipse.xtext.ide.server.LanguageServerImpl
 
@@ -53,7 +54,7 @@ abstract class AbstractLanguageServer implements Runnable {
     /**
      * Queue to execute SWT or AWT calls on the main Thread.
      */
-    private static val BlockingQueue<Consumer<Void>> mainThreadQueue = new LinkedBlockingQueue<Consumer<Void>>()
+    static val BlockingQueue<Consumer<Void>> mainThreadQueue = new LinkedBlockingQueue<Consumer<Void>>()
 
     /**
      * Configure this the launch of this language server with the language registration, a language server creator and
@@ -91,17 +92,27 @@ abstract class AbstractLanguageServer implements Runnable {
      * Add a new function to be executed on the main Thread.
      * This method will wait until the function is executed.
      */
-    public static def addToMainThreadQueue(Consumer<Object> f) {
+    static def addToMainThreadQueue(Consumer<Object> f) {
 
+        val Maybe<Throwable> maybeThrowable = new Maybe
         synchronized (mainThreadQueue) {
             mainThreadQueue.add([
-                f.accept(null)
+                // Make sure methods in the main thread queue do not throw, any throwable thrown by the given function
+                // is remembered and finally re-thrown by this method.
+                try {
+                    f.accept(null)
+                } catch (Throwable t) {
+                    maybeThrowable.set(t)
+                }
             ])
             // Wait to continue
             while (!mainThreadQueue.isNullOrEmpty) {
                 mainThreadQueue.notify
                 mainThreadQueue.wait
             }
+        }
+        if (maybeThrowable.get instanceof Throwable) {
+            throw maybeThrowable.get
         }
     }
     
