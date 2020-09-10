@@ -12,20 +12,12 @@
  */
 package de.cau.cs.kieler.klighd.internal.macrolayout;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map.Entry;
-import java.util.ServiceLoader;
 import java.util.Set;
 
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Platform;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.elk.core.math.KVector;
 import org.eclipse.elk.core.options.CoreOptions;
 import org.eclipse.elk.core.service.IDiagramLayoutConnector;
@@ -60,9 +52,7 @@ import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 
 import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
-import de.cau.cs.kieler.klighd.IPreservedProperties;
 import de.cau.cs.kieler.klighd.IViewer;
-import de.cau.cs.kieler.klighd.Klighd;
 import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.KlighdDataManager;
 import de.cau.cs.kieler.klighd.KlighdOptions;
@@ -270,7 +260,7 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
      * by ELK. It is used to decide which value to rely on for the minimal node size.
      */
     private static final IProperty<Boolean> INITIAL_NODE_SIZE = new Property<Boolean>(
-            "klighd.initialNodeSize", true);    
+            "klighd.initialNodeSize", true);
 
     /**
      * Creates a layout node for the node inside the given layout parent node.
