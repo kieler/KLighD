@@ -21,7 +21,6 @@ import java.util.Map;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.elk.core.LayoutConfigurator;
 import org.eclipse.elk.core.util.IGraphElementVisitor;
 import org.eclipse.elk.core.util.Pair;
 import org.eclipse.elk.graph.properties.IProperty;
@@ -399,24 +398,24 @@ public abstract class AbstractDiagramSynthesis<S> implements ISynthesis {
     }
     
     /**
-     * Returns a list of {@link LayoutConfigurator LayoutConfigurators} to be handed over to ELK in
+     * Returns a list of {@link IGraphElementVisitor IGraphElementVisitor} to be handed over to ELK in
      * order to cause additional layout runs corresponding to the provided configurations.
      * May be overridden by concrete implementations.
      * 
      * @param viewModel
      *            the view model
-     * @return a {@link List} of {@link LayoutConfigurator LayoutConfigurators}
+     * @return a {@link List} of {@link IGraphElementVisitor IGraphElementVisitor}
      */
     public List<? extends IGraphElementVisitor> getAdditionalLayoutConfigs(final KNode viewModel) {
         return getAdditionalLayoutConfigs();
     }
 
     /**
-     * Returns a list of {@link LayoutConfigurator LayoutConfigurators} to be handed over to ELK in
+     * Returns a list of {@link IGraphElementVisitor IGraphElementVisitor} to be handed over to ELK in
      * order to cause additional layout runs corresponding to the provided configurations.
      * May be overridden by concrete implementations.
      * 
-     * @return a {@link List} of {@link LayoutConfigurator LayoutConfigurators}
+     * @return a {@link List} of {@link IGraphElementVisitor IGraphElementVisitor}
      */
     public List<? extends IGraphElementVisitor> getAdditionalLayoutConfigs() {
         return new ArrayList<IGraphElementVisitor>();
