@@ -12,6 +12,7 @@
  */
 package de.cau.cs.kieler.klighd;
 
+import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.elk.graph.properties.IProperty;
@@ -21,7 +22,7 @@ import org.eclipse.elk.graph.properties.IProperty;
  * 
  * @author sdo
  */
-public interface IPreservedProperties {
+public interface IPreservedProperties extends Iterable<IProperty<?>> {
     
     /**
      * A List of all properties that should be preserved.
@@ -29,5 +30,9 @@ public interface IPreservedProperties {
      * @return The preserved properties.
      */
     public List<IProperty<?>> getProperties();
+    
+    default Iterator<IProperty<?>> iterator() {
+        return getProperties().iterator();
+    }
 
 }

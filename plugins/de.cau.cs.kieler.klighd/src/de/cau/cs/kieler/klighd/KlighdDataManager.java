@@ -288,11 +288,7 @@ public final class KlighdDataManager {
 
             } else if (PRESERVED_PROPERTIES.equals(elementName)) {
                 doRegisterExtension(element, IPreservedProperties.class,
-                        (preservedProperties) -> {
-                            for (IProperty<?> property : preservedProperties.getProperties()) {
-                                registerPreservedProperty(property);
-                            }
-                        });
+                        (preservedProperties) -> registerPreservedProperties(preservedProperties));
 
             } else if (ELEMENT_STARTUP_HOOK.equals(elementName)) {
                 doRegisterExtension(element, IKlighdStartupHook.class,
@@ -375,9 +371,7 @@ public final class KlighdDataManager {
         }
         for (IPreservedProperties preservedProperties : ServiceLoader.load(IPreservedProperties.class,
                 KlighdDataManager.class.getClassLoader())) {
-            for (IProperty<?> property : preservedProperties.getProperties()) {
-                registerPreservedProperty(property);
-            }
+            registerPreservedProperties(preservedProperties);
         }
         for (IKlighdStartupHook startupHook : ServiceLoader.load(IKlighdStartupHook.class,
                 KlighdDataManager.class.getClassLoader())) {
@@ -664,6 +658,13 @@ public final class KlighdDataManager {
     
     public KlighdDataManager registerPreservedProperty(IProperty<?> preservedProperty) {
         this.preservedProperties.add(preservedProperty);
+        return this;
+    }
+    
+    public KlighdDataManager registerPreservedProperties(Iterable<IProperty<?>> preservedProperties) {
+        for (IProperty<?> preservedProperty : preservedProperties) {
+            registerPreservedProperty(preservedProperty);
+        }
         return this;
     }
 
