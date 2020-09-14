@@ -22,6 +22,10 @@ import org.eclipse.emf.common.util.URI
  * @author nre
  */
 class KeithWorkspaceManager extends WorkspaceManager {
+    
+    /** Lock for synchronizing access to resource loading. */
+    Object resourceLoadLock = new Object
+    
     /**
      * Returns the resource referenced by a file URI, or null if no resource is available.
      * 
@@ -32,10 +36,16 @@ class KeithWorkspaceManager extends WorkspaceManager {
         val resourceURI = uri.trimFragment
         val projectMnr = getProjectManager(resourceURI)
         try {
-            return projectMnr?.getResource(resourceURI)
+            // The first load of a resource will modify it and fill its contents after the resource itself is
+            // already available. To avoid having a loaded resource without content in a paralell Thread,
+            // synchronize the resource loading so that only fully loaded resources will get used.
+            synchronized (resourceLoadLock) {
+               return projectMnr?.getResource(resourceURI)
+           }
         } catch (RuntimeException e) {
             // Xtext just throws a generic RuntimeException when no resource for the URI is available.
             return null
         }
     }
+    
 }
