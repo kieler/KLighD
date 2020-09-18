@@ -32,10 +32,8 @@ import de.cau.cs.kieler.klighd.KlighdDataManager;
 import de.cau.cs.kieler.klighd.KlighdOptions;
 import de.cau.cs.kieler.klighd.kgraph.KGraphPackage;
 import de.cau.cs.kieler.klighd.krendering.KRenderingPackage;
-import de.cau.cs.kieler.klighd.krendering.SimpleUpdateStrategy;
 import de.cau.cs.kieler.klighd.piccolo.export.BitmapOffscreenRenderer;
 import de.cau.cs.kieler.klighd.piccolo.export.SVGOffscreenRenderer;
-import de.cau.cs.kieler.klighd.piccolo.viewer.PiccoloViewer;
 import de.cau.cs.kieler.klighd.util.ExpansionAwareLayoutOption;
 
 public class KlighdStandaloneSetup {
