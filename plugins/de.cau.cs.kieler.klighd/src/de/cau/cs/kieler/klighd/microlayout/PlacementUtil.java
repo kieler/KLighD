@@ -85,6 +85,7 @@ import de.cau.cs.kieler.klighd.krendering.KXPosition;
 import de.cau.cs.kieler.klighd.krendering.KYPosition;
 import de.cau.cs.kieler.klighd.krendering.util.KRenderingSwitch;
 import de.cau.cs.kieler.klighd.util.Iterables2;
+import de.cau.cs.kieler.klighd.util.KlighdProperties;
 import de.cau.cs.kieler.klighd.util.ModelingUtil;
 
 /**
@@ -951,6 +952,13 @@ public final class PlacementUtil {
      */
     public static Bounds getTestingTextSize(final KText kText) {
         if (kText != null) {
+            // If the KText has already estimated bounds, use them.
+            if (kText.hasProperty(KlighdProperties.CALCULATED_TEXT_BOUNDS)) {
+                // The bounds need to be copied, because otherwise they would be changed by the caller of this method,
+                // specifically the GridPlacementUtil.estimateGridSize::501 changes its cellSize (which is this object).
+                return new Bounds(kText.getProperty(KlighdProperties.CALCULATED_TEXT_BOUNDS));
+            }
+            
             // special handling required for the regression tests
             // I don't trust in the different SWT implementations to
             //  provide the same size of a text on different platforms

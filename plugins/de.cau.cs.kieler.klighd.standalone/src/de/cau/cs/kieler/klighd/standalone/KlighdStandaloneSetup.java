@@ -32,10 +32,8 @@ import de.cau.cs.kieler.klighd.KlighdDataManager;
 import de.cau.cs.kieler.klighd.KlighdOptions;
 import de.cau.cs.kieler.klighd.kgraph.KGraphPackage;
 import de.cau.cs.kieler.klighd.krendering.KRenderingPackage;
-import de.cau.cs.kieler.klighd.krendering.SimpleUpdateStrategy;
 import de.cau.cs.kieler.klighd.piccolo.export.BitmapOffscreenRenderer;
 import de.cau.cs.kieler.klighd.piccolo.export.SVGOffscreenRenderer;
-import de.cau.cs.kieler.klighd.piccolo.viewer.PiccoloViewer;
 import de.cau.cs.kieler.klighd.util.ExpansionAwareLayoutOption;
 
 public class KlighdStandaloneSetup {
@@ -68,8 +66,6 @@ public class KlighdStandaloneSetup {
         );
 
         KlighdDataManager.getInstance()
-                .registerUpdateStrategy(SimpleUpdateStrategy.ID, new SimpleUpdateStrategy())
-                .registerViewer(PiccoloViewer.ID, new PiccoloViewer.Provider())
                 .registerOffscreenRenderer(BitmapOffscreenRenderer.ID, new BitmapOffscreenRenderer(),
                         IOffscreenRenderer.BMP, IOffscreenRenderer.JPEG, IOffscreenRenderer.PNG)
                 .registerOffscreenRenderer(SVGOffscreenRenderer.ID, new SVGOffscreenRenderer(),

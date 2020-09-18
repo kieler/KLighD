@@ -16,6 +16,7 @@ package de.cau.cs.kieler.klighd.internal;
 import java.util.List;
 
 import org.eclipse.elk.core.LayoutConfigurator;
+import org.eclipse.elk.core.util.IGraphElementVisitor;
 import org.eclipse.elk.core.util.Pair;
 import org.eclipse.elk.graph.properties.IProperty;
 
@@ -122,10 +123,14 @@ public interface ISynthesis {
     Function<String, Void> getTextUpdateFunction(final KText kText, final KGraphElement element);
 
     /**
-     * Returns a list of {@link LayoutConfigurator LayoutConfigurators} to be handed over to ELK in
+     * Returns a list of {@link IGraphElementVisitor IGraphElementVisitor} to be handed over to ELK in
      * order to cause additional layout runs corresponding to the provided configurations.
      * 
-     * @return a {@link List} of {@link LayoutConfigurator LayoutConfigurators}
+     * @param viewModel
+     *            the view model
+     * @param viewContext
+     *            the related {@link ViewContext}
+     * @return a {@link List} of {@link IGraphElementVisitor IGraphElementVisitor}
      */
-    List<? extends LayoutConfigurator> getAdditionalLayoutConfigs();
+    List<? extends IGraphElementVisitor> getAdditionalLayoutConfigs(KNode viewModel, ViewContext viewContext);
 }

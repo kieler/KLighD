@@ -27,6 +27,7 @@ import de.cau.cs.kieler.klighd.piccolo.export.SVGOffscreenRenderer
 import de.cau.cs.kieler.klighd.util.KlighdSemanticDiagramData
 import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties
 import java.io.ByteArrayOutputStream
+import java.util.EnumSet
 import java.util.regex.Pattern
 import org.eclipse.elk.core.options.PortConstraints
 import org.eclipse.elk.core.options.PortLabelPlacement
@@ -159,8 +160,8 @@ class FreeHEPSVGOffscreenRenderingTest {
 		'''.equalsSVGwithTextLengthsOf[
 			addKNodeWithSizeOf(100, 100) => [
 				setProperty(PORT_CONSTRAINTS, PortConstraints.FIXED_SIDE)
-				setProperty(PORT_LABELS_PLACEMENT, PortLabelPlacement.OUTSIDE)
-				setProperty(PORT_LABELS_NEXT_TO_PORT_IF_POSSIBLE, Boolean.TRUE)
+				setProperty(PORT_LABELS_PLACEMENT, EnumSet.of(PortLabelPlacement.OUTSIDE,
+				    PortLabelPlacement.NEXT_TO_PORT_IF_POSSIBLE))
 				
 				addKPortWithSizeOf(5, 5) => [
 					setProperty(PORT_SIDE, PortSide.EAST)
@@ -195,8 +196,8 @@ class FreeHEPSVGOffscreenRenderingTest {
 		'''.equalsSVGwithTextLengthsOf[
 			addKNodeWithSizeOf(100, 100) => [
 				setProperty(PORT_CONSTRAINTS, PortConstraints.FIXED_SIDE)
-				setProperty(PORT_LABELS_PLACEMENT, PortLabelPlacement.OUTSIDE)
-				setProperty(PORT_LABELS_NEXT_TO_PORT_IF_POSSIBLE, Boolean.TRUE)
+                setProperty(PORT_LABELS_PLACEMENT, EnumSet.of(PortLabelPlacement.OUTSIDE,
+                    PortLabelPlacement.NEXT_TO_PORT_IF_POSSIBLE))
 				
 				addKPortWithSizeOf(5, 5) => [
 					setProperty(PORT_SIDE, PortSide.WEST)
@@ -363,8 +364,8 @@ class FreeHEPSVGOffscreenRenderingTest {
 		'''.equalsSVGwithTextLengthsOf[
 			addKNodeWithSizeOf(100, 100) => [
 				setProperty(PORT_CONSTRAINTS, PortConstraints.FIXED_SIDE)
-				setProperty(PORT_LABELS_PLACEMENT, PortLabelPlacement.OUTSIDE)
-				setProperty(PORT_LABELS_NEXT_TO_PORT_IF_POSSIBLE, Boolean.TRUE)
+                setProperty(PORT_LABELS_PLACEMENT, EnumSet.of(PortLabelPlacement.OUTSIDE,
+                    PortLabelPlacement.NEXT_TO_PORT_IF_POSSIBLE))
 				
 				addKPortWithSizeOf(5, 5) => [
 					setProperty(PORT_SIDE, PortSide.EAST)
@@ -407,8 +408,8 @@ class FreeHEPSVGOffscreenRenderingTest {
 		'''.equalsSVGwithTextLengthsOf[
 			addKNodeWithSizeOf(100, 100) => [
 				setProperty(PORT_CONSTRAINTS, PortConstraints.FIXED_SIDE)
-				setProperty(PORT_LABELS_PLACEMENT, PortLabelPlacement.OUTSIDE)
-				setProperty(PORT_LABELS_NEXT_TO_PORT_IF_POSSIBLE, Boolean.TRUE)
+                setProperty(PORT_LABELS_PLACEMENT, EnumSet.of(PortLabelPlacement.OUTSIDE,
+                    PortLabelPlacement.NEXT_TO_PORT_IF_POSSIBLE))
 				
 				addKPortWithSizeOf(5, 5) => [
 					setProperty(PORT_SIDE, PortSide.EAST)
@@ -457,8 +458,8 @@ class FreeHEPSVGOffscreenRenderingTest {
 		'''.equalsSVGof[ // cs: deactivated generation of 'textLength' property settings on purpose, as we cannot inject reliable test size data per text line as of now
 			addKNodeWithSizeOf(100, 100) => [
 				setProperty(PORT_CONSTRAINTS, PortConstraints.FIXED_SIDE)
-				setProperty(PORT_LABELS_PLACEMENT, PortLabelPlacement.OUTSIDE)
-				setProperty(PORT_LABELS_NEXT_TO_PORT_IF_POSSIBLE, Boolean.TRUE)
+                setProperty(PORT_LABELS_PLACEMENT, EnumSet.of(PortLabelPlacement.OUTSIDE,
+                    PortLabelPlacement.NEXT_TO_PORT_IF_POSSIBLE))
 				
 				addKPortWithSizeOf(5, 5) => [
 					setProperty(PORT_SIDE, PortSide.EAST)

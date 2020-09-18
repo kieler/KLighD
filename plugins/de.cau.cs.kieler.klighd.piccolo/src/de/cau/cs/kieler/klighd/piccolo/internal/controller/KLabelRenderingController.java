@@ -142,14 +142,4 @@ public class KLabelRenderingController extends AbstractKGERenderingController<KL
 
         return controller;
     }
-
-    /**
-     * Creates a default rendering for labels without attached rendering data.
-     * 
-     * @return the rendering
-     */
-    protected KRendering createDefaultRendering() {
-        // create the default rendering model
-        return KRenderingFactory.eINSTANCE.createKText();
-    }
 }

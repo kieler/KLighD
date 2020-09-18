@@ -21,6 +21,7 @@
     <module>plugins/de.cau.cs.kieler.klighd.kgraph</module>
     <module>plugins/de.cau.cs.kieler.klighd.krendering</module>
     <module>plugins/de.cau.cs.kieler.klighd.krendering.extensions</module>
+    <module>plugins/de.cau.cs.kieler.klighd.lsp</module>
     <module>plugins/de.cau.cs.kieler.klighd.piccolo</module>
     <module>plugins/de.cau.cs.kieler.klighd.standalone</module>
     <module>test/de.cau.cs.kieler.klighd.test</module>
@@ -50,10 +51,10 @@
 
   <!-- Define a few properties used throughout all build profiles. -->
   <properties>
-    <tycho-version>1.5.0</tycho-version>
+    <tycho-version>1.7.0</tycho-version>
     <targetJdk>1.8</targetJdk>
-    <xtext-version>2.16.0</xtext-version>
-    <elk-version>0.6.1</elk-version>
+    <xtext-version>2.22.0</xtext-version>
+    <elk-version>0.7.0</elk-version>
 
     <!-- chsch: copied from https://eclipse.googlesource.com/recommenders/org.eclipse.recommenders/+/3dae4575d3370da2da25a1cbce3dfcff198f0611/features/pom.xml -->
     <!-- Non-breakable space, as normal spaces are trimmed. -->

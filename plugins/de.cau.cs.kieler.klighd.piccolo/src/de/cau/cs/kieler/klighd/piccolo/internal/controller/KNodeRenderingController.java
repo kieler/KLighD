@@ -139,15 +139,4 @@ public class KNodeRenderingController extends AbstractKGERenderingController<KNo
                     }
                 });
     }
-
-    /**
-     * Creates a default rendering for nodes without attached rendering data.
-     *
-     * @return the rendering
-     */
-    @Override
-    protected KRendering createDefaultRendering() {
-        // create the default rendering model
-        return KRenderingFactory.eINSTANCE.createKRectangle();
-    }
 }

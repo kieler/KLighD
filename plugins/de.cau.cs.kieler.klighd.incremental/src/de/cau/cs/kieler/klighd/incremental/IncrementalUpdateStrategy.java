@@ -71,8 +71,6 @@ public class IncrementalUpdateStrategy implements IUpdateStrategy {
             KComparison comparison = new KComparison(baseAdapter, newAdapter);
             KGraphMerger merger = new KGraphMerger(comparison, new KGraphDataFilter());
             merger.merge();
-
-
         } catch (RuntimeException e) {
             final String msg = "KLighD: Incremental update of diagram failed.";
             Klighd.log(new Status(IStatus.ERROR, Klighd.PLUGIN_ID, msg, e));

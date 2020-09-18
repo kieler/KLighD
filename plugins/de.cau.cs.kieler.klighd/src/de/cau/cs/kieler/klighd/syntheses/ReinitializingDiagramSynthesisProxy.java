@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.eclipse.elk.core.LayoutConfigurator;
+import org.eclipse.elk.core.util.IGraphElementVisitor;
 import org.eclipse.elk.core.util.Pair;
 import org.eclipse.elk.core.util.WrappedException;
 import org.eclipse.elk.graph.properties.IProperty;
@@ -339,11 +340,11 @@ public class ReinitializingDiagramSynthesisProxy<S> implements ISynthesis {
     /**
      * {@inheritDoc}
      */
-    public List<? extends LayoutConfigurator> getAdditionalLayoutConfigs() {
+    public List<? extends IGraphElementVisitor> getAdditionalLayoutConfigs(KNode viewModel, ViewContext viewContext) {
         if (this.transformationDelegate == null) {
             this.transformationDelegate = getNewDelegateInstance();
         }
-        return this.transformationDelegate.getAdditionalLayoutConfigs();
+        return this.transformationDelegate.getAdditionalLayoutConfigs(viewModel, viewContext);
     }
 
     /**

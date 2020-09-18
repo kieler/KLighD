@@ -284,7 +284,7 @@ public final class LabelDecorationConfigurator {
         }
 
         EdgeLabelPlacement placement = label.getProperty(CoreOptions.EDGE_LABELS_PLACEMENT);
-        if (placement != EdgeLabelPlacement.CENTER && placement != EdgeLabelPlacement.UNDEFINED) {
+        if (placement != EdgeLabelPlacement.CENTER) {
             return false;
         }
         

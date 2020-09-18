@@ -58,23 +58,4 @@ public class KPortRenderingController extends AbstractKGERenderingController<KPo
         return renderingNodeController;
     }
 
-    /**
-     * Creates a default rendering for ports without attached rendering data.
-     *
-     * @return the rendering
-     */
-    @Override
-    protected KRendering createDefaultRendering() {
-        // create the default rendering model
-        final KRenderingFactory factory = KRenderingFactory.eINSTANCE;
-        final KRectangle rect = factory.createKRectangle();
-
-        final KForeground foreground = factory.createKForeground().setColor(0, 0, 0);
-        final KBackground background = factory.createKBackground().setColor(0, 0, 0);
-
-        rect.getStyles().add(foreground);
-        rect.getStyles().add(background);
-        return rect;
-    }
-
 }

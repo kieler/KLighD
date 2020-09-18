@@ -25,12 +25,17 @@ import de.cau.cs.kieler.klighd.kgraph.KGraphPackage;
  * @author msp
  */
 public class KGraphStandaloneSetup extends KGraphStandaloneSetupGenerated {
+    
+    protected static Injector injector;
 
     /**
      * Create an injector and do EMF registration.
      */
-    public static void doSetup() {
-        new KGraphStandaloneSetup().createInjectorAndDoEMFRegistration();
+    public static Injector doSetup() {
+        if (injector == null) {
+            injector = new KGraphStandaloneSetup().createInjectorAndDoEMFRegistration();
+        }
+        return injector;
     }
 
     /**

@@ -12,7 +12,9 @@
  */
 package de.cau.cs.kieler.klighd.kgraph.util;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import org.eclipse.elk.core.math.KVector;
@@ -203,11 +205,6 @@ public final class KGraphUtil {
                             NodeLabelPlacement.insideTopCenter());
                 }
             }
-        } else if (ele instanceof KEdge) {
-            EdgeLabelPlacement elp = ele.getProperty(CoreOptions.EDGE_LABELS_PLACEMENT);
-            if (elp == EdgeLabelPlacement.UNDEFINED) {
-                ele.setProperty(CoreOptions.EDGE_LABELS_PLACEMENT, EdgeLabelPlacement.CENTER);
-            }
         }
     }
     
@@ -289,19 +286,6 @@ public final class KGraphUtil {
         }
         
         ensureLabel(port);
-    }
-
-    /**
-     * Configures the {@link EdgeLabelPlacement} of the passed edge to be center of the edge.
-     * 
-     * @param edge
-     *            an edge of a graph
-     */
-    public static void configureWithDefaultValues(final KEdge edge) {
-        EdgeLabelPlacement elp = edge.getProperty(CoreOptions.EDGE_LABELS_PLACEMENT);
-        if (elp == EdgeLabelPlacement.UNDEFINED) {
-            edge.setProperty(CoreOptions.EDGE_LABELS_PLACEMENT, EdgeLabelPlacement.CENTER);
-        }
     }
 
     /**
@@ -766,6 +750,7 @@ public final class KGraphUtil {
      */
     public static boolean isDescendant(final KNode child, final KNode parent) {
         KNode current = child;
+        if (current == null) return false;
         while (current.getParent() != null) {
             current = current.getParent();
             if (current == parent) {
@@ -820,4 +805,36 @@ public final class KGraphUtil {
         return node1.getParent() == node2.getParent() && node1.getParent() != null;
     }
 
+    /**
+     * Determines the root of the given node.
+     * 
+     * @param node KNode, which root should be returned.
+     * @return The root of the given node.
+     */
+    public static KNode getRootNodeOf(KNode node) {
+        KNode parent = node;
+        while (parent.getParent() != null) {
+            parent = parent.getParent();
+        }
+        return parent;
+    }
+
+    /**
+     * Collects the adjacent nodes of {@code node} in a list.
+     * @param node The node of which you want to know the adjacent nodes.
+     * @return The adjacent nodes of the given node
+     */
+    public static List<KNode> getAdjacentNodes(KNode node) {
+        List<KEdge> inEdges = node.getIncomingEdges();
+        List<KEdge> outEdges = node.getOutgoingEdges();
+        List<KNode> adjacentNodes = new ArrayList<>();
+
+        for (KEdge e : inEdges) {
+            adjacentNodes.add(e.getSource());
+        }
+        for (KEdge e : outEdges) {
+            adjacentNodes.add(e.getTarget());
+        }
+        return adjacentNodes;
+    }
 }

@@ -54,6 +54,7 @@ import com.google.common.collect.Lists;
 import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.KlighdConstants;
+import de.cau.cs.kieler.klighd.KlighdDataManager;
 import de.cau.cs.kieler.klighd.KlighdOptions;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.internal.ILayoutRecorder;
@@ -667,6 +668,16 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
                 public Boolean caseElkNode(final ElkNode layoutNode) {
                     final KNode node = (KNode) element;
                     
+                    // Get properties that shall be preserved from ElkGraph to KGraph
+                    List<IProperty<?>> propertiesToPreserve = KlighdDataManager.getInstance().getPreservedProperties();
+                    
+                    // Preserve properties
+                    for (IProperty<?> property : propertiesToPreserve) {
+                        if (layoutNode.hasProperty(property)) {
+                            node.setProperty((IProperty<Object>) property, (Object) layoutNode.getProperty(property));
+                        }
+                    }                  
+                    
                     shapeToViewModel(mapping, layoutNode, node, true, true);
                     node.setProperty(INITIAL_NODE_SIZE, false);
 
@@ -675,6 +686,7 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
                     // and the figure scaling will be set according this property setting
                     node.setProperty(CoreOptions.SCALE_FACTOR,
                             layoutNode.getProperty(CoreOptions.SCALE_FACTOR));
+                                        
                     return true;
                 }
 
@@ -709,7 +721,8 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
         final List<KEdge> excludedEdges = mapping.getProperty(EXCLUDED_EDGES);
         if (excludedEdges != null) {
             for (final KEdge edge : excludedEdges) {
-                handleExcludedEdge(edge);
+                if (edge != null && edge.getTarget() != null)
+                    handleExcludedEdge(edge);
             }
         }
 

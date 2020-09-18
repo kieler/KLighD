@@ -24,8 +24,10 @@ import org.eclipse.emf.ecore.EObject;
 
 import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
+import de.cau.cs.kieler.klighd.kgraph.KLayoutData;
 import de.cau.cs.kieler.klighd.kgraph.KNode;
 import de.cau.cs.kieler.klighd.krendering.KText;
+import de.cau.cs.kieler.klighd.microlayout.Bounds;
 
 /**
  * A collection of KLighD-specific {@link de.cau.cs.kieler.klighd.properties.IProperty IProperties}
@@ -347,4 +349,12 @@ public final class KlighdProperties {
      */
     public static final IProperty<Color> CANVAS_COLOR =
             new Property<Color>("klighd.canvas.color", Color.WHITE);
+    
+    /**
+     * Property determining the precalculated bounds of a {@link KText}. If this property is set the
+     * text size estimation will not call any other size estimation and use the bounds given by this
+     * property instead.
+     */
+    public static final IProperty<Bounds> CALCULATED_TEXT_BOUNDS =
+            new Property<Bounds>("klighd.calculated.text.bounds", null);
 }

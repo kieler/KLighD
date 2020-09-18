@@ -63,7 +63,44 @@ public final class SynthesisOption {
      */
     public static SynthesisOption createCategory(final String label,
             final boolean initiallyExpanded) {
-        return new SynthesisOption(label, TransformationOptionType.CATEGORY, initiallyExpanded);
+        return createCategory(createIdFromName(label, TransformationOptionType.CATEGORY), label, initiallyExpanded);
+    }
+    
+    /**
+     * Static factory method providing a 'Category' pseudo {@link SynthesisOption}.<br>
+     * 
+     * This option has no semantic meaning, it will result in a collapsable section in the options
+     * view, containing all other {@link SynthesisOption} configured with this category.<br>
+     * 
+     * The section will display the given label and the given initial expansion state.
+     * 
+     * @param id the id of the option.  
+     * @param label the label text of the category.
+     * @param initiallyExpanded the initial expansion state
+     * @return a 'Category' {@link SynthesisOption}.
+     */
+    public static SynthesisOption createCategory(final String id, final String label,
+            final boolean initiallyExpanded) {
+        return new SynthesisOption(id, label, TransformationOptionType.CATEGORY, initiallyExpanded);
+    }
+    
+    /**
+     * Static factory method providing a 'Category' pseudo {@link SynthesisOption}.<br>
+     * 
+     * This option has no semantic meaning, it will result in a collapsable section in the options
+     * view, containing all other {@link SynthesisOption} configured with this category.<br>
+     * 
+     * The section will display the given label and the given initial expansion state.
+     * 
+     * @param clazz the class the option was defined in. Used to generate an id.
+     * @param label the label text of the category.
+     * @param initiallyExpanded the initial expansion state
+     * @return a 'Category' {@link SynthesisOption}.
+     */
+    public static SynthesisOption createCategory(final Class<?> clazz, final String label,
+            final boolean initiallyExpanded) {
+        return new SynthesisOption(createId(clazz, label, TransformationOptionType.CATEGORY), label,
+                TransformationOptionType.CATEGORY, initiallyExpanded);
     }
 
     /**
@@ -79,7 +116,40 @@ public final class SynthesisOption {
      * @return a 'Category' {@link SynthesisOption}.
      */
     public static SynthesisOption createCategory(final String label) {
-        return new SynthesisOption(label, TransformationOptionType.CATEGORY, true);
+        return createCategory(createIdFromName(label, TransformationOptionType.CATEGORY), label);
+    }
+    
+    /**
+     * Static factory method providing a 'Category' pseudo {@link SynthesisOption}.<br>
+     * 
+     * This option has no semantic meaning, it will result in a collapsable section in the options
+     * view, containing all other {@link SynthesisOption} configured with this category.<br>
+     * 
+     * The section will display the given label and will be initially expanded.
+     * 
+     * @param id the id of the option.  
+     * @param label the label text of the category.
+     * @return a 'Category' {@link SynthesisOption}.
+     */
+    public static SynthesisOption createCategory(final String id, final String label) {
+        return new SynthesisOption(id, label, TransformationOptionType.CATEGORY, true);
+    }
+    
+    /**
+     * Static factory method providing a 'Category' pseudo {@link SynthesisOption}.<br>
+     * 
+     * This option has no semantic meaning, it will result in a collapsable section in the options
+     * view, containing all other {@link SynthesisOption} configured with this category.<br>
+     * 
+     * The section will display the given label and will be initially expanded.
+     * 
+     * @param clazz the class the option was defined in. Used to generate an id.
+     * @param label the label text of the category.
+     * @return a 'Category' {@link SynthesisOption}.
+     */
+    public static SynthesisOption createCategory(final Class<?> clazz, final String label) {
+        return new SynthesisOption(createId(clazz, label, TransformationOptionType.CATEGORY), label,
+                TransformationOptionType.CATEGORY, true);
     }
     
     /**
@@ -108,7 +178,41 @@ public final class SynthesisOption {
      */
     public static SynthesisOption createCheckOption(final String name,
             final Boolean initiallyChecked) {
-        return new SynthesisOption(name, TransformationOptionType.CHECK, initiallyChecked);
+        return createCheckOption(createIdFromName(name, TransformationOptionType.CHECK), name, initiallyChecked);
+    }
+    
+    /**
+     * Static factory method providing an 'OnOff' {@link SynthesisOption}.<br>
+     * <br>
+     * Hint: Declare {@link SynthesisOption TransformationOptions} by means of static fields if
+     * the transformation is a re-initialized one (determined in the registration).
+     * 
+     * @param id the id of the option.
+     * @param name the name of the option.
+     * @param initiallyChecked true is the option shall be set initially.
+     * @return an 'OnOff' {@link SynthesisOption}
+     */
+    public static SynthesisOption createCheckOption(final String id, final String name,
+            final Boolean initiallyChecked) {
+        return new SynthesisOption(id,
+                name, TransformationOptionType.CHECK, initiallyChecked);
+    }
+    
+    /**
+     * Static factory method providing an 'OnOff' {@link SynthesisOption}.<br>
+     * <br>
+     * Hint: Declare {@link SynthesisOption TransformationOptions} by means of static fields if
+     * the transformation is a re-initialized one (determined in the registration).
+     * 
+     * @param clazz the class the option was defined in. Used to generate an id.
+     * @param name the name of the option.
+     * @param initiallyChecked true is the option shall be set initially.
+     * @return an 'OnOff' {@link SynthesisOption}
+     */
+    public static SynthesisOption createCheckOption(final Class<?> clazz, final String name,
+            final Boolean initiallyChecked) {
+        return new SynthesisOption(createId(clazz, name, TransformationOptionType.CHECK),
+                name, TransformationOptionType.CHECK, initiallyChecked);
     }
     
     /**
@@ -122,8 +226,39 @@ public final class SynthesisOption {
      * @return the desired 'Choice' {@link SynthesisOption}
      */
     public static SynthesisOption createChoiceOption(final String name) {
-        return new SynthesisOption(name, TransformationOptionType.CHOICE, null);
-    }    
+        return createChoiceOption(createIdFromName(name, TransformationOptionType.CHOICE), name);
+    }
+    
+    /**
+     * Static factory method providing a 'Choice' {@link SynthesisOption}.<br>
+     * <br>
+     * Hint: Declare {@link SynthesisOption TransformationOptions} by means of static fields if
+     * the transformation is a re-initialized one (determined in the registration).
+     * 
+     * @param id the id of the option.
+     * @param name
+     *            the name of the option
+     * @return the desired 'Choice' {@link SynthesisOption}
+     */
+    public static SynthesisOption createChoiceOption(final String id, final String name) {
+        return new SynthesisOption(id, name, TransformationOptionType.CHOICE, null);
+    }
+    
+    /**
+     * Static factory method providing a 'Choice' {@link SynthesisOption}.<br>
+     * <br>
+     * Hint: Declare {@link SynthesisOption TransformationOptions} by means of static fields if
+     * the transformation is a re-initialized one (determined in the registration).
+     * 
+     * @param clazz the class the option was defined in. Used to generate an id.
+     * @param name
+     *            the name of the option
+     * @return the desired 'Choice' {@link SynthesisOption}
+     */
+    public static SynthesisOption createChoiceOption(final Class<?> clazz, final String name) {
+        return new SynthesisOption(createId(clazz, name, TransformationOptionType.CHOICE), name,
+                TransformationOptionType.CHOICE, null);
+    }
 
     /**
      * Static factory method providing a 'Choice' {@link SynthesisOption}.<br>
@@ -141,10 +276,44 @@ public final class SynthesisOption {
      */
     public static SynthesisOption createChoiceOption(final String name, final List<?> values,
             final Object initialValue) {
-        final SynthesisOption option = new SynthesisOption(name,
+        return createChoiceOption(createIdFromName(name, TransformationOptionType.CHOICE), name, values, initialValue);
+    }
+    
+    /**
+     * Static factory method providing a 'Choice' {@link SynthesisOption}.<br>
+     * <br>
+     * Hint: Declare {@link SynthesisOption TransformationOptions} by means of static fields if
+     * the transformation is a re-initialized one (determined in the registration).
+     * 
+     * @param id the id of the option.
+     * @param name the name of the option.
+     * @param values the available option values.
+     * @param initialValue the initially selected option value.
+     * @return the desired 'Choice' {@link SynthesisOption}
+     */
+    public static SynthesisOption createChoiceOption(final String id, final String name, final List<?> values,
+            final Object initialValue) {
+        final SynthesisOption option = new SynthesisOption(id, name,
                 TransformationOptionType.CHOICE, initialValue);
         option.setValues(values);
         return option;
+    }
+    
+    /**
+     * Static factory method providing a 'Choice' {@link SynthesisOption}.<br>
+     * <br>
+     * Hint: Declare {@link SynthesisOption TransformationOptions} by means of static fields if
+     * the transformation is a re-initialized one (determined in the registration).
+     * 
+     * @param clazz the class the option was defined in. Used to generate an id.
+     * @param name the name of the option.
+     * @param values the available option values.
+     * @param initialValue the initially selected option value.
+     * @return the desired 'Choice' {@link SynthesisOption}
+     */
+    public static SynthesisOption createChoiceOption(final Class<?> clazz, final String name, final List<?> values,
+            final Object initialValue) {
+        return createChoiceOption(createId(clazz, name, TransformationOptionType.CHOICE), name, values, initialValue);
     }
     
     /**
@@ -171,7 +340,31 @@ public final class SynthesisOption {
      */
     public static <T extends Number> SynthesisOption createRangeOption(
             final String name, final T lowerBound, final T upperBound, final T initialValue) {
-        final SynthesisOption option = new SynthesisOption(name,
+        return createRangeOption(createIdFromName(name, TransformationOptionType.RANGE), name, lowerBound, upperBound,
+                initialValue);
+    }
+    
+    /**
+     * Static factory method providing a 'Range' {@link SynthesisOption}.<br>
+     * <br>
+     * Hint: Declare {@link SynthesisOption TransformationOptions} by means of static fields if
+     * the transformation is a re-initialized one (determined in the registration).<br>
+     * <br>
+     * <b>Note:</b> Use <<OPTION_NAME>>.<code>optionFloatValue</code> while testing the option value
+     * if at least one of the parameters is a floating point value, and <<OPTION_NAME>>.
+     * <code>optionIntValue</code> otherwise (in Xtend).
+     * 
+     * @param <T> concrete type of the range's end value
+     * @param id the id of the option.
+     * @param name the name of the option.
+     * @param lowerBound the range's lower bound.
+     * @param upperBound the range's upper bound.
+     * @param initialValue the initially selected option value.
+     * @return the desired 'Range' {@link SynthesisOption}
+     */
+    public static <T extends Number> SynthesisOption createRangeOption(final String id,
+            final String name, final T lowerBound, final T upperBound, final T initialValue) {
+        final SynthesisOption option = new SynthesisOption(id, name,
                 TransformationOptionType.RANGE, initialValue);
         option.setValues(Pair.of(lowerBound, upperBound));
         if (!lowerBound.equals(lowerBound.intValue())
@@ -182,6 +375,30 @@ public final class SynthesisOption {
             option.setStepSize(DEFAULT_STEP_SIZE_INTEGER);
         }
         return option;
+    }
+    
+    /**
+     * Static factory method providing a 'Range' {@link SynthesisOption}.<br>
+     * <br>
+     * Hint: Declare {@link SynthesisOption TransformationOptions} by means of static fields if
+     * the transformation is a re-initialized one (determined in the registration).<br>
+     * <br>
+     * <b>Note:</b> Use <<OPTION_NAME>>.<code>optionFloatValue</code> while testing the option value
+     * if at least one of the parameters is a floating point value, and <<OPTION_NAME>>.
+     * <code>optionIntValue</code> otherwise (in Xtend).
+     * 
+     * @param <T> concrete type of the range's end value
+     * @param clazz the class the option was defined in. Used to generate an id.
+     * @param name the name of the option.
+     * @param lowerBound the range's lower bound.
+     * @param upperBound the range's upper bound.
+     * @param initialValue the initially selected option value.
+     * @return the desired 'Range' {@link SynthesisOption}
+     */
+    public static <T extends Number> SynthesisOption createRangeOption(final Class<?> clazz,
+            final String name, final T lowerBound, final T upperBound, final T initialValue) {
+        return createRangeOption(createId(clazz, name, TransformationOptionType.RANGE), name, lowerBound, upperBound,
+                initialValue);
     }
     
     /**
@@ -221,7 +438,34 @@ public final class SynthesisOption {
      */
     public static <T extends Number> SynthesisOption createRangeOption(final String name,
             final T lowerBound, final T upperBound, final T stepSize, final T initialValue) {
-        final SynthesisOption option = new SynthesisOption(name,
+        return createRangeOption(createIdFromName(name, TransformationOptionType.RANGE), name, lowerBound, upperBound,
+                stepSize, initialValue);
+    }
+
+    
+    /**
+     * Static factory method providing a 'Range' {@link SynthesisOption}.<br>
+     * <br>
+     * Hint: Declare {@link SynthesisOption TransformationOptions} by means of static fields if
+     * the transformation is a re-initialized one (determined in the registration).<br>
+     * <br>
+     * <b>Note:</b> Use <<OPTION_NAME>>.<code>optionFloatValue</code> while testing the option value
+     * if at least one of the parameters is a floating point value, and <<OPTION_NAME>>.
+     * <code>optionIntValue</code> otherwise (in Xtend).
+     * 
+     * 
+     * @param <T> concrete type of the range's end value
+     * @param id the id of the option.
+     * @param name the name of the option.
+     * @param lowerBound the range's lower bound.
+     * @param upperBound the range's upper bound.
+     * @param stepSize the step size determining the option value granularity.
+     * @param initialValue the initially selected option value.
+     * @return an 'Choice' {@link SynthesisOption}
+     */
+    public static <T extends Number> SynthesisOption createRangeOption(final String id, final String name,
+            final T lowerBound, final T upperBound, final T stepSize, final T initialValue) {
+        final SynthesisOption option = new SynthesisOption(id, name,
                 TransformationOptionType.RANGE, initialValue);
         option.setValues(Pair.of(lowerBound, upperBound));
         if (!lowerBound.equals(lowerBound.intValue())
@@ -236,6 +480,32 @@ public final class SynthesisOption {
     }
     
     /**
+     * Static factory method providing a 'Range' {@link SynthesisOption}.<br>
+     * <br>
+     * Hint: Declare {@link SynthesisOption TransformationOptions} by means of static fields if
+     * the transformation is a re-initialized one (determined in the registration).<br>
+     * <br>
+     * <b>Note:</b> Use <<OPTION_NAME>>.<code>optionFloatValue</code> while testing the option value
+     * if at least one of the parameters is a floating point value, and <<OPTION_NAME>>.
+     * <code>optionIntValue</code> otherwise (in Xtend).
+     * 
+     * 
+     * @param <T> concrete type of the range's end value
+     * @param clazz the class the option was defined in. Used to generate an id.
+     * @param name the name of the option.
+     * @param lowerBound the range's lower bound.
+     * @param upperBound the range's upper bound.
+     * @param stepSize the step size determining the option value granularity.
+     * @param initialValue the initially selected option value.
+     * @return an 'Choice' {@link SynthesisOption}
+     */
+    public static <T extends Number> SynthesisOption createRangeOption(final Class<?> clazz, final String name,
+            final T lowerBound, final T upperBound, final T stepSize, final T initialValue) {
+        return createRangeOption(createId(clazz, name, TransformationOptionType.RANGE), name, lowerBound, upperBound,
+                stepSize, initialValue);
+    }
+    
+    /**
      * Static factory method providing a 'Text' {@link SynthesisOption}.<br>
      * <br>
      * Hint: Declare {@link SynthesisOption TransformationOptions} by means of static fields if
@@ -245,7 +515,36 @@ public final class SynthesisOption {
      * @return The desired 'Text' {@link SynthesisOption}
      */
     public static SynthesisOption createTextOption(final String name) {
-        return new SynthesisOption(name, TransformationOptionType.TEXT, "");
+        return createTextOptionWithId(createIdFromName(name, TransformationOptionType.TEXT), name);
+    }
+    
+    /**
+     * Static factory method providing a 'Text' {@link SynthesisOption}.<br>
+     * <br>
+     * Hint: Declare {@link SynthesisOption TransformationOptions} by means of static fields if
+     * the transformation is a re-initialized one (determined in the registration).
+     * 
+     * @param id the id of the option.
+     * @param name The name of the option.
+     * @return The desired 'Text' {@link SynthesisOption}
+     */
+    public static SynthesisOption createTextOptionWithId(final String id, final String name) {
+        return new SynthesisOption(id, name, TransformationOptionType.TEXT, "");
+    }
+    
+    /**
+     * Static factory method providing a 'Text' {@link SynthesisOption}.<br>
+     * <br>
+     * Hint: Declare {@link SynthesisOption TransformationOptions} by means of static fields if
+     * the transformation is a re-initialized one (determined in the registration).
+     * 
+     * @param clazz the class the option was defined in. Used to generate an id.
+     * @param name The name of the option.
+     * @return The desired 'Text' {@link SynthesisOption}
+     */
+    public static SynthesisOption createTextOptionWithId(final Class<?> clazz, final String name) {
+        return new SynthesisOption(createId(clazz, name, TransformationOptionType.TEXT), name,
+                TransformationOptionType.TEXT, "");
     }
     
     /**
@@ -259,7 +558,40 @@ public final class SynthesisOption {
      * @return The desired 'Text' {@link SynthesisOption}
      */
     public static SynthesisOption createTextOption(final String name, final String initialValue) {
-        return new SynthesisOption(name, TransformationOptionType.TEXT, initialValue);
+        return createTextOptionWithId(createIdFromName(name, TransformationOptionType.TEXT), name, initialValue);
+    }
+    
+    /**
+     * Static factory method providing a 'Text' {@link SynthesisOption}.<br>
+     * <br>
+     * Hint: Declare {@link SynthesisOption TransformationOptions} by means of static fields if
+     * the transformation is a re-initialized one (determined in the registration).
+     * 
+     * @param id the id of the option.
+     * @param name The name of the option.
+     * @param initialValue The initial value of the option.
+     * @return The desired 'Text' {@link SynthesisOption}
+     */
+    public static SynthesisOption createTextOptionWithId(final String id,
+            final String name, final String initialValue) {
+        return new SynthesisOption(id, name, TransformationOptionType.TEXT, initialValue);
+    }
+    
+    /**
+     * Static factory method providing a 'Text' {@link SynthesisOption}.<br>
+     * <br>
+     * Hint: Declare {@link SynthesisOption TransformationOptions} by means of static fields if
+     * the transformation is a re-initialized one (determined in the registration).
+     * 
+     * @param clazz the class the option was defined in. Used to generate an id.
+     * @param name The name of the option.
+     * @param initialValue The initial value of the option.
+     * @return The desired 'Text' {@link SynthesisOption}
+     */
+    public static SynthesisOption createTextOptionWithId(final Class<?> clazz,
+            final String name, final String initialValue) {
+        return new SynthesisOption(createId(clazz, name, TransformationOptionType.TEXT), name,
+                TransformationOptionType.TEXT, initialValue);
     }
 
     /* -- the internal part -- */
@@ -285,6 +617,10 @@ public final class SynthesisOption {
         CATEGORY;
     }
     
+    /**
+     * Used to identify option if used in language server.
+     */
+    private final String id;
     private final String name;    
     private final TransformationOptionType type;
     private final Object initialValue;
@@ -300,12 +636,32 @@ public final class SynthesisOption {
     
     /**
      * Constructor.
+     * Sets the id to an empty string.
      */
     private SynthesisOption(final String theName, final TransformationOptionType theType,
             final Object theInitialValue) {
+        this.id = "";
         this.name = theName;
         this.type = theType;
         this.initialValue = theInitialValue;
+    }
+    
+    /**
+     * Constructor.
+     */
+    private SynthesisOption(final String id, final String theName, final TransformationOptionType theType,
+            final Object theInitialValue) {
+        this.id = id;
+        this.name = theName;
+        this.type = theType;
+        this.initialValue = theInitialValue;
+    }
+    
+    /**
+     * @return the id
+     */
+    public String getId() {
+        return id;
     }
     
     /**
@@ -522,5 +878,28 @@ public final class SynthesisOption {
         }
         this.category = newCategory;
         return this;
+    }
+    
+    /**
+     * Creates a synthesis option id using the class and the name of the option.
+     * 
+     * @param clazz The class the option is define in.
+     * @param name The name of the option.
+     * @return An id string.
+     */
+    private static String createId(final Class<?> clazz, final String name, final TransformationOptionType type) {
+        return clazz.getName() + "." + createIdFromName(name, type);
+    }
+
+    
+    /**
+     * Creates a synthesis option id using the name of the option.
+     * 
+     * @param name The name of the option.
+     * @param type The type of the option e.g. "category", "choice", ...
+     * @return An id string.
+     */
+    private static String createIdFromName(final String name, final TransformationOptionType type) {
+        return type.name() + name.hashCode();
     }
 }

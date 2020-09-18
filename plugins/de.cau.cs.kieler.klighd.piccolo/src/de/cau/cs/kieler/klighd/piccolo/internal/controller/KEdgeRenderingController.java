@@ -410,17 +410,6 @@ public class KEdgeRenderingController extends AbstractKGERenderingController<KEd
         return controller;
     }
 
-    /**
-     * Creates a default rendering for edges without attached rendering data.
-     *
-     * @return the rendering
-     */
-    @Override
-    protected KPolyline createDefaultRendering() {
-        // create the default rendering model
-        return KRenderingFactory.eINSTANCE.createKPolyline();
-    }
-
     @Override
     protected void moveToFront() {
         this.getRepresentation().moveToFront();
