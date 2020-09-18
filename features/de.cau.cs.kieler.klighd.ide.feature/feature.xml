@@ -2,7 +2,7 @@
 <feature
       id="de.cau.cs.kieler.klighd.ide.feature"
       label="KIELER Lightweight Diagrams IDE"
-      version="1.1.2.qualifier"
+      version="2.0.0.v20200918"
       provider-name="Kiel University"
       plugin="de.cau.cs.kieler.klighd.ide">
 
