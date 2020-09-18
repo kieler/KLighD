@@ -46,6 +46,7 @@ import java.util.Stack;
 import java.util.zip.GZIPOutputStream;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Path;
 import org.eclipse.swt.graphics.PathData;
@@ -69,6 +70,7 @@ import com.google.common.collect.Maps;
 
 import de.cau.cs.kieler.klighd.Klighd;
 import de.cau.cs.kieler.klighd.KlighdConstants;
+import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
 import de.cau.cs.kieler.klighd.piccolo.export.KlighdAbstractSVGGraphics.KlighdGradientPaint;
 import de.cau.cs.kieler.klighd.util.KlighdSemanticDiagramData;
 
@@ -127,7 +129,11 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
 
     public static final String TITLE = rootKey + "." + InfoConstants.TITLE;
 
-    private BasicStroke defaultStroke = new BasicStroke();
+    private BasicStroke defaultStroke =
+            new BasicStroke(
+                    KlighdConstants.DEFAULT_LINE_ATTRIBUTES.width,
+                    KlighdConstants.DEFAULT_LINE_ATTRIBUTES.cap - 1,
+                    KlighdConstants.DEFAULT_LINE_ATTRIBUTES.join - 1);
 
     public static final String EMBED_FONTS = rootKey + "."
             + FontConstants.EMBED_FONTS;
@@ -397,9 +403,6 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
             os.println("     xmlns:xlink=\"http://www.w3.org/1999/xlink\"");
             os.println("     xmlns:ev=\"http://www.w3.org/2001/xml-events\"");
             os.println("     xmlns:klighd=\"http://de.cau.cs.kieler/klighd\"");
-            // KIPRA-1637: preserve multiple spaces when displaying an svg
-            //  this affects all <text> elements of the document
-            os.println("     xml:space=\"preserve\"");
         }
         os.println("     x=\"" + x + "px\"");
         os.println("     y=\"" + y + "px\"");
@@ -768,6 +771,12 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
                 .toString()))));
     }
 
+    private Double nextTextLength = null;
+
+    public void setNextTextLength(double textLength) {
+        this.nextTextLength = Double.valueOf(textLength);
+    }
+
     /**
      * Copied from {@link AbstractVectorGraphicsIO} to change the handling of text as shapes.
      * 
@@ -812,6 +821,8 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
                 writeString(string, x, y);
             } catch (IOException e) {
                 handleException(e);
+            } finally {
+                this.nextTextLength = null;
             }
         }
     }
@@ -844,54 +855,63 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
         }
         style.put("stroke", "none");
 
+        // related to KIPRA-1637: preserve multiple spaces when displaying text strings
+        if (isProperty(STYLABLE))
+            style.put("white-space", "pre");
+        else
+            // avoid using the deprecated property 'xml:space' (https://docs.w3cub.com/svg/attribute/xml:space/)
+            //  and sneak in the (css-based) replacement (https://www.w3schools.com/cssref/pr_text_white-space.asp)
+            //  via a 'style' property definition
+            style.put("style", "white-space: pre");
+
         // convert tags to string values
         str = XMLWriter.normalizeText(str);
 
-        // replace leading space by &#00a0; otherwise firefox 1.5 fails
-        if (str.startsWith(" ")) {
-            str = "&#x00a0;" + str.substring(1);
-        }
-
-        os.println(getTransformedString(
-            // general transformation
-            getTransform(),
-            // general clip
-            getClippedString(
-                getTransformedString(
-                    // text offset
-                    new AffineTransform(1, 0, 0, 1, x, y),
+        final AffineTransform textOffset = new AffineTransform(1, 0, 0, 1, x, y);
+        textOffset.concatenate(getTransform());
+        final boolean isSingleLine = str.indexOf('\n') == -1;
+        os.println(
+            isSingleLine
+                ? getTransformedString(
+                    // general transformation + text offset
+                    textOffset,
                     getTransformedString(
                         // font transformation and text
                         getFont().getTransform(),
-                        "<text "
-                            // style
-                            + style(style)
-                            // semantic data
-                            + attributes(false)
-                            // Coordinates
-                            + " x=\"0\" y=\"0\">"
-                            // text
-                            + insertTSpan(str)
-                            + "</text>")))));
+                        getTextsString(
+                            str, style,
+                            // indentation
+                            textOffset.isIdentity() ? "" : "  "
+                        )
+                     )
+                ) : getTransformedString(
+                    // general transformation + text offset
+                    textOffset,
+                    // style
+                    style(style)
+                    // semantic data
+                    + attributes(false),
+                    getTransformedString(
+                        // font transformation and text
+                        getFont().getTransform(),
+                        getTextsString(
+                            str, null /* properties are added to the group */,
+                            // indentation
+                            "  "
+                        )
+                    )
+                )
+        );
 
         resetSemanticData();
     }
 
-    /**
-     * Insert TSpan elements into a multiline text string.
-     * @param text string where lines are indicated by "\n"
-     * @return the string enriched by TSpan elements.
-     */
-    private String insertTSpan(final String text) {
-        
-        // empty string
-        if (Strings.isNullOrEmpty(text)) {
-            return "";
-        }
-
-        int i = 0;
+    private String getTextsString(String text, Properties style, String indentation) {
         final String[] lines = text.split("\\r?\\n|\\r");
+        final boolean isSingleLine = lines.length <= 1;
         final StringBuffer content = new StringBuffer();
+        
+        int i = 0;
         if (display != null) {
             // Translate the font back to an swt font
             //  KLighD used SWT to determine font sizes and as SWT and AWT font metrics
@@ -908,37 +928,65 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
             // distance to each remaining line
             final float lineHeight = getAdjustedFontHeight(height, ascent, descent, false);
 
-            // use tspans to emulate multiline text
-            boolean first = true;
+            final Double nextLength = this.nextTextLength;
+            this.nextTextLength = null;
+            
+            // if we have a multi-line text and a configured nextTextLength
+            //  we need to recalculate the designated textLength per line
+            // otherwise we can stick to the given 'nextTextLength' value
+            boolean noTextLengthPerLineCalcRequired = nextLength == null || isSingleLine;
+            final FontData fontData = noTextLengthPerLineCalcRequired ? null : getFontData(getFont());
+            
+            float y = firstLineHeight;
             for (final String line : lines) {
-                content.append("<tspan x=\"0\" dy=\"");
-                content.append(first ? firstLineHeight : lineHeight);
-                content.append("\"");
-                content.append(tSpanAttributes(line, i++));
+                content.append("\n" + indentation);
+                content.append("<text x=\"0\" y=\"").append(y).append("\"");
+                // style
+                content.append(isSingleLine ? " " + style(style) : "");
+                
+                final Double nextLineLength = noTextLengthPerLineCalcRequired ? nextLength :
+                    // need to box the result here as the type of the ternary operation would be 'double' otherwise
+                    //  yielding NPEs if 'nextLength' is 'null'
+                    Double.valueOf(PlacementUtil.estimateTextSize(fontData, line).getWidth());
+                
+                // text length
+                content.append(textLength(nextLineLength));
+                // semantic data
+                content.append(isSingleLine ? attributes(false) : "");
+                content.append(textLineAttributes(line, i++));
                 content.append(">");
                 content.append(line);
-                content.append("</tspan>" + Klighd.LINE_SEPARATOR);
-                first = false;
+                content.append("</text>");
+                
+                y += lineHeight;
             }
             
         } else {
             // without a display just use the pt size as line height for multiline text
 
-            // use tspans to emulate multiline text
+            final int fontSize = getFont().getSize();
+            float y = fontSize;
             for (final String line : lines) {
-                content.append("<tspan x=\"0\" dy=\"");
-                content.append(getFont().getSize());
-                content.append("\"");
-                content.append(tSpanAttributes(line, i++));
+                content.append("\n" + indentation);
+                content.append("<text x=\"0\" y=\"").append(y).append("\"");
+                content.append(isSingleLine ? " "
+                    // style
+                    + style(style)
+                    // semantic data
+                    + attributes(false) : ""
+                );
+                content.append(textLineAttributes(line, i++));
                 content.append(">");
                 content.append(line);
-                content.append("</tspan>" + Klighd.LINE_SEPARATOR);
+                content.append("</text>");
             }
         }
 
-        return content.toString();
+        if (content.length() == 0)
+            return "";
+        else
+            return content.toString().substring(1); // trim the leading line break
     }
-    
 
     protected float getAdjustedFontHeight(int height, int ascent, int descent, boolean firstLine) {
         // FIXME 
@@ -951,6 +999,14 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
         
         final int leading = height - ascent - descent;
         return displayScaleY * (leading + ascent + (firstLine ? 0f : descent));
+    }
+
+    protected String textLength(Double nextLength) {
+        if (nextLength == null)
+            return "";
+
+        else
+            return " textLength=\"" + nextLength.floatValue() + "px\" lengthAdjust=\"spacingAndGlyphs\"";
     }
 
     /**
@@ -1323,6 +1379,20 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
      *            SVG-Tag
      */
     private String getTransformedString(AffineTransform t, String s) {
+        return getTransformedString(t,  null, s);
+    }
+    
+    /**
+     * Encapsulates a SVG-Tag by the given transformation matrix
+     *
+     * @param t
+     *            Transformation
+     * @param additionalProperties
+     *            additional properties to be set on the element
+     * @param s
+     *            SVG-Tag
+     */
+    private String getTransformedString(AffineTransform t, String additionalProperties, String s) {
         StringBuffer result = new StringBuffer();
 
         if (t != null && !t.isIdentity()) {
@@ -1338,12 +1408,18 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
             result.append(fixedPrecision(t.getTranslateX()));
             result.append(", ");
             result.append(fixedPrecision(t.getTranslateY()));
-            result.append(")\">\n");
+            result.append(")\"");
+            if (additionalProperties != null)
+                result.append(" ").append(additionalProperties);
+            result.append(">\n");
+            
+        } else if (additionalProperties != null) {
+            result.append("<g ").append(additionalProperties).append(">\n");
         }
 
         result.append(s);
 
-        if (t != null && !t.isIdentity()) {
+        if (t != null && !t.isIdentity() || additionalProperties != null) {
             result.append("\n</g>");
             if (writeComments) {
                 result.append(" <!-- transform -->");
@@ -1527,25 +1603,23 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
             return "";
         }
 
-        final StringBuffer sb = new StringBuffer(" ");
+        final StringBuffer sb = new StringBuffer();
 
         for (final Entry<String, String> e : semanticData) {
 
             // special tags
             if (e.getKey().equals(KlighdConstants.SEMANTIC_DATA_ID)) {
-                sb.append("id" + "=\"" + e.getValue() + "\"");
+                sb.append(" id" + "=\"" + e.getValue() + "\"");
 
             } else if (e.getKey().equals(KlighdConstants.SEMANTIC_DATA_CLASS)) {
-                sb.append("class" + "=\"" + e.getValue() + "\"");
+                sb.append(" class" + "=\"" + e.getValue() + "\"");
 
             } else if (e.getKey().equals(KlighdConstants.SEMANTIC_DATA_RAW)) {
-                sb.append(e.getValue());
+                sb.append(" " + e.getValue());
                 
             } else {
-                sb.append("klighd:" + e.getKey() + "=\"" + e.getValue() + "\"");
+                sb.append(" klighd:" + e.getKey() + "=\"" + e.getValue() + "\"");
             }
-
-            sb.append(" ");
         }
 
         if (resetSemData) {
@@ -1554,27 +1628,25 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
         return sb.toString();
     }
 
-    private String tSpanAttributes(final String textLine, final int noOfLine) {
+    private String textLineAttributes(final String textLine, final int noOfLine) {
         if (semanticData == null) {
             return "";
         }
 
-        final StringBuffer sb = new StringBuffer(" ");
+        final StringBuffer sb = new StringBuffer();
 
         for (final Entry<String, String> e : semanticData.textLineIterable(textLine, noOfLine)) {
 
             // special tags
             if (e.getKey().equals(KlighdConstants.SEMANTIC_DATA_ID)) {
-                sb.append("id" + "=\"" + e.getValue() + "\"");
+                sb.append(" id" + "=\"" + e.getValue() + "\"");
 
             } else if (e.getKey().equals(KlighdConstants.SEMANTIC_DATA_RAW)) {
-                sb.append(e.getValue());
+                sb.append(" " + e.getValue());
 
             } else {
-                sb.append("klighd:" + e.getKey() + "=\"" + e.getValue() + "\"");
+                sb.append(" klighd:" + e.getKey() + "=\"" + e.getValue() + "\"");
             }
-
-            sb.append(" ");
         }
 
         return sb.toString();
@@ -1591,9 +1663,9 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
     public void startGroup(KlighdSemanticDiagramData nextSemanticData) {
         this.semanticData = nextSemanticData;
         if ((this.semanticData != null && this.semanticData.iterator().hasNext())) {
-            os.write("<g ");
+            os.write("<g");
             os.write(attributes(true));
-            os.write(" >\n");
+            os.write(">\n");
             groupsStack.push(true);
         } else {
             groupsStack.push(false);
@@ -1710,15 +1782,18 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
         if (!awtSwtFontCache.containsKey(font) && display != null) {
             // note that the style constants for swt and awt are equal
             org.eclipse.swt.graphics.Font swtFont =
-                    new org.eclipse.swt.graphics.Font(display, getFont().getName(), getFont()
-                            .getSize(), getSWTFontStyle());
+                    new org.eclipse.swt.graphics.Font(display, getFontData(font));
             awtSwtFontCache.put(font, swtFont);
         }
         return awtSwtFontCache.get(font);
     }
     
-    private int getSWTFontStyle() {
-        switch (getFont().getStyle()) {
+    protected FontData getFontData(Font font) {
+        return new FontData(font.getName(), font.getSize(), getSWTFontStyle(font));
+    }
+    
+    private int getSWTFontStyle(Font font) {
+        switch (font.getStyle()) {
         case Font.PLAIN:
             return SWT.NORMAL;
         case Font.BOLD:

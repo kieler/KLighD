@@ -23,6 +23,7 @@ import com.google.common.base.Strings;
 import de.cau.cs.kieler.klighd.Klighd;
 import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.krendering.KText;
+import de.cau.cs.kieler.klighd.microlayout.Bounds;
 import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
 import de.cau.cs.kieler.klighd.piccolo.KlighdNode;
 import de.cau.cs.kieler.klighd.piccolo.KlighdPiccolo;
@@ -57,6 +58,8 @@ public class KlighdStyledText extends KlighdNode.KlighdFigureNode<KText> {
 
     private static final long serialVersionUID = -4463204146476543138L;
 
+    private final Bounds testingSize;
+
     private String text = "";
 
     private FontData fontData = null;
@@ -82,13 +85,9 @@ public class KlighdStyledText extends KlighdNode.KlighdFigureNode<KText> {
      *            The KText view model element containing the string to be displayed.
      */
     public KlighdStyledText(final KText theKText) {
-        this(theKText.getText(), KlighdConstants.DEFAULT_FONT);
+        this(theKText.getText(), KlighdConstants.DEFAULT_FONT,
+                PlacementUtil.getTestingTextSize(theKText));
         this.setRendering(theKText);
-
-        // re-enable the pickability of textNode if required,
-        //  as the selection and cursor selection and tooltips will not work otherwise
-        this.setPickable(theKText.isCursorSelectable() || isSelectable()
-            || theKText.hasProperty(KlighdProperties.TOOLTIP));
     }
 
     /**
@@ -98,7 +97,7 @@ public class KlighdStyledText extends KlighdNode.KlighdFigureNode<KText> {
      *            The initial text.
      */
     public KlighdStyledText(final String theText) {
-        this(theText, KlighdConstants.DEFAULT_FONT);
+        this(theText, KlighdConstants.DEFAULT_FONT, null);
     }
 
     /**
@@ -110,9 +109,17 @@ public class KlighdStyledText extends KlighdNode.KlighdFigureNode<KText> {
      *            The SWT {@link FontData} configuration for this text component.
      */
     public KlighdStyledText(final String theText, final FontData theFont) {
+        this(theText, theFont, null);
+    }
+
+    /**
+     * Internal constructor.
+     */
+    private KlighdStyledText(final String theText, final FontData theFont, final Bounds testingSize) {
         super();
         this.text = theText;
         this.setFont(theFont != null ? theFont : KlighdConstants.DEFAULT_FONT);
+        this.testingSize = testingSize;
     }
 
     /**
@@ -390,7 +397,9 @@ public class KlighdStyledText extends KlighdNode.KlighdFigureNode<KText> {
 
         if (bounds.isEmpty()) {
             // lazy (re-)computation of the figure's (local) bounds if the bounds are set 'empty'
-            this.setBounds(PlacementUtil.estimateTextSize(this.fontData, this.text).toRectangle2D());
+            this.setBounds(
+                testingSize != null ? testingSize.toRectangle2D()
+                    : PlacementUtil.estimateTextSize(this.fontData, this.text).toRectangle2D());
 
             // update the scale-based visibility bounds (limits) according to specification defined
             //  on the corresponding KText element (either in absolute px or zoom scale fractions)
@@ -480,6 +489,10 @@ public class KlighdStyledText extends KlighdNode.KlighdFigureNode<KText> {
         }
 
         addSemanticData(kpc);
+
+        if (kpc.isSetTextLengths()) {
+            graphics.setNextTextLength(this.getWidth());
+        }
 
         graphics.drawText(text);
 

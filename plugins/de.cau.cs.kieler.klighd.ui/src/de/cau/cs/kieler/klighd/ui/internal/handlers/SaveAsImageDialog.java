@@ -33,7 +33,6 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -73,11 +72,6 @@ import de.cau.cs.kieler.klighd.ui.internal.Messages;
  */
 public class SaveAsImageDialog extends Dialog {
 
-    /** the default dialog width. */
-    private static final int DEFAULT_WIDTH = 500;
-    /** the default dialog height. */
-    private static final int DEFAULT_HEIGHT = 400;
-
     /** the preference key for the file path. */
     private static final String PREFERENCE_FILE_PATH = "saveAsImageDialog.filePath"; //$NON-NLS-1$
     /** the preference key for the workspace path. */
@@ -94,17 +88,20 @@ public class SaveAsImageDialog extends Dialog {
     /** the preference key for the scale factor. */
     private static final String PREFERENCE_SCALE_FACTOR = "saveAsImageDialog.scaleFactor"; //$NON-NLS-1$
     /** the preference key for the text as shapes property. */
-    private static final String PREFERENCE_TEXT_AS_SHAPES
-        = "saveAsImageDialog.textAsShapes"; //$NON-NLS-1$
+    private static final String PREFERENCE_TEXT_AS_SHAPES = "saveAsImageDialog."
+            + "textAsShapes"; //$NON-NLS-1$
     /** the preference key for the embed fonts property. */
-    private static final String PREFERENCE_EMBED_FONTS
-    = "saveAsImageDialog.embedFonts"; //$NON-NLS-1$
+    private static final String PREFERENCE_EMBED_FONTS = "saveAsImageDialog."
+            + "embedFonts"; //$NON-NLS-1$
+    /** the preference key for the set textLengths property. */
+    private static final String PREFERENCE_SET_TEXT_LENGTHS = "saveAsImageDialog."
+            + "setTextLengths"; //$NON-NLS-1$
     /** the preference key for the transparent background property. */
-    private static final String PREFERENCE_TRANSPARENT_BACKGROUND
-    = "saveAsImageDialog.embedFonts"; //$NON-NLS-1$
+    private static final String PREFERENCE_TRANSPARENT_BACKGROUND = "saveAsImageDialog."
+            + "embedFonts"; //$NON-NLS-1$
     /** the preference keys for the tiling information. */
-    private static final String PREFERENCE_TILING_IS_MAXSIZE =
-            "saveAsImageDialog.tilingIsMaxsize"; //$NON-NLS-1$
+    private static final String PREFERENCE_TILING_IS_MAXSIZE = "saveAsImageDialog."
+            + "tilingIsMaxsize"; //$NON-NLS-1$
     private static final String PREFERENCE_TILING_X = "saveAsImageDialog.tilingX"; //$NON-NLS-1$
     private static final String PREFERENCE_TILING_Y = "saveAsImageDialog.tilingY"; //$NON-NLS-1$
 
@@ -131,12 +128,14 @@ public class SaveAsImageDialog extends Dialog {
     private Button cameraViewportCheckbox;
     /** the camera zoom level checkbox. */
     private Button cameraZoomLevelCheckbox;
-    /** the camera text as shapes checkbox. */
-    private Button textAsShapesCheckbox;
-    /** the camera embed fonts checkbox. */
-    private Button embedFontsCheckbox;
     /** the transparent background checkbox. */
     private Button transparentBackgroundCheckbox;
+    /** the text as shapes checkbox. */
+    private Button textAsShapesCheckbox;
+    /** the embed fonts checkbox. */
+    private Button embedFontsCheckbox;
+    /** the set textLength checkbox. */
+    private Button setTextLengthsCheckbox;
     /** the message image. */
     private Label messageImageLabel;
     /** the message label. */
@@ -166,6 +165,9 @@ public class SaveAsImageDialog extends Dialog {
      */
     public SaveAsImageDialog(final ViewContext viewContext, final Shell parentShell) {
         super(parentShell);
+
+        // let's activate the 'setTextLengths' option by default
+        preferenceStore.setDefault(PREFERENCE_SET_TEXT_LENGTHS, true);
 
         this.viewContext = viewContext;
 
@@ -416,6 +418,12 @@ public class SaveAsImageDialog extends Dialog {
         cameraZoomLevelCheckbox.setText(Messages.SaveAsImageDialog_apply_camera_zoom_level_caption);
         cameraZoomLevelCheckbox.setSelection(preferenceStore.getBoolean(PREFERENCE_CAMERA_ZOOM_LEVEL));
 
+        // transparent background
+        transparentBackgroundCheckbox = new Button(composite, SWT.CHECK | SWT.LEFT);
+        transparentBackgroundCheckbox.setText(Messages.SaveAsImageDialog_transparent_background);
+        transparentBackgroundCheckbox.setSelection(
+                preferenceStore.getBoolean(PREFERENCE_TRANSPARENT_BACKGROUND));
+
         // text as shapes
         textAsShapesCheckbox = new Button(composite, SWT.CHECK | SWT.LEFT);
         textAsShapesCheckbox.setText(Messages.SaveAsImageDialog_text_as_shapes);
@@ -426,37 +434,44 @@ public class SaveAsImageDialog extends Dialog {
         embedFontsCheckbox.setText(Messages.SaveAsImageDialog_embed_fonts);
         embedFontsCheckbox.setSelection(preferenceStore.getBoolean(PREFERENCE_EMBED_FONTS));
 
-        // transparent background
-        transparentBackgroundCheckbox = new Button(composite, SWT.CHECK | SWT.LEFT);
-        transparentBackgroundCheckbox.setText(Messages.SaveAsImageDialog_transparent_background);
-        transparentBackgroundCheckbox
-        .setSelection(preferenceStore.getBoolean(PREFERENCE_TRANSPARENT_BACKGROUND));
+        // set textLength
+        setTextLengthsCheckbox = new Button(composite, SWT.CHECK | SWT.LEFT);
+        setTextLengthsCheckbox.setText(Messages.SaveAsImageDialog_set_textLength);
+        setTextLengthsCheckbox.setSelection(preferenceStore.getBoolean(PREFERENCE_SET_TEXT_LENGTHS));
 
-        updateEmbedFontsCheckbox(textAsShapesCheckbox.getSelection(), embedFontsCheckbox.getSelection());
+        updateEmbedFontsCheckbox(textAsShapesCheckbox.getSelection());
+        updateSetTextLengthsCheckbox(textAsShapesCheckbox.getSelection());
         textAsShapesCheckbox.addSelectionListener(new SelectionAdapter() {
-            private boolean prevEmbedFonts = embedFontsCheckbox.getSelection();
 
             @Override
             public void widgetSelected(final SelectionEvent e) {
                 final boolean selected = ((Button) e.widget).getSelection();
-                if (selected) {
-                    prevEmbedFonts = embedFontsCheckbox.getSelection();
-                }
-                updateEmbedFontsCheckbox(selected, prevEmbedFonts);
+                updateEmbedFontsCheckbox(selected);
+                updateSetTextLengthsCheckbox(selected);
             }
         });
     }
 
-    private void updateEmbedFontsCheckbox(final boolean disabled, final boolean prevSelection) {
+    private void updateEmbedFontsCheckbox(final boolean disabled) {
         if (disabled) {
             embedFontsCheckbox.setEnabled(false);
             embedFontsCheckbox.setSelection(false);
         } else {
-            embedFontsCheckbox.setSelection(prevSelection);
+            embedFontsCheckbox.setSelection(preferenceStore.getBoolean(PREFERENCE_EMBED_FONTS));
             embedFontsCheckbox.setEnabled(true);
         }
     }
 
+    private void updateSetTextLengthsCheckbox(final boolean disabled) {
+        if (disabled) {
+            setTextLengthsCheckbox.setEnabled(false);
+            setTextLengthsCheckbox.setSelection(false);
+        } else {
+            setTextLengthsCheckbox.setSelection(preferenceStore.getBoolean(PREFERENCE_SET_TEXT_LENGTHS));
+            setTextLengthsCheckbox.setEnabled(true);
+        }
+    }
+    
     private static final int MESSAGE_LABEL_WIDTH_HINT = 300;
 
     private void createMessageGroup(final Composite parent) {
@@ -626,14 +641,6 @@ public class SaveAsImageDialog extends Dialog {
     }
 
     /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected Point getInitialSize() {
-        return new Point(DEFAULT_WIDTH, DEFAULT_HEIGHT);
-    }
-
-    /**
      * @return the currentExporter
      */
     public ExporterDescriptor getCurrentExporter() {
@@ -659,10 +666,15 @@ public class SaveAsImageDialog extends Dialog {
         preferenceStore.setValue(PREFERENCE_CAMERA_VIEWPORT, cameraViewportCheckbox.getSelection());
         preferenceStore.setValue(PREFERENCE_CAMERA_ZOOM_LEVEL, cameraZoomLevelCheckbox.getSelection());
         preferenceStore.setValue(PREFERENCE_SCALE_FACTOR, scaleSlider.getSelection());
-        preferenceStore.setValue(PREFERENCE_TEXT_AS_SHAPES, textAsShapesCheckbox.getSelection());
         preferenceStore.setValue(PREFERENCE_TRANSPARENT_BACKGROUND,
                 transparentBackgroundCheckbox.getSelection());
-        preferenceStore.setValue(PREFERENCE_EMBED_FONTS, embedFontsCheckbox.getSelection());
+        preferenceStore.setValue(PREFERENCE_TEXT_AS_SHAPES, textAsShapesCheckbox.getSelection());
+        if (embedFontsCheckbox.isEnabled()) {
+            preferenceStore.setValue(PREFERENCE_EMBED_FONTS, embedFontsCheckbox.getSelection());
+        }
+        if (setTextLengthsCheckbox.isEnabled()) {
+            preferenceStore.setValue(PREFERENCE_SET_TEXT_LENGTHS, setTextLengthsCheckbox.getSelection());
+        }
         preferenceStore.setValue(PREFERENCE_TILING_IS_MAXSIZE, tilingInfo.isMaxsize);
         if (tilingInfo.isMaxsize) {
             preferenceStore.setValue(PREFERENCE_TILING_X, tilingInfo.maxWidth);
@@ -690,9 +702,10 @@ public class SaveAsImageDialog extends Dialog {
                 .cameraViewport(cameraViewportCheckbox.getSelection())
                 .applyCameraZoomLevel(cameraZoomLevelCheckbox.getSelection())
                 .scale(scaleSlider.getSelection())
+                .transparentBackground(transparentBackgroundCheckbox.getSelection())
                 .textAsShapes(textAsShapesCheckbox.getSelection())
                 .embedFonts(embedFontsCheckbox.getSelection())
-                .transparentBackground(transparentBackgroundCheckbox.getSelection());
+                .setTextLengths(setTextLengthsCheckbox.getSelection());
         
         if (currentExporter.supportsTiling && tilingInfo.isTiled) {
             builder.tilingInfo(tilingInfo);
