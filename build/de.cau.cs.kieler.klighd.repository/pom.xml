@@ -63,7 +63,7 @@
               <siteTemplateFolder>siteTemplate</siteTemplateFolder>
               <symbols>
                 <update.site.name>KIELER Lightweight Diagrams</update.site.name>
-                <update.site.description>Nightly</update.site.description>
+                <update.site.description>v2.0.0</update.site.description>
                 <update.site.version>${unqualifiedVersion}.${buildQualifier}</update.site.version>
               </symbols>
             </configuration>
