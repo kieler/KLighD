@@ -74,6 +74,14 @@ class KNodeExtensions {
     def boolean nodeExists(Object... os) {
         getInternalNodeMap.containsKey(newArrayList(os))
     }
+    
+    /**
+     * A convenient method to register a node that was not created via the create extension.
+     * @return the previous node associated with the given object(s), or {@code null} if there was no node.
+     */
+    def KNode registerExistingNode(KNode node, Object... os) {
+        return getInternalNodeMap.put(newArrayList(os), node)
+    }
 
     /**
      * A convenient getter preserving the element image relation by a create extension.

@@ -106,6 +106,14 @@ class KPortExtensions {
     }
     
     /**
+     * A convenient method to register a port that was not created via the create extension.
+     * @return the previous port associated with the given object(s), or {@code null} if there was no port yet.
+     */
+    def KPort registerExistingPort(KPort port, Object... os) {
+        return getInternalPortMap.put(newArrayList(os), port)
+    }
+    
+    /**
      * A convenient port getter based on a single business object preserving the
      * element image relation by a create extension.
      */
