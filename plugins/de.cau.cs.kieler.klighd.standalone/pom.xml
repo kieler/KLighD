@@ -16,7 +16,7 @@
   <dependencies>
     <dependency>
       <groupId>org.eclipse.elk</groupId>
-      <artifactId>org.eclipse.elk.core</artifactId>
+      <artifactId>org.eclipse.elk.core.service</artifactId>
       <version>${elk-version}</version>
     </dependency>
     <dependency>
