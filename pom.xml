@@ -120,6 +120,30 @@
     </dependency>
   </dependencies>
 
+  <!-- This dependency management are only here to resolve the broken Maven dependencies of Eclipse artifacts. Should be removed
+  once this ticket is resolved: https://bugs.eclipse.org/bugs/show_bug.cgi?id=567244 -->
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.eclipse.platform</groupId>
+        <artifactId>org.eclipse.ui.workbench</artifactId>
+        <version>3.110.0</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.eclipse.platform</groupId>
+            <artifactId>org.eclipse.swt</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.platform</groupId>
+            <artifactId>org.eclipse.urischeme</artifactId>
+          </exclusion>
+        </exclusions>
+        <!-- transitively pulls 'org.eclipse.jface', too,
+               defining e.g. 'org.eclipse.jface.preference.IPreferenceStore' -->
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
   <distributionManagement>
     <snapshotRepository>
       <id>localSnapshot</id>
