@@ -10,7 +10,7 @@
   <parent>
     <groupId>de.cau.cs.kieler.klighd</groupId>
     <artifactId>parent</artifactId>
-    <version>2.0.0.v20200918</version>
+    <version>2.0.0.v20200930</version>
     <relativePath>../../pom.xml</relativePath>
   </parent>
 
