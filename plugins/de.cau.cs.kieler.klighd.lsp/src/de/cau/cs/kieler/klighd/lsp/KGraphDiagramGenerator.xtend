@@ -570,9 +570,13 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
                 newData.text = line
                 newLabel.data += newData
                 val identifier = KGraphFactory.eINSTANCE.createKIdentifier
-                identifier.id = diagramRoot.id + KGraphElementIdGenerator.ID_SEPARATOR + "texts-only" + 
+                var uniqueId = ""
+                do {
+                    uniqueId = diagramRoot.id + KGraphElementIdGenerator.ID_SEPARATOR + "texts-only" + 
                     KGraphElementIdGenerator.ID_SEPARATOR + KGraphElementIdGenerator.LABEL_SEPARATOR 
-                    + newLabel.hashCode + KGraphElementIdGenerator.ID_SEPARATOR + index
+                    + Math.random + KGraphElementIdGenerator.ID_SEPARATOR + index
+                } while (textMapping.get(uniqueId) !== null)
+                identifier.id = uniqueId
                 newLabel.data += identifier
                 
                 // generate a new Label as if it would belong to the main model
