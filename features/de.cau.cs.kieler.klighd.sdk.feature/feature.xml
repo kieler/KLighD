@@ -2,7 +2,7 @@
 <feature
       id="de.cau.cs.kieler.klighd.sdk.feature"
       label="KIELER Lightweight Diagrams - Developer Resources &amp; Examples"
-      version="2.0.0.v20200930"
+      version="2.0.1.v20201026"
       provider-name="Kiel University"
       plugin="de.cau.cs.kieler.klighd.ui.wizard">
 

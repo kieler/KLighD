@@ -11,56 +11,56 @@
       </description>
    </category-def>
 
-   <feature url="features/de.cau.cs.kieler.klighd.feature_2.0.0.v20200930.jar" id="de.cau.cs.kieler.klighd.feature" version="2.0.0.v20200930">
+   <feature url="features/de.cau.cs.kieler.klighd.feature_2.0.1.v20201026.jar" id="de.cau.cs.kieler.klighd.feature" version="2.0.1.v20201026">
       <category name="kieler-klighd"/>
    </feature>
-   <feature url="features/de.cau.cs.kieler.klighd.feature.source_2.0.0.v20200930.jar" id="de.cau.cs.kieler.klighd.feature.source" version="2.0.0.v20200930">
-      <category name="kieler-klighd"/>
-   </feature>
-
-   <feature url="features/de.cau.cs.kieler.klighd.batik.feature_2.0.0.v20200930.jar" id="de.cau.cs.kieler.klighd.batik.feature" version="2.0.0.v20200930">
-      <category name="kieler-klighd"/>
-   </feature>
-   <feature url="features/de.cau.cs.kieler.klighd.batik.feature.source_2.0.0.v20200930.jar" id="de.cau.cs.kieler.klighd.batik.feature.source" version="2.0.0.v20200930">
+   <feature url="features/de.cau.cs.kieler.klighd.feature.source_2.0.1.v20201026.jar" id="de.cau.cs.kieler.klighd.feature.source" version="2.0.1.v20201026">
       <category name="kieler-klighd"/>
    </feature>
 
-   <feature url="features/de.cau.cs.kieler.klighd.freehep.feature_2.0.0.v20200930.jar" id="de.cau.cs.kieler.klighd.freehep.feature" version="2.0.0.v20200930">
+   <feature url="features/de.cau.cs.kieler.klighd.batik.feature_2.0.1.v20201026.jar" id="de.cau.cs.kieler.klighd.batik.feature" version="2.0.1.v20201026">
       <category name="kieler-klighd"/>
    </feature>
-   <feature url="features/de.cau.cs.kieler.klighd.freehep.feature.source_2.0.0.v20200930.jar" id="de.cau.cs.kieler.klighd.freehep.feature.source" version="2.0.0.v20200930">
-      <category name="kieler-klighd"/>
-   </feature>
-
-   <feature url="features/de.cau.cs.kieler.klighd.draw2d.feature_2.0.0.v20200930.jar" id="de.cau.cs.kieler.klighd.draw2d.feature" version="2.0.0.v20200930">
-      <category name="kieler-klighd"/>
-   </feature>
-   <feature url="features/de.cau.cs.kieler.klighd.draw2d.feature.source_2.0.0.v20200930.jar" id="de.cau.cs.kieler.klighd.draw2d.feature.source" version="2.0.0.v20200930">
-      <category name="kieler-klighd"/>
-   </feature>
-   <feature url="features/de.cau.cs.kieler.klighd.ide.feature_2.0.0.v20200930.jar" id="de.cau.cs.kieler.klighd.ide.feature" version="2.0.0.v20200930">
-      <category name="kieler-klighd"/>
-   </feature>
-   <feature url="features/de.cau.cs.kieler.klighd.ide.feature.source_2.0.0.v20200930.jar" id="de.cau.cs.kieler.klighd.ide.feature.source" version="2.0.0.v20200930">
+   <feature url="features/de.cau.cs.kieler.klighd.batik.feature.source_2.0.1.v20201026.jar" id="de.cau.cs.kieler.klighd.batik.feature.source" version="2.0.1.v20201026">
       <category name="kieler-klighd"/>
    </feature>
 
-   <feature url="features/de.cau.cs.kieler.klighd.view.feature_2.0.0.v20200930.jar" id="de.cau.cs.kieler.klighd.view.feature" version="2.0.0.v20200930">
+   <feature url="features/de.cau.cs.kieler.klighd.freehep.feature_2.0.1.v20201026.jar" id="de.cau.cs.kieler.klighd.freehep.feature" version="2.0.1.v20201026">
       <category name="kieler-klighd"/>
    </feature>
-   <feature url="features/de.cau.cs.kieler.klighd.view.feature.source_2.0.0.v20200930.jar" id="de.cau.cs.kieler.klighd.view.feature.source" version="2.0.0.v20200930">
-      <category name="kieler-klighd"/>
-   </feature>
-
-   <feature url="features/de.cau.cs.kieler.klighd.sdk.feature_2.0.0.v20200930.jar" id="de.cau.cs.kieler.klighd.sdk.feature" version="2.0.0.v20200930">
-      <category name="kieler-klighd"/>
-   </feature>
-   <feature url="features/de.cau.cs.kieler.klighd.sdk.feature.source_2.0.0.v20200930.jar" id="de.cau.cs.kieler.klighd.sdk.feature.source" version="2.0.0.v20200930">
+   <feature url="features/de.cau.cs.kieler.klighd.freehep.feature.source_2.0.1.v20201026.jar" id="de.cau.cs.kieler.klighd.freehep.feature.source" version="2.0.1.v20201026">
       <category name="kieler-klighd"/>
    </feature>
 
-   <bundle id="de.cau.cs.kieler.klighd.standalone" version="2.0.0.v20200930"/>
-   <bundle id="de.cau.cs.kieler.klighd.lsp" version="2.0.0.v20200930"/>
+   <feature url="features/de.cau.cs.kieler.klighd.draw2d.feature_2.0.1.v20201026.jar" id="de.cau.cs.kieler.klighd.draw2d.feature" version="2.0.1.v20201026">
+      <category name="kieler-klighd"/>
+   </feature>
+   <feature url="features/de.cau.cs.kieler.klighd.draw2d.feature.source_2.0.1.v20201026.jar" id="de.cau.cs.kieler.klighd.draw2d.feature.source" version="2.0.1.v20201026">
+      <category name="kieler-klighd"/>
+   </feature>
+   <feature url="features/de.cau.cs.kieler.klighd.ide.feature_2.0.1.v20201026.jar" id="de.cau.cs.kieler.klighd.ide.feature" version="2.0.1.v20201026">
+      <category name="kieler-klighd"/>
+   </feature>
+   <feature url="features/de.cau.cs.kieler.klighd.ide.feature.source_2.0.1.v20201026.jar" id="de.cau.cs.kieler.klighd.ide.feature.source" version="2.0.1.v20201026">
+      <category name="kieler-klighd"/>
+   </feature>
+
+   <feature url="features/de.cau.cs.kieler.klighd.view.feature_2.0.1.v20201026.jar" id="de.cau.cs.kieler.klighd.view.feature" version="2.0.1.v20201026">
+      <category name="kieler-klighd"/>
+   </feature>
+   <feature url="features/de.cau.cs.kieler.klighd.view.feature.source_2.0.1.v20201026.jar" id="de.cau.cs.kieler.klighd.view.feature.source" version="2.0.1.v20201026">
+      <category name="kieler-klighd"/>
+   </feature>
+
+   <feature url="features/de.cau.cs.kieler.klighd.sdk.feature_2.0.1.v20201026.jar" id="de.cau.cs.kieler.klighd.sdk.feature" version="2.0.1.v20201026">
+      <category name="kieler-klighd"/>
+   </feature>
+   <feature url="features/de.cau.cs.kieler.klighd.sdk.feature.source_2.0.1.v20201026.jar" id="de.cau.cs.kieler.klighd.sdk.feature.source" version="2.0.1.v20201026">
+      <category name="kieler-klighd"/>
+   </feature>
+
+   <bundle id="de.cau.cs.kieler.klighd.standalone" version="2.0.1.v20201026"/>
+   <bundle id="de.cau.cs.kieler.klighd.lsp" version="2.0.1.v20201026"/>
 
    <repository-reference location="https://download.eclipse.org/releases/2020-06/" enabled="true" />
    <repository-reference location="https://download.eclipse.org/modeling/mdt/uml2/updates/5.4/" enabled="true" />

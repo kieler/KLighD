@@ -10,7 +10,7 @@
   <parent>
     <groupId>de.cau.cs.kieler.klighd</groupId>
     <artifactId>parent</artifactId>
-    <version>2.0.0.v20200930</version>
+    <version>2.0.1.v20201026</version>
     <relativePath>../../pom.xml</relativePath>
   </parent>
 
@@ -63,7 +63,7 @@
               <siteTemplateFolder>siteTemplate</siteTemplateFolder>
               <symbols>
                 <update.site.name>KIELER Lightweight Diagrams</update.site.name>
-                <update.site.description>v2.0.0</update.site.description>
+                <update.site.description>v2.0.1</update.site.description>
                 <update.site.version>${unqualifiedVersion}.${buildQualifier}</update.site.version>
               </symbols>
             </configuration>
