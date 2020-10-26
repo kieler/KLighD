@@ -894,8 +894,6 @@ public final class DiagramView extends DiagramViewPart implements ISelectionChan
             // Update toolbar and menu
             toolBarManager.update(false);
             menuManager.updateAll(false);
-            // Update ActionBars important for correct toolbar layout
-            getViewSite().getActionBars().updateActionBars();
 
             // Activate new controller
             simpleUpdate = true;
