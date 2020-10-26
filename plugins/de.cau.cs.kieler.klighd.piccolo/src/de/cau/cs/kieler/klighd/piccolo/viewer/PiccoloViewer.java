@@ -144,7 +144,7 @@ public class PiccoloViewer extends AbstractViewer implements ILayoutRecorder,
         this.magnificationLensVisibleSupplier = installEventHanders(camera);
 
         // add a tooltip element
-        new PiccoloTooltip(canvas);
+        this.installToolTip(canvas);
 
         // A timer being in charge of buffering and thus aggregating a bunch of single
         // view transform changes occurring closely after each other to a single view
@@ -221,6 +221,15 @@ public class PiccoloViewer extends AbstractViewer implements ILayoutRecorder,
                 new KlighdSelectiveZoomEventHandler(this)));
 
         return () -> magnificationLensHandler.isLensVisible();
+    }
+
+    /**
+     * Installs the tooltip support on this diagram viewer, clients may override.
+     * 
+     * @param canvas the {@link KlighdCanvas} to install the tooltip support on
+     */
+    protected void installToolTip(final KlighdCanvas canvas) {
+        new PiccoloTooltip(canvas);
     }
 
     /**
