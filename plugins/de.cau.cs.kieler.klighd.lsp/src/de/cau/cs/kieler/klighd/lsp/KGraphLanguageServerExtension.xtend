@@ -14,6 +14,7 @@ package de.cau.cs.kieler.klighd.lsp
 
 import com.google.common.base.Throwables
 import com.google.common.html.HtmlEscapers
+import com.google.gson.JsonObject
 import com.google.inject.Inject
 import com.google.inject.Provider
 import com.google.inject.Singleton
@@ -103,10 +104,21 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
     
     KGraphLanguageClient kgraphLanguageClient
     
+    /**
+     * The property of the {@link InitializeParams} containing the client-defined diagram options.
+     */
+    public static String CLIENT_DIAGRAM_OPTIONS_PROPERTY = "clientDiagramOptions"
+    
     override initialize(InitializeParams params) {
         // Close all diagram servers still open from a previous session.
         val oldClientIds = diagramServerManager.diagramServers.map[ clientId ].toList // toList to avoid lazy evaluation
         oldClientIds.forEach[ didClose ]
+        val initializationOptions = params.initializationOptions
+        if (initializationOptions instanceof JsonObject) {
+            synchronized (diagramState) {
+                diagramState.clientOptions = initializationOptions.get(CLIENT_DIAGRAM_OPTIONS_PROPERTY)
+            }
+        }
         return super.initialize(params)
     }
     
@@ -246,6 +258,7 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
                     // The options in the parameter are a newly generated object, so it needs to be matched to the 
                     // option of the viewContext.
                     val synthesisOption = synthesisOptions.findFirst [
+                        // TODO: replace this with the option ID
                         System.identityHashCode(it) === paramSynthesisOption.sourceHash
                     ]
                     if (synthesisOption === null) {
@@ -364,7 +377,7 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
      * @param value The value for that option
      * @param viewContext The current {@code ViewContext} in which the option is configured
      */
-    def void configureOption(SynthesisOption option, Object value, ViewContext viewContext) {
+    static def void configureOption(SynthesisOption option, Object value, ViewContext viewContext) {
         if (option.isChoiceOption) {
             // Choice options are predefined with non-primitive types, so try to match the
             // paramSynthesisOption with one of the options available for this choice.

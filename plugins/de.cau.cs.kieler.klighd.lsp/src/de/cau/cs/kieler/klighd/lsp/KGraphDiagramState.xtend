@@ -3,7 +3,7 @@
  *
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright 2018,2019 by
+ * Copyright 2018,2020 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -12,6 +12,7 @@
  */
 package de.cau.cs.kieler.klighd.lsp
 
+import com.google.gson.JsonElement
 import com.google.inject.Singleton
 import de.cau.cs.kieler.klighd.IViewer
 import de.cau.cs.kieler.klighd.SynthesisOption
@@ -103,6 +104,11 @@ class KGraphDiagramState {
      * Map containing all recently used {@link SynthesisOption}s and their current values.
      */
     Map<SynthesisOption, Object> recentSynthesisOptions = new HashMap
+    
+    /**
+     * The options predefined by the client that should be used during syntheses and layout.
+     */
+    JsonElement clientOptions
     
     /**
      * A map to map the Sprotty client id to the URI leading to the resource.
@@ -337,7 +343,21 @@ class KGraphDiagramState {
     }
     
     /**
-     * Add an option with its current value to the recently used options to be retreivable later via
+     * Sets the options defined by the client.
+     */
+    def setClientOptions(JsonElement clientOptions) {
+        this.clientOptions = clientOptions
+    }
+    
+    /**
+     * Returns all options defined by the client.
+     */
+    def getClientOptions() {
+        return clientOptions
+    }
+    
+    /**
+     * Add an option with its current value to the recently used options to be retrievable later via
      * {@link #getRecentSynthesisOptions()}.
      */
     def addRecentSynthesisOption(SynthesisOption option, Object value) {
