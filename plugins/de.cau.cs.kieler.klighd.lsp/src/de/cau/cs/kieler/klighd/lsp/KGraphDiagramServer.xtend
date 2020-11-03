@@ -21,6 +21,7 @@ import de.cau.cs.kieler.klighd.IAction
 import de.cau.cs.kieler.klighd.IAction.ActionContext
 import de.cau.cs.kieler.klighd.Klighd
 import de.cau.cs.kieler.klighd.KlighdDataManager
+import de.cau.cs.kieler.klighd.ViewContext
 import de.cau.cs.kieler.klighd.kgraph.KLabel
 import de.cau.cs.kieler.klighd.kgraph.KNode
 import de.cau.cs.kieler.klighd.krendering.KRendering
@@ -31,6 +32,7 @@ import de.cau.cs.kieler.klighd.lsp.launch.AbstractLanguageServer
 import de.cau.cs.kieler.klighd.lsp.model.CheckImagesAction
 import de.cau.cs.kieler.klighd.lsp.model.CheckedImagesAction
 import de.cau.cs.kieler.klighd.lsp.model.ComputedTextBoundsAction
+import de.cau.cs.kieler.klighd.lsp.model.LayoutOptionUIData
 import de.cau.cs.kieler.klighd.lsp.model.PerformActionAction
 import de.cau.cs.kieler.klighd.lsp.model.RefreshDiagramAction
 import de.cau.cs.kieler.klighd.lsp.model.RefreshLayoutAction
@@ -38,6 +40,8 @@ import de.cau.cs.kieler.klighd.lsp.model.RequestTextBoundsAction
 import de.cau.cs.kieler.klighd.lsp.model.SKGraph
 import de.cau.cs.kieler.klighd.lsp.model.SetSynthesisAction
 import de.cau.cs.kieler.klighd.lsp.model.StoreImagesAction
+import de.cau.cs.kieler.klighd.lsp.model.UpdateDiagramOptionsAction
+import de.cau.cs.kieler.klighd.lsp.model.ValuedSynthesisOption
 import de.cau.cs.kieler.klighd.lsp.utils.KRenderingIdGenerator
 import de.cau.cs.kieler.klighd.lsp.utils.SprottyProperties
 import de.cau.cs.kieler.klighd.microlayout.Bounds
@@ -46,11 +50,16 @@ import java.io.FileNotFoundException
 import java.io.InputStream
 import java.util.ArrayList
 import java.util.Base64
+import java.util.Collection
 import java.util.List
 import java.util.Map
 import java.util.concurrent.CompletableFuture
 import org.apache.log4j.Logger
 import org.eclipse.core.runtime.Platform
+import org.eclipse.elk.core.data.LayoutMetaDataService
+import org.eclipse.elk.core.data.LayoutOptionData
+import org.eclipse.elk.core.data.LayoutOptionData.Visibility
+import org.eclipse.elk.graph.properties.IProperty
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.sprotty.Action
 import org.eclipse.sprotty.ActionMessage
@@ -144,6 +153,7 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
      * for client-side cached images with the {@link CheckImagesAction}. If the corresponding response to the 
      * {@link CheckImagesAction} requires images to be sent, a {@link SendImagesAction} is sent first. After receiving
      * the result back, updates the model with default Sprotty behavior via the {@link #updateModel} function.
+     * Also handles updating the diagram options on the client.
      * 
      * @param newRoot the diagram to request the text sizes for.
      */
@@ -176,6 +186,9 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
                     dispatch(new CheckImagesAction(images))
                     // the setOrUpdateModel is then executed after the client confirms it has all images cached.
                 }
+                
+                // Update the diagram options with the current used values on the client.
+                updateDiagramOptions(newRoot.id)
             } else {
                 setOrUpdateModel
             }
@@ -184,6 +197,61 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
                 setOrUpdateModel
             }
         }
+    }
+    
+    /**
+     * Updates the diagram options on the client with the values from the currently used view context found under the
+     * given URI.
+     * 
+     * @param uri The URI of the model to take the options from.
+     */
+    def void updateDiagramOptions(String uri) {
+        synchronized (diagramState) {
+            val ViewContext viewContext = diagramState.getKGraphContext(uri)
+            if (viewContext !== null) {
+                val synthesisOptions = new ArrayList<ValuedSynthesisOption>
+                for (option : viewContext.displayedSynthesisOptions) {
+                    var currentValue = viewContext.getOptionValue(option)
+                    if (currentValue instanceof Enum) {
+                        currentValue = currentValue.toString
+                    }
+                    synthesisOptions.add(new ValuedSynthesisOption(option, currentValue))
+                }
+                val layoutOptionUIData = calculateLayoutOptionUIData(viewContext.displayedLayoutOptions)
+                val actionData = viewContext.displayedActions
+                dispatch(new UpdateDiagramOptionsAction(synthesisOptions, layoutOptionUIData, actionData, uri))
+            }
+        }
+    }
+    
+    /**
+     * Packs all data needed to display the layout options in any user interface into a single list of
+     * {@link LayoutOptionUIData}.
+     * 
+     * @param displayedLayoutOptions The layout options that should be displayed. 
+     */
+    def calculateLayoutOptionUIData(List<org.eclipse.elk.core.util.Pair<IProperty<?>, List<?>>> displayedLayoutOptions) {
+        val List<LayoutOptionUIData> layoutOptionUIData = new ArrayList
+        for (pair : displayedLayoutOptions) {
+            var Object first
+            var Object second
+            if (pair.second instanceof Collection) {
+                val iterator = (pair.second as Collection<?>).iterator
+                first = if (iterator.hasNext) iterator.next else null
+                second = if (iterator.hasNext) iterator.next else null
+            }
+
+            val LayoutOptionData optionData = LayoutMetaDataService.instance.getOptionData(pair.first.id)
+            if (optionData.visibility !== Visibility.HIDDEN) {
+                if (first instanceof Number && second instanceof Number) {
+                    layoutOptionUIData.add(new LayoutOptionUIData(optionData, (first as Number).floatValue,
+                        (second as Number).floatValue, null))
+                } else {
+                    layoutOptionUIData.add(new LayoutOptionUIData(optionData, null, null, pair.second))
+                }
+            }
+        }
+        return layoutOptionUIData
     }
     
     override void accept(ActionMessage message) {

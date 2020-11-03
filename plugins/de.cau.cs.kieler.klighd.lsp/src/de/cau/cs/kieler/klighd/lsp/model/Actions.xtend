@@ -12,6 +12,7 @@
  */
 package de.cau.cs.kieler.klighd.lsp.model
 
+import de.cau.cs.kieler.klighd.DisplayedActionData
 import de.cau.cs.kieler.klighd.krendering.KImage
 import java.util.List
 import java.util.function.Consumer
@@ -20,10 +21,10 @@ import org.eclipse.sprotty.ElementAndBounds
 import org.eclipse.sprotty.RequestAction
 import org.eclipse.sprotty.ResponseAction
 import org.eclipse.sprotty.SModelRoot
+import org.eclipse.sprotty.UpdateModelAction
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.xtend.lib.annotations.EqualsHashCode
 import org.eclipse.xtend.lib.annotations.ToString
-import org.eclipse.sprotty.UpdateModelAction
 
 /**
  * Sent from the server to the client to request bounds for the given texts. The texts are rendered
@@ -111,6 +112,57 @@ class StoreImagesAction implements Action {
     new(List<Pair<Pair<String, String>, String>> images) {
         this.images = images
     }
+}
+
+/**
+ * Action message from the server to update the diagram options widget on the client.
+ * 
+ * @author nre
+ */
+@Accessors
+@EqualsHashCode
+@ToString(skipNulls = true)
+class UpdateDiagramOptionsAction implements Action {
+    public static val KIND = 'updateOptions'
+    String kind = KIND
+    
+    /**
+     * The list of all displayed synthesis options with their current values.
+     */
+    List<ValuedSynthesisOption> valuedSynthesisOptions
+    
+    /**
+     * The list of the UI data for layout options.
+     */
+    List<LayoutOptionUIData> layoutOptions
+     
+    /**
+     * The list of all displayed actions.
+     */
+    List<DisplayedActionData> actions
+    
+    /**
+     * The uri for identifying the model these options are for.
+     */
+    String modelUri
+    
+    new() {}
+    new(Consumer<UpdateDiagramOptionsAction> initializer) {
+        initializer.accept(this)
+    }
+    
+    /**
+     * Constructor to call when creating this. The {@code textDiagram} should contain a sprotty Diagram with all texts,
+     * whose bounds should be requested.
+     */
+    new(List<ValuedSynthesisOption> valuedSynthesisOptions, List<LayoutOptionUIData> layoutOptions,
+        List<DisplayedActionData> actions, String modelUri) {
+        this.valuedSynthesisOptions = valuedSynthesisOptions
+        this.layoutOptions = layoutOptions
+        this.actions = actions
+        this.modelUri = modelUri 
+    }
+    
 }
 
 /**

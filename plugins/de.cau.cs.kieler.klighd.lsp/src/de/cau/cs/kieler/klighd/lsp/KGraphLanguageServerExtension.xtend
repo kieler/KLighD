@@ -23,19 +23,14 @@ import de.cau.cs.kieler.klighd.KlighdDataManager
 import de.cau.cs.kieler.klighd.SynthesisOption
 import de.cau.cs.kieler.klighd.ViewContext
 import de.cau.cs.kieler.klighd.lsp.launch.AbstractLanguageServer
-import de.cau.cs.kieler.klighd.lsp.model.GetOptionsParam
-import de.cau.cs.kieler.klighd.lsp.model.GetOptionsResult
-import de.cau.cs.kieler.klighd.lsp.model.LayoutOptionUIData
 import de.cau.cs.kieler.klighd.lsp.model.PerformActionParam
 import de.cau.cs.kieler.klighd.lsp.model.SetLayoutOptionsParam
 import de.cau.cs.kieler.klighd.lsp.model.SetSynthesesAction
 import de.cau.cs.kieler.klighd.lsp.model.SetSynthesesActionData
 import de.cau.cs.kieler.klighd.lsp.model.SetSynthesisOptionsParam
-import de.cau.cs.kieler.klighd.lsp.model.ValuedSynthesisOption
 import de.cau.cs.kieler.klighd.syntheses.ReinitializingDiagramSynthesisProxy
 import java.net.URLDecoder
 import java.util.ArrayList
-import java.util.Collection
 import java.util.List
 import java.util.Map
 import java.util.concurrent.CompletableFuture
@@ -43,10 +38,7 @@ import org.eclipse.elk.core.LayoutConfigurator
 import org.eclipse.elk.core.data.LayoutMetaDataService
 import org.eclipse.elk.core.data.LayoutOptionData
 import org.eclipse.elk.core.data.LayoutOptionData.Type
-import org.eclipse.elk.core.data.LayoutOptionData.Visibility
-import org.eclipse.elk.core.util.Pair
 import org.eclipse.elk.graph.ElkGraphElement
-import org.eclipse.elk.graph.properties.IProperty
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.lsp4j.DocumentHighlight
@@ -190,59 +182,6 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
             }
             return new SetSynthesesActionData(synthesisId, displayedName)
         ].toList
-    }
-    
-    override getOptions(GetOptionsParam param) {
-        val decodedUri = URLDecoder.decode(param.uri, "UTF-8")
-        return doRead(decodedUri) [ resource, ci |
-            synchronized (diagramState) {
-                val ViewContext viewContext = diagramState.getKGraphContext(decodedUri)
-                if (viewContext === null) {
-                    // A diagram for this file is currently not opened, so no options can be shown.
-                    return null
-                }
-                val synthesisOptions = new ArrayList<ValuedSynthesisOption>
-                val recentSynthesisOptions = diagramState.recentSynthesisOptions
-                for (option : viewContext.displayedSynthesisOptions) {
-                    val currentValue = recentSynthesisOptions.get(option)
-                    synthesisOptions.add(new ValuedSynthesisOption(option, currentValue))
-                }
-                val layoutOptionUIData = calculateLayoutOptionUIData(viewContext.displayedLayoutOptions)
-                
-                return new GetOptionsResult(synthesisOptions, layoutOptionUIData,
-                    viewContext.displayedActions)
-            }
-        ]
-    }
-    
-    /**
-     * Packs all data needed to display the layout options in any user interface into a single list of
-     * {@link LayoutOptionUIData}.
-     * 
-     * @param displayedLayoutOptions The layout options that should be displayed. 
-     */
-    def calculateLayoutOptionUIData(List<Pair<IProperty<?>, List<?>>> displayedLayoutOptions) {
-        val List<LayoutOptionUIData> layoutOptionUIData = new ArrayList
-        for (pair : displayedLayoutOptions) {
-            var Object first
-            var Object second
-            if (pair.second instanceof Collection) {
-                val iterator = (pair.second as Collection<?>).iterator
-                first = if (iterator.hasNext) iterator.next else null
-                second = if (iterator.hasNext) iterator.next else null
-            }
-
-            val LayoutOptionData optionData = LayoutMetaDataService.instance.getOptionData(pair.first.id)
-            if (optionData.visibility !== Visibility.HIDDEN) {
-                if (first instanceof Number && second instanceof Number) {
-                    layoutOptionUIData.add(new LayoutOptionUIData(optionData, (first as Number).floatValue,
-                        (second as Number).floatValue, null))
-                } else {
-                    layoutOptionUIData.add(new LayoutOptionUIData(optionData, null, null, pair.second))
-                }
-            }
-        }
-        return layoutOptionUIData
     }
     
     override setSynthesisOptions(SetSynthesisOptionsParam param) {

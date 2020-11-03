@@ -33,18 +33,6 @@ import org.eclipse.lsp4j.jsonrpc.services.JsonSegment
 interface IDiagramOptionsLanguageServerExtension {
     
     /**
-     * Method called by a client to get all options to modify a diagram via the sidebar. This includes all
-     * {@link ValuedSynthesisOption}s, all layout options, and the actions defined in an {@link IDiagramSynthesis}
-     * to be shown to the user.
-     * 
-     * @param param Defines the {@code param.path} to the source model of that diagram.
-     * @return All synthesis options, layout options with their current values, and the actions if the diagram for
-     * {@code param.path} is opened, {@code null} otherwise.
-     */
-    @JsonRequest('getOptions')
-    def CompletableFuture<GetOptionsResult> getOptions(GetOptionsParam param)
-    
-    /**
      * Method called by a client to set the {@link SynthesisOption}s of the diagram resolved by {@code param.uri} to 
      * the options given in {@code param.synthesisOptions}. Also updates the diagram.
      * 
