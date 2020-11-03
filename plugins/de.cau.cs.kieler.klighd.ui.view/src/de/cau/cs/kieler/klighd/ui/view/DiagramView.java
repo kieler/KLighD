@@ -927,9 +927,13 @@ public final class DiagramView extends DiagramViewPart implements ISelectionChan
             // Find all available synthesis options for the currently used syntheses
             allUsedSyntheisOptions.addAll(usedRootSynthesis.getDisplayedSynthesisOptions());
             for (ViewContext childVC : viewContext.getChildViewContexts(true)) {
-                usedSyntheses.add(childVC.getDiagramSynthesis());
-                allUsedSyntheisOptions
-                        .addAll(childVC.getDiagramSynthesis().getDisplayedSynthesisOptions());
+                if (childVC != null) {
+                    ISynthesis childSynthesis = childVC.getDiagramSynthesis();
+                    if (childSynthesis != null) {
+                        usedSyntheses.add(childSynthesis);
+                        allUsedSyntheisOptions.addAll(childSynthesis.getDisplayedSynthesisOptions());
+                    }
+                }
             }
 
             // Save used options
