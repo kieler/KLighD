@@ -15,6 +15,7 @@ package de.cau.cs.kieler.klighd.lsp.model
 import de.cau.cs.kieler.klighd.DisplayedActionData
 import de.cau.cs.kieler.klighd.krendering.KImage
 import java.util.List
+import java.util.Set
 import java.util.function.Consumer
 import org.eclipse.sprotty.Action
 import org.eclipse.sprotty.ElementAndBounds
@@ -84,14 +85,15 @@ class SetSynthesesAction implements Action {
 @Accessors
 @EqualsHashCode
 @ToString(skipNulls = true)
-class CheckImagesAction implements Action {
+class CheckImagesAction implements RequestAction<CheckedImagesAction> {
     public static val KIND = 'checkImages'
     String kind = KIND
     
-    List<KImage> images
+    Set<ImageData> images
+    String requestId
     
-    new(List<KImage> images) {
-        this.images = images
+    new(Set<ImageData> imageData) {
+        this.images = imageData
     }
 }
 
@@ -173,11 +175,12 @@ class UpdateDiagramOptionsAction implements Action {
 @Accessors
 @EqualsHashCode
 @ToString(skipNulls = true)
-class CheckedImagesAction implements Action {
+class CheckedImagesAction implements ResponseAction {
     public static val KIND = 'checkedImages'
     String kind = KIND
     
     List<Pair<String, String>> notCached
+    String responseId
 
     new() {}
     new(Consumer<CheckedImagesAction> initializer) {

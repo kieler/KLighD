@@ -279,7 +279,7 @@ class KGraphDiagramUpdater extends DiagramUpdater {
             diagramState.putIdToKGraphElementMap(uri, diagramGenerator.idToKGraphElementMap)
             diagramState.putTexts(uri, diagramGenerator.getModelLabels)
             diagramState.putTextMapping(uri, diagramGenerator.getTextMapping)
-            diagramState.putImages(uri, diagramGenerator.images)
+            diagramState.putImageData(uri, diagramGenerator.images)
         }
 
         return sGraph

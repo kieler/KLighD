@@ -3,7 +3,7 @@
  *
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright 2018,2019 by
+ * Copyright 2018,2020 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -177,13 +177,13 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
                 }
                 
                 // image handling
-                val images = diagramState.getImages(newRoot.id)
-                if (images === null) {
+                val imageData = diagramState.getImageData(newRoot.id)
+                if (imageData === null) {
                     throw new NullPointerException("The id of the SGraph was not found in the diagramState")
-                } else if (images.empty) {
+                } else if (imageData.empty) {
                     imagesUpdated = true
                 } else {
-                    dispatch(new CheckImagesAction(images))
+                    dispatch(new CheckImagesAction(imageData))
                     // the setOrUpdateModel is then executed after the client confirms it has all images cached.
                 }
                 

@@ -31,6 +31,7 @@ import de.cau.cs.kieler.klighd.krendering.KRendering
 import de.cau.cs.kieler.klighd.krendering.KRenderingLibrary
 import de.cau.cs.kieler.klighd.krendering.KRenderingUtil
 import de.cau.cs.kieler.klighd.krendering.KText
+import de.cau.cs.kieler.klighd.lsp.model.ImageData
 import de.cau.cs.kieler.klighd.lsp.model.SKEdge
 import de.cau.cs.kieler.klighd.lsp.model.SKGraph
 import de.cau.cs.kieler.klighd.lsp.model.SKLabel
@@ -43,6 +44,7 @@ import de.cau.cs.kieler.klighd.util.KlighdProperties
 import de.cau.cs.kieler.klighd.util.RenderingContextData
 import java.util.ArrayList
 import java.util.HashMap
+import java.util.HashSet
 import java.util.List
 import java.util.Map
 import org.apache.log4j.Logger
@@ -108,10 +110,10 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
     var Map<String, KText> textMapping
     
     /**
-     * The {@link KImage}s contained in the view model.
+     * The data of all {@link KImage}s contained in the view model.
      */
     @Accessors(PUBLIC_GETTER)
-    var List<KImage> images
+    var HashSet<ImageData> images
 
     /**
      * The root node of the translated {@link SGraph}.
@@ -177,7 +179,7 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
         kGraphToSModelElementMap = new HashMap
         textMapping = new HashMap
         modelLabels = new ArrayList
-        images = new ArrayList
+        images = new HashSet
         idGen = new KGraphElementIdGenerator
         edgesToGenerate = new ArrayList
 
@@ -544,7 +546,7 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
      */
     private def void findSpecialRenderings(KGraphData data) {
         val List<SKLabel> dataLabels = newArrayList
-        var KImage dataImage = null
+        var ImageData imageData = null
         if (data instanceof KText) {
             // create a new Label with data as its text for each line in the original text.
             // KTexts in Labels have their texts stored inside their ancestor KLabel, not in the KText itself
@@ -586,7 +588,7 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
         } else if (data instanceof KContainerRendering) {
             // KImages are container renderings themselves, so also look for their child renderings.
             if (data instanceof KImage) {
-                dataImage = data
+                imageData = ImageData.of(data)
             }
             
             for (childData: data.children) {
@@ -602,8 +604,8 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
         if (!dataLabels.empty) {
             modelLabels.addAll(dataLabels)
         }
-        if (dataImage !== null) {
-            images.add(dataImage)
+        if (imageData !== null) {
+            images.add(imageData)
         }
     }
     

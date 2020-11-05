@@ -21,6 +21,7 @@ import de.cau.cs.kieler.klighd.internal.ISynthesis
 import de.cau.cs.kieler.klighd.kgraph.KGraphElement
 import de.cau.cs.kieler.klighd.krendering.KImage
 import de.cau.cs.kieler.klighd.krendering.KText
+import de.cau.cs.kieler.klighd.lsp.model.ImageData
 import de.cau.cs.kieler.klighd.lsp.model.SKLabel
 import java.net.URLDecoder
 import java.util.HashMap
@@ -58,10 +59,10 @@ class KGraphDiagramState {
     Map<String, Map<String, KGraphElement>> idToKGraphElementMap = new HashMap
     
     /**
-     * A list containing all {@link KImage}s from the source KGraph.
+     * A set containing the image data for all {@link KImage}s from the source KGraph.
      * Mapped by the URI this map belongs to.
      */
-    Map<String, List<KImage>> images = new HashMap
+    Map<String, Set<ImageData>> imageData = new HashMap
     
     /**
      * A list containing all texts from the source KGraph in Sprotty labels.
@@ -175,22 +176,22 @@ class KGraphDiagramState {
     }
     
     /**
-     * Getter to access the value stored in the images map.
+     * Getter to access the value stored in the imageData map.
      * 
      * @param uri The identifying URI of the graph to access the value in the map.
      */
-    def List<KImage> getImages(String uri) {
-        images.get(uri)
+    def Set<ImageData> getImageData(String uri) {
+        imageData.get(uri)
     }
     
     /**
-     * Put method to put a new value in the images map.
+     * Put method to put a new value in the imageData map.
      * 
      * @param uri The identifying URI of the graph to access the map.
      * @param value The value to be stored in the map.
      */
-    def putImages(String uri, List<KImage> value) {
-        images.put(uri, value)
+    def putImageData(String uri, Set<ImageData> value) {
+        imageData.put(uri, value)
     }
     
     /**
