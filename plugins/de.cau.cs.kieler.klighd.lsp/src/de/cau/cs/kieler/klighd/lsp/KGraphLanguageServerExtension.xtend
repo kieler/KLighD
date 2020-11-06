@@ -193,6 +193,10 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
                     sendErrorAndThrow(new IllegalStateException("The diagram has already been closed."))
                 }
                 val synthesisOptions = viewContext.displayedSynthesisOptions
+                
+                // Indicates if the diagram should be updated with this new synthesis options.
+                // If only categories are updated, do not update the diagram.
+                var update = false 
                 for (paramSynthesisOption : param.synthesisOptions) {
                     // The options in the parameter are a newly generated object, so it needs to be matched to the 
                     // option of the viewContext.
@@ -201,17 +205,22 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
                         System.identityHashCode(it) === paramSynthesisOption.sourceHash
                     ]
                     if (synthesisOption === null) {
-                    throw new IllegalStateException("A changed option cannot be found.")
+                        throw new IllegalStateException("A changed option cannot be found.")
                     }
                     else {
                         configureOption(synthesisOption, paramSynthesisOption.currentValue, viewContext)
+                        if (!synthesisOption.isCategory) {
+                            update = true
+                        }
                     }
                 }
                 // Update the diagram.
                 if (diagramUpdater instanceof KGraphDiagramUpdater) {
-                    AbstractLanguageServer.addToMainThreadQueue([
-                        (diagramUpdater as KGraphDiagramUpdater).updateDiagrams2(#[_uriExtensions.toUri(decodedUri)])
-                    ])
+                    if (update) {
+                        AbstractLanguageServer.addToMainThreadQueue([
+                            (diagramUpdater as KGraphDiagramUpdater).updateDiagrams2(#[_uriExtensions.toUri(decodedUri)])
+                        ])
+                    } 
                     return null
                 }
                 throw new IllegalStateException("The diagramUpdater is not setup correctly.")
