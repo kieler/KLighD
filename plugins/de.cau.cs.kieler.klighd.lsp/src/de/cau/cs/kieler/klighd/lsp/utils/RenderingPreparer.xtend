@@ -3,7 +3,7 @@
  *
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright 2018 by
+ * Copyright 2018,2020 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -149,16 +149,9 @@ final class RenderingPreparer {
             // In this case the element is a KEdge.
             bounds = edgeBounds(element as KEdge)
         }
-        // Decide if the bounds should be put in the boundsMap or in the rendering's properties.
-        if (boundsMap === null) {
-            rendering.setBounds(bounds)
-        } else {
-            boundsMap.put(rendering.renderingId, bounds)
-        }
-        // Calculate the bounds and decorations of all child renderings.
-        if (rendering instanceof KContainerRendering) {
-            handleChildren(rendering.children, rendering.childPlacement, bounds, boundsMap, decorationMap, element)
-        }
+        // Calculate the bounds of the rendering.
+        handleAreaAndPointAndDecoratorPlacementRendering(rendering, bounds, boundsMap, decorationMap, element)
+        
         // Calculate the bounds for the junction point rendering.
         if (rendering instanceof KPolyline) {
             if (rendering.junctionPointRendering !== null) {                
