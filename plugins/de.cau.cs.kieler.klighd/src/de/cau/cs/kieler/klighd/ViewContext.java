@@ -460,7 +460,8 @@ public class ViewContext extends MapPropertyHolder {
                         + " failed for input model " + sourceModel.toString() + ".";
 
                 Klighd.handle(
-                        new Status(IStatus.ERROR, Klighd.PLUGIN_ID, msg, e));
+                        new Status(IStatus.ERROR, Klighd.PLUGIN_ID, msg, e),
+                        IKlighdStatusManager.LOG | IKlighdStatusManager.SHOW);
                 return false;
             }
 
