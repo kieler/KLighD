@@ -2,7 +2,7 @@
 <feature
       id="de.cau.cs.kieler.klighd.freehep.feature"
       label="KIELER Lightweight Diagrams Vector Graphics Export Powered by FreeHEP 2.1.1"
-      version="2.0.1.v20201026"
+      version="2.0.1.v20201109"
       provider-name="Kiel University">
 
    <description url="http://www.informatik.uni-kiel.de/rtsys/kieler">
