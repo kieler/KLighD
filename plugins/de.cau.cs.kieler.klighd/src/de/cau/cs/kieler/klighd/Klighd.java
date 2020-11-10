@@ -89,7 +89,7 @@ public class Klighd {
     }
     
     public static void handle(IStatus status) {
-        getStatusManager().handle(status, IKlighdStatusManager.NONE);
+        getStatusManager().handle(status, IKlighdStatusManager.LOG);
     }
     
     public static void log(IStatus status) {
