@@ -12,7 +12,6 @@
  */
 package de.cau.cs.kieler.klighd.lsp
 
-import com.google.common.html.HtmlEscapers
 import org.eclipse.lsp4j.Range
 import org.eclipse.lsp4j.jsonrpc.services.JsonNotification
 import org.eclipse.lsp4j.services.LanguageClient
@@ -35,23 +34,5 @@ interface KGraphLanguageClient extends LanguageClient {
      */
     @JsonNotification("general/replaceContentInFile")
     def void replaceContentInFile(String uri, String code, Range range)
-    
-    /**
-     * Escapes the given message to be safely displayable in a client context putting this message into an HTML page
-     * to avoid possibilities of XSS attacks and a clearly readable message. Uses Google Guava's {@link HtmlEscapers}
-     * for making the message safe and custom String replacement to replace line breaks and tabulators with HTML
-     * counterparts.
-     * 
-     * @param message The unescaped and possibly unsafe message String.
-     * @return An escaped and safe String to display in HTML.
-     */
-    static def String escapeHtml(String message) {
-        return HtmlEscapers.htmlEscaper.escape(message)
-            // TODO: HTML tags are no longer allowed in Theia to prevent XSS, also preventing
-            // any newlines. Look for a solution by following Theia issue #8743:
-            // https://github.com/eclipse-theia/theia/issues/8743
-//            .replace("\n", "<br>\n")
-            .replace("\t", "&nbsp;&nbsp;&nbsp;&nbsp;")
-    }
     
 }

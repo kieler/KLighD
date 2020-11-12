@@ -576,7 +576,7 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
     
     override sendError(String message) {
         if (this.kgraphLanguageClient !== null) {
-            this.kgraphLanguageClient.sendMessage(KGraphLanguageClient.escapeHtml(message), "error")
+            this.kgraphLanguageClient.sendMessage(LSPUtil.escapeHtml(message), "error")
             return true
         }
         return false
@@ -584,7 +584,7 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
     
     override sendWarning(String message) {
         if (this.kgraphLanguageClient !== null) {
-            this.kgraphLanguageClient.sendMessage(KGraphLanguageClient.escapeHtml(message), "warn")
+            this.kgraphLanguageClient.sendMessage(LSPUtil.escapeHtml(message), "warn")
             return true
         }
         return false
@@ -592,7 +592,7 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
     
     override sendInfo(String message) {
         if (this.kgraphLanguageClient !== null) {
-            this.kgraphLanguageClient.sendMessage(KGraphLanguageClient.escapeHtml(message), "info")
+            this.kgraphLanguageClient.sendMessage(LSPUtil.escapeHtml(message), "info")
             return true
         }
         return false

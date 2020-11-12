@@ -21,6 +21,7 @@ import de.cau.cs.kieler.klighd.KlighdDataManager
 import de.cau.cs.kieler.klighd.lsp.KGraphDiagramModule
 import de.cau.cs.kieler.klighd.lsp.KGraphDiagramServerModule
 import de.cau.cs.kieler.klighd.lsp.KGraphLanguageClient
+import de.cau.cs.kieler.klighd.lsp.LSPUtil
 import de.cau.cs.kieler.klighd.lsp.SprottyViewer
 import de.cau.cs.kieler.klighd.lsp.gson_utils.KGraphTypeAdapterUtil
 import de.cau.cs.kieler.klighd.standalone.KlighdStandaloneSetup
@@ -189,7 +190,7 @@ abstract class AbstractLsCreator implements ILsCreator {
      */
     def String statusToMessage(IStatus status) {
         val stackTrace = (status.exception !== null) ? Throwables.getStackTraceAsString(status.exception) : ""
-        return KGraphLanguageClient.escapeHtml(status.message + "\n" + stackTrace)
+        return LSPUtil.escapeHtml(status.message + "\n" + stackTrace)
     }
     
     /**
