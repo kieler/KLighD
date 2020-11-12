@@ -13,7 +13,6 @@
 package de.cau.cs.kieler.klighd.lsp
 
 import com.google.common.base.Throwables
-import com.google.common.html.HtmlEscapers
 import com.google.gson.JsonObject
 import com.google.inject.Inject
 import com.google.inject.Provider
@@ -577,7 +576,7 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
     
     override sendError(String message) {
         if (this.kgraphLanguageClient !== null) {
-            this.kgraphLanguageClient.sendMessage(escapeHtml(message), "error")
+            this.kgraphLanguageClient.sendMessage(KGraphLanguageClient.escapeHtml(message), "error")
             return true
         }
         return false
@@ -585,7 +584,7 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
     
     override sendWarning(String message) {
         if (this.kgraphLanguageClient !== null) {
-            this.kgraphLanguageClient.sendMessage(escapeHtml(message), "warn")
+            this.kgraphLanguageClient.sendMessage(KGraphLanguageClient.escapeHtml(message), "warn")
             return true
         }
         return false
@@ -593,24 +592,9 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
     
     override sendInfo(String message) {
         if (this.kgraphLanguageClient !== null) {
-            this.kgraphLanguageClient.sendMessage(escapeHtml(message), "info")
+            this.kgraphLanguageClient.sendMessage(KGraphLanguageClient.escapeHtml(message), "info")
             return true
         }
         return false
-    }
-    
-    /**
-     * Escapes the given message to be safely displayable in a client context putting this message into an HTML page
-     * to avoid possibilities of XSS attacks and a clearly readable message. Uses Google Guava's {@link HtmlEscapers}
-     * for making the message safe and custom String replacement to replace line breaks and tabulators with HTML
-     * counterparts.
-     * 
-     * @param message The unescaped and possibly unsafe message String.
-     * @return An escaped and safe String to display in HTML.
-     */
-    private def String escapeHtml(String message) {
-        return HtmlEscapers.htmlEscaper.escape(message)
-            .replace("\n", "<br>\n")
-            .replace("\t", "&nbsp;&nbsp;&nbsp;&nbsp;")
     }
 }
