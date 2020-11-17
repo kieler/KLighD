@@ -71,10 +71,9 @@ class LSPUtil {
      */
     static def String escapeHtml(String message) {
         return HtmlEscapers.htmlEscaper.escape(message)
-            // TODO: HTML tags are no longer allowed in Theia to prevent XSS, also preventing
-            // any newlines. Look for a solution by following Theia issue #8743:
-            // https://github.com/eclipse-theia/theia/issues/8743
-//            .replace("\n", "<br>\n")
+            // Convert newlines to a line ending in "\" so that markdown will display the newline.
+            .replace("\n", "\\\n")
+            // Replace tabs with four spaces.
             .replace("\t", "&nbsp;&nbsp;&nbsp;&nbsp;")
     }
 }
