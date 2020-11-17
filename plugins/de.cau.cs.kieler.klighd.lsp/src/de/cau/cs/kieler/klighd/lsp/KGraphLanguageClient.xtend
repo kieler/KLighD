@@ -12,9 +12,9 @@
  */
 package de.cau.cs.kieler.klighd.lsp
 
+import org.eclipse.lsp4j.Range
 import org.eclipse.lsp4j.jsonrpc.services.JsonNotification
 import org.eclipse.lsp4j.services.LanguageClient
-import org.eclipse.lsp4j.Range
 
 /**
  * Register all server to client notifications and requests.
@@ -34,4 +34,5 @@ interface KGraphLanguageClient extends LanguageClient {
      */
     @JsonNotification("general/replaceContentInFile")
     def void replaceContentInFile(String uri, String code, Range range)
+    
 }

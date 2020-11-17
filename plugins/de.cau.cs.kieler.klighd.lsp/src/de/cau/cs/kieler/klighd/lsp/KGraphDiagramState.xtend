@@ -3,7 +3,7 @@
  *
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright 2018,2019 by
+ * Copyright 2018,2020 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -12,6 +12,7 @@
  */
 package de.cau.cs.kieler.klighd.lsp
 
+import com.google.gson.JsonElement
 import com.google.inject.Singleton
 import de.cau.cs.kieler.klighd.IViewer
 import de.cau.cs.kieler.klighd.SynthesisOption
@@ -20,6 +21,7 @@ import de.cau.cs.kieler.klighd.internal.ISynthesis
 import de.cau.cs.kieler.klighd.kgraph.KGraphElement
 import de.cau.cs.kieler.klighd.krendering.KImage
 import de.cau.cs.kieler.klighd.krendering.KText
+import de.cau.cs.kieler.klighd.lsp.model.ImageData
 import de.cau.cs.kieler.klighd.lsp.model.SKLabel
 import java.net.URLDecoder
 import java.util.HashMap
@@ -57,10 +59,10 @@ class KGraphDiagramState {
     Map<String, Map<String, KGraphElement>> idToKGraphElementMap = new HashMap
     
     /**
-     * A list containing all {@link KImage}s from the source KGraph.
+     * A set containing the image data for all {@link KImage}s from the source KGraph.
      * Mapped by the URI this map belongs to.
      */
-    Map<String, List<KImage>> images = new HashMap
+    Map<String, Set<ImageData>> imageData = new HashMap
     
     /**
      * A list containing all texts from the source KGraph in Sprotty labels.
@@ -103,6 +105,11 @@ class KGraphDiagramState {
      * Map containing all recently used {@link SynthesisOption}s and their current values.
      */
     Map<SynthesisOption, Object> recentSynthesisOptions = new HashMap
+    
+    /**
+     * The options predefined by the client that should be used during syntheses and layout.
+     */
+    JsonElement clientOptions
     
     /**
      * A map to map the Sprotty client id to the URI leading to the resource.
@@ -169,22 +176,22 @@ class KGraphDiagramState {
     }
     
     /**
-     * Getter to access the value stored in the images map.
+     * Getter to access the value stored in the imageData map.
      * 
      * @param uri The identifying URI of the graph to access the value in the map.
      */
-    def List<KImage> getImages(String uri) {
-        images.get(uri)
+    def Set<ImageData> getImageData(String uri) {
+        imageData.get(uri)
     }
     
     /**
-     * Put method to put a new value in the images map.
+     * Put method to put a new value in the imageData map.
      * 
      * @param uri The identifying URI of the graph to access the map.
      * @param value The value to be stored in the map.
      */
-    def putImages(String uri, List<KImage> value) {
-        images.put(uri, value)
+    def putImageData(String uri, Set<ImageData> value) {
+        imageData.put(uri, value)
     }
     
     /**
@@ -337,7 +344,21 @@ class KGraphDiagramState {
     }
     
     /**
-     * Add an option with its current value to the recently used options to be retreivable later via
+     * Sets the options defined by the client.
+     */
+    def setClientOptions(JsonElement clientOptions) {
+        this.clientOptions = clientOptions
+    }
+    
+    /**
+     * Returns all options defined by the client.
+     */
+    def getClientOptions() {
+        return clientOptions
+    }
+    
+    /**
+     * Add an option with its current value to the recently used options to be retrievable later via
      * {@link #getRecentSynthesisOptions()}.
      */
     def addRecentSynthesisOption(SynthesisOption option, Object value) {

@@ -12,6 +12,7 @@
  */
 package de.cau.cs.kieler.klighd.lsp
 
+import com.google.common.html.HtmlEscapers
 import de.cau.cs.kieler.klighd.ViewContext
 import de.cau.cs.kieler.klighd.kgraph.KNode
 
@@ -57,5 +58,22 @@ class LSPUtil {
         } else {
             return null
         }
+    }
+    
+    /**
+     * Escapes the given message to be safely displayable in a client context putting this message into an HTML page
+     * to avoid possibilities of XSS attacks and a clearly readable message. Uses Google Guava's {@link HtmlEscapers}
+     * for making the message safe and custom String replacement to replace line breaks and tabulators with HTML
+     * counterparts.
+     * 
+     * @param message The unescaped and possibly unsafe message String.
+     * @return An escaped and safe String to display in HTML.
+     */
+    static def String escapeHtml(String message) {
+        return HtmlEscapers.htmlEscaper.escape(message)
+            // Convert newlines to a line ending in "\" so that markdown will display the newline.
+            .replace("\n", "\\\n")
+            // Replace tabs with four spaces.
+            .replace("\t", "&nbsp;&nbsp;&nbsp;&nbsp;")
     }
 }

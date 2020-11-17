@@ -12,11 +12,16 @@
  */
 package de.cau.cs.kieler.klighd.lsp.launch
 
+import com.google.common.base.Throwables
 import com.google.gson.GsonBuilder
 import com.google.inject.Injector
+import de.cau.cs.kieler.klighd.IKlighdStatusManager
+import de.cau.cs.kieler.klighd.Klighd
 import de.cau.cs.kieler.klighd.KlighdDataManager
 import de.cau.cs.kieler.klighd.lsp.KGraphDiagramModule
 import de.cau.cs.kieler.klighd.lsp.KGraphDiagramServerModule
+import de.cau.cs.kieler.klighd.lsp.KGraphLanguageClient
+import de.cau.cs.kieler.klighd.lsp.LSPUtil
 import de.cau.cs.kieler.klighd.lsp.SprottyViewer
 import de.cau.cs.kieler.klighd.lsp.gson_utils.KGraphTypeAdapterUtil
 import de.cau.cs.kieler.klighd.standalone.KlighdStandaloneSetup
@@ -29,6 +34,7 @@ import java.util.function.Consumer
 import java.util.function.Function
 import org.apache.log4j.AsyncAppender
 import org.apache.log4j.Logger
+import org.eclipse.core.runtime.IStatus
 import org.eclipse.lsp4j.jsonrpc.Launcher.Builder
 import org.eclipse.lsp4j.jsonrpc.MessageConsumer
 import org.eclipse.lsp4j.services.LanguageClient
@@ -56,7 +62,7 @@ abstract class AbstractLsCreator implements ILsCreator {
     /**
      * The language client used for message handling.
      */
-    protected LanguageClient languageClient
+    protected KGraphLanguageClient languageClient
     
     /**
      * Binds all necessary classes to start the LS.
@@ -102,7 +108,7 @@ abstract class AbstractLsCreator implements ILsCreator {
         KlighdStandaloneSetup.initialize
         // Programmatically register the SprottyViewer. It is not registered via service, as it will only ever be used
         // in this language server case.
-        KlighdDataManager.instance.registerViewer(SprottyViewer$Provider.ID, new SprottyViewer$Provider)
+        KlighdDataManager.instance.registerViewer(SprottyViewer.Provider.ID, new SprottyViewer.Provider)
         
         // TypeAdapter is needed to be able to send recursive data in json
         val Consumer<GsonBuilder> configureGson = [ gsonBuilder |
@@ -123,7 +129,8 @@ abstract class AbstractLsCreator implements ILsCreator {
                 .configureGson(configureGson)
                 .setClassLoader(this.class.classLoader)
                 .create();
-        languageClient = launcher.remoteProxy
+        // We only allow KGraphLanguageClient or its subclasses as the remote interface.
+        languageClient = launcher.remoteProxy as KGraphLanguageClient
         ls.connect(languageClient)
         onConnect
         val future = launcher.startListening
@@ -153,13 +160,37 @@ abstract class AbstractLsCreator implements ILsCreator {
     /**
      * The remote interface class this language server should use.
      */
-    def abstract Class<? extends LanguageClient> getRemoteInterface()
+    def abstract Class<? extends KGraphLanguageClient> getRemoteInterface()
     
     /**
      * Handles what needs to be done after the language server connected.
      */
     def void onConnect() {
-        // Defaults a no-op.
+        // Register a new status handler that forwards the messages to the client.
+        Klighd.setStatusManager( [status, style |
+            if (style !== IKlighdStatusManager.NONE) {
+                var String type
+                switch (status.getSeverity()) {
+                case IStatus.INFO:
+                    type = "info"
+                case IStatus.WARNING:
+                    type = "warn"
+                case IStatus.ERROR:
+                    type = "error"
+                default:
+                    return
+                }
+                languageClient.sendMessage(statusToMessage(status), type)
+            }
+        ])
+    }
+    
+    /**
+     * Converts the status into a readable String, including the 
+     */
+    def String statusToMessage(IStatus status) {
+        val stackTrace = (status.exception !== null) ? Throwables.getStackTraceAsString(status.exception) : ""
+        return LSPUtil.escapeHtml(status.message + "\n" + stackTrace)
     }
     
     /**

@@ -13,6 +13,7 @@
 package de.cau.cs.kieler.klighd.lsp
 
 import com.google.common.base.Throwables
+import com.google.gson.JsonObject
 import com.google.inject.Inject
 import com.google.inject.Provider
 import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart
@@ -22,12 +23,21 @@ import de.cau.cs.kieler.klighd.ViewContext
 import de.cau.cs.kieler.klighd.ide.model.MessageModel
 import de.cau.cs.kieler.klighd.kgraph.KNode
 import de.cau.cs.kieler.klighd.lsp.launch.AbstractLanguageServer
+import de.cau.cs.kieler.klighd.lsp.model.LayoutOptionUIData
 import de.cau.cs.kieler.klighd.lsp.model.SKGraph
+import de.cau.cs.kieler.klighd.lsp.model.ValuedSynthesisOption
 import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties
+import java.util.ArrayList
+import java.util.Collection
 import java.util.HashSet
 import java.util.List
 import java.util.Map
 import java.util.concurrent.CompletableFuture
+import org.eclipse.elk.core.data.LayoutMetaDataService
+import org.eclipse.elk.core.data.LayoutOptionData
+import org.eclipse.elk.core.data.LayoutOptionData.Visibility
+import org.eclipse.elk.core.util.Pair
+import org.eclipse.elk.graph.properties.IProperty
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.sprotty.IDiagramServer
@@ -68,6 +78,11 @@ class KGraphDiagramUpdater extends DiagramUpdater {
      */
     @Inject
     INotificationHandler notificationHandler
+    
+    /**
+     * The key of the client options under that the synthesis options are stored.
+     */
+    public static String SYNTHESIS_OPTION = 'synthesis'
 
     override initialize(DiagramLanguageServer languageServer) {
         this.languageServer = languageServer
@@ -174,15 +189,6 @@ class KGraphDiagramUpdater extends DiagramUpdater {
             properties.setProperty(KlighdSynthesisProperties.REQUESTED_DIAGRAM_SYNTHESIS, synthesisId)
         }
 
-        // Save previous synthesis options to restore later.
-        storeCurrentSynthesisOptions()
-        // Configure options.
-        var Map<SynthesisOption, Object> recentSynthesisOptions = null
-        synchronized (diagramState) {
-            recentSynthesisOptions = diagramState.recentSynthesisOptions
-        }
-        properties.configureSynthesisOptionValues(recentSynthesisOptions)
-
         // Indicated if the model type changed against the current model
         var modelTypeChanged = false
         var ViewContext viewContext = null
@@ -211,9 +217,26 @@ class KGraphDiagramUpdater extends DiagramUpdater {
             viewer = viewContext.createViewer(null, null) as SprottyViewer
             viewer.diagramServer = server as KGraphDiagramServer
             viewer.viewContext = viewContext
-        } else {
-            viewContext.copyProperties(properties)
         }
+
+        // Save recent synthesis options to restore later.
+        storeCurrentSynthesisOptions()
+        // Update the recent synthesis options with all synthesis options configured on the client.
+        configureSynthesisOptions(viewContext)
+        var Map<SynthesisOption, Object> recentSynthesisOptions = null
+        synchronized (diagramState) {
+            recentSynthesisOptions = diagramState.recentSynthesisOptions
+        }
+        properties.configureSynthesisOptionValues(recentSynthesisOptions)
+        
+        viewContext.copyProperties(properties)
+        // Manually set the options in the view context, as it already has been initially configured before.
+        if (recentSynthesisOptions !== null) {
+            for (Map.Entry<SynthesisOption, Object> entry : recentSynthesisOptions.entrySet) {
+                viewContext.configureOption(entry.key, entry.value)
+            }
+        }
+        
         val vc = viewContext
         // Update the model and with that call the diagram synthesis.
         AbstractLanguageServer.addToMainThreadQueue([
@@ -256,7 +279,7 @@ class KGraphDiagramUpdater extends DiagramUpdater {
             diagramState.putIdToKGraphElementMap(uri, diagramGenerator.idToKGraphElementMap)
             diagramState.putTexts(uri, diagramGenerator.getModelLabels)
             diagramState.putTextMapping(uri, diagramGenerator.getTextMapping)
-            diagramState.putImages(uri, diagramGenerator.images)
+            diagramState.putImageData(uri, diagramGenerator.images)
         }
 
         return sGraph
@@ -293,6 +316,49 @@ class KGraphDiagramUpdater extends DiagramUpdater {
                     diagramState.addRecentSynthesisOption(option, viewContext.getOptionValue(option))
                 }
             }
+        }
+    }
+    
+    /**
+     * Updates the recent synthesis options with all synthesis options configured on the client.
+     * 
+     * @param viewContext The view context to compare the synthesis options against.
+     */
+    def void configureSynthesisOptions(ViewContext viewContext) {
+        var Map<SynthesisOption, Object> recentSynthesisOptions = null
+        synchronized (diagramState) {
+            recentSynthesisOptions = diagramState.recentSynthesisOptions
+        }
+        try {
+            var JsonObject clientOptions
+            synchronized (diagramState) {
+                clientOptions = diagramState.clientOptions.asJsonObject
+            }
+            val List<String> configuredOptions = newArrayList
+            val synthesisOptions = clientOptions.get(SYNTHESIS_OPTION).asJsonObject
+            for (option : synthesisOptions.entrySet) {
+                val optionId = option.key
+                val optionValue = option.value.asJsonPrimitive
+                // Search an option with the same ID in the view context and configure it with the new value.
+                val availableOptions = viewContext.displayedSynthesisOptions
+                val matchedOption = availableOptions.findFirst [ it.id == optionId ]
+                if (matchedOption !== null) {
+                    val Object optionValueObject = optionValue.isBoolean ? optionValue.asBoolean
+                                                 : optionValue.isNumber  ? optionValue.asNumber
+                                                 : optionValue.isString  ? optionValue.asString
+                    KGraphLanguageServerExtension.configureOption(matchedOption, optionValueObject, viewContext)
+                    // Store the option with the new value in the recent options.
+                    recentSynthesisOptions.put(matchedOption, viewContext.getOptionValue(matchedOption))
+                    configuredOptions.add(optionId)
+                }
+            }
+            // These options now already have been configured here, so remove them from being configured again.
+            for (configuredOption : configuredOptions) {
+                synthesisOptions.remove(configuredOption)
+            }
+        } catch (Exception e) {
+            println("Could not load client-side synthesis options.")
+            e.printStackTrace
         }
     }
 

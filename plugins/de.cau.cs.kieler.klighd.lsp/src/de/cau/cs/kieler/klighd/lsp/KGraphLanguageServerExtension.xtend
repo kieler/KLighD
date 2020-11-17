@@ -13,7 +13,7 @@
 package de.cau.cs.kieler.klighd.lsp
 
 import com.google.common.base.Throwables
-import com.google.common.html.HtmlEscapers
+import com.google.gson.JsonObject
 import com.google.inject.Inject
 import com.google.inject.Provider
 import com.google.inject.Singleton
@@ -22,19 +22,14 @@ import de.cau.cs.kieler.klighd.KlighdDataManager
 import de.cau.cs.kieler.klighd.SynthesisOption
 import de.cau.cs.kieler.klighd.ViewContext
 import de.cau.cs.kieler.klighd.lsp.launch.AbstractLanguageServer
-import de.cau.cs.kieler.klighd.lsp.model.GetOptionsParam
-import de.cau.cs.kieler.klighd.lsp.model.GetOptionsResult
-import de.cau.cs.kieler.klighd.lsp.model.LayoutOptionUIData
 import de.cau.cs.kieler.klighd.lsp.model.PerformActionParam
 import de.cau.cs.kieler.klighd.lsp.model.SetLayoutOptionsParam
 import de.cau.cs.kieler.klighd.lsp.model.SetSynthesesAction
 import de.cau.cs.kieler.klighd.lsp.model.SetSynthesesActionData
 import de.cau.cs.kieler.klighd.lsp.model.SetSynthesisOptionsParam
-import de.cau.cs.kieler.klighd.lsp.model.ValuedSynthesisOption
 import de.cau.cs.kieler.klighd.syntheses.ReinitializingDiagramSynthesisProxy
 import java.net.URLDecoder
 import java.util.ArrayList
-import java.util.Collection
 import java.util.List
 import java.util.Map
 import java.util.concurrent.CompletableFuture
@@ -42,10 +37,7 @@ import org.eclipse.elk.core.LayoutConfigurator
 import org.eclipse.elk.core.data.LayoutMetaDataService
 import org.eclipse.elk.core.data.LayoutOptionData
 import org.eclipse.elk.core.data.LayoutOptionData.Type
-import org.eclipse.elk.core.data.LayoutOptionData.Visibility
-import org.eclipse.elk.core.util.Pair
 import org.eclipse.elk.graph.ElkGraphElement
-import org.eclipse.elk.graph.properties.IProperty
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.lsp4j.DocumentHighlight
@@ -103,10 +95,21 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
     
     KGraphLanguageClient kgraphLanguageClient
     
+    /**
+     * The property of the {@link InitializeParams} containing the client-defined diagram options.
+     */
+    public static String CLIENT_DIAGRAM_OPTIONS_PROPERTY = "clientDiagramOptions"
+    
     override initialize(InitializeParams params) {
         // Close all diagram servers still open from a previous session.
         val oldClientIds = diagramServerManager.diagramServers.map[ clientId ].toList // toList to avoid lazy evaluation
         oldClientIds.forEach[ didClose ]
+        val initializationOptions = params.initializationOptions
+        if (initializationOptions instanceof JsonObject) {
+            synchronized (diagramState) {
+                diagramState.clientOptions = initializationOptions.get(CLIENT_DIAGRAM_OPTIONS_PROPERTY)
+            }
+        }
         return super.initialize(params)
     }
     
@@ -180,59 +183,6 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
         ].toList
     }
     
-    override getOptions(GetOptionsParam param) {
-        val decodedUri = URLDecoder.decode(param.uri, "UTF-8")
-        return doRead(decodedUri) [ resource, ci |
-            synchronized (diagramState) {
-                val ViewContext viewContext = diagramState.getKGraphContext(decodedUri)
-                if (viewContext === null) {
-                    // A diagram for this file is currently not opened, so no options can be shown.
-                    return null
-                }
-                val synthesisOptions = new ArrayList<ValuedSynthesisOption>
-                val recentSynthesisOptions = diagramState.recentSynthesisOptions
-                for (option : viewContext.displayedSynthesisOptions) {
-                    val currentValue = recentSynthesisOptions.get(option)
-                    synthesisOptions.add(new ValuedSynthesisOption(option, currentValue))
-                }
-                val layoutOptionUIData = calculateLayoutOptionUIData(viewContext.displayedLayoutOptions)
-                
-                return new GetOptionsResult(synthesisOptions, layoutOptionUIData,
-                    viewContext.displayedActions)
-            }
-        ]
-    }
-    
-    /**
-     * Packs all data needed to display the layout options in any user interface into a single list of
-     * {@link LayoutOptionUIData}.
-     * 
-     * @param displayedLayoutOptions The layout options that should be displayed. 
-     */
-    def calculateLayoutOptionUIData(List<Pair<IProperty<?>, List<?>>> displayedLayoutOptions) {
-        val List<LayoutOptionUIData> layoutOptionUIData = new ArrayList
-        for (pair : displayedLayoutOptions) {
-            var Object first
-            var Object second
-            if (pair.second instanceof Collection) {
-                val iterator = (pair.second as Collection<?>).iterator
-                first = if (iterator.hasNext) iterator.next else null
-                second = if (iterator.hasNext) iterator.next else null
-            }
-
-            val LayoutOptionData optionData = LayoutMetaDataService.instance.getOptionData(pair.first.id)
-            if (optionData.visibility !== Visibility.HIDDEN) {
-                if (first instanceof Number && second instanceof Number) {
-                    layoutOptionUIData.add(new LayoutOptionUIData(optionData, (first as Number).floatValue,
-                        (second as Number).floatValue, null))
-                } else {
-                    layoutOptionUIData.add(new LayoutOptionUIData(optionData, null, null, pair.second))
-                }
-            }
-        }
-        return layoutOptionUIData
-    }
-    
     override setSynthesisOptions(SetSynthesisOptionsParam param) {
         val decodedUri = URLDecoder.decode(param.uri, "UTF-8")
         doRead(decodedUri) [ resource, ci |
@@ -242,24 +192,34 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
                     sendErrorAndThrow(new IllegalStateException("The diagram has already been closed."))
                 }
                 val synthesisOptions = viewContext.displayedSynthesisOptions
+                
+                // Indicates if the diagram should be updated with this new synthesis options.
+                // If only categories are updated, do not update the diagram.
+                var update = false 
                 for (paramSynthesisOption : param.synthesisOptions) {
                     // The options in the parameter are a newly generated object, so it needs to be matched to the 
                     // option of the viewContext.
                     val synthesisOption = synthesisOptions.findFirst [
+                        // TODO: replace this with the option ID
                         System.identityHashCode(it) === paramSynthesisOption.sourceHash
                     ]
                     if (synthesisOption === null) {
-                    throw new IllegalStateException("A changed option cannot be found.")
+                        throw new IllegalStateException("A changed option cannot be found.")
                     }
                     else {
                         configureOption(synthesisOption, paramSynthesisOption.currentValue, viewContext)
+                        if (!synthesisOption.isCategory) {
+                            update = true
+                        }
                     }
                 }
                 // Update the diagram.
                 if (diagramUpdater instanceof KGraphDiagramUpdater) {
-                    AbstractLanguageServer.addToMainThreadQueue([
-                        (diagramUpdater as KGraphDiagramUpdater).updateDiagrams2(#[_uriExtensions.toUri(decodedUri)])
-                    ])
+                    if (update) {
+                        AbstractLanguageServer.addToMainThreadQueue([
+                            (diagramUpdater as KGraphDiagramUpdater).updateDiagrams2(#[_uriExtensions.toUri(decodedUri)])
+                        ])
+                    } 
                     return null
                 }
                 throw new IllegalStateException("The diagramUpdater is not setup correctly.")
@@ -364,7 +324,7 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
      * @param value The value for that option
      * @param viewContext The current {@code ViewContext} in which the option is configured
      */
-    def void configureOption(SynthesisOption option, Object value, ViewContext viewContext) {
+    static def void configureOption(SynthesisOption option, Object value, ViewContext viewContext) {
         if (option.isChoiceOption) {
             // Choice options are predefined with non-primitive types, so try to match the
             // paramSynthesisOption with one of the options available for this choice.
@@ -616,7 +576,7 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
     
     override sendError(String message) {
         if (this.kgraphLanguageClient !== null) {
-            this.kgraphLanguageClient.sendMessage(escapeHtml(message), "error")
+            this.kgraphLanguageClient.sendMessage(LSPUtil.escapeHtml(message), "error")
             return true
         }
         return false
@@ -624,7 +584,7 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
     
     override sendWarning(String message) {
         if (this.kgraphLanguageClient !== null) {
-            this.kgraphLanguageClient.sendMessage(escapeHtml(message), "warn")
+            this.kgraphLanguageClient.sendMessage(LSPUtil.escapeHtml(message), "warn")
             return true
         }
         return false
@@ -632,24 +592,9 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
     
     override sendInfo(String message) {
         if (this.kgraphLanguageClient !== null) {
-            this.kgraphLanguageClient.sendMessage(escapeHtml(message), "info")
+            this.kgraphLanguageClient.sendMessage(LSPUtil.escapeHtml(message), "info")
             return true
         }
         return false
-    }
-    
-    /**
-     * Escapes the given message to be safely displayable in a client context putting this message into an HTML page
-     * to avoid possibilities of XSS attacks and a clearly readable message. Uses Google Guava's {@link HtmlEscapers}
-     * for making the message safe and custom String replacement to replace line breaks and tabulators with HTML
-     * counterparts.
-     * 
-     * @param message The unescaped and possibly unsafe message String.
-     * @return An escaped and safe String to display in HTML.
-     */
-    private def String escapeHtml(String message) {
-        return HtmlEscapers.htmlEscaper.escape(message)
-            .replace("\n", "<br>\n")
-            .replace("\t", "&nbsp;&nbsp;&nbsp;&nbsp;")
     }
 }
