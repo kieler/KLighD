@@ -357,4 +357,12 @@ public final class KlighdProperties {
      */
     public static final IProperty<Bounds> CALCULATED_TEXT_BOUNDS =
             new Property<Bounds>("klighd.calculated.text.bounds", null);
+
+	    
+    /**
+     * Determines whether a KText can be interpreted as a title for a node.
+     * By default the KText is not a title.
+     */
+    public static final IProperty<Boolean> IS_NODE_TITLE =
+            new Property<Boolean>("klighd.isNodeTitle", false);
 }
