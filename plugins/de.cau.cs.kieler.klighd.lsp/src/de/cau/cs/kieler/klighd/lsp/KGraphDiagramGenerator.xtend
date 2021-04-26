@@ -199,6 +199,49 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
            else 
                diagramRoot
 	}
+	
+	// NOTE: This is a temporary adapter function to serve externally like the existing toSGraph function
+	// but internally enable incremental building of the SGraph
+	// this will simulate a client requesting pieces, the next steps will be incremental support in both
+	// directions (client requests and further processing such as layout)
+	// most importantly: communication between server and client should start using incremental data
+	def SGraph incrementalToSGraph(KNode parentNode, String uri, CancelIndicator cancelIndicator) {
+	    // TODO: implement
+	    
+	    // Store current state of incremental generation, generate nodes and edges piece by piece
+	    // piece = one node and its direct children
+	    // need to see how post-processing  works when dealing with pieces
+	    
+	    val depth = 1
+	    
+	    // PREPARATION STEPS:
+	    // generate an SGraph root element around the translation of the parent KNode.
+        diagramRoot = new SKGraph => [
+            type = 'graph'
+            id = uri
+            children = new ArrayList
+        ]
+        
+        // INCREMENTAL STEPS:
+        // incrementalGenerateNodesAndEdges
+        // postProcess piece !! this currently neglects any hierarchical edges
+        // add piece to current state
+	    
+	    // call to original non incremental method, remove once new implementation is in place
+	    return toSGraph(parentNode, uri, cancelIndicator)
+	}
+	
+	// NOTE: incremental version of createNodesAndPrepareEdges
+	// only handles one node and its children
+	private def List<SModelElement> incrementalCreateNodesAndPrepareEdges(List<KNode> nodes, SModelElement parent) {
+	    // similar to original method, but generateNode must work differently i.e., no recursive call for children
+	    // TODO: implement
+	}
+	
+	private def SKNode incrementalGenerateNode(KNode node) {
+	    // only generate self and leave children as stubs to be generated later
+	    // TODO: implement
+	}
 
     /**
      * Translates all {@code nodes} and their outgoing edges to {@link SModelElement}s. Also handles tracing and
