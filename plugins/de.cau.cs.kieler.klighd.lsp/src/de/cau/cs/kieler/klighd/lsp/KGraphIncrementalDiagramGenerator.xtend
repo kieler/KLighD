@@ -70,6 +70,7 @@ import java.util.LinkedList
 
 /**
  * @author mka
+ * TODO: remove old approach stuff and leave only incremental stuff in file
  *
  */
 class KGraphIncrementalDiagramGenerator implements IDiagramGenerator {
