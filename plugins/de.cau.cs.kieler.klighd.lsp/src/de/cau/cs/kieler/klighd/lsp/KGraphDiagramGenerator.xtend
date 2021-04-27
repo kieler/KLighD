@@ -65,8 +65,6 @@ import org.eclipse.sprotty.xtext.tracing.ITraceProvider
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.xtext.resource.XtextResource
 import org.eclipse.xtext.util.CancelIndicator
-import java.util.Queue
-import java.util.LinkedList
 
 /**
  * A diagram generator that can create Sprotty {@link SGraph} from any {@link EObject} that has a registered view
@@ -202,7 +200,6 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
                diagramRoot
 	}
 	
-
     /**
      * Translates all {@code nodes} and their outgoing edges to {@link SModelElement}s. Also handles tracing and
      * mapping between {@link KGraphElement}s and SModelElements.
@@ -258,7 +255,6 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
         ]
     }
     
-
     /**
      * Translates all {@code ports} to SModelElements. Also handles tracing and mapping between
      * KGraphElements and SModelElements.
@@ -529,7 +525,6 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
         ]
     }
     
-
     /**
      * Looks through the data of elements and searches for special renderings that are needed to be pre-processed before
      * rendering:
