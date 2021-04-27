@@ -199,7 +199,7 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
            else 
                diagramRoot
 	}
-	
+
     /**
      * Translates all {@code nodes} and their outgoing edges to {@link SModelElement}s. Also handles tracing and
      * mapping between {@link KGraphElement}s and SModelElements.
@@ -254,7 +254,7 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
             }
         ]
     }
-    
+
     /**
      * Translates all {@code ports} to SModelElements. Also handles tracing and mapping between
      * KGraphElements and SModelElements.
@@ -524,7 +524,7 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
             }
         ]
     }
-    
+
     /**
      * Looks through the data of elements and searches for special renderings that are needed to be pre-processed before
      * rendering:
