@@ -275,8 +275,8 @@ class KGraphDiagramUpdater extends DiagramUpdater {
         diagramGenerator.activeTracing = shouldSelectText
         // NOTE: change this call to incrementalToSGraph adapter, in first version it should externally act like the 
         // toSGraph call. This way the first focus can be on incrementally building the SGraph
-        // val sGraph = diagramGenerator.toSGraph(viewContext.viewModel, uri, cancelIndicator)
         val sGraph = diagramGenerator.incrementalToSGraph(viewContext.viewModel, uri, cancelIndicator)
+        // val sGraph = diagramGenerator.toSGraph(viewContext.viewModel, uri, cancelIndicator)
         synchronized (diagramState) {
             diagramState.putKGraphToSModelElementMap(uri, diagramGenerator.getKGraphToSModelElementMap)
             diagramState.putIdToKGraphElementMap(uri, diagramGenerator.idToKGraphElementMap)
