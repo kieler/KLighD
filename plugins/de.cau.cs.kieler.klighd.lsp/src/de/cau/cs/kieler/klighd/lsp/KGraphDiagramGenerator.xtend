@@ -256,7 +256,8 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
             val skNode = kGraphToSModelElementMap.get(node.parent)
             
             skNode.children.addAll(incrementalCreateNodesAndPrepareEdges(#[node], skNode))
-            //postProcess()
+            // incrementalCreateEdges()
+            // postProcess()
         }
         
         // TODO: this has to be made incremental too
@@ -273,7 +274,6 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
 	// only handles one node and its children
 	private def List<SModelElement> incrementalCreateNodesAndPrepareEdges(List<KNode> nodes, SModelElement parent) {
 	    // similar to original method, but generateNode must work differently i.e., no recursive call for children
-	    // TODO: implement
 	    val nodeAndEdgeElements = new ArrayList
 	    // add all node children
         for (node : nodes) {
@@ -304,8 +304,6 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
 	
 	private def SKNode incrementalGenerateNode(KNode node) {
 	    // only generate self and leave children as stubs to be generated later
-	    // TODO: implement
-	    
 	    val nodeElement = configSElement(SKNode, idGen.getId(node))
 	    
 	    nodeElement.size = new Dimension(node.width, node.height)
@@ -325,9 +323,6 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
             renderingContextData.setProperty(KlighdInternalProperties.ACTIVE, true)
         }
         
-        //// WARNING
-        // This stuff needs to be changed as we don't want to recursively create the child nodes at this point
-        // Populate the children of this node only if child nodes exist and the node should be drawn expanded.
         var boolean isExpanded
         if (renderingContextData.hasProperty(SprottyProperties.EXPANDED)) {
             isExpanded = renderingContextData.getProperty(SprottyProperties.EXPANDED)
@@ -394,6 +389,23 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
      * Also handles tracing and mapping between {@link KGraphElement}s and SModelElements.
      */
     private def createEdges() {
+        edgesToGenerate.forEach [ edgeAndParent |
+            val edge = edgeAndParent.key
+            val parent = edgeAndParent.value
+            val SEdge edgeElement = generateEdge(edge)
+            if (edgeElement !== null) {
+                parent.add(edgeElement)
+                kGraphToSModelElementMap.put(edge, edgeElement)
+                edgeElement.trace(edge)
+            }
+        ]
+    }
+    
+    // version of function to create edges in multiple calls
+    private def incrementalCreateEdges() {
+        // need to remove processed edges from list and can only process edges where both nodes already exist
+        // may need a different data structure than edgesToGenerate
+
         edgesToGenerate.forEach [ edgeAndParent |
             val edge = edgeAndParent.key
             val parent = edgeAndParent.value
@@ -615,6 +627,72 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
      */
     def postProcess() {
         // Create the edges all edges now that their source and target IDs are defined
+        createEdges()
+
+        // Add all active renderings to the sModelElements.
+        this.kGraphToSModelElementMap.forEach [ kGraphElement, sModelElement |
+            var KRendering currentRendering
+            val renderings = kGraphElement.data.filter(KRendering)
+            // Getting the current rendering similar to AbstractKGERenderingController#getCurrentRendering
+            if (kGraphElement instanceof KNode) {
+                // in case the node to be depicted is tagged as 'populated',
+                // i.e. children are depicted in the diagram ...
+                if (RenderingContextData.get(kGraphElement).getProperty(KlighdInternalProperties.POPULATED)) {
+                    // ... look for a rendering tagged as 'expanded', ...
+                    currentRendering = renderings.findFirst [
+                        KlighdPredicates.isExpandedRendering().apply(it)
+                    ]
+
+                    // ... and if none exists ...
+                    if (currentRendering === null) {
+                        // ... take the first one that is not marked as 'collapsed' one
+                        currentRendering = renderings.findFirst [
+                            !KlighdPredicates.isCollapsedRendering().apply(it)
+                        ]
+                    }
+                } else {
+                    // in case the node to be depicted is tagged as 'not populated',
+                    // i.e. no children are visible in the diagram
+                    // look for a rendering marked as 'collapsed' one, ...
+                    currentRendering = renderings.findFirst [
+                        KlighdPredicates.isCollapsedRendering().apply(it)
+                    ]
+
+                    // ... and if none exists ...
+                    if (currentRendering === null) {
+                        // ... take the first one that is not marked as 'expanded' one
+                        currentRendering = renderings.findFirst [
+                            !KlighdPredicates.isExpandedRendering().apply(it)
+                        ]
+                    }
+                }
+                (sModelElement as SKNode).data.add(currentRendering)
+            } else {
+                // Child renderings of elements other than KNodes are always displayed.
+                if (renderings.empty) {
+                    // Create a default rendering for each type.
+                    currentRendering = KRenderingUtil.createDefaultRendering(kGraphElement)
+                    kGraphElement.data.add(currentRendering)
+                } else {
+                    currentRendering = renderings.head
+                }
+                switch (sModelElement.class) {
+                    case SKEdge:
+                        (sModelElement as SKEdge).data = #[currentRendering]
+                    case SKPort:
+                        (sModelElement as SKPort).data = #[currentRendering]
+                    case SKLabel:
+                        (sModelElement as SKLabel).data = #[currentRendering]
+                }
+            }
+        ]
+    }
+    
+    
+    // This is copy of the original method that I can slowly take apart to make it incremental
+    def incrementalPostProcess() {
+        // Create the edges all edges now that their source and target IDs are defined
+        // do this incrementally after each step always only generating the edges that can at that point be generated
         createEdges()
 
         // Add all active renderings to the sModelElements.
