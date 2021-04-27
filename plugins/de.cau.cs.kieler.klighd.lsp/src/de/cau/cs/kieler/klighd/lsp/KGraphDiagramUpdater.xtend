@@ -60,6 +60,13 @@ class KGraphDiagramUpdater extends DiagramUpdater {
      */
     @Inject
     Provider<KGraphDiagramGenerator> diagramGeneratorProvider
+    
+    /**
+     * The {@link Provider} to call an injected {@link KGraphIncrementalDiagramGenerator} to generate {@link KNode KGraphs} and 
+     * {@link SKGraph}s from that using the incremental top-down approach.
+     */
+    @Inject
+    Provider<KGraphIncrementalDiagramGenerator> incrementalDiagramGeneratorProvider
 
     /**
      * The language server using this diagram updater. Double of the private languageServer field of the DiagramUpdater
@@ -267,7 +274,8 @@ class KGraphDiagramUpdater extends DiagramUpdater {
     synchronized def SGraph createModel(ViewContext viewContext, String uri, CancelIndicator cancelIndicator) {
         // Generate the SGraph model from the KGraph model and store every later relevant part in the
         // diagram state.
-        val diagramGenerator = diagramGeneratorProvider.get
+        // val diagramGenerator = diagramGeneratorProvider.get
+        val diagramGenerator = incrementalDiagramGeneratorProvider.get
         var shouldSelectText = false
         if (languageServer instanceof KGraphLanguageServerExtension) {
             shouldSelectText = languageServer.shouldSelectText
