@@ -133,7 +133,7 @@ class KGraphIncrementalDiagramGenerator implements IDiagramGenerator {
      * List of all {@link KEdge}s that need to be generated in the end and added into the list that is the second
      * element of each pair.
      */
-    List<Pair<KEdge, List<SModelElement>>> edgesToGenerate
+    Queue<Pair<KEdge, List<SModelElement>>> edgesToGenerate
     
     /**
      * Queue of remaining child {@link Knode}s to process in breadth-first traversal to construct diagram.
@@ -190,7 +190,7 @@ class KGraphIncrementalDiagramGenerator implements IDiagramGenerator {
         modelLabels = new ArrayList
         images = new HashSet
         idGen = new KGraphElementIdGenerator
-        edgesToGenerate = new ArrayList
+        edgesToGenerate = new LinkedList
         // generate an SGraph root element around the translation of the parent KNode.
         diagramRoot = new SKGraph => [
             type = 'graph'
@@ -219,7 +219,7 @@ class KGraphIncrementalDiagramGenerator implements IDiagramGenerator {
             val skNode = kGraphToSModelElementMap.get(node.parent)
             
             skNode.children.addAll(incrementalCreateNodesAndPrepareEdges(#[node], skNode))
-            // incrementalCreateEdges()
+            incrementalCreateEdges()
             // postProcess()
         }
         
@@ -344,17 +344,27 @@ class KGraphIncrementalDiagramGenerator implements IDiagramGenerator {
     private def incrementalCreateEdges() {
         // need to remove processed edges from list and can only process edges where both nodes already exist
         // may need a different data structure than edgesToGenerate
-
-        edgesToGenerate.forEach [ edgeAndParent |
+        
+        // go through queue of edges and create those that can be generated
+        var remainingEdges = new LinkedList<Pair<KEdge, List<SModelElement>>>
+        for( Pair<KEdge, List<SModelElement>> edgeAndParent : edgesToGenerate ) {
             val edge = edgeAndParent.key
             val parent = edgeAndParent.value
-            val SEdge edgeElement = generateEdge(edge)
-            if (edgeElement !== null) {
-                parent.add(edgeElement)
-                kGraphToSModelElementMap.put(edge, edgeElement)
-                edgeElement.trace(edge)
+            
+            // check if source and target of edge have already been generated
+            if (kGraphToSModelElementMap.containsKey(edge.target) && kGraphToSModelElementMap.containsKey(edge.source)){
+                val SEdge edgeElement = generateEdge(edge)
+                    if (edgeElement !== null) {
+                    parent.add(edgeElement)
+                    kGraphToSModelElementMap.put(edge, edgeElement)
+                    edgeElement.trace(edge)
+                }
+            } else {
+                remainingEdges.add(edgeAndParent)
             }
-        ]
+        }
+        // update edgesToGenerate
+        edgesToGenerate = remainingEdges
     }
 
     /**
@@ -590,7 +600,7 @@ class KGraphIncrementalDiagramGenerator implements IDiagramGenerator {
     def incrementalPostProcess() {
         // Create the edges all edges now that their source and target IDs are defined
         // do this incrementally after each step always only generating the edges that can at that point be generated
-        createEdges()
+        // createEdges()
 
         // Add all active renderings to the sModelElements.
         this.kGraphToSModelElementMap.forEach [ kGraphElement, sModelElement |
