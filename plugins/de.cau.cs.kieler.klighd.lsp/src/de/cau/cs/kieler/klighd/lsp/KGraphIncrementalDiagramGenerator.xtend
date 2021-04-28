@@ -215,7 +215,7 @@ class KGraphIncrementalDiagramGenerator implements IDiagramGenerator {
         // duplicate elements
         // missing incremental build up eventually this needs to be another interface
         
-        while (childrenToProcess.peek() != null) {
+        while (childrenToProcess.peek() !== null) {
             // this logic needs to later be extracted and individually callable
             val node = childrenToProcess.remove()
             // get parent node to add children to
