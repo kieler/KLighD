@@ -170,40 +170,13 @@ class KGraphIncrementalDiagramGenerator implements IDiagramGenerator {
      *                        generated graph.
      * @param cancelIndicator Indicates, if the action requesting this translation has already been canceled.
      */
-    def SGraph toSGraph(KNode parentNode, String uri, CancelIndicator cancelIndicator) {
-        LOG.info("Generating diagram for input: '" + uri + "'")
-
-        kGraphToSModelElementMap = new HashMap
-        textMapping = new HashMap
-        modelLabels = new ArrayList
-        images = new HashSet
-        idGen = new KGraphElementIdGenerator
-        edgesToGenerate = new ArrayList
-
-        // generate an SGraph root element around the translation of the parent KNode.
-        diagramRoot = new SKGraph => [
-            type = 'graph'
-            id = uri
-            children = new ArrayList
-        ]
-
-        diagramRoot.children.addAll(createNodesAndPrepareEdges(#[parentNode], diagramRoot))
-        // Do post processing.
-        postProcess()
-
-        return if (cancelIndicator.canceled) 
-               null
-           else 
-               diagramRoot
-    }
     
     // NOTE: This is a temporary adapter function to serve externally like the existing toSGraph function
     // but internally enable incremental building of the SGraph
     // this will simulate a client requesting pieces, the next steps will be incremental support in both
     // directions (client requests and further processing such as layout)
     // most importantly: communication between server and client should start using incremental data
-    def SGraph incrementalToSGraph(KNode parentNode, String uri, CancelIndicator cancelIndicator) {
-        // TODO: implement
+    def SGraph toSGraph(KNode parentNode, String uri, CancelIndicator cancelIndicator) {
         
         // Store current state of incremental generation, generate nodes and edges piece by piece
         // piece = one node and its direct children
@@ -260,6 +233,15 @@ class KGraphIncrementalDiagramGenerator implements IDiagramGenerator {
                diagramRoot
     }
     
+    /**
+     * Translates all {@code nodes} and their outgoing edges to {@link SModelElement}s. Also handles tracing and
+     * mapping between {@link KGraphElement}s and SModelElements.
+     * The edges are translated together with the nodes, because {@link KNode}s contain {@link KEdge}s in the field 
+     * {@link KNode#getOutgoingEdges} as children, whereas outgoing {@link SEdge}s are siblings of their originating 
+     * {@link SNode}s.
+     * The edges are stored to be generated later in the {@code edgesToGenerate} list and need to be generated later.
+     */
+    
     // NOTE: incremental version of createNodesAndPrepareEdges
     // only handles one node and its children
     private def List<SModelElement> incrementalCreateNodesAndPrepareEdges(List<KNode> nodes, SModelElement parent) {
@@ -292,6 +274,9 @@ class KGraphIncrementalDiagramGenerator implements IDiagramGenerator {
         return nodeAndEdgeElements
     }
     
+    /**
+     * Creates a Sprotty node corresponding to the given {@link KNode}.
+     */
     private def SKNode incrementalGenerateNode(KNode node) {
         // only generate self and leave children as stubs to be generated later
         val nodeElement = configSElement(SKNode, idGen.getId(node))
@@ -334,42 +319,6 @@ class KGraphIncrementalDiagramGenerator implements IDiagramGenerator {
        
         
         return nodeElement
-    }
-
-    /**
-     * Translates all {@code nodes} and their outgoing edges to {@link SModelElement}s. Also handles tracing and
-     * mapping between {@link KGraphElement}s and SModelElements.
-     * The edges are translated together with the nodes, because {@link KNode}s contain {@link KEdge}s in the field 
-     * {@link KNode#getOutgoingEdges} as children, whereas outgoing {@link SEdge}s are siblings of their originating 
-     * {@link SNode}s.
-     * The edges are stored to be generated later in the {@code edgesToGenerate} list and need to be generated later.
-     */
-    private def List<SModelElement> createNodesAndPrepareEdges(List<KNode> nodes, SModelElement parent) {
-        val nodeAndEdgeElements = new ArrayList
-        // add all node children
-        for (node : nodes) {
-            val SNode nodeElement = generateNode(node)
-            nodeAndEdgeElements.add(nodeElement)
-            kGraphToSModelElementMap.put(node, nodeElement)
-            nodeElement.trace(node)
-
-            // Add all edges in a list to be generated later, as they need their source and target nodes or ports
-            // to be generated previously. Because hierarchical edges could connect to any arbitrary parent or child node,
-            // they can only be generated safely in the end.
-            for (edge : node.outgoingEdges) {
-                if (edge.target !== null) {
-                    // if target node is directly or indirectly contained by the source node
-                    if (KGraphUtil.isDescendant(edge.target, node)) {
-                        // then generated element of node (add to its children)
-                        edgesToGenerate.add(edge -> nodeElement.children)
-                    } else {
-                        // otherwise the source node's parent generated element (add to its children)
-                        edgesToGenerate.add(edge -> parent.children)
-                    }
-                }
-            }
-        }
-        return nodeAndEdgeElements
     }
 
     /**
@@ -458,48 +407,6 @@ class KGraphIncrementalDiagramGenerator implements IDiagramGenerator {
                 }
             }
         }
-    }
-
-    /**
-     * Creates a Sprotty node corresponding to the given {@link KNode}.
-     */
-    private def SKNode generateNode(KNode node) {
-        val nodeElement = configSElement(SKNode, idGen.getId(node))
-
-        nodeElement.size = new Dimension(node.width, node.height)
-        nodeElement.tooltip = node.getProperty(KlighdProperties.TOOLTIP)
-        val filteredData = node.data.filter [
-            KRendering.isAssignableFrom(it.class) || KRenderingLibrary.isAssignableFrom(it.class)
-        ].toList
-
-        nodeElement.data = node.data.filter[KRenderingLibrary.isAssignableFrom(it.class)].toList
-        
-        setProperties(nodeElement, node)
-        findSpecialRenderings(filteredData)
-        
-        val renderingContextData = RenderingContextData.get(node)
-        // activate the element by default if it does not have an active/inactive status yet.
-        if (!renderingContextData.containsPoperty(KlighdInternalProperties.ACTIVE)) {
-            renderingContextData.setProperty(KlighdInternalProperties.ACTIVE, true)
-        }
-        // Populate the children of this node only if child nodes exist and the node should be drawn expanded.
-        var boolean isExpanded
-        if (renderingContextData.hasProperty(SprottyProperties.EXPANDED)) {
-            isExpanded = renderingContextData.getProperty(SprottyProperties.EXPANDED)
-        } else {
-            // If the expanded property does not exist yet, use the initial expansion.
-            isExpanded = node.getProperty(KlighdProperties.EXPAND)
-        }
-        
-        nodeElement.children.addAll(createPorts(node.ports))
-        nodeElement.children.addAll(createLabels(node.labels))
-        if ((!node.children.empty) && isExpanded) {
-            renderingContextData.setProperty(KlighdInternalProperties.POPULATED, true)
-            nodeElement.children.addAll(createNodesAndPrepareEdges(node.children, nodeElement))
-        } else {
-            renderingContextData.setProperty(KlighdInternalProperties.POPULATED, false)
-        }
-        return nodeElement
     }
     
     /**
