@@ -205,11 +205,20 @@ class KGraphIncrementalDiagramGenerator implements IDiagramGenerator {
         // useful as it doesn't have much meaning, depth control would be a little more useful, but
         // actual region identification would be best
         // priority style queue queuing elements in viewing area first might be interesting
-        var numElementsToProcess = 5
-        while (childrenToProcess.peek() !== null && (numElementsToProcess > 0)) {
-            processNextElement()
+        var numElementsToProcess = 10 // controls how many total elements are generated
+        val maxLevel = 3 // controls how many hierarchy levels should be generated
+        var currentLevel = 0
+        while (childrenToProcess.peek() !== null && (numElementsToProcess > 0) && currentLevel < maxLevel) {
             
-            numElementsToProcess--
+            var elementsOnLevel = childrenToProcess.size()
+            while (elementsOnLevel > 0) {
+                processNextElement()
+            
+                numElementsToProcess--
+                elementsOnLevel--
+            }
+            currentLevel++
+            
         }
 
         return if (cancelIndicator.canceled) 
