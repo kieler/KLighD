@@ -205,8 +205,9 @@ class KGraphIncrementalDiagramGenerator implements IDiagramGenerator {
         // useful as it doesn't have much meaning, depth control would be a little more useful, but
         // actual region identification would be best
         // priority style queue queuing elements in viewing area first might be interesting
-        var numElementsToProcess = 10 // controls how many total elements are generated
-        val maxLevel = 3 // controls how many hierarchy levels should be generated
+        var numElementsToProcess = 10000 // controls how many total elements are generated
+        // wagon.sctx has 9 levels and 310 (node) elements
+        val maxLevel = 20 // controls how many hierarchy levels should be generated
         var currentLevel = 0
         while (childrenToProcess.peek() !== null && (numElementsToProcess > 0) && currentLevel < maxLevel) {
             
@@ -220,6 +221,8 @@ class KGraphIncrementalDiagramGenerator implements IDiagramGenerator {
             currentLevel++
             
         }
+        LOG.info("current hierarchy level: " + currentLevel)
+        LOG.info("remaining allowed elements to be processed: " + numElementsToProcess)
 
         return if (cancelIndicator.canceled) 
                null
