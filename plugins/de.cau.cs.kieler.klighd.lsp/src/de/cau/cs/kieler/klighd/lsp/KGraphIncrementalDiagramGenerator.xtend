@@ -45,8 +45,10 @@ import de.cau.cs.kieler.klighd.util.RenderingContextData
 import java.util.ArrayList
 import java.util.HashMap
 import java.util.HashSet
+import java.util.LinkedList
 import java.util.List
 import java.util.Map
+import java.util.Queue
 import org.apache.log4j.Logger
 import org.eclipse.elk.alg.layered.options.LayeredOptions
 import org.eclipse.elk.alg.rectpacking.options.RectPackingOptions
@@ -65,8 +67,6 @@ import org.eclipse.sprotty.xtext.tracing.ITraceProvider
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.xtext.resource.XtextResource
 import org.eclipse.xtext.util.CancelIndicator
-import java.util.Queue
-import java.util.LinkedList
 
 /**
  * @author mka
@@ -179,16 +179,10 @@ class KGraphIncrementalDiagramGenerator implements IDiagramGenerator {
     // NOTE: This is a temporary adapter function to serve externally like the existing toSGraph function
     // but internally enable incremental building of the SGraph
     // this will simulate a client requesting pieces, the next steps will be incremental support in both
-    // directions (client requests and further processing such as layout)
+    // directions (client requests and further processing such as layout not done with this sgraph though)
     // most importantly: communication between server and client should start using incremental data
     def SGraph toSGraph(KNode parentNode, String uri, CancelIndicator cancelIndicator) {
         
-        // Store current state of incremental generation, generate nodes and edges piece by piece
-        // piece = one node and its direct children
-        // need to see how post-processing  works when dealing with pieces
-        
-        
-        // PREPARATION STEPS:
         kGraphToSModelElementMap = new HashMap
         textMapping = new HashMap
         modelLabels = new ArrayList
@@ -203,31 +197,34 @@ class KGraphIncrementalDiagramGenerator implements IDiagramGenerator {
             id = uri
             children = new ArrayList
         ]
-        
-        // INCREMENTAL STEPS:
-        // incrementalGenerateNodesAndEdges
-        // postProcess piece !! this currently neglects any hierarchical edges
-        // add piece to current state
-        
-        
+ 
         diagramRoot.children.addAll(incrementalCreateNodesAndPrepareEdges(#[parentNode], diagramRoot))
-        //postProcess() // check if additional maintenance is necessary when calling this multiple times to avoid creating 
-        // duplicate elements
-        // missing incremental build up eventually this needs to be another interface
+        incrementalPostProcess()
         
-        while (childrenToProcess.peek() !== null) {
-            // this logic needs to later be extracted and individually callable
-            val node = childrenToProcess.remove()
-            // get parent node to add children to
-            val skNode = kGraphToSModelElementMap.get(node.parent)
+        // experimental control of how much of graph to generate, simple number is not particularly
+        // useful as it doesn't have much meaning, depth control would be a little more useful, but
+        // actual region identification would be best
+        // priority style queue queuing elements in viewing area first might be interesting
+        var numElementsToProcess = 5
+        while (childrenToProcess.peek() !== null && (numElementsToProcess > 0)) {
+            processNextElement()
             
-            skNode.children.addAll(incrementalCreateNodesAndPrepareEdges(#[node], skNode))
-            incrementalPostProcess()
+            numElementsToProcess--
         }
+
         return if (cancelIndicator.canceled) 
                null
            else 
                diagramRoot
+    }
+    
+    private def void processNextElement() {
+        val node = childrenToProcess.remove()
+        // get parent node to add children to
+        val skNode = kGraphToSModelElementMap.get(node.parent)
+        
+        skNode.children.addAll(incrementalCreateNodesAndPrepareEdges(#[node], skNode))
+        incrementalPostProcess()
     }
     
     /**
