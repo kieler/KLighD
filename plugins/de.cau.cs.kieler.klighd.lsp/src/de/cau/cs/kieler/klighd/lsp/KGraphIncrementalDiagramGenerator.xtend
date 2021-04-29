@@ -198,7 +198,7 @@ class KGraphIncrementalDiagramGenerator implements IDiagramGenerator {
             children = new ArrayList
         ]
  
-        diagramRoot.children.addAll(incrementalCreateNodesAndPrepareEdges(#[parentNode], diagramRoot))
+        diagramRoot.children.addAll(incrementalCreateNodesAndPrepareEdges(parentNode, diagramRoot))
         incrementalPostProcess()
         
         // experimental control of how much of graph to generate, simple number is not particularly
@@ -223,7 +223,7 @@ class KGraphIncrementalDiagramGenerator implements IDiagramGenerator {
         // get parent node to add children to
         val skNode = kGraphToSModelElementMap.get(node.parent)
         
-        skNode.children.addAll(incrementalCreateNodesAndPrepareEdges(#[node], skNode))
+        skNode.children.addAll(incrementalCreateNodesAndPrepareEdges(node, skNode))
         incrementalPostProcess()
     }
     
@@ -238,31 +238,29 @@ class KGraphIncrementalDiagramGenerator implements IDiagramGenerator {
     
     // NOTE: incremental version of createNodesAndPrepareEdges
     // only handles one node and its children
-    private def List<SModelElement> incrementalCreateNodesAndPrepareEdges(List<KNode> nodes, SModelElement parent) {
+    private def List<SModelElement> incrementalCreateNodesAndPrepareEdges(KNode node, SModelElement parent) {
         // similar to original method, but generateNode must work differently i.e., no recursive call for children
         val nodeAndEdgeElements = new ArrayList
         // add all node children
-        for (node : nodes) {
-            val SNode nodeElement = incrementalGenerateNode(node)
-            nodeAndEdgeElements.add(nodeElement)
-            kGraphToSModelElementMap.put(node, nodeElement)
-            elementsToPostProcess.add(new Pair(node, nodeElement))
-            nodeElement.trace(node)
+        val SNode nodeElement = incrementalGenerateNode(node)
+        nodeAndEdgeElements.add(nodeElement)
+        kGraphToSModelElementMap.put(node, nodeElement)
+        elementsToPostProcess.add(new Pair(node, nodeElement))
+        nodeElement.trace(node)
 
-            // Add all edges in a list to be generated later, as they need their source and target nodes or ports
-            // to be generated previously. Because hierarchical edges could connect to any arbitrary parent or child node,
-            // they can only be generated safely in the end.\
-            // NOTE: since I will now do post processing for every increment, hierarchical edges should be completely broken
-            for (edge : node.outgoingEdges) {
-                if (edge.target !== null) {
-                    // if target node is directly or indirectly contained by the source node
-                    if (KGraphUtil.isDescendant(edge.target, node)) {
-                        // then generated element of node (add to its children)
-                        edgesToGenerate.add(edge -> nodeElement.children)
-                    } else {
-                        // otherwise the source node's parent generated element (add to its children)
-                        edgesToGenerate.add(edge -> parent.children)
-                    }
+        // Add all edges in a list to be generated later, as they need their source and target nodes or ports
+        // to be generated previously. Because hierarchical edges could connect to any arbitrary parent or child node,
+        // they can only be generated safely in the end.\
+        // NOTE: since I will now do post processing for every increment, hierarchical edges should be completely broken
+        for (edge : node.outgoingEdges) {
+            if (edge.target !== null) {
+                // if target node is directly or indirectly contained by the source node
+                if (KGraphUtil.isDescendant(edge.target, node)) {
+                    // then generated element of node (add to its children)
+                    edgesToGenerate.add(edge -> nodeElement.children)
+                } else {
+                    // otherwise the source node's parent generated element (add to its children)
+                    edgesToGenerate.add(edge -> parent.children)
                 }
             }
         }
