@@ -276,6 +276,8 @@ class KGraphDiagramUpdater extends DiagramUpdater {
         // diagram state.
         // val diagramGenerator = diagramGeneratorProvider.get
         
+        // FIXME: currently collapsing and expanding all regions breaks the diagram somehow
+        
         var hierarchyDepth = 6
         val diagramGenerator = incrementalDiagramGeneratorProvider.get
         var shouldSelectText = false
