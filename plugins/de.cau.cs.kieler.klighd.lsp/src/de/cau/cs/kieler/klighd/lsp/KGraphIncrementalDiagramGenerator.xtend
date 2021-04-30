@@ -69,9 +69,9 @@ import org.eclipse.xtext.resource.XtextResource
 import org.eclipse.xtext.util.CancelIndicator
 
 /**
+ * A breadth-first implementation of {@link KGraphDiagramGenerator}. Breadth-first traversal allows
+ * limiting the amount of depth of a diagram that is rendered.
  * @author mka
- * TODO: remove old approach stuff and leave only incremental stuff in file
- *
  */
 class KGraphIncrementalDiagramGenerator implements IDiagramGenerator {
     static val LOG = Logger.getLogger(KGraphDiagramGenerator)
@@ -205,9 +205,9 @@ class KGraphIncrementalDiagramGenerator implements IDiagramGenerator {
         // useful as it doesn't have much meaning, depth control would be a little more useful, but
         // actual region identification would be best
         // priority style queue queuing elements in viewing area first might be interesting
-        var numElementsToProcess = 10000 // controls how many total elements are generated
+        var numElementsToProcess = 1000 // controls how many total elements are generated
         // wagon.sctx has 9 levels and 310 (node) elements
-        val maxLevel = 20 // controls how many hierarchy levels should be generated
+        val maxLevel = 5 // controls how many hierarchy levels should be generated
         var currentLevel = 0
         while (childrenToProcess.peek() !== null && (numElementsToProcess > 0) && currentLevel < maxLevel) {
             
@@ -240,18 +240,15 @@ class KGraphIncrementalDiagramGenerator implements IDiagramGenerator {
     }
     
     /**
-     * Translates all {@code nodes} and their outgoing edges to {@link SModelElement}s. Also handles tracing and
+     * Translates one {@code node} and its outgoing edges to {@link SModelElement}s. Also handles tracing and
      * mapping between {@link KGraphElement}s and SModelElements.
      * The edges are translated together with the nodes, because {@link KNode}s contain {@link KEdge}s in the field 
      * {@link KNode#getOutgoingEdges} as children, whereas outgoing {@link SEdge}s are siblings of their originating 
      * {@link SNode}s.
      * The edges are stored to be generated later in the {@code edgesToGenerate} list and need to be generated later.
+     * The children of the node are added to the {@code childrenToProcess} queue to be generated later.
      */
-    
-    // NOTE: incremental version of createNodesAndPrepareEdges
-    // only handles one node and its children
     private def List<SModelElement> incrementalCreateNodesAndPrepareEdges(KNode node, SModelElement parent) {
-        // similar to original method, but generateNode must work differently i.e., no recursive call for children
         val nodeAndEdgeElements = new ArrayList
         // add all node children
         val SNode nodeElement = incrementalGenerateNode(node)
@@ -331,13 +328,11 @@ class KGraphIncrementalDiagramGenerator implements IDiagramGenerator {
      * in the {@link edgesToGenerate} field. This method translates all {@link KEdge}s in the {@link edgesToGenerate}
      * field to {@link SModelElement}s and adds them to their corresponding parent SModelElement.
      * Also handles tracing and mapping between {@link KGraphElement}s and SModelElements.
+     * Only creates edges that can already be created i.e., where the corresponding nodes have already been
+     * generated.
      */
-    
-    // version of function to create edges in multiple calls
     private def incrementalCreateEdges() {
         // need to remove processed edges from list and can only process edges where both nodes already exist
-        // may need a different data structure than edgesToGenerate
-        
         // go through queue of edges and create those that can be generated
         var remainingEdges = new LinkedList<Pair<KEdge, List<SModelElement>>>
         for( Pair<KEdge, List<SModelElement>> edgeAndParent : edgesToGenerate ) {
@@ -526,10 +521,9 @@ class KGraphIncrementalDiagramGenerator implements IDiagramGenerator {
 
     /**
      * Handles processing that has to happen after the generation of the SKGraph model depending on data that may only
-     * be accessible once all elements are generated.
+     * be accessible once all elements are generated. In each call the elements that can be processed are processed
+     * and subsequently removed from the queue.
      */
-    
-    // This is copy of the original method that I can slowly take apart to make it incremental
     def incrementalPostProcess() {
         // Create the edges all edges now that their source and target IDs are defined
         // do this incrementally after each step always only generating the edges that can at that point be generated
