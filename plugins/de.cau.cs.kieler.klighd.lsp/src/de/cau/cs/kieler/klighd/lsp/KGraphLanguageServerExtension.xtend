@@ -86,6 +86,12 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
     boolean shouldSelectText = false
     
     /**
+     * Option to indicate desired hierarchy depth.
+     */
+     @Accessors
+     int hierarchyDepth = 6
+    
+    /**
      * Stores data for the generation of diagrams.
      */
     @Inject
@@ -481,6 +487,11 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
                 case "diagram.shouldSelectText": {
                     if (value instanceof Boolean) {
                         this.shouldSelectText = value
+                    }
+                }
+                case "diagram.hierarchyDepth": {
+                    if (value instanceof Double) {
+                        this.hierarchyDepth = value.intValue
                     }
                 }
             }

@@ -167,6 +167,11 @@ class KGraphIncrementalDiagramGenerator implements IDiagramGenerator {
         return ret
     }
     
+    def SGraph toSGraph(KNode parentNode, String uri, CancelIndicator cancelIndicator) {
+        val defaultDepth = 3
+        return toSGraph(parentNode, uri, cancelIndicator, defaultDepth)
+    }
+    
     /**
      * Translates a plain {@link KNode} or a KNode translated by {@link #translateModel} to an {@link SGraph}. 
      * @param parentNode      the KNode that should be translated. This is the parent node containing all elements of
@@ -174,6 +179,7 @@ class KGraphIncrementalDiagramGenerator implements IDiagramGenerator {
      * @param uri             The uri of the source model the parent node was synthesized from. Used as the ID of the
      *                        generated graph.
      * @param cancelIndicator Indicates, if the action requesting this translation has already been canceled.
+     * @param hierarchyDepth  the number of hierarchy levels that should be drawn
      */
     
     // NOTE: This is a temporary adapter function to serve externally like the existing toSGraph function
@@ -181,7 +187,7 @@ class KGraphIncrementalDiagramGenerator implements IDiagramGenerator {
     // this will simulate a client requesting pieces, the next steps will be incremental support in both
     // directions (client requests and further processing such as layout not done with this sgraph though)
     // most importantly: communication between server and client should start using incremental data
-    def SGraph toSGraph(KNode parentNode, String uri, CancelIndicator cancelIndicator) {
+    def SGraph toSGraph(KNode parentNode, String uri, CancelIndicator cancelIndicator, int hierarchyDepth) {
         
         kGraphToSModelElementMap = new HashMap
         textMapping = new HashMap
@@ -207,7 +213,7 @@ class KGraphIncrementalDiagramGenerator implements IDiagramGenerator {
         // priority style queue queuing elements in viewing area first might be interesting
         var numElementsToProcess = 1000 // controls how many total elements are generated
         // wagon.sctx has 9 levels and 310 (node) elements
-        val maxLevel = 5 // controls how many hierarchy levels should be generated
+        val maxLevel = hierarchyDepth // controls how many hierarchy levels should be generated
         var currentLevel = 0
         while (childrenToProcess.peek() !== null && (numElementsToProcess > 0) && currentLevel < maxLevel) {
             

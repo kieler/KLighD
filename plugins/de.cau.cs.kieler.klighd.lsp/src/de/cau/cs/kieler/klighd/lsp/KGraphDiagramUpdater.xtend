@@ -275,13 +275,16 @@ class KGraphDiagramUpdater extends DiagramUpdater {
         // Generate the SGraph model from the KGraph model and store every later relevant part in the
         // diagram state.
         // val diagramGenerator = diagramGeneratorProvider.get
+        
+        var hierarchyDepth = 6
         val diagramGenerator = incrementalDiagramGeneratorProvider.get
         var shouldSelectText = false
         if (languageServer instanceof KGraphLanguageServerExtension) {
             shouldSelectText = languageServer.shouldSelectText
+            hierarchyDepth = languageServer.hierarchyDepth
         }
         diagramGenerator.activeTracing = shouldSelectText
-        val sGraph = diagramGenerator.toSGraph(viewContext.viewModel, uri, cancelIndicator)
+        val sGraph = diagramGenerator.toSGraph(viewContext.viewModel, uri, cancelIndicator, hierarchyDepth)
         synchronized (diagramState) {
             diagramState.putKGraphToSModelElementMap(uri, diagramGenerator.getKGraphToSModelElementMap)
             diagramState.putIdToKGraphElementMap(uri, diagramGenerator.idToKGraphElementMap)
