@@ -245,7 +245,7 @@ public final class PlacementUtil {
     // CHECKSTYLEON Visibility
 
     private static final KRenderingPackage KRENDERING_PACKAGE = KRenderingPackage.eINSTANCE;
-
+    private static final float PT_TO_PX_FACTOR = KlighdConstants.DEFAULT_DISPLAY_DPI / 72f;
 
     /**
      * Evaluates a position inside given parent bounds.
@@ -934,10 +934,11 @@ public final class PlacementUtil {
     public static Bounds estimateTextSize(final KText kText, final String text) {
         final Bounds testSize = getTestingTextSize(kText);
 
-        if (testSize != null)
+        if (testSize != null) {
             return testSize;
-        else
+        } else {
             return estimateTextSize(fontDataFor(kText, null), text);
+        }
     }
     
     /**
@@ -1090,6 +1091,11 @@ public final class PlacementUtil {
             textBounds.width = 0f; // omit the width in this case
         } else {
             textBounds = new Bounds(fm.getStringBounds(text, fmg));
+        }
+        
+        if (Klighd.simulateSwtFontSizeInAwt()) {
+            textBounds.width  *= PT_TO_PX_FACTOR;
+            textBounds.height *= PT_TO_PX_FACTOR;
         }
         
         return textBounds;
