@@ -168,7 +168,7 @@ class KGraphIncrementalDiagramGenerator implements IDiagramGenerator {
     }
     
     def SGraph toSGraph(KNode parentNode, String uri, CancelIndicator cancelIndicator) {
-        val defaultDepth = 3
+        val defaultDepth = 5
         return toSGraph(parentNode, uri, cancelIndicator, defaultDepth)
     }
     
@@ -203,32 +203,25 @@ class KGraphIncrementalDiagramGenerator implements IDiagramGenerator {
             id = uri
             children = new ArrayList
         ]
- 
+
         diagramRoot.children.addAll(incrementalCreateNodesAndPrepareEdges(parentNode, diagramRoot))
         incrementalPostProcess()
-        
-        // experimental control of how much of graph to generate, simple number is not particularly
-        // useful as it doesn't have much meaning, depth control would be a little more useful, but
-        // actual region identification would be best
+
         // priority style queue queuing elements in viewing area first might be interesting
-        var numElementsToProcess = 1000 // controls how many total elements are generated
         // wagon.sctx has 9 levels and 310 (node) elements
         val maxLevel = hierarchyDepth // controls how many hierarchy levels should be generated
         var currentLevel = 0
-        while (childrenToProcess.peek() !== null && (numElementsToProcess > 0) && currentLevel < maxLevel) {
+        while (childrenToProcess.peek() !== null && currentLevel < maxLevel) {
             
             var elementsOnLevel = childrenToProcess.size()
             while (elementsOnLevel > 0) {
                 processNextElement()
             
-                numElementsToProcess--
                 elementsOnLevel--
             }
             currentLevel++
             
         }
-        LOG.info("current hierarchy level: " + currentLevel)
-        LOG.info("remaining allowed elements to be processed: " + numElementsToProcess)
 
         return if (cancelIndicator.canceled) 
                null

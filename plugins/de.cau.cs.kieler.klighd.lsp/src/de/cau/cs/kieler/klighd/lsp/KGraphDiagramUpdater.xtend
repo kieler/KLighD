@@ -276,9 +276,11 @@ class KGraphDiagramUpdater extends DiagramUpdater {
         // diagram state.
         // val diagramGenerator = diagramGeneratorProvider.get
         
-        // FIXME: currently collapsing and expanding all regions breaks the diagram somehow
+        // FIXME: currently collapsing and expanding all regions breaks the diagram somehow, apparently not always
+        //        maybe when hierarchy is low so some elements aren't rendered and "get lost" when collapsing and 
+        //        expanding, not sure why though, must investigate further
         
-        var hierarchyDepth = 6
+        var hierarchyDepth = 5
         val diagramGenerator = incrementalDiagramGeneratorProvider.get
         var shouldSelectText = false
         if (languageServer instanceof KGraphLanguageServerExtension) {

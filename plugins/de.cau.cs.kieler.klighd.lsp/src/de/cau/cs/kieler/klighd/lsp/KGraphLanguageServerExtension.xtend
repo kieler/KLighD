@@ -86,10 +86,10 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
     boolean shouldSelectText = false
     
     /**
-     * Option to indicate desired hierarchy depth.
+     * Option to indicate desired hierarchy depth. Default value is five.
      */
      @Accessors
-     int hierarchyDepth = 6
+     int hierarchyDepth = 5
     
     /**
      * Stores data for the generation of diagrams.
