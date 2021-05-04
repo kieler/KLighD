@@ -137,6 +137,11 @@
             <groupId>org.eclipse.platform</groupId>
             <artifactId>org.eclipse.urischeme</artifactId>
           </exclusion>
+          <!-- This exclusion is temporarily added to fix another missing Maven artifact of Eclipse's depepdencies, see https://github.com/kieler/KLighD/issues/82 and https://bugs.eclipse.org/bugs/show_bug.cgi?id=569770 -->
+          <exclusion>
+            <groupId>javax.annotation</groupId>
+            <artifactId>javax.annotation-api</artifactId>
+          </exclusion>
         </exclusions>
         <!-- transitively pulls 'org.eclipse.jface', too,
                defining e.g. 'org.eclipse.jface.preference.IPreferenceStore' -->
