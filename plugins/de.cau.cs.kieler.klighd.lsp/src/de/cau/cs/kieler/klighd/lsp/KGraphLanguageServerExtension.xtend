@@ -88,8 +88,15 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
     /**
      * Option to indicate desired hierarchy depth. Default value is five.
      */
-     @Accessors
-     int hierarchyDepth = 5
+    @Accessors
+    int hierarchyDepth = 5
+    
+    /**
+     * Option to indicate which diagram generator to use.
+     * Possible values are: "topdown" and "recursive".
+     */
+    @Accessors
+    String diagramGeneratorType = "topdown";
     
     /**
      * Stores data for the generation of diagrams.
@@ -487,6 +494,11 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
                 case "diagram.shouldSelectText": {
                     if (value instanceof Boolean) {
                         this.shouldSelectText = value
+                    }
+                }
+                case "diagram.diagramGenerator": {
+                    if (value instanceof String) {
+                        this.diagramGeneratorType = value
                     }
                 }
                 case "diagram.hierarchyDepth": {

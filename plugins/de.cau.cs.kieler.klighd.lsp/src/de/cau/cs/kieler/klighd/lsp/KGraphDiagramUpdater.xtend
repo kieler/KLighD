@@ -280,24 +280,48 @@ class KGraphDiagramUpdater extends DiagramUpdater {
         //        maybe when hierarchy is low so some elements aren't rendered and "get lost" when collapsing and 
         //        expanding, not sure why though, must investigate further
         
+        var diagramGeneratorType = "topdown"
         var hierarchyDepth = 5
-        val diagramGenerator = incrementalDiagramGeneratorProvider.get
         var shouldSelectText = false
         if (languageServer instanceof KGraphLanguageServerExtension) {
             shouldSelectText = languageServer.shouldSelectText
             hierarchyDepth = languageServer.hierarchyDepth
+            diagramGeneratorType = languageServer.diagramGeneratorType
         }
-        diagramGenerator.activeTracing = shouldSelectText
-        val sGraph = diagramGenerator.toSGraph(viewContext.viewModel, uri, cancelIndicator, hierarchyDepth)
-        synchronized (diagramState) {
-            diagramState.putKGraphToSModelElementMap(uri, diagramGenerator.getKGraphToSModelElementMap)
-            diagramState.putIdToKGraphElementMap(uri, diagramGenerator.idToKGraphElementMap)
-            diagramState.putTexts(uri, diagramGenerator.getModelLabels)
-            diagramState.putTextMapping(uri, diagramGenerator.getTextMapping)
-            diagramState.putImageData(uri, diagramGenerator.images)
-        }
+        
+        // FIXME: extract this to some other strategy manager that can handle passing the options
+        switch (diagramGeneratorType){
+            case "recursive": {
+                val diagramGenerator = diagramGeneratorProvider.get
+                diagramGenerator.activeTracing = shouldSelectText
+                val sGraph = diagramGenerator.toSGraph(viewContext.viewModel, uri, cancelIndicator)
+                synchronized (diagramState) {
+                    diagramState.putKGraphToSModelElementMap(uri, diagramGenerator.getKGraphToSModelElementMap)
+                    diagramState.putIdToKGraphElementMap(uri, diagramGenerator.idToKGraphElementMap)
+                    diagramState.putTexts(uri, diagramGenerator.getModelLabels)
+                    diagramState.putTextMapping(uri, diagramGenerator.getTextMapping)
+                    diagramState.putImageData(uri, diagramGenerator.images)
+                }
 
-        return sGraph
+                return sGraph
+            }
+            case "topdown": {
+                val diagramGenerator = incrementalDiagramGeneratorProvider.get
+                diagramGenerator.activeTracing = shouldSelectText
+                val sGraph = diagramGenerator.toSGraph(viewContext.viewModel, uri, cancelIndicator, hierarchyDepth)
+                synchronized (diagramState) {
+                    diagramState.putKGraphToSModelElementMap(uri, diagramGenerator.getKGraphToSModelElementMap)
+                    diagramState.putIdToKGraphElementMap(uri, diagramGenerator.idToKGraphElementMap)
+                    diagramState.putTexts(uri, diagramGenerator.getModelLabels)
+                    diagramState.putTextMapping(uri, diagramGenerator.getTextMapping)
+                    diagramState.putImageData(uri, diagramGenerator.images)
+                }
+        
+                return sGraph
+            }
+                
+        }
+        
     }
 
     /**
