@@ -46,6 +46,7 @@ import org.eclipse.sprotty.xtext.ILanguageAwareDiagramServer
 import org.eclipse.sprotty.xtext.ls.DiagramLanguageServer
 import org.eclipse.sprotty.xtext.ls.DiagramUpdater
 import org.eclipse.xtext.util.CancelIndicator
+import org.eclipse.sprotty.xtext.IDiagramGenerator
 
 /**
  * Connection between {@link IDiagramServer} and the {@link DiagramLanguageServer}. With this singleton diagram updater,
@@ -290,9 +291,11 @@ class KGraphDiagramUpdater extends DiagramUpdater {
         }
         
         // FIXME: extract this to some other strategy manager that can handle passing the options
+        //        idea: abstract superclass KGraphDiagramGenerator
+        // var IDiagramGenerator diagramGenerator
         switch (diagramGeneratorType){
             case "recursive": {
-                val diagramGenerator = diagramGeneratorProvider.get
+                val diagramGenerator = diagramGeneratorProvider.get as KGraphDiagramGenerator
                 diagramGenerator.activeTracing = shouldSelectText
                 val sGraph = diagramGenerator.toSGraph(viewContext.viewModel, uri, cancelIndicator)
                 synchronized (diagramState) {
@@ -306,9 +309,10 @@ class KGraphDiagramUpdater extends DiagramUpdater {
                 return sGraph
             }
             case "topdown": {
-                val diagramGenerator = incrementalDiagramGeneratorProvider.get
+                val diagramGenerator = incrementalDiagramGeneratorProvider.get as KGraphIncrementalDiagramGenerator
                 diagramGenerator.activeTracing = shouldSelectText
-                val sGraph = diagramGenerator.toSGraph(viewContext.viewModel, uri, cancelIndicator, hierarchyDepth)
+                diagramGenerator.hierarchyDepth = hierarchyDepth
+                val sGraph = diagramGenerator.toSGraph(viewContext.viewModel, uri, cancelIndicator)
                 synchronized (diagramState) {
                     diagramState.putKGraphToSModelElementMap(uri, diagramGenerator.getKGraphToSModelElementMap)
                     diagramState.putIdToKGraphElementMap(uri, diagramGenerator.idToKGraphElementMap)

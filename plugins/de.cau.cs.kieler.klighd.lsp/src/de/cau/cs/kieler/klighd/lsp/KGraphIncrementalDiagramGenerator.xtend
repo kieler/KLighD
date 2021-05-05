@@ -125,6 +125,12 @@ class KGraphIncrementalDiagramGenerator implements IDiagramGenerator {
     var boolean activeTracing
     
     /**
+     * Indicates the number of hierarchy levels that should be rendered.
+     */
+    @Accessors(PUBLIC_GETTER, PUBLIC_SETTER)
+    var int hierarchyDepth = 5
+    
+    /**
      * Generates unique IDs for any KGraphElement.
      */
     KGraphElementIdGenerator idGen
@@ -143,7 +149,8 @@ class KGraphIncrementalDiagramGenerator implements IDiagramGenerator {
     /**
      * Queue of graph elements that still need to be post processed.
      */
-     Queue<Pair<KGraphElement, SModelElement>> elementsToPostProcess
+    Queue<Pair<KGraphElement, SModelElement>> elementsToPostProcess
+    
 
     /**
      * Creates a {@link ViewContext} containing the KGraph model for any {@link Object} model with a registered 
@@ -167,11 +174,6 @@ class KGraphIncrementalDiagramGenerator implements IDiagramGenerator {
         return ret
     }
     
-    def SGraph toSGraph(KNode parentNode, String uri, CancelIndicator cancelIndicator) {
-        val defaultDepth = 5
-        return toSGraph(parentNode, uri, cancelIndicator, defaultDepth)
-    }
-    
     /**
      * Translates a plain {@link KNode} or a KNode translated by {@link #translateModel} to an {@link SGraph}. 
      * @param parentNode      the KNode that should be translated. This is the parent node containing all elements of
@@ -187,7 +189,7 @@ class KGraphIncrementalDiagramGenerator implements IDiagramGenerator {
     // this will simulate a client requesting pieces, the next steps will be incremental support in both
     // directions (client requests and further processing such as layout not done with this sgraph though)
     // most importantly: communication between server and client should start using incremental data
-    def SGraph toSGraph(KNode parentNode, String uri, CancelIndicator cancelIndicator, int hierarchyDepth) {
+    def SGraph toSGraph(KNode parentNode, String uri, CancelIndicator cancelIndicator) {
         
         kGraphToSModelElementMap = new HashMap
         textMapping = new HashMap
