@@ -33,6 +33,7 @@ import java.util.HashSet
 import java.util.List
 import java.util.Map
 import java.util.concurrent.CompletableFuture
+import org.apache.log4j.Logger
 import org.eclipse.elk.core.data.LayoutMetaDataService
 import org.eclipse.elk.core.data.LayoutOptionData
 import org.eclipse.elk.core.data.LayoutOptionData.Visibility
@@ -46,7 +47,6 @@ import org.eclipse.sprotty.xtext.ILanguageAwareDiagramServer
 import org.eclipse.sprotty.xtext.ls.DiagramLanguageServer
 import org.eclipse.sprotty.xtext.ls.DiagramUpdater
 import org.eclipse.xtext.util.CancelIndicator
-import org.apache.log4j.Logger
 
 /**
  * Connection between {@link IDiagramServer} and the {@link DiagramLanguageServer}. With this singleton diagram updater,
