@@ -46,6 +46,7 @@ import org.eclipse.sprotty.xtext.ILanguageAwareDiagramServer
 import org.eclipse.sprotty.xtext.ls.DiagramLanguageServer
 import org.eclipse.sprotty.xtext.ls.DiagramUpdater
 import org.eclipse.xtext.util.CancelIndicator
+import org.apache.log4j.Logger
 
 /**
  * Connection between {@link IDiagramServer} and the {@link DiagramLanguageServer}. With this singleton diagram updater,
@@ -54,6 +55,8 @@ import org.eclipse.xtext.util.CancelIndicator
  * @author nre
  */
 class KGraphDiagramUpdater extends DiagramUpdater {
+    static val LOG = Logger.getLogger(KGraphDiagramUpdater)
+    
     /**
      * The {@link Provider} to call an injected {@link KGraphDiagramGenerator} to generate {@link KNode KGraphs} and 
      * {@link SKGraph}s from that.
@@ -330,12 +333,18 @@ class KGraphDiagramUpdater extends DiagramUpdater {
             recentSynthesisOptions = diagramState.recentSynthesisOptions
         }
         try {
-            var JsonObject clientOptions
+            var JsonObject synthesisOptions
             synchronized (diagramState) {
-                clientOptions = diagramState.clientOptions.asJsonObject
+                if (diagramState.clientOptions === null) {
+                    // Use an empty JSON object if the client does not specify synthesis options during initialization.
+                    LOG.info("No client-side synthesis options provided. Fallback to empty options.")
+                    synthesisOptions = new JsonObject
+                } else {
+                    val clientOptions = diagramState.clientOptions.asJsonObject
+                    synthesisOptions = clientOptions.get(SYNTHESIS_OPTION).asJsonObject
+                }
             }
             val List<String> configuredOptions = newArrayList
-            val synthesisOptions = clientOptions.get(SYNTHESIS_OPTION).asJsonObject
             for (option : synthesisOptions.entrySet) {
                 val optionId = option.key
                 val optionValue = option.value.asJsonPrimitive
