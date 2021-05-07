@@ -26,6 +26,7 @@ import org.eclipse.sprotty.UpdateModelAction
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.xtend.lib.annotations.EqualsHashCode
 import org.eclipse.xtend.lib.annotations.ToString
+import org.eclipse.sprotty.RequestModelAction
 
 /**
  * Sent from the server to the client to request bounds for the given texts. The texts are rendered
@@ -319,3 +320,87 @@ public class KeithUpdateModelAction extends UpdateModelAction {
         this.cause = cause
     }
 }
+
+/**
+ * Sent from client to server to initiate incremental model generation.
+ * 
+ * @author mka
+ */
+@Accessors
+@EqualsHashCode
+@ToString(skipNulls = true)
+public class RequestIncrementalModelAction implements RequestAction<IncrementalModelReadyAction> {
+    public static val KIND = 'requestIncrementalModel'
+    String kind = KIND
+    
+    String requestId
+    
+    new() {}
+    new(Consumer<RequestIncrementalModelAction> initializer) {
+        initializer.accept(this)
+    }
+    
+}
+
+/**
+ * Response to {@link RequestIncrementalModelAction}. Indicates to the client that it can begin requesting pieces of the
+ * diagram.
+ * 
+ * @author mka
+ */
+@Accessors
+@EqualsHashCode
+@ToString(skipNulls = true)
+public class IncrementalModelReadyAction implements ResponseAction {
+    public static val KIND = 'incrementalModelReady'
+    String kind = KIND
+    
+    String responseId
+    
+    new() {}
+    new(Consumer<IncrementalModelReadyAction> initializer) {
+        initializer.accept(this)
+    }
+    
+}
+
+/**
+ * Sent from client to request a certain piece of the diagram.
+ * 
+ * @author mka
+ */
+@Accessors
+@EqualsHashCode
+@ToString(skipNulls = true)
+public class RequestDiagramPieceAction implements RequestAction<SetDiagramPieceAction> {
+    public static val KIND = 'requestDiagramPiece'
+    String kind = KIND
+    
+    String requestId
+    
+    new() {}
+    new(Consumer<RequestDiagramPieceAction> initializer) {
+        initializer.accept(this)
+    }
+}
+
+/**
+ * Response to {@link RequestDiagramPieceAction}. Contains the requested SModelElement.
+ * 
+ * @author mka
+ */
+@Accessors
+@EqualsHashCode
+@ToString(skipNulls = true)
+public class SetDiagramPieceAction implements ResponseAction {
+    public static val KIND = 'setDiagramPiece'
+    String kind = KIND
+    
+    String responseId
+    
+    new() {}
+    new(Consumer<SetDiagramPieceAction> initializer) {
+        initializer.accept(this)
+    }
+}
+
