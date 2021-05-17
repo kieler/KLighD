@@ -27,6 +27,8 @@ import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.xtend.lib.annotations.EqualsHashCode
 import org.eclipse.xtend.lib.annotations.ToString
 import org.eclipse.sprotty.RequestModelAction
+import java.util.Map
+import org.eclipse.sprotty.SModelElement
 
 /**
  * Sent from the server to the client to request bounds for the given texts. The texts are rendered
@@ -329,17 +331,18 @@ public class KeithUpdateModelAction extends UpdateModelAction {
 @Accessors
 @EqualsHashCode
 @ToString(skipNulls = true)
-public class RequestIncrementalModelAction implements RequestAction<IncrementalModelReadyAction> {
+public class RequestIncrementalModelAction extends RequestModelAction {
     public static val KIND = 'requestIncrementalModel'
     String kind = KIND
     
+    String diagramType
+    Map<String, String> options
     String requestId
     
     new() {}
     new(Consumer<RequestIncrementalModelAction> initializer) {
         initializer.accept(this)
     }
-    
 }
 
 /**
@@ -361,7 +364,6 @@ public class IncrementalModelReadyAction implements ResponseAction {
     new(Consumer<IncrementalModelReadyAction> initializer) {
         initializer.accept(this)
     }
-    
 }
 
 /**
@@ -396,11 +398,16 @@ public class SetDiagramPieceAction implements ResponseAction {
     public static val KIND = 'setDiagramPiece'
     String kind = KIND
     
+    SModelElement diagramPiece
     String responseId
     
     new() {}
     new(Consumer<SetDiagramPieceAction> initializer) {
         initializer.accept(this)
+    }
+    
+    new(SModelElement diagramPiece) {
+        this.diagramPiece = diagramPiece
     }
 }
 

@@ -77,6 +77,10 @@ import org.eclipse.sprotty.SetModelAction
 import org.eclipse.sprotty.UpdateModelAction
 import org.eclipse.sprotty.xtext.LanguageAwareDiagramServer
 import org.eclipse.xtend.lib.annotations.Accessors
+import de.cau.cs.kieler.klighd.lsp.model.RequestIncrementalModelAction
+import de.cau.cs.kieler.klighd.lsp.model.RequestDiagramPieceAction
+import de.cau.cs.kieler.klighd.lsp.model.SetDiagramPieceAction
+import org.eclipse.sprotty.RejectAction
 
 /**
  * Diagram server extension adding functionality to special actions needed for handling KGraphs.
@@ -272,6 +276,8 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
                     handle(action as RefreshDiagramAction)
                 } else if (action.getKind === RefreshLayoutAction.KIND) {
                     handle(action as RefreshLayoutAction)
+                } else if (action.getKind === RequestDiagramPieceAction.KIND) {
+                    handle(action as RequestDiagramPieceAction)
                 } else if (constraintActionHandler.canHandleAction(action.getKind)) {
                     constraintActionHandler.handle(action, clientId, this)
                 } else if (rectpackingActionHandler.canHandleAction(action.getKind)) {
@@ -380,9 +386,9 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
                     response.setResponseId(request.getRequestId());
                     dispatch(response);
                 } else if (update && modelType !== null && modelType.equals(lastSubmittedModelType)) {
-                    dispatch(new UpdateModelAction(newRoot));
+                    dispatch(new UpdateModelAction(newRoot)); // this should only send model root with new approach
                 } else {
-                    dispatch(new SetModelAction(newRoot));
+                    dispatch(new SetModelAction(newRoot));    // this should only send model root with new approach
                 }
                 lastSubmittedModelType = modelType;
                 var IModelUpdateListener listener = getModelUpdateListener();
@@ -640,6 +646,26 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
     protected def handle(RefreshLayoutAction action) {
         updateLayout()
         return
+    }
+    
+    protected def handle(RequestDiagramPieceAction action) {
+        // TODO: implement 
+        //       use diagram updater to use incremental diagram generator to get next piece and dispatch
+        
+        synchronized (diagramState) {
+            val diagramUpdater = diagramLanguageServer.diagramUpdater
+            if (diagramUpdater instanceof KGraphDiagramUpdater) {
+                val piece = diagramUpdater.getNextDiagramPiece(this)
+                if (piece !== null) {
+                    dispatch(new SetDiagramPieceAction(piece))
+                } else {
+                    dispatch(new RejectAction())
+                }
+                
+            } else {
+                throw new IllegalStateException("The diagramUpdater was not initialized correctly")
+            }
+        }
     }
     
     /**

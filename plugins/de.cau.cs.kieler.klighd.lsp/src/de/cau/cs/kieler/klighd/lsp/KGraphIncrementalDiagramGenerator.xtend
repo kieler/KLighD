@@ -209,6 +209,7 @@ class KGraphIncrementalDiagramGenerator implements IDiagramGenerator {
         diagramRoot.children.addAll(incrementalCreateNodesAndPrepareEdges(parentNode, diagramRoot))
         incrementalPostProcess()
 
+        /* ----------- Extracted to individual calls -----------------
         // priority style queue queuing elements in viewing area first might be interesting
         // wagon.sctx has 9 levels and 310 (node) elements
         val maxLevel = hierarchyDepth // controls how many hierarchy levels should be generated
@@ -224,6 +225,8 @@ class KGraphIncrementalDiagramGenerator implements IDiagramGenerator {
             currentLevel++
             
         }
+        * 
+        */
 
         return if (cancelIndicator.canceled) 
                null
@@ -231,13 +234,23 @@ class KGraphIncrementalDiagramGenerator implements IDiagramGenerator {
                diagramRoot
     }
     
-    private def void processNextElement() {
+    /**
+     * Function to request next part of the diagram. Should eventually support getting specific pieces if they are ready.
+     */
+    def SModelElement getNextDiagramPiece() {
+        if (childrenToProcess.peek() !== null) {
+            return processNextElement()
+        }
+    }
+    
+    private def SModelElement processNextElement() {
         val node = childrenToProcess.remove()
         // get parent node to add children to
         val skNode = kGraphToSModelElementMap.get(node.parent)
         
         skNode.children.addAll(incrementalCreateNodesAndPrepareEdges(node, skNode))
         incrementalPostProcess()
+        return skNode
     }
     
     /**
@@ -722,4 +735,9 @@ class KGraphIncrementalDiagramGenerator implements IDiagramGenerator {
         root.children += labels
         return root
     }
+    
+    def restoreState(KGraphDiagramState state) {
+        throw new UnsupportedOperationException("TODO: auto-generated method stub")
+    }
+    
 }

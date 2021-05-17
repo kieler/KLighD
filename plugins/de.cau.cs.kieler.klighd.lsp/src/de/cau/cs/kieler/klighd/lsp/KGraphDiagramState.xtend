@@ -116,8 +116,17 @@ class KGraphDiagramState {
      */
     Map<String, String> uriStringMap = new HashMap
     
+    Map<String, KGraphIncrementalDiagramGenerator> incrementalDiagramGeneratorMap = new HashMap
+    
     // ------------ Methods to access or modify the fields -------------
     
+    def KGraphIncrementalDiagramGenerator getIncrementalDiagramGenerator(String uri) {
+        incrementalDiagramGeneratorMap.get(uri)
+    }
+    
+    def putIncrementalDiagramGenerator(String uri, KGraphIncrementalDiagramGenerator generator) {
+        incrementalDiagramGeneratorMap.put(uri, generator)
+    }
     /**
      * Getter to access the value stored in the kGraphContext map.
      * 
@@ -392,6 +401,7 @@ class KGraphDiagramState {
             synthesisIdMapping.remove(uri)
             viewer = null
             uriStringMap.remove(clientId)
+            incrementalDiagramGeneratorMap.remove(uri)
         }
     }
     

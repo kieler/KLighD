@@ -47,6 +47,7 @@ import org.eclipse.sprotty.xtext.ls.DiagramLanguageServer
 import org.eclipse.sprotty.xtext.ls.DiagramUpdater
 import org.eclipse.xtext.util.CancelIndicator
 import org.eclipse.sprotty.xtext.IDiagramGenerator
+import org.eclipse.sprotty.SModelElement
 
 /**
  * Connection between {@link IDiagramServer} and the {@link DiagramLanguageServer}. With this singleton diagram updater,
@@ -319,6 +320,8 @@ class KGraphDiagramUpdater extends DiagramUpdater {
                     diagramState.putTexts(uri, diagramGenerator.getModelLabels)
                     diagramState.putTextMapping(uri, diagramGenerator.getTextMapping)
                     diagramState.putImageData(uri, diagramGenerator.images)
+                    
+                    diagramState.putIncrementalDiagramGenerator(uri, diagramGenerator)
                 }
         
                 return sGraph
@@ -411,4 +414,15 @@ class KGraphDiagramUpdater extends DiagramUpdater {
     def updateDiagrams2(List<URI> uris) {
         updateDiagrams(uris)
     }
+    
+    def SModelElement getNextDiagramPiece(KGraphDiagramServer server) {
+        synchronized (diagramState) {
+            val diagramGenerator = diagramState.getIncrementalDiagramGenerator(server.sourceUri)
+            val piece = diagramGenerator.nextDiagramPiece
+            
+            return piece
+        }
+        
+    }
+    
 }
