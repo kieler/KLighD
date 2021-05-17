@@ -134,13 +134,16 @@ abstract class AbstractLanguageServer implements Runnable {
                 println(e.stackTrace)
                 return
             }
-            println("Connection to: " + host + ":" + port)
+            LOG.info("Connection to: " + host + ":" + port)
             // Register all languages
-            println("Starting language server socket")
+            LOG.info("Starting language server socket")
             bindAndRegisterLanguages()
             
             val serverSocket = AsynchronousServerSocketChannel.open.bind(new InetSocketAddress(host, port))
             val threadPool = Executors.newCachedThreadPool()
+            
+            LOG.info("Language Server Socket ready!")
+            
             while (true) {
                 val socketChannel = serverSocket.accept.get            
                 val in = Channels.newInputStream(socketChannel)
