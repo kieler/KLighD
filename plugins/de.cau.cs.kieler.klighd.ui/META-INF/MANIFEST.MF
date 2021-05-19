@@ -32,3 +32,4 @@ Export-Package: de.cau.cs.kieler.klighd.ui,
  de.cau.cs.kieler.klighd.ui.printing,
  de.cau.cs.kieler.klighd.ui.printing.dialog,
  de.cau.cs.kieler.klighd.ui.viewers
+Automatic-Module-Name: de.cau.cs.kieler.klighd.ui
