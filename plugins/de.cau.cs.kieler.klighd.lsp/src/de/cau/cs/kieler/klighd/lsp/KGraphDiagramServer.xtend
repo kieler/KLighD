@@ -652,7 +652,13 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
         // TODO: implement 
         //       use diagram updater to use incremental diagram generator to get next piece and dispatch
         
+        
         synchronized (diagramState) {
+            if (diagramState.getIncrementalDiagramGenerator(this.sourceUri) === null) {
+                // can't handle these requests if we are using recursive generation method
+                dispatch(new RejectAction())
+                return
+            }
             val diagramUpdater = diagramLanguageServer.diagramUpdater
             if (diagramUpdater instanceof KGraphDiagramUpdater) {
                 val piece = diagramUpdater.getNextDiagramPiece(this)

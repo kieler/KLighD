@@ -48,6 +48,7 @@ import org.eclipse.sprotty.xtext.ls.DiagramUpdater
 import org.eclipse.xtext.util.CancelIndicator
 import org.eclipse.sprotty.xtext.IDiagramGenerator
 import org.eclipse.sprotty.SModelElement
+import de.cau.cs.kieler.klighd.lsp.utils.KGraphMappingUtil
 
 /**
  * Connection between {@link IDiagramServer} and the {@link DiagramLanguageServer}. With this singleton diagram updater,
@@ -419,6 +420,15 @@ class KGraphDiagramUpdater extends DiagramUpdater {
         synchronized (diagramState) {
             val diagramGenerator = diagramState.getIncrementalDiagramGenerator(server.sourceUri)
             val piece = diagramGenerator.nextDiagramPiece
+            
+            diagramState.putKGraphToSModelElementMap(server.sourceUri, diagramGenerator.getKGraphToSModelElementMap)
+            diagramState.putIdToKGraphElementMap(server.sourceUri, diagramGenerator.idToKGraphElementMap)
+            diagramState.putTexts(server.sourceUri, diagramGenerator.getModelLabels)
+            diagramState.putTextMapping(server.sourceUri, diagramGenerator.getTextMapping)
+            diagramState.putImageData(server.sourceUri, diagramGenerator.images)
+            // TODO: the way this diagramState is used is a bit out of control
+            // map layout info onto new piece
+            KGraphMappingUtil.mapLayout(diagramState.getKGraphToSModelElementMap(server.sourceUri))
             
             return piece
         }
