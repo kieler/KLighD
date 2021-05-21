@@ -31,6 +31,7 @@ import java.util.Map
 import java.util.Set
 import org.eclipse.elk.core.LayoutConfigurator
 import org.eclipse.sprotty.SModelElement
+import org.eclipse.xtext.ide.editor.contentassist.antlr.RequiredRuleNameComputer.Param
 
 /**
  * Singleton class to map a URI identifying a graph to their various parts needed for handling KGraph models
@@ -116,16 +117,16 @@ class KGraphDiagramState {
      */
     Map<String, String> uriStringMap = new HashMap
     
-    Map<String, KGraphIncrementalDiagramGenerator> incrementalDiagramGeneratorMap = new HashMap
+    Map<String, KGraphDiagramPieceRequestManager> diagramPieceRequestManagerMap = new HashMap
     
     // ------------ Methods to access or modify the fields -------------
     
-    def KGraphIncrementalDiagramGenerator getIncrementalDiagramGenerator(String uri) {
-        incrementalDiagramGeneratorMap.get(uri)
+    def KGraphDiagramPieceRequestManager getDiagramPieceRequestManager(String uri) {
+        diagramPieceRequestManagerMap.get(uri)
     }
     
-    def putIncrementalDiagramGenerator(String uri, KGraphIncrementalDiagramGenerator generator) {
-        incrementalDiagramGeneratorMap.put(uri, generator)
+    def putDiagramPieceRequestManager(String uri, KGraphDiagramPieceRequestManager requestManager) {
+        diagramPieceRequestManagerMap.put(uri, requestManager)
     }
     /**
      * Getter to access the value stored in the kGraphContext map.
@@ -401,7 +402,7 @@ class KGraphDiagramState {
             synthesisIdMapping.remove(uri)
             viewer = null
             uriStringMap.remove(clientId)
-            incrementalDiagramGeneratorMap.remove(uri)
+            diagramPieceRequestManagerMap.remove(uri)
         }
     }
     

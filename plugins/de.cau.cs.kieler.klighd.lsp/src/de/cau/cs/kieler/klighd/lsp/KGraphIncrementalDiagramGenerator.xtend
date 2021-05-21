@@ -234,6 +234,7 @@ class KGraphIncrementalDiagramGenerator implements IDiagramGenerator {
                diagramRoot
     }
     
+    // TODO: need mechanisms to manipulate the queue in such a way to prioritize generating requested pieces
     /**
      * Function to request next part of the diagram. Should eventually support getting specific pieces if they are ready.
      */
@@ -241,6 +242,13 @@ class KGraphIncrementalDiagramGenerator implements IDiagramGenerator {
         if (childrenToProcess.peek() !== null) {
             return processNextElement()
         }
+    }
+    
+    /**
+     * Like getNextDiagramPiece, but doesn't return piece. Only triggers generation.
+     */
+    def generateNextDiagramPiece() {
+        getNextDiagramPiece
     }
     
     private def SModelElement processNextElement() {

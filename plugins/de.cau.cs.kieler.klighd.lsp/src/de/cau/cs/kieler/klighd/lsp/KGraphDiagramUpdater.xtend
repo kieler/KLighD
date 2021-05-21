@@ -49,6 +49,7 @@ import org.eclipse.xtext.util.CancelIndicator
 import org.eclipse.sprotty.xtext.IDiagramGenerator
 import org.eclipse.sprotty.SModelElement
 import de.cau.cs.kieler.klighd.lsp.utils.KGraphMappingUtil
+import de.cau.cs.kieler.klighd.lsp.model.RequestDiagramPieceAction
 
 /**
  * Connection between {@link IDiagramServer} and the {@link DiagramLanguageServer}. With this singleton diagram updater,
@@ -315,6 +316,7 @@ class KGraphDiagramUpdater extends DiagramUpdater {
                 diagramGenerator.activeTracing = shouldSelectText
                 diagramGenerator.hierarchyDepth = hierarchyDepth
                 val sGraph = diagramGenerator.toSGraph(viewContext.viewModel, uri, cancelIndicator)
+                val requestManager = new KGraphDiagramPieceRequestManager(diagramGenerator)
                 synchronized (diagramState) {
                     diagramState.putKGraphToSModelElementMap(uri, diagramGenerator.getKGraphToSModelElementMap)
                     diagramState.putIdToKGraphElementMap(uri, diagramGenerator.idToKGraphElementMap)
@@ -322,7 +324,7 @@ class KGraphDiagramUpdater extends DiagramUpdater {
                     diagramState.putTextMapping(uri, diagramGenerator.getTextMapping)
                     diagramState.putImageData(uri, diagramGenerator.images)
                     
-                    diagramState.putIncrementalDiagramGenerator(uri, diagramGenerator)
+                    diagramState.putDiagramPieceRequestManager(uri, requestManager)
                 }
         
                 return sGraph
@@ -416,18 +418,22 @@ class KGraphDiagramUpdater extends DiagramUpdater {
         updateDiagrams(uris)
     }
     
-    def SModelElement getNextDiagramPiece(KGraphDiagramServer server) {
+    def SModelElement getNextDiagramPiece(KGraphDiagramServer server, RequestDiagramPieceAction request) {
         synchronized (diagramState) {
-            val diagramGenerator = diagramState.getIncrementalDiagramGenerator(server.sourceUri)
-            val piece = diagramGenerator.nextDiagramPiece
+            val requestManager = diagramState.getDiagramPieceRequestManager(server.sourceUri)
+            val diagramGenerator = requestManager.diagramGenerator
+            val piece = requestManager.processRequest(request)
             
+            // TODO: diagram state now contains redundant info, because through the request manager and the generator
+            //       stuff is stored twice
             diagramState.putKGraphToSModelElementMap(server.sourceUri, diagramGenerator.getKGraphToSModelElementMap)
             diagramState.putIdToKGraphElementMap(server.sourceUri, diagramGenerator.idToKGraphElementMap)
             diagramState.putTexts(server.sourceUri, diagramGenerator.getModelLabels)
             diagramState.putTextMapping(server.sourceUri, diagramGenerator.getTextMapping)
             diagramState.putImageData(server.sourceUri, diagramGenerator.images)
-            // TODO: the way this diagramState is used is a bit out of control
             // map layout info onto new piece
+            // TODO: don't actually need to do this on everything every time, should be replaced by method to map only to 
+            //       elements which haven't yet received their info
             KGraphMappingUtil.mapLayout(diagramState.getKGraphToSModelElementMap(server.sourceUri))
             
             return piece

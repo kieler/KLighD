@@ -378,9 +378,14 @@ public class RequestDiagramPieceAction implements RequestAction<SetDiagramPieceA
     public static val KIND = 'requestDiagramPiece'
     String kind = KIND
     
+    String modelElementId
     String requestId
     
     new() {}
+    new(String modelElementId) {
+        this.modelElementId = modelElementId
+    }
+    
     new(Consumer<RequestDiagramPieceAction> initializer) {
         initializer.accept(this)
     }
