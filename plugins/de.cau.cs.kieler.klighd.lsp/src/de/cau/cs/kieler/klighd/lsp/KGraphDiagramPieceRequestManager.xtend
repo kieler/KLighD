@@ -17,6 +17,10 @@ import org.eclipse.sprotty.SModelElement
 import java.util.LinkedList
 import java.util.Queue
 import de.cau.cs.kieler.klighd.lsp.model.RequestDiagramPieceAction
+import de.cau.cs.kieler.klighd.lsp.model.SKEdge
+import de.cau.cs.kieler.klighd.lsp.model.SKNode
+import de.cau.cs.kieler.klighd.lsp.model.SKPort
+import de.cau.cs.kieler.klighd.lsp.model.SKLabel
 
 /**
  * Class to keep track of incoming piece requests and responsible for managing the piece generation, ensuring the 
@@ -63,11 +67,23 @@ class KGraphDiagramPieceRequestManager {
     private def SModelElement nextDiagramPiece() {
         val request = requests.remove()
         // If diagram piece has previously been generated, get it
-        if (diagramGenerator.idToKGraphElementMap.containsKey(request.modelElementId)){
+        // additionally there must be no children left in the childrenToProcess Queue whose parent 
+        // is the one being requested, because only after they have been processed do their stubs exist
+        // and only then can the client ask for them
+        var generateNextFirst = false
+        if (diagramGenerator.idToKGraphElementMap.containsKey(request.modelElementId)) {
             val kGraphElement = diagramGenerator.idToKGraphElementMap.get(request.modelElementId)
-            val sModelElement = diagramGenerator.KGraphToSModelElementMap.get(kGraphElement)
-            return sModelElement // TODO: make copy and replace children with stubs
+            
+            if (diagramGenerator.nodeChildrenAllProcessed(kGraphElement)) {
+                val sModelElement = diagramGenerator.KGraphToSModelElementMap.get(kGraphElement)
+                return copyAndTrimChildren(sModelElement) // TODO: make copy and replace children with stubs
+            } else {
+                generateNextFirst = true
+            }
         } else {
+            generateNextFirst = true
+        } 
+        if (generateNextFirst) {
             // put request to back of queue
             requests.add(request)
             // Generate another piece
@@ -75,5 +91,20 @@ class KGraphDiagramPieceRequestManager {
             // Try serving next request in queue
             return this.nextDiagramPiece()
         }
+    }
+    
+    private def SModelElement copyAndTrimChildren(SModelElement original) {
+        
+        if (original instanceof SKEdge) {
+            // copy edge
+        } else if (original instanceof SKNode) {
+            // copy node and remove children
+        } else if (original instanceof SKPort) {
+            // copy port
+        } else if (original instanceof SKLabel) {
+            // copy label
+        }
+        // TODO: Implement this function
+        return original
     }
 }

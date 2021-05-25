@@ -251,6 +251,15 @@ class KGraphIncrementalDiagramGenerator implements IDiagramGenerator {
         getNextDiagramPiece
     }
     
+    def boolean nodeChildrenAllProcessed(KGraphElement node) {
+        for (child: childrenToProcess) {
+            if (child.parent.equals(node)) {
+                return false
+            }
+        }
+        return true
+    }
+    
     private def SModelElement processNextElement() {
         val node = childrenToProcess.remove()
         // get parent node to add children to
