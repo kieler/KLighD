@@ -101,9 +101,8 @@ final class CopiesBlock {
         DialogUtil.label(result, KlighdUIPrintingMessages.PrintDialog_NumberOfCopies);
         final Spinner copiesSpinner = DialogUtil.spinner(result, 1, Integer.MAX_VALUE);
 
-        @SuppressWarnings("unchecked")
         final IObservableValue copiesValue = 
-                BeanProperties.value((Class<PrintOptions>) options.getClass(), PrintOptions.PROPERTY_COPIES).observe(realm, options);
+                BeanProperties.value(options.getClass().asSubclass(PrintOptions.class), PrintOptions.PROPERTY_COPIES).observe(realm, options);
                 // BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_COPIES);
         var copiesObservation = WidgetProperties.widgetSelection().observe(copiesSpinner); //SWTObservables.observeSelection(copiesSpinner)
         bindings.bindValue(copiesObservation, copiesValue);
@@ -121,7 +120,7 @@ final class CopiesBlock {
         collateImageLabel.setImage(collateCheck.getSelection() ? collateOnImage : collateOffImage);
 
         final IObservableValue collateValue =
-                BeanProperties.value((Class<PrintOptions>) options.getClass(), PrintOptions.PROPERTY_COLLATE).observe(realm, options);
+                BeanProperties.value(options.getClass().asSubclass(PrintOptions.class), PrintOptions.PROPERTY_COLLATE).observe(realm, options);
                 // BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_COLLATE);
         var collateObservation =  WidgetProperties.widgetSelection().observe((Widget) collateCheck); //SWTObservables.observeSelection(collateCheck);
         bindings.bindValue(collateObservation, collateValue);

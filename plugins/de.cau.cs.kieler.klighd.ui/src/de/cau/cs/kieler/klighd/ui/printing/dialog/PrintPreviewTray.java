@@ -111,45 +111,38 @@ public class PrintPreviewTray extends DialogTray {
         final IObservableValue delayedResize = Observables.observeDelayedValue(OBSERVABLE_DELAY, observedSize);
         delayedResize.addValueChangeListener(listener);
 
-        @SuppressWarnings("unchecked")
         var observedData = 
-                BeanProperties.value((Class<DiagramPrintOptions>) options.getClass(), PrintOptions.PROPERTY_PRINTER_DATA)
+                BeanProperties.value(options.getClass().asSubclass(DiagramPrintOptions.class), PrintOptions.PROPERTY_PRINTER_DATA)
                 .observe(realm, options); //BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_PRINTER_DATA);
         final IObservableValue delayedPrinterData = Observables.observeDelayedValue(OBSERVABLE_DELAY, observedData);
         delayedPrinterData.addValueChangeListener(listener);
 
-        @SuppressWarnings("unchecked")
-        var observedScale = BeanProperties.value((Class<DiagramPrintOptions>) options.getClass(), PrintOptions.PROPERTY_SCALE_FACTOR)
+        var observedScale = BeanProperties.value(options.getClass().asSubclass(DiagramPrintOptions.class), PrintOptions.PROPERTY_SCALE_FACTOR)
                 .observe(realm, options); // BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_SCALE_FACTOR);
         final IObservableValue delayedScale = Observables.observeDelayedValue(OBSERVABLE_DELAY,observedScale);
         delayedScale.addValueChangeListener(listener);
 
-        @SuppressWarnings("unchecked")
-        var observedPagesWide = BeanProperties.value((Class<DiagramPrintOptions>) options.getClass(), PrintOptions.PROPERTY_PAGES_WIDE)
+        var observedPagesWide = BeanProperties.value(options.getClass().asSubclass(DiagramPrintOptions.class), PrintOptions.PROPERTY_PAGES_WIDE)
                 .observe(realm, options); // BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_PAGES_WIDE);
         final IObservableValue delayedPagesWide = Observables.observeDelayedValue(OBSERVABLE_DELAY,observedPagesWide);
         delayedPagesWide.addValueChangeListener(listener);
 
-        @SuppressWarnings("unchecked")
-        var observedScaleTall = BeanProperties.value((Class<DiagramPrintOptions>) options.getClass(), PrintOptions.PROPERTY_PAGES_TALL)
+        var observedScaleTall = BeanProperties.value(options.getClass().asSubclass(DiagramPrintOptions.class), PrintOptions.PROPERTY_PAGES_TALL)
                 .observe(realm, options); // BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_PAGES_TALL);
         final IObservableValue delayedPagesTall = Observables.observeDelayedValue(OBSERVABLE_DELAY, observedScaleTall);
         delayedPagesTall.addValueChangeListener(listener);
 
-        @SuppressWarnings("unchecked")
-        var observedHorCenter = BeanProperties.value((Class<DiagramPrintOptions>) options.getClass(), PrintOptions.PROPERTY_CENTER_HORIZONTALLY)
+        var observedHorCenter = BeanProperties.value(options.getClass().asSubclass(DiagramPrintOptions.class), PrintOptions.PROPERTY_CENTER_HORIZONTALLY)
                 .observe(realm, options); // BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_CENTER_HORIZONTALLY);
         final IObservableValue delayedHorCentered = Observables.observeDelayedValue(OBSERVABLE_DELAY, observedHorCenter);
         delayedHorCentered.addValueChangeListener(listener);
 
-        @SuppressWarnings("unchecked")
-        var observedVertCenter = BeanProperties.value((Class<DiagramPrintOptions>) options.getClass(), PrintOptions.PROPERTY_CENTER_VERTICALLY)
+        var observedVertCenter = BeanProperties.value(options.getClass().asSubclass(DiagramPrintOptions.class), PrintOptions.PROPERTY_CENTER_VERTICALLY)
                 .observe(realm, options); // BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_CENTER_VERTICALLY);
         final IObservableValue delayedVerCentered = Observables.observeDelayedValue(OBSERVABLE_DELAY, observedVertCenter);
         delayedVerCentered.addValueChangeListener(listener);
         
-        @SuppressWarnings("unchecked")
-        var observedOrientation = BeanProperties.value((Class<DiagramPrintOptions>) options.getClass(), PrintOptions.PROPERTY_ORIENTATION)
+        var observedOrientation = BeanProperties.value(options.getClass().asSubclass(DiagramPrintOptions.class), PrintOptions.PROPERTY_ORIENTATION)
                 .observe(realm, options); // BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_ORIENTATION);
         final IObservableValue delayedOrientation = Observables.observeDelayedValue(OBSERVABLE_DELAY, observedOrientation);
         delayedOrientation.addValueChangeListener(listener);

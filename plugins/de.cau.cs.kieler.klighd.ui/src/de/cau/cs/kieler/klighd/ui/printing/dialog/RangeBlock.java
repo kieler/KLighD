@@ -86,9 +86,8 @@ final class RangeBlock {
         final Button allRadio = DialogUtil.radio(result, KlighdUIPrintingMessages.PrintDialog_All);
         DialogUtil.layoutSpanHorizontal(allRadio, columns);
         
-        @SuppressWarnings("unchecked")
         final IObservableValue allValue =
-                BeanProperties.value((Class<PrintOptions>) options.getClass(), PrintOptions.PROPERTY_ALL_PAGES).observe(realm, options);
+                BeanProperties.value(options.getClass().asSubclass(PrintOptions.class), PrintOptions.PROPERTY_ALL_PAGES).observe(realm, options);
                 // BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_ALL_PAGES);
         var observedAllPages = WidgetProperties.widgetSelection().observe(allRadio); // SWTObservables.observeSelection(allRadio) 
         bindings.bindValue(observedAllPages, allValue);
@@ -125,9 +124,8 @@ final class RangeBlock {
 
         final Text textFrom = DialogUtil.text(result, textWidth);
 
-        @SuppressWarnings("unchecked")
         final IObservableValue rangeFrom = 
-                BeanProperties.value((Class<PrintOptions>) options.getClass(), PrintOptions.PROPERTY_RANGE_FROM).observe(realm, options);
+                BeanProperties.value(options.getClass().asSubclass(PrintOptions.class), PrintOptions.PROPERTY_RANGE_FROM).observe(realm, options);
                 // BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_RANGE_FROM);
         var observedModifiedTextFrom = WidgetProperties.text(SWT.Modify).observe(textFrom); // SWTObservables.observeText(textFrom, SWT.Modify) 
         bindings.bindValue(observedModifiedTextFrom, rangeFrom);
@@ -140,9 +138,8 @@ final class RangeBlock {
 
         final Text textTo = DialogUtil.text(result, textWidth);
 
-        @SuppressWarnings("unchecked")
         final IObservableValue rangeTo =
-                BeanProperties.value((Class<PrintOptions>) options.getClass(), PrintOptions.PROPERTY_RANGE_TO).observe(realm, options);
+                BeanProperties.value(options.getClass().asSubclass(PrintOptions.class), PrintOptions.PROPERTY_RANGE_TO).observe(realm, options);
                 // BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_RANGE_TO);
         
         var observedModifyTextTo = WidgetProperties.text(SWT.Modify).observe(textTo); //SWTObservables.observeText(textTo, SWT.Modify)

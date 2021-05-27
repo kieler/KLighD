@@ -99,10 +99,9 @@ final class PrinterBlock {
 
             @Override
             protected Object calculate() {
-                @SuppressWarnings("unchecked")
                 final PrinterData data = 
                         (PrinterData) BeanProperties
-                        .value((Class<PrintOptions>) options.getClass(), PrintOptions.PROPERTY_PRINTER_DATA)
+                        .value( options.getClass().asSubclass(PrintOptions.class), PrintOptions.PROPERTY_PRINTER_DATA)
                         .observe(realm, options)
                         .getValue();
                 /*final PrinterData data =

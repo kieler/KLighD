@@ -186,7 +186,7 @@ final class ScalingBlock {
 
             @SuppressWarnings("unchecked")
             final IObservableValue scalePercent =
-                    BeanProperties.value((Class<DiagramPrintOptions>) dOptions.getClass(),
+                    BeanProperties.value(dOptions.getClass().asSubclass(DiagramPrintOptions.class),
                             PrintOptions.PROPERTY_SCALE_PERCENT).observe(realm, dOptions);
             // BeansObservables.observeValue(realm, dOptions, PrintOptions.PROPERTY_SCALE_PERCENT);
             var observerScaleSpinner = WidgetProperties.widgetSelection().observe(scaleSpinner); // SWTObservables.observeSelection(scaleSpinner);
@@ -194,7 +194,7 @@ final class ScalingBlock {
 
             @SuppressWarnings("unchecked")
             final IObservableValue pagesWide = 
-                    BeanProperties.value((Class<DiagramPrintOptions>) dOptions.getClass(),
+                    BeanProperties.value(dOptions.getClass().asSubclass(DiagramPrintOptions.class),
                             PrintOptions.PROPERTY_PAGES_WIDE).observe(realm, dOptions); 
             // BeansObservables.observeValue(realm, dOptions, PrintOptions.PROPERTY_PAGES_WIDE);
             var observerWideSpinner = WidgetProperties.widgetSelection().observe(spinnerWide); // SWTObservables.observeSelection(spinnerWide);
@@ -202,7 +202,7 @@ final class ScalingBlock {
 
             @SuppressWarnings("unchecked")
             final IObservableValue pagesTall = 
-                    BeanProperties.value((Class<DiagramPrintOptions>) dOptions.getClass(),
+                    BeanProperties.value(dOptions.getClass().asSubclass(DiagramPrintOptions.class),
                             PrintOptions.PROPERTY_PAGES_TALL).observe(realm, dOptions); 
             // BeansObservables.observeValue(realm, dOptions, PrintOptions.PROPERTY_PAGES_TALL);
             var observerTallSpinner = WidgetProperties.widgetSelection().observe(spinnerTall); // SWTObservables.observeSelection(spinnerTall);

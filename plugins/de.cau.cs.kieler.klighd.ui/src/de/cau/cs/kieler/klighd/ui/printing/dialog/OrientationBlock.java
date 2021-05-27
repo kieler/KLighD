@@ -82,8 +82,7 @@ final class OrientationBlock {
         var observeLandscape = WidgetProperties.widgetSelection().observe(landscapeRadio); // SWTObservables.observeSelection(landscapeRadio);
         orientationGroupValue.addOption(PrinterData.LANDSCAPE, observeLandscape);
 
-        @SuppressWarnings("unchecked")
-        var observeOrientation = BeanProperties.value((Class<PrintOptions>) options.getClass(), PrintOptions.PROPERTY_ORIENTATION)
+        var observeOrientation = BeanProperties.value(options.getClass().asSubclass(PrintOptions.class), PrintOptions.PROPERTY_ORIENTATION)
                 .observe(realm, options);
         // BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_ORIENTATION);
         bindings.bindValue(orientationGroupValue, observeOrientation);
