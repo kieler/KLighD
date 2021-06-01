@@ -77,10 +77,11 @@ import org.eclipse.sprotty.SetModelAction
 import org.eclipse.sprotty.UpdateModelAction
 import org.eclipse.sprotty.xtext.LanguageAwareDiagramServer
 import org.eclipse.xtend.lib.annotations.Accessors
-import de.cau.cs.kieler.klighd.lsp.model.RequestIncrementalModelAction
 import de.cau.cs.kieler.klighd.lsp.model.RequestDiagramPieceAction
 import de.cau.cs.kieler.klighd.lsp.model.SetDiagramPieceAction
 import org.eclipse.sprotty.RejectAction
+import de.cau.cs.kieler.klighd.lsp.model.IncrementalRequestTextBoundsAction
+import de.cau.cs.kieler.klighd.lsp.model.IncrementalComputedTextBoundsAction
 
 /**
  * Diagram server extension adding functionality to special actions needed for handling KGraphs.
@@ -140,6 +141,10 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
      */
     protected int revision = 0
     
+    /**
+     * Needed to remember diagram piece request, while getting text bounds.
+     */
+    protected RequestDiagramPieceAction currentDiagramPieceRequest
     /**
      * Needed for KeithUpdateModelAction
      * 
@@ -278,6 +283,8 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
                     handle(action as RefreshLayoutAction)
                 } else if (action.getKind === RequestDiagramPieceAction.KIND) {
                     handle(action as RequestDiagramPieceAction)
+                } else if (action.getKind === IncrementalComputedTextBoundsAction.KIND) {
+                    handle(action as IncrementalComputedTextBoundsAction)
                 } else if (constraintActionHandler.canHandleAction(action.getKind)) {
                     constraintActionHandler.handle(action, clientId, this)
                 } else if (rectpackingActionHandler.canHandleAction(action.getKind)) {
@@ -648,7 +655,8 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
         return
     }
     
-    protected def handle(RequestDiagramPieceAction action) {        
+    protected def handle(RequestDiagramPieceAction action) {  
+        textsUpdated = false      
         
         synchronized (diagramState) {
             if (diagramState.getDiagramPieceRequestManager(this.sourceUri) === null) {
@@ -656,9 +664,107 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
                 dispatch(new RejectAction())
                 return
             }
+            val texts = diagramState.getTexts(this.sourceUri)
+            if (texts === null) {
+                throw new NullPointerException("The id of the SGraph was not found in the diagramState")
+            } else if (texts.empty) {
+                textsUpdated = true
+            } else {
+                val textDiagram = KGraphDiagramGenerator.generateTextDiagram(texts, this.sourceUri)
+                currentDiagramPieceRequest = action
+                dispatch(new IncrementalRequestTextBoundsAction(textDiagram))
+            }
+            // TODO: also handle images incrementally
+            if (textsUpdated) {
+                // go directly to next step
+                val diagramUpdater = diagramLanguageServer.diagramUpdater
+                if (diagramUpdater instanceof KGraphDiagramUpdater) {
+                    val piece = diagramUpdater.getNextDiagramPiece(this, action)
+                    if (piece !== null) {
+                        dispatch(new SetDiagramPieceAction(piece))
+                    } else {
+                        dispatch(new RejectAction())
+                    }
+                    
+                } else {
+                    throw new IllegalStateException("The diagramUpdater was not initialized correctly")
+                }
+            }            
+        }
+    }
+    
+    protected def handle(IncrementalComputedTextBoundsAction action) {
+        
+        // TODO: currrently copy of original method, go through and adjust
+        
+        synchronized (modelLock) {
+            if (currentRoot.getRevision() !== action.getRevision()) {
+                return
+            }
+            
+            val textMapping = diagramState.getTextMapping(currentRoot.id)
+            // Add the bounds for each label to the text's properties and remember which KTexts have been modified.
+            // Also calculate the widths and heights of all texts on the fly to be applied later.
+            val List<KText> texts = newArrayList
+            val Map<KText, float[]> textWidths = newHashMap
+            val Map<KText, float[]> textHeights = newHashMap 
+            for (elementAndBound : action.bounds) {
+                val elementId = elementAndBound.elementId
+                val newSize = elementAndBound.newSize
+                if (newSize === null) {
+                    throw new NullPointerException("Estimated Size for a KText is null!")
+                }
+                val kText = textMapping.get(elementId)
+                if (kText === null) {
+                    LOG.info("The textMapping does not contain the referenced Text anymore. The model has changed before" + 
+                        "completion of the request. Terminating this request.")
+                    return
+                }
+                val index = Integer.parseInt(elementId.split("\\$").last) // Matches the character '$'
+                if (!texts.contains(kText)) {
+                    var container = kText.eContainer
+                    while (container instanceof KRendering) {
+                        container = container.eContainer
+                    }
+                    var String text
+                    if (container instanceof KLabel) {
+                        text = container.text
+                    } else {
+                        text = kText.text
+                    }
+                    if (text !== null) {
+                        var lines = text.split("\\r?\\n", -1).size
+                        texts.add(kText)
+                        val widths = newFloatArrayOfSize(lines)
+                        widths.set(index, newSize.width as float)
+                        textWidths.put(kText, widths)
+                        val heights = newFloatArrayOfSize(lines)
+                        heights.set(index, newSize.height as float)
+                        textHeights.put(kText, heights)
+                    }
+                } else {
+                    textWidths.get(kText).set(index, newSize.width as float)
+                    textHeights.get(kText).set(index, newSize.height as float)
+                }
+            }
+            // Apply the text's bounds.
+            for (text : texts) {
+                text.properties.put(KlighdProperties.CALCULATED_TEXT_BOUNDS, 
+                    new Bounds(0, 0, textWidths.get(text).max, textHeights.get(text).fold(0f, [ a, b | a + b ])))
+                text.properties.put(SprottyProperties.CALCULATED_TEXT_LINE_WIDTHS, textWidths.get(text))
+                text.properties.put(SprottyProperties.CALCULATED_TEXT_LINE_HEIGHTS, textHeights.get(text))
+            }
+            textsUpdated = true
+            /* IGNORE image stuff for now, also we don't use setOrUpdateModel
+            if (imagesUpdated) {
+                setOrUpdateModel
+            }
+            */
+        }
+        synchronized(diagramState) {
             val diagramUpdater = diagramLanguageServer.diagramUpdater
             if (diagramUpdater instanceof KGraphDiagramUpdater) {
-                val piece = diagramUpdater.getNextDiagramPiece(this, action)
+                val piece = diagramUpdater.getNextDiagramPiece(this, currentDiagramPieceRequest)
                 if (piece !== null) {
                     dispatch(new SetDiagramPieceAction(piece))
                 } else {

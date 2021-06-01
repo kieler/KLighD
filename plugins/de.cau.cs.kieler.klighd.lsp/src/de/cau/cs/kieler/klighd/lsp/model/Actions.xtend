@@ -324,49 +324,6 @@ public class KeithUpdateModelAction extends UpdateModelAction {
 }
 
 /**
- * Sent from client to server to initiate incremental model generation.
- * 
- * @author mka
- */
-@Accessors
-@EqualsHashCode
-@ToString(skipNulls = true)
-public class RequestIncrementalModelAction extends RequestModelAction {
-    public static val KIND = 'requestIncrementalModel'
-    String kind = KIND
-    
-    String diagramType
-    Map<String, String> options
-    String requestId
-    
-    new() {}
-    new(Consumer<RequestIncrementalModelAction> initializer) {
-        initializer.accept(this)
-    }
-}
-
-/**
- * Response to {@link RequestIncrementalModelAction}. Indicates to the client that it can begin requesting pieces of the
- * diagram.
- * 
- * @author mka
- */
-@Accessors
-@EqualsHashCode
-@ToString(skipNulls = true)
-public class IncrementalModelReadyAction implements ResponseAction {
-    public static val KIND = 'incrementalModelReady'
-    String kind = KIND
-    
-    String responseId
-    
-    new() {}
-    new(Consumer<IncrementalModelReadyAction> initializer) {
-        initializer.accept(this)
-    }
-}
-
-/**
  * Sent from client to request a certain piece of the diagram.
  * 
  * @author mka
@@ -415,4 +372,52 @@ public class SetDiagramPieceAction implements ResponseAction {
         this.diagramPiece = diagramPiece
     }
 }
+
+/**
+ * Functionally the same as { @link RequestTextBoundsAction }, but it is handled differently.
+ */
+@Accessors
+@EqualsHashCode
+@ToString(skipNulls = true)
+public class IncrementalRequestTextBoundsAction implements RequestAction<IncrementalComputedTextBoundsAction> {
+    public static val KIND = 'incrementalRequestTextBounds'
+    String kind = KIND
+    
+    SModelRoot textDiagram
+    String requestId
+    
+    new() {}
+    new(Consumer<IncrementalRequestTextBoundsAction> initializer) {
+        initializer.accept(this)
+    }
+    
+    /**
+     * Constructor to call when creating this. The {@code textDiagram} should contain a sprotty Diagram with all texts,
+     * whose bounds should be requested.
+     */
+    new(SModelRoot textDiagram) {
+        this.textDiagram = textDiagram
+    }
+}
+
+/**
+ * Functionally the same as { @link ComputedTextBoundsAction }, but it is handled differently.
+ */
+@Accessors
+@EqualsHashCode
+@ToString(skipNulls = true)
+public class IncrementalComputedTextBoundsAction implements ResponseAction {
+    public static val KIND = 'incrementalComputedTextBounds'
+    String kind = KIND
+    int revision
+    
+    List<ElementAndBounds> bounds
+    String responseId
+    
+    new() {}
+    new(Consumer<IncrementalComputedTextBoundsAction> initializer) {
+        initializer.accept(this)
+    }
+}
+
 

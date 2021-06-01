@@ -32,11 +32,8 @@ import de.cau.cs.kieler.klighd.lsp.model.SetSynthesisAction
 import java.awt.geom.Point2D
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.sprotty.server.json.ActionTypeAdapter
-import de.cau.cs.kieler.klighd.lsp.model.RequestIncrementalModelAction
-import org.eclipse.sprotty.SModelElement
-import org.eclipse.sprotty.SModelRoot
-import org.eclipse.sprotty.SGraph
 import de.cau.cs.kieler.klighd.lsp.model.RequestDiagramPieceAction
+import de.cau.cs.kieler.klighd.lsp.model.IncrementalRequestTextBoundsAction
 
 /**
  * Static util class to configure needed gson type adapters for KGraph serialization.
@@ -70,10 +67,8 @@ class KGraphTypeAdapterUtil {
                 addActionKind(SetAspectRatioAction.KIND, SetAspectRatioAction)
                 
                 // Incremental topdown actions
-                // don't need this addActionKind(RequestIncrementalModelAction.KIND, RequestIncrementalModelAction)
-                // TODO: add others as needed just to make things clearer while figuring this out
-                //       will need the actions for pieces, as that is going to be completely new
                 addActionKind(RequestDiagramPieceAction.KIND, RequestDiagramPieceAction)
+                addActionKind(IncrementalRequestTextBoundsAction.KIND, IncrementalRequestTextBoundsAction)
             ]
         )
         .registerTypeAdapter(Point2D, new Point2DTypeAdapter)
