@@ -117,6 +117,10 @@ class EObjectSerializer implements JsonSerializer<EObject> {
                         jsonObject.add("calculatedTextLineHeights", context.serialize(
                             propertyHolder.<float[]>getProperty(SprottyProperties.CALCULATED_TEXT_LINE_HEIGHTS)))
                     }
+					if (propertyHolder.hasProperty(KlighdProperties.IS_NODE_TITLE)) {
+                        jsonObject.add("isNodeTitle", context.serialize(
+                            propertyHolder.getProperty(KlighdProperties.IS_NODE_TITLE)))
+                    }
                 }
             }
             // All renderings may have tooltips and rendering IDs again.
