@@ -34,6 +34,7 @@ import org.eclipse.emf.ecore.EObject
 import org.eclipse.sprotty.server.json.ActionTypeAdapter
 import de.cau.cs.kieler.klighd.lsp.model.RequestDiagramPieceAction
 import de.cau.cs.kieler.klighd.lsp.model.IncrementalRequestTextBoundsAction
+import de.cau.cs.kieler.klighd.lsp.model.IncrementalComputedTextBoundsAction
 
 /**
  * Static util class to configure needed gson type adapters for KGraph serialization.
@@ -69,6 +70,7 @@ class KGraphTypeAdapterUtil {
                 // Incremental topdown actions
                 addActionKind(RequestDiagramPieceAction.KIND, RequestDiagramPieceAction)
                 addActionKind(IncrementalRequestTextBoundsAction.KIND, IncrementalRequestTextBoundsAction)
+                addActionKind(IncrementalComputedTextBoundsAction.KIND, IncrementalComputedTextBoundsAction)
             ]
         )
         .registerTypeAdapter(Point2D, new Point2DTypeAdapter)

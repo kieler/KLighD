@@ -694,13 +694,14 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
     }
     
     protected def handle(IncrementalComputedTextBoundsAction action) {
-        
-        // TODO: currrently copy of original method, go through and adjust
-        
+                
         synchronized (modelLock) {
+            /* 
+             * revision numbers lose their meaning a bit in this incremental concept so ignore this for now
             if (currentRoot.getRevision() !== action.getRevision()) {
                 return
             }
+            */
             
             val textMapping = diagramState.getTextMapping(currentRoot.id)
             // Add the bounds for each label to the text's properties and remember which KTexts have been modified.
