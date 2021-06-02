@@ -961,6 +961,43 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
                 y += lineHeight;
             }
             
+        } else if (Klighd.simulateSwtFontSizeInAwt()) {
+            // If simulation of SWT font sizes in AWT is active we can use px size and set text length
+            
+            final int fontSize = getFont().getSize();
+            final float y = fontSize * pointToPxFactor;
+            final Double nextLength = this.nextTextLength;
+            this.nextTextLength = null;
+            
+            // if we have a multi-line text and a configured nextTextLength
+            //  we need to recalculate the designated textLength per line
+            // otherwise we can stick to the given 'nextTextLength' value
+            boolean noTextLengthPerLineCalcRequired = nextLength == null || isSingleLine;
+            final FontData fontData = noTextLengthPerLineCalcRequired ? null : getFontData(getFont());
+            
+            for (final String line : lines) {
+                content.append("\n" + indentation);
+                content.append("<text x=\"0\" y=\"").append(y).append("\"");
+                
+                final Double nextLineLength = noTextLengthPerLineCalcRequired ? nextLength :
+                    // need to box the result here as the type of the ternary operation would be 'double' otherwise
+                    //  yielding NPEs if 'nextLength' is 'null'
+                    Double.valueOf(PlacementUtil.estimateTextSize(fontData, line).getWidth());
+                
+                // text length
+                content.append(textLength(nextLineLength));
+                // semantic data
+                content.append(isSingleLine ? " "
+                    // style
+                    + style(style)
+                    // semantic data
+                    + attributes(false) : ""
+                );
+                content.append(textLineAttributes(line, i++));
+                content.append(">");
+                content.append(line);
+                content.append("</text>");
+            }
         } else {
             // without a display just use the pt size as line height for multiline text
 
@@ -1098,10 +1135,10 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
          * A font's size is specified in 'pt' which is a relative size where a height of 72pt
          * corresponds to 1 inch. When a font is rendered on a screen however, these pts are converted
          * to pixels and sizes of nodes and boxes are determined correspondingly. We thus use a px size
-         * if we are able to determine the device with wich the font was rendered (i.e. the device).
+         * if we are able to determine the device with which the font was rendered (i.e. the device).
          */
         Float size = (Float) attributes.get(TextAttribute.SIZE);
-        if (display != null) {
+        if (display != null || Klighd.simulateSwtFontSizeInAwt()) {
             result.put("font-size", fixedPrecision(size.floatValue() * pointToPxFactor) + "px");
         } else {
             result.put("font-size", fixedPrecision(size.floatValue()) + "pt");
