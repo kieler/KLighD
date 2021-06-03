@@ -284,7 +284,7 @@ class KGraphDiagramUpdater extends DiagramUpdater {
         //        maybe when hierarchy is low so some elements aren't rendered and "get lost" when collapsing and 
         //        expanding, not sure why though, must investigate further
         
-        var diagramGeneratorType = "topdown"
+        var diagramGeneratorType = "recursive"
         var hierarchyDepth = 5
         var shouldSelectText = false
         if (languageServer instanceof KGraphLanguageServerExtension) {

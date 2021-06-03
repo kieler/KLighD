@@ -96,7 +96,7 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
      * Possible values are: "topdown" and "recursive".
      */
     @Accessors
-    String diagramGeneratorType = "topdown";
+    String diagramGeneratorType = "recursive";
     
     /**
      * Stores data for the generation of diagrams.
