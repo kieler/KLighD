@@ -3,7 +3,7 @@
  * 
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright 2019, 2020 by
+ * Copyright 2019, 2021 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -23,22 +23,12 @@ import de.cau.cs.kieler.klighd.ViewContext
 import de.cau.cs.kieler.klighd.ide.model.MessageModel
 import de.cau.cs.kieler.klighd.kgraph.KNode
 import de.cau.cs.kieler.klighd.lsp.launch.AbstractLanguageServer
-import de.cau.cs.kieler.klighd.lsp.model.LayoutOptionUIData
 import de.cau.cs.kieler.klighd.lsp.model.SKGraph
-import de.cau.cs.kieler.klighd.lsp.model.ValuedSynthesisOption
 import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties
-import java.util.ArrayList
-import java.util.Collection
 import java.util.HashSet
 import java.util.List
 import java.util.Map
 import java.util.concurrent.CompletableFuture
-import org.apache.log4j.Logger
-import org.eclipse.elk.core.data.LayoutMetaDataService
-import org.eclipse.elk.core.data.LayoutOptionData
-import org.eclipse.elk.core.data.LayoutOptionData.Visibility
-import org.eclipse.elk.core.util.Pair
-import org.eclipse.elk.graph.properties.IProperty
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.sprotty.IDiagramServer
@@ -55,7 +45,6 @@ import org.eclipse.xtext.util.CancelIndicator
  * @author nre
  */
 class KGraphDiagramUpdater extends DiagramUpdater {
-    static val LOG = Logger.getLogger(KGraphDiagramUpdater)
     
     /**
      * The {@link Provider} to call an injected {@link KGraphDiagramGenerator} to generate {@link KNode KGraphs} and 
@@ -335,14 +324,9 @@ class KGraphDiagramUpdater extends DiagramUpdater {
         try {
             var JsonObject synthesisOptions
             synchronized (diagramState) {
-                if (diagramState.clientOptions === null) {
-                    // Use an empty JSON object if the client does not specify synthesis options during initialization.
-                    LOG.info("No client-side synthesis options provided. Fallback to empty options.")
-                    synthesisOptions = new JsonObject
-                } else {
-                    val clientOptions = diagramState.clientOptions.asJsonObject
-                    synthesisOptions = clientOptions.get(SYNTHESIS_OPTION).asJsonObject
-                }
+                // Use an empty JSON object if the client does not specify synthesis options during initialization.
+                synthesisOptions = diagramState.clientOptions?.asJsonObject?.get(SYNTHESIS_OPTION)?.asJsonObject
+                    ?: new JsonObject
             }
             val List<String> configuredOptions = newArrayList
             for (option : synthesisOptions.entrySet) {
