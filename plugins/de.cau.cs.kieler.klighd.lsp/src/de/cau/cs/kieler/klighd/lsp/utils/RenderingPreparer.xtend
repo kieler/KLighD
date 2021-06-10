@@ -115,6 +115,12 @@ final class RenderingPreparer {
         }
         if (element instanceof KNode) {
             for (node : element.children) {
+                var x = node.getXpos();
+                var y = node.getYpos();
+                x += element.getInsets().left;
+                y += element.getInsets().top;
+                node.setXpos(x);
+                node.setYpos(y);
                 prepareRendering(node)
             }
             for (edge : element.outgoingEdges) {
@@ -249,6 +255,8 @@ final class RenderingPreparer {
         var Decoration decoration = null
         var Map<String, Bounds> usedBoundsMap = boundsMap
         var Map<String, Decoration> usedDecorationMap = decorationMap
+        
+        
         
         // KRenderingRefs inside other renderings. This reference needs a new bounds- and decoration map to be stored
         // inside it.
