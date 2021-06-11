@@ -569,38 +569,19 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
                                     ?.getResource(path)
                                     ?.openStream
                             } else {
-                                // If there is no platform, we have to use the class loader to find the resource.
-                                // With the help of Guava, look for any class from a package with the same name as the
-                                // searched bundle.
-                                val classPath = ClassPath.from(ClassLoader.systemClassLoader)
-                                var class = classPath.getTopLevelClasses(bundle).head?.load
-                                if (class === null) {
-                                    // If there is no such class, try again with packages starting with the bundle name
-                                    class = classPath.getTopLevelClassesRecursive(bundle).head?.load
-                                }
-                                if (class !== null) {
-                                    // Where the class was found, look for the given path in the jar local to that class.
-                                    class.getResourceAsStream("/" + path)
-                                } else {
-                                    null
-                                }
-                                
-                                // Other solution, if the above one does not work in built jars: 
-                                // If the bundle path is added to the classpath, this following line will just work
-                                // without explicitly looking for the bundle (which does not exist as a 'bundle' in the 
-                                // non-Platform-case anyway).
-//                                ClassLoader.getSystemClassLoader.getResourceAsStream(path)
-
-                                // For more information, see
-                                // https://stackoverflow.com/questions/9864267/loading-image-resource
-                                // and
-                                // https://stackoverflow.com/questions/676250/different-ways-of-loading-a-file-as-an-inputstream/676273#676273
+                                // In the jar or plain Java application case, the bundle is ignored and the file path
+                                // is searched on the classpath directly
+                                this.class.getResourceAsStream("/" + path)
                             }
                         if (imageStream !== null) {
-                            val imageBytes = ByteStreams.toByteArray(imageStream)
-                            imageStream.close
-                            val imageString = Base64.encoder.encodeToString(imageBytes)
-                            images.add(notCached -> imageString)
+                            try {
+                                val imageBytes = ByteStreams.toByteArray(imageStream)
+                                val imageString = Base64.encoder.encodeToString(imageBytes)
+                                images.add(notCached -> imageString)
+                            } finally {
+                                // Always close the stream.
+                                imageStream.close
+                            }
                         } else {
                             throw new FileNotFoundException("The image for bundle "
                                 + bundle
