@@ -27,7 +27,7 @@
       </styleModifier>
       <styleModifier
             class="de.cau.cs.kieler.klighd.labels.decoration.EdgeLabelStyleModifier"
-            id="de.cau.cs.kieler.klighd.labels.inline.inlineEdgeLabelStyleModifier">
+            id="de.cau.cs.kieler.klighd.labels.decoration.EdgeLabelStyleModifier">
       </styleModifier>
       <action
             class="de.cau.cs.kieler.klighd.actions.CollapseExpandAction"
