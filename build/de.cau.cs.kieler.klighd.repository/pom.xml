@@ -51,7 +51,7 @@
                 <associateSite>https://download.eclipse.org/modeling/mdt/uml2/updates/5.4/</associateSite>
                 <!-- Eclipse Layout Kernel -->
                 <!-- associateSite>http://build.eclipse.org/modeling/elk/updates/nightly/</associateSite -->
-                <associateSite>https://download.eclipse.org/elk/updates/releases/0.7.0/</associateSite>>
+                <associateSite>https://download.eclipse.org/elk/updates/releases/0.7.1/</associateSite>>
                 <!-- Xtext -->
                 <associateSite>https://download.eclipse.org/modeling/tmf/xtext/updates/releases/2.22.0/</associateSite>>
                 <associateSite>https://xtext.github.io/download/updates/releases/2.1.1/</associateSite>>

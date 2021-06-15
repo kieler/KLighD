@@ -65,7 +65,7 @@
 
    <repository-reference location="https://download.eclipse.org/releases/2020-06/" enabled="true" />
    <repository-reference location="https://download.eclipse.org/modeling/mdt/uml2/updates/5.4/" enabled="true" />
-   <repository-reference location="https://download.eclipse.org/elk/updates/releases/0.7.0/" enabled="true" />
+   <repository-reference location="https://download.eclipse.org/elk/updates/releases/0.7.1/" enabled="true" />
    <repository-reference location="https://download.eclipse.org/modeling/tmf/xtext/updates/releases/2.22.0/" enabled="true" />
    <repository-reference location="https://xtext.github.io/download/updates/releases/2.1.1/" enabled="true" />
    <repository-reference location="https://download.eclipse.org/tools/orbit/downloads/drops/R20200529191137/repository/" enabled="true" />
