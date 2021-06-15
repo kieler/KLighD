@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
 
-   <description name="KIELER Lightweight Diagrams" url="http://services.typefox.io/open-source/jenkins/job/KLighD/job/master/lastSuccessfulBuild/artifact/updatesite/">
-      Update site for KIELER Lightweight Diagrams nightly builds.
+   <description name="KIELER Lightweight Diagrams" url="https://kieler.github.io/KLighD/">
+      Update site for KIELER Lightweight Diagrams.
    </description>
 
    <category-def name="kieler-klighd" label="KIELER Lightweight Diagrams">
