@@ -61,7 +61,7 @@
 
    <bundle id="de.cau.cs.kieler.klighd.standalone" version="2.1.0.v20210615"/>
    <bundle id="de.cau.cs.kieler.klighd.lsp" version="2.1.0.v20210615"/>
-   <bundle id="de.cau.cs.kieler.klighd.lsp.source" version="2.0.1.qualifier"/>
+   <bundle id="de.cau.cs.kieler.klighd.lsp.source" version="2.1.0.v20210615"/>
 
    <repository-reference location="https://download.eclipse.org/releases/2020-06/" enabled="true" />
    <repository-reference location="https://download.eclipse.org/modeling/mdt/uml2/updates/5.4/" enabled="true" />
