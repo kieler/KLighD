@@ -115,18 +115,81 @@ final class RenderingPreparer {
         }
         if (element instanceof KNode) {
             for (node : element.children) {
+                // Get insets from parent region
+                var left = element.getInsets().left;
+                var top = element.getInsets().top;
                 var x = node.getXpos();
                 var y = node.getYpos();
-                x += element.getInsets().left;
-                y += element.getInsets().top;
+                x += left;
+                y += top;
                 node.setXpos(x);
                 node.setYpos(y);
+                
+                // Adapt positions for all labels of node
+                for (labels: node.labels) {
+                    var xL = labels.xpos;
+                    var yL = labels.ypos;
+                    xL += left;
+                    yL += top;
+                    labels.setPos(xL, yL);
+                }
+            
                 prepareRendering(node)
             }
             for (edge : element.outgoingEdges) {
+                
+                // Get potential insets from parent region
+                var left = element.parent.insets.left;
+                var top = element.parent.insets.top;
+                // Source point adaption
+                var xS = edge.sourcePoint.x;
+                var yS = edge.sourcePoint.y;
+                xS += left;
+                yS += top;
+                
+                edge.sourcePoint.setPos(xS, yS)
+                
+                // Target point adaption
+                var xT = edge.targetPoint.x;
+                var yT = edge.targetPoint.y;
+                xT += left;
+                yT += top;
+                
+                edge.targetPoint.setPos(xT, yT);
+                
+                // Update bend points for edge
+                for (bends : edge.bendPoints) {
+                    bends.setPos(bends.x + left, bends.y + top);
+                }
+                
+                // Update all labels for this edge
+                for (labels: edge.labels) {
+                    var xL = labels.xpos;
+                    var yL = labels.ypos;
+                    xL += left;
+                    yL += top;
+                    labels.setPos(xL, yL);
+                }
                 prepareRendering(edge)
             }
             for (port : element.ports) {
+                // Get potential insets from parent region
+                var left = element.parent.insets.left;
+                var top = element.parent.insets.top;
+                // Adapt position according to insets
+                var xP = port.xpos;
+                var yP = port.ypos;
+                xP += left;
+                yP += top;
+                port.setPos(xP, yP);
+                // Adapt all labels of this port
+                for (labels: port.labels) {
+                    var xL = labels.xpos;
+                    var yL = labels.ypos;
+                    xL += left;
+                    yL += top;
+                    labels.setPos(xL, yL);
+                }
                 prepareRendering(port)
             }
         }
