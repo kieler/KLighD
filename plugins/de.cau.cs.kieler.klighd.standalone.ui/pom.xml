@@ -9,7 +9,7 @@
   </parent>
 
   <groupId>de.cau.cs.kieler.klighd</groupId>
-  <artifactId>de.cau.cs.kieler.klighd.standalone</artifactId>
+  <artifactId>de.cau.cs.kieler.klighd.standalone.ui</artifactId>
   <version>2.1.1-SNAPSHOT</version>
   <packaging>eclipse-plugin</packaging>
 
@@ -37,6 +37,16 @@
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>de.cau.cs.kieler.klighd.krendering.extensions</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>de.cau.cs.kieler.klighd.piccolo</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>de.cau.cs.kieler.klighd.piccolo.freehep</artifactId>
       <version>${project.version}</version>
     </dependency>
   </dependencies>
