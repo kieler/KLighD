@@ -24,6 +24,8 @@
     <module>plugins/de.cau.cs.kieler.klighd.lsp</module>
     <module>plugins/de.cau.cs.kieler.klighd.piccolo</module>
     <module>plugins/de.cau.cs.kieler.klighd.standalone</module>
+    <module>plugins/de.cau.cs.kieler.klighd.standalone.mockup</module>
+    <module>plugins/de.cau.cs.kieler.klighd.standalone.ui</module>
     <module>test/de.cau.cs.kieler.klighd.test</module>
     <module>test/de.cau.cs.kieler.klighd.piccolo.test</module>
     <module>plugins/de.cau.cs.kieler.klighd.piccolo.batik</module>
