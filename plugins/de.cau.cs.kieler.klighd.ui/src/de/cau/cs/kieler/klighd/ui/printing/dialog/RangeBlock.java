@@ -25,11 +25,11 @@
 package de.cau.cs.kieler.klighd.ui.printing.dialog;
 
 import org.eclipse.core.databinding.DataBindingContext;
-import org.eclipse.core.databinding.beans.BeansObservables;
+import org.eclipse.core.databinding.beans.typed.BeanProperties;
 import org.eclipse.core.databinding.observable.Realm;
 import org.eclipse.core.databinding.observable.value.ComputedValue;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
-import org.eclipse.jface.databinding.swt.SWTObservables;
+import org.eclipse.jface.databinding.swt.typed.WidgetProperties;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
@@ -85,10 +85,13 @@ final class RangeBlock {
         // radio button for print all
         final Button allRadio = DialogUtil.radio(result, KlighdUIPrintingMessages.PrintDialog_All);
         DialogUtil.layoutSpanHorizontal(allRadio, columns);
-
+        
+        @SuppressWarnings("unchecked")
         final IObservableValue allValue =
-                BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_ALL_PAGES);
-        bindings.bindValue(SWTObservables.observeSelection(allRadio), allValue);
+                BeanProperties.value((Class<PrintOptions>) options.getClass(), PrintOptions.PROPERTY_ALL_PAGES).observe(realm, options);
+                // BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_ALL_PAGES);
+        var observedAllPages = WidgetProperties.widgetSelection().observe(allRadio); // SWTObservables.observeSelection(allRadio) 
+        bindings.bindValue(observedAllPages, allValue);
 
         // radio button for defining a print range
         final Button rangeRadio = DialogUtil.radio(result, KlighdUIPrintingMessages.PrintDialog_Pages);
@@ -106,14 +109,15 @@ final class RangeBlock {
         // the update of 'rangeValue' is than caused by the de-selection of 'allValue' leading to
         //  a re-computation of rangValue by means of the above mentioned listeners (crazy shit ...);
         //  the than calculated result is used below for enabling the "from" & "to" text fields.
-        final IObservableValue rangeValue = new ComputedValue(realm) {
+        final IObservableValue rangeValue = new ComputedValue<>(realm) {
 
             @Override
             protected Object calculate() {
                 return ((Boolean) allValue.getValue()).booleanValue() ? Boolean.FALSE : Boolean.TRUE;
             }
         };
-        bindings.bindValue(SWTObservables.observeSelection(rangeRadio), rangeValue);
+        var selection = WidgetProperties.widgetSelection().observe(rangeRadio); //SWTObservables.observeSelection(rangeRadio)
+        bindings.bindValue(selection, rangeValue);
 
         // range from (label & textfield)
         DialogUtil.layoutHorizontalIndent(DialogUtil.label(result,
@@ -121,10 +125,14 @@ final class RangeBlock {
 
         final Text textFrom = DialogUtil.text(result, textWidth);
 
-        final IObservableValue rangeFrom =
-                BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_RANGE_FROM);
-        bindings.bindValue(SWTObservables.observeText(textFrom, SWT.Modify), rangeFrom);
-        bindings.bindValue(SWTObservables.observeEnabled(textFrom), rangeValue);
+        @SuppressWarnings("unchecked")
+        final IObservableValue rangeFrom = 
+                BeanProperties.value((Class<PrintOptions>) options.getClass(), PrintOptions.PROPERTY_RANGE_FROM).observe(realm, options);
+                // BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_RANGE_FROM);
+        var observedModifiedTextFrom = WidgetProperties.text(SWT.Modify).observe(textFrom); // SWTObservables.observeText(textFrom, SWT.Modify) 
+        bindings.bindValue(observedModifiedTextFrom, rangeFrom);
+        var observedEnabledFrom = WidgetProperties.enabled().observe(textFrom); //SWTObservables.observeEnabled(textFrom);
+        bindings.bindValue(observedEnabledFrom, rangeValue);
 
         // range to (label & textfield)
         DialogUtil.layoutHorizontalIndent(
@@ -132,10 +140,15 @@ final class RangeBlock {
 
         final Text textTo = DialogUtil.text(result, textWidth);
 
+        @SuppressWarnings("unchecked")
         final IObservableValue rangeTo =
-                BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_RANGE_TO);
-        bindings.bindValue(SWTObservables.observeText(textTo, SWT.Modify), rangeTo);
-        bindings.bindValue(SWTObservables.observeEnabled(textTo), rangeValue);
+                BeanProperties.value((Class<PrintOptions>) options.getClass(), PrintOptions.PROPERTY_RANGE_TO).observe(realm, options);
+                // BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_RANGE_TO);
+        
+        var observedModifyTextTo = WidgetProperties.text(SWT.Modify).observe(textTo); //SWTObservables.observeText(textTo, SWT.Modify)
+        bindings.bindValue(observedModifyTextTo, rangeTo);
+        var observedEnabledTo = WidgetProperties.enabled().observe(textTo); //SWTObservables.observeEnabled(textTo)
+        bindings.bindValue(observedEnabledTo, rangeValue);
 
         result.addListener(SWT.Dispose, new Listener() {
 

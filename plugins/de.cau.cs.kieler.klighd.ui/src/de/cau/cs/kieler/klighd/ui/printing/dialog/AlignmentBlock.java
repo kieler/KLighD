@@ -14,10 +14,10 @@
 package de.cau.cs.kieler.klighd.ui.printing.dialog;
 
 import org.eclipse.core.databinding.DataBindingContext;
-import org.eclipse.core.databinding.beans.BeansObservables;
+import org.eclipse.core.databinding.beans.typed.BeanProperties;
 import org.eclipse.core.databinding.observable.Realm;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
-import org.eclipse.jface.databinding.swt.SWTObservables;
+import org.eclipse.jface.databinding.swt.typed.WidgetProperties;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
@@ -77,13 +77,19 @@ final class AlignmentBlock {
 
         final Realm realm = bindings.getValidationRealm();
 
-        final IObservableValue centerHorValue =
-                BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_CENTER_HORIZONTALLY);
-        bindings.bindValue(SWTObservables.observeSelection(centerHorizontally), centerHorValue);
+        @SuppressWarnings("unchecked")
+        final IObservableValue centerHorValue = 
+                BeanProperties.value((Class<PrintOptions>) options.getClass(), PrintOptions.PROPERTY_CENTER_HORIZONTALLY)
+                    .observe(realm, options);
+                // BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_CENTER_HORIZONTALLY);
+        var horObservation = WidgetProperties.widgetSelection().observe(centerHorizontally); //SWTObservables.observeSelection(centerHorizontally);
+        bindings.bindValue(horObservation, centerHorValue);
 
-        final IObservableValue centerVerValue =
-                BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_CENTER_VERTICALLY);
-        bindings.bindValue(SWTObservables.observeSelection(centerVertically), centerVerValue);
+        final IObservableValue centerVerValue = BeanProperties.value((Class<PrintOptions>) options.getClass(), PrintOptions.PROPERTY_CENTER_VERTICALLY)
+                .observe(realm, options);
+                // BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_CENTER_VERTICALLY);
+        var vertObservation = WidgetProperties.widgetSelection().observe(centerVertically); // SWTObservables.observeSelection(centerVertically)
+        bindings.bindValue(vertObservation, centerVerValue);
 
         result.addListener(SWT.Dispose, new Listener() {
 

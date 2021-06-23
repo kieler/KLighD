@@ -381,7 +381,7 @@ public class KlighdNewProjectCreationPage extends WizardNewProjectCreationPage {
                 || Strings.isNullOrEmpty(transformationPackage.getText())) {
             return false;
         }
-        status =
+        status = 
                 JavaConventions.validateJavaTypeName(transformationName.getText(),
                         JavaCore.VERSION_1_5, JavaCore.VERSION_1_5);
         if (!status.isOK()) {

@@ -18,13 +18,13 @@ import java.awt.Rectangle;
 import java.awt.geom.Point2D;
 
 import org.eclipse.core.databinding.DataBindingContext;
-import org.eclipse.core.databinding.beans.BeansObservables;
+import org.eclipse.core.databinding.beans.typed.BeanProperties;
 import org.eclipse.core.databinding.observable.Observables;
 import org.eclipse.core.databinding.observable.Realm;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.observable.value.IValueChangeListener;
 import org.eclipse.core.databinding.observable.value.ValueChangeEvent;
-import org.eclipse.jface.databinding.swt.SWTObservables;
+import org.eclipse.jface.databinding.swt.typed.WidgetProperties;
 import org.eclipse.jface.dialogs.DialogTray;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
@@ -107,37 +107,51 @@ public class PrintPreviewTray extends DialogTray {
             }
         };
 
-        final IObservableValue delayedResize = Observables.observeDelayedValue(OBSERVABLE_DELAY,
-                SWTObservables.observeSize(body));
+        var observedSize = WidgetProperties.size().observe(body); //SWTObservables.observeSize(body);
+        final IObservableValue delayedResize = Observables.observeDelayedValue(OBSERVABLE_DELAY, observedSize);
         delayedResize.addValueChangeListener(listener);
 
-        final IObservableValue delayedPrinterData = Observables.observeDelayedValue(OBSERVABLE_DELAY,
-                BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_PRINTER_DATA));
+        @SuppressWarnings("unchecked")
+        var observedData = 
+                BeanProperties.value((Class<DiagramPrintOptions>) options.getClass(), PrintOptions.PROPERTY_PRINTER_DATA)
+                .observe(realm, options); //BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_PRINTER_DATA);
+        final IObservableValue delayedPrinterData = Observables.observeDelayedValue(OBSERVABLE_DELAY, observedData);
         delayedPrinterData.addValueChangeListener(listener);
 
-        final IObservableValue delayedScale = Observables.observeDelayedValue(OBSERVABLE_DELAY,
-                BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_SCALE_FACTOR));
+        @SuppressWarnings("unchecked")
+        var observedScale = BeanProperties.value((Class<DiagramPrintOptions>) options.getClass(), PrintOptions.PROPERTY_SCALE_FACTOR)
+                .observe(realm, options); // BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_SCALE_FACTOR);
+        final IObservableValue delayedScale = Observables.observeDelayedValue(OBSERVABLE_DELAY,observedScale);
         delayedScale.addValueChangeListener(listener);
 
-        final IObservableValue delayedPagesWide = Observables.observeDelayedValue(OBSERVABLE_DELAY,
-                BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_PAGES_WIDE));
+        @SuppressWarnings("unchecked")
+        var observedPagesWide = BeanProperties.value((Class<DiagramPrintOptions>) options.getClass(), PrintOptions.PROPERTY_PAGES_WIDE)
+                .observe(realm, options); // BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_PAGES_WIDE);
+        final IObservableValue delayedPagesWide = Observables.observeDelayedValue(OBSERVABLE_DELAY,observedPagesWide);
         delayedPagesWide.addValueChangeListener(listener);
 
-        final IObservableValue delayedPagesTall = Observables.observeDelayedValue(OBSERVABLE_DELAY,
-                BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_PAGES_TALL));
+        @SuppressWarnings("unchecked")
+        var observedScaleTall = BeanProperties.value((Class<DiagramPrintOptions>) options.getClass(), PrintOptions.PROPERTY_PAGES_TALL)
+                .observe(realm, options); // BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_PAGES_TALL);
+        final IObservableValue delayedPagesTall = Observables.observeDelayedValue(OBSERVABLE_DELAY, observedScaleTall);
         delayedPagesTall.addValueChangeListener(listener);
 
-        final IObservableValue delayedHorCentered = Observables.observeDelayedValue(OBSERVABLE_DELAY,
-                BeansObservables.observeValue(realm, options,
-                        PrintOptions.PROPERTY_CENTER_HORIZONTALLY));
+        @SuppressWarnings("unchecked")
+        var observedHorCenter = BeanProperties.value((Class<DiagramPrintOptions>) options.getClass(), PrintOptions.PROPERTY_CENTER_HORIZONTALLY)
+                .observe(realm, options); // BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_CENTER_HORIZONTALLY);
+        final IObservableValue delayedHorCentered = Observables.observeDelayedValue(OBSERVABLE_DELAY, observedHorCenter);
         delayedHorCentered.addValueChangeListener(listener);
 
-        final IObservableValue delayedVerCentered = Observables.observeDelayedValue(OBSERVABLE_DELAY,
-                BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_CENTER_VERTICALLY));
+        @SuppressWarnings("unchecked")
+        var observedVertCenter = BeanProperties.value((Class<DiagramPrintOptions>) options.getClass(), PrintOptions.PROPERTY_CENTER_VERTICALLY)
+                .observe(realm, options); // BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_CENTER_VERTICALLY);
+        final IObservableValue delayedVerCentered = Observables.observeDelayedValue(OBSERVABLE_DELAY, observedVertCenter);
         delayedVerCentered.addValueChangeListener(listener);
-
-        final IObservableValue delayedOrientation = Observables.observeDelayedValue(OBSERVABLE_DELAY,
-                BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_ORIENTATION));
+        
+        @SuppressWarnings("unchecked")
+        var observedOrientation = BeanProperties.value((Class<DiagramPrintOptions>) options.getClass(), PrintOptions.PROPERTY_ORIENTATION)
+                .observe(realm, options); // BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_ORIENTATION);
+        final IObservableValue delayedOrientation = Observables.observeDelayedValue(OBSERVABLE_DELAY, observedOrientation);
         delayedOrientation.addValueChangeListener(listener);
 
         body.addListener(SWT.Dispose, new Listener() {
