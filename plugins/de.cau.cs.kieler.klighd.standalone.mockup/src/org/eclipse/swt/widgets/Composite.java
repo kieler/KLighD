@@ -12,8 +12,20 @@
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 package org.eclipse.swt.widgets;
-public class Composite {
+
+public class Composite extends Control {
+    
+    public Composite (Composite parent, int style) {
+
+    }
     public void layout() {
         
+    }
+    public void setLayout (Layout layout) {
+    }
+    public void pack() {
+        
+    }
+    public void layout (boolean changed, boolean all) {
     }
 }

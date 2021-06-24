@@ -13,7 +13,12 @@
  *******************************************************************************/
 package org.eclipse.ui;
 
+import org.eclipse.swt.widgets.Shell;
+
 public interface IWorkbenchPartSite {
-    
+    String getId();
     IWorkbenchPage getPage();
+    Shell getShell();
+    IWorkbenchWindow getWorkbenchWindow();
+
 }

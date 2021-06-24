@@ -14,4 +14,9 @@
 package org.eclipse.ui;
 public interface IWorkbenchPage {
     void bringToTop(IWorkbenchPart part);
+    void addPartListener(IPartListener2 listener);
+    void removePartListener(IPartListener2 listener);
+    IEditorPart[] getEditors();
+    IEditorPart openEditor(IEditorInput input, String editorId) throws PartInitException;
+
 }

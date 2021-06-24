@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2018 IBM Corporation and others.
+ * Copyright (c) 2000, 2017 IBM Corporation and others.
  *
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -10,16 +10,12 @@
  *
  * Contributors:
  *     IBM Corporation - initial API and implementation
+ *     Lars Vogel <Lars.Vogel@vogella.com>  - Bug 513037
  *******************************************************************************/
-package org.eclipse.ui;
+package org.eclipse.swt.events;
 
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.progress.IProgressService;
+import java.util.EventListener;
 
-public interface IWorkbench {
-	Display getDisplay();
-	IProgressService getProgressService();
-   void addWorkbenchListener(IWorkbenchListener listener);
-   IWorkbenchWindow getActiveWorkbenchWindow();
+public interface MouseListener extends EventListener {
 
 }

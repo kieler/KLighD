@@ -12,5 +12,13 @@
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 package org.eclipse.ui;
+
+import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.action.IToolBarManager;
+
 public interface IActionBars {
+    void updateActionBars();
+    IToolBarManager getToolBarManager();
+    IMenuManager getMenuManager();
+
 }

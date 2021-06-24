@@ -14,9 +14,10 @@
  *******************************************************************************/
 package org.eclipse.swt.widgets;
 
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Point;
 
-public abstract class Control {
+public abstract class Control extends Widget {
     
     public boolean isDisposed() {
         return true;
@@ -30,5 +31,22 @@ public abstract class Control {
     }
     public void dispose() {
         
+    }
+    public void setBackground(Color c) {
+        
+    }
+    public void setLocation(int x, int y) {
+
+    }
+    public void setLayoutData (Object layoutData) {
+
+    }
+    
+    public void setSize (int width, int height) {
+    }
+    public void setVisible (boolean visible) {
+    }
+    public boolean getVisible () {
+        return false;
     }
 }

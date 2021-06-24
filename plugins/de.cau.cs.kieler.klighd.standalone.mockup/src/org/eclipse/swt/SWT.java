@@ -20,5 +20,13 @@ public class SWT {
     public static int BOLD = 2;
     
     public static boolean OFF = false;
+    public static final int NONE = 0;
+
     public static final int COLOR_LIST_SELECTION = 26;
+    public static final int NO_BACKGROUND = 1 << 18;
+    public static final int DROP_DOWN = 1 << 2;
+    public static final int READ_ONLY = 1 << 3;
+    public static final int BORDER = 1 << 11;
+    public static final int WRAP = 1 << 6;
+
 }

@@ -51,4 +51,7 @@ public class Display {
     public void sleep() {
         
     }
+    public static Display getDefault () {
+        return null;
+    }
 }

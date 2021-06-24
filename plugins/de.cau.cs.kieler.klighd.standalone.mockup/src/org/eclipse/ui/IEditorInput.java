@@ -12,6 +12,16 @@
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 package org.eclipse.ui;
+
+import org.eclipse.jface.resource.ImageDescriptor;
+
 public interface IEditorInput {
-	
+    
+    boolean exists();
+    ImageDescriptor getImageDescriptor();
+    String getName();
+    IPersistableElement getPersistable();
+    String getToolTipText();
+    public <T> T getAdapter(Class<T> adapter);
+
 }

@@ -14,6 +14,8 @@
  *******************************************************************************/
 package org.eclipse.ui;
 
+import org.eclipse.jface.preference.IPreferenceStore;
+
 public final class PlatformUI {
     
     public static boolean isWorkbenchRunning() {
@@ -21,6 +23,9 @@ public final class PlatformUI {
     }
     
     public static IWorkbench getWorkbench() {
+        return null;
+    }
+    public static IPreferenceStore getPreferenceStore() {
         return null;
     }
 }

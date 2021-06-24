@@ -11,15 +11,16 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package org.eclipse.ui;
+package org.eclipse.swt.widgets;
 
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.progress.IProgressService;
+import org.eclipse.swt.events.MouseListener;
 
-public interface IWorkbench {
-	Display getDisplay();
-	IProgressService getProgressService();
-   void addWorkbenchListener(IWorkbenchListener listener);
-   IWorkbenchWindow getActiveWorkbenchWindow();
-
+public class Label extends Control {
+    public void setToolTipText(String s) {
+        
+    }
+    
+    public void addMouseListener(MouseListener listener) {
+        
+    }
 }

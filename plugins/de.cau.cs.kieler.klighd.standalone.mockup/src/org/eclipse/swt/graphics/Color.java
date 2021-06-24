@@ -13,6 +13,10 @@
  *******************************************************************************/
 package org.eclipse.swt.graphics;
 public final class Color {
+    public Color(Device device, RGB rgb) {
+    }
+    public Color(Device device, int red, int green, int blue, int alpha) {
+    }
     
     public int getRed() {
         return 0;
@@ -22,5 +26,8 @@ public final class Color {
     }
     public int getBlue() {
         return 0;
+    }
+    public void dispose() {
+        
     }
 }

@@ -11,15 +11,6 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package org.eclipse.ui;
-
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.progress.IProgressService;
-
-public interface IWorkbench {
-	Display getDisplay();
-	IProgressService getProgressService();
-   void addWorkbenchListener(IWorkbenchListener listener);
-   IWorkbenchWindow getActiveWorkbenchWindow();
-
+package org.eclipse.swt.graphics;
+public abstract class Device implements Drawable {
 }
