@@ -191,7 +191,7 @@ public class KlighdLayoutConfigurationStore implements ILayoutConfigurationStore
                 return null;
             }
 
-            final Control control = viewer.getControl();
+            final Control control = (Control) viewer.getControl();
 
             final RunnableWithResult<Double> runnable = new AbstractRunnableWithResult<Double>() {
 

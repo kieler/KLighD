@@ -81,7 +81,7 @@ public class UiContextViewer extends ContextViewer implements ISelectionProvider
 
             // since the control, i.e. the diagram canvas, is setup during the above call of
             //  'setModel(...)' we cannot register the context menu earlier; thus...
-            final Control control = getControl();
+            final Control control = (Control) getControl();
 
             // this test is just for safety purposes, should never be null
             if (control != null) {

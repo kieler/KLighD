@@ -21,6 +21,7 @@ import org.eclipse.elk.core.math.KVector;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.PlatformUI;
 
 import com.google.common.base.Predicate;
@@ -343,7 +344,7 @@ public class KlighdActionEventHandler implements PInputEventListener {
             // the following cast doesn't need to be checked since the action event handler
             //  doesn't react on other kinds events, see above
             final MouseEvent me = ((KlighdMouseEvent) event.getSourceSwingEvent()).getEvent();
-            return getActiveViewer().getControl().toDisplay(me.x, me.y);
+            return ((Control) getActiveViewer().getControl()).toDisplay(me.x, me.y);
         }
     }
 

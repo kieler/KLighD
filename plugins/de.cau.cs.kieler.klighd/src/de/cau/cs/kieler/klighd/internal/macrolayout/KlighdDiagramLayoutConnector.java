@@ -41,6 +41,7 @@ import org.eclipse.elk.graph.util.ElkGraphUtil;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.IWorkbenchPart;
 
 import com.google.common.base.Predicate;
@@ -627,7 +628,7 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
             final IViewer viewer = (IViewer) recorder;
             final boolean suppressEdgeAdjustment = viewer.getViewContext().getProperty(
                     KlighdSynthesisProperties.SUPPRESS_EDGE_ADJUSTMENT);
-            if (viewer.getControl() != null && viewer.getControl().isDisposed()) {
+            if (viewer.getControl() != null && ((Control) viewer.getControl()).isDisposed()) {
                 return;
             }
             recorder.startRecording();

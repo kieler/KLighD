@@ -45,7 +45,7 @@ public interface IViewer {
      *
      * @return the control
      */
-    Control getControl();
+    Object getControl();
 
     /**
      * Returns the {@link ContextViewer} containing this viewer.

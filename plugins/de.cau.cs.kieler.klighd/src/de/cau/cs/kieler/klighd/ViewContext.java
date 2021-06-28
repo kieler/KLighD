@@ -301,7 +301,7 @@ public class ViewContext extends MapPropertyHolder {
      *            the parent {@link Composite} widget
      * @return the created viewer or <code>null</code> on failure
      */
-    public IViewer createViewer(final ContextViewer parentViewer, final Composite parent) {
+    public IViewer createViewer(final ContextViewer parentViewer, final Object parent) {
         if (this.viewerProvider != null) {
             // create the new viewer
             this.viewer = this.viewerProvider.createViewer(parentViewer, parent);

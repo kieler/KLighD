@@ -99,14 +99,16 @@ public class Bounds {
     }
 
     /**
-     * Constructs bounds from the dimensions of the given SWT Point with coordinates (0,0).
+     * Constructs bounds from the dimensions of the given x and y coordinates.
      *
-     * @param point
-     *            the SWT point to take width and height from
+     * @param x
+ *              the x-coordinate
+     * @param y
+     *          the y-coordinate
      */
-    public Bounds(final org.eclipse.swt.graphics.Point point) {
-        this.width = point.x;
-        this.height = point.y;
+    public Bounds(int x, int y) {
+        this.width = x;
+        this.height = y;
         this.insets = KGraphFactory.eINSTANCE.createKInsets();
     }
 

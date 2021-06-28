@@ -1063,10 +1063,12 @@ public final class PlacementUtil {
         if (Strings.isNullOrEmpty(text)) {
             // if no text string is given, take the bounds of a space character to get a proper
             // value for the height
-            textBounds = new Bounds(myGC.textExtent(" "));
+            org.eclipse.swt.graphics.Point p = myGC.textExtent(" ");
+            textBounds = new Bounds(p.x, p.y);
             textBounds.width = 0f; // omit the width in this case
         } else {
-            textBounds = new Bounds(myGC.textExtent(text));
+            org.eclipse.swt.graphics.Point p = myGC.textExtent(text);
+            textBounds = new Bounds(p.x, p.y);
         }
 
         if (!Klighd.isSuppressDisplayScaleCompensationWhileHandlingText()) {

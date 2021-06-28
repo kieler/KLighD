@@ -22,6 +22,7 @@ import org.eclipse.elk.core.data.LayoutMetaDataService;
 import org.eclipse.elk.core.options.CoreOptions;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.hamcrest.collection.IsIterableContainingInOrder;
@@ -97,7 +98,7 @@ public class ViewChangedNotificationSuppressionTest {
 
         new ContextViewer(shell).setModel(viewContext, true);
 
-        heightDelta = 200 - viewContext.getViewer().getControl().getSize().y;
+        heightDelta = 200 - ((Control) viewContext.getViewer().getControl()).getSize().y;
         shell.setSize(300, 200 + heightDelta);
 
         viewContext.update(null);

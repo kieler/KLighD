@@ -62,7 +62,6 @@ import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.Klighd;
-import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.LightDiagramLayoutConfig;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.ZoomStyle;
@@ -268,7 +267,7 @@ public class DiagramEditorPart extends EditorPart implements
                 // In order to avoid flickering we set the viewer's control
                 //  (the canvas) invisible, the canvas of a potentially created outline
                 //  page is invisible after initialization, too.
-                viewer.getControl().setVisible(false);
+                ((Control) viewer.getControl()).setVisible(false);
 
                 // It is important to wait with the layout call until the #createPartControl
                 //  method has finished and the widget toolkit has applied proper bounds
@@ -293,7 +292,7 @@ public class DiagramEditorPart extends EditorPart implements
                             return;
                         }
 
-                        final Control control = viewer.getControl();
+                        final Control control = (Control) viewer.getControl();
 
                         if (control == null || control.isDisposed()) {
                             return;
@@ -433,7 +432,7 @@ public class DiagramEditorPart extends EditorPart implements
                 // if the main canvas is visible we can assume the presence of a properly
                 // initialized and arrange diagram (see #createPartControl() above),
                 // otherwise leave the outline canvas invisible, thus...
-                currentOutlinePage.setVisible(viewer.getControl().isVisible()
+                currentOutlinePage.setVisible(((Control) viewer.getControl()).isVisible()
                         || !requiresInitialLayout(viewer.getViewContext()));
                 return currentOutlinePage;
             }
@@ -469,7 +468,7 @@ public class DiagramEditorPart extends EditorPart implements
      */
     @Override
     public void setFocus() {
-        final Control c = viewer.getControl();
+        final Control c = (Control) viewer.getControl();
         if (c.isVisible()) {
             c.setFocus();
         } else {

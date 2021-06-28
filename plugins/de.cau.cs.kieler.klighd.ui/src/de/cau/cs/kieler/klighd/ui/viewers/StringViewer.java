@@ -73,7 +73,7 @@ public class StringViewer implements IViewer {
     /**
      * {@inheritDoc}
      */
-    public Control getControl() {
+    public Object getControl() {
         return canvas;
     }
 

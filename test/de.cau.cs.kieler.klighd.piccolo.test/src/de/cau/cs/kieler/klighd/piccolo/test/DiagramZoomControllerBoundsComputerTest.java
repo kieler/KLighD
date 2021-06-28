@@ -169,7 +169,7 @@ public class DiagramZoomControllerBoundsComputerTest {
 
         new ContextViewer(shell).setModel(viewContext, true);
 
-        heightDelta = 200 - viewContext.getViewer().getControl().getSize().y;
+        heightDelta = 200 - ((Control) viewContext.getViewer().getControl()).getSize().y;
         shell.setSize(1100, 800 + heightDelta);
 
         viewContext.update(null);
@@ -181,7 +181,7 @@ public class DiagramZoomControllerBoundsComputerTest {
         viewer.zoomToLevel(4, 0);
         shell.open();
 
-        zeroPoint = viewer.getControl().toDisplay(0, 0);
+        zeroPoint = ((Control) viewer.getControl()).toDisplay(0, 0);
     }
 
 
@@ -296,7 +296,7 @@ public class DiagramZoomControllerBoundsComputerTest {
             // make sure the color recognition works by checking the background color in the top left corner
             // in case this check gives, e.g., RGB {0, 0, 0} the color identification doesn't work and
             //  this test shall be skipped
-            Assume.assumeThat(Pair.of(sharedInstance.viewer.getControl(), new KVector(2, 2)), IS_WHITE);
+            Assume.assumeThat(Pair.of((Control) sharedInstance.viewer.getControl(), new KVector(2, 2)), IS_WHITE);
             
             if (landscape) {
                 sharedInstance.shell.setSize(1000, 500);

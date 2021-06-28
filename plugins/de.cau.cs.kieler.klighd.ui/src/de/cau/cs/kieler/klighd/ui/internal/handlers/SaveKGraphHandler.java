@@ -28,6 +28,7 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchPart;
@@ -157,7 +158,7 @@ public class SaveKGraphHandler extends AbstractHandler {
             // ---------------------------------------------------
             // Default export of the selected (sub-)graph
             // ---------------------------------------------------
-            final SaveKGraphDialog fd = new SaveKGraphDialog(viewer.getControl().getShell());
+            final SaveKGraphDialog fd = new SaveKGraphDialog(((Control) viewer.getControl()).getShell());
             // show a KLighd save KGraph dialog
             int success = fd.open();
 

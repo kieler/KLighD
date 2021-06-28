@@ -87,8 +87,8 @@ public class PiccoloViewer extends AbstractViewer implements ILayoutRecorder,
         /**
          * {@inheritDoc}
          */
-        public IViewer createViewer(final ContextViewer parentViewer, final Composite parent) {
-            return new PiccoloViewer(parentViewer, parent);
+        public IViewer createViewer(final ContextViewer parentViewer, final Object parent) {
+            return new PiccoloViewer(parentViewer, (Composite) parent);
         }
     }
 

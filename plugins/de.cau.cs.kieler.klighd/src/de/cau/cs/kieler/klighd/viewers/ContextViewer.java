@@ -124,7 +124,7 @@ public class ContextViewer implements IViewer, ILayoutRecorder, ISelectionProvid
     protected synchronized void setViewer(final IViewer viewer) {
         // remove the current viewer if someone exists
         if (currentViewer != null) {
-            currentViewer.getControl().dispose();
+            ((Control) currentViewer.getControl()).dispose();
             currentViewer = null;
         }
 
@@ -242,7 +242,7 @@ public class ContextViewer implements IViewer, ILayoutRecorder, ISelectionProvid
     /**
      * {@inheritDoc}
      */
-    public Control getControl() {
+    public Object getControl() {
         return currentViewer != null ? currentViewer.getControl() : null;
     }
 

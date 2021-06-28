@@ -97,7 +97,7 @@ public class HighlightedEdgeToForegroundTest {
         shell.layout(true, true);
         shell.open();
 
-        canvas = viewContext.getViewer().getControl();
+        canvas = (Control) viewContext.getViewer().getControl();
         zeroPoint = canvas.toDisplay(0, 0);
 
         // make sure the color recognition works by checking the background color in the top left corner

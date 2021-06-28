@@ -80,8 +80,8 @@ public class PiccoloViewerUI extends PiccoloViewer {
         /**
          * {@inheritDoc}
          */
-        public IViewer createViewer(final ContextViewer parentViewer, final Composite parent) {
-            return new PiccoloViewerUI(parentViewer, parent);
+        public IViewer createViewer(final ContextViewer parentViewer, final Object parent) {
+            return new PiccoloViewerUI(parentViewer, (Composite) parent);
         }
     }
 

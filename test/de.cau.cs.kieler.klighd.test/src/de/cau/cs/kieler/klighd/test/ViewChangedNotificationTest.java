@@ -17,6 +17,7 @@ import org.eclipse.elk.core.data.LayoutMetaDataService;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.hamcrest.collection.IsIterableWithSize;
@@ -88,7 +89,7 @@ public class ViewChangedNotificationTest {
 
         new ContextViewer(shell).setModel(viewContext, true);
 
-        heightDelta = 200 - viewContext.getViewer().getControl().getSize().y;
+        heightDelta = 200 - ((Control) viewContext.getViewer().getControl()).getSize().y;
         shell.setSize(300, 200 + heightDelta);
 
         viewContext.update(null);

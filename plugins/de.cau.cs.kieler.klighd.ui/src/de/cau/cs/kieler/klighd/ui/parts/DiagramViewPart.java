@@ -29,6 +29,7 @@ import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.events.ControlListener;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IViewSite;
 import org.eclipse.ui.actions.ActionFactory;
@@ -360,7 +361,7 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart,
      */
     @Override
     public void setFocus() {
-        viewer.getControl().setFocus();
+        ((Control) viewer.getControl()).setFocus();
     }
 
     /**

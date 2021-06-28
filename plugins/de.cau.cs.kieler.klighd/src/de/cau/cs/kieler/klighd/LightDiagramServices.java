@@ -33,6 +33,7 @@ import org.eclipse.elk.core.util.Pair;
 import org.eclipse.elk.graph.properties.IProperty;
 import org.eclipse.elk.graph.properties.IPropertyHolder;
 import org.eclipse.elk.graph.properties.MapPropertyHolder;
+import org.eclipse.swt.widgets.Control;
 
 import com.google.common.base.Predicates;
 import com.google.common.collect.Collections2;
@@ -161,7 +162,7 @@ public final class LightDiagramServices {
         if (thePart != null) {
             final IViewer theViewer = thePart.getViewer();
             if (theViewer == null
-                    || theViewer.getControl() != null && theViewer.getControl().isDisposed()) {
+                    || theViewer.getControl() != null && ((Control) theViewer.getControl()).isDisposed()) {
                 // This might happen, if the layout computation is to be executed asynchronously
                 //  and 'thePart' (and with that the corresponding control(s)) has been disposed
                 //  in the meantime.

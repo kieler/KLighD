@@ -20,6 +20,8 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.window.Window;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.handlers.HandlerUtil;
@@ -55,7 +57,7 @@ public class SaveAsImageHandler extends AbstractHandler {
             return null;
         }
 
-        final Shell shell = viewer.getControl().getShell();
+        final Shell shell = ((Control) viewer.getControl()).getShell();
 
         // open the dialog to receive the required user input
         final SaveAsImageDialog dialog = new SaveAsImageDialog(viewer.getViewContext(), shell);
@@ -73,7 +75,7 @@ public class SaveAsImageHandler extends AbstractHandler {
         IStatus res;
         try {
             // execute the export process
-            res = exporter.export(viewer.getControl(), dialog.getExportData());
+            res = exporter.export((Control) viewer.getControl(), dialog.getExportData());
 
         } catch (final Throwable t) {
             final String msg = "The diagram export could not be completed.";

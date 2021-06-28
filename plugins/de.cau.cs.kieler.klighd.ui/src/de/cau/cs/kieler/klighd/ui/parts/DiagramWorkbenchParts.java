@@ -82,7 +82,7 @@ public final class DiagramWorkbenchParts {
             final ViewContext context = diagramWorkbenchPart.getViewContext();
 
             if (KlighdPreferences.isZoomOnWorkbenchpartChange() && context != null) {
-                final Control control = context.getViewer().getControl();
+                final Control control = (Control) context.getViewer().getControl();
 
                 if (control == null || control.isDisposed() || !control.isVisible()) {
                     return;
@@ -102,7 +102,7 @@ public final class DiagramWorkbenchParts {
 
                     public void run() {
                         final IViewer viewer = diagramWorkbenchPart.getViewer();
-                        final Control control = viewer.getControl();
+                        final Control control = (Control) viewer.getControl();
 
                         isScheduled = false;
                         if (!control.isDisposed() && control.isVisible()) {
@@ -120,7 +120,7 @@ public final class DiagramWorkbenchParts {
          */
         private void zoomOrRelayout(final IViewer viewer) {
             // calculate the aspect ratio of the current canvas
-            final Point size = viewer.getControl().getSize();
+            final Point size = ((Control) viewer.getControl()).getSize();
 
             // assure that the composite's size is settled before we execute the layout
             if (size.x > 0 && size.y > 0) {

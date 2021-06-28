@@ -137,7 +137,7 @@ public class DiagramClipTest {
 
         new ContextViewer(shell).setModel(viewContext, true);
 
-        heightDelta = 200 - viewContext.getViewer().getControl().getSize().y;
+        heightDelta = 200 - ((Control) viewContext.getViewer().getControl()).getSize().y;
         shell.setSize(1100, 800 + heightDelta);
 
         viewContext.update(null);
@@ -149,12 +149,12 @@ public class DiagramClipTest {
         viewer.zoomToLevel(4, 0);
         shell.open();
 
-        zeroPoint = viewer.getControl().toDisplay(0, 0);
+        zeroPoint = ((Control) viewer.getControl()).toDisplay(0, 0);
 
         // make sure the color recognition works by checking the background color in the top left corner
         // in case this check gives, e.g., RGB {0, 0, 0} the color identification doesn't work and
         //  this whole test class shall be skipped
-        Assume.assumeThat(Pair.of(viewer.getControl(), new KVector(2, 2)), IS_WHITE);
+        Assume.assumeThat(Pair.of((Control) viewer.getControl(), new KVector(2, 2)), IS_WHITE);
         
         finished = false;
     }
@@ -200,12 +200,12 @@ public class DiagramClipTest {
             waitAmoment();
 
             moveTo((int) (port0pos.x), (int) (port0pos.y));
-            Assert.assertThat(Pair.of(viewer.getControl(), port0pos), IS_BLACK);
+            Assert.assertThat(Pair.of((Control) viewer.getControl(), port0pos), IS_BLACK);
 
             waitAmoment();
 
             moveTo((int) (portXpos.x), (int) (portXpos.y));
-            Assert.assertThat(Pair.of(viewer.getControl(), portXpos), IS_BLACK);
+            Assert.assertThat(Pair.of((Control) viewer.getControl(), portXpos), IS_BLACK);
         }
     }
 
