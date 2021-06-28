@@ -101,7 +101,7 @@ final class CopiesBlock {
         DialogUtil.label(result, KlighdUIPrintingMessages.PrintDialog_NumberOfCopies);
         final Spinner copiesSpinner = DialogUtil.spinner(result, 1, Integer.MAX_VALUE);
 
-        final IObservableValue copiesValue = 
+        final IObservableValue<Object> copiesValue = 
                 BeanProperties.value(options.getClass().asSubclass(PrintOptions.class), PrintOptions.PROPERTY_COPIES).observe(realm, options);
                 // BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_COPIES);
         var copiesObservation = WidgetProperties.widgetSelection().observe(copiesSpinner); //SWTObservables.observeSelection(copiesSpinner)
@@ -119,15 +119,15 @@ final class CopiesBlock {
 
         collateImageLabel.setImage(collateCheck.getSelection() ? collateOnImage : collateOffImage);
 
-        final IObservableValue collateValue =
+        final IObservableValue<Object> collateValue =
                 BeanProperties.value(options.getClass().asSubclass(PrintOptions.class), PrintOptions.PROPERTY_COLLATE).observe(realm, options);
                 // BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_COLLATE);
         var collateObservation =  WidgetProperties.widgetSelection().observe((Widget) collateCheck); //SWTObservables.observeSelection(collateCheck);
         bindings.bindValue(collateObservation, collateValue);
 
-        collateValue.addValueChangeListener(new IValueChangeListener() {
+        collateValue.addValueChangeListener(new IValueChangeListener<Object>() {
 
-            public void handleValueChange(final ValueChangeEvent event) {
+            public void handleValueChange(final ValueChangeEvent<? extends Object> event) {
 
                 // set image according to collate state
                 if (((Boolean) event.getObservableValue().getValue()).booleanValue()) {

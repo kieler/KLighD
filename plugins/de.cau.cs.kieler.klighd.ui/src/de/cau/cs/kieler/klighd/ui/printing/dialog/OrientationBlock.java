@@ -76,10 +76,11 @@ final class OrientationBlock {
 
         final Realm realm = bindings.getValidationRealm();
 
-        final SelectObservableValue orientationGroupValue = new SelectObservableValue<>(realm);
-        var observerPortrait = WidgetProperties.widgetSelection().observe(portraitRadio); // SWTObservables.observeSelection(portraitRadio);
+        final SelectObservableValue<Integer> orientationGroupValue = new SelectObservableValue<>(realm);
+        
+        var observerPortrait = WidgetProperties.<Button, Boolean>widgetSelection().observe(portraitRadio); // SWTObservables.observeSelection(portraitRadio);
         orientationGroupValue.addOption(PrinterData.PORTRAIT, observerPortrait);
-        var observeLandscape = WidgetProperties.widgetSelection().observe(landscapeRadio); // SWTObservables.observeSelection(landscapeRadio);
+        var observeLandscape = WidgetProperties.<Button, Boolean>widgetSelection().observe(landscapeRadio); // SWTObservables.observeSelection(landscapeRadio);
         orientationGroupValue.addOption(PrinterData.LANDSCAPE, observeLandscape);
 
         var observeOrientation = BeanProperties.value(options.getClass().asSubclass(PrintOptions.class), PrintOptions.PROPERTY_ORIENTATION)

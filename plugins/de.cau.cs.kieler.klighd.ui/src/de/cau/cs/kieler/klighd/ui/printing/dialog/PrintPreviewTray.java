@@ -100,51 +100,51 @@ public class PrintPreviewTray extends DialogTray {
 
         updateComposite();
 
-        final IValueChangeListener listener = new IValueChangeListener() {
+        final IValueChangeListener<Object> listener = new IValueChangeListener<Object>() {
 
-            public void handleValueChange(final ValueChangeEvent event) {
+            public void handleValueChange(final ValueChangeEvent<? extends Object> event) {
                 updateComposite();
             }
         };
 
-        var observedSize = WidgetProperties.size().observe(body); //SWTObservables.observeSize(body);
-        final IObservableValue delayedResize = Observables.observeDelayedValue(OBSERVABLE_DELAY, observedSize);
+        var<Point> observedSize = WidgetProperties.size().observe(body); //SWTObservables.observeSize(body);
+        final IObservableValue<Point> delayedResize = Observables.observeDelayedValue(OBSERVABLE_DELAY, observedSize);
         delayedResize.addValueChangeListener(listener);
 
-        var observedData = 
+        var<Object> observedData = 
                 BeanProperties.value(options.getClass().asSubclass(DiagramPrintOptions.class), PrintOptions.PROPERTY_PRINTER_DATA)
                 .observe(realm, options); //BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_PRINTER_DATA);
-        final IObservableValue delayedPrinterData = Observables.observeDelayedValue(OBSERVABLE_DELAY, observedData);
+        final IObservableValue<Object> delayedPrinterData = Observables.observeDelayedValue(OBSERVABLE_DELAY, observedData);
         delayedPrinterData.addValueChangeListener(listener);
 
         var observedScale = BeanProperties.value(options.getClass().asSubclass(DiagramPrintOptions.class), PrintOptions.PROPERTY_SCALE_FACTOR)
                 .observe(realm, options); // BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_SCALE_FACTOR);
-        final IObservableValue delayedScale = Observables.observeDelayedValue(OBSERVABLE_DELAY,observedScale);
+        final IObservableValue<Object> delayedScale = Observables.observeDelayedValue(OBSERVABLE_DELAY,observedScale);
         delayedScale.addValueChangeListener(listener);
 
         var observedPagesWide = BeanProperties.value(options.getClass().asSubclass(DiagramPrintOptions.class), PrintOptions.PROPERTY_PAGES_WIDE)
                 .observe(realm, options); // BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_PAGES_WIDE);
-        final IObservableValue delayedPagesWide = Observables.observeDelayedValue(OBSERVABLE_DELAY,observedPagesWide);
+        final IObservableValue<Object> delayedPagesWide = Observables.observeDelayedValue(OBSERVABLE_DELAY,observedPagesWide);
         delayedPagesWide.addValueChangeListener(listener);
 
         var observedScaleTall = BeanProperties.value(options.getClass().asSubclass(DiagramPrintOptions.class), PrintOptions.PROPERTY_PAGES_TALL)
                 .observe(realm, options); // BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_PAGES_TALL);
-        final IObservableValue delayedPagesTall = Observables.observeDelayedValue(OBSERVABLE_DELAY, observedScaleTall);
+        final IObservableValue<Object> delayedPagesTall = Observables.observeDelayedValue(OBSERVABLE_DELAY, observedScaleTall);
         delayedPagesTall.addValueChangeListener(listener);
 
         var observedHorCenter = BeanProperties.value(options.getClass().asSubclass(DiagramPrintOptions.class), PrintOptions.PROPERTY_CENTER_HORIZONTALLY)
                 .observe(realm, options); // BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_CENTER_HORIZONTALLY);
-        final IObservableValue delayedHorCentered = Observables.observeDelayedValue(OBSERVABLE_DELAY, observedHorCenter);
+        final IObservableValue<Object> delayedHorCentered = Observables.observeDelayedValue(OBSERVABLE_DELAY, observedHorCenter);
         delayedHorCentered.addValueChangeListener(listener);
 
         var observedVertCenter = BeanProperties.value(options.getClass().asSubclass(DiagramPrintOptions.class), PrintOptions.PROPERTY_CENTER_VERTICALLY)
                 .observe(realm, options); // BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_CENTER_VERTICALLY);
-        final IObservableValue delayedVerCentered = Observables.observeDelayedValue(OBSERVABLE_DELAY, observedVertCenter);
+        final IObservableValue<Object> delayedVerCentered = Observables.observeDelayedValue(OBSERVABLE_DELAY, observedVertCenter);
         delayedVerCentered.addValueChangeListener(listener);
         
         var observedOrientation = BeanProperties.value(options.getClass().asSubclass(DiagramPrintOptions.class), PrintOptions.PROPERTY_ORIENTATION)
                 .observe(realm, options); // BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_ORIENTATION);
-        final IObservableValue delayedOrientation = Observables.observeDelayedValue(OBSERVABLE_DELAY, observedOrientation);
+        final IObservableValue<Object> delayedOrientation = Observables.observeDelayedValue(OBSERVABLE_DELAY, observedOrientation);
         delayedOrientation.addValueChangeListener(listener);
 
         body.addListener(SWT.Dispose, new Listener() {

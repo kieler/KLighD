@@ -86,7 +86,7 @@ final class RangeBlock {
         final Button allRadio = DialogUtil.radio(result, KlighdUIPrintingMessages.PrintDialog_All);
         DialogUtil.layoutSpanHorizontal(allRadio, columns);
         
-        final IObservableValue allValue =
+        final IObservableValue<Object> allValue =
                 BeanProperties.value(options.getClass().asSubclass(PrintOptions.class), PrintOptions.PROPERTY_ALL_PAGES).observe(realm, options);
                 // BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_ALL_PAGES);
         var observedAllPages = WidgetProperties.widgetSelection().observe(allRadio); // SWTObservables.observeSelection(allRadio) 
@@ -108,10 +108,10 @@ final class RangeBlock {
         // the update of 'rangeValue' is than caused by the de-selection of 'allValue' leading to
         //  a re-computation of rangValue by means of the above mentioned listeners (crazy shit ...);
         //  the than calculated result is used below for enabling the "from" & "to" text fields.
-        final IObservableValue rangeValue = new ComputedValue<>(realm) {
+        final IObservableValue<Boolean> rangeValue = new ComputedValue<>(realm) {
 
             @Override
-            protected Object calculate() {
+            protected Boolean calculate() {
                 return ((Boolean) allValue.getValue()).booleanValue() ? Boolean.FALSE : Boolean.TRUE;
             }
         };
@@ -124,7 +124,7 @@ final class RangeBlock {
 
         final Text textFrom = DialogUtil.text(result, textWidth);
 
-        final IObservableValue rangeFrom = 
+        final IObservableValue<Object> rangeFrom = 
                 BeanProperties.value(options.getClass().asSubclass(PrintOptions.class), PrintOptions.PROPERTY_RANGE_FROM).observe(realm, options);
                 // BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_RANGE_FROM);
         var observedModifiedTextFrom = WidgetProperties.text(SWT.Modify).observe(textFrom); // SWTObservables.observeText(textFrom, SWT.Modify) 
@@ -138,7 +138,7 @@ final class RangeBlock {
 
         final Text textTo = DialogUtil.text(result, textWidth);
 
-        final IObservableValue rangeTo =
+        final IObservableValue<Object> rangeTo =
                 BeanProperties.value(options.getClass().asSubclass(PrintOptions.class), PrintOptions.PROPERTY_RANGE_TO).observe(realm, options);
                 // BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_RANGE_TO);
         

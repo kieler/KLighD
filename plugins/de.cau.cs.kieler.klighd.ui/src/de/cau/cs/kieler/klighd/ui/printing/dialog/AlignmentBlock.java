@@ -77,14 +77,14 @@ final class AlignmentBlock {
 
         final Realm realm = bindings.getValidationRealm();
 
-        final IObservableValue centerHorValue = 
+        final IObservableValue<Object> centerHorValue = 
                 BeanProperties.value(options.getClass().asSubclass(PrintOptions.class), PrintOptions.PROPERTY_CENTER_HORIZONTALLY)
                     .observe(realm, options);
                 // BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_CENTER_HORIZONTALLY);
         var horObservation = WidgetProperties.widgetSelection().observe(centerHorizontally); //SWTObservables.observeSelection(centerHorizontally);
         bindings.bindValue(horObservation, centerHorValue);
 
-        final IObservableValue centerVerValue = BeanProperties.value(options.getClass().asSubclass(PrintOptions.class), PrintOptions.PROPERTY_CENTER_VERTICALLY)
+        final IObservableValue<Object> centerVerValue = BeanProperties.value(options.getClass().asSubclass(PrintOptions.class), PrintOptions.PROPERTY_CENTER_VERTICALLY)
                 .observe(realm, options);
                 // BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_CENTER_VERTICALLY);
         var vertObservation = WidgetProperties.widgetSelection().observe(centerVertically); // SWTObservables.observeSelection(centerVertically)
