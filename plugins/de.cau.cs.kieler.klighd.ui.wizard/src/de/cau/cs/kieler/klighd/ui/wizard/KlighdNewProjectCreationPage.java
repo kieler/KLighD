@@ -383,7 +383,7 @@ public class KlighdNewProjectCreationPage extends WizardNewProjectCreationPage {
         }
         status = 
                 JavaConventions.validateJavaTypeName(transformationName.getText(),
-                        JavaCore.VERSION_1_5, JavaCore.VERSION_1_5);
+                        JavaCore.VERSION_1_5, JavaCore.VERSION_1_5, null);
         if (!status.isOK()) {
             setErrorMessage(JavaUIMessages.KlighdNewProjectCreationPage_MsgInvalidTransformationName
                     + status.getMessage());
