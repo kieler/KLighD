@@ -284,12 +284,10 @@ class KGraphDiagramUpdater extends DiagramUpdater {
         //        maybe when hierarchy is low so some elements aren't rendered and "get lost" when collapsing and 
         //        expanding, not sure why though, must investigate further
         
-        var diagramGeneratorType = "recursive"
-        var hierarchyDepth = 5
+        var diagramGeneratorType = "full"
         var shouldSelectText = false
         if (languageServer instanceof KGraphLanguageServerExtension) {
             shouldSelectText = languageServer.shouldSelectText
-            hierarchyDepth = languageServer.hierarchyDepth
             diagramGeneratorType = languageServer.diagramGeneratorType
         }
         
@@ -297,7 +295,7 @@ class KGraphDiagramUpdater extends DiagramUpdater {
         //        idea: abstract superclass KGraphDiagramGenerator
         // var IDiagramGenerator diagramGenerator
         switch (diagramGeneratorType){
-            case "recursive": {
+            case "full": {
                 val diagramGenerator = diagramGeneratorProvider.get as KGraphDiagramGenerator
                 diagramGenerator.activeTracing = shouldSelectText
                 val sGraph = diagramGenerator.toSGraph(viewContext.viewModel, uri, cancelIndicator)
@@ -311,10 +309,9 @@ class KGraphDiagramUpdater extends DiagramUpdater {
 
                 return sGraph
             }
-            case "topdown": {
+            case "iterative": {
                 val diagramGenerator = incrementalDiagramGeneratorProvider.get as KGraphIncrementalDiagramGenerator
                 diagramGenerator.activeTracing = shouldSelectText
-                diagramGenerator.hierarchyDepth = hierarchyDepth
                 val sGraph = diagramGenerator.toSGraph(viewContext.viewModel, uri, cancelIndicator)
                 val requestManager = new KGraphDiagramPieceRequestManager(diagramGenerator)
                 synchronized (diagramState) {

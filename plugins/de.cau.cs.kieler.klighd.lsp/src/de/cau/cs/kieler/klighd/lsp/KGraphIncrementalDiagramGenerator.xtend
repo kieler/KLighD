@@ -125,12 +125,6 @@ class KGraphIncrementalDiagramGenerator implements IDiagramGenerator {
     var boolean activeTracing
     
     /**
-     * Indicates the number of hierarchy levels that should be rendered.
-     */
-    @Accessors(PUBLIC_GETTER, PUBLIC_SETTER)
-    var int hierarchyDepth = 5
-    
-    /**
      * Generates unique IDs for any KGraphElement.
      */
     KGraphElementIdGenerator idGen
@@ -181,7 +175,6 @@ class KGraphIncrementalDiagramGenerator implements IDiagramGenerator {
      * @param uri             The uri of the source model the parent node was synthesized from. Used as the ID of the
      *                        generated graph.
      * @param cancelIndicator Indicates, if the action requesting this translation has already been canceled.
-     * @param hierarchyDepth  the number of hierarchy levels that should be drawn
      */
     
     // NOTE: This is a temporary adapter function to serve externally like the existing toSGraph function

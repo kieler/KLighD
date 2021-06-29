@@ -86,6 +86,8 @@ class KGraphMappingUtil {
         
         // Copy the bend points.
         skedge.junctionPoints = kedge.getProperty(CoreOptions.JUNCTION_POINTS)
+        // Copy render scale.
+        skedge.renderScale = kedge.getProperty(CoreOptions.RENDER_SCALE);
     }
     
     /**

@@ -26,6 +26,7 @@ import org.eclipse.sprotty.Action
 import org.eclipse.sprotty.SGraph
 import org.eclipse.sprotty.SModelRoot
 import org.eclipse.sprotty.layout.ElkLayoutEngine
+import org.eclipse.elk.core.options.CoreOptions
 
 /**
  * Handles the server side layout of KGraphs.
@@ -75,7 +76,9 @@ class KGraphLayoutEngine extends ElkLayoutEngine {
         lightDiagramLayoutConfig.options(configurators)
 
         synchronized (kGraphContext.viewModel) {
-            lightDiagramLayoutConfig.performLayout
+            // set property to identify root of model during layout
+            kGraphContext.viewModel.setProperty(CoreOptions.IS_ROOT, true)
+            lightDiagramLayoutConfig.performLayout            
             RenderingPreparer.prepareRendering(kGraphContext.viewModel)
         }
     }
