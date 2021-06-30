@@ -146,16 +146,6 @@ final class RenderingPreparer {
                 prepareRendering(edge)
             }
             for (port : element.ports) {
-                // Get potential insets from parent region
-                var left = element.parent.insets.left;
-                var top = element.parent.insets.top;
-                // Adapt position according to insets
-                var xP = port.xpos;
-                var yP = port.ypos;
-                xP += left;
-                yP += top;
-                port.setPos(xP, yP);
-                
                 prepareRendering(port)
             }
         }

@@ -139,7 +139,14 @@ class KGraphMappingUtil {
                 leftInset = inset.left;
                 topInset = inset.top;
             }
-        }        
+        } else if (kElement instanceof KPort) {
+            var parent = kElement.getNode();
+            if (parent !== null) {
+                var inset = parent.getInsets();
+                leftInset = inset.left;
+                topInset = inset.top;
+            }
+        }      
         
         sElement.position = new Point(kElement.xpos + leftInset, kElement.ypos + topInset)
         sElement.size = new Dimension(kElement.width, kElement.height)
