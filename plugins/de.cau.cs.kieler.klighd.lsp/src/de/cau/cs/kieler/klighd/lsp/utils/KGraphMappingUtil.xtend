@@ -138,9 +138,9 @@ class KGraphMappingUtil {
             if (parent instanceof KNode) {
                 grandParent = parent.getParent();
             } else if (parent instanceof KEdge) {
-                grandParent = parent.getSource();
+                grandParent = parent.getSource().getParent();
             } else if (parent instanceof KPort) {
-                grandParent = parent.getNode();
+                grandParent = parent.getNode().getParent();
             }
             
             if (grandParent !== null) {
