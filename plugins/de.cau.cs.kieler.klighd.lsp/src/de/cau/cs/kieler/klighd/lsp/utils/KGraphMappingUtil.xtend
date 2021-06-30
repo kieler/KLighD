@@ -72,7 +72,7 @@ class KGraphMappingUtil {
         var leftInset = 0.0;
         var topInset = 0.0;
         if (kedge instanceof KEdge) {
-            var parent = kedge.getSource();
+            var parent = kedge.getSource().getParent();
             var inset = parent.getInsets();
             leftInset = inset.left;
             topInset = inset.top;
