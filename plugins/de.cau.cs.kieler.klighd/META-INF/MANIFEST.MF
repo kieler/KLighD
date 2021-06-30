@@ -13,8 +13,7 @@ Require-Bundle: de.cau.cs.kieler.klighd.kgraph,
  org.eclipse.emf.edit;bundle-version="2.8.0";resolution:=optional,
  com.google.guava;bundle-version="10.0.0";visibility:=reexport,
  com.google.inject;bundle-version="3.0.0",
- javax.inject;bundle-version="1.0.0";visibility:=reexport,
- org.eclipse.swt;resolution:=optional
+ javax.inject;bundle-version="1.0.0";visibility:=reexport
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: de.cau.cs.kieler.klighd.KlighdPlugin
 Export-Package: de.cau.cs.kieler.klighd,
@@ -36,11 +35,11 @@ Export-Package: de.cau.cs.kieler.klighd,
  de.cau.cs.kieler.klighd.syntheses,
  de.cau.cs.kieler.klighd.util,
  de.cau.cs.kieler.klighd.viewers
-Import-Package: org.eclipse.jface.viewers,
- org.eclipse.swt,
- org.eclipse.swt.events,
- org.eclipse.swt.graphics,
- org.eclipse.swt.widgets,
- org.eclipse.ui,
- org.eclipse.ui.part,
- org.eclipse.ui.statushandlers
+Import-Package: org.eclipse.jface.viewers;resolution:=optional,
+ org.eclipse.swt;resolution:=optional,
+ org.eclipse.swt.events;resolution:=optional,
+ org.eclipse.swt.graphics;resolution:=optional,
+ org.eclipse.swt.widgets;resolution:=optional,
+ org.eclipse.ui;resolution:=optional,
+ org.eclipse.ui.part;resolution:=optional,
+ org.eclipse.ui.statushandlers;resolution:=optional
