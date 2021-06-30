@@ -118,12 +118,6 @@ final class RenderingPreparer {
                 // Get insets from parent region
                 var left = element.getInsets().left;
                 var top = element.getInsets().top;
-                var x = node.getXpos();
-                var y = node.getYpos();
-                x += left;
-                y += top;
-                node.setXpos(x);
-                node.setYpos(y);
                 
                 // Adapt positions for all labels of node
                 for (labels: node.labels) {

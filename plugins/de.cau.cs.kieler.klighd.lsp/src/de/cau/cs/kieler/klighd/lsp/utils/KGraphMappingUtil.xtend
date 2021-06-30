@@ -95,7 +95,15 @@ class KGraphMappingUtil {
      * @param skNode The SGraph node
      */
     private static def mapLayout(KNode kNode, SKNode skNode) {
-        skNode.position = new Point(kNode.xpos, kNode.ypos)
+        var leftInset = 0.0; 
+        var topInset = 0.0;
+        var parent = kNode.getParent();
+        if (parent !== null) {
+            var inset = parent.getInsets();
+            leftInset = inset.left;
+            topInset = inset.top;
+        }
+        skNode.position = new Point(kNode.xpos + leftInset, kNode.ypos + topInset)
         skNode.size = new Dimension(kNode.width, kNode.height)
         for (property : KlighdDataManager.instance.preservedProperties) {
             skNode.properties.put(property.id.substring(property.id.lastIndexOf('.') + 1), kNode.getProperty(property))
