@@ -69,19 +69,28 @@ class KGraphMappingUtil {
      * @param skedge The SkGraph edge
      */
     private static def mapLayout(KEdgeLayout kedge, SKEdge skedge) {
+        var leftInset = 0.0;
+        var topInset = 0.0;
+        if (kedge instanceof KEdge) {
+            var parent = kedge.getSource();
+            var inset = parent.getInsets();
+            leftInset = inset.left;
+            topInset = inset.top;
+        }
+        
         // Copy all routing points.
         var ArrayList<Point> routingPoints = new ArrayList<Point>
         val sourcePoint = kedge.sourcePoint
         val targetPoint = kedge.targetPoint
         
         if (sourcePoint !== null) {
-            routingPoints.add(new Point(sourcePoint.x, sourcePoint.y))
+            routingPoints.add(new Point(sourcePoint.x + leftInset, sourcePoint.y + topInset))
         }
         for (bendPoint : kedge.bendPoints) {
-            routingPoints.add(new Point(bendPoint.x, bendPoint.y))
+            routingPoints.add(new Point(bendPoint.x + leftInset, bendPoint.y + topInset))
         }
         if (targetPoint !== null) {
-            routingPoints.add(new Point(targetPoint.x, targetPoint.y))
+            routingPoints.add(new Point(targetPoint.x + leftInset, targetPoint.y + topInset))
         }
         skedge.routingPoints = routingPoints
         

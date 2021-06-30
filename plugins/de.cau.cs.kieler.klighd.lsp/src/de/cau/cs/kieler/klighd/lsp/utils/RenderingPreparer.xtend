@@ -118,31 +118,6 @@ final class RenderingPreparer {
                 prepareRendering(node)
             }
             for (edge : element.outgoingEdges) {
-                
-                // Get potential insets from parent region
-                var left = element.parent.insets.left;
-                var top = element.parent.insets.top;
-                // Source point adaption
-                var xS = edge.sourcePoint.x;
-                var yS = edge.sourcePoint.y;
-                xS += left;
-                yS += top;
-                
-                edge.sourcePoint.setPos(xS, yS)
-                
-                // Target point adaption
-                var xT = edge.targetPoint.x;
-                var yT = edge.targetPoint.y;
-                xT += left;
-                yT += top;
-                
-                edge.targetPoint.setPos(xT, yT);
-                
-                // Update bend points for edge
-                for (bends : edge.bendPoints) {
-                    bends.setPos(bends.x + left, bends.y + top);
-                }
-                
                 prepareRendering(edge)
             }
             for (port : element.ports) {
