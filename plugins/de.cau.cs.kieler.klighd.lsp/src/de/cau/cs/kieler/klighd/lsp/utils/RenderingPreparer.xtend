@@ -115,19 +115,6 @@ final class RenderingPreparer {
         }
         if (element instanceof KNode) {
             for (node : element.children) {
-                // Get insets from parent region
-                var left = element.getInsets().left;
-                var top = element.getInsets().top;
-                
-                // Adapt positions for all labels of node
-                for (labels: node.labels) {
-                    var xL = labels.xpos;
-                    var yL = labels.ypos;
-                    xL += left;
-                    yL += top;
-                    labels.setPos(xL, yL);
-                }
-            
                 prepareRendering(node)
             }
             for (edge : element.outgoingEdges) {
@@ -156,14 +143,6 @@ final class RenderingPreparer {
                     bends.setPos(bends.x + left, bends.y + top);
                 }
                 
-                // Update all labels for this edge
-                for (labels: edge.labels) {
-                    var xL = labels.xpos;
-                    var yL = labels.ypos;
-                    xL += left;
-                    yL += top;
-                    labels.setPos(xL, yL);
-                }
                 prepareRendering(edge)
             }
             for (port : element.ports) {
@@ -176,14 +155,7 @@ final class RenderingPreparer {
                 xP += left;
                 yP += top;
                 port.setPos(xP, yP);
-                // Adapt all labels of this port
-                for (labels: port.labels) {
-                    var xL = labels.xpos;
-                    var yL = labels.ypos;
-                    xL += left;
-                    yL += top;
-                    labels.setPos(xL, yL);
-                }
+                
                 prepareRendering(port)
             }
         }

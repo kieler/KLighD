@@ -73,6 +73,7 @@ class KGraphMappingUtil {
         var ArrayList<Point> routingPoints = new ArrayList<Point>
         val sourcePoint = kedge.sourcePoint
         val targetPoint = kedge.targetPoint
+        
         if (sourcePoint !== null) {
             routingPoints.add(new Point(sourcePoint.x, sourcePoint.y))
         }
@@ -103,6 +104,7 @@ class KGraphMappingUtil {
             leftInset = inset.left;
             topInset = inset.top;
         }
+        
         skNode.position = new Point(kNode.xpos + leftInset, kNode.ypos + topInset)
         skNode.size = new Dimension(kNode.width, kNode.height)
         for (property : KlighdDataManager.instance.preservedProperties) {
@@ -117,7 +119,29 @@ class KGraphMappingUtil {
      * @param sElement The SGraph shape
      */
     private static def mapLayout(KShapeLayout kElement, SShapeElement sElement) {
-        sElement.position = new Point(kElement.xpos, kElement.ypos)
+        var leftInset = 0.0; 
+        var topInset = 0.0;
+        
+        if (kElement instanceof KLabel){
+            var parent = kElement.getParent();
+            var KNode grandParent = null;
+            
+            if (parent instanceof KNode) {
+                grandParent = parent.getParent();
+            } else if (parent instanceof KEdge) {
+                grandParent = parent.getSource();
+            } else if (parent instanceof KPort) {
+                grandParent = parent.getNode();
+            }
+            
+            if (grandParent !== null) {
+                var inset = grandParent.getInsets();
+                leftInset = inset.left;
+                topInset = inset.top;
+            }
+        }        
+        
+        sElement.position = new Point(kElement.xpos + leftInset, kElement.ypos + topInset)
         sElement.size = new Dimension(kElement.width, kElement.height)
     }
 }
