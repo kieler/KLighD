@@ -31,6 +31,8 @@ import org.eclipse.sprotty.Point
 import org.eclipse.sprotty.SModelElement
 import org.eclipse.sprotty.SShapeElement
 import de.cau.cs.kieler.klighd.KlighdDataManager
+import org.eclipse.elk.core.math.KVectorChain
+import org.eclipse.elk.core.math.KVector
 
 /**
  * A helper class containing static methods for mapping of KGraph and SGraph bounds.
@@ -95,7 +97,8 @@ class KGraphMappingUtil {
         skedge.routingPoints = routingPoints
         
         // Copy the bend points.
-        skedge.junctionPoints = kedge.getProperty(CoreOptions.JUNCTION_POINTS)
+        skedge.junctionPoints = new KVectorChain(kedge.getProperty(CoreOptions.JUNCTION_POINTS).toArray())
+        skedge.junctionPoints.offset(new KVector(leftInset, topInset))
     }
     
     /**
