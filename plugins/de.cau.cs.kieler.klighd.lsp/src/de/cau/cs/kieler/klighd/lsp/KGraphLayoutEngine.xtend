@@ -76,8 +76,6 @@ class KGraphLayoutEngine extends ElkLayoutEngine {
         lightDiagramLayoutConfig.options(configurators)
 
         synchronized (kGraphContext.viewModel) {
-            // set property to identify root of model during layout
-            kGraphContext.viewModel.setProperty(CoreOptions.IS_ROOT, true)
             lightDiagramLayoutConfig.performLayout            
             RenderingPreparer.prepareRendering(kGraphContext.viewModel)
         }
