@@ -14,9 +14,11 @@
 package org.eclipse.swt.widgets;
 
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Device;
+import org.eclipse.swt.graphics.GCData;
 import org.eclipse.swt.graphics.Point;
 
-public class Display {
+public class Display extends Device {
     
     private static Display currentDisplay = new Display();
     
@@ -53,5 +55,15 @@ public class Display {
     }
     public static Display getDefault () {
         return null;
+    }
+
+    @Override
+    public long internal_new_GC(GCData data) {
+        return 0;
+    }
+
+    @Override
+    public void internal_dispose_GC(long handle, GCData data) {
+        
     }
 }
