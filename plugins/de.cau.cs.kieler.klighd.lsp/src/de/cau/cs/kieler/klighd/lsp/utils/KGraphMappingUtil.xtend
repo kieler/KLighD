@@ -97,7 +97,8 @@ class KGraphMappingUtil {
         skedge.routingPoints = routingPoints
         
         // Copy the bend points.
-        skedge.junctionPoints = new KVectorChain(kedge.getProperty(CoreOptions.JUNCTION_POINTS).toArray())
+        skedge.junctionPoints = new KVectorChain()
+        skedge.junctionPoints.addAllAsCopies(0,kedge.getProperty(CoreOptions.JUNCTION_POINTS))
         skedge.junctionPoints.offset(new KVector(leftInset, topInset))
     }
     
