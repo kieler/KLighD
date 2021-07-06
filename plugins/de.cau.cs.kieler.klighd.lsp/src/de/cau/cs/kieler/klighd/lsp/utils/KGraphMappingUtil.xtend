@@ -31,6 +31,8 @@ import org.eclipse.sprotty.Point
 import org.eclipse.sprotty.SModelElement
 import org.eclipse.sprotty.SShapeElement
 import de.cau.cs.kieler.klighd.KlighdDataManager
+import org.eclipse.elk.core.math.KVectorChain
+import org.eclipse.elk.core.math.KVector
 
 /**
  * A helper class containing static methods for mapping of KGraph and SGraph bounds.
@@ -69,23 +71,35 @@ class KGraphMappingUtil {
      * @param skedge The SkGraph edge
      */
     private static def mapLayout(KEdgeLayout kedge, SKEdge skedge) {
+        var leftInset = 0.0;
+        var topInset = 0.0;
+        if (kedge instanceof KEdge) {
+            var parent = kedge.getSource().getParent();
+            var inset = parent.getInsets();
+            leftInset = inset.left;
+            topInset = inset.top;
+        }
+        
         // Copy all routing points.
         var ArrayList<Point> routingPoints = new ArrayList<Point>
         val sourcePoint = kedge.sourcePoint
         val targetPoint = kedge.targetPoint
+        
         if (sourcePoint !== null) {
-            routingPoints.add(new Point(sourcePoint.x, sourcePoint.y))
+            routingPoints.add(new Point(sourcePoint.x + leftInset, sourcePoint.y + topInset))
         }
         for (bendPoint : kedge.bendPoints) {
-            routingPoints.add(new Point(bendPoint.x, bendPoint.y))
+            routingPoints.add(new Point(bendPoint.x + leftInset, bendPoint.y + topInset))
         }
         if (targetPoint !== null) {
-            routingPoints.add(new Point(targetPoint.x, targetPoint.y))
+            routingPoints.add(new Point(targetPoint.x + leftInset, targetPoint.y + topInset))
         }
         skedge.routingPoints = routingPoints
         
         // Copy the bend points.
-        skedge.junctionPoints = kedge.getProperty(CoreOptions.JUNCTION_POINTS)
+        skedge.junctionPoints = new KVectorChain()
+        skedge.junctionPoints.addAllAsCopies(0,kedge.getProperty(CoreOptions.JUNCTION_POINTS))
+        skedge.junctionPoints.offset(new KVector(leftInset, topInset))
     }
     
     /**
@@ -95,7 +109,16 @@ class KGraphMappingUtil {
      * @param skNode The SGraph node
      */
     private static def mapLayout(KNode kNode, SKNode skNode) {
-        skNode.position = new Point(kNode.xpos, kNode.ypos)
+        var leftInset = 0.0; 
+        var topInset = 0.0;
+        var parent = kNode.getParent();
+        if (parent !== null) {
+            var inset = parent.getInsets();
+            leftInset = inset.left;
+            topInset = inset.top;
+        }
+        
+        skNode.position = new Point(kNode.xpos + leftInset, kNode.ypos + topInset)
         skNode.size = new Dimension(kNode.width, kNode.height)
         for (property : KlighdDataManager.instance.preservedProperties) {
             skNode.properties.put(property.id.substring(property.id.lastIndexOf('.') + 1), kNode.getProperty(property))
@@ -109,7 +132,36 @@ class KGraphMappingUtil {
      * @param sElement The SGraph shape
      */
     private static def mapLayout(KShapeLayout kElement, SShapeElement sElement) {
-        sElement.position = new Point(kElement.xpos, kElement.ypos)
+        var leftInset = 0.0; 
+        var topInset = 0.0;
+        
+        if (kElement instanceof KLabel){
+            var parent = kElement.getParent();
+            var KNode grandParent = null;
+            
+            if (parent instanceof KNode) {
+                grandParent = parent.getParent();
+            } else if (parent instanceof KEdge) {
+                grandParent = parent.getSource().getParent();
+            } else if (parent instanceof KPort) {
+                grandParent = parent.getNode().getParent();
+            }
+            
+            if (grandParent !== null) {
+                var inset = grandParent.getInsets();
+                leftInset = inset.left;
+                topInset = inset.top;
+            }
+        } else if (kElement instanceof KPort) {
+            var parent = kElement.getNode().getParent();
+            if (parent !== null) {
+                var inset = parent.getInsets();
+                leftInset = inset.left;
+                topInset = inset.top;
+            }
+        }      
+        
+        sElement.position = new Point(kElement.xpos + leftInset, kElement.ypos + topInset)
         sElement.size = new Dimension(kElement.width, kElement.height)
     }
 }
