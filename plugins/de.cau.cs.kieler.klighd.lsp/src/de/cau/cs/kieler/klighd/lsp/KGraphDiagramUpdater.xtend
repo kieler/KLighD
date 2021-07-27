@@ -132,23 +132,35 @@ class KGraphDiagramUpdater extends DiagramUpdater {
             synchronized (diagramState) {
                 snapshotModel = diagramState.getSnapshotModel(uri)
             }
-            val model = if (snapshotModel === null) {
-                    if (resource === null) {
-                        new MessageModel("No model in editor")
-                    } else {
-                        resource.contents.head
-                    }
+            var Object model = null
+            if (snapshotModel === null) {
+                if (resource === null) {
+                    model = new MessageModel("No model in editor")
                 } else {
-                    snapshotModel
+                    model = resource.contents.head
                 }
-            if (!(model instanceof EObject) || (model as EObject).eResource  === null ||
-                (model as EObject).eResource.errors.isEmpty
-            ) {
-                (diagramServers as List<KGraphDiagramServer>).forEach [ server |
-                    prepareModel(server, model, uri)
-                    updateLayout(server)
-                ]
+            } else {
+                model = snapshotModel
             }
+            // Check if the model has errors. If the model has errors and no diagram has been shown before, show an
+            // error message as the model. Otherwise if there are errors, ignore the diagram update and keep the old
+            // one. If there are no errors, just generate the diagram.
+            val hasErrors = model instanceof EObject && (model as EObject).eResource !== null
+                && !(model as EObject).eResource.errors.isEmpty
+            if (hasErrors) {
+                // prettify the error message to be better readable line by line
+                val errors = (model as EObject).eResource.errors.fold(
+                    new StringBuilder, [builder, error | builder.append("\n" + error)]).toString
+                model = new MessageModel("The model contains errors:\n" + errors)
+            }
+            val model_ = model;
+            (diagramServers as List<KGraphDiagramServer>).forEach [ KGraphDiagramServer server |
+                // Only update an erroneous model if there was no diagram shown before.
+                if (!hasErrors || server.currentRoot.type == "NONE") {
+                    prepareModel(server, model_, uri)
+                    updateLayout(server)
+                }
+            ]
             return null as Void
         ]
     }
@@ -192,6 +204,8 @@ class KGraphDiagramUpdater extends DiagramUpdater {
             viewContext = viewer.viewContext
             if (viewContext.inputModel === null || viewContext.inputModel.class !== model.class) {
                 modelTypeChanged = true
+                // If the model is a different type of what is given in the viewContext, also reset the synthesis.
+                properties.setProperty(KlighdSynthesisProperties.REQUESTED_DIAGRAM_SYNTHESIS, null)
             }
             if (viewContext.getDiagramSynthesis() !== null
                 && !KlighdDataManager.instance.getSynthesisID(viewContext.getDiagramSynthesis()).equals(synthesisId)) {
