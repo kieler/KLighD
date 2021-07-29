@@ -3,7 +3,7 @@
  *
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright 2018,2020 by
+ * Copyright 2018-2021 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -12,6 +12,7 @@
  */
 package de.cau.cs.kieler.klighd.lsp
 
+import com.google.common.collect.BiMap
 import com.google.gson.JsonElement
 import com.google.inject.Singleton
 import de.cau.cs.kieler.klighd.IViewer
@@ -50,7 +51,7 @@ class KGraphDiagramState {
      * Convenient for finding a specific key KGraphElement faster.
      * Mapped by the URI this map belongs to.
      */
-    Map<String, Map<KGraphElement, SModelElement>> kGraphToSModelElementMap = new HashMap
+    Map<String, BiMap<KGraphElement, SModelElement>> kGraphToSModelElementMap = new HashMap
     
     /**
      * A map that contains a key-value pair for each ID of a graph element and the {@link KGraphElement} it identifies.
@@ -142,7 +143,7 @@ class KGraphDiagramState {
      * 
      * @param uri The identifying URI of the graph to access the value in the map.
      */
-    def Map<KGraphElement, SModelElement> getKGraphToSModelElementMap(String uri) {
+    def BiMap<KGraphElement, SModelElement> getKGraphToSModelElementMap(String uri) {
         kGraphToSModelElementMap.get(uri)
     }
     
@@ -152,7 +153,7 @@ class KGraphDiagramState {
      * @param uri The identifying URI of the graph to access the map.
      * @param value The value to be stored in the map.
      */
-    def putKGraphToSModelElementMap(String uri, Map<KGraphElement, SModelElement> value) {
+    def putKGraphToSModelElementMap(String uri, BiMap<KGraphElement, SModelElement> value) {
         kGraphToSModelElementMap.put(uri, value)
     }
     
