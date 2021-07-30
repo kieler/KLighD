@@ -3,7 +3,7 @@
  *
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright 2018,2020 by
+ * Copyright 2018-2021 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -12,7 +12,8 @@
  */
 package de.cau.cs.kieler.klighd.lsp
 
-import com.google.inject.Inject
+import com.google.common.collect.BiMap
+import com.google.common.collect.HashBiMap
 import de.cau.cs.kieler.klighd.LightDiagramServices
 import de.cau.cs.kieler.klighd.ViewContext
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties
@@ -61,9 +62,7 @@ import org.eclipse.sprotty.SModelElement
 import org.eclipse.sprotty.SNode
 import org.eclipse.sprotty.SPort
 import org.eclipse.sprotty.xtext.IDiagramGenerator
-import org.eclipse.sprotty.xtext.tracing.ITraceProvider
 import org.eclipse.xtend.lib.annotations.Accessors
-import org.eclipse.xtext.resource.XtextResource
 import org.eclipse.xtext.util.CancelIndicator
 
 /**
@@ -91,7 +90,7 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
      * @see KGraphLayoutEngine
      */
     @Accessors(PUBLIC_GETTER)
-    var Map<KGraphElement, SModelElement> kGraphToSModelElementMap
+    var BiMap<KGraphElement, SModelElement> kGraphToSModelElementMap
     
     /**
      * A list containing all texts from the source KGraph inside Sprotty labels. Used for the simpler texts-only SGraph.
@@ -119,18 +118,6 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
      * The root node of the translated {@link SGraph}.
      */
 	var SGraph diagramRoot
-	
-	/**
-	 * Provides functionality to tag SModelElements.
-	 */
-	@Inject
-	ITraceProvider traceProvider
-	
-	/**
-	 * Indicates if elements should be traced back to the lines of code in their resource.
-	 */
-	@Accessors(PUBLIC_GETTER, PUBLIC_SETTER)
-	var boolean activeTracing
     
     /**
      * Generates unique IDs for any KGraphElement.
@@ -176,7 +163,7 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
 	def SGraph toSGraph(KNode parentNode, String uri, CancelIndicator cancelIndicator) {
         LOG.info("Generating diagram for input: '" + uri + "'")
 
-        kGraphToSModelElementMap = new HashMap
+        kGraphToSModelElementMap = HashBiMap.create
         textMapping = new HashMap
         modelLabels = new ArrayList
         images = new HashSet
@@ -215,7 +202,6 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
             val SNode nodeElement = generateNode(node)
             nodeAndEdgeElements.add(nodeElement)
             kGraphToSModelElementMap.put(node, nodeElement)
-            nodeElement.trace(node)
 
             // Add all edges in a list to be generated later, as they need their source and target nodes or ports
             // to be generated previously. Because hierarchical edges could connect to any arbitrary parent or child node,
@@ -250,7 +236,6 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
             if (edgeElement !== null) {
                 parent.add(edgeElement)
                 kGraphToSModelElementMap.put(edge, edgeElement)
-                edgeElement.trace(edge)
             }
         ]
     }
@@ -265,7 +250,6 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
             val SPort portElement = generatePort(port)
             portElements.add(portElement)
             kGraphToSModelElementMap.put(port, portElement)
-            portElement.trace(port)
         }
         return portElements
     }
@@ -280,31 +264,8 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
             val SLabel labelElement = generateLabel(label, true)
             labelElements.add(labelElement)
             kGraphToSModelElementMap.put(label, labelElement)
-            labelElement.trace(label)
         }
         return labelElements
-    }
-
-    /**
-     * Generates a trace for the {@code kElement}'s source EObject on the {@code sElement}. 
-     * The kElement must be synthesized by a KLighD synthesis before and must have its source EObject stored in the 
-     * {@link KlighdInternalProperties#MODEL_ELEMEMT} property.
-     */
-    private def void trace(SModelElement sElement, KGraphElement kElement) {
-        // The real model element that can be traced is the EObject that got synthesized in the
-        // {@link translateModel} function. That model element has to be stored in the properties during the 
-        // synthesis. Otherwise the tracing will not work
-        // FIXME: For large diagrams (expanded railway environment) the tracing alone
-        // requires an additional 40s (almost 50% of the generation time), which is not acceptable.
-        // This should be done just in time when tracing is requested instead of statically for every element.
-        if (activeTracing) {
-            val modelKElement = kElement.properties.get(KlighdInternalProperties.MODEL_ELEMEMT)
-            if (modelKElement instanceof EObject) {
-                if (modelKElement.eResource instanceof XtextResource) {
-                    traceProvider.trace(sElement, modelKElement)
-                }
-            }
-        }
     }
 
     /**
