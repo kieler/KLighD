@@ -474,15 +474,15 @@ public class KGraphProposalProvider extends AbstractKGraphProposalProvider {
                         try {
                         
                             proposal = "\""
-                                    + optionData.getOptionClass().getConstructor().newInstance().toString()
+                                    + optionData.getOptionClass().getDeclaredConstructor().newInstance().toString()
                                     + "\"";
                         
-                        } catch (final InstantiationException e) {
+                        } catch (final InstantiationException 
+                                | IllegalAccessException 
+                                | IllegalArgumentException 
+                                | NoSuchMethodException e) {
                             proposal = "\"\"";
-                        } catch (final IllegalAccessException e) {
-                            proposal = "\"\"";
-                        }catch (IllegalArgumentException | InvocationTargetException
-                                | NoSuchMethodException | SecurityException e) {
+                        } catch (final InvocationTargetException e) {
                             proposal = "\"\"";
                             e.printStackTrace();
                         }
