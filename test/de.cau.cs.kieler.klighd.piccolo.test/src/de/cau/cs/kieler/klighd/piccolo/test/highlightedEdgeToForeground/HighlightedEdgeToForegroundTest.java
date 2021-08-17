@@ -89,8 +89,10 @@ public class HighlightedEdgeToForegroundTest {
         new ContextViewer(shell).setModel(viewContext, true);
 
         viewContext.update(null);
-        new LightDiagramLayoutConfig(viewContext).animate(false)
-                .zoomStyle(ZoomStyle.ZOOM_TO_ACTUAL_SIZE).performLayout();
+        new LightDiagramLayoutConfig(viewContext)
+                .animate(false)
+                .zoomStyle(ZoomStyle.ZOOM_TO_ACTUAL_SIZE)
+                .performLayout();
 
         shell.layout(true, true);
         shell.open();
@@ -103,43 +105,38 @@ public class HighlightedEdgeToForegroundTest {
         // in case this check gives, e.g., RGB {0, 0, 0} the color identification doesn't work and
         // this whole test class is skipped
         Assume.assumeThat(getColorAt(2, 2), IS_WHITE);
+        // @formatter:off
+        //  // The following might be helpful when running/debugging via Eclipse:
         //
-        // // The following might be helpful when running/debugging via Eclipse:
+        //  // The following is some mouse pointer "warm up" since I experienced some delayed reactions of the
+        //  //  UI on the mouse pointer movement commands executed in the tests below.
+        //  // Note, that these movements are not mandatory for the test execution,
+        //  //  but very helpful for developers for verifying the test execution.
+        //  for (int i = 0; i < 3; i++) {
+        //      clickOn(4, 2);
+        //      waitAmoment();
+        //      clickOn(4, 4);
+        //      waitAmoment();
+        //  }
+        //  clickOn(4, 4);
+        //  waitAmoment();
         //
-        // // The following is some mouse pointer "warm up" since I experienced some delayed
-        // reactions of the
-        // // UI on the mouse pointer movement commands executed in the tests below.
-        // // Note, that these movements are not mandatory for the test execution,
-        // // but very helpful for developers for verifying the test execution.
-        // for (int i = 0; i < 3; i++) {
-        // clickOn(4, 2);
-        // waitAmoment();
-        // clickOn(4, 4);
-        // waitAmoment();
-        // }
-        // clickOn(4, 4);
-        // waitAmoment();
+        //  // The following is display a "warm up" test since the continuous build's (virtual) display's palette
+        //  //  seems to be very limited. The observed behavior is: If 'black' or 'white' is the first observed
+        //  //  color, only those colors will be obtained subsequently. I interpret this as follows:
+        //  // The image's color palette then contains only black and white. If the image also contains 'red'
+        //  //  parts before testing the first time for any color the palette than also contains 'red'.
+        //  // Weird ...
+        //  final KShapeLayout firstChildNodeLayout = viewContext.getViewModel().getChildren().get(0).getChildren().get(0);
+        //  final int firstChildNodeYPos = Math.round(firstChildNodeLayout.getYpos());
+        //  final int firstClickXPos = 5 + 100;
         //
-        // // The following is display a "warm up" test since the continuous build's (virtual)
-        // display's palette
-        // // seems to be very limited. The observed behavior is: If 'black' or 'white' is the first
-        // observed
-        // // color, only those colors will be obtained subsequently. I interpret this as follows:
-        // // The image's color palette then contains only black and white. If the image also
-        // contains 'red'
-        // // parts before testing the first time for any color the palette than also contains
-        // 'red'.
-        // // Weird ...
-        // final KShapeLayout firstChildNodeLayout =
-        // viewContext.getViewModel().getChildren().get(0).getChildren().get(0);
-        // final int firstChildNodeYPos = Math.round(firstChildNodeLayout.getYpos());
-        // final int firstClickXPos = 5 + 100;
+        //  clickOn(firstClickXPos, firstChildNodeYPos);
+        //  waitAmoment();
         //
-        // clickOn(firstClickXPos, firstChildNodeYPos);
-        // waitAmoment();
-        //
-        // clickOn(4, 4);
-        // waitAmoment();
+        //  clickOn(4, 4);
+        //  waitAmoment();
+        // @formatter:on
     }
 
     private static final ColorMatcher<RGB> IS_BLACK =
@@ -178,11 +175,13 @@ public class HighlightedEdgeToForegroundTest {
         MatcherAssert.assertThat("", getColorAt(sampleXPos, firstWPortLayoutCenterYPos), IS_RED);
 
         moveTo(secondClickXPos, firstWPortLayoutCenterYPos);
-        MatcherAssert.assertThat("", getColorAt(secondClickXPos, firstWPortLayoutCenterYPos), IS_BLACK);
+        MatcherAssert.assertThat("", getColorAt(secondClickXPos, firstWPortLayoutCenterYPos),
+                IS_BLACK);
 
         clickOn(secondClickXPos, firstWPortLayoutCenterYPos);
         waitAmoment();
-        MatcherAssert.assertThat("", getColorAt(secondClickXPos, firstWPortLayoutCenterYPos), IS_RED);
+        MatcherAssert.assertThat("", getColorAt(secondClickXPos, firstWPortLayoutCenterYPos),
+                IS_RED);
 
         moveTo(sampleXPos, firstWPortLayoutCenterYPos);
         waitAmoment();
@@ -222,11 +221,13 @@ public class HighlightedEdgeToForegroundTest {
         MatcherAssert.assertThat("", getColorAt(sampleXPos, secondWPortLayoutCenterYPos), IS_RED);
 
         moveTo(secondClickXPos, secondWPortLayoutCenterYPos);
-        MatcherAssert.assertThat("", getColorAt(secondClickXPos, secondWPortLayoutCenterYPos), IS_BLACK);
+        MatcherAssert.assertThat("", getColorAt(secondClickXPos, secondWPortLayoutCenterYPos),
+                IS_BLACK);
 
         clickOn(secondClickXPos, secondWPortLayoutCenterYPos);
         waitAmoment();
-        MatcherAssert.assertThat("", getColorAt(secondClickXPos, secondWPortLayoutCenterYPos), IS_RED);
+        MatcherAssert.assertThat("", getColorAt(secondClickXPos, secondWPortLayoutCenterYPos),
+                IS_RED);
 
         moveTo(sampleXPos, secondWPortLayoutCenterYPos);
         waitAmoment();
@@ -268,15 +269,17 @@ public class HighlightedEdgeToForegroundTest {
         MatcherAssert.assertThat("", getColorAt(sampleXPos, secondWPortLayoutCenterYPos), IS_RED);
 
         moveTo(secondClickXPos, secondWPortLayoutCenterYPos);
-        MatcherAssert.assertThat("",getColorAt(secondClickXPos, secondWPortLayoutCenterYPos), IS_BLACK);
+        MatcherAssert.assertThat("", getColorAt(secondClickXPos, secondWPortLayoutCenterYPos),
+                IS_BLACK);
 
         clickOn(secondClickXPos, secondWPortLayoutCenterYPos);
         waitAmoment();
-        MatcherAssert.assertThat("",getColorAt(secondClickXPos, secondWPortLayoutCenterYPos), IS_RED);
+        MatcherAssert.assertThat("", getColorAt(secondClickXPos, secondWPortLayoutCenterYPos),
+                IS_RED);
 
         moveTo(sampleXPos, secondWPortLayoutCenterYPos);
         waitAmoment();
-        MatcherAssert.assertThat("",getColorAt(sampleXPos, secondWPortLayoutCenterYPos), IS_RED);
+        MatcherAssert.assertThat("", getColorAt(sampleXPos, secondWPortLayoutCenterYPos), IS_RED);
 
         clickOn(4, 4);
         waitAmoment();
