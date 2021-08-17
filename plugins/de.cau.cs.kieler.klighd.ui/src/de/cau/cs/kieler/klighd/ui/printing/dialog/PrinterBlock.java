@@ -96,10 +96,10 @@ final class PrinterBlock {
         final Realm realm = bindings.getValidationRealm();
 
         // Observable to display the printer resp. file name, if print to file is set.
-        final ComputedValue<?> computedValue = new ComputedValue<>(realm) {
+        final ComputedValue<String> computedValue = new ComputedValue<String>(realm) {
 
             @Override
-            protected Object calculate() {
+            protected String calculate() {
                 final PrinterData data = 
                         (PrinterData) BeanProperties
                         .value( options.getClass().asSubclass(PrintOptions.class), PrintOptions.PROPERTY_PRINTER_DATA)
