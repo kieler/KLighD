@@ -280,13 +280,13 @@ public class DiagramClipGlobalPortLabelVisiblityConfigTest {
                 waitAmoment();
 
                 moveTo((int) (port0pos.x), (int) (port0pos.y));
-                MatcherAssert.assertThat("",Pair.of(viewer.getControl(), port0pos), portMatcher);
+                MatcherAssert.assertThat("", Pair.of(viewer.getControl(), port0pos), portMatcher);
 
                 if (port0Layout != portXLayout) {
                     waitAmoment();
 
                     moveTo((int) (portXpos.x), (int) (portXpos.y));
-                    MatcherAssert.assertThat("",Pair.of(viewer.getControl(), portXpos), portMatcher);
+                    MatcherAssert.assertThat("", Pair.of(viewer.getControl(), portXpos), portMatcher);
 
                     if (node.getLabels().isEmpty()) {
                         return;
@@ -310,7 +310,7 @@ public class DiagramClipGlobalPortLabelVisiblityConfigTest {
                 waitAmoment();
 
                 moveTo((int) (label0pos.x), (int) (label0pos.y));
-                MatcherAssert.assertThat("",Pair.of(viewer.getControl(), label0pos), labelMatcher);
+                MatcherAssert.assertThat("", Pair.of(viewer.getControl(), label0pos), labelMatcher);
             }
         }
     }

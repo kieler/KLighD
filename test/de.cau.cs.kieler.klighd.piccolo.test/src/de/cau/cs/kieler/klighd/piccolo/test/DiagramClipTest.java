@@ -201,12 +201,12 @@ public class DiagramClipTest {
             waitAmoment();
 
             moveTo((int) (port0pos.x), (int) (port0pos.y));
-            MatcherAssert.assertThat("",Pair.of(viewer.getControl(), port0pos), IS_BLACK);
+            MatcherAssert.assertThat("", Pair.of(viewer.getControl(), port0pos), IS_BLACK);
 
             waitAmoment();
 
             moveTo((int) (portXpos.x), (int) (portXpos.y));
-            MatcherAssert.assertThat("",Pair.of(viewer.getControl(), portXpos), IS_BLACK);
+            MatcherAssert.assertThat("", Pair.of(viewer.getControl(), portXpos), IS_BLACK);
         }
     }
 
