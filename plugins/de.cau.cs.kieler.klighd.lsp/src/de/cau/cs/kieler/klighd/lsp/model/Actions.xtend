@@ -374,7 +374,7 @@ public class SetDiagramPieceAction implements ResponseAction {
 }
 
 /**
- * Functionally the same as { @link RequestTextBoundsAction }, but it is handled differently.
+ * Functionally the same as { @link RequestTextBoundsAction }, but it is handled incrementally.
  */
 @Accessors
 @EqualsHashCode

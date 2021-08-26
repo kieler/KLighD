@@ -48,7 +48,6 @@ import java.util.Map
 import static com.google.common.collect.Iterables.filter
 
 import static extension de.cau.cs.kieler.klighd.lsp.utils.SprottyProperties.*
-import org.eclipse.elk.core.options.CoreOptions
 
 /**
  * Utility class to provide some functionality to persist prepare the rendering of a {@link KGraphElement}.

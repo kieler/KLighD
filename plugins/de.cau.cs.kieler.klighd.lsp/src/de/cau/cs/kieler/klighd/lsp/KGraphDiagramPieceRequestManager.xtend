@@ -3,7 +3,7 @@
  *
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright ${year} by
+ * Copyright 2021 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -26,7 +26,7 @@ import de.cau.cs.kieler.klighd.lsp.model.SKLabel
  * Class to keep track of incoming piece requests and responsible for managing the piece generation, ensuring the 
  * requested pieces are retrieved if they already exist or generated as soon as possible if not. The updater is then
  * responsible for sending the pieces to the client.
- * @author max
+ * @author mka
  */
 class KGraphDiagramPieceRequestManager {
     
