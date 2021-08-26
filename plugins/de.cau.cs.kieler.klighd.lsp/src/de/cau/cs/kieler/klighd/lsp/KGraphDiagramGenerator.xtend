@@ -290,7 +290,7 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
      * The kElement must be synthesized by a KLighD synthesis before and must have its source EObject stored in the 
      * {@link KlighdInternalProperties#MODEL_ELEMEMT} property.
      */
-    private def void trace(SModelElement sElement, KGraphElement kElement) {
+    protected def void trace(SModelElement sElement, KGraphElement kElement) {
         // The real model element that can be traced is the EObject that got synthesized in the
         // {@link translateModel} function. That model element has to be stored in the properties during the 
         // synthesis. Otherwise the tracing will not work
@@ -376,7 +376,7 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
      * Creates a Sprotty edge corresponding to the given {@link KEdge}.
      * Assumes, that the source and target nodes or ports of this {@code edge} have already been generated.
      */
-    private def SKEdge generateEdge(KEdge edge) {
+    protected def SKEdge generateEdge(KEdge edge) {
         val SKEdge edgeElement = configSElement(SKEdge, idGen.getId(edge))
         edgeElement.sourceId = idGen.getId(edge.source)
         edgeElement.targetId = idGen.getId(edge.target)
@@ -400,7 +400,7 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
     /**
      * Creates a Sprotty port corresponding to the given {@link KPort}.
      */
-    private def SKPort generatePort(KPort port) {
+    protected def SKPort generatePort(KPort port) {
         val SKPort portElement = configSElement(SKPort, idGen.getId(port))
         portElement.tooltip = port.getProperty(KlighdProperties.TOOLTIP)
         
@@ -423,7 +423,7 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
      * 
      * @param isMainGraphElement Describes, if the generated label will be part of the main generated {@link SGraph}.
      */
-    private def SKLabel generateLabel(KLabel label, boolean isMainGraphElement) {
+    protected def SKLabel generateLabel(KLabel label, boolean isMainGraphElement) {
         val id = isMainGraphElement ? idGen.getId(label) : label.data.filter(KIdentifier).head.id
         val SKLabel labelElement = configSElement(SKLabel, id)
         labelElement.tooltip = label.getProperty(KlighdProperties.TOOLTIP)
@@ -450,7 +450,7 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
      * Generates a generic {@link SModelElement} with the defaults {@code id}, {@code type} already set and the 
      * {@code children} list already initialized.
      */
-    private static def <E extends SModelElement> E configSElement(Class<E> elementClass, String idStr) {
+    protected static def <E extends SModelElement> E configSElement(Class<E> elementClass, String idStr) {
         elementClass.constructor.newInstance => [
             id = idStr
             type = getTypeString(it)
@@ -533,7 +533,7 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
      * Remembers the mapping to the KText elements from the source model in the textMapping field.
      * Stores all {@link KImage}s in the {@code images} field.
      */
-    private def void findSpecialRenderings(List<KGraphData> datas) {
+    protected def void findSpecialRenderings(List<KGraphData> datas) {
         for (data : datas) {
             findSpecialRenderings(data)
         }
@@ -544,7 +544,7 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
      * stores them. Also remembers the mapping to the KText elements from the source model in the {@code textMapping} 
      * field.
      */
-    private def void findSpecialRenderings(KGraphData data) {
+    protected def void findSpecialRenderings(KGraphData data) {
         val List<SKLabel> dataLabels = newArrayList
         var ImageData imageData = null
         if (data instanceof KText) {
@@ -625,7 +625,7 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
     /**
      * Returns a String describing the type of the {@link SModelElement}.
      */
-    private static def String getTypeString(SModelElement element) {
+    protected static def String getTypeString(SModelElement element) {
         switch element {
             SNode: 'node'
             SLabel: 'label'
