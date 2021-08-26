@@ -50,8 +50,6 @@ import java.util.List
 import java.util.Map
 import java.util.Queue
 import org.apache.log4j.Logger
-import org.eclipse.elk.alg.layered.options.LayeredOptions
-import org.eclipse.elk.alg.rectpacking.options.RectPackingOptions
 import org.eclipse.elk.core.options.CoreOptions
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.util.EcoreUtil
@@ -62,7 +60,6 @@ import org.eclipse.sprotty.SLabel
 import org.eclipse.sprotty.SModelElement
 import org.eclipse.sprotty.SNode
 import org.eclipse.sprotty.SPort
-import org.eclipse.sprotty.xtext.IDiagramGenerator
 import org.eclipse.sprotty.xtext.tracing.ITraceProvider
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.xtext.resource.XtextResource
@@ -73,67 +70,8 @@ import org.eclipse.xtext.util.CancelIndicator
  * limiting the amount of depth of a diagram that is rendered.
  * @author mka
  */
-class KGraphIncrementalDiagramGenerator implements IDiagramGenerator {
-    static val LOG = Logger.getLogger(KGraphDiagramGenerator)
-    
-    /**
-     * A map that maps each {@link KGraphElement} to its {@link SModelElement}.
-     * Convenient for finding a specific key KGraphElement faster.
-     * @see KGraphDiagramState
-     * @see KGraphLayoutEngine
-     */
-    @Accessors(PUBLIC_GETTER)
-    var Map<KGraphElement, SModelElement> kGraphToSModelElementMap
-    
-    /**
-     * A list containing all texts from the source KGraph inside Sprotty labels. Used for the simpler texts-only SGraph.
-     * @see #generateTextDiagram
-     * @see KGraphDiagramState
-     */
-    @Accessors(PUBLIC_GETTER)
-    var List<SKLabel> modelLabels
-    
-    /**
-     * A map containing all {@link KText}s from the source KGraph under the key of their ID in the texts-only SGraph.
-     * @see #generateTextDiagram
-     * @see KGraphDiagramState
-     */
-    @Accessors(PUBLIC_GETTER)
-    var Map<String, KText> textMapping
-    
-    /**
-     * The data of all {@link KImage}s contained in the view model.
-     */
-    @Accessors(PUBLIC_GETTER)
-    var HashSet<ImageData> images
-
-    /**
-     * The root node of the translated {@link SGraph}.
-     */
-    var SGraph diagramRoot
-    
-    /**
-     * Provides functionality to tag SModelElements.
-     */
-    @Inject
-    ITraceProvider traceProvider
-    
-    /**
-     * Indicates if elements should be traced back to the lines of code in their resource.
-     */
-    @Accessors(PUBLIC_GETTER, PUBLIC_SETTER)
-    var boolean activeTracing
-    
-    /**
-     * Generates unique IDs for any KGraphElement.
-     */
-    KGraphElementIdGenerator idGen
-    
-    /**
-     * List of all {@link KEdge}s that need to be generated in the end and added into the list that is the second
-     * element of each pair.
-     */
-    Queue<Pair<KEdge, List<SModelElement>>> edgesToGenerate
+class KGraphIncrementalDiagramGenerator extends KGraphDiagramGenerator {
+    static val LOG = Logger.getLogger(KGraphIncrementalDiagramGenerator)
     
     /**
      * Queue of remaining child {@link Knode}s to process in breadth-first traversal to construct diagram.
@@ -182,7 +120,7 @@ class KGraphIncrementalDiagramGenerator implements IDiagramGenerator {
     // this will simulate a client requesting pieces, the next steps will be incremental support in both
     // directions (client requests and further processing such as layout not done with this sgraph though)
     // most importantly: communication between server and client should start using incremental data
-    def SGraph toSGraph(KNode parentNode, String uri, CancelIndicator cancelIndicator) {
+    override SGraph toSGraph(KNode parentNode, String uri, CancelIndicator cancelIndicator) {
         
         kGraphToSModelElementMap = new HashMap
         textMapping = new HashMap
@@ -435,29 +373,6 @@ class KGraphIncrementalDiagramGenerator implements IDiagramGenerator {
     }
     
     /**
-     * Set all properties supported by the client.
-     */
-    def setProperties(SKNode nodeElement, KNode node) {
-        nodeElement.properties.put("layerId", node.getProperty(LayeredOptions.LAYERING_LAYER_ID))
-        nodeElement.properties.put("positionId", node.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_ID))
-        nodeElement.properties.put("layerConstraint", node.getProperty(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT))
-        nodeElement.properties.put("positionConstraint", node.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT))
-        nodeElement.properties.put("interactiveLayout", node.getProperty(CoreOptions.INTERACTIVE_LAYOUT))
-        nodeElement.properties.put("algorithm", node.getProperty(CoreOptions.ALGORITHM))
-        nodeElement.properties.put("desiredPosition", node.getProperty(RectPackingOptions.DESIRED_POSITION))
-        nodeElement.properties.put("currentPosition", node.getProperty(RectPackingOptions.CURRENT_POSITION))
-        nodeElement.properties.put("aspectRatio", node.getProperty(RectPackingOptions.ASPECT_RATIO))
-        
-        var parent = node
-        if (node.parent !== null) {
-            parent = node.parent
-        }
-        
-        // The client expects every node to know what its direction is
-        nodeElement.direction = parent.getProperty(LayeredOptions.DIRECTION)
-    }
-
-    /**
      * Creates a Sprotty edge corresponding to the given {@link KEdge}.
      * Assumes, that the source and target nodes or ports of this {@code edge} have already been generated.
      */
@@ -701,15 +616,6 @@ class KGraphIncrementalDiagramGenerator implements IDiagramGenerator {
         if (imageData !== null) {
             images.add(imageData)
         }
-    }
-    
-    /**
-     * Get method for the mapping from generated IDs to their corresponding {@link KGraphElement}s.
-     * 
-     * @return The mapping.
-     */
-    def getIdToKGraphElementMap() {
-        return idGen.idToElementMap
     }
 
     /**

@@ -91,7 +91,7 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
      * @see KGraphLayoutEngine
      */
     @Accessors(PUBLIC_GETTER)
-    var Map<KGraphElement, SModelElement> kGraphToSModelElementMap
+    protected var Map<KGraphElement, SModelElement> kGraphToSModelElementMap
     
     /**
      * A list containing all texts from the source KGraph inside Sprotty labels. Used for the simpler texts-only SGraph.
@@ -99,7 +99,7 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
      * @see KGraphDiagramState
      */
     @Accessors(PUBLIC_GETTER)
-    var List<SKLabel> modelLabels
+    protected var List<SKLabel> modelLabels
     
     /**
      * A map containing all {@link KText}s from the source KGraph under the key of their ID in the texts-only SGraph.
@@ -107,41 +107,41 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
      * @see KGraphDiagramState
      */
     @Accessors(PUBLIC_GETTER)
-    var Map<String, KText> textMapping
+    protected var Map<String, KText> textMapping
     
     /**
      * The data of all {@link KImage}s contained in the view model.
      */
     @Accessors(PUBLIC_GETTER)
-    var HashSet<ImageData> images
+    protected var HashSet<ImageData> images
 
     /**
      * The root node of the translated {@link SGraph}.
      */
-	var SGraph diagramRoot
+	protected var SGraph diagramRoot
 	
 	/**
 	 * Provides functionality to tag SModelElements.
 	 */
 	@Inject
-	ITraceProvider traceProvider
+	protected ITraceProvider traceProvider
 	
 	/**
 	 * Indicates if elements should be traced back to the lines of code in their resource.
 	 */
 	@Accessors(PUBLIC_GETTER, PUBLIC_SETTER)
-	var boolean activeTracing
+	protected var boolean activeTracing
     
     /**
      * Generates unique IDs for any KGraphElement.
      */
-    KGraphElementIdGenerator idGen
+    protected KGraphElementIdGenerator idGen
     
     /**
      * List of all {@link KEdge}s that need to be generated in the end and added into the list that is the second
      * element of each pair.
      */
-    List<Pair<KEdge, List<SModelElement>>> edgesToGenerate
+    protected List<Pair<KEdge, List<SModelElement>>> edgesToGenerate
 
     /**
      * Creates a {@link ViewContext} containing the KGraph model for any {@link Object} model with a registered 
