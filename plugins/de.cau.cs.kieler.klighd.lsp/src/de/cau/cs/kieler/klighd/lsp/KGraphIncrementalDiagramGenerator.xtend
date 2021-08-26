@@ -12,7 +12,6 @@
  */
 package de.cau.cs.kieler.klighd.lsp
 
-import com.google.inject.Inject
 import de.cau.cs.kieler.klighd.LightDiagramServices
 import de.cau.cs.kieler.klighd.ViewContext
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties
@@ -47,7 +46,6 @@ import java.util.HashMap
 import java.util.HashSet
 import java.util.LinkedList
 import java.util.List
-import java.util.Map
 import java.util.Queue
 import org.apache.log4j.Logger
 import org.eclipse.elk.core.options.CoreOptions
@@ -60,8 +58,6 @@ import org.eclipse.sprotty.SLabel
 import org.eclipse.sprotty.SModelElement
 import org.eclipse.sprotty.SNode
 import org.eclipse.sprotty.SPort
-import org.eclipse.sprotty.xtext.tracing.ITraceProvider
-import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.xtext.resource.XtextResource
 import org.eclipse.xtext.util.CancelIndicator
 
