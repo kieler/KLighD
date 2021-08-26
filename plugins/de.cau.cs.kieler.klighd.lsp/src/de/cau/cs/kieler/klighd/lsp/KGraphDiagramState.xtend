@@ -116,14 +116,28 @@ class KGraphDiagramState {
      */
     Map<String, String> uriStringMap = new HashMap
     
+    /**
+     * Contains the diagram piece request manager for the URI of the model.
+     */
     Map<String, KGraphDiagramPieceRequestManager> diagramPieceRequestManagerMap = new HashMap
     
     // ------------ Methods to access or modify the fields -------------
     
+    /**
+     * Getter to access the diagram piece request manager for the given URI.
+     * 
+     * @param uri The identifying URI of the graph to access the value in the map.
+     */
     def KGraphDiagramPieceRequestManager getDiagramPieceRequestManager(String uri) {
         diagramPieceRequestManagerMap.get(uri)
     }
     
+    /**
+     * Put method to set the diagram piece request manager for a URI.
+     * 
+     * @param uri The identifying URI of the graph to access the map.
+     * @param requestManager The diagram piece request manager to be stored.
+     */
     def putDiagramPieceRequestManager(String uri, KGraphDiagramPieceRequestManager requestManager) {
         diagramPieceRequestManagerMap.put(uri, requestManager)
     }
