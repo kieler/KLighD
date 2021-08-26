@@ -700,8 +700,9 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
     protected def handle(IncrementalComputedTextBoundsAction action) {
                 
         synchronized (modelLock) {
-            /* 
-             * revision numbers lose their meaning a bit in this incremental concept so ignore this for now
+            /* FIXME: revision numbers should just stay constant during the incremental build-up process
+             *        the question is where the revision number is set for an action, I assume on Keith,
+             *        but I don't know where
             if (currentRoot.getRevision() !== action.getRevision()) {
                 return
             }
