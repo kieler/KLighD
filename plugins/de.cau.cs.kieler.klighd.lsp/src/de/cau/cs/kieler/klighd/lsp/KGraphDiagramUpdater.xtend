@@ -23,33 +23,23 @@ import de.cau.cs.kieler.klighd.ViewContext
 import de.cau.cs.kieler.klighd.ide.model.MessageModel
 import de.cau.cs.kieler.klighd.kgraph.KNode
 import de.cau.cs.kieler.klighd.lsp.launch.AbstractLanguageServer
-import de.cau.cs.kieler.klighd.lsp.model.LayoutOptionUIData
+import de.cau.cs.kieler.klighd.lsp.model.RequestDiagramPieceAction
 import de.cau.cs.kieler.klighd.lsp.model.SKGraph
-import de.cau.cs.kieler.klighd.lsp.model.ValuedSynthesisOption
+import de.cau.cs.kieler.klighd.lsp.utils.KGraphMappingUtil
 import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties
-import java.util.ArrayList
-import java.util.Collection
 import java.util.HashSet
 import java.util.List
 import java.util.Map
 import java.util.concurrent.CompletableFuture
-import org.eclipse.elk.core.data.LayoutMetaDataService
-import org.eclipse.elk.core.data.LayoutOptionData
-import org.eclipse.elk.core.data.LayoutOptionData.Visibility
-import org.eclipse.elk.core.util.Pair
-import org.eclipse.elk.graph.properties.IProperty
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.sprotty.IDiagramServer
 import org.eclipse.sprotty.SGraph
+import org.eclipse.sprotty.SModelElement
 import org.eclipse.sprotty.xtext.ILanguageAwareDiagramServer
 import org.eclipse.sprotty.xtext.ls.DiagramLanguageServer
 import org.eclipse.sprotty.xtext.ls.DiagramUpdater
 import org.eclipse.xtext.util.CancelIndicator
-import org.eclipse.sprotty.xtext.IDiagramGenerator
-import org.eclipse.sprotty.SModelElement
-import de.cau.cs.kieler.klighd.lsp.utils.KGraphMappingUtil
-import de.cau.cs.kieler.klighd.lsp.model.RequestDiagramPieceAction
 
 /**
  * Connection between {@link IDiagramServer} and the {@link DiagramLanguageServer}. With this singleton diagram updater,

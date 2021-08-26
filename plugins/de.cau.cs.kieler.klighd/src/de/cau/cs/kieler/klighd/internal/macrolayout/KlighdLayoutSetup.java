@@ -14,8 +14,6 @@ package de.cau.cs.kieler.klighd.internal.macrolayout;
 
 import org.eclipse.elk.core.ConfigurableGraphLayoutEngine;
 import org.eclipse.elk.core.IGraphLayoutEngine;
-import org.eclipse.elk.core.RecursiveGraphLayoutEngine;
-import org.eclipse.elk.core.TopDownGraphLayoutEngine;
 import org.eclipse.elk.core.service.DiagramLayoutEngine;
 import org.eclipse.elk.core.service.IDiagramLayoutConnector;
 import org.eclipse.elk.core.service.ILayoutConfigurationStore;
@@ -89,8 +87,6 @@ public final class KlighdLayoutSetup implements ILayoutSetup {
         public void configure(final Binder binder) {
             // TODO extend "org.eclipse.elk.core.service.internal.DefaultModule()"
             //  and replace the first line by "super.configure(binder);"
-            // binder.bind(IGraphLayoutEngine.class).to(RecursiveGraphLayoutEngine.class);
-            // binder.bind(IGraphLayoutEngine.class).to(TopDownGraphLayoutEngine.class);
             binder.bind(IGraphLayoutEngine.class).to(ConfigurableGraphLayoutEngine.class);
             binder.bind(IDiagramLayoutConnector.class).to(KlighdDiagramLayoutConnector.class);
             binder.bind(ILayoutConfigurationStore.Provider.class)

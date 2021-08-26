@@ -12,15 +12,15 @@
  */
 package de.cau.cs.kieler.klighd.lsp
 
-import org.eclipse.xtend.lib.annotations.Accessors
-import org.eclipse.sprotty.SModelElement
-import java.util.LinkedList
-import java.util.Queue
 import de.cau.cs.kieler.klighd.lsp.model.RequestDiagramPieceAction
 import de.cau.cs.kieler.klighd.lsp.model.SKEdge
+import de.cau.cs.kieler.klighd.lsp.model.SKLabel
 import de.cau.cs.kieler.klighd.lsp.model.SKNode
 import de.cau.cs.kieler.klighd.lsp.model.SKPort
-import de.cau.cs.kieler.klighd.lsp.model.SKLabel
+import java.util.LinkedList
+import java.util.Queue
+import org.eclipse.sprotty.SModelElement
+import org.eclipse.xtend.lib.annotations.Accessors
 
 /**
  * Class to keep track of incoming piece requests and responsible for managing the piece generation, ensuring the 

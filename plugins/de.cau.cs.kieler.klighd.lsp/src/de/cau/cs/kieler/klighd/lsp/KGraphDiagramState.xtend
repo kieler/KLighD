@@ -31,7 +31,6 @@ import java.util.Map
 import java.util.Set
 import org.eclipse.elk.core.LayoutConfigurator
 import org.eclipse.sprotty.SModelElement
-import org.eclipse.xtext.ide.editor.contentassist.antlr.RequiredRuleNameComputer.Param
 
 /**
  * Singleton class to map a URI identifying a graph to their various parts needed for handling KGraph models

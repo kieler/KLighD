@@ -21,14 +21,12 @@ import org.eclipse.sprotty.Action
 import org.eclipse.sprotty.ElementAndBounds
 import org.eclipse.sprotty.RequestAction
 import org.eclipse.sprotty.ResponseAction
+import org.eclipse.sprotty.SModelElement
 import org.eclipse.sprotty.SModelRoot
 import org.eclipse.sprotty.UpdateModelAction
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.xtend.lib.annotations.EqualsHashCode
 import org.eclipse.xtend.lib.annotations.ToString
-import org.eclipse.sprotty.RequestModelAction
-import java.util.Map
-import org.eclipse.sprotty.SModelElement
 
 /**
  * Sent from the server to the client to request bounds for the given texts. The texts are rendered
@@ -401,7 +399,7 @@ public class IncrementalRequestTextBoundsAction implements RequestAction<Increme
 }
 
 /**
- * Functionally the same as { @link ComputedTextBoundsAction }, but it is handled differently.
+ * Functionally the same as { @link ComputedTextBoundsAction }, but it is handled incrementally.
  */
 @Accessors
 @EqualsHashCode

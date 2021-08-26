@@ -25,16 +25,16 @@ import de.cau.cs.kieler.klighd.lsp.interactive.rectpacking.RectpackingSetPositio
 import de.cau.cs.kieler.klighd.lsp.interactive.rectpacking.SetAspectRatioAction
 import de.cau.cs.kieler.klighd.lsp.model.CheckedImagesAction
 import de.cau.cs.kieler.klighd.lsp.model.ComputedTextBoundsAction
+import de.cau.cs.kieler.klighd.lsp.model.IncrementalComputedTextBoundsAction
+import de.cau.cs.kieler.klighd.lsp.model.IncrementalRequestTextBoundsAction
 import de.cau.cs.kieler.klighd.lsp.model.PerformActionAction
 import de.cau.cs.kieler.klighd.lsp.model.RefreshDiagramAction
 import de.cau.cs.kieler.klighd.lsp.model.RefreshLayoutAction
+import de.cau.cs.kieler.klighd.lsp.model.RequestDiagramPieceAction
 import de.cau.cs.kieler.klighd.lsp.model.SetSynthesisAction
 import java.awt.geom.Point2D
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.sprotty.server.json.ActionTypeAdapter
-import de.cau.cs.kieler.klighd.lsp.model.RequestDiagramPieceAction
-import de.cau.cs.kieler.klighd.lsp.model.IncrementalRequestTextBoundsAction
-import de.cau.cs.kieler.klighd.lsp.model.IncrementalComputedTextBoundsAction
 
 /**
  * Static util class to configure needed gson type adapters for KGraph serialization.
@@ -76,7 +76,5 @@ class KGraphTypeAdapterUtil {
         .registerTypeAdapter(Point2D, new Point2DTypeAdapter)
         .registerTypeHierarchyAdapter(EObject, new EObjectSerializer)
         .registerTypeAdapter(SynthesisOption, new SynthesisOptionSerializer)
-        //.registerTypeHierarchyAdapter(SModelElement, new SModelElementSerializer) possibly abandon this idea
-        // because it doesn't really solve the issue of determining which low level part to serialize
     }
 }

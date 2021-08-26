@@ -32,12 +32,16 @@ import de.cau.cs.kieler.klighd.lsp.launch.AbstractLanguageServer
 import de.cau.cs.kieler.klighd.lsp.model.CheckImagesAction
 import de.cau.cs.kieler.klighd.lsp.model.CheckedImagesAction
 import de.cau.cs.kieler.klighd.lsp.model.ComputedTextBoundsAction
+import de.cau.cs.kieler.klighd.lsp.model.IncrementalComputedTextBoundsAction
+import de.cau.cs.kieler.klighd.lsp.model.IncrementalRequestTextBoundsAction
 import de.cau.cs.kieler.klighd.lsp.model.LayoutOptionUIData
 import de.cau.cs.kieler.klighd.lsp.model.PerformActionAction
 import de.cau.cs.kieler.klighd.lsp.model.RefreshDiagramAction
 import de.cau.cs.kieler.klighd.lsp.model.RefreshLayoutAction
+import de.cau.cs.kieler.klighd.lsp.model.RequestDiagramPieceAction
 import de.cau.cs.kieler.klighd.lsp.model.RequestTextBoundsAction
 import de.cau.cs.kieler.klighd.lsp.model.SKGraph
+import de.cau.cs.kieler.klighd.lsp.model.SetDiagramPieceAction
 import de.cau.cs.kieler.klighd.lsp.model.SetSynthesisAction
 import de.cau.cs.kieler.klighd.lsp.model.StoreImagesAction
 import de.cau.cs.kieler.klighd.lsp.model.UpdateDiagramOptionsAction
@@ -66,6 +70,7 @@ import org.eclipse.sprotty.ActionMessage
 import org.eclipse.sprotty.ILayoutEngine
 import org.eclipse.sprotty.IModelUpdateListener
 import org.eclipse.sprotty.LayoutAction
+import org.eclipse.sprotty.RejectAction
 import org.eclipse.sprotty.RequestBoundsAction
 import org.eclipse.sprotty.RequestModelAction
 import org.eclipse.sprotty.SModelCloner
@@ -77,11 +82,6 @@ import org.eclipse.sprotty.SetModelAction
 import org.eclipse.sprotty.UpdateModelAction
 import org.eclipse.sprotty.xtext.LanguageAwareDiagramServer
 import org.eclipse.xtend.lib.annotations.Accessors
-import de.cau.cs.kieler.klighd.lsp.model.RequestDiagramPieceAction
-import de.cau.cs.kieler.klighd.lsp.model.SetDiagramPieceAction
-import org.eclipse.sprotty.RejectAction
-import de.cau.cs.kieler.klighd.lsp.model.IncrementalRequestTextBoundsAction
-import de.cau.cs.kieler.klighd.lsp.model.IncrementalComputedTextBoundsAction
 
 /**
  * Diagram server extension adding functionality to special actions needed for handling KGraphs.
