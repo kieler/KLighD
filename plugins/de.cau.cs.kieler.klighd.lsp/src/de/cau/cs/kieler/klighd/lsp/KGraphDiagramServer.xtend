@@ -393,9 +393,9 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
                     response.setResponseId(request.getRequestId());
                     dispatch(response);
                 } else if (update && modelType !== null && modelType.equals(lastSubmittedModelType)) {
-                    dispatch(new UpdateModelAction(newRoot)); // this should only send model root with new approach
+                    dispatch(new UpdateModelAction(newRoot));
                 } else {
-                    dispatch(new SetModelAction(newRoot));    // this should only send model root with new approach
+                    dispatch(new SetModelAction(newRoot));
                 }
                 lastSubmittedModelType = modelType;
                 var IModelUpdateListener listener = getModelUpdateListener();
@@ -664,6 +664,10 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
                 dispatch(new RejectAction())
                 return
             }
+            // FIXME: The texts are not handled incrementally at the moment, which is a performance issue
+            //        as all texts are retrieved for every piece request. This needs to be changed to only
+            //        retrieve the new texts. The implementation for this should probably be in the incremental
+            //        diagram generator or maybe also using the piece request manager
             val texts = diagramState.getTexts(this.sourceUri)
             if (texts === null) {
                 throw new NullPointerException("The id of the SGraph was not found in the diagramState")
