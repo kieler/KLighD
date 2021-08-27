@@ -983,8 +983,8 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
                 layoutEdge.getProperty(CoreOptions.EDGE_TYPE));
         viewModelEdge.setProperty(CoreOptions.JUNCTION_POINTS,
                 layoutEdge.getProperty(CoreOptions.JUNCTION_POINTS));
-        viewModelEdge.setProperty(CoreOptions.RENDER_SCALE,
-                layoutEdge.getProperty(CoreOptions.RENDER_SCALE));
+        viewModelEdge.setProperty(CoreOptions.TOP_DOWN_LAYOUT_RENDER_SCALE,
+                layoutEdge.getProperty(CoreOptions.TOP_DOWN_LAYOUT_RENDER_SCALE));
         
         final ElkEdgeSection layoutEdgeSection = layoutEdge.getSections().get(0);
         

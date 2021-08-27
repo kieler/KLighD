@@ -31,7 +31,7 @@ public class TopDownPreservedProperties implements IPreservedProperties {
      */
     @Override
     public List<IProperty<?>> getProperties() {
-        return Arrays.asList(CoreOptions.RENDER_SCALE);
+        return Arrays.asList(CoreOptions.TOP_DOWN_LAYOUT_RENDER_SCALE);
     }
 
 }
