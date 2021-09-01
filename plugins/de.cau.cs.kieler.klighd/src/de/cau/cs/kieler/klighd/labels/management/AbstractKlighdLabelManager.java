@@ -242,6 +242,11 @@ public abstract class AbstractKlighdLabelManager implements ILabelManager {
      * @return the label's new size.
      */
     private KVector calculateFinalLabelSize(final ElkLabel elkLabel, final String text) {
+        // If the final label is empty remove all renderings of it
+        if (elkLabel.getText() == "") {
+            elkLabel.setProperty(KRenderingOptions.K_RENDERING, null);
+            return new KVector();
+        }
         // Find the label's rendering
         KRendering rootRendering = elkLabel.getProperty(KRenderingOptions.K_RENDERING);
         if (rootRendering instanceof KRenderingRef) {
