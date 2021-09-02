@@ -53,8 +53,8 @@ import de.cau.cs.kieler.klighd.viewers.ContextViewer;
  * selected and due to corresponding styles their color is switched from black to red.<br>
  * <br>
  * In order to assess the correctness of the tool's behavior the color of the diagram is evaluated
- * at certain positions of the diagram. Since the "measured" color will differ from the expected one
- * by some units due to anti-aliasing a similarity heuristic is applied.
+ * at certain positions of the diagram. Since the "measured" color will differ from the expected
+ * one by some units due to anti-aliasing a similarity heuristic is applied.
  *
  * @author chsch
  */
@@ -90,9 +90,9 @@ public class HighlightedEdgeToForegroundTest {
 
         viewContext.update(null);
         new LightDiagramLayoutConfig(viewContext)
-                .animate(false)
-                .zoomStyle(ZoomStyle.ZOOM_TO_ACTUAL_SIZE)
-                .performLayout();
+            .animate(false)
+            .zoomStyle(ZoomStyle.ZOOM_TO_ACTUAL_SIZE)
+            .performLayout();
 
         shell.layout(true, true);
         shell.open();
@@ -260,13 +260,11 @@ public class HighlightedEdgeToForegroundTest {
         MatcherAssert.assertThat("", getColorAt(sampleXPos, secondWPortLayoutCenterYPos), IS_RED);
 
         moveTo(secondClickXPos, secondWPortLayoutCenterYPos);
-        MatcherAssert.assertThat("", getColorAt(secondClickXPos, secondWPortLayoutCenterYPos),
-                IS_BLACK);
+        MatcherAssert.assertThat("", getColorAt(secondClickXPos, secondWPortLayoutCenterYPos), IS_BLACK);
 
         clickOn(secondClickXPos, secondWPortLayoutCenterYPos);
         waitAmoment();
-        MatcherAssert.assertThat("", getColorAt(secondClickXPos, secondWPortLayoutCenterYPos),
-                IS_RED);
+        MatcherAssert.assertThat("", getColorAt(secondClickXPos, secondWPortLayoutCenterYPos), IS_RED);
 
         moveTo(sampleXPos, secondWPortLayoutCenterYPos);
         waitAmoment();

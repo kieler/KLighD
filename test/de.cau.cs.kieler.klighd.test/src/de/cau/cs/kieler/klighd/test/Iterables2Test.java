@@ -58,7 +58,7 @@ public class Iterables2Test {
     public void skipLastX(final int x) {
         // System.out.println(Iterables.toString(Iterables2.skipLast(TEST_LIST, x)));
 
-        MatcherAssert.assertThat("",Iterables2.skipLast(TEST_LIST, x), x >= TEST_LIST.size()
+        MatcherAssert.assertThat("", Iterables2.skipLast(TEST_LIST, x), x >= TEST_LIST.size()
                 ? IsEmptyIterable.emptyIterable()
                 : IsIterableContainingInOrder.contains(
                         TEST_LIST.subList(0, TEST_LIST.size() - x).toArray()));

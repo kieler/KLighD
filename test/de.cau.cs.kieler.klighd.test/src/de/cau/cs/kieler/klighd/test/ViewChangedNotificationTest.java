@@ -158,7 +158,7 @@ public class ViewChangedNotificationTest {
             final Iterable<KGraphElement> l = Sets.newHashSet(
                     countNodesOnly ? change.visibleDiagramNodes() : change.visibleDiagramElements());
             try {
-                MatcherAssert.assertThat("",l,
+                MatcherAssert.assertThat("", l,
                         IsIterableWithSize.<KGraphElement>iterableWithSize(expectedElementsNumber));
             } catch (final AssertionError e) {
                 failure = e;

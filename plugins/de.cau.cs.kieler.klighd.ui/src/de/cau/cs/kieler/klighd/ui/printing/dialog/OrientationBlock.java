@@ -46,7 +46,7 @@ final class OrientationBlock {
     }
 
     /**
-     * Creates the 'Orientation' block contents. 
+     * Creates the 'Orientation' block contents.
      * The bindings are used to bind observable GUI elements to print setting in the given options.
      *
      * @param parent
@@ -62,8 +62,8 @@ final class OrientationBlock {
         final int columns = 1;
 
         // create group
-        final Group result = DialogUtil.group(parent,
-                KlighdUIPrintingMessages.PrintDialog_Orientation_orientation);
+        final Group result =
+                DialogUtil.group(parent, KlighdUIPrintingMessages.PrintDialog_Orientation_orientation);
         DialogUtil.layout(result, columns);
 
         // radio button for portrait
@@ -72,8 +72,8 @@ final class OrientationBlock {
         DialogUtil.layoutSpanHorizontal(portraitRadio, columns);
 
         // radio button for landscape
-        final Button landscapeRadio = DialogUtil.radio(result,
-                KlighdUIPrintingMessages.PrintDialog_Orientation_landscape);
+        final Button landscapeRadio =
+                DialogUtil.radio(result, KlighdUIPrintingMessages.PrintDialog_Orientation_landscape);
         DialogUtil.layoutSpanHorizontal(landscapeRadio, columns);
 
         final Realm realm = bindings.getValidationRealm();
@@ -92,8 +92,7 @@ final class OrientationBlock {
         result.addListener(SWT.Dispose, new Listener() {
 
             public void handleEvent(final Event event) {
-                // although the 'option SWTObservables' are automatically disposed via the radio
-                // buttons
+                // although the 'option SWTObservables' are automatically disposed via the radio buttons
                 // the 'SelectObservableValue' is not, so...
                 orientationGroupValue.dispose();
             }

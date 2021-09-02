@@ -133,11 +133,11 @@ public class ViewChangedNotificationSuppressionTest {
 
         shell.close();
 
-        MatcherAssert.assertThat("",observedNotifications01,
+        MatcherAssert.assertThat("", observedNotifications01,
                 IsIterableContainingInOrder.contains(expectedNotifications01.toArray()));
 
         if (secondListenerEmployed) {
-            MatcherAssert.assertThat("",observedNotifications02,
+            MatcherAssert.assertThat("", observedNotifications02,
                     IsIterableContainingInOrder.contains(expectedNotifications02.toArray()));
         }
     }

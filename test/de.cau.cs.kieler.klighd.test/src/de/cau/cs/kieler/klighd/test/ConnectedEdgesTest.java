@@ -114,7 +114,7 @@ public class ConnectedEdgesTest {
                             }
                         }, null);
 
-                MatcherAssert.assertThat("",sourceId.eContainer(), IsInstanceOf.instanceOf(KPort.class));
+                MatcherAssert.assertThat("", sourceId.eContainer(), IsInstanceOf.instanceOf(KPort.class));
 
                 this.sourcePorts.add((KPort) sourceId.eContainer());
             } else if (EXPECTED_TARGET_PORT.equals(pe.getKey())) {
@@ -131,7 +131,7 @@ public class ConnectedEdgesTest {
                             }
                         }, null);
 
-                MatcherAssert.assertThat("",targetId.eContainer(), IsInstanceOf.instanceOf(KPort.class));
+                MatcherAssert.assertThat("", targetId.eContainer(), IsInstanceOf.instanceOf(KPort.class));
 
                 this.expectedTargetPorts.add((KPort) targetId.eContainer());
 

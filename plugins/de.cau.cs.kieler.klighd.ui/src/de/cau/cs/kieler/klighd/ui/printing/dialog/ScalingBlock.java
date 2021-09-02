@@ -60,8 +60,8 @@ import de.cau.cs.kieler.klighd.ui.printing.PrintOptions;
 final class ScalingBlock {
 
     /**
-     * Instantiates a new scaling block. The bindings are used to bind observable GUI elements to
-     * print setting in the given options.
+     * Instantiates a new scaling block.
+     * The bindings are used to bind observable GUI elements to print setting in the given options.
      *
      * @param bindings
      *            the bindings used for observables
@@ -77,8 +77,8 @@ final class ScalingBlock {
     private static final int SCALING_GROUP_COLUMNS = 4;
 
     /**
-     * Creates the 'Scaling' block contents. The bindings are used to bind observable GUI elements
-     * to print setting in the given options.
+     * Creates the 'Scaling' block contents.
+     * The bindings are used to bind observable GUI elements to print setting in the given options.
      *
      * @param parent
      *            the parent {@link Composite} to use
@@ -249,11 +249,11 @@ final class ScalingBlock {
         final Dimension2D diagramBounds = exporter.getDiagramBoundsIncludingTrim();
         final Dimension2D trimmedPrinterBounds = exporter.getTrimmedTileBounds(dOptions);
 
-        final double scaleX = 
+        final double scaleX =
                 trimmedPrinterBounds.getWidth() * dOptions.getPagesWide()
                         / diagramBounds.getWidth();
 
-        final double scaleY = 
+        final double scaleY =
                 trimmedPrinterBounds.getHeight() * dOptions.getPagesTall()
                         / diagramBounds.getHeight();
 

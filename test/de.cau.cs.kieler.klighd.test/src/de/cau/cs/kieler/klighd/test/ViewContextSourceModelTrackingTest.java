@@ -165,7 +165,7 @@ public class ViewContextSourceModelTrackingTest {
                 viewContext.getSourceElement(viewContext.getViewModel()),
                 sourceModel);
         
-        MatcherAssert.assertThat("",viewContext.getTargetElements(sourceModel),
+        MatcherAssert.assertThat("", viewContext.getTargetElements(sourceModel),
                 IsIterableContainingInOrder.contains((Object) viewContext.getViewModel()));
         
         return viewContext;
@@ -189,7 +189,7 @@ public class ViewContextSourceModelTrackingTest {
         Assert.assertEquals(sourceRoot,
                 viewContext.getSourceElement(viewContext.getViewModel()));
         
-        MatcherAssert.assertThat("",viewContext.getTargetElements(sourceRoot),
+        MatcherAssert.assertThat("", viewContext.getTargetElements(sourceRoot),
                 IsIterableContainingInOrder.contains((Object) viewContext.getViewModel()));
         
         Assert.assertEquals(sourceRoot.getChildren().get(0),
@@ -270,12 +270,12 @@ public class ViewContextSourceModelTrackingTest {
                     }
                 }));
         
-        MatcherAssert.assertThat("",child0kgesSources, IsIterableWithSize.iterableWithSize(4));
+        MatcherAssert.assertThat("", child0kgesSources, IsIterableWithSize.iterableWithSize(4));
 
-        MatcherAssert.assertThat("",child0kgesSources,
+        MatcherAssert.assertThat("", child0kgesSources,
                 IsCollectionContaining.hasItem(CoreMatchers.notNullValue()));
 
-        MatcherAssert.assertThat("",Iterables.filter(child0kgesSources, Predicates.<Object>in(child0kges)),
+        MatcherAssert.assertThat("", Iterables.filter(child0kgesSources, Predicates.<Object>in(child0kges)),
                 IsEmptyIterable.emptyIterable());
         
         final Iterable<EObject> child0kgesSourcesTargets =
@@ -286,9 +286,9 @@ public class ViewContextSourceModelTrackingTest {
                     }
                 });
 
-        MatcherAssert.assertThat("",child0kgesSourcesTargets, IsIterableWithSize.<EObject>iterableWithSize(4));
+        MatcherAssert.assertThat("", child0kgesSourcesTargets, IsIterableWithSize.<EObject>iterableWithSize(4));
 
-        MatcherAssert.assertThat("",child0kgesSourcesTargets,
+        MatcherAssert.assertThat("", child0kgesSourcesTargets,
                 IsIterableContainingInOrder.contains(child0kges.toArray()));
         
         checkTracerMaps(viewContext, 10);
@@ -351,7 +351,7 @@ public class ViewContextSourceModelTrackingTest {
        final Iterable<EObject> targets = viewContext.getTargetElements(source);
        
        Assert.assertNotNull(targets);
-       MatcherAssert.assertThat("",targets, IsIterableWithSize.<EObject>iterableWithSize(1));
+       MatcherAssert.assertThat("", targets, IsIterableWithSize.<EObject>iterableWithSize(1));
        Assert.assertSame(rect, Iterables.getOnlyElement(targets));
    }
     
