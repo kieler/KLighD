@@ -100,8 +100,7 @@ public class HighlightedEdgeToForegroundTest {
         canvas = viewContext.getViewer().getControl();
         zeroPoint = canvas.toDisplay(0, 0);
 
-        // make sure the color recognition works by checking the background color in the top left
-        // corner
+        // make sure the color recognition works by checking the background color in the top left corner
         // in case this check gives, e.g., RGB {0, 0, 0} the color identification doesn't work and
         // this whole test class is skipped
         Assume.assumeThat(getColorAt(2, 2), IS_WHITE);
@@ -139,11 +138,9 @@ public class HighlightedEdgeToForegroundTest {
         // @formatter:on
     }
 
-    private static final ColorMatcher<RGB> IS_BLACK =
-            ColorMatcher.acceptingRGBsExpecting(Colors.BLACK);
+    private static final ColorMatcher<RGB> IS_BLACK = ColorMatcher.acceptingRGBsExpecting(Colors.BLACK);
     private static final ColorMatcher<RGB> IS_RED = ColorMatcher.acceptingRGBsExpecting(Colors.RED);
-    private static final ColorMatcher<RGB> IS_WHITE =
-            ColorMatcher.acceptingRGBsExpecting(Colors.WHITE);
+    private static final ColorMatcher<RGB> IS_WHITE = ColorMatcher.acceptingRGBsExpecting(Colors.WHITE);
 
     /**
      * Tests the highlighting of overlapped interlevel edges connected to same source.
@@ -159,8 +156,7 @@ public class HighlightedEdgeToForegroundTest {
         final int firstWPortLayoutCenterYPos = Math.round(firstWPortLayout.getYpos()) + 3;
 
         final int sampleXPos = 50;
-        final int firstClickXPos = 5 + 100; // port width + border spacing + edge spacing factor *
-                                            // spacing
+        final int firstClickXPos = 5 + 100; // port width + border spacing + edge spacing factor * spacing
         final int secondClickXPos = 200;
 
         moveTo(firstClickXPos, firstChildNodeYPos);
@@ -175,13 +171,11 @@ public class HighlightedEdgeToForegroundTest {
         MatcherAssert.assertThat("", getColorAt(sampleXPos, firstWPortLayoutCenterYPos), IS_RED);
 
         moveTo(secondClickXPos, firstWPortLayoutCenterYPos);
-        MatcherAssert.assertThat("", getColorAt(secondClickXPos, firstWPortLayoutCenterYPos),
-                IS_BLACK);
+        MatcherAssert.assertThat("", getColorAt(secondClickXPos, firstWPortLayoutCenterYPos), IS_BLACK);
 
         clickOn(secondClickXPos, firstWPortLayoutCenterYPos);
         waitAmoment();
-        MatcherAssert.assertThat("", getColorAt(secondClickXPos, firstWPortLayoutCenterYPos),
-                IS_RED);
+        MatcherAssert.assertThat("", getColorAt(secondClickXPos, firstWPortLayoutCenterYPos), IS_RED);
 
         moveTo(sampleXPos, firstWPortLayoutCenterYPos);
         waitAmoment();
@@ -205,8 +199,7 @@ public class HighlightedEdgeToForegroundTest {
         final int secondWPortLayoutCenterYPos = Math.round(secondWPortLayout.getYpos()) + 3;
 
         final int sampleXPos = 120;
-        final int firstClickXPos = 5 + 100; // port width + border spacing + edge spacing factor *
-                                            // spacing
+        final int firstClickXPos = 5 + 100; // port width + border spacing + edge spacing factor * spacing
         final int secondClickXPos = 50;
 
         moveTo(firstClickXPos, firstChildNodeYPos);
@@ -221,13 +214,11 @@ public class HighlightedEdgeToForegroundTest {
         MatcherAssert.assertThat("", getColorAt(sampleXPos, secondWPortLayoutCenterYPos), IS_RED);
 
         moveTo(secondClickXPos, secondWPortLayoutCenterYPos);
-        MatcherAssert.assertThat("", getColorAt(secondClickXPos, secondWPortLayoutCenterYPos),
-                IS_BLACK);
+        MatcherAssert.assertThat("", getColorAt(secondClickXPos, secondWPortLayoutCenterYPos), IS_BLACK);
 
         clickOn(secondClickXPos, secondWPortLayoutCenterYPos);
         waitAmoment();
-        MatcherAssert.assertThat("", getColorAt(secondClickXPos, secondWPortLayoutCenterYPos),
-                IS_RED);
+        MatcherAssert.assertThat("", getColorAt(secondClickXPos, secondWPortLayoutCenterYPos), IS_RED);
 
         moveTo(sampleXPos, secondWPortLayoutCenterYPos);
         waitAmoment();

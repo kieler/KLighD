@@ -46,8 +46,8 @@ final class OrientationBlock {
     }
 
     /**
-     * Creates the 'Orientation' block contents. The bindings are used to bind observable GUI
-     * elements to print setting in the given options.
+     * Creates the 'Orientation' block contents. 
+     * The bindings are used to bind observable GUI elements to print setting in the given options.
      *
      * @param parent
      *            the parent {@link Composite} to use

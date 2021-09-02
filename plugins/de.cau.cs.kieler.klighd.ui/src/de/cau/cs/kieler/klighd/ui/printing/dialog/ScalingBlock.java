@@ -106,14 +106,14 @@ final class ScalingBlock {
         DialogUtil.layoutFillHorizontal(buttonsGroup, true);
         buttonsGroup.setLayout(new GridLayout(BUTTONS_GROUP_COLUMNS, false));
 
-        final Button oneToOneBtn =
-                DialogUtil.button(buttonsGroup, KlighdUIPrintingMessages.PrintDialog_Scaling_to100);
+        final Button oneToOneBtn = DialogUtil.button(
+                buttonsGroup, KlighdUIPrintingMessages.PrintDialog_Scaling_to100);
 
-        final Button fitToPagesBtn = DialogUtil.button(buttonsGroup,
-                KlighdUIPrintingMessages.PrintDialog_Scaling_fitPages);
+        final Button fitToPagesBtn = DialogUtil.button(
+                buttonsGroup, KlighdUIPrintingMessages.PrintDialog_Scaling_fitPages);
 
-        final Button adjustPagesBtn = DialogUtil.button(buttonsGroup,
-                KlighdUIPrintingMessages.PrintDialog_Scaling_adjustPages);
+        final Button adjustPagesBtn = DialogUtil.button(
+                buttonsGroup, KlighdUIPrintingMessages.PrintDialog_Scaling_adjustPages);
 
         // Group containing a spinner and some text labels for scale settings.
         final Composite scalingGroup = new Composite(result, SWT.NONE);
@@ -171,8 +171,7 @@ final class ScalingBlock {
                     // how many pages are necessary to fit the diagram in.
 
                     final PrintExporter exporter = dOptions.getExporter();
-                    final Dimension2D trimmedPrinterBounds =
-                            exporter.getTrimmedTileBounds(dOptions);
+                    final Dimension2D trimmedPrinterBounds = exporter.getTrimmedTileBounds(dOptions);
                     final Dimension2D diagramBounds = exporter.getDiagramBoundsIncludingTrim();
 
                     dOptions.setPagesWide((int) Math.ceil(diagramBounds.getWidth()
@@ -219,11 +218,9 @@ final class ScalingBlock {
 
         } else {
 
-            // in case the 'options' field is null, i.e. this instance is not linked to an instance
-            // of
+            // in case the 'options' field is null, i.e. this instance is not linked to an instance of
             // 'DiagramPrintOptions',
-            // deactivate all the controls as they do not make sense for printing non-diagram
-            // content
+            // deactivate all the controls as they do not make sense for printing non-diagram content
             // (some customers asked for this feature in order to provide consistent print dialogs
             // for all kinds of printable content)
 
@@ -255,11 +252,13 @@ final class ScalingBlock {
         final Dimension2D diagramBounds = exporter.getDiagramBoundsIncludingTrim();
         final Dimension2D trimmedPrinterBounds = exporter.getTrimmedTileBounds(dOptions);
 
-        final double scaleX = trimmedPrinterBounds.getWidth() * dOptions.getPagesWide()
-                / diagramBounds.getWidth();
+        final double scaleX = 
+                trimmedPrinterBounds.getWidth() * dOptions.getPagesWide()
+                        / diagramBounds.getWidth();
 
-        final double scaleY = trimmedPrinterBounds.getHeight() * dOptions.getPagesTall()
-                / diagramBounds.getHeight();
+        final double scaleY = 
+                trimmedPrinterBounds.getHeight() * dOptions.getPagesTall()
+                        / diagramBounds.getHeight();
 
         dOptions.setScaleFactor(Math.min(scaleX, scaleY));
     }
