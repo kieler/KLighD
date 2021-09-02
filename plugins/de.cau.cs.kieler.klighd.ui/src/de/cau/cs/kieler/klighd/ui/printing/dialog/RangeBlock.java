@@ -109,7 +109,7 @@ final class RangeBlock {
         // the update of 'rangeValue' is than caused by the de-selection of 'allValue' leading to
         //  a re-computation of rangValue by means of the above mentioned listeners (crazy shit ...);
         //  the than calculated result is used below for enabling the "from" & "to" text fields.
-        final IObservableValue<Boolean> rangeValue = new ComputedValue<>(realm) {
+        final IObservableValue<Boolean> rangeValue = new ComputedValue<Boolean>(realm) {
 
             @Override
             protected Boolean calculate() {
