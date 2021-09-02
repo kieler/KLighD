@@ -178,7 +178,7 @@ public class KlighdPrintDialog extends TrayDialog {
      */
     @Override
     protected Control createDialogArea(final Composite parent) {
-        bindings = new DataBindingContext(DisplayRealm.getRealm(parent.getDisplay()) /*SWTObservables.getRealm(parent.getDisplay())*/);
+        bindings = new DataBindingContext(DisplayRealm.getRealm(parent.getDisplay()));
 
         final boolean previewInitiallyOpen =
                 diagramPrintOptionsAvailable && DiagramPrintOptions.getInitiallyShowPreview()

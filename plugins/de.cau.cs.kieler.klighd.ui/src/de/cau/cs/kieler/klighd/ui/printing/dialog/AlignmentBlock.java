@@ -81,14 +81,12 @@ final class AlignmentBlock {
         final IObservableValue<Object> centerHorValue = 
                 BeanProperties.value(options.getClass().asSubclass(PrintOptions.class), PrintOptions.PROPERTY_CENTER_HORIZONTALLY)
                     .observe(realm, options);
-                // BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_CENTER_HORIZONTALLY);
-        ISWTObservableValue<Object> horObservation = WidgetProperties.widgetSelection().observe(centerHorizontally); //SWTObservables.observeSelection(centerHorizontally);
+        ISWTObservableValue<Object> horObservation = WidgetProperties.widgetSelection().observe(centerHorizontally);
         bindings.bindValue(horObservation, centerHorValue);
 
         final IObservableValue<Object> centerVerValue = BeanProperties.value(options.getClass().asSubclass(PrintOptions.class), PrintOptions.PROPERTY_CENTER_VERTICALLY)
                 .observe(realm, options);
-                // BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_CENTER_VERTICALLY);
-        ISWTObservableValue<Object> vertObservation = WidgetProperties.widgetSelection().observe(centerVertically); // SWTObservables.observeSelection(centerVertically)
+        ISWTObservableValue<Object> vertObservation = WidgetProperties.widgetSelection().observe(centerVertically);
         bindings.bindValue(vertObservation, centerVerValue);
 
         result.addListener(SWT.Dispose, new Listener() {

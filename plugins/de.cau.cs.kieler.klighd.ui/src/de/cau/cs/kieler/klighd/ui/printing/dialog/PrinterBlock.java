@@ -105,10 +105,6 @@ final class PrinterBlock {
                         .value( options.getClass().asSubclass(PrintOptions.class), PrintOptions.PROPERTY_PRINTER_DATA)
                         .observe(realm, options)
                         .getValue();
-                /*final PrinterData data =
-                        (PrinterData) BeansObservables.observeValue(realm, options,
-                                PrintOptions.PROPERTY_PRINTER_DATA).getValue();
-                */
                 if (data.printToFile) {
                     return data.fileName;
                 } else {
@@ -116,7 +112,7 @@ final class PrinterBlock {
                 }
             }
         };
-        final ISWTObservableValue<String> labelText = WidgetProperties.text().observe(printerLabel); // SWTObservables.observeText(printerLabel); 
+        final ISWTObservableValue<String> labelText = WidgetProperties.text().observe(printerLabel); 
         bindings.bindValue(labelText, computedValue);
 
         // printer properties button

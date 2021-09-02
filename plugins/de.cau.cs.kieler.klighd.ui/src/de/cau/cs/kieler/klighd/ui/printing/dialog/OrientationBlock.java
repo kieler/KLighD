@@ -80,9 +80,9 @@ final class OrientationBlock {
 
         final SelectObservableValue<Integer> orientationGroupValue = new SelectObservableValue<>(realm);
         
-        ISWTObservableValue<Boolean> observerPortrait = WidgetProperties.<Button, Boolean>widgetSelection().observe(portraitRadio); // SWTObservables.observeSelection(portraitRadio);
+        ISWTObservableValue<Boolean> observerPortrait = WidgetProperties.<Button, Boolean>widgetSelection().observe(portraitRadio);
         orientationGroupValue.addOption(PrinterData.PORTRAIT, observerPortrait);
-        ISWTObservableValue<Boolean> observeLandscape = WidgetProperties.<Button, Boolean>widgetSelection().observe(landscapeRadio); // SWTObservables.observeSelection(landscapeRadio);
+        ISWTObservableValue<Boolean> observeLandscape = WidgetProperties.<Button, Boolean>widgetSelection().observe(landscapeRadio);
         orientationGroupValue.addOption(PrinterData.LANDSCAPE, observeLandscape);
 
         IObservableValue<Object> observeOrientation = BeanProperties.value(options.getClass().asSubclass(PrintOptions.class), PrintOptions.PROPERTY_ORIENTATION)
