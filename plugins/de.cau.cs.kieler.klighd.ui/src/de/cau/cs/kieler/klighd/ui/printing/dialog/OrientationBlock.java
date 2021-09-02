@@ -87,7 +87,6 @@ final class OrientationBlock {
 
         IObservableValue<Object> observeOrientation = BeanProperties.value(options.getClass().asSubclass(PrintOptions.class), PrintOptions.PROPERTY_ORIENTATION)
                 .observe(realm, options);
-        // BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_ORIENTATION);
         bindings.bindValue(orientationGroupValue, observeOrientation);
 
         result.addListener(SWT.Dispose, new Listener() {
