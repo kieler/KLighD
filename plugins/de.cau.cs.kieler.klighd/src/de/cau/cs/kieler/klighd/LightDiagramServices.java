@@ -25,6 +25,7 @@ import org.eclipse.elk.core.options.CoreOptions;
 import org.eclipse.elk.core.service.DiagramLayoutEngine;
 import org.eclipse.elk.core.service.DiagramLayoutEngine.Parameters;
 import org.eclipse.elk.core.service.ElkServicePlugin;
+import org.eclipse.elk.core.util.BasicProgressMonitor;
 import org.eclipse.elk.core.util.IElkCancelIndicator;
 import org.eclipse.elk.core.util.IElkProgressMonitor;
 import org.eclipse.elk.core.util.IGraphElementVisitor;
@@ -254,7 +255,12 @@ public final class LightDiagramServices {
                         .getProperty(DiagramLayoutEngine.MAPPING_STATUS);
 
             } else {
-                final IElkProgressMonitor progressMonitor = new NullElkProgressMonitor();
+                final IElkProgressMonitor progressMonitor =
+                        new BasicProgressMonitor()
+                                .withMaxHierarchyLevels(0)
+                                .withLogging(true)
+                                .withLogPersistence(true)
+                                .withExecutionTimeMeasurement(true);
 
                 status = engine.layout(thePart, diagramPart, progressMonitor, layoutParameters)
                         .getProperty(DiagramLayoutEngine.MAPPING_STATUS);
