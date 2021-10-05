@@ -3,7 +3,7 @@
  *
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright 2018,2020 by
+ * Copyright 2018-2021 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -15,37 +15,28 @@ package de.cau.cs.kieler.klighd.lsp
 import com.google.common.base.Strings
 import com.google.common.base.Throwables
 import com.google.common.io.ByteStreams
-import com.google.common.reflect.ClassPath
 import com.google.inject.Inject
 import de.cau.cs.kieler.klighd.IAction
 import de.cau.cs.kieler.klighd.IAction.ActionContext
 import de.cau.cs.kieler.klighd.Klighd
 import de.cau.cs.kieler.klighd.KlighdDataManager
 import de.cau.cs.kieler.klighd.ViewContext
-import de.cau.cs.kieler.klighd.kgraph.KLabel
 import de.cau.cs.kieler.klighd.kgraph.KNode
-import de.cau.cs.kieler.klighd.krendering.KRendering
-import de.cau.cs.kieler.klighd.krendering.KText
 import de.cau.cs.kieler.klighd.lsp.interactive.layered.LayeredInteractiveActionHandler
 import de.cau.cs.kieler.klighd.lsp.interactive.rectpacking.RectpackingInteractiveActionHandler
 import de.cau.cs.kieler.klighd.lsp.launch.AbstractLanguageServer
 import de.cau.cs.kieler.klighd.lsp.model.CheckImagesAction
 import de.cau.cs.kieler.klighd.lsp.model.CheckedImagesAction
-import de.cau.cs.kieler.klighd.lsp.model.ComputedTextBoundsAction
 import de.cau.cs.kieler.klighd.lsp.model.LayoutOptionUIData
 import de.cau.cs.kieler.klighd.lsp.model.PerformActionAction
 import de.cau.cs.kieler.klighd.lsp.model.RefreshDiagramAction
 import de.cau.cs.kieler.klighd.lsp.model.RefreshLayoutAction
-import de.cau.cs.kieler.klighd.lsp.model.RequestTextBoundsAction
 import de.cau.cs.kieler.klighd.lsp.model.SKGraph
 import de.cau.cs.kieler.klighd.lsp.model.SetSynthesisAction
 import de.cau.cs.kieler.klighd.lsp.model.StoreImagesAction
 import de.cau.cs.kieler.klighd.lsp.model.UpdateDiagramOptionsAction
 import de.cau.cs.kieler.klighd.lsp.model.ValuedSynthesisOption
 import de.cau.cs.kieler.klighd.lsp.utils.KRenderingIdGenerator
-import de.cau.cs.kieler.klighd.lsp.utils.SprottyProperties
-import de.cau.cs.kieler.klighd.microlayout.Bounds
-import de.cau.cs.kieler.klighd.util.KlighdProperties
 import java.io.FileNotFoundException
 import java.io.InputStream
 import java.util.ArrayList
@@ -110,11 +101,6 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
     protected SModelRoot currentRoot
     
     /**
-     * Flag indicating if the texts of the current root are updated.
-     */
-    protected boolean textsUpdated = false
-    
-    /**
      * Flag indicating if the images of the current root are updated on the client.
      */
     protected boolean imagesUpdated = false
@@ -148,33 +134,19 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
     }
     
     /**
-     * Prepares the client side update of the model by processing the potentially needed text sizes and images on the 
-     * client. Requests the calculation of text sizes by the client via the {@link RequestTextBoundsAction} and checks
+     * Prepares the client side update of the model by processing the potentially needed images on the client. Checks
      * for client-side cached images with the {@link CheckImagesAction}. If the corresponding response to the 
      * {@link CheckImagesAction} requires images to be sent, a {@link SendImagesAction} is sent first. After receiving
      * the result back, updates the model with default Sprotty behavior via the {@link #updateModel} function.
      * Also handles updating the diagram options on the client.
      * 
-     * @param newRoot the diagram to request the text sizes for.
+     * @param newRoot the diagram to request the images for.
      */
     protected def prepareUpdateModel(SModelRoot newRoot) {
         synchronized (modelLock) {
             currentRoot = newRoot
             if (newRoot !== null) {
-                textsUpdated = false
                 imagesUpdated =  false
-                
-                // text handling
-                val texts = diagramState.getTexts(newRoot.id)
-                if (texts === null) {
-                    throw new NullPointerException("The id of the SGraph was not found in the diagramState")
-                } else if (texts.empty) {
-                    textsUpdated = true
-                } else {
-                    val textDiagram = KGraphDiagramGenerator.generateTextDiagram(texts, newRoot.id)
-                    dispatch(new RequestTextBoundsAction(textDiagram))
-                    // the setOrUpdateModel is then executed after the client returns with its ComputedTextBoundsAction
-                }
                 
                 // image handling
                 val imageData = diagramState.getImageData(newRoot.id)
@@ -192,8 +164,8 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
             } else {
                 setOrUpdateModel
             }
-            // If the texts and the images are already updated, the model is ready to be sent to the client.
-            if (textsUpdated && imagesUpdated) {
+            // If the images are already updated, the model is ready to be sent to the client.
+            if (imagesUpdated) {
                 setOrUpdateModel
             }
         }
@@ -258,11 +230,8 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
         try {
             val clientId = getClientId();
             if (clientId !== null && clientId.equals(message.getClientId())) {
-                // call the handle function for the ComputedTextBoundsAction or forward the call to the super implementation
                 val Action action = message.getAction();
-                if (action.getKind() === ComputedTextBoundsAction.KIND) {
-                    handle(action as ComputedTextBoundsAction)
-                } else if (action.getKind() === PerformActionAction.KIND) {
+                if (action.getKind() === PerformActionAction.KIND) {
                     handle(action as PerformActionAction)
                 } else if (action.getKind() === SetSynthesisAction.KIND) {
                     handle(action as SetSynthesisAction)
@@ -389,79 +358,6 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
                 if (listener !== null) {
                     listener.modelSubmitted(newRoot, this);
                 }
-            }
-        }
-    }
-    
-    /**
-     * Called when a {@link ComputedTextBoundsAction} is received.
-     * Maps the bounds for all texts referenced in the action back to their corresponding {@link KText} elements
-     * and updates the model on the client.
-     */
-    protected def handle(ComputedTextBoundsAction action) {
-        synchronized (modelLock) {
-            if (currentRoot.getRevision() !== action.getRevision()) {
-                return
-            }
-            // Assume the model is still stored in 'currentRoot', since the ComputedTextBoundsAction only gets issued
-            // after a RequestTextBoundsAction, where it got stored before. Only applies if no other diagram revision
-            // is issued first.
-            
-            val textMapping = diagramState.getTextMapping(currentRoot.id)
-            // Add the bounds for each label to the text's properties and remember which KTexts have been modified.
-            // Also calculate the widths and heights of all texts on the fly to be applied later.
-            val List<KText> texts = newArrayList
-            val Map<KText, float[]> textWidths = newHashMap
-            val Map<KText, float[]> textHeights = newHashMap 
-            for (elementAndBound : action.bounds) {
-                val elementId = elementAndBound.elementId
-                val newSize = elementAndBound.newSize
-                if (newSize === null) {
-                    throw new NullPointerException("Estimated Size for a KText is null!")
-                }
-                val kText = textMapping.get(elementId)
-                if (kText === null) {
-                    LOG.info("The textMapping does not contain the referenced Text anymore. The model has changed before" + 
-                        "completion of the request. Terminating this request.")
-                    return
-                }
-                val index = Integer.parseInt(elementId.split("\\$").last) // Matches the character '$'
-                if (!texts.contains(kText)) {
-                    var container = kText.eContainer
-                    while (container instanceof KRendering) {
-                        container = container.eContainer
-                    }
-                    var String text
-                    if (container instanceof KLabel) {
-                        text = container.text
-                    } else {
-                        text = kText.text
-                    }
-                    if (text !== null) {
-                        var lines = text.split("\\r?\\n", -1).size
-                        texts.add(kText)
-                        val widths = newFloatArrayOfSize(lines)
-                        widths.set(index, newSize.width as float)
-                        textWidths.put(kText, widths)
-                        val heights = newFloatArrayOfSize(lines)
-                        heights.set(index, newSize.height as float)
-                        textHeights.put(kText, heights)
-                    }
-                } else {
-                    textWidths.get(kText).set(index, newSize.width as float)
-                    textHeights.get(kText).set(index, newSize.height as float)
-                }
-            }
-            // Apply the text's bounds.
-            for (text : texts) {
-                text.properties.put(KlighdProperties.CALCULATED_TEXT_BOUNDS, 
-                    new Bounds(0, 0, textWidths.get(text).max, textHeights.get(text).fold(0f, [ a, b | a + b ])))
-                text.properties.put(SprottyProperties.CALCULATED_TEXT_LINE_WIDTHS, textWidths.get(text))
-                text.properties.put(SprottyProperties.CALCULATED_TEXT_LINE_HEIGHTS, textHeights.get(text))
-            }
-            textsUpdated = true
-            if (imagesUpdated) {
-                setOrUpdateModel
             }
         }
     }
@@ -599,9 +495,7 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
                 dispatch(new StoreImagesAction(images))
                 imagesUpdated = true
             }
-            if (textsUpdated) {
-                setOrUpdateModel
-            }
+            setOrUpdateModel
         }
     }
 

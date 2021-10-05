@@ -3,7 +3,7 @@
  * 
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright 2019,2020 by
+ * Copyright 2019-2021 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -25,6 +25,11 @@ import de.cau.cs.kieler.klighd.lsp.LSPUtil
 import de.cau.cs.kieler.klighd.lsp.SprottyViewer
 import de.cau.cs.kieler.klighd.lsp.gson_utils.KGraphTypeAdapterUtil
 import de.cau.cs.kieler.klighd.standalone.KlighdStandaloneSetup
+import java.awt.Font
+import java.awt.FontFormatException
+import java.awt.GraphicsEnvironment
+import java.io.File
+import java.io.IOException
 import java.io.InputStream
 import java.io.OutputStream
 import java.util.Collection
@@ -104,6 +109,9 @@ abstract class AbstractLsCreator implements ILsCreator {
         ExecutorService executorService, Function<MessageConsumer, MessageConsumer> wrapper, boolean socket
     ) {
         this.injector = injector
+        // Register the default non-Eclipse open font for AWT.
+        registerFonts()
+        
         // Setup KLighD.
         KlighdStandaloneSetup.initialize
         // Programmatically register the SprottyViewer. It is not registered via service, as it will only ever be used
@@ -148,6 +156,21 @@ abstract class AbstractLsCreator implements ILsCreator {
             Thread.sleep(10_000l)
         }
         onReload
+    }
+    
+    /**
+     * Registers all TrueType (.ttf) and OpenType (.otf) font files placed in the resources/fonts folder.
+     */
+    def void registerFonts() {
+        val fontsFolder = new File(this.class.getResource("/resources/fonts/").toURI)
+        val ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        for (file : fontsFolder.listFiles([ dir, name | name.endsWith(".ttf") || name.endsWith(".otf") ])) {
+            try {
+                ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, file));
+            } catch (IOException|FontFormatException e) {
+                println("could not load font file " + file.absolutePath)
+            }
+        }    
     }
     
     /**
