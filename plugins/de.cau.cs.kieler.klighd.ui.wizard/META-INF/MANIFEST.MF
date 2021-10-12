@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: KIELER Plug-In Wizard for KLighD-Based Projects
 Bundle-SymbolicName: de.cau.cs.kieler.klighd.ui.wizard;singleton:=true
-Bundle-Version: 2.0.1.qualifier
+Bundle-Version: 2.1.1.qualifier
 Bundle-Activator: de.cau.cs.kieler.klighd.ui.wizard.KlighdWizardPlugin
 Require-Bundle: org.apache.log4j,
  org.eclipse.core.expressions,
@@ -22,3 +22,4 @@ Require-Bundle: org.apache.log4j,
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: Kiel University
+Automatic-Module-Name: de.cau.cs.kieler.klighd.ui.wizard

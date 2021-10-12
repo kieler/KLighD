@@ -12,6 +12,7 @@
  */
 package de.cau.cs.kieler.klighd.lsp
 
+import com.google.common.collect.HashBiMap
 import de.cau.cs.kieler.klighd.LightDiagramServices
 import de.cau.cs.kieler.klighd.ViewContext
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties
@@ -107,7 +108,7 @@ class KGraphIncrementalDiagramGenerator extends KGraphDiagramGenerator {
     // most importantly: communication between server and client should start using incremental data
     override SGraph toSGraph(KNode parentNode, String uri, CancelIndicator cancelIndicator) {
         
-        kGraphToSModelElementMap = new HashMap
+        kGraphToSModelElementMap = HashBiMap.create
         textMapping = new HashMap
         modelLabels = new ArrayList
         images = new HashSet
@@ -202,7 +203,6 @@ class KGraphIncrementalDiagramGenerator extends KGraphDiagramGenerator {
         nodeAndEdgeElements.add(nodeElement)
         kGraphToSModelElementMap.put(node, nodeElement)
         elementsToPostProcess.add(new Pair(node, nodeElement))
-        nodeElement.trace(node)
 
         // Add all edges in a list to be generated later, as they need their source and target nodes or ports
         // to be generated previously. Because hierarchical edges could connect to any arbitrary parent or child node,
@@ -293,7 +293,6 @@ class KGraphIncrementalDiagramGenerator extends KGraphDiagramGenerator {
                     parent.add(edgeElement)
                     kGraphToSModelElementMap.put(edge, edgeElement)
                     elementsToPostProcess.add(new Pair(edge, edgeElement))
-                    edgeElement.trace(edge)
                 }
             } else {
                 remainingEdges.add(edgeAndParent)
@@ -314,7 +313,6 @@ class KGraphIncrementalDiagramGenerator extends KGraphDiagramGenerator {
             portElements.add(portElement)
             kGraphToSModelElementMap.put(port, portElement)
             elementsToPostProcess.add(new Pair(port, portElement))
-            portElement.trace(port)
         }
         return portElements
     }
@@ -330,7 +328,6 @@ class KGraphIncrementalDiagramGenerator extends KGraphDiagramGenerator {
             labelElements.add(labelElement)
             kGraphToSModelElementMap.put(label, labelElement)
             elementsToPostProcess.add(new Pair(label, labelElement))
-            labelElement.trace(label)
         }
         return labelElements
     }

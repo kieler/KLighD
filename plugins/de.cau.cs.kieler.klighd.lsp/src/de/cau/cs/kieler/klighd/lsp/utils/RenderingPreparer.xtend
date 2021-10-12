@@ -18,6 +18,7 @@ import de.cau.cs.kieler.klighd.IStyleModifier.StyleModificationContext
 import de.cau.cs.kieler.klighd.KlighdDataManager
 import de.cau.cs.kieler.klighd.kgraph.KEdge
 import de.cau.cs.kieler.klighd.kgraph.KGraphElement
+import de.cau.cs.kieler.klighd.kgraph.KLabel
 import de.cau.cs.kieler.klighd.kgraph.KLabeledGraphElement
 import de.cau.cs.kieler.klighd.kgraph.KNode
 import de.cau.cs.kieler.klighd.kgraph.KPoint
@@ -48,6 +49,7 @@ import java.util.Map
 import static com.google.common.collect.Iterables.filter
 
 import static extension de.cau.cs.kieler.klighd.lsp.utils.SprottyProperties.*
+import de.cau.cs.kieler.klighd.kgraph.KPort
 
 /**
  * Utility class to provide some functionality to persist prepare the rendering of a {@link KGraphElement}.
@@ -250,6 +252,8 @@ final class RenderingPreparer {
         var Map<String, Bounds> usedBoundsMap = boundsMap
         var Map<String, Decoration> usedDecorationMap = decorationMap
         
+        
+        
         // KRenderingRefs inside other renderings. This reference needs a new bounds- and decoration map to be stored
         // inside it.
         if (rendering instanceof KRenderingRef) {
@@ -279,12 +283,24 @@ final class RenderingPreparer {
                 var Point2D[] path = #[]
 //                var path = new KlighdPath(rendering) // TODO: Can I also only use the points of the rendering?
                 val parentRendering = rendering.eContainer
+                
+                // Get inset from parent region
+                var float leftInset = 0
+                var float topInset = 0
+                if (parent instanceof KEdge) {
+                    leftInset = parent.source.parent.insets.left
+                    topInset = parent.source.parent.insets.top
+                } 
                 if (parentRendering instanceof KPolygon) {
                     // For a KPolygon as the parent rendering the points it have to be evaluated first.
                     var points = newArrayOfSize(parentRendering.points.size)
                     for (var i = 0; i < parentRendering.points.size; i++) {
-                        points.set(i, 
-                            PlacementUtil.evaluateKPosition(parentRendering.points.get(i), parentBounds, true).toPoint2D)
+                        // Update decoration positions according to parent region insets
+                        var position = PlacementUtil.evaluateKPosition(parentRendering.points.get(i), parentBounds, true).toPoint2D
+                        var x = position.x + leftInset
+                        var y = position.y + topInset
+                        position.setLocation(x, y)
+                        points.set(i, position)
                     }
                     // The path is a polygon as the parent rendering indicates.
                     path = points
@@ -310,7 +326,13 @@ final class RenderingPreparer {
                     var points = newArrayOfSize(pointList.size)
                     for (var i = 0; i < pointList.size; i++) {
                         val point = pointList.get(i)
-                        points.set(i, new Point2D.Float(point.x, point.y))
+                        
+                        // Update decoration positions according to parent region insets
+                        var position = new Point2D.Float(point.x, point.y)
+                        var x = position.x + leftInset
+                        var y = position.y + topInset
+                        position.setLocation(x, y)
+                        points.set(i, position)
                     }
                     // The path is a polyline as the parent rendering indicates.
                     path = points

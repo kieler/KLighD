@@ -81,6 +81,12 @@ final class SynthesisOptionsPersistence {
                 if (option.isCheckOption()) {
                     return Boolean.parseBoolean(value);
                 } else if (option.isRangeOption()) {
+                    // An Integer range option should be parsed as an integer. Default to float parsing otherwise.
+                    if (option.getRange().getFirst() instanceof Integer
+                            && option.getRange().getSecond() instanceof Integer
+                            && option.getStepSize() instanceof Integer) {
+                        return Integer.parseInt(value);
+                    }
                     return Float.parseFloat(value);
                 } else if (option.isChoiceOption()) {
                     int hash = Integer.parseInt(value);

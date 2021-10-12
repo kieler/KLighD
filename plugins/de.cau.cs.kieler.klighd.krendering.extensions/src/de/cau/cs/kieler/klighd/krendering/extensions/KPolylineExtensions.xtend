@@ -56,8 +56,8 @@ class KPolylineExtensions {
                 it.absolute = if (head) -2f else 2f;
                 it.width = 8;
                 it.height = 6;
-                it.setXOffset(if (head) -6f else 6f); // chsch: used the regular way here and below, as the alias 
-                it.setYOffset(if (head) -3f else 3f); //  name translation convention changed from Xtext 2.3 to 2.4.
+                it.setXOffset(if (head) -6f else -3f); // chsch: used the regular way here and below, as the alias 
+                it.setYOffset(if (head) -3f else -4f); //  name translation convention changed from Xtext 2.3 to 2.4.
             ];
             if (!head) it.rotation = 180f
         ];

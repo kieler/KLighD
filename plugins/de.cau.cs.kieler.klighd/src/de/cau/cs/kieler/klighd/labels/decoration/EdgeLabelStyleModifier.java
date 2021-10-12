@@ -49,7 +49,7 @@ public class EdgeLabelStyleModifier implements IStyleModifier {
     
     /** Modifier ID. */
     public static final String ID =
-            "de.cau.cs.kieler.klighd.labels.inline.inlineEdgeLabelStyleModifier";
+            "de.cau.cs.kieler.klighd.labels.decoration.EdgeLabelStyleModifier";
     
     
     ////////////////////////////////////////////////////////////////////////////////////////////

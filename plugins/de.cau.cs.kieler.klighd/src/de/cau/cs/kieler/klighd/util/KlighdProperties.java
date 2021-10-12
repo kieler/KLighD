@@ -24,7 +24,6 @@ import org.eclipse.emf.ecore.EObject;
 
 import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
-import de.cau.cs.kieler.klighd.kgraph.KLayoutData;
 import de.cau.cs.kieler.klighd.kgraph.KNode;
 import de.cau.cs.kieler.klighd.krendering.KText;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
@@ -357,4 +356,12 @@ public final class KlighdProperties {
      */
     public static final IProperty<Bounds> CALCULATED_TEXT_BOUNDS =
             new Property<Bounds>("klighd.calculated.text.bounds", null);
+
+	    
+    /**
+     * Determines whether a KText can be interpreted as a title for a node.
+     * By default the KText is not a title.
+     */
+    public static final IProperty<Boolean> IS_NODE_TITLE =
+            new Property<Boolean>("klighd.isNodeTitle", false);
 }

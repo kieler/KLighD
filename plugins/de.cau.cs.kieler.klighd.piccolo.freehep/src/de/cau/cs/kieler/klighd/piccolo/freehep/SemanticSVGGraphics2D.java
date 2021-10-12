@@ -855,15 +855,6 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
         }
         style.put("stroke", "none");
 
-        // related to KIPRA-1637: preserve multiple spaces when displaying text strings
-        if (isProperty(STYLABLE))
-            style.put("white-space", "pre");
-        else
-            // avoid using the deprecated property 'xml:space' (https://docs.w3cub.com/svg/attribute/xml:space/)
-            //  and sneak in the (css-based) replacement (https://www.w3schools.com/cssref/pr_text_white-space.asp)
-            //  via a 'style' property definition
-            style.put("style", "white-space: pre");
-
         // convert tags to string values
         str = XMLWriter.normalizeText(str);
 
@@ -910,7 +901,22 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
         final String[] lines = text.split("\\r?\\n|\\r");
         final boolean isSingleLine = lines.length <= 1;
         final StringBuffer content = new StringBuffer();
-        
+
+        // in case of a single line text
+        //  clone the styles object in order to achieve identical order while iterating over the entries
+        // otherwise take an empty properties table, ...
+        final Properties textLineStyle = isSingleLine ? (Properties) style.clone() : new Properties();
+
+        // related to KIPRA-1637: preserve multiple spaces when displaying text strings;
+        // this property must be set per text field and won't be considered properly by chromium if outsourced to parent
+        if (isProperty(STYLABLE))
+            textLineStyle.put("white-space", "pre");
+        else
+            // avoid using the deprecated property 'xml:space' (https://docs.w3cub.com/svg/attribute/xml:space/)
+            //  and sneak in the (css-based) replacement (https://www.w3schools.com/cssref/pr_text_white-space.asp)
+            //  via a 'style' property definition
+            textLineStyle.put("style", "white-space: pre");
+
         int i = 0;
         if (display != null) {
             // Translate the font back to an swt font
@@ -942,7 +948,7 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
                 content.append("\n" + indentation);
                 content.append("<text x=\"0\" y=\"").append(y).append("\"");
                 // style
-                content.append(isSingleLine ? " " + style(style) : "");
+                content.append(" " + style(textLineStyle));
                 
                 final Double nextLineLength = noTextLengthPerLineCalcRequired ? nextLength :
                     // need to box the result here as the type of the ternary operation would be 'double' otherwise
@@ -961,6 +967,43 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
                 y += lineHeight;
             }
             
+        } else if (Klighd.simulateSwtFontSizeInAwt()) {
+            // If simulation of SWT font sizes in AWT is active we can use px size and set text length
+            
+            final int fontSize = getFont().getSize();
+            final float y = fontSize * pointToPxFactor;
+            final Double nextLength = this.nextTextLength;
+            this.nextTextLength = null;
+            
+            // if we have a multi-line text and a configured nextTextLength
+            //  we need to recalculate the designated textLength per line
+            // otherwise we can stick to the given 'nextTextLength' value
+            boolean noTextLengthPerLineCalcRequired = nextLength == null || isSingleLine;
+            final FontData fontData = noTextLengthPerLineCalcRequired ? null : getFontData(getFont());
+            
+            for (final String line : lines) {
+                content.append("\n" + indentation);
+                content.append("<text x=\"0\" y=\"").append(y).append("\"");
+                
+                final Double nextLineLength = noTextLengthPerLineCalcRequired ? nextLength :
+                    // need to box the result here as the type of the ternary operation would be 'double' otherwise
+                    //  yielding NPEs if 'nextLength' is 'null'
+                    Double.valueOf(PlacementUtil.estimateTextSize(fontData, line).getWidth());
+                
+                // text length
+                content.append(textLength(nextLineLength));
+                // semantic data
+                content.append(isSingleLine ? " "
+                    // style
+                    + style(style)
+                    // semantic data
+                    + attributes(false) : ""
+                );
+                content.append(textLineAttributes(line, i++));
+                content.append(">");
+                content.append(line);
+                content.append("</text>");
+            }
         } else {
             // without a display just use the pt size as line height for multiline text
 
@@ -969,11 +1012,11 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
             for (final String line : lines) {
                 content.append("\n" + indentation);
                 content.append("<text x=\"0\" y=\"").append(y).append("\"");
-                content.append(isSingleLine ? " "
+                content.append(" "
                     // style
                     + style(style)
                     // semantic data
-                    + attributes(false) : ""
+                    + (isSingleLine ? " " + attributes(false) : "")
                 );
                 content.append(textLineAttributes(line, i++));
                 content.append(">");
@@ -1098,10 +1141,10 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
          * A font's size is specified in 'pt' which is a relative size where a height of 72pt
          * corresponds to 1 inch. When a font is rendered on a screen however, these pts are converted
          * to pixels and sizes of nodes and boxes are determined correspondingly. We thus use a px size
-         * if we are able to determine the device with wich the font was rendered (i.e. the device).
+         * if we are able to determine the device with which the font was rendered (i.e. the device).
          */
         Float size = (Float) attributes.get(TextAttribute.SIZE);
-        if (display != null) {
+        if (display != null || Klighd.simulateSwtFontSizeInAwt()) {
             result.put("font-size", fixedPrecision(size.floatValue() * pointToPxFactor) + "px");
         } else {
             result.put("font-size", fixedPrecision(size.floatValue()) + "pt");

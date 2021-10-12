@@ -46,6 +46,7 @@ public class Klighd {
     private static IKlighdStatusManager statusManager;
     
     private static boolean suppressDisplayScaleCompensationWhileHandlingText = false;
+    private static boolean simulateSwtFontSizeInAwt = true;
     
     static {
         boolean isLinux = false;
@@ -128,7 +129,31 @@ public class Klighd {
      *            <code>true</code> if compensation shall be suppressed, <code>false</code> reverts
      *            to the default.
      */
-    public static void setSuppressDisplayScaleCompensationWhileHandlingText(boolean suppress) {
+    public static void setSuppressDisplayScaleCompensationWhileHandlingText(final boolean suppress) {
         suppressDisplayScaleCompensationWhileHandlingText = suppress;
+    }
+    
+    /**
+     * Returns the (global) setting on adjusting the font size estimation of AWT to match SWT sizes
+     * more closely. This also enables using px instead of pt when rendering SVGs.
+     * 
+     * @return <code>true</code> if simulation is active and fonts will be scaled (default),
+     *         <code>false</code> otherwise.
+     */
+    public static boolean simulateSwtFontSizeInAwt() {
+        return simulateSwtFontSizeInAwt;
+    }
+
+    /**
+     * Changes the (global) setting on adjusting adjusting the font size estimation of AWT to match SWT sizes
+     * more closely. This also enables using px instead of pt when rendering SVGs.
+     * This setting will only affect non-UI applications, but may be switched off if default AWT font sizes and values
+     * in pt are preferred.
+     *
+     * @param simulate
+     *            <code>true</code> if font sizes should be adjusted, <code>false</code> to deactivate this behavior.
+     */
+    public static void setSimulateSwtFontSizeInAwt(final boolean simulate) {
+        simulateSwtFontSizeInAwt = simulate;
     }
 }

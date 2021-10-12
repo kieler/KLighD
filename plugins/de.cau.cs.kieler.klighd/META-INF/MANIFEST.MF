@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: KIELER Lightweight Diagrams (KLighD)
 Bundle-SymbolicName: de.cau.cs.kieler.klighd;singleton:=true
-Bundle-Version: 2.0.1.qualifier
+Bundle-Version: 2.1.1.qualifier
 Bundle-Vendor: Kiel University
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: de.cau.cs.kieler.klighd.kgraph,
@@ -38,3 +38,4 @@ Export-Package: de.cau.cs.kieler.klighd,
  de.cau.cs.kieler.klighd.syntheses,
  de.cau.cs.kieler.klighd.util,
  de.cau.cs.kieler.klighd.viewers
+Automatic-Module-Name: de.cau.cs.kieler.klighd

@@ -96,7 +96,7 @@ public class PrintAction extends Action {
      * @return the viewer to print
      */
     private PiccoloViewer getViewer() {
-        if (pViewer != null) {
+        if (pViewer != null && !pViewer.getControl().isDisposed()) {
             return pViewer;
         }
 

@@ -743,7 +743,7 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
                         layoutLabel.getText());
                 String origLabelText = label.getText();
                 
-                if (origLabelText.equals(layoutLabel.getText())) {
+                if (origLabelText != null && origLabelText.equals(layoutLabel.getText())) {
                     label.setProperty(KlighdProperties.TOOLTIP, null);
                 } else {
                     label.setProperty(KlighdProperties.TOOLTIP, origLabelText);
@@ -983,8 +983,8 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
                 layoutEdge.getProperty(CoreOptions.EDGE_TYPE));
         viewModelEdge.setProperty(CoreOptions.JUNCTION_POINTS,
                 layoutEdge.getProperty(CoreOptions.JUNCTION_POINTS));
-        viewModelEdge.setProperty(CoreOptions.TOP_DOWN_LAYOUT_RENDER_SCALE,
-                layoutEdge.getProperty(CoreOptions.TOP_DOWN_LAYOUT_RENDER_SCALE));
+//        viewModelEdge.setProperty(CoreOptions.TOP_DOWN_LAYOUT_RENDER_SCALE,
+//                layoutEdge.getProperty(CoreOptions.TOP_DOWN_LAYOUT_RENDER_SCALE));
         
         final ElkEdgeSection layoutEdgeSection = layoutEdge.getSections().get(0);
         
