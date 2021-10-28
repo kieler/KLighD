@@ -109,8 +109,6 @@ abstract class AbstractLsCreator implements ILsCreator {
         ExecutorService executorService, Function<MessageConsumer, MessageConsumer> wrapper, boolean socket
     ) {
         this.injector = injector
-        // Register the default non-Eclipse open font for AWT.
-        registerFonts()
         
         // Setup KLighD.
         KlighdStandaloneSetup.initialize
@@ -156,21 +154,6 @@ abstract class AbstractLsCreator implements ILsCreator {
             Thread.sleep(10_000l)
         }
         onReload
-    }
-    
-    /**
-     * Registers all TrueType (.ttf) and OpenType (.otf) font files placed in the resources/fonts folder.
-     */
-    def void registerFonts() {
-        val fontsFolder = new File(this.class.getResource("/resources/fonts/").toURI)
-        val ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-        for (file : fontsFolder.listFiles([ dir, name | name.endsWith(".ttf") || name.endsWith(".otf") ])) {
-            try {
-                ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, file));
-            } catch (IOException|FontFormatException e) {
-                println("could not load font file " + file.absolutePath)
-            }
-        }    
     }
     
     /**

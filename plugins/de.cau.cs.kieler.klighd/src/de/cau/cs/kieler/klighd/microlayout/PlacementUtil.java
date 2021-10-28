@@ -969,7 +969,7 @@ public final class PlacementUtil {
                 size = new Bounds(0, y, maxWidth, totalHeight);
             }
         }
-        if (textWidths != null && textHeights != null) {
+        if (kText != null && textWidths != null && textHeights != null) {
             // persist the line-wise estimations on the KText.
             kText.getProperties().put(KlighdProperties.CALCULATED_TEXT_BOUNDS, Bounds.of(size));
             kText.getProperties().put(KlighdProperties.CALCULATED_TEXT_LINE_WIDTHS, textWidths);

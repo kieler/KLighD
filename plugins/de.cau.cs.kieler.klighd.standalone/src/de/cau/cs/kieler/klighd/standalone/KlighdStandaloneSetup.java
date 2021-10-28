@@ -9,6 +9,13 @@
  */
 package de.cau.cs.kieler.klighd.standalone;
 
+import java.awt.Font;
+import java.awt.FontFormatException;
+import java.awt.GraphicsEnvironment;
+import java.io.File;
+import java.io.FilenameFilter;
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.Collection;
 
 import org.eclipse.elk.alg.force.options.ForceMetaDataProvider;
@@ -46,6 +53,7 @@ public class KlighdStandaloneSetup {
         EPackage.Registry.INSTANCE.put(KGraphPackage.eNS_URI, KGraphPackage.eINSTANCE);
         EPackage.Registry.INSTANCE.put(KRenderingPackage.eNS_URI, KRenderingPackage.eINSTANCE);
         Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("kgx", new XMIResourceFactoryImpl());
+        registerFonts();
 
         ElkReflect.register(ExpansionAwareLayoutOption.ExpansionAwareLayoutOptionData.class,
                 () -> new ExpansionAwareLayoutOption.ExpansionAwareLayoutOptionData(),
@@ -110,5 +118,30 @@ public class KlighdStandaloneSetup {
         } catch (Throwable t) {
             return null;
         }
+    }
+    
+    /**
+     * Registers all TrueType (.ttf) and OpenType (.otf) font files placed in the resources/fonts folder to the AWT
+     * {@link GraphicsEnvironment} to be used as the default font in external/standalone applications.
+     */
+    protected void registerFonts() {
+        try {
+            final File fontsFolder = new File(this.getClass().getResource("/resources/fonts/").toURI());
+            final GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            for (File file : fontsFolder.listFiles(new FilenameFilter() {
+                        @Override
+                        public boolean accept(File dir, String name) {
+                            return name.endsWith(".ttf") || name.endsWith(".otf");
+                        }
+                    })) {
+                try {
+                    ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, file));
+                } catch (IOException|FontFormatException e) {
+                    System.out.println("could not load font file " + file.getAbsolutePath());
+                }
+            }  
+        } catch (URISyntaxException e) {
+            System.out.println("could not load /resources/fonts/ folder for this class " + this.getClass().toString());
+        }  
     }
 }
