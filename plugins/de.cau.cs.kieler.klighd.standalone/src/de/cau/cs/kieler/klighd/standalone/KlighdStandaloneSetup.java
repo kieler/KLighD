@@ -10,12 +10,8 @@
 package de.cau.cs.kieler.klighd.standalone;
 
 import java.awt.Font;
-import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
-import java.io.File;
-import java.io.FilenameFilter;
-import java.io.IOException;
-import java.net.URISyntaxException;
+import java.io.InputStream;
 import java.util.Collection;
 
 import org.eclipse.elk.alg.force.options.ForceMetaDataProvider;
@@ -125,23 +121,14 @@ public class KlighdStandaloneSetup {
      * {@link GraphicsEnvironment} to be used as the default font in external/standalone applications.
      */
     protected void registerFonts() {
-        try {
-            final File fontsFolder = new File(this.getClass().getResource("/resources/fonts/").toURI());
-            final GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-            for (File file : fontsFolder.listFiles(new FilenameFilter() {
-                        @Override
-                        public boolean accept(File dir, String name) {
-                            return name.endsWith(".ttf") || name.endsWith(".otf");
-                        }
-                    })) {
-                try {
-                    ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, file));
-                } catch (IOException|FontFormatException e) {
-                    System.out.println("could not load font file " + file.getAbsolutePath());
-                }
-            }  
-        } catch (URISyntaxException e) {
-            System.out.println("could not load /resources/fonts/ folder for this class " + this.getClass().toString());
-        }  
+        String[] filePaths = {"/resources/fonts/overpass-regular.otf", "/resources/fonts/overpass-mono-regular.otf"};
+        final GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        for (int i = 0; i < filePaths.length; ++i) {
+            try (InputStream fontStream = this.getClass().getResourceAsStream(filePaths[i])) {
+                ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, fontStream));
+            } catch (Throwable e) {
+                System.out.println("could not load font file " + filePaths[i]);
+            }
+        }
     }
 }
