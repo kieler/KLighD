@@ -13,6 +13,9 @@
  */
 package de.cau.cs.kieler.klighd.standalone;
 
+import java.awt.Font;
+import java.awt.GraphicsEnvironment;
+import java.io.InputStream;
 import java.util.Collection;
 
 import org.eclipse.elk.alg.force.options.ForceMetaDataProvider;
@@ -50,6 +53,7 @@ public class KlighdStandaloneSetup {
         EPackage.Registry.INSTANCE.put(KGraphPackage.eNS_URI, KGraphPackage.eINSTANCE);
         EPackage.Registry.INSTANCE.put(KRenderingPackage.eNS_URI, KRenderingPackage.eINSTANCE);
         Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("kgx", new XMIResourceFactoryImpl());
+        registerFonts();
 
         ElkReflect.register(ExpansionAwareLayoutOption.ExpansionAwareLayoutOptionData.class,
                 () -> new ExpansionAwareLayoutOption.ExpansionAwareLayoutOptionData(),
@@ -113,6 +117,22 @@ public class KlighdStandaloneSetup {
             return new RadialMetaDataProvider();
         } catch (Throwable t) {
             return null;
+        }
+    }
+    
+    /**
+     * Registers all TrueType (.ttf) and OpenType (.otf) font files placed in the resources/fonts folder to the AWT
+     * {@link GraphicsEnvironment} to be used as the default font in external/standalone applications.
+     */
+    protected void registerFonts() {
+        String[] filePaths = {"/resources/fonts/overpass-regular.otf", "/resources/fonts/overpass-mono-regular.otf"};
+        final GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        for (int i = 0; i < filePaths.length; ++i) {
+            try (InputStream fontStream = this.getClass().getResourceAsStream(filePaths[i])) {
+                ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, fontStream));
+            } catch (Throwable e) {
+                System.out.println("could not load font file " + filePaths[i]);
+            }
         }
     }
 }

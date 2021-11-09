@@ -27,7 +27,7 @@ import org.eclipse.elk.graph.properties.Property
 
 /**
  * A collection of {@link IProperty IProperties} that may be used to persist some additional data on
- * {@link KGraphElement}s to allow functionality with a sprotty viewer.
+ * {@link KGraphElement}s to allow functionality with a Sprotty viewer.
  * 
  * @author nre
  */
@@ -71,18 +71,6 @@ class SprottyProperties {
      */
     public static final IProperty<Boolean> EXPANDED =
         new Property<Boolean>("klighd.lsp.expanded", true);
-    
-    /**
-     * Property determining the pre-calculated widths of each line in a {@link KText}.
-     */
-    public static final IProperty<float[]> CALCULATED_TEXT_LINE_WIDTHS = 
-        new Property<float[]>("klighd.calculated.text.line.widths", null);
-    
-    /**
-     * Property determining the pre-calculated heights of each line in a {@link KText}.
-     */
-    public static final IProperty<float[]> CALCULATED_TEXT_LINE_HEIGHTS = 
-        new Property<float[]>("klighd.calculated.text.line.heights", null);
     
     /**
      * The unique identifier of a {@link KRendering}, built hierarchically from the root rendering of an element using

@@ -3,7 +3,7 @@
  *
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright 2018, 2020 by
+ * Copyright 2018-2021 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -28,7 +28,6 @@ import de.cau.cs.kieler.klighd.lsp.interactive.rectpacking.RectpackingDeletePosi
 import de.cau.cs.kieler.klighd.lsp.interactive.rectpacking.RectpackingSetPositionConstraintAction
 import de.cau.cs.kieler.klighd.lsp.interactive.rectpacking.SetAspectRatioAction
 import de.cau.cs.kieler.klighd.lsp.model.CheckedImagesAction
-import de.cau.cs.kieler.klighd.lsp.model.ComputedTextBoundsAction
 import de.cau.cs.kieler.klighd.lsp.model.PerformActionAction
 import de.cau.cs.kieler.klighd.lsp.model.RefreshDiagramAction
 import de.cau.cs.kieler.klighd.lsp.model.RefreshLayoutAction
@@ -47,9 +46,8 @@ class KGraphTypeAdapterUtil {
         gsonBuilder
         .registerTypeAdapterFactory(
             new ActionTypeAdapter.Factory => [
-                // General sprotty action
+                // General Sprotty actions
                 addActionKind(CheckedImagesAction.KIND, CheckedImagesAction)
-                addActionKind(ComputedTextBoundsAction.KIND, ComputedTextBoundsAction)
                 addActionKind(PerformActionAction.KIND, PerformActionAction)
                 addActionKind(SetSynthesisAction.KIND, SetSynthesisAction)
                 addActionKind(RefreshDiagramAction.KIND, RefreshDiagramAction)

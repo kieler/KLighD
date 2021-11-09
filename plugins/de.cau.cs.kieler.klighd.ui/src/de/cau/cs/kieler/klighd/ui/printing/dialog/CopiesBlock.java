@@ -28,12 +28,13 @@
 package de.cau.cs.kieler.klighd.ui.printing.dialog;
 
 import org.eclipse.core.databinding.DataBindingContext;
-import org.eclipse.core.databinding.beans.BeansObservables;
+import org.eclipse.core.databinding.beans.typed.BeanProperties;
 import org.eclipse.core.databinding.observable.Realm;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.observable.value.IValueChangeListener;
 import org.eclipse.core.databinding.observable.value.ValueChangeEvent;
-import org.eclipse.jface.databinding.swt.SWTObservables;
+import org.eclipse.jface.databinding.swt.ISWTObservableValue;
+import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
@@ -45,6 +46,7 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Spinner;
+import org.eclipse.swt.widgets.Widget;
 
 import de.cau.cs.kieler.klighd.Klighd;
 import de.cau.cs.kieler.klighd.ui.KlighdUIPlugin;
@@ -103,9 +105,10 @@ final class CopiesBlock {
         DialogUtil.label(result, KlighdUIPrintingMessages.PrintDialog_NumberOfCopies);
         final Spinner copiesSpinner = DialogUtil.spinner(result, 1, Integer.MAX_VALUE);
 
-        final IObservableValue copiesValue =
-                BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_COPIES);
-        bindings.bindValue(SWTObservables.observeSelection(copiesSpinner), copiesValue);
+        final IObservableValue<Object> copiesValue = 
+                BeanProperties.value(options.getClass().asSubclass(PrintOptions.class), PrintOptions.PROPERTY_COPIES).observe(realm, options);
+        ISWTObservableValue<Object> copiesObservation = WidgetProperties.selection().observe(copiesSpinner);
+        bindings.bindValue(copiesObservation, copiesValue);
 
         final Image collateOnImage = COLLATE_ON.createImage();
         final Image collateOffImage = COLLATE_OFF.createImage();
@@ -119,13 +122,14 @@ final class CopiesBlock {
 
         collateImageLabel.setImage(collateCheck.getSelection() ? collateOnImage : collateOffImage);
 
-        final IObservableValue collateValue =
-                BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_COLLATE);
-        bindings.bindValue(SWTObservables.observeSelection(collateCheck), collateValue);
+        final IObservableValue<Object> collateValue =
+                BeanProperties.value(options.getClass().asSubclass(PrintOptions.class), PrintOptions.PROPERTY_COLLATE).observe(realm, options);
+        ISWTObservableValue<Object> collateObservation =  WidgetProperties.selection().observe((Widget) collateCheck);
+        bindings.bindValue(collateObservation, collateValue);
 
-        collateValue.addValueChangeListener(new IValueChangeListener() {
+        collateValue.addValueChangeListener(new IValueChangeListener<Object>() {
 
-            public void handleValueChange(final ValueChangeEvent event) {
+            public void handleValueChange(final ValueChangeEvent<? extends Object> event) {
 
                 // set image according to collate state
                 if (((Boolean) event.getObservableValue().getValue()).booleanValue()) {

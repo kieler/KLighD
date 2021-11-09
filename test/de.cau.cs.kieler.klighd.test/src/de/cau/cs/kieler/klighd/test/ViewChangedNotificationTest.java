@@ -22,6 +22,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+import org.hamcrest.MatcherAssert;
 import org.hamcrest.collection.IsIterableWithSize;
 import org.junit.After;
 import org.junit.Assert;
@@ -160,7 +161,7 @@ public class ViewChangedNotificationTest {
             final Iterable<KGraphElement> l = Sets.newHashSet(
                     countNodesOnly ? change.visibleDiagramNodes() : change.visibleDiagramElements());
             try {
-                Assert.assertThat(l,
+                MatcherAssert.assertThat("", l,
                         IsIterableWithSize.<KGraphElement>iterableWithSize(expectedElementsNumber));
             } catch (final AssertionError e) {
                 failure = e;

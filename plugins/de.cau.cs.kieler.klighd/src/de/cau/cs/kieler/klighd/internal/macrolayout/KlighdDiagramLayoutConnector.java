@@ -747,7 +747,7 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
                         layoutLabel.getText());
                 String origLabelText = label.getText();
                 
-                if (origLabelText.equals(layoutLabel.getText())) {
+                if (origLabelText != null && origLabelText.equals(layoutLabel.getText())) {
                     label.setProperty(KlighdProperties.TOOLTIP, null);
                 } else {
                     label.setProperty(KlighdProperties.TOOLTIP, origLabelText);

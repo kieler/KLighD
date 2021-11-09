@@ -137,8 +137,10 @@ public interface IViewer {
      * @param eventTypes
      *            the {@link ViewChangeType} this listener is notified of
      */
-    void addViewChangedListener(IViewChangeListener listener,
-            ViewChangeType... eventTypes);
+    default void addViewChangedListener(IViewChangeListener listener,
+            ViewChangeType... eventTypes) {
+        this.addViewChangeListener(listener, eventTypes);
+    }
 
     /**
      * @deprecated (inconsistent name) use {@link #removeViewChangeListener(IViewChangeListener)}
@@ -146,7 +148,9 @@ public interface IViewer {
      * @param listener
      *            the {@link IViewChangeListener} to be removed from the listeners queue
      */
-    void removeViewChangedEventListener(IViewChangeListener listener);
+    default void removeViewChangedEventListener(IViewChangeListener listener) {
+        this.removeViewChangeListener(listener);
+    }
 
 
     /* ----------------------------- */

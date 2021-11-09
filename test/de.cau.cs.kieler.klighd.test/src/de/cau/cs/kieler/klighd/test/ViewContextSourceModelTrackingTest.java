@@ -25,6 +25,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.hamcrest.CoreMatchers;
+import org.hamcrest.MatcherAssert;
 import org.hamcrest.collection.IsCollectionWithSize;
 import org.hamcrest.collection.IsEmptyIterable;
 import org.hamcrest.collection.IsIterableContainingInOrder;
@@ -94,8 +95,8 @@ public class ViewContextSourceModelTrackingTest {
             return;
         }
 
-        Assert.assertThat(sourceTargetsMap.values(), IsCollectionWithSize.hasSize(expectedEntryNumber));
-        Assert.assertThat(targetSourceMap.entrySet(), IsCollectionWithSize.hasSize(expectedEntryNumber));
+        MatcherAssert.assertThat("", sourceTargetsMap.values(), IsCollectionWithSize.hasSize(expectedEntryNumber));
+        MatcherAssert.assertThat("", targetSourceMap.entrySet(), IsCollectionWithSize.hasSize(expectedEntryNumber));
     }
 
 
@@ -167,7 +168,7 @@ public class ViewContextSourceModelTrackingTest {
                 viewContext.getSourceElement(viewContext.getViewModel()),
                 sourceModel);
         
-        Assert.assertThat(viewContext.getTargetElements(sourceModel),
+        MatcherAssert.assertThat("", viewContext.getTargetElements(sourceModel),
                 IsIterableContainingInOrder.contains((Object) viewContext.getViewModel()));
         
         return viewContext;
@@ -191,7 +192,7 @@ public class ViewContextSourceModelTrackingTest {
         Assert.assertEquals(sourceRoot,
                 viewContext.getSourceElement(viewContext.getViewModel()));
         
-        Assert.assertThat(viewContext.getTargetElements(sourceRoot),
+        MatcherAssert.assertThat("", viewContext.getTargetElements(sourceRoot),
                 IsIterableContainingInOrder.contains((Object) viewContext.getViewModel()));
         
         Assert.assertEquals(sourceRoot.getChildren().get(0),
@@ -262,7 +263,7 @@ public class ViewContextSourceModelTrackingTest {
                 Lists.newArrayList(Iterators.filter(child0.eAllContents(), KGraphElement.class));
         
         // note that child0.eAllContents() includes child0's outgoing edge, too! 
-        Assert.assertThat(child0kges, IsIterableWithSize.<KGraphElement>iterableWithSize(4));
+        MatcherAssert.assertThat("", child0kges, IsIterableWithSize.<KGraphElement>iterableWithSize(4));
         
         final Iterable<Object> child0kgesSources = Lists.newArrayList(
                 Iterables.transform(child0kges, new Function<KGraphElement, Object>() {
@@ -272,12 +273,12 @@ public class ViewContextSourceModelTrackingTest {
                     }
                 }));
         
-        Assert.assertThat(child0kgesSources, IsIterableWithSize.iterableWithSize(4));
+        MatcherAssert.assertThat("", child0kgesSources, IsIterableWithSize.iterableWithSize(4));
 
-        Assert.assertThat(child0kgesSources,
+        MatcherAssert.assertThat("", child0kgesSources,
                 IsCollectionContaining.hasItem(CoreMatchers.notNullValue()));
 
-        Assert.assertThat(Iterables.filter(child0kgesSources, Predicates.<Object>in(child0kges)),
+        MatcherAssert.assertThat("", Iterables.filter(child0kgesSources, Predicates.<Object>in(child0kges)),
                 IsEmptyIterable.emptyIterable());
         
         final Iterable<EObject> child0kgesSourcesTargets =
@@ -288,9 +289,9 @@ public class ViewContextSourceModelTrackingTest {
                     }
                 });
 
-        Assert.assertThat(child0kgesSourcesTargets, IsIterableWithSize.<EObject>iterableWithSize(4));
+        MatcherAssert.assertThat("", child0kgesSourcesTargets, IsIterableWithSize.<EObject>iterableWithSize(4));
 
-        Assert.assertThat(child0kgesSourcesTargets,
+        MatcherAssert.assertThat("", child0kgesSourcesTargets,
                 IsIterableContainingInOrder.contains(child0kges.toArray()));
         
         checkTracerMaps(viewContext, 10);
@@ -353,7 +354,7 @@ public class ViewContextSourceModelTrackingTest {
        final Iterable<EObject> targets = viewContext.getTargetElements(source);
        
        Assert.assertNotNull(targets);
-       Assert.assertThat(targets, IsIterableWithSize.<EObject>iterableWithSize(1));
+       MatcherAssert.assertThat("", targets, IsIterableWithSize.<EObject>iterableWithSize(1));
        Assert.assertSame(rect, Iterables.getOnlyElement(targets));
    }
     

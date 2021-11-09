@@ -3,7 +3,7 @@
  *
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright 2019 by
+ * Copyright 2019-2021 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -113,13 +113,13 @@ class EObjectSerializer implements JsonSerializer<EObject> {
                         jsonObject.add("calculatedTextBounds", context.serialize(
                             propertyHolder.getProperty(KlighdProperties.CALCULATED_TEXT_BOUNDS)))
                     }
-                    if (propertyHolder.hasProperty(SprottyProperties.CALCULATED_TEXT_LINE_WIDTHS)) {
+                    if (propertyHolder.hasProperty(KlighdProperties.CALCULATED_TEXT_LINE_WIDTHS)) {
                         jsonObject.add("calculatedTextLineWidths", context.serialize(
-                            propertyHolder.<float[]>getProperty(SprottyProperties.CALCULATED_TEXT_LINE_WIDTHS)))
+                            propertyHolder.<float[]>getProperty(KlighdProperties.CALCULATED_TEXT_LINE_WIDTHS)))
                     }
-                    if (propertyHolder.hasProperty(SprottyProperties.CALCULATED_TEXT_LINE_HEIGHTS)) {
+                    if (propertyHolder.hasProperty(KlighdProperties.CALCULATED_TEXT_LINE_HEIGHTS)) {
                         jsonObject.add("calculatedTextLineHeights", context.serialize(
-                            propertyHolder.<float[]>getProperty(SprottyProperties.CALCULATED_TEXT_LINE_HEIGHTS)))
+                            propertyHolder.<float[]>getProperty(KlighdProperties.CALCULATED_TEXT_LINE_HEIGHTS)))
                     }
 					if (propertyHolder.hasProperty(KlighdProperties.IS_NODE_TITLE)) {
                         jsonObject.add("isNodeTitle", context.serialize(

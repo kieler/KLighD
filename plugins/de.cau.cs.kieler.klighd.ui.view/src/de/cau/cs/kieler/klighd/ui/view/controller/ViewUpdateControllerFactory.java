@@ -323,7 +323,7 @@ public final class ViewUpdateControllerFactory {
                     mucm.idControllerMapping.get(controllerID);
             if (clazz != null) {
                 try {
-                    AbstractViewUpdateController newInstance = clazz.newInstance();
+                    AbstractViewUpdateController newInstance = clazz.getDeclaredConstructor().newInstance();
                     newInstance.initialize(diagramView);
                     return newInstance;
                 } catch (Exception e) {

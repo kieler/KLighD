@@ -10,7 +10,7 @@
   <modules>
     <module>build/de.cau.cs.kieler.klighd.targetplatform</module>
 
-    <!-- the following 3 entries exist just for the tycho-versions:setVerion task to work properly -->
+    <!-- the following 3 entries exist just for the tycho-versions:setVersion task to work properly -->
     <module>plugins</module>
     <module>test</module>
     <module>features</module>
@@ -85,22 +85,6 @@
         <tycho.surefire.extra.vmargs>-XstartOnFirstThread</tycho.surefire.extra.vmargs>
       </properties>
     </profile>
-    <profile>
-      <!-- cs: currently I don't see any smarter way to configure the klighd-piccolo2d upstream repository, is not possible via cmd line. -->
-      <id>typefox-jenkins</id>
-      <activation>
-        <!-- activeByDefault doesn't do the trick here, so activate the profile if property 'not-typefox-jenkins' is absent. -->
-        <property>
-          <name>!not-typefox-jenkins</name>
-        </property>
-      </activation>
-      <!-- repositories>
-        <repository>
-          <id>klighd-piccolo2d</id>
-          <url>http://services.typefox.io/open-source/jenkins/job/KLighD.Piccolo2d/lastSuccessfulBuild/artifact/klighd-piccolo2d</url>
-        </repository>
-      </repositories -->
-    </profile>
   </profiles>
 
   <repositories>
@@ -137,7 +121,7 @@
             <groupId>org.eclipse.platform</groupId>
             <artifactId>org.eclipse.urischeme</artifactId>
           </exclusion>
-          <!-- This exclusion is temporarily added to fix another missing Maven artifact of Eclipse's depepdencies, see https://github.com/kieler/KLighD/issues/82 and https://bugs.eclipse.org/bugs/show_bug.cgi?id=569770 -->
+          <!-- This exclusion is temporarily added to fix another missing Maven artifact of Eclipse's dependencies, see https://github.com/kieler/KLighD/issues/82 and https://bugs.eclipse.org/bugs/show_bug.cgi?id=569770 -->
           <exclusion>
             <groupId>javax.annotation</groupId>
             <artifactId>javax.annotation-api</artifactId>
