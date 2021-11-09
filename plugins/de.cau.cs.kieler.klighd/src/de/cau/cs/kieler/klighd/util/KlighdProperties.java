@@ -356,6 +356,18 @@ public final class KlighdProperties {
      */
     public static final IProperty<Bounds> CALCULATED_TEXT_BOUNDS =
             new Property<Bounds>("klighd.calculated.text.bounds", null);
+    
+    /**
+     * Property determining the pre-calculated widths of each line in a {@link KText}.
+     */
+    public static final IProperty<float[]> CALCULATED_TEXT_LINE_WIDTHS = 
+        new Property<float[]>("klighd.calculated.text.line.widths", null);
+    
+    /**
+     * Property determining the pre-calculated heights of each line in a {@link KText}.
+     */
+    public static final IProperty<float[]> CALCULATED_TEXT_LINE_HEIGHTS = 
+        new Property<float[]>("klighd.calculated.text.line.heights", null);
 
 	    
     /**

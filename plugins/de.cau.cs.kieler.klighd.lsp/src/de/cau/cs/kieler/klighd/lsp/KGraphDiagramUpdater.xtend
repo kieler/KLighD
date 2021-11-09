@@ -277,8 +277,6 @@ class KGraphDiagramUpdater extends DiagramUpdater {
         synchronized (diagramState) {
             diagramState.putKGraphToSModelElementMap(uri, diagramGenerator.getKGraphToSModelElementMap)
             diagramState.putIdToKGraphElementMap(uri, diagramGenerator.idToKGraphElementMap)
-            diagramState.putTexts(uri, diagramGenerator.getModelLabels)
-            diagramState.putTextMapping(uri, diagramGenerator.getTextMapping)
             diagramState.putImageData(uri, diagramGenerator.images)
         }
 
