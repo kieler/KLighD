@@ -36,12 +36,10 @@ import de.cau.cs.kieler.klighd.util.KlighdPredicates
 import de.cau.cs.kieler.klighd.util.KlighdProperties
 import de.cau.cs.kieler.klighd.util.RenderingContextData
 import java.util.ArrayList
-import java.util.HashMap
 import java.util.HashSet
 import java.util.LinkedList
 import java.util.List
 import java.util.Queue
-import org.apache.log4j.Logger
 import org.eclipse.sprotty.Dimension
 import org.eclipse.sprotty.SEdge
 import org.eclipse.sprotty.SGraph
@@ -57,7 +55,6 @@ import org.eclipse.xtext.util.CancelIndicator
  * @author mka
  */
 class KGraphIncrementalDiagramGenerator extends KGraphDiagramGenerator {
-    static val LOG = Logger.getLogger(KGraphIncrementalDiagramGenerator)
     
     /**
      * Queue of remaining child {@link Knode}s to process in breadth-first traversal to construct diagram.
@@ -159,13 +156,6 @@ class KGraphIncrementalDiagramGenerator extends KGraphDiagramGenerator {
         }
     }
     
-    /**
-     * Like getNextDiagramPiece, but doesn't return piece. Only triggers generation.
-     */
-    def generateNextDiagramPiece() {
-        getNextDiagramPiece
-    }
-    
     def boolean nodeChildrenAllProcessed(KGraphElement node) {
         for (child: childrenToProcess) {
             if (child.parent.equals(node)) {
@@ -186,7 +176,7 @@ class KGraphIncrementalDiagramGenerator extends KGraphDiagramGenerator {
     }
     
     /**
-     * Translates one {@code node} and its outgoing edges to {@link SModelElement}s. Also handles tracing and
+     * Translates one {@code node} and its outgoing edges to {@link SModelElement}s. Also handles
      * mapping between {@link KGraphElement}s and SModelElements.
      * The edges are translated together with the nodes, because {@link KNode}s contain {@link KEdge}s in the field 
      * {@link KNode#getOutgoingEdges} as children, whereas outgoing {@link SEdge}s are siblings of their originating 
@@ -272,7 +262,7 @@ class KGraphIncrementalDiagramGenerator extends KGraphDiagramGenerator {
      * Function to be called after the the {@link SKGraph} has been generated and all edges are prepared to be added
      * in the {@link edgesToGenerate} field. This method translates all {@link KEdge}s in the {@link edgesToGenerate}
      * field to {@link SModelElement}s and adds them to their corresponding parent SModelElement.
-     * Also handles tracing and mapping between {@link KGraphElement}s and SModelElements.
+     * Also handles mapping between {@link KGraphElement}s and SModelElements.
      * Only creates edges that can already be created i.e., where the corresponding nodes have already been
      * generated.
      */
@@ -301,10 +291,10 @@ class KGraphIncrementalDiagramGenerator extends KGraphDiagramGenerator {
     }
 
     /**
-     * Translates all {@code ports} to SModelElements. Also handles tracing and mapping between
+     * Translates all {@code ports} to SModelElements. Also handles mapping between
      * KGraphElements and SModelElements.
      */
-    private def List<SPort> createPorts(List<KPort> ports) {
+    override List<SPort> createPorts(List<KPort> ports) {
         val List<SPort> portElements = new ArrayList
         for (port : ports) {
             val SPort portElement = generatePort(port)
@@ -316,10 +306,10 @@ class KGraphIncrementalDiagramGenerator extends KGraphDiagramGenerator {
     }
 
     /**
-     * Translates all {@code labels} to SModelElements. Also handles tracing and mapping between
+     * Translates all {@code labels} to SModelElements. Also handles mapping between
      * KGraphElements and SModelElements.
      */
-    private def List<SLabel> createLabels(List<KLabel> labels) {
+    override List<SLabel> createLabels(List<KLabel> labels) {
         val List<SLabel> labelElements = new ArrayList
         for (label : labels) {
             val SLabel labelElement = generateLabel(label)
@@ -337,7 +327,7 @@ class KGraphIncrementalDiagramGenerator extends KGraphDiagramGenerator {
      * and subsequently removed from the queue.
      */
     def incrementalPostProcess() {
-        // Create the edges all edges now that their source and target IDs are defined
+        // Create all edges now that their source and target IDs are defined
         // do this incrementally after each step always only generating the edges that can at that point be generated
         incrementalCreateEdges()
 

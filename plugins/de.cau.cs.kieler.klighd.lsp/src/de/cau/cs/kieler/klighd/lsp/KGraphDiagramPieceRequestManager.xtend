@@ -87,7 +87,7 @@ class KGraphDiagramPieceRequestManager {
             // put request to back of queue
             requests.add(request)
             // Generate another piece
-            diagramGenerator.generateNextDiagramPiece
+            diagramGenerator.getNextDiagramPiece
             // Try serving next request in queue
             return this.nextDiagramPiece()
         }

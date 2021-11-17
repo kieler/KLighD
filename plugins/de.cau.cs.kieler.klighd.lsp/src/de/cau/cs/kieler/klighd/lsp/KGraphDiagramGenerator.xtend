@@ -167,7 +167,7 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
 	}
 
     /**
-     * Translates all {@code nodes} and their outgoing edges to {@link SModelElement}s. Also handles tracing and
+     * Translates all {@code nodes} and their outgoing edges to {@link SModelElement}s. Also handles
      * mapping between {@link KGraphElement}s and SModelElements.
      * The edges are translated together with the nodes, because {@link KNode}s contain {@link KEdge}s in the field 
      * {@link KNode#getOutgoingEdges} as children, whereas outgoing {@link SEdge}s are siblings of their originating 
@@ -205,7 +205,7 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
      * Function to be called after the the {@link SKGraph} has been generated and all edges are prepared to be added
      * in the {@link edgesToGenerate} field. This method translates all {@link KEdge}s in the {@link edgesToGenerate}
      * field to {@link SModelElement}s and adds them to their corresponding parent SModelElement.
-     * Also handles tracing and mapping between {@link KGraphElement}s and SModelElements.
+     * Also handles mapping between {@link KGraphElement}s and SModelElements.
      */
     private def createEdges() {
         edgesToGenerate.forEach [ edgeAndParent |
@@ -220,10 +220,10 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
     }
 
     /**
-     * Translates all {@code ports} to SModelElements. Also handles tracing and mapping between
+     * Translates all {@code ports} to SModelElements. Also handles mapping between
      * KGraphElements and SModelElements.
      */
-    private def List<SPort> createPorts(List<KPort> ports) {
+    protected def List<SPort> createPorts(List<KPort> ports) {
         val List<SPort> portElements = new ArrayList
         for (port : ports) {
             val SPort portElement = generatePort(port)
@@ -234,10 +234,10 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
     }
 
     /**
-     * Translates all {@code labels} to SModelElements. Also handles tracing and mapping between
+     * Translates all {@code labels} to SModelElements. Also handles mapping between
      * KGraphElements and SModelElements.
      */
-    private def List<SLabel> createLabels(List<KLabel> labels) {
+    protected def List<SLabel> createLabels(List<KLabel> labels) {
         val List<SLabel> labelElements = new ArrayList
         for (label : labels) {
             val SLabel labelElement = generateLabel(label)
