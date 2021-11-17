@@ -8,7 +8,11 @@
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
  * 
- * This code is provided under the terms of the Eclipse Public License (EPL).
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0.
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 package de.cau.cs.kieler.klighd.lsp
 
@@ -20,8 +24,6 @@ import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties
 import de.cau.cs.kieler.klighd.kgraph.KEdge
 import de.cau.cs.kieler.klighd.kgraph.KGraphData
 import de.cau.cs.kieler.klighd.kgraph.KGraphElement
-import de.cau.cs.kieler.klighd.kgraph.KGraphFactory
-import de.cau.cs.kieler.klighd.kgraph.KIdentifier
 import de.cau.cs.kieler.klighd.kgraph.KLabel
 import de.cau.cs.kieler.klighd.kgraph.KNode
 import de.cau.cs.kieler.klighd.kgraph.KPort
@@ -31,7 +33,6 @@ import de.cau.cs.kieler.klighd.krendering.KImage
 import de.cau.cs.kieler.klighd.krendering.KRendering
 import de.cau.cs.kieler.klighd.krendering.KRenderingLibrary
 import de.cau.cs.kieler.klighd.krendering.KRenderingUtil
-import de.cau.cs.kieler.klighd.krendering.KText
 import de.cau.cs.kieler.klighd.lsp.model.ImageData
 import de.cau.cs.kieler.klighd.lsp.model.SKEdge
 import de.cau.cs.kieler.klighd.lsp.model.SKGraph
@@ -44,16 +45,13 @@ import de.cau.cs.kieler.klighd.util.KlighdPredicates
 import de.cau.cs.kieler.klighd.util.KlighdProperties
 import de.cau.cs.kieler.klighd.util.RenderingContextData
 import java.util.ArrayList
-import java.util.HashMap
 import java.util.HashSet
 import java.util.List
-import java.util.Map
 import org.apache.log4j.Logger
 import org.eclipse.elk.alg.layered.options.LayeredOptions
 import org.eclipse.elk.alg.rectpacking.options.RectPackingOptions
 import org.eclipse.elk.core.options.CoreOptions
 import org.eclipse.emf.ecore.EObject
-import org.eclipse.emf.ecore.util.EcoreUtil
 import org.eclipse.sprotty.Dimension
 import org.eclipse.sprotty.SEdge
 import org.eclipse.sprotty.SGraph
@@ -70,10 +68,7 @@ import org.eclipse.xtext.util.CancelIndicator
  * synthesis to {@link KNode} for KLighD. 
  * For translation first call the {@link translateModel} function to translate the EObject to a KNode and then call
  * {@link generate(KNode, String, CancelIndicator)} with that KNode to translate it to an SGraph.
- * During translation a map for mapping between the source and target element types is generated as well as
- * a list of all generated texts in Sprotty and a map to each text in the source model.
- * The function {@link #generateTextDiagram} can be called after the translation to get a simpler SGraph, that contains
- * only labels with all texts in the source KNode.
+ * During translation a map for mapping between the source and target element types is generated.
  * Based on the yang-lsp implementation by TypeFox.
  * 
  * @author nre
@@ -91,22 +86,6 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
      */
     @Accessors(PUBLIC_GETTER)
     protected var BiMap<KGraphElement, SModelElement> kGraphToSModelElementMap
-    
-    /**
-     * A list containing all texts from the source KGraph inside Sprotty labels. Used for the simpler texts-only SGraph.
-     * @see #generateTextDiagram
-     * @see KGraphDiagramState
-     */
-    @Accessors(PUBLIC_GETTER)
-    protected var List<SKLabel> modelLabels
-    
-    /**
-     * A map containing all {@link KText}s from the source KGraph under the key of their ID in the texts-only SGraph.
-     * @see #generateTextDiagram
-     * @see KGraphDiagramState
-     */
-    @Accessors(PUBLIC_GETTER)
-    protected var Map<String, KText> textMapping
     
     /**
      * The data of all {@link KImage}s contained in the view model.
@@ -164,8 +143,6 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
         LOG.info("Generating diagram for input: '" + uri + "'")
 
         kGraphToSModelElementMap = HashBiMap.create
-        textMapping = new HashMap
-        modelLabels = new ArrayList
         images = new HashSet
         idGen = new KGraphElementIdGenerator
         edgesToGenerate = new ArrayList
@@ -263,7 +240,7 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
     private def List<SLabel> createLabels(List<KLabel> labels) {
         val List<SLabel> labelElements = new ArrayList
         for (label : labels) {
-            val SLabel labelElement = generateLabel(label, true)
+            val SLabel labelElement = generateLabel(label)
             labelElements.add(labelElement)
             kGraphToSModelElementMap.put(label, labelElement)
         }
@@ -383,28 +360,19 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
 
     /**
      * Creates a Sprotty label corresponding to the given {@link KLabel}.
-     * 
-     * @param isMainGraphElement Describes, if the generated label will be part of the main generated {@link SGraph}.
      */
-    protected def SKLabel generateLabel(KLabel label, boolean isMainGraphElement) {
-        val id = isMainGraphElement ? idGen.getId(label) : label.data.filter(KIdentifier).head.id
-        val SKLabel labelElement = configSElement(SKLabel, id)
+    protected def SKLabel generateLabel(KLabel label) {
+        val SKLabel labelElement = configSElement(SKLabel, idGen.getId(label))
         labelElement.tooltip = label.getProperty(KlighdProperties.TOOLTIP)
         labelElement.text = label.text
 
         val renderings = label.data.filter[KRendering.isAssignableFrom(it.class)].toList
 
-        if (isMainGraphElement) {
-            // remember KLabel element for later size estimation
-            findSpecialRenderings(renderings)
-            // activate the element by default if it does not have an active/inactive status yet.
-            val renderingContextData = RenderingContextData.get(label)
-            if (!renderingContextData.containsPoperty(KlighdInternalProperties.ACTIVE)) {
-                renderingContextData.setProperty(KlighdInternalProperties.ACTIVE, true)
-            }
-        } else {
-            // Add the renderings here already to the element.
-            labelElement.data = renderings
+        findSpecialRenderings(renderings)
+        // activate the element by default if it does not have an active/inactive status yet.
+        val renderingContextData = RenderingContextData.get(label)
+        if (!renderingContextData.containsPoperty(KlighdInternalProperties.ACTIVE)) {
+            renderingContextData.setProperty(KlighdInternalProperties.ACTIVE, true)
         }
         return labelElement
     }
@@ -491,9 +459,6 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
     /**
      * Looks through the data of elements and searches for special renderings that are needed to be pre-processed before
      * rendering:
-     * Finds all KText and KLabel elements within the renderings in dataList and puts them as new labels in the
-     * {@code modelLabels} field.
-     * Remembers the mapping to the KText elements from the source model in the textMapping field.
      * Stores all {@link KImage}s in the {@code images} field.
      */
     protected def void findSpecialRenderings(List<KGraphData> datas) {
@@ -503,56 +468,11 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
     }
 
     /**
-     * Finds all {@link KText}, {@link KLabel} and {@link KImage} elements within the renderings in {@code dataList} and 
-     * stores them. Also remembers the mapping to the KText elements from the source model in the {@code textMapping} 
-     * field.
+     * Finds all {@link KImage} elements within the renderings in {@code dataList} and stores them.
      */
     protected def void findSpecialRenderings(KGraphData data) {
-        val List<SKLabel> dataLabels = newArrayList
         var ImageData imageData = null
-        if (data instanceof KText) {
-            // create a new Label with data as its text for each line in the original text.
-            // KTexts in Labels have their texts stored inside their ancestor KLabel, not in the KText itself
-            var container = data.eContainer
-            while (container instanceof KRendering) {
-                container = container.eContainer
-            }
-            var String text
-            if (container instanceof KLabel) {
-                text = container.text
-            } else {
-                text = data.text
-            }
-            // Found the original text, split it up into individual labels for each line.
-            // If there is no text, ignore this KText.
-            val lines = text?.split("\\r?\\n", -1)
-            lines?.forEach [ line, index |
-                val newLabel = KGraphFactory.eINSTANCE.createKLabel
-                newLabel.text = line
-                // need to put a copy of the text inside the new label because otherwise inserting it into the label will
-                // modify the eContainer feature of the Text, which should not be changed
-                val newData = EcoreUtil.copy(data)
-                newData.text = line
-                newLabel.data += newData
-                val identifier = KGraphFactory.eINSTANCE.createKIdentifier
-                var uniqueId = ""
-                do {
-                    uniqueId = diagramRoot.id + KGraphElementIdGenerator.ID_SEPARATOR + "texts-only" + 
-                    KGraphElementIdGenerator.ID_SEPARATOR + KGraphElementIdGenerator.LABEL_SEPARATOR 
-                    + Math.random + KGraphElementIdGenerator.ID_SEPARATOR + index
-                } while (textMapping.get(uniqueId) !== null)
-                identifier.id = uniqueId
-                newLabel.data += identifier
-                
-                // generate a new Label as if it would belong to the main model
-                val sKLabel = generateLabel(newLabel, false)
-                // All lines point towards the same original data. For matching, the index in the ID has to be taken
-                // into account as well to match it to its line.
-                textMapping.put(sKLabel.id, data)
-                
-                dataLabels += sKLabel
-            ]
-        } else if (data instanceof KContainerRendering) {
+        if (data instanceof KContainerRendering) {
             // KImages are container renderings themselves, so also look for their child renderings.
             if (data instanceof KImage) {
                 imageData = ImageData.of(data)
@@ -567,9 +487,6 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
                     findSpecialRenderings(libraryEntry)
                 }
             }
-        }
-        if (!dataLabels.empty) {
-            modelLabels.addAll(dataLabels)
         }
         if (imageData !== null) {
             images.add(imageData)
@@ -596,26 +513,5 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
             SPort: 'port'
             default: throw new IllegalArgumentException("Unknown SModelElement type: "+ element?.class)
         }
-    }
-
-    /**
-     * Generates a simple text-only {@link SGraph} for a Graph with only the given labels.
-     * The {@code label}s are expected to come from the {@code modelLabels} field after the {@link #toSGraph}
-     * translation.
-     * 
-     * @param labels A list of all labels, this SGraph should contain.
-     * @param parentId The ID of the graph containing all these labels.
-     */
-    static def SGraph generateTextDiagram(List<SKLabel> labels, String parentId) {
-        // equivalent for the SRootElement
-        val root = new SKGraph => [
-            type = 'graph'
-            id = parentId + KGraphElementIdGenerator.ID_SEPARATOR + "texts-only"
-            children = new ArrayList
-        ]
-
-        root.children = new ArrayList
-        root.children += labels
-        return root
     }
 }

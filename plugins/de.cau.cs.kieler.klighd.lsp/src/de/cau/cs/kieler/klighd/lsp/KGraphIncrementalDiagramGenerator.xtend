@@ -109,8 +109,6 @@ class KGraphIncrementalDiagramGenerator extends KGraphDiagramGenerator {
     override SGraph toSGraph(KNode parentNode, String uri, CancelIndicator cancelIndicator) {
         
         kGraphToSModelElementMap = HashBiMap.create
-        textMapping = new HashMap
-        modelLabels = new ArrayList
         images = new HashSet
         idGen = new KGraphElementIdGenerator
         edgesToGenerate = new LinkedList
@@ -324,7 +322,7 @@ class KGraphIncrementalDiagramGenerator extends KGraphDiagramGenerator {
     private def List<SLabel> createLabels(List<KLabel> labels) {
         val List<SLabel> labelElements = new ArrayList
         for (label : labels) {
-            val SLabel labelElement = generateLabel(label, true)
+            val SLabel labelElement = generateLabel(label)
             labelElements.add(labelElement)
             kGraphToSModelElementMap.put(label, labelElement)
             elementsToPostProcess.add(new Pair(label, labelElement))

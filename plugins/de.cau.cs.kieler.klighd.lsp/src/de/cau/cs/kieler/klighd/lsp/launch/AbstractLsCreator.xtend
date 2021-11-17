@@ -3,12 +3,16 @@
  * 
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright 2019,2020 by
+ * Copyright 2019-2021 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
  * 
- * This code is provided under the terms of the Eclipse Public License (EPL).
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0.
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 package de.cau.cs.kieler.klighd.lsp.launch
 
@@ -25,6 +29,11 @@ import de.cau.cs.kieler.klighd.lsp.LSPUtil
 import de.cau.cs.kieler.klighd.lsp.SprottyViewer
 import de.cau.cs.kieler.klighd.lsp.gson_utils.KGraphTypeAdapterUtil
 import de.cau.cs.kieler.klighd.standalone.KlighdStandaloneSetup
+import java.awt.Font
+import java.awt.FontFormatException
+import java.awt.GraphicsEnvironment
+import java.io.File
+import java.io.IOException
 import java.io.InputStream
 import java.io.OutputStream
 import java.util.Collection
@@ -104,6 +113,7 @@ abstract class AbstractLsCreator implements ILsCreator {
         ExecutorService executorService, Function<MessageConsumer, MessageConsumer> wrapper, boolean socket
     ) {
         this.injector = injector
+        
         // Setup KLighD.
         KlighdStandaloneSetup.initialize
         // Programmatically register the SprottyViewer. It is not registered via service, as it will only ever be used

@@ -120,8 +120,11 @@ To activate a controller for a specific editor use the editor extension point.
    + Department of Computer Science&lt;BR&gt;
      + Real-Time and Embedded Systems Group&lt;BR&gt;
 &lt;BR&gt; 
-This code is provided under the terms of the Eclipse Public License (EPL).&lt;BR&gt;
-See the file epl-v10.html for the license text.&lt;BR&gt;
+This program and the accompanying materials are made available under the&lt;BR&gt;
+terms of the Eclipse Public License 2.0 which is available at&lt;BR&gt;
+http://www.eclipse.org/legal/epl-2.0.&lt;BR&gt;
+&lt;BR&gt;
+SPDX-License-Identifier: EPL-2.0&lt;BR&gt;
 &lt;BR&gt;
 &lt;BR&gt;
       </documentation>

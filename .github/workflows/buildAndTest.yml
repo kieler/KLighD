@@ -1,0 +1,56 @@
+name: KLighD Build & Test execution
+
+on:
+  push:
+    branches:
+      - '**'
+    tags-ignore:
+      - '**'
+  workflow_dispatch: # enables manual triggering
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: nelonoel/branch-name@v1.0.1
+    - name: Set up JDK
+      uses: actions/setup-java@v2
+      with:
+        java-version: 8
+        distribution: adopt
+    - name: Cache Maven packages
+      uses: actions/cache@v2
+      with:
+        path: .m2
+        key: ${{ runner.os }}-m2-${{ hashFiles('.github/workflows/**/*.*', '**/pom.xml', '**/META-INF/MANIFEST.MF', 'build/de.cau.cs.kieler.klighd.targetplatform/de.cau.cs.kieler.klighd.targetplatform.target') }}
+    - name: Run mvn build headless
+      run: |
+          export DISPLAY=:0
+          #instead of 
+          # Xvfb -screen 0 1280x1024x16 -ac :17 > /dev/null 2>&1 &
+          #use screen 0 with 1280x1024x8 that is default according to https://www.x.org/releases/X11R7.6/doc/man/man1/Xvfb.1.xhtml
+          Xvfb -ac > /dev/null 2>&1 &
+          mvn -B -fae -Dmaven.repo.local=.m2 -Dmaven.test.failure.ignore=true -ntp -s mvn-local-settings.xml clean deploy
+          #print the folder structure up to depth 2 on the console as we have no other option of getting an inside into workspace folder
+          find . -maxdepth 2
+    - name: Archive P2 Repository
+      uses: actions/upload-artifact@v2
+      with:
+        name: KLighD P2 Repository
+        path: build/de.cau.cs.kieler.klighd.repository/target/repository/**/*
+        retention-days: 14
+        if-no-files-found: error
+    - name: Archive MVN Repository
+      uses: actions/upload-artifact@v2
+      with:
+        name: KLighD MVN Repository
+        path: klighd-snapshots/**/*
+        retention-days: 14
+        if-no-files-found: error
+    - name: Publish Test Report
+      id: test_report
+      if: ${{ !cancelled() }}
+      uses: scacap/action-surefire-report@v1
+      with:
+        report_paths: 'test/**/surefire-reports/*.xml'

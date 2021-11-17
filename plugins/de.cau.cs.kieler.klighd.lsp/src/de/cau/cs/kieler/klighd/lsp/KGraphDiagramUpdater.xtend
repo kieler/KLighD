@@ -8,7 +8,11 @@
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
  * 
- * This code is provided under the terms of the Eclipse Public License (EPL).
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0.
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 package de.cau.cs.kieler.klighd.lsp
 
@@ -312,8 +316,6 @@ class KGraphDiagramUpdater extends DiagramUpdater {
         synchronized (diagramState) {
             diagramState.putKGraphToSModelElementMap(uri, diagramGenerator.getKGraphToSModelElementMap)
             diagramState.putIdToKGraphElementMap(uri, diagramGenerator.idToKGraphElementMap)
-            diagramState.putTexts(uri, diagramGenerator.getModelLabels)
-            diagramState.putTextMapping(uri, diagramGenerator.getTextMapping)
             diagramState.putImageData(uri, diagramGenerator.images)
         }
         
@@ -423,8 +425,6 @@ class KGraphDiagramUpdater extends DiagramUpdater {
             //       stuff is stored twice
             diagramState.putKGraphToSModelElementMap(server.sourceUri, diagramGenerator.getKGraphToSModelElementMap)
             diagramState.putIdToKGraphElementMap(server.sourceUri, diagramGenerator.idToKGraphElementMap)
-            diagramState.putTexts(server.sourceUri, diagramGenerator.getModelLabels)
-            diagramState.putTextMapping(server.sourceUri, diagramGenerator.getTextMapping)
             diagramState.putImageData(server.sourceUri, diagramGenerator.images)
             // map layout info onto new piece
             // TODO: don't actually need to do this on everything every time, should be replaced by method to map only to 
