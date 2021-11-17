@@ -90,11 +90,10 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
     boolean shouldSelectText = false
     
     /**
-     * Option to indicate which diagram generator to use.
-     * Possible values are: "iterative" and "full".
+     * Option to indicate if an incremental diagram generator should be used.
      */
     @Accessors
-    String diagramGeneratorType = "full";
+    boolean incrementalDiagramGenerator = false;
     
     /**
      * Stores data for the generation of diagrams.
@@ -494,9 +493,9 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
                         this.shouldSelectText = value
                     }
                 }
-                case "diagram.diagramGenerator": {
-                    if (value instanceof String) {
-                        this.diagramGeneratorType = value
+                case "diagram.incrementalDiagramGenerator": {
+                    if (value instanceof Boolean) {
+                        this.incrementalDiagramGenerator = value
                     }
                 }
             }

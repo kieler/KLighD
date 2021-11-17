@@ -291,22 +291,20 @@ class KGraphDiagramUpdater extends DiagramUpdater {
         //        maybe when hierarchy is low so some elements aren't rendered and "get lost" when collapsing and 
         //        expanding, not sure why though, must investigate further
         
-        var diagramGeneratorType = "full"
+        var incrementalDiagramGenerator = false
         if (languageServer instanceof KGraphLanguageServerExtension) {
-            diagramGeneratorType = languageServer.diagramGeneratorType
+            incrementalDiagramGenerator = languageServer.isIncrementalDiagramGenerator
         }
         
         // FIXME: extract this to some other strategy manager that can handle passing the options
         //        idea: abstract superclass KGraphDiagramGenerator
-        var diagramGenerator = diagramGeneratorProvider.get as KGraphDiagramGenerator
-        
-        if (diagramGeneratorType.equals("iterative")) {
-            diagramGenerator = incrementalDiagramGeneratorProvider.get as KGraphIncrementalDiagramGenerator
-        }
+        var diagramGenerator = incrementalDiagramGenerator
+            ? incrementalDiagramGeneratorProvider.get
+            : diagramGeneratorProvider.get
         
         val sGraph = diagramGenerator.toSGraph(viewContext.viewModel, uri, cancelIndicator)
         
-        if (diagramGeneratorType.equals("iterative")) {
+        if (incrementalDiagramGenerator) {
             val requestManager = new KGraphDiagramPieceRequestManager(diagramGenerator as KGraphIncrementalDiagramGenerator)
             synchronized (diagramState) {
                 diagramState.putDiagramPieceRequestManager(uri, requestManager)
