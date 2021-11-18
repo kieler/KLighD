@@ -91,6 +91,7 @@ public final class KlighdLayoutSetup implements ILayoutSetup {
         public void configure(final Binder binder) {
             // TODO extend "org.eclipse.elk.core.service.internal.DefaultModule()"
             //  and replace the first line by "super.configure(binder);"
+//            binder.bind(IGraphLayoutEngine.class).to(ConfigurableGraphLayoutEngine.class);
             binder.bind(IGraphLayoutEngine.class).to(RecursiveGraphLayoutEngine.class);
             binder.bind(IDiagramLayoutConnector.class).to(KlighdDiagramLayoutConnector.class);
             binder.bind(ILayoutConfigurationStore.Provider.class)

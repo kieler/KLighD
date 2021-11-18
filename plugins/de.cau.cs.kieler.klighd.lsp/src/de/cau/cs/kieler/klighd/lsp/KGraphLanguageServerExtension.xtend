@@ -90,6 +90,12 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
     boolean shouldSelectText = false
     
     /**
+     * Option to indicate if an incremental diagram generator should be used.
+     */
+    @Accessors
+    boolean incrementalDiagramGenerator = false;
+    
+    /**
      * Stores data for the generation of diagrams.
      */
     @Inject
@@ -485,6 +491,11 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
                 case "diagram.shouldSelectText": {
                     if (value instanceof Boolean) {
                         this.shouldSelectText = value
+                    }
+                }
+                case "diagram.incrementalDiagramGenerator": {
+                    if (value instanceof Boolean) {
+                        this.incrementalDiagramGenerator = value
                     }
                 }
             }

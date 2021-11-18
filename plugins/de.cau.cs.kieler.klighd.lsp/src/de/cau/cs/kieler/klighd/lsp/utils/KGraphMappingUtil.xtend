@@ -104,6 +104,8 @@ class KGraphMappingUtil {
         skedge.junctionPoints = new KVectorChain()
         skedge.junctionPoints.addAllAsCopies(0,kedge.getProperty(CoreOptions.JUNCTION_POINTS))
         skedge.junctionPoints.offset(new KVector(leftInset, topInset))
+        // Copy render scale.
+//        skedge.renderScale = kedge.getProperty(CoreOptions.TOP_DOWN_LAYOUT_RENDER_SCALE);
     }
     
     /**

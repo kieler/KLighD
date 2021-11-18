@@ -85,29 +85,29 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
      * @see KGraphLayoutEngine
      */
     @Accessors(PUBLIC_GETTER)
-    var BiMap<KGraphElement, SModelElement> kGraphToSModelElementMap
+    protected var BiMap<KGraphElement, SModelElement> kGraphToSModelElementMap
     
     /**
      * The data of all {@link KImage}s contained in the view model.
      */
     @Accessors(PUBLIC_GETTER)
-    var HashSet<ImageData> images
+    protected var HashSet<ImageData> images
 
     /**
      * The root node of the translated {@link SGraph}.
      */
-	var SGraph diagramRoot
+	protected var SGraph diagramRoot
     
     /**
      * Generates unique IDs for any KGraphElement.
      */
-    KGraphElementIdGenerator idGen
+    protected KGraphElementIdGenerator idGen
     
     /**
      * List of all {@link KEdge}s that need to be generated in the end and added into the list that is the second
      * element of each pair.
      */
-    List<Pair<KEdge, List<SModelElement>>> edgesToGenerate
+    protected List<Pair<KEdge, List<SModelElement>>> edgesToGenerate
 
     /**
      * Creates a {@link ViewContext} containing the KGraph model for any {@link Object} model with a registered 
@@ -167,7 +167,7 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
 	}
 
     /**
-     * Translates all {@code nodes} and their outgoing edges to {@link SModelElement}s. Also handles tracing and
+     * Translates all {@code nodes} and their outgoing edges to {@link SModelElement}s. Also handles
      * mapping between {@link KGraphElement}s and SModelElements.
      * The edges are translated together with the nodes, because {@link KNode}s contain {@link KEdge}s in the field 
      * {@link KNode#getOutgoingEdges} as children, whereas outgoing {@link SEdge}s are siblings of their originating 
@@ -205,7 +205,7 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
      * Function to be called after the the {@link SKGraph} has been generated and all edges are prepared to be added
      * in the {@link edgesToGenerate} field. This method translates all {@link KEdge}s in the {@link edgesToGenerate}
      * field to {@link SModelElement}s and adds them to their corresponding parent SModelElement.
-     * Also handles tracing and mapping between {@link KGraphElement}s and SModelElements.
+     * Also handles mapping between {@link KGraphElement}s and SModelElements.
      */
     private def createEdges() {
         edgesToGenerate.forEach [ edgeAndParent |
@@ -220,10 +220,10 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
     }
 
     /**
-     * Translates all {@code ports} to SModelElements. Also handles tracing and mapping between
+     * Translates all {@code ports} to SModelElements. Also handles mapping between
      * KGraphElements and SModelElements.
      */
-    private def List<SPort> createPorts(List<KPort> ports) {
+    protected def List<SPort> createPorts(List<KPort> ports) {
         val List<SPort> portElements = new ArrayList
         for (port : ports) {
             val SPort portElement = generatePort(port)
@@ -234,10 +234,10 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
     }
 
     /**
-     * Translates all {@code labels} to SModelElements. Also handles tracing and mapping between
+     * Translates all {@code labels} to SModelElements. Also handles mapping between
      * KGraphElements and SModelElements.
      */
-    private def List<SLabel> createLabels(List<KLabel> labels) {
+    protected def List<SLabel> createLabels(List<KLabel> labels) {
         val List<SLabel> labelElements = new ArrayList
         for (label : labels) {
             val SLabel labelElement = generateLabel(label)
@@ -316,7 +316,7 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
      * Creates a Sprotty edge corresponding to the given {@link KEdge}.
      * Assumes, that the source and target nodes or ports of this {@code edge} have already been generated.
      */
-    private def SKEdge generateEdge(KEdge edge) {
+    protected def SKEdge generateEdge(KEdge edge) {
         val SKEdge edgeElement = configSElement(SKEdge, idGen.getId(edge))
         edgeElement.sourceId = idGen.getId(edge.source)
         edgeElement.targetId = idGen.getId(edge.target)
@@ -340,7 +340,7 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
     /**
      * Creates a Sprotty port corresponding to the given {@link KPort}.
      */
-    private def SKPort generatePort(KPort port) {
+    protected def SKPort generatePort(KPort port) {
         val SKPort portElement = configSElement(SKPort, idGen.getId(port))
         portElement.tooltip = port.getProperty(KlighdProperties.TOOLTIP)
         
@@ -361,7 +361,7 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
     /**
      * Creates a Sprotty label corresponding to the given {@link KLabel}.
      */
-    private def SKLabel generateLabel(KLabel label) {
+    protected def SKLabel generateLabel(KLabel label) {
         val SKLabel labelElement = configSElement(SKLabel, idGen.getId(label))
         labelElement.tooltip = label.getProperty(KlighdProperties.TOOLTIP)
         labelElement.text = label.text
@@ -381,7 +381,7 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
      * Generates a generic {@link SModelElement} with the defaults {@code id}, {@code type} already set and the 
      * {@code children} list already initialized.
      */
-    private static def <E extends SModelElement> E configSElement(Class<E> elementClass, String idStr) {
+    protected static def <E extends SModelElement> E configSElement(Class<E> elementClass, String idStr) {
         elementClass.constructor.newInstance => [
             id = idStr
             type = getTypeString(it)
@@ -461,7 +461,7 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
      * rendering:
      * Stores all {@link KImage}s in the {@code images} field.
      */
-    private def void findSpecialRenderings(List<KGraphData> datas) {
+    protected def void findSpecialRenderings(List<KGraphData> datas) {
         for (data : datas) {
             findSpecialRenderings(data)
         }
@@ -470,7 +470,7 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
     /**
      * Finds all {@link KImage} elements within the renderings in {@code dataList} and stores them.
      */
-    private def void findSpecialRenderings(KGraphData data) {
+    protected def void findSpecialRenderings(KGraphData data) {
         var ImageData imageData = null
         if (data instanceof KContainerRendering) {
             // KImages are container renderings themselves, so also look for their child renderings.
@@ -505,7 +505,7 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
     /**
      * Returns a String describing the type of the {@link SModelElement}.
      */
-    private static def String getTypeString(SModelElement element) {
+    protected static def String getTypeString(SModelElement element) {
         switch element {
             SNode: 'node'
             SLabel: 'label'

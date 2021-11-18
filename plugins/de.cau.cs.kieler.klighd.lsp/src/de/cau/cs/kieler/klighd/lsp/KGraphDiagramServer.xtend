@@ -35,7 +35,9 @@ import de.cau.cs.kieler.klighd.lsp.model.LayoutOptionUIData
 import de.cau.cs.kieler.klighd.lsp.model.PerformActionAction
 import de.cau.cs.kieler.klighd.lsp.model.RefreshDiagramAction
 import de.cau.cs.kieler.klighd.lsp.model.RefreshLayoutAction
+import de.cau.cs.kieler.klighd.lsp.model.RequestDiagramPieceAction
 import de.cau.cs.kieler.klighd.lsp.model.SKGraph
+import de.cau.cs.kieler.klighd.lsp.model.SetDiagramPieceAction
 import de.cau.cs.kieler.klighd.lsp.model.SetSynthesisAction
 import de.cau.cs.kieler.klighd.lsp.model.StoreImagesAction
 import de.cau.cs.kieler.klighd.lsp.model.UpdateDiagramOptionsAction
@@ -61,6 +63,7 @@ import org.eclipse.sprotty.ActionMessage
 import org.eclipse.sprotty.ILayoutEngine
 import org.eclipse.sprotty.IModelUpdateListener
 import org.eclipse.sprotty.LayoutAction
+import org.eclipse.sprotty.RejectAction
 import org.eclipse.sprotty.RequestBoundsAction
 import org.eclipse.sprotty.RequestModelAction
 import org.eclipse.sprotty.SModelCloner
@@ -245,6 +248,8 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
                     handle(action as RefreshDiagramAction)
                 } else if (action.getKind === RefreshLayoutAction.KIND) {
                     handle(action as RefreshLayoutAction)
+                } else if (action.getKind === RequestDiagramPieceAction.KIND) {
+                    handle(action as RequestDiagramPieceAction)
                 } else if (constraintActionHandler.canHandleAction(action.getKind)) {
                     constraintActionHandler.handle(action, clientId, this)
                 } else if (rectpackingActionHandler.canHandleAction(action.getKind)) {
@@ -519,6 +524,31 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
     protected def handle(RefreshLayoutAction action) {
         updateLayout()
         return
+    }
+    
+    protected def handle(RequestDiagramPieceAction action) {  
+        
+        synchronized (diagramState) {
+            if (diagramState.getDiagramPieceRequestManager(this.sourceUri) === null) {
+                // can't handle these requests if we are using recursive generation method
+                dispatch(new RejectAction())
+                return
+            }
+            
+            // TODO: handle images incrementally
+            val diagramUpdater = diagramLanguageServer.diagramUpdater
+            if (diagramUpdater instanceof KGraphDiagramUpdater) {
+                val piece = diagramUpdater.getNextDiagramPiece(this, action)
+                if (piece !== null) {
+                    dispatch(new SetDiagramPieceAction(piece))
+                } else {
+                    dispatch(new RejectAction())
+                }
+                
+            } else {
+                throw new IllegalStateException("The diagramUpdater was not initialized correctly")
+            }        
+        }
     }
     
     /**

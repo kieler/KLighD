@@ -31,6 +31,7 @@ import de.cau.cs.kieler.klighd.lsp.model.CheckedImagesAction
 import de.cau.cs.kieler.klighd.lsp.model.PerformActionAction
 import de.cau.cs.kieler.klighd.lsp.model.RefreshDiagramAction
 import de.cau.cs.kieler.klighd.lsp.model.RefreshLayoutAction
+import de.cau.cs.kieler.klighd.lsp.model.RequestDiagramPieceAction
 import de.cau.cs.kieler.klighd.lsp.model.SetSynthesisAction
 import java.awt.geom.Point2D
 import org.eclipse.emf.ecore.EObject
@@ -65,6 +66,9 @@ class KGraphTypeAdapterUtil {
                 addActionKind(RectpackingSetPositionConstraintAction.KIND, RectpackingSetPositionConstraintAction)
                 addActionKind(RectpackingDeletePositionConstraintAction.KIND, RectpackingDeletePositionConstraintAction)
                 addActionKind(SetAspectRatioAction.KIND, SetAspectRatioAction)
+                
+                // Incremental topdown actions
+                addActionKind(RequestDiagramPieceAction.KIND, RequestDiagramPieceAction)
             ]
         )
         .registerTypeAdapter(Point2D, new Point2DTypeAdapter)

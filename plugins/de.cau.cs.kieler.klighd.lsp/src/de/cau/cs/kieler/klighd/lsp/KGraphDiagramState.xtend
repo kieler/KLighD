@@ -80,6 +80,11 @@ class KGraphDiagramState {
      * Contains the current synthesis ID for the URI of the model.
      */
     Map<String, String> synthesisIdMapping = new HashMap
+    
+    /**
+     * Contains the diagram piece request manager for the URI of the model.
+     */
+    Map<String, KGraphDiagramPieceRequestManager> diagramPieceRequestManagerMap = new HashMap
 
     /**
      * Contains the {@link IViewer} displaying diagrams.
@@ -247,6 +252,25 @@ class KGraphDiagramState {
     }
     
     /**
+     * Getter to access the diagram piece request manager for the given URI.
+     * 
+     * @param uri The identifying URI of the graph to access the value in the map.
+     */
+    def KGraphDiagramPieceRequestManager getDiagramPieceRequestManager(String uri) {
+        diagramPieceRequestManagerMap.get(uri)
+    }
+    
+    /**
+     * Put method to set the diagram piece request manager for a URI.
+     * 
+     * @param uri The identifying URI of the graph to access the map.
+     * @param requestManager The diagram piece request manager to be stored.
+     */
+    def putDiagramPieceRequestManager(String uri, KGraphDiagramPieceRequestManager requestManager) {
+        diagramPieceRequestManagerMap.put(uri, requestManager)
+    }
+    
+    /**
      * Getter to access the value stored in the uriString map.
      * 
      * @param clientId The clientId of the diagram view.
@@ -340,6 +364,7 @@ class KGraphDiagramState {
             snapshotModelMapping.remove(uri)
             layoutConfigMapping.remove(uri)
             synthesisIdMapping.remove(uri)
+            diagramPieceRequestManagerMap.remove(uri)
             viewer = null
             uriStringMap.remove(clientId)
         }

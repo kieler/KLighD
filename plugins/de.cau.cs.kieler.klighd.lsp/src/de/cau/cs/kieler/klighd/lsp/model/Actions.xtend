@@ -24,6 +24,7 @@ import java.util.function.Consumer
 import org.eclipse.sprotty.Action
 import org.eclipse.sprotty.RequestAction
 import org.eclipse.sprotty.ResponseAction
+import org.eclipse.sprotty.SModelElement
 import org.eclipse.sprotty.SModelRoot
 import org.eclipse.sprotty.UpdateModelAction
 import org.eclipse.xtend.lib.annotations.Accessors
@@ -268,3 +269,55 @@ public class KeithUpdateModelAction extends UpdateModelAction {
         this.cause = cause
     }
 }
+
+/**
+ * Sent from client to request a certain piece of the diagram.
+ * 
+ * @author mka
+ */
+@Accessors
+@EqualsHashCode
+@ToString(skipNulls = true)
+public class RequestDiagramPieceAction implements RequestAction<SetDiagramPieceAction> {
+    public static val KIND = 'requestDiagramPiece'
+    String kind = KIND
+    
+    String modelElementId
+    String requestId
+    
+    new() {}
+    new(String modelElementId) {
+        this.modelElementId = modelElementId
+    }
+    
+    new(Consumer<RequestDiagramPieceAction> initializer) {
+        initializer.accept(this)
+    }
+}
+
+/**
+ * Response to {@link RequestDiagramPieceAction}. Contains the requested SModelElement.
+ * 
+ * @author mka
+ */
+@Accessors
+@EqualsHashCode
+@ToString(skipNulls = true)
+public class SetDiagramPieceAction implements ResponseAction {
+    public static val KIND = 'setDiagramPiece'
+    String kind = KIND
+    
+    SModelElement diagramPiece
+    String responseId
+    
+    new() {}
+    new(Consumer<SetDiagramPieceAction> initializer) {
+        initializer.accept(this)
+    }
+    
+    new(SModelElement diagramPiece) {
+        this.diagramPiece = diagramPiece
+    }
+}
+
+
