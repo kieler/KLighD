@@ -374,8 +374,8 @@ public final class KlighdProperties {
 
 	    
     /**
-     * Determines whether a KText can be interpreted as a title for a node.
-     * By default the KText is not a title.
+     * Determines whether a sub-KRendering can be interpreted as a title for a node.
+     * By default no rendering is seen as a title.
      */
     public static final IProperty<Boolean> IS_NODE_TITLE =
             new Property<Boolean>("klighd.isNodeTitle", false);
