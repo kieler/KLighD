@@ -255,7 +255,7 @@ public final class LightDiagramServices {
                         .getProperty(DiagramLayoutEngine.MAPPING_STATUS);
 
             } else {
-                final IElkProgressMonitor progressMonitor =
+                final IElkProgressMonitor progressMonitor = // XXX new NullElkProgressMonitor();
                         new BasicProgressMonitor()
                                 .withMaxHierarchyLevels(0)
                                 .withLogging(true)
