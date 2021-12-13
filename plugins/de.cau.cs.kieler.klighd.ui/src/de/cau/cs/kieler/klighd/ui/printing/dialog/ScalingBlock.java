@@ -2,9 +2,9 @@
 /******************************************************************************
  * Copyright (c) 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
+ * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * http://www.eclipse.org/legal/epl-v20.html
  *
  * Contributors:
  *    IBM Corporation - initial API and implementation
@@ -19,18 +19,22 @@
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
  *
- * This code is provided under the terms of the Eclipse Public License (EPL).
- * See the file epl-v10.html for the license text.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0.
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 package de.cau.cs.kieler.klighd.ui.printing.dialog;
 
 import java.awt.geom.Dimension2D;
 
 import org.eclipse.core.databinding.DataBindingContext;
-import org.eclipse.core.databinding.beans.BeansObservables;
+import org.eclipse.core.databinding.beans.typed.BeanProperties;
 import org.eclipse.core.databinding.observable.Realm;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
-import org.eclipse.jface.databinding.swt.SWTObservables;
+import org.eclipse.jface.databinding.swt.ISWTObservableValue;
+import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -125,7 +129,7 @@ final class ScalingBlock {
         DialogUtil.label(scalingGroup, KlighdUIPrintingMessages.PrintDialog_Scaling_lbl_percent);
 
         // Group containing two spinners (and describing labels)
-        //  to set the number of pages tall and wide to print on.
+        // to set the number of pages tall and wide to print on.
         final Composite pagesGroup = new Composite(result, SWT.NONE);
         DialogUtil.layoutFillHorizontal(pagesGroup, true);
         pagesGroup.setLayout(new GridLayout(PAGES_GROUP_COLUMNS, false));
@@ -167,7 +171,7 @@ final class ScalingBlock {
                 @Override
                 public void widgetSelected(final SelectionEvent e) {
                     // Calculate for both horizontal and vertical directions
-                    //  how many pages are necessary to fit the diagram in.
+                    // how many pages are necessary to fit the diagram in.
 
                     final PrintExporter exporter = dOptions.getExporter();
                     final Dimension2D trimmedPrinterBounds = exporter.getTrimmedTileBounds(dOptions);
@@ -183,23 +187,29 @@ final class ScalingBlock {
 
             final Realm realm = bindings.getValidationRealm();
 
-            final IObservableValue scalePercent =
-                    BeansObservables.observeValue(realm, dOptions, PrintOptions.PROPERTY_SCALE_PERCENT);
-            bindings.bindValue(SWTObservables.observeSelection(scaleSpinner), scalePercent);
+            final IObservableValue<Object> scalePercent =
+                    BeanProperties.value(dOptions.getClass().asSubclass(DiagramPrintOptions.class),
+                            PrintOptions.PROPERTY_SCALE_PERCENT).observe(realm, dOptions);
+            ISWTObservableValue<Object> observerScaleSpinner = WidgetProperties.selection().observe(scaleSpinner);
+            bindings.bindValue(observerScaleSpinner, scalePercent);
 
-            final IObservableValue pagesWide =
-                    BeansObservables.observeValue(realm, dOptions, PrintOptions.PROPERTY_PAGES_WIDE);
-            bindings.bindValue(SWTObservables.observeSelection(spinnerWide), pagesWide);
+            final IObservableValue<Object> pagesWide = 
+                    BeanProperties.value(dOptions.getClass().asSubclass(DiagramPrintOptions.class),
+                            PrintOptions.PROPERTY_PAGES_WIDE).observe(realm, dOptions); 
+            ISWTObservableValue<Object> observerWideSpinner = WidgetProperties.selection().observe(spinnerWide);
+            bindings.bindValue(observerWideSpinner, pagesWide);
 
-            final IObservableValue pagesTall =
-                    BeansObservables.observeValue(realm, dOptions, PrintOptions.PROPERTY_PAGES_TALL);
-            bindings.bindValue(SWTObservables.observeSelection(spinnerTall), pagesTall);
+            final IObservableValue<Object> pagesTall = 
+                    BeanProperties.value(dOptions.getClass().asSubclass(DiagramPrintOptions.class),
+                            PrintOptions.PROPERTY_PAGES_TALL).observe(realm, dOptions);
+            ISWTObservableValue<Object> observerTallSpinner = WidgetProperties.selection().observe(spinnerTall);
+            bindings.bindValue(observerTallSpinner, pagesTall);
 
             result.addListener(SWT.Dispose, new Listener() {
 
                 public void handleEvent(final Event event) {
                     // while the SWTObservableValues are disposed while disposing the corresponding
-                    //  widgets the Beans-based ones should be disposed explicitly
+                    // widgets the Beans-based ones should be disposed explicitly
                     scalePercent.dispose();
                     pagesWide.dispose();
                     pagesTall.dispose();
@@ -209,10 +219,10 @@ final class ScalingBlock {
         } else {
 
             // in case the 'options' field is null, i.e. this instance is not linked to an instance of
-            //  'DiagramPrintOptions',
+            // 'DiagramPrintOptions',
             // deactivate all the controls as they do not make sense for printing non-diagram content
             // (some customers asked for this feature in order to provide consistent print dialogs
-            //  for all kinds of printable content)
+            // for all kinds of printable content)
 
             result.setEnabled(false);
             for (final Control c : result.getChildren()) {

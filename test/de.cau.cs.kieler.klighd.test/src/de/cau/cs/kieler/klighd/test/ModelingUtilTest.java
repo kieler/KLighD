@@ -8,8 +8,11 @@
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
  *
- * This code is provided under the terms of the Eclipse Public License (EPL).
- * See the file epl-v10.html for the license text.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0.
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 package de.cau.cs.kieler.klighd.test;
 
@@ -26,6 +29,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.hamcrest.Factory;
 import org.hamcrest.FeatureMatcher;
 import org.hamcrest.Matcher;
+import org.hamcrest.MatcherAssert;
 import org.hamcrest.core.IsEqual;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -85,14 +89,14 @@ public class ModelingUtilTest {
 
     @Test
     public void eAllContainerTest() {
-        Assert.assertThat(
+        MatcherAssert.assertThat("",
                 eAllContainers(eAllContainerTestObject),
                 IsIteratorWithSize.iteratorWithSize(2));
     }
 
     @Test
     public void selfAndEAllContainerTest() {
-        Assert.assertThat(
+        MatcherAssert.assertThat("",
                 selfAndEAllContainers(eAllContainerTestObject),
                 IsIteratorWithSize.iteratorWithSize(3)
         );
@@ -104,7 +108,7 @@ public class ModelingUtilTest {
 
     @Test
     public void eAllContentsOfType_1() {
-        Assert.assertThat(
+        MatcherAssert.assertThat("",
                 eAllContentsOfType(eAllContentsOfType2Object, KNode.class),
                 IsIteratorWithSize.iteratorWithSize(2)
         );
@@ -124,7 +128,7 @@ public class ModelingUtilTest {
 
     @Test
     public void eAllContentsOfType_2() {
-        Assert.assertThat(
+        MatcherAssert.assertThat("",
                 eAllContentsOfType(eAllContentsOfType2Object, KRendering.class),
                 IsIteratorWithSize.iteratorWithSize(5)
         );
@@ -134,7 +138,7 @@ public class ModelingUtilTest {
 
     @Test
     public void eAllContentsOfType_va1() {
-        Assert.assertThat(
+        MatcherAssert.assertThat("",
                 eAllContentsOfType(eAllContentsOfType2Object, KNode.class, KLabel.class),
                 IsIteratorWithSize.iteratorWithSize(3)
         );
@@ -154,7 +158,7 @@ public class ModelingUtilTest {
 
     @Test
     public void eAllContentsOfType_va2() {
-        Assert.assertThat(
+        MatcherAssert.assertThat("",
                 eAllContentsOfType(eAllContentsOfType2Object, KLabel.class, KRendering.class),
                 IsIteratorWithSize.iteratorWithSize(6)
         );
@@ -164,7 +168,7 @@ public class ModelingUtilTest {
 
     @Test
     public void selfAndEAllContentsOfType_1() {
-        Assert.assertThat(
+        MatcherAssert.assertThat("",
                 selfAndEAllContentsOfType(eAllContentsOfType2Object, KNode.class),
                 IsIteratorWithSize.iteratorWithSize(3)
         );
@@ -172,7 +176,7 @@ public class ModelingUtilTest {
 
     @Test
     public void selfAndEAllContentsOfType_2() {
-        Assert.assertThat(
+        MatcherAssert.assertThat("",
                 selfAndEAllContentsOfType(eAllContentsOfType2Object, KRendering.class),
                 IsIteratorWithSize.iteratorWithSize(6)
         );
@@ -208,7 +212,7 @@ public class ModelingUtilTest {
 
     @Test
     public void selfAndEAllContentsOfType_va1() {
-        Assert.assertThat(
+        MatcherAssert.assertThat("",
                 selfAndEAllContentsOfType(eAllContentsOfType2Object, KNode.class, KLabel.class),
                 IsIteratorWithSize.iteratorWithSize(4)
         );
@@ -228,7 +232,7 @@ public class ModelingUtilTest {
 
     @Test
     public void selfAndEAllContentsOfType_va2() {
-        Assert.assertThat(
+        MatcherAssert.assertThat("",
                 selfAndEAllContentsOfType(eAllContentsOfType2Object, KLabel.class, KRendering.class),
                 IsIteratorWithSize.iteratorWithSize(7)
         );
@@ -240,7 +244,7 @@ public class ModelingUtilTest {
 
     @Test
     public void eAllContentsOfType2_1() {
-        Assert.assertThat(
+        MatcherAssert.assertThat("",
                 eAllContentsOfType2(eAllContentsOfType2Object, KNode.class),
                 IsIteratorWithSize.iteratorWithSize(2)
         );
@@ -260,7 +264,7 @@ public class ModelingUtilTest {
 
     @Test
     public void eAllContentsOfType2_2() {
-        Assert.assertThat(
+        MatcherAssert.assertThat("",
                 eAllContentsOfType2(eAllContentsOfType2Object, KRendering.class),
                 IsIteratorWithSize.iteratorWithSize(1)
         );
@@ -270,7 +274,7 @@ public class ModelingUtilTest {
 
     @Test
     public void eAllContentsOfType2_va1() {
-        Assert.assertThat(
+        MatcherAssert.assertThat("",
                 eAllContentsOfType2(eAllContentsOfType2Object, KNode.class, KLabel.class),
                 IsIteratorWithSize.iteratorWithSize(3)
         );
@@ -290,7 +294,7 @@ public class ModelingUtilTest {
 
     @Test
     public void eAllContentsOfType2_va2() {
-        Assert.assertThat(
+        MatcherAssert.assertThat("",
                 eAllContentsOfType2(eAllContentsOfType2Object, KGraphElement.class, KRendering.class),
                 IsIteratorWithSize.iteratorWithSize(8)
         );
@@ -300,7 +304,7 @@ public class ModelingUtilTest {
 
     @Test
     public void selfAndEAllContentsOfType2_1() {
-        Assert.assertThat(
+        MatcherAssert.assertThat("",
                 selfAndEAllContentsOfType2(eAllContentsOfType2Object, KNode.class),
                 IsIteratorWithSize.iteratorWithSize(3)
         );
@@ -308,7 +312,7 @@ public class ModelingUtilTest {
 
     @Test
     public void selfAndEAllContentsOfType2_2() {
-        Assert.assertThat(
+        MatcherAssert.assertThat("",
                 selfAndEAllContentsOfType2(eAllContentsOfType2Object, KRendering.class),
                 IsIteratorWithSize.iteratorWithSize(2)
         );
@@ -344,7 +348,7 @@ public class ModelingUtilTest {
 
     @Test
     public void selfAndEAllContentsOfType2_va1() {
-        Assert.assertThat(
+        MatcherAssert.assertThat("",
                 selfAndEAllContentsOfType2(eAllContentsOfType2Object, KNode.class, KText.class),
                 IsIteratorWithSize.iteratorWithSize(5)
         );
@@ -364,7 +368,7 @@ public class ModelingUtilTest {
 
     @Test
     public void selfAndEAllContentsOfType2_va2() {
-        Assert.assertThat(
+        MatcherAssert.assertThat("",
                 selfAndEAllContentsOfType2(eAllContentsOfType2Object, KGraphElement.class, KText.class),
                 IsIteratorWithSize.iteratorWithSize(7)
         );

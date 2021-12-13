@@ -8,8 +8,11 @@
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
  * 
- * This code is provided under the terms of the Eclipse Public License (EPL).
- * See the file epl-v10.html for the license text.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0.
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 package de.cau.cs.kieler.klighd.microlayout;
 
@@ -932,13 +935,51 @@ public final class PlacementUtil {
      * @return the minimal bounds for the string
      */
     public static Bounds estimateTextSize(final KText kText, final String text) {
-        final Bounds testSize = getTestingTextSize(kText);
+        Bounds size = getTestingTextSize(kText);
+        
+        float[] textWidths = null;
+        float[] textHeights = null;
 
-        if (testSize != null) {
-            return testSize;
-        } else {
-            return estimateTextSize(fontDataFor(kText, null), text);
+        if (size == null) {
+            FontData fontData = fontDataFor(kText, null);
+            
+            if (Klighd.IS_PLATFORM_RUNNING) {
+                // In the platform case, SWT is used and handles the text size estimation just fine.
+                size = estimateTextSize(fontData, text);
+            } else {
+                String[] lines = text.split("\n");
+                // In the non-platform case when AWT is used, AWT needs some help to estimate the text line by line.
+                textWidths = new float[lines.length];
+                textHeights = new float[lines.length];
+                float y = 0;
+                float maxWidth = Float.MIN_VALUE;
+                float totalHeight = 0;
+                // Estimate size for each line individually.
+                for (int i = 0; i < lines.length; ++i) {
+                    Bounds lineSize = estimateTextSize(fontData, lines[i]);
+                    
+                    // The first y value is the y value of the multiline text.
+                    if (i == 0) y = lineSize.y;
+                    // Track the max width.
+                    if (lineSize.width > maxWidth) maxWidth = lineSize.width;
+                    // Track the total height.
+                    totalHeight += lineSize.height;
+                    
+                    textWidths[i] = lineSize.width;
+                    textHeights[i] = lineSize.height;
+                }
+                // Calculate the complete bounding box of the multiline text.
+                size = new Bounds(0, y, maxWidth, totalHeight);
+            }
         }
+        if (kText != null && textWidths != null && textHeights != null) {
+            // persist the line-wise estimations on the KText.
+            kText.getProperties().put(KlighdProperties.CALCULATED_TEXT_BOUNDS, Bounds.of(size));
+            kText.getProperties().put(KlighdProperties.CALCULATED_TEXT_LINE_WIDTHS, textWidths);
+            kText.getProperties().put(KlighdProperties.CALCULATED_TEXT_LINE_HEIGHTS, textHeights);
+        }
+        
+        return size;
     }
     
     /**
@@ -953,13 +994,6 @@ public final class PlacementUtil {
      */
     public static Bounds getTestingTextSize(final KText kText) {
         if (kText != null) {
-            // If the KText has already estimated bounds, use them.
-            if (kText.hasProperty(KlighdProperties.CALCULATED_TEXT_BOUNDS)) {
-                // The bounds need to be copied, because otherwise they would be changed by the caller of this method,
-                // specifically the GridPlacementUtil.estimateGridSize::501 changes its cellSize (which is this object).
-                return new Bounds(kText.getProperty(KlighdProperties.CALCULATED_TEXT_BOUNDS));
-            }
-            
             // special handling required for the regression tests
             // I don't trust in the different SWT implementations to
             //  provide the same size of a text on different platforms

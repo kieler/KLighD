@@ -8,8 +8,11 @@
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
  *
- * This code is provided under the terms of the Eclipse Public License (EPL).
- * See the file epl-v10.html for the license text.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0.
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 package de.cau.cs.kieler.klighd;
 
@@ -134,8 +137,10 @@ public interface IViewer {
      * @param eventTypes
      *            the {@link ViewChangeType} this listener is notified of
      */
-    void addViewChangedListener(IViewChangeListener listener,
-            ViewChangeType... eventTypes);
+    default void addViewChangedListener(IViewChangeListener listener,
+            ViewChangeType... eventTypes) {
+        this.addViewChangeListener(listener, eventTypes);
+    }
 
     /**
      * @deprecated (inconsistent name) use {@link #removeViewChangeListener(IViewChangeListener)}
@@ -143,7 +148,9 @@ public interface IViewer {
      * @param listener
      *            the {@link IViewChangeListener} to be removed from the listeners queue
      */
-    void removeViewChangedEventListener(IViewChangeListener listener);
+    default void removeViewChangedEventListener(IViewChangeListener listener) {
+        this.removeViewChangeListener(listener);
+    }
 
 
     /* ----------------------------- */

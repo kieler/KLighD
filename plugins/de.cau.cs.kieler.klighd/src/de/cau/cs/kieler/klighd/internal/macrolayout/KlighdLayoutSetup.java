@@ -7,8 +7,12 @@
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
- * 
- * This code is provided under the terms of the Eclipse Public License (EPL).
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0.
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 package de.cau.cs.kieler.klighd.internal.macrolayout;
 
@@ -87,6 +91,7 @@ public final class KlighdLayoutSetup implements ILayoutSetup {
         public void configure(final Binder binder) {
             // TODO extend "org.eclipse.elk.core.service.internal.DefaultModule()"
             //  and replace the first line by "super.configure(binder);"
+//            binder.bind(IGraphLayoutEngine.class).to(ConfigurableGraphLayoutEngine.class);
             binder.bind(IGraphLayoutEngine.class).to(RecursiveGraphLayoutEngine.class);
             binder.bind(IDiagramLayoutConnector.class).to(KlighdDiagramLayoutConnector.class);
             binder.bind(ILayoutConfigurationStore.Provider.class)

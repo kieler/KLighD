@@ -8,12 +8,16 @@
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
  *
- * This code is provided under the terms of the Eclipse Public License (EPL).
- * See the file epl-v10.html for the license text.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0.
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 package de.cau.cs.kieler.kgraph.text.ui.contentassist;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 
 import javax.inject.Inject;
@@ -471,13 +475,19 @@ public class KGraphProposalProvider extends AbstractKGraphProposalProvider {
                         break;
                     case OBJECT:
                         try {
+                        
                             proposal = "\""
-                                    + optionData.getOptionClass().newInstance().toString()
+                                    + optionData.getOptionClass().getDeclaredConstructor().newInstance().toString()
                                     + "\"";
-                        } catch (final InstantiationException e) {
+                        
+                        } catch (final InstantiationException 
+                                | IllegalAccessException 
+                                | IllegalArgumentException 
+                                | NoSuchMethodException e) {
                             proposal = "\"\"";
-                        } catch (final IllegalAccessException e) {
+                        } catch (final InvocationTargetException e) {
                             proposal = "\"\"";
+                            e.printStackTrace();
                         }
                         break;
 

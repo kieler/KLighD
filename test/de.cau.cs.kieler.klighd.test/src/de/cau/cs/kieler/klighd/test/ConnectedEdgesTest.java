@@ -8,8 +8,11 @@
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
  *
- * This code is provided under the terms of the Eclipse Public License (EPL).
- * See the file epl-v10.html for the license text.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0.
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 package de.cau.cs.kieler.klighd.test;
 
@@ -20,6 +23,7 @@ import java.util.List;
 
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.xtext.resource.XtextResourceSet;
+import org.hamcrest.MatcherAssert;
 import org.hamcrest.core.IsInstanceOf;
 import org.junit.Assert;
 import org.junit.Before;
@@ -113,7 +117,7 @@ public class ConnectedEdgesTest {
                             }
                         }, null);
 
-                Assert.assertThat(sourceId.eContainer(), IsInstanceOf.instanceOf(KPort.class));
+                MatcherAssert.assertThat("", sourceId.eContainer(), IsInstanceOf.instanceOf(KPort.class));
 
                 this.sourcePorts.add((KPort) sourceId.eContainer());
             } else if (EXPECTED_TARGET_PORT.equals(pe.getKey())) {
@@ -130,7 +134,7 @@ public class ConnectedEdgesTest {
                             }
                         }, null);
 
-                Assert.assertThat(targetId.eContainer(), IsInstanceOf.instanceOf(KPort.class));
+                MatcherAssert.assertThat("", targetId.eContainer(), IsInstanceOf.instanceOf(KPort.class));
 
                 this.expectedTargetPorts.add((KPort) targetId.eContainer());
 

@@ -8,8 +8,11 @@
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
  *
- * This code is provided under the terms of the Eclipse Public License (EPL).
- * See the file epl-v10.html for the license text.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0.
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 package de.cau.cs.kieler.klighd.util;
 
@@ -24,7 +27,6 @@ import org.eclipse.emf.ecore.EObject;
 
 import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
-import de.cau.cs.kieler.klighd.kgraph.KLayoutData;
 import de.cau.cs.kieler.klighd.kgraph.KNode;
 import de.cau.cs.kieler.klighd.krendering.KText;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
@@ -357,11 +359,23 @@ public final class KlighdProperties {
      */
     public static final IProperty<Bounds> CALCULATED_TEXT_BOUNDS =
             new Property<Bounds>("klighd.calculated.text.bounds", null);
+    
+    /**
+     * Property determining the pre-calculated widths of each line in a {@link KText}.
+     */
+    public static final IProperty<float[]> CALCULATED_TEXT_LINE_WIDTHS = 
+        new Property<float[]>("klighd.calculated.text.line.widths", null);
+    
+    /**
+     * Property determining the pre-calculated heights of each line in a {@link KText}.
+     */
+    public static final IProperty<float[]> CALCULATED_TEXT_LINE_HEIGHTS = 
+        new Property<float[]>("klighd.calculated.text.line.heights", null);
 
 	    
     /**
-     * Determines whether a KText can be interpreted as a title for a node.
-     * By default the KText is not a title.
+     * Determines whether a sub-KRendering can be interpreted as a title for a node.
+     * By default no rendering is seen as a title.
      */
     public static final IProperty<Boolean> IS_NODE_TITLE =
             new Property<Boolean>("klighd.isNodeTitle", false);

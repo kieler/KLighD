@@ -9,6 +9,9 @@
       <preservedProperties
             class="de.cau.cs.kieler.klighd.lsp.interactive.rectpacking.RectpackingPreservedProperties">
       </preservedProperties>
+      <preservedProperties
+            class="de.cau.cs.kieler.klighd.lsp.TopDownPreservedProperties">
+      </preservedProperties>
    </extension>
 
 </plugin>

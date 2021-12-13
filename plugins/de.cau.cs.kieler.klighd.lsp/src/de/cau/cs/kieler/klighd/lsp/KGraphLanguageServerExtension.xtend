@@ -8,7 +8,11 @@
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
  * 
- * This code is provided under the terms of the Eclipse Public License (EPL).
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0.
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 package de.cau.cs.kieler.klighd.lsp
 
@@ -84,6 +88,12 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
      */
     @Accessors
     boolean shouldSelectText = false
+    
+    /**
+     * Option to indicate if an incremental diagram generator should be used.
+     */
+    @Accessors
+    boolean incrementalDiagramGenerator = false;
     
     /**
      * Stores data for the generation of diagrams.
@@ -481,6 +491,11 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
                 case "diagram.shouldSelectText": {
                     if (value instanceof Boolean) {
                         this.shouldSelectText = value
+                    }
+                }
+                case "diagram.incrementalDiagramGenerator": {
+                    if (value instanceof Boolean) {
+                        this.incrementalDiagramGenerator = value
                     }
                 }
             }
