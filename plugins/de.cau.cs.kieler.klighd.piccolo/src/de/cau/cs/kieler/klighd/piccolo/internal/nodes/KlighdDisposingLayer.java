@@ -139,7 +139,7 @@ public class KlighdDisposingLayer extends PLayer implements IKlighdNode {
         isValidatingPaint = false;
 
         if (!tempRect.isEmpty()) {
-            repaintFrom(tempRect, this);
+            super.repaintFrom(tempRect, this);
         }
     }
 
