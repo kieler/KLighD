@@ -368,17 +368,20 @@ public final class NodeUtil {
         final PBounds nodeBounds = node.getFullBounds();
 
         if (node == clipNode) {
+            // revert the application of node's transform on 'nodeBounds' that is included in the 'fullBounds',
+            //  but it's not applied while drawing the clip node in the main diagram
+            node.parentToLocal(nodeBounds);
             return nodeBounds;
         }
 
         // since the fullBounds are already adjusted wrt. to node's transform
         //  start with node's parent here!
         PNode p = node.getParent();
-        while (p != null && p.getParent() != null) {
-            p.localToParent(nodeBounds);
+        while (p != null) {
             if (p == clipNode) {
                 return nodeBounds;
             }
+            p.localToParent(nodeBounds);
             p = p.getParent();
         }
 

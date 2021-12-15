@@ -52,6 +52,7 @@ import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
 import de.cau.cs.kieler.klighd.piccolo.internal.KlighdCanvas;
 import de.cau.cs.kieler.klighd.piccolo.internal.KlighdSWTGraphicsEx;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdBasicInputEventHandler;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KNodeAbstractNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KNodeTopNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdPath;
@@ -504,10 +505,9 @@ public class PiccoloOutlinePage implements IDiagramOutlinePage {
      * graph layout. Note, that the bounds of the canvas are automatically updated of the size of
      * the outline page change, since the outlineCanvas is provided by this class via
      * {@link #getControl()}. The canvas in turn immediately updates the bounds of its camera, see
-     * {@link edu.umd.cs.piccolox.swt.PSWTCanvas#setBounds(int, int, int, int)
-     * PSWTCanvas#.setBounds(int, int, int, int)}. Thus we don't need to care about the canvas' and
-     * camera's (full) bounds and can limit the modifications to the camera's view bounds (/view
-     * transform).
+     * {@link KlighdCanvas#setBounds(int, int, int, int) KlighdCanvas.setBounds(int, int, int,
+     * int)}. Thus we don't need to care about the canvas' and camera's (full) bounds and can limit
+     * the modifications to the camera's view bounds (/view transform).
      */
     private void adjustCamera() {
         if (rootNode == null) {
@@ -545,9 +545,11 @@ public class PiccoloOutlinePage implements IDiagramOutlinePage {
         final PNode displayedNode = (PNode) originalCamera.getDisplayedKNodeNode();
 
         // get the new bounds
+        // use the camera's non-adjusted viewBounds here, not 'canvasCamera.getViewBoundsAdjustedByClipNodeScale()',
+        //  since 'displayedNode's transform included subsequently contributes the scale adjustment!
         final PBounds bounds = originalCamera.getViewBounds();
         final PAffineTransform localToParent = 
-                NodeUtil.localToParent(displayedNode.getParent(), topNode);
+                NodeUtil.localToParent(displayedNode, topNode);
         localToParent.preConcatenate(outlineCanvas.getCamera().getViewTransformReference());
         localToParent.transform(bounds, bounds);
 
@@ -557,7 +559,8 @@ public class PiccoloOutlinePage implements IDiagramOutlinePage {
                 (float) bounds.x, (float) bounds.y, (float) bounds.width, (float) bounds.height,
                 viewportOutlineRectCornerWidth, viewportOutlineRectCornerWidth);
 
-        // schedule a repaint
+        // schedule a repaint, without this we observed dirty area artifacts in the outline view (at least on win32),
+        //  to be investigated!
         outlineCanvas.getCamera().invalidatePaint();
     }
 
@@ -636,34 +639,42 @@ public class PiccoloOutlinePage implements IDiagramOutlinePage {
         protected void startDrag(final PInputEvent event) {
             isDragging = true;
             super.startDrag(event);
-            final Point2D pos = event.getPosition();
+            final Point2D clickPosInDiagramCoords = event.getPosition();
 
             final KlighdMainCamera originalCamera = topNode.getDiagramMainCamera();
 
             // In clipped diagrams the accumulated 'translate' offset ((x,y) positions)
-            //  of the displayed inode's parent pnodes (!) must be applied the determined
-            //  view bounds in order to get the "actual" click position.
-            // Note however that the displayed inode's translate (x,y) must not be taken
-            //  into account because it is not contained in 'originalCamera.getViewBounds()'!
+            //  of the displayed inode and all of its parent pnodes (!) must be applied to the determined
+            //  view/diagram bounds in order to obtain the "actual" (true) click position.
             // Since PCamera.paintCameraView() calls 'fullPaint(...)' on each displayed PLayer
             //  the transforms of those layers are applied on top of the camera's view transform!
-            // For that reason the global translation of
-            //  'originalCamera.getDisplayedLayer().getParent()' is calculated. This way an
-            //  optional translation of the parent inode's child area is also respected!
-            final Point2D clipOffset =
-                    originalCamera.getDisplayedKNodeNode().getParent().getGlobalTranslation();
+            // Hence, for the outline view the transforms for each and every KNodeNode are always applied,
+            //  while for the main diagram the transforms of the clip node's parent pnodes are ignored
+            //  (of course because those nodes are simply invisible for the main diagram camera)
+            //  as well is the clip node's transform, see KNodeNode#fullPaint(PPaintContext)
+            // For that reason the global translation of 'originalCamera.getDisplayedKNodeNode()' is calculated.
+            // Optional translations of some parent inodes' child areas are also respected this way.
+            final KNodeAbstractNode displayedKNodeNode = originalCamera.getDisplayedKNodeNode();
+            final Point2D clipOffset = displayedKNodeNode.getGlobalTranslation();
 
-            final PBounds outlineRectBounds =
-                    originalCamera.getViewBounds().moveBy(clipOffset.getX(), clipOffset.getY());
+            // determine the bounds of the currently visible main diagram area (excerpt) in diagram coordinates, ...
+            final PBounds viewBounds = originalCamera.getViewBoundsAdjustedByClipNodeScale();
+            // ... and translate them by the clip node's transitive translation, s.t. they match the diagram's root KNodeTopNode's
+            //  coordinate system (assuming the diagram is clipped, 'clipOffset' is supposed to be (0,0) otherwise)
+            final PBounds trueBoundsOfVisibleMainDiagramArea =
+                    viewBounds.moveBy(clipOffset.getX(), clipOffset.getY());
 
             // if the user clicks outside the outline rect,
             // center it on this point before dragging starts
-            final boolean withinRect = outlineRectBounds.contains(pos);
-            if (!withinRect) {
-                // translate the camera by the delta between click
-                // and current center point of the bounds
-                final Point2D center = outlineRectBounds.getCenter2D();
-                originalCamera.translateView(center.getX() - pos.getX(), center.getY() - pos.getY());
+            final boolean clickedWithinVisibleMainDaigramExcerpt = 
+                    trueBoundsOfVisibleMainDiagramArea.contains(clickPosInDiagramCoords);
+            if (!clickedWithinVisibleMainDaigramExcerpt) {
+                // translate the camera by the delta between click and current center point of the bounds
+                //  reduced by the clip node's scale to match the main camera's coordinate system
+                final Point2D center = trueBoundsOfVisibleMainDiagramArea.getCenter2D();
+                originalCamera.translateViewAdjustedByClipNodeScale(
+                        center.getX() - clickPosInDiagramCoords.getX(), center.getY() - clickPosInDiagramCoords.getY()
+                );
             }
         }
 
@@ -674,7 +685,7 @@ public class PiccoloOutlinePage implements IDiagramOutlinePage {
         protected void drag(final PInputEvent event) {
             super.drag(event);
             final PDimension delta = event.getDelta();
-            topNode.getDiagramMainCamera().translateView(-delta.getWidth(), -delta.getHeight());
+            topNode.getDiagramMainCamera().translateViewAdjustedByClipNodeScale(-delta.getWidth(), -delta.getHeight());
         }
 
         /**

@@ -156,8 +156,16 @@ public class KlighdMagnificationLensEventHandler extends KlighdBasicInputEventHa
 
     /**
      * Composes a {@link PAffineTransform} incorporating the lens magnification according to the
-     * corresponding preference setting, the inverse of the clip node's scaling, and event's mouse
-     * pointer position in terms the diagram coordinates (rather than canvas coordinates).
+     * corresponding preference setting and event's mouse pointer position in terms the
+     * diagram coordinates (rather than canvas coordinates).
+     * 
+     * Note that no attention need to be paid to the current diagram clip node's scale and offset.
+     * They're not applied while drawing them via the main camera, and since 'mainCamera' is
+     * the top element in the paintContext's cameraStack while drawing via 'lensCamera'
+     * (as its a transitive parent of 'lensCamera') KNodeNode#fullPaint(PPaintContext)
+     * will behave the same way as when called via 'mainCamera'.
+     * 
+     * See also {@link PCamera#fullPaint(edu.umd.cs.piccolo.util.PPaintContext)}.
      * 
      * @param event
      *            the {@link PInputEvent} to get the diagram position from
@@ -170,9 +178,6 @@ public class KlighdMagnificationLensEventHandler extends KlighdBasicInputEventHa
         final float scale = STORE.getFloat(KlighdPreferences.MAGNIFICATION_LENS_SCALE) / 100f;
         viewTransform.scale(scale, scale);
 
-        final double clipScale = mainCamera.getDisplayedKNodeNode().getScale();
-        viewTransform.scale(1 / clipScale, 1 / clipScale);
-        
         final Point2D pos = event.getPosition();
         viewTransform.translate(-pos.getX(), -pos.getY());
         return viewTransform;
