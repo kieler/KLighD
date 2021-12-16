@@ -325,7 +325,7 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
      *            new stroke color
      */
     public void setStrokeColor(final RGB strokeColor) {
-        if (strokePaint != null && strokePaint.equals(strokeColor)) {
+        if (strokePaint == null && strokeColor == null || strokePaint != null && strokePaint.equals(strokeColor)) {
             return;
         }
 
@@ -360,7 +360,7 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
      *            new stroke color
      */
     public void setStrokeColor(final RGBGradient strokeGradient) {
-        if (strokePaintGradient != null && strokePaintGradient.equals(strokeGradient)) {
+        if (strokePaintGradient == null && strokeGradient == null ||  strokePaintGradient != null && strokePaintGradient.equals(strokeGradient)) {
             return;
         }
         Object oldPaint = null;
@@ -402,7 +402,7 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
      *            paint that this node should use when painting itself.
      */
     public void setPaint(final RGB newPaint) {
-        if (paint != null && paint.equals(newPaint)) {
+        if (paint == null && newPaint == null || paint != null && paint.equals(newPaint)) {
             return;
         }
         Object oldPaint = null;
@@ -435,7 +435,7 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
      *            paint that this node should use when painting itself.
      */
     public void setPaint(final RGBGradient newPaint) {
-        if (paintGradient != null && paintGradient.equals(newPaint)) {
+        if (paintGradient == null && newPaint == null || paintGradient != null && paintGradient.equals(newPaint)) {
             return;
         }
         Object oldPaint = null;
