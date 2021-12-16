@@ -24,6 +24,8 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.RGB;
 
+import com.google.common.collect.Lists;
+
 import de.cau.cs.kieler.klighd.IKlighdPreferenceStore;
 import de.cau.cs.kieler.klighd.KlighdPreferences;
 import de.cau.cs.kieler.klighd.piccolo.internal.KlighdCanvas;
@@ -31,6 +33,7 @@ import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMagnificationLensCam
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdPath;
 import edu.umd.cs.piccolo.PCamera;
+import edu.umd.cs.piccolo.PLayer;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.event.PInputEvent;
 import edu.umd.cs.piccolo.util.PAffineTransform;
@@ -193,7 +196,7 @@ public class KlighdMagnificationLensEventHandler extends KlighdBasicInputEventHa
             lensCamera.getParent().setOffset(determineLensOffset(event));            
             lensCamera.setViewTransform(createViewTransform(event));
 
-            lensCamera.getLayersReference().clear();
+            detachCameraFromLayers();
             lensCamera.addLayer(mainCamera.getDisplayedKNodeNode());
             lensVisible = true;
             lensCamera.getParent().setVisible(true);
@@ -208,10 +211,10 @@ public class KlighdMagnificationLensEventHandler extends KlighdBasicInputEventHa
 
             lensCamera.getParent().setVisible(false);
             lensVisible = false;
-            lensCamera.getLayersReference().clear();
+            detachCameraFromLayers();
         }
     }
-    
+
     @Override
     public void mouseMoved(final PInputEvent event) {
         if (event.isAltDown() && event.isControlDown()) {
@@ -226,7 +229,17 @@ public class KlighdMagnificationLensEventHandler extends KlighdBasicInputEventHa
 
             lensCamera.getParent().setVisible(false);
             lensVisible = false;
-            lensCamera.getLayersReference().clear();
+            detachCameraFromLayers();
         }
+    }
+
+    private void detachCameraFromLayers() {
+        @SuppressWarnings("unchecked")
+        final Iterable<PLayer> layers = Lists.reverse(
+            Lists.<PLayer>newArrayList(lensCamera.getLayersReference())
+        );
+
+        for (PLayer layer : layers)
+            lensCamera.removeLayer(layer);
     }
 }

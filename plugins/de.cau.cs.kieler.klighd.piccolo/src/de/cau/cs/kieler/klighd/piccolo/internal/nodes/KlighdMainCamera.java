@@ -32,6 +32,7 @@ import edu.umd.cs.piccolo.PCamera;
 import edu.umd.cs.piccolo.PLayer;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.PRoot;
+import edu.umd.cs.piccolo.activities.PTransformActivity;
 import edu.umd.cs.piccolo.util.PBounds;
 import edu.umd.cs.piccolo.util.PPaintContext;
 import edu.umd.cs.piccolo.util.PPickPath;
@@ -272,6 +273,17 @@ public class KlighdMainCamera extends PCamera {
         this.addLayer(0, node);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public PTransformActivity animateViewToTransform(AffineTransform destTransform, long duration) {
+        // just a bit of performance saving
+        if (destTransform == null || destTransform.equals(getViewTransformReference()))
+            return null;
+        else
+            return super.animateViewToTransform(destTransform, duration);
+    }
 
     /**
      * A specialized {@link PPickPath}.
