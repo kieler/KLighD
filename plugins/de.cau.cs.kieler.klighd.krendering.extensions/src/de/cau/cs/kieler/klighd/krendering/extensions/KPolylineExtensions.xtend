@@ -8,8 +8,11 @@
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
  * 
- * This code is provided under the terms of the Eclipse Public License (EPL).
- * See the file epl-v10.html for the license text.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0.
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 package de.cau.cs.kieler.klighd.krendering.extensions
 
@@ -56,8 +59,8 @@ class KPolylineExtensions {
                 it.absolute = if (head) -2f else 2f;
                 it.width = 8;
                 it.height = 6;
-                it.setXOffset(if (head) -6f else 6f); // chsch: used the regular way here and below, as the alias 
-                it.setYOffset(if (head) -3f else 3f); //  name translation convention changed from Xtext 2.3 to 2.4.
+                it.setXOffset(if (head) -6f else -3f); // chsch: used the regular way here and below, as the alias 
+                it.setYOffset(if (head) -3f else -4f); //  name translation convention changed from Xtext 2.3 to 2.4.
             ];
             if (!head) it.rotation = 180f
         ];

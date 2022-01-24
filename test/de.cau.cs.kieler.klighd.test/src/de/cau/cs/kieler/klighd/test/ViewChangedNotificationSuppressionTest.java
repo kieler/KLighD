@@ -8,8 +8,11 @@
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
  *
- * This code is provided under the terms of the Eclipse Public License (EPL).
- * See the file epl-v10.html for the license text.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0.
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 package de.cau.cs.kieler.klighd.test;
 
@@ -24,6 +27,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+import org.hamcrest.MatcherAssert;
 import org.hamcrest.collection.IsIterableContainingInOrder;
 import org.junit.After;
 import org.junit.Assert;
@@ -132,11 +136,11 @@ public class ViewChangedNotificationSuppressionTest {
 
         shell.close();
 
-        Assert.assertThat(observedNotifications01,
+        MatcherAssert.assertThat("", observedNotifications01,
                 IsIterableContainingInOrder.contains(expectedNotifications01.toArray()));
 
         if (secondListenerEmployed) {
-            Assert.assertThat(observedNotifications02,
+            MatcherAssert.assertThat("", observedNotifications02,
                     IsIterableContainingInOrder.contains(expectedNotifications02.toArray()));
         }
     }

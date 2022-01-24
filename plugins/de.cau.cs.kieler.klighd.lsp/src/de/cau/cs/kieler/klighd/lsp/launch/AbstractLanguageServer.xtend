@@ -8,7 +8,11 @@
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
  * 
- * This code is provided under the terms of the Eclipse Public License (EPL).
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0.
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 package de.cau.cs.kieler.klighd.lsp.launch
 
@@ -134,21 +138,25 @@ abstract class AbstractLanguageServer implements Runnable {
                 println(e.stackTrace)
                 return
             }
-            println("Connection to: " + host + ":" + port)
+            LOG.info("Connection to: " + host + ":" + port)
             // Register all languages
-            println("Starting language server socket")
+            LOG.info("Starting language server socket")
             bindAndRegisterLanguages()
             
             val serverSocket = AsynchronousServerSocketChannel.open.bind(new InetSocketAddress(host, port))
             val threadPool = Executors.newCachedThreadPool()
+            
+            LOG.info("Language Server Socket ready!")
+            
             while (true) {
                 val socketChannel = serverSocket.accept.get            
                 val in = Channels.newInputStream(socketChannel)
                 val out = Channels.newOutputStream(socketChannel)
                 val injector = Guice.createInjector(createLSModules(true))
                 val ls = injector.getInstance(LanguageServerImpl)
+                LOG.info("Starting language server for client " + socketChannel.remoteAddress)
                 buildAndStartLS(injector, ls, in, out, threadPool, [it], true)
-                LOG.info("Started language server for client " + socketChannel.remoteAddress)
+                LOG.info("Finished language server for client " + socketChannel.remoteAddress)
             }
         } else {
             LanguageServerLauncher.launch(languageRegistration, creator)

@@ -2,9 +2,9 @@
 /******************************************************************************
  * Copyright (c) 2008, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
+ * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * http://www.eclipse.org/legal/epl-v20.html
  *
  * Contributors:
  *    IBM Corporation - initial API and implementation
@@ -19,16 +19,20 @@
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
  *
- * This code is provided under the terms of the Eclipse Public License (EPL).
- * See the file epl-v10.html for the license text.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0.
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 package de.cau.cs.kieler.klighd.ui.printing.dialog;
 
 import org.eclipse.core.databinding.DataBindingContext;
-import org.eclipse.core.databinding.beans.BeansObservables;
+import org.eclipse.core.databinding.beans.typed.BeanProperties;
 import org.eclipse.core.databinding.observable.Realm;
 import org.eclipse.core.databinding.observable.value.ComputedValue;
-import org.eclipse.jface.databinding.swt.SWTObservables;
+import org.eclipse.jface.databinding.swt.ISWTObservableValue;
+import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -95,13 +99,15 @@ final class PrinterBlock {
         final Realm realm = bindings.getValidationRealm();
 
         // Observable to display the printer resp. file name, if print to file is set.
-        final ComputedValue computedValue = new ComputedValue(realm) {
+        final ComputedValue<String> computedValue = new ComputedValue<String>(realm) {
 
             @Override
-            protected Object calculate() {
-                final PrinterData data =
-                        (PrinterData) BeansObservables.observeValue(realm, options,
-                                PrintOptions.PROPERTY_PRINTER_DATA).getValue();
+            protected String calculate() {
+                final PrinterData data = 
+                        (PrinterData) BeanProperties
+                        .value( options.getClass().asSubclass(PrintOptions.class), PrintOptions.PROPERTY_PRINTER_DATA)
+                        .observe(realm, options)
+                        .getValue();
                 if (data.printToFile) {
                     return data.fileName;
                 } else {
@@ -109,7 +115,8 @@ final class PrinterBlock {
                 }
             }
         };
-        bindings.bindValue(SWTObservables.observeText(printerLabel), computedValue);
+        final ISWTObservableValue<String> labelText = WidgetProperties.text().observe(printerLabel); 
+        bindings.bindValue(labelText, computedValue);
 
         // printer properties button
         final Button propertiesButton =

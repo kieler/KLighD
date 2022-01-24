@@ -8,8 +8,11 @@
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
  * 
- * This code is provided under the terms of the Eclipse Public License (EPL).
- * See the file epl-v10.html for the license text.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0.
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 package de.cau.cs.kieler.klighd;
 
@@ -112,13 +115,22 @@ public final class KlighdConstants {
      * 
      * Note: This is a AWT constant!
      */
-    public static final String DEFAULT_FONT_NAME = Klighd.IS_WINDOWS ? "Arial" : "DejaVu Sans";
+    public static final String DEFAULT_FONT_NAME = Klighd.IS_PLATFORM_RUNNING
+            ? Klighd.IS_WINDOWS 
+                    ? "Arial"
+                    : "DejaVu Sans"
+            : "Overpass";
 
     /**
      * A platform independent font name identifier for a default monospaced font.
      */
-    public static final String DEFAULT_MONOSPACE_FONT_NAME = Klighd.IS_WINDOWS ? "Consolas"
-            : Klighd.IS_MACOSX ? "Monaco" : "Monospace";
+    public static final String DEFAULT_MONOSPACE_FONT_NAME = Klighd.IS_PLATFORM_RUNNING
+            ? Klighd.IS_WINDOWS
+                ? "Consolas"
+                : Klighd.IS_MACOSX 
+                    ? "Monaco" 
+                    : "Monospace"
+            : "Overpass Mono";
 
     /**
      * This font size is used for {@link de.cau.cs.kieler.klighd.krendering.KText KTexts}, if no

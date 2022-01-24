@@ -2,9 +2,9 @@
 /******************************************************************************
  * Copyright (c) 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
+ * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * http://www.eclipse.org/legal/epl-v20.html
  *
  * Contributors:
  *    IBM Corporation - initial API and implementation
@@ -19,13 +19,16 @@
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
  *
- * This code is provided under the terms of the Eclipse Public License (EPL).
- * See the file epl-v10.html for the license text.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0.
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 package de.cau.cs.kieler.klighd.ui.printing.dialog;
 
 import org.eclipse.core.databinding.DataBindingContext;
-import org.eclipse.jface.databinding.swt.SWTObservables;
+import org.eclipse.jface.databinding.swt.DisplayRealm;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.TrayDialog;
 import org.eclipse.jface.window.IShellProvider;
@@ -178,7 +181,7 @@ public class KlighdPrintDialog extends TrayDialog {
      */
     @Override
     protected Control createDialogArea(final Composite parent) {
-        bindings = new DataBindingContext(SWTObservables.getRealm(parent.getDisplay()));
+        bindings = new DataBindingContext(DisplayRealm.getRealm(parent.getDisplay()));
 
         final boolean previewInitiallyOpen =
                 diagramPrintOptionsAvailable && DiagramPrintOptions.getInitiallyShowPreview()

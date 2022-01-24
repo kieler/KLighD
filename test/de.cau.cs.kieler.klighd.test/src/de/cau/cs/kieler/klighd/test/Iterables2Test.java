@@ -8,13 +8,17 @@
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
  *
- * This code is provided under the terms of the Eclipse Public License (EPL).
- * See the file epl-v10.html for the license text.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0.
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 package de.cau.cs.kieler.klighd.test;
 
 import java.util.Iterator;
 
+import org.hamcrest.MatcherAssert;
 import org.hamcrest.collection.IsEmptyIterable;
 import org.hamcrest.collection.IsIterableContainingInOrder;
 import org.junit.Assert;
@@ -57,7 +61,7 @@ public class Iterables2Test {
     public void skipLastX(final int x) {
         // System.out.println(Iterables.toString(Iterables2.skipLast(TEST_LIST, x)));
 
-        Assert.assertThat(Iterables2.skipLast(TEST_LIST, x), x >= TEST_LIST.size()
+        MatcherAssert.assertThat("", Iterables2.skipLast(TEST_LIST, x), x >= TEST_LIST.size()
                 ? IsEmptyIterable.emptyIterable()
                 : IsIterableContainingInOrder.contains(
                         TEST_LIST.subList(0, TEST_LIST.size() - x).toArray()));

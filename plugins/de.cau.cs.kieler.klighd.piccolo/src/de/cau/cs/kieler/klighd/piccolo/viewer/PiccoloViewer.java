@@ -8,8 +8,11 @@
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
  *
- * This code is provided under the terms of the Eclipse Public License (EPL).
- * See the file epl-v10.html for the license text.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0.
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 package de.cau.cs.kieler.klighd.piccolo.viewer;
 
@@ -144,7 +147,7 @@ public class PiccoloViewer extends AbstractViewer implements ILayoutRecorder,
         this.magnificationLensVisibleSupplier = installEventHanders(camera);
 
         // add a tooltip element
-        new PiccoloTooltip(canvas);
+        this.installToolTip(canvas);
 
         // A timer being in charge of buffering and thus aggregating a bunch of single
         // view transform changes occurring closely after each other to a single view
@@ -221,6 +224,15 @@ public class PiccoloViewer extends AbstractViewer implements ILayoutRecorder,
                 new KlighdSelectiveZoomEventHandler(this)));
 
         return () -> magnificationLensHandler.isLensVisible();
+    }
+
+    /**
+     * Installs the tooltip support on this diagram viewer, clients may override.
+     * 
+     * @param canvas the {@link KlighdCanvas} to install the tooltip support on
+     */
+    protected void installToolTip(KlighdCanvas canvas) {
+        new PiccoloTooltip(canvas);
     }
 
     /**

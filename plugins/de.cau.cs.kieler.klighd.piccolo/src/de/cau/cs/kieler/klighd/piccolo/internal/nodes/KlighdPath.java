@@ -8,8 +8,11 @@
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
  *
- * This code is provided under the terms of the Eclipse Public License (EPL).
- * See the file epl-v10.html for the license text.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0.
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 package de.cau.cs.kieler.klighd.piccolo.internal.nodes;
 
@@ -322,7 +325,7 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
      *            new stroke color
      */
     public void setStrokeColor(final RGB strokeColor) {
-        if (strokePaint != null && strokePaint.equals(strokeColor)) {
+        if (strokePaint == null && strokeColor == null || strokePaint != null && strokePaint.equals(strokeColor)) {
             return;
         }
 
@@ -357,7 +360,7 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
      *            new stroke color
      */
     public void setStrokeColor(final RGBGradient strokeGradient) {
-        if (strokePaintGradient != null && strokePaintGradient.equals(strokeGradient)) {
+        if (strokePaintGradient == null && strokeGradient == null ||  strokePaintGradient != null && strokePaintGradient.equals(strokeGradient)) {
             return;
         }
         Object oldPaint = null;
@@ -399,7 +402,7 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
      *            paint that this node should use when painting itself.
      */
     public void setPaint(final RGB newPaint) {
-        if (paint != null && paint.equals(newPaint)) {
+        if (paint == null && newPaint == null || paint != null && paint.equals(newPaint)) {
             return;
         }
         Object oldPaint = null;
@@ -432,7 +435,7 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
      *            paint that this node should use when painting itself.
      */
     public void setPaint(final RGBGradient newPaint) {
-        if (paintGradient != null && paintGradient.equals(newPaint)) {
+        if (paintGradient == null && newPaint == null || paintGradient != null && paintGradient.equals(newPaint)) {
             return;
         }
         Object oldPaint = null;

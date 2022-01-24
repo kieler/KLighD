@@ -3,12 +3,16 @@
  * 
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright 2019, 2021 by
+ * Copyright 2019, 2020, 2021 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
  * 
- * This code is provided under the terms of the Eclipse Public License (EPL).
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0.
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 package de.cau.cs.kieler.klighd.lsp
 
@@ -23,7 +27,9 @@ import de.cau.cs.kieler.klighd.ViewContext
 import de.cau.cs.kieler.klighd.ide.model.MessageModel
 import de.cau.cs.kieler.klighd.kgraph.KNode
 import de.cau.cs.kieler.klighd.lsp.launch.AbstractLanguageServer
+import de.cau.cs.kieler.klighd.lsp.model.RequestDiagramPieceAction
 import de.cau.cs.kieler.klighd.lsp.model.SKGraph
+import de.cau.cs.kieler.klighd.lsp.utils.KGraphMappingUtil
 import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties
 import java.util.HashSet
 import java.util.List
@@ -33,6 +39,7 @@ import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.sprotty.IDiagramServer
 import org.eclipse.sprotty.SGraph
+import org.eclipse.sprotty.SModelElement
 import org.eclipse.sprotty.xtext.ILanguageAwareDiagramServer
 import org.eclipse.sprotty.xtext.ls.DiagramLanguageServer
 import org.eclipse.sprotty.xtext.ls.DiagramUpdater
@@ -45,13 +52,19 @@ import org.eclipse.xtext.util.CancelIndicator
  * @author nre
  */
 class KGraphDiagramUpdater extends DiagramUpdater {
-    
     /**
      * The {@link Provider} to call an injected {@link KGraphDiagramGenerator} to generate {@link KNode KGraphs} and 
      * {@link SKGraph}s from that.
      */
     @Inject
     Provider<KGraphDiagramGenerator> diagramGeneratorProvider
+    
+    /**
+     * The {@link Provider} to call an injected {@link KGraphIncrementalDiagramGenerator} to generate {@link KNode KGraphs} and 
+     * {@link SKGraph}s from that using the incremental top-down approach.
+     */
+    @Inject
+    Provider<KGraphIncrementalDiagramGenerator> incrementalDiagramGeneratorProvider
 
     /**
      * The language server using this diagram updater. Double of the private languageServer field of the DiagramUpdater
@@ -132,23 +145,35 @@ class KGraphDiagramUpdater extends DiagramUpdater {
             synchronized (diagramState) {
                 snapshotModel = diagramState.getSnapshotModel(uri)
             }
-            val model = if (snapshotModel === null) {
-                    if (resource === null) {
-                        new MessageModel("No model in editor")
-                    } else {
-                        resource.contents.head
-                    }
+            var Object model = null
+            if (snapshotModel === null) {
+                if (resource === null) {
+                    model = new MessageModel("No model in editor")
                 } else {
-                    snapshotModel
+                    model = resource.contents.head
                 }
-            if (!(model instanceof EObject) || (model as EObject).eResource  === null ||
-                (model as EObject).eResource.errors.isEmpty
-            ) {
-                (diagramServers as List<KGraphDiagramServer>).forEach [ server |
-                    prepareModel(server, model, uri)
-                    updateLayout(server)
-                ]
+            } else {
+                model = snapshotModel
             }
+            // Check if the model has errors. If the model has errors and no diagram has been shown before, show an
+            // error message as the model. Otherwise if there are errors, ignore the diagram update and keep the old
+            // one. If there are no errors, just generate the diagram.
+            val hasErrors = model instanceof EObject && (model as EObject).eResource !== null
+                && !(model as EObject).eResource.errors.isEmpty
+            if (hasErrors) {
+                // prettify the error message to be better readable line by line
+                val errors = (model as EObject).eResource.errors.fold(
+                    new StringBuilder, [builder, error | builder.append("\n" + error)]).toString
+                model = new MessageModel("The model contains errors:\n" + errors)
+            }
+            val model_ = model;
+            (diagramServers as List<KGraphDiagramServer>).forEach [ KGraphDiagramServer server |
+                // Only update an erroneous model if there was no diagram shown before.
+                if (!hasErrors || server.currentRoot.type == "NONE") {
+                    prepareModel(server, model_, uri)
+                    updateLayout(server)
+                }
+            ]
             return null as Void
         ]
     }
@@ -192,6 +217,8 @@ class KGraphDiagramUpdater extends DiagramUpdater {
             viewContext = viewer.viewContext
             if (viewContext.inputModel === null || viewContext.inputModel.class !== model.class) {
                 modelTypeChanged = true
+                // If the model is a different type of what is given in the viewContext, also reset the synthesis.
+                properties.setProperty(KlighdSynthesisProperties.REQUESTED_DIAGRAM_SYNTHESIS, null)
             }
             if (viewContext.getDiagramSynthesis() !== null
                 && !KlighdDataManager.instance.getSynthesisID(viewContext.getDiagramSynthesis()).equals(synthesisId)) {
@@ -259,22 +286,39 @@ class KGraphDiagramUpdater extends DiagramUpdater {
     synchronized def SGraph createModel(ViewContext viewContext, String uri, CancelIndicator cancelIndicator) {
         // Generate the SGraph model from the KGraph model and store every later relevant part in the
         // diagram state.
-        val diagramGenerator = diagramGeneratorProvider.get
-        var shouldSelectText = false
+        
+        // FIXME: currently collapsing and expanding all regions breaks the diagram somehow, apparently not always
+        //        maybe when hierarchy is low so some elements aren't rendered and "get lost" when collapsing and 
+        //        expanding, not sure why though, must investigate further
+        
+        var incrementalDiagramGenerator = false
         if (languageServer instanceof KGraphLanguageServerExtension) {
-            shouldSelectText = languageServer.shouldSelectText
+            incrementalDiagramGenerator = languageServer.isIncrementalDiagramGenerator
         }
-        diagramGenerator.activeTracing = shouldSelectText
+        
+        // FIXME: extract this to some other strategy manager that can handle passing the options
+        //        idea: abstract superclass KGraphDiagramGenerator
+        var diagramGenerator = incrementalDiagramGenerator
+            ? incrementalDiagramGeneratorProvider.get
+            : diagramGeneratorProvider.get
+        
         val sGraph = diagramGenerator.toSGraph(viewContext.viewModel, uri, cancelIndicator)
+        
+        if (incrementalDiagramGenerator) {
+            val requestManager = new KGraphDiagramPieceRequestManager(diagramGenerator as KGraphIncrementalDiagramGenerator)
+            synchronized (diagramState) {
+                diagramState.putDiagramPieceRequestManager(uri, requestManager)
+            }
+        }
+        
         synchronized (diagramState) {
             diagramState.putKGraphToSModelElementMap(uri, diagramGenerator.getKGraphToSModelElementMap)
             diagramState.putIdToKGraphElementMap(uri, diagramGenerator.idToKGraphElementMap)
-            diagramState.putTexts(uri, diagramGenerator.getModelLabels)
-            diagramState.putTextMapping(uri, diagramGenerator.getTextMapping)
             diagramState.putImageData(uri, diagramGenerator.images)
         }
-
+        
         return sGraph
+        
     }
 
     /**
@@ -331,18 +375,22 @@ class KGraphDiagramUpdater extends DiagramUpdater {
             val List<String> configuredOptions = newArrayList
             for (option : synthesisOptions.entrySet) {
                 val optionId = option.key
-                val optionValue = option.value.asJsonPrimitive
-                // Search an option with the same ID in the view context and configure it with the new value.
-                val availableOptions = viewContext.displayedSynthesisOptions
-                val matchedOption = availableOptions.findFirst [ it.id == optionId ]
-                if (matchedOption !== null) {
-                    val Object optionValueObject = optionValue.isBoolean ? optionValue.asBoolean
-                                                 : optionValue.isNumber  ? optionValue.asNumber
-                                                 : optionValue.isString  ? optionValue.asString
-                    KGraphLanguageServerExtension.configureOption(matchedOption, optionValueObject, viewContext)
-                    // Store the option with the new value in the recent options.
-                    recentSynthesisOptions.put(matchedOption, viewContext.getOptionValue(matchedOption))
-                    configuredOptions.add(optionId)
+                if (option.value.isJsonPrimitive){
+                    val optionValue = option.value.asJsonPrimitive
+                    // Search an option with the same ID in the view context and configure it with the new value.
+                    val availableOptions = viewContext.displayedSynthesisOptions
+                    val matchedOption = availableOptions.findFirst [ it.id == optionId ]
+                    if (matchedOption !== null) {
+                        val Object optionValueObject = optionValue.isBoolean ? optionValue.asBoolean
+                                                     : optionValue.isNumber  ? optionValue.asNumber
+                                                     : optionValue.isString  ? optionValue.asString
+                        KGraphLanguageServerExtension.configureOption(matchedOption, optionValueObject, viewContext)
+                        // Store the option with the new value in the recent options.
+                        recentSynthesisOptions.put(matchedOption, viewContext.getOptionValue(matchedOption))
+                        configuredOptions.add(optionId)
+                    }
+                } else {
+                   println("Not a JSON Primitive: " + option.value)
                 }
             }
             // These options now already have been configured here, so remove them from being configured again.
@@ -361,4 +409,29 @@ class KGraphDiagramUpdater extends DiagramUpdater {
     def updateDiagrams2(List<URI> uris) {
         updateDiagrams(uris)
     }
+    
+    /**
+     * Gets the next diagram piece requested by the client.
+     */
+    def SModelElement getNextDiagramPiece(KGraphDiagramServer server, RequestDiagramPieceAction request) {
+        synchronized (diagramState) {
+            val requestManager = diagramState.getDiagramPieceRequestManager(server.sourceUri)
+            val diagramGenerator = requestManager.diagramGenerator
+            val piece = requestManager.processRequest(request)
+            
+            // TODO: diagram state now contains redundant info, because through the request manager and the generator
+            //       stuff is stored twice
+            diagramState.putKGraphToSModelElementMap(server.sourceUri, diagramGenerator.getKGraphToSModelElementMap)
+            diagramState.putIdToKGraphElementMap(server.sourceUri, diagramGenerator.idToKGraphElementMap)
+            diagramState.putImageData(server.sourceUri, diagramGenerator.images)
+            // map layout info onto new piece
+            // TODO: don't actually need to do this on everything every time, should be replaced by method to map only to 
+            //       elements which haven't yet received their info
+            KGraphMappingUtil.mapLayout(diagramState.getKGraphToSModelElementMap(server.sourceUri))
+            
+            return piece
+        }
+        
+    }
+    
 }

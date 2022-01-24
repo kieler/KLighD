@@ -8,8 +8,11 @@
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
  *
- * This code is provided under the terms of the Eclipse Public License (EPL).
- * See the file epl-v10.html for the license text.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0.
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 package de.cau.cs.kieler.klighd.piccolo.test;
 
@@ -38,6 +41,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Shell;
 import org.hamcrest.Matcher;
+import org.hamcrest.MatcherAssert;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Assume;
@@ -279,13 +283,13 @@ public class DiagramClipPortLabelVisibilityTest {
                 waitAmoment();
 
                 moveTo((int) (port0pos.x), (int) (port0pos.y));
-                Assert.assertThat(Pair.of(viewer.getControl(), port0pos), portMatcher);
+                MatcherAssert.assertThat("", Pair.of(viewer.getControl(), port0pos), portMatcher);
 
                 if (port0Layout != portXLayout) {
                     waitAmoment();
 
                     moveTo((int) (portXpos.x), (int) (portXpos.y));
-                    Assert.assertThat(Pair.of(viewer.getControl(), portXpos), portMatcher);
+                    MatcherAssert.assertThat("", Pair.of(viewer.getControl(), portXpos), portMatcher);
 
                     if (node.getLabels().isEmpty()) {
                         return;
@@ -309,7 +313,7 @@ public class DiagramClipPortLabelVisibilityTest {
                 waitAmoment();
 
                 moveTo((int) (label0pos.x), (int) (label0pos.y));
-                Assert.assertThat(Pair.of(viewer.getControl(), label0pos), labelMatcher);
+                MatcherAssert.assertThat("", Pair.of(viewer.getControl(), label0pos), labelMatcher);
             }
         }
     }

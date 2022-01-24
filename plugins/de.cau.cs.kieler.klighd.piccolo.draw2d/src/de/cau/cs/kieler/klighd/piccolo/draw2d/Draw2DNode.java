@@ -8,8 +8,11 @@
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
  * 
- * This code is provided under the terms of the Eclipse Public License (EPL).
- * See the file epl-v10.html for the license text.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0.
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 package de.cau.cs.kieler.klighd.piccolo.draw2d;
 
@@ -144,41 +147,59 @@ public class Draw2DNode extends KCustomFigureNode {
      */
     @Override
     public void applyStyles(final Styles styles) {
+        // chsch: deactivated the calls of 'Color.dispose()' in the following, as with the changes of
+        //  https://github.com/eclipse/eclipse.platform.swt/commit/6f25fa51112fbf1670baee56c085ab60273daf47
+        // on WIN_32 all disposed colors (handle == -1 == 0xFFFFFFFF) are equal to the Color "white" (handle == 0xFFFFFF),
+        //  see https://github.com/eclipse/eclipse.platform.swt/blob/6f25fa51112fbf1670baee56c085ab60273daf47/bundles/org.eclipse.swt/Eclipse%20SWT/win32/org/eclipse/swt/graphics/Color.java#L357-L362
+        // see also the handle determination in https://github.com/eclipse/eclipse.platform.swt/blob/6f25fa51112fbf1670baee56c085ab60273daf47/bundles/org.eclipse.swt/Eclipse%20SWT/win32/org/eclipse/swt/graphics/Color.java#L480-L486
+        // 
+        // Because of https://github.com/eclipse/gef-legacy/blob/14563a9e1f2af636a5364d195cf07dbff6f35fa6/org.eclipse.draw2d/src/org/eclipse/draw2d/Figure.java#L1459-L1463 
+        //  and       https://github.com/eclipse/gef-legacy/blob/14563a9e1f2af636a5364d195cf07dbff6f35fa6/org.eclipse.draw2d/src/org/eclipse/draw2d/Figure.java#L1664-L1668
+        //  the disposed color would than stick in place and cause exceptions like on the next canvas redrawing action
+        //    org.eclipse.swt.SWTException: Graphic is disposed
+        //    at org.eclipse.swt.SWT.error(SWT.java:4869)
+        //    at org.eclipse.swt.SWT.error(SWT.java:4784)
+        //    at org.eclipse.swt.SWT.error(SWT.java:4755)
+        //    at org.eclipse.swt.graphics.Color.getRGB(Color.java:410)
+        //    at de.cau.cs.kieler.klighd.piccolo.draw2d.GraphicsAdapter.setForegroundColor(GraphicsAdapter.java:512)
+        //    at org.eclipse.draw2d.Figure.paint(Figure.java:1112)
+        //    ...
+        
         final IFigure drawnFigure = (IFigure) figure.getChildren().get(0);
         
         //apply background color
         if (styles.background != null) {
-            if (drawnFigure.getBackgroundColor() != null
-                    && drawnFigure.getBackgroundColor() != this.initialBackground) {
-                drawnFigure.getBackgroundColor().dispose();
-            }
+//            if (drawnFigure.getBackgroundColor() != null
+//                    && drawnFigure.getBackgroundColor() != this.initialBackground) {
+//                drawnFigure.getBackgroundColor().dispose();
+//            }
             
             final KColor bgColor = styles.background.getColor();
             drawnFigure.setBackgroundColor(
                     new Color(null, bgColor.getRed(), bgColor.getGreen(), bgColor.getBlue()));
         } else {
-            if (drawnFigure.getBackgroundColor() != null
-                    && drawnFigure.getBackgroundColor() != this.initialBackground) {
-                drawnFigure.getBackgroundColor().dispose();
-            }
+//            if (drawnFigure.getBackgroundColor() != null
+//                    && drawnFigure.getBackgroundColor() != this.initialBackground) {
+//                drawnFigure.getBackgroundColor().dispose();
+//            }
             drawnFigure.setBackgroundColor(this.initialBackground);
         }
         
         //apply foreground color
         if (styles.foreground != null) {
-            if (drawnFigure.getForegroundColor() != null
-                    && drawnFigure.getForegroundColor() != this.initialForeground) {
-                drawnFigure.getForegroundColor().dispose();
-            }
+//            if (drawnFigure.getForegroundColor() != null
+//                    && drawnFigure.getForegroundColor() != this.initialForeground) {
+//                drawnFigure.getForegroundColor().dispose();
+//            }
             
             final KColor fgColor = styles.foreground.getColor();
             drawnFigure.setForegroundColor(
                     new Color(null, fgColor.getRed(), fgColor.getGreen(), fgColor.getBlue()));
         } else {
-            if (drawnFigure.getForegroundColor() != null
-                    && drawnFigure.getForegroundColor() != this.initialForeground) {
-                drawnFigure.getForegroundColor().dispose();
-            }
+//            if (drawnFigure.getForegroundColor() != null
+//                    && drawnFigure.getForegroundColor() != this.initialForeground) {
+//                drawnFigure.getForegroundColor().dispose();
+//            }
             drawnFigure.setForegroundColor(this.initialForeground);
         }
         

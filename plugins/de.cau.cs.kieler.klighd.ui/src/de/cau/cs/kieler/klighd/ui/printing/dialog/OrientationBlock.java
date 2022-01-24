@@ -8,16 +8,21 @@
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
  *
- * This code is provided under the terms of the Eclipse Public License (EPL).
- * See the file epl-v10.html for the license text.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0.
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 package de.cau.cs.kieler.klighd.ui.printing.dialog;
 
 import org.eclipse.core.databinding.DataBindingContext;
-import org.eclipse.core.databinding.beans.BeansObservables;
+import org.eclipse.core.databinding.beans.typed.BeanProperties;
 import org.eclipse.core.databinding.observable.Realm;
+import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.observable.value.SelectObservableValue;
-import org.eclipse.jface.databinding.swt.SWTObservables;
+import org.eclipse.jface.databinding.swt.ISWTObservableValue;
+import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.printing.PrinterData;
 import org.eclipse.swt.widgets.Button;
@@ -76,20 +81,22 @@ final class OrientationBlock {
 
         final Realm realm = bindings.getValidationRealm();
 
-        final SelectObservableValue orientationGroupValue = new SelectObservableValue(realm);
-        orientationGroupValue.addOption(PrinterData.PORTRAIT,
-                SWTObservables.observeSelection(portraitRadio));
-        orientationGroupValue.addOption(PrinterData.LANDSCAPE,
-                SWTObservables.observeSelection(landscapeRadio));
+        final SelectObservableValue<Integer> orientationGroupValue = new SelectObservableValue<>(realm);
+        
+        ISWTObservableValue<Boolean> observerPortrait = WidgetProperties.selection().observe(portraitRadio);
+        orientationGroupValue.addOption(PrinterData.PORTRAIT, observerPortrait);
+        ISWTObservableValue<Boolean> observeLandscape = WidgetProperties.selection().observe(landscapeRadio);
+        orientationGroupValue.addOption(PrinterData.LANDSCAPE, observeLandscape);
 
-        bindings.bindValue(orientationGroupValue,
-                BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_ORIENTATION));
+        IObservableValue<Object> observeOrientation = BeanProperties.value(options.getClass().asSubclass(PrintOptions.class), PrintOptions.PROPERTY_ORIENTATION)
+                .observe(realm, options);
+        bindings.bindValue(orientationGroupValue, observeOrientation);
 
         result.addListener(SWT.Dispose, new Listener() {
 
             public void handleEvent(final Event event) {
                 // although the 'option SWTObservables' are automatically disposed via the radio buttons
-                //  the 'SelectObservableValue' is not, so...
+                // the 'SelectObservableValue' is not, so...
                 orientationGroupValue.dispose();
             }
         });

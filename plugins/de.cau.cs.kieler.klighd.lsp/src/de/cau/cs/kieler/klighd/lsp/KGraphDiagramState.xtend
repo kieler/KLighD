@@ -3,15 +3,20 @@
  *
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright 2018,2020 by
+ * Copyright 2018-2021 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
  * 
- * This code is provided under the terms of the Eclipse Public License (EPL).
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0.
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 package de.cau.cs.kieler.klighd.lsp
 
+import com.google.common.collect.BiMap
 import com.google.gson.JsonElement
 import com.google.inject.Singleton
 import de.cau.cs.kieler.klighd.IViewer
@@ -20,13 +25,10 @@ import de.cau.cs.kieler.klighd.ViewContext
 import de.cau.cs.kieler.klighd.internal.ISynthesis
 import de.cau.cs.kieler.klighd.kgraph.KGraphElement
 import de.cau.cs.kieler.klighd.krendering.KImage
-import de.cau.cs.kieler.klighd.krendering.KText
 import de.cau.cs.kieler.klighd.lsp.model.ImageData
-import de.cau.cs.kieler.klighd.lsp.model.SKLabel
 import java.net.URLDecoder
 import java.util.HashMap
 import java.util.HashSet
-import java.util.List
 import java.util.Map
 import java.util.Set
 import org.eclipse.elk.core.LayoutConfigurator
@@ -50,7 +52,7 @@ class KGraphDiagramState {
      * Convenient for finding a specific key KGraphElement faster.
      * Mapped by the URI this map belongs to.
      */
-    Map<String, Map<KGraphElement, SModelElement>> kGraphToSModelElementMap = new HashMap
+    Map<String, BiMap<KGraphElement, SModelElement>> kGraphToSModelElementMap = new HashMap
     
     /**
      * A map that contains a key-value pair for each ID of a graph element and the {@link KGraphElement} it identifies.
@@ -63,18 +65,6 @@ class KGraphDiagramState {
      * Mapped by the URI this map belongs to.
      */
     Map<String, Set<ImageData>> imageData = new HashMap
-    
-    /**
-     * A list containing all texts from the source KGraph in Sprotty labels.
-     * Mapped by the URI this map belongs to.
-     */
-    Map<String, List<SKLabel>> texts = new HashMap
-    
-    /**
-     * A map containing all KTexts from the source KGraph under the key of their id.
-     * Mapped by the URI this map belongs to.
-     */
-    Map<String, Map<String, KText>> textMapping = new HashMap
     
     /**
      * Contains the model of the currently drawn snapshot for the URI of the model, if available.
@@ -90,6 +80,11 @@ class KGraphDiagramState {
      * Contains the current synthesis ID for the URI of the model.
      */
     Map<String, String> synthesisIdMapping = new HashMap
+    
+    /**
+     * Contains the diagram piece request manager for the URI of the model.
+     */
+    Map<String, KGraphDiagramPieceRequestManager> diagramPieceRequestManagerMap = new HashMap
 
     /**
      * Contains the {@link IViewer} displaying diagrams.
@@ -142,7 +137,7 @@ class KGraphDiagramState {
      * 
      * @param uri The identifying URI of the graph to access the value in the map.
      */
-    def Map<KGraphElement, SModelElement> getKGraphToSModelElementMap(String uri) {
+    def BiMap<KGraphElement, SModelElement> getKGraphToSModelElementMap(String uri) {
         kGraphToSModelElementMap.get(uri)
     }
     
@@ -152,7 +147,7 @@ class KGraphDiagramState {
      * @param uri The identifying URI of the graph to access the map.
      * @param value The value to be stored in the map.
      */
-    def putKGraphToSModelElementMap(String uri, Map<KGraphElement, SModelElement> value) {
+    def putKGraphToSModelElementMap(String uri, BiMap<KGraphElement, SModelElement> value) {
         kGraphToSModelElementMap.put(uri, value)
     }
     
@@ -192,44 +187,6 @@ class KGraphDiagramState {
      */
     def putImageData(String uri, Set<ImageData> value) {
         imageData.put(uri, value)
-    }
-    
-    /**
-     * Getter to access the value stored in the texts map.
-     * 
-     * @param uri The identifying URI of the graph to access the value in the map.
-     */
-    def List<SKLabel> getTexts(String uri) {
-        texts.get(uri)
-    }
-    
-    /**
-     * Put method to put a new value in the texts map.
-     * 
-     * @param uri The identifying URI of the graph to access the map.
-     * @param value The value to be stored in the map.
-     */
-    def putTexts(String uri, List<SKLabel> value) {
-        texts.put(uri, value)
-    }
-    
-    /**
-     * Getter to access the value stored in the textMapping map.
-     * 
-     * @param uri The identifying URI of the graph to access the value in the map.
-     */
-    def Map<String, KText> getTextMapping(String uri) {
-        textMapping.get(uri)
-    }
-    
-    /**
-     * Put method to put a new value in the textMapping map.
-     * 
-     * @param uri The identifying URI of the graph to access the map.
-     * @param value The value to be stored in the map.
-     */
-    def putTextMapping(String uri, Map<String, KText> value) {
-        textMapping.put(uri, value)
     }
     
     /**
@@ -292,6 +249,25 @@ class KGraphDiagramState {
      */
     def putSynthesisId(String uri, String value) {
         synthesisIdMapping.put(uri, value)
+    }
+    
+    /**
+     * Getter to access the diagram piece request manager for the given URI.
+     * 
+     * @param uri The identifying URI of the graph to access the value in the map.
+     */
+    def KGraphDiagramPieceRequestManager getDiagramPieceRequestManager(String uri) {
+        diagramPieceRequestManagerMap.get(uri)
+    }
+    
+    /**
+     * Put method to set the diagram piece request manager for a URI.
+     * 
+     * @param uri The identifying URI of the graph to access the map.
+     * @param requestManager The diagram piece request manager to be stored.
+     */
+    def putDiagramPieceRequestManager(String uri, KGraphDiagramPieceRequestManager requestManager) {
+        diagramPieceRequestManagerMap.put(uri, requestManager)
     }
     
     /**
@@ -385,11 +361,10 @@ class KGraphDiagramState {
             kGraphContexts.remove(URLDecoder.decode(uri, "UTF-8"))
             kGraphToSModelElementMap.remove(uri)
             idToKGraphElementMap.remove(uri)
-            texts.remove(uri)
-            textMapping.remove(uri)
             snapshotModelMapping.remove(uri)
             layoutConfigMapping.remove(uri)
             synthesisIdMapping.remove(uri)
+            diagramPieceRequestManagerMap.remove(uri)
             viewer = null
             uriStringMap.remove(clientId)
         }
