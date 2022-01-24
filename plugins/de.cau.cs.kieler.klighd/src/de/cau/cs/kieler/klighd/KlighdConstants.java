@@ -112,7 +112,7 @@ public final class KlighdConstants {
      * 
      * Note: This is a AWT constant!
      */
-    public static final String DEFAULT_FONT_NAME = Klighd.IS_WINDOWS ? "Arial" : Font.SANS_SERIF;
+    public static final String DEFAULT_FONT_NAME = Klighd.IS_WINDOWS ? "Arial" : "DejaVu Sans";
 
     /**
      * A platform independent font name identifier for a default monospaced font.
