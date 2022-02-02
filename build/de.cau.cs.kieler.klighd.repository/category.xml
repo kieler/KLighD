@@ -59,10 +59,6 @@
       <category name="kieler-klighd"/>
    </feature>
 
-   <bundle id="de.cau.cs.kieler.klighd.standalone" version="2.1.1.qualifier"/>
-   <bundle id="de.cau.cs.kieler.klighd.lsp" version="2.1.1.qualifier"/>
-   <bundle id="de.cau.cs.kieler.klighd.lsp.source" version="2.1.1.qualifier"/>
-
    <repository-reference location="https://download.eclipse.org/releases/2020-06/" enabled="true" />
    <repository-reference location="https://download.eclipse.org/modeling/mdt/uml2/updates/5.4/" enabled="true" />
    <repository-reference location="https://download.eclipse.org/elk/updates/releases/0.7.1/" enabled="true" />
