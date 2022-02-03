@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>de.cau.cs.kieler.klighd</groupId>
-    <artifactId>plugins</artifactId>
+    <artifactId>parent</artifactId>
     <version>2.1.1-SNAPSHOT</version>
   </parent>
   <groupId>de.cau.cs.kieler.klighd</groupId>

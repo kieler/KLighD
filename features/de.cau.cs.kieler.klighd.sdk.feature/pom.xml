@@ -11,4 +11,15 @@
   <artifactId>de.cau.cs.kieler.klighd.sdk.feature</artifactId>
   <version>2.1.1-SNAPSHOT</version>
   <packaging>eclipse-feature</packaging>
+  <build>
+    <plugins>
+      <!-- do not publish this artifact to Maven repositories -->
+      <plugin>
+        <artifactId>maven-deploy-plugin</artifactId>
+          <configuration>
+            <skip>true</skip>
+          </configuration>
+      </plugin>
+    </plugins>
+  </build>
 </project>

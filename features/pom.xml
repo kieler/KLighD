@@ -25,6 +25,13 @@
         <artifactId>tycho-p2-plugin</artifactId>
         <version>${tycho-version}</version>
       </plugin>
+      <!-- do not publish this artifact to Maven repositories -->
+      <plugin>
+        <artifactId>maven-deploy-plugin</artifactId>
+          <configuration>
+            <skip>true</skip>
+          </configuration>
+      </plugin>
     </plugins>
   </build>
 
