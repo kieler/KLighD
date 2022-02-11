@@ -183,6 +183,28 @@ public abstract class KNodeAbstractNode extends KlighdDisposingLayer implements
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setVisible(boolean isVisible) {
+        final boolean visible = getVisible();
+        super.setVisible(isVisible);
+
+        // in case edges/labels/ports with high 'x' or 'y' coordinate values were set invisible
+        //  and smaller width and/or height have been assigned to the parent node
+        // the containing edgeLayer/labelLayer/portLayer will keep the former potentially larger size,
+        //  as no 'invalidate bounds' event is raised on the containing layer by the default impl
+        // those over-sized full bounds will than propagate to the parent kNodeNode and potentially further upward
+        // this is not a problem for correctly drawing the diagram, but it will impair the
+        //  zooming and panning via 'IViewer.reveal(...)' or 'IViewer.centerOn(...)'.
+        // the following 'invalidateFullBounds' should fix that for (child) nodes
+        //  shall be in sync with KGraphElementNode.setVisible(boolean)
+        if (visible != isVisible && getParent() != null) {
+            getParent().invalidateFullBounds();
+        }
+    }
+
+    /**
      * Returns whether the diagram is clipped to the represented {@link KNode} and its ports are hidden.
      * 
      * @return <code>true</code> if the diagram is clipped to the represented {@link KNode} and its
