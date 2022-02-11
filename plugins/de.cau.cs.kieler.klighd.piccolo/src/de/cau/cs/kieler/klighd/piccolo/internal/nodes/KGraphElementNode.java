@@ -166,6 +166,28 @@ public abstract class KGraphElementNode<T extends KGraphElement> extends KlighdN
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setVisible(boolean isVisible) {
+        final boolean visible = getVisible();
+        super.setVisible(isVisible);
+
+        // in case edges/labels/ports with high 'x' or 'y' coordinate values were set invisible
+        //  and smaller width and/or height have been assigned to the parent node
+        // the containing edgeLayer/labelLayer/portLayer will keep the former potentially larger size,
+        //  as no 'invalidate bounds' event is raised on the containing layer by the default impl
+        // those over-sized full bounds will than propagate to the parent kNodeNode and potentially further upward
+        // this is not a problem for correctly drawing the diagram, but it will impair the
+        //  zooming and panning via 'IViewer.reveal(...)' or 'IViewer.centerOn(...)'.
+        // the following 'invalidateFullBounds' should fix that for edges, labels, and ports
+        //  shall be in sync with KNodeAbstractNode.setVisible(boolean)
+        if (visible != isVisible) {
+            invalidateFullBounds();
+        }
+    }
+
+    /**
      * {@inheritDoc}<br>
      * <br>
      * KLighD contributes a visibility check in this method.<br>

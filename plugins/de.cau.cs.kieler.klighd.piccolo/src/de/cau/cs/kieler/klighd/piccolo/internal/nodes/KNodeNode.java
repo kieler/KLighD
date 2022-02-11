@@ -463,6 +463,30 @@ public class KNodeNode extends KNodeAbstractNode implements
         this.nodeScale = Double.valueOf(scale);
     }
 
+//    /**
+//     * {@inheritDoc}
+//     */
+//    @Override
+//    public void signalBoundsChanged() {
+//        super.signalBoundsChanged();
+//
+//        // in case (almost) all ports(labels) were set invisible, and smaller width and/or height
+//        //  have been assigned to the node the portLayer(labelLayer) will keep the former
+//        //  potentially larger size, as no 'invalidate bounds' will occur on the containing layer
+//        // those over-sized full bounds will than propagate to this kNodeNode and potentially further upward
+//        // this is not a problem for correctly drawing the diagram, but it will impair the
+//        //  zooming and panning via 'IViewer.reveal(...)' or 'IViewer.centerOn(...)'.
+//        // the following 'invalidateFullBounds' requests on the port and label layers fix that,
+//        //  the performance impact should be neglectable, as the propagation of the 'child bounds invalid'
+//        //  event to the particular layer's parents will stop at this kNodeNodes parent
+//        if (this.portLayer != null) {
+//            this.portLayer.invalidateFullBounds();
+//        }
+//        if (this.labelLayer != null) {
+//            this.labelLayer.invalidateFullBounds();
+//        }
+//    }
+
     /**
      * {@inheritDoc}
      */
