@@ -2,7 +2,7 @@
 <feature
       id="de.cau.cs.kieler.klighd.draw2d.feature"
       label="KIELER Lightweight Diagrams - Piccolo Binding Extension Supporting Draw2d Figures"
-      version="2.1.1.v20211222"
+      version="2.1.2.v20220213"
       provider-name="Kiel University">
 
    <description url="http://www.informatik.uni-kiel.de/rtsys/kieler">

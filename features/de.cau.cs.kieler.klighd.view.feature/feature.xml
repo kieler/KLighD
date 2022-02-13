@@ -2,7 +2,7 @@
 <feature
       id="de.cau.cs.kieler.klighd.view.feature"
       label="KIELER Lightweight Diagrams Generic Diagram View"
-      version="2.1.1.v20211222"
+      version="2.1.2.v20220213"
       provider-name="Kiel University"
       plugin="de.cau.cs.kieler.klighd.ui.view">
 
