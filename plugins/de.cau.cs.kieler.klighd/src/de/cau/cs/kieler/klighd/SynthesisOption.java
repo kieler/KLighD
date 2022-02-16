@@ -636,6 +636,8 @@ public final class SynthesisOption {
     private String updateAction = null;
     /** The optional category option. */
     private SynthesisOption category = null;
+    /** An optional description of this option. */
+    private String description = null;
     
     /**
      * Constructor.
@@ -880,6 +882,24 @@ public final class SynthesisOption {
             throw new IllegalArgumentException("The given synthesis option is not a category");
         }
         this.category = newCategory;
+        return this;
+    }
+    
+    /**
+     * @return the description of what this option does, or the option's name if not configured.
+     */
+    public String getDescription() {
+        return description != null ? description : getName();
+    }
+    
+    /**
+     * Sets the description of what this option does.
+     * @param newDescription
+     *          the new description for this option, or <code>null</code> to unset this option.
+     * @return <code>this</code> {@link SynthesisOption} for convenience.
+     */
+    public SynthesisOption setDescription(final String newDescription) {
+        this.description = newDescription;
         return this;
     }
     
