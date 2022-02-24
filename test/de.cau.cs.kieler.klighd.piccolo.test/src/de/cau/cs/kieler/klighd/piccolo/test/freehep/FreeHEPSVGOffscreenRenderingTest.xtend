@@ -146,6 +146,47 @@ class FreeHEPSVGOffscreenRenderingTest {
 	}
 	
 	@Test
+	def void test03b_singleKNodeWithLabel_with_leading_LF() {
+		'''
+			<g stroke-linejoin="miter" stroke-dashoffset="0" stroke-dasharray="none" stroke-width="1" stroke-miterlimit="10" stroke-linecap="butt">
+			<g fill="none" stroke-opacity="1" stroke="#000000">
+			  <path d="M 0.5 0.5 L 99.5 0.5 L 99.5 99.5 L 0.5 99.5 L 0.5 0.5 z"/>
+			</g>
+			<g fill-opacity="1" font-style="normal" font-family="Helvetica" font-weight="normal" stroke="none" fill="#000000" font-size="<FONT_SIZE>">
+			  <text x="0" y="<Y>" style="white-space: pre" textLength="0.0px" lengthAdjust="spacingAndGlyphs"></text>
+			  <text x="0" y="<Y>" style="white-space: pre" textLength="52.0px" lengthAdjust="spacingAndGlyphs">NodeLabel</text>
+			</g>
+			</g>
+		'''.equalsSVGwithTextLengthsOf[
+			addKNodeWithSizeOf(100, 100) => [
+				createInitializedLabel(it) => [
+					text = "\nNodeLabel"
+					addKTextWithAssumedSizeOf(50, 10)
+				]
+			]
+		]
+	}
+	
+	@Test
+	def void test03c_singleKNodeWithLabel_with_trailing_LF() {
+		'''
+			<g stroke-linejoin="miter" stroke-dashoffset="0" stroke-dasharray="none" stroke-width="1" stroke-miterlimit="10" stroke-linecap="butt">
+			<g fill="none" stroke-opacity="1" stroke="#000000">
+			  <path d="M 0.5 0.5 L 99.5 0.5 L 99.5 99.5 L 0.5 99.5 L 0.5 0.5 z"/>
+			</g>
+			<text x="0" y="<Y>" fill-opacity="1" font-style="normal" font-family="Helvetica" style="white-space: pre" font-weight="normal" stroke="none" fill="#000000" font-size="<FONT_SIZE>" textLength="50.0px" lengthAdjust="spacingAndGlyphs">NodeLabel</text>
+			</g>
+		'''.equalsSVGwithTextLengthsOf[
+			addKNodeWithSizeOf(100, 100) => [
+				createInitializedLabel(it) => [
+					text = "NodeLabel\n"
+					addKTextWithAssumedSizeOf(50, 10)
+				]
+			]
+		]
+	}
+	
+	@Test
 	def void test04a_singleKNodeWithEastPortWithOutsideLabel() {
 		'''
 			<g stroke-linejoin="miter" stroke-dashoffset="0" stroke-dasharray="none" stroke-width="1" stroke-miterlimit="10" stroke-linecap="butt">
