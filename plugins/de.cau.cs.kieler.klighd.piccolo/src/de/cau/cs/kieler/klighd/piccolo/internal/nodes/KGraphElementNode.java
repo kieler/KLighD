@@ -182,8 +182,8 @@ public abstract class KGraphElementNode<T extends KGraphElement> extends KlighdN
         //  zooming and panning via 'IViewer.reveal(...)' or 'IViewer.centerOn(...)'.
         // the following 'invalidateFullBounds' should fix that for edges, labels, and ports
         //  shall be in sync with KNodeAbstractNode.setVisible(boolean)
-        if (visible != isVisible) {
-            invalidateFullBounds();
+        if (visible != isVisible && getParent() != null) {
+            getParent().invalidateFullBounds();
         }
     }
 

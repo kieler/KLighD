@@ -199,8 +199,8 @@ public abstract class KNodeAbstractNode extends KlighdDisposingLayer implements
         //  zooming and panning via 'IViewer.reveal(...)' or 'IViewer.centerOn(...)'.
         // the following 'invalidateFullBounds' should fix that for (child) nodes
         //  shall be in sync with KGraphElementNode.setVisible(boolean)
-        if (visible != isVisible) {
-            invalidateFullBounds();
+        if (visible != isVisible && getParent() != null) {
+            getParent().invalidateFullBounds();
         }
     }
 
