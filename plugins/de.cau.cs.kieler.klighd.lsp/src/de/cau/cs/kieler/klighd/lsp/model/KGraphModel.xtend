@@ -69,7 +69,7 @@ class SKEdge extends SEdge {
     List<KGraphData> data
     String tooltip
     KVectorChain junctionPoints
-    Double renderScale
+    Double topdownScaleFactor
 }
 
 /**
