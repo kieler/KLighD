@@ -130,9 +130,7 @@ class KGraphMappingUtil {
             skNode.properties.put(property.id.substring(property.id.lastIndexOf('.') + 1), kNode.getProperty(property))
             
         }*/
-        // TODO: add logic to omit blacklisted stuff later
-        // How can I identify which properties cause a stackoverflow?
-        // kNode.allProperties.forEach [property, value | skNode.properties.put(property.id, value)]
+        // TODO: make this nices
         var blackList = new ArrayList<String>();
         blackList.add("klighd.modelElement");
         blackList.add("de.cau.cs.kieler.sccharts.ui.tracker");
