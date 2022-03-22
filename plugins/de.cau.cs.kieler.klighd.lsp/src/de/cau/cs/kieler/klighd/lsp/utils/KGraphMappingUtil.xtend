@@ -126,8 +126,24 @@ class KGraphMappingUtil {
         
         skNode.position = new Point(kNode.xpos + leftInset, kNode.ypos + topInset)
         skNode.size = new Dimension(kNode.width, kNode.height)
-        for (property : KlighdDataManager.instance.preservedProperties) {
+        /*for (property : KlighdDataManager.instance.preservedProperties) {
             skNode.properties.put(property.id.substring(property.id.lastIndexOf('.') + 1), kNode.getProperty(property))
+            
+        }*/
+        // TODO: add logic to omit blacklisted stuff later
+        // How can I identify which properties cause a stackoverflow?
+        // kNode.allProperties.forEach [property, value | skNode.properties.put(property.id, value)]
+        var blackList = new ArrayList<String>();
+        blackList.add("klighd.modelElement"); 
+        // couldn't find anything else that causes problems yet 
+        // (checked elkgraph, sccharts, elkt with some different options)
+        var properties = kNode.allProperties;
+        var propertyKeys = properties.keySet
+        for (key : propertyKeys) {
+            System.out.println(key.id + " " + properties.get(key));
+            if (!blackList.contains(key.id)) {
+                skNode.properties.put(key.id, properties.get(key));
+            }
         }
     }
     
