@@ -134,7 +134,8 @@ class KGraphMappingUtil {
         // How can I identify which properties cause a stackoverflow?
         // kNode.allProperties.forEach [property, value | skNode.properties.put(property.id, value)]
         var blackList = new ArrayList<String>();
-        blackList.add("klighd.modelElement"); 
+        blackList.add("klighd.modelElement");
+        blackList.add("de.cau.cs.kieler.sccharts.ui.tracker");
         // couldn't find anything else that causes problems yet 
         // (checked elkgraph, sccharts, elkt with some different options)
         var properties = kNode.allProperties;
