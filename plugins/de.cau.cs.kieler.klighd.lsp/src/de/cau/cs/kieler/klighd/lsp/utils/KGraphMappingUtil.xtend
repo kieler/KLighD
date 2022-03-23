@@ -134,10 +134,12 @@ class KGraphMappingUtil {
         var blackList = KlighdDataManager.instance.blacklistedProperties;
         for (key : propertyKeys) {
             if (!containsPropertyWithId(blackList, key.id)) {
-                skNode.properties.put(key.id, properties.get(key));
+                // TODO: this should be removed once the semantics repository is updated
+                if (!key.id.equals("de.cau.cs.kieler.sccharts.ui.tracker")) {
+                    skNode.properties.put(key.id, properties.get(key));
+                }
             }
         }
-
     }
     
     private static def containsPropertyWithId(List<IProperty<?>> propertyList, String id) {
