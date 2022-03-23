@@ -298,11 +298,7 @@ public final class KlighdDataManager {
             } else if (PRESERVED_PROPERTIES.equals(elementName)) {
                 doRegisterExtension(element, IPreservedProperties.class,
                         (preservedProperties) -> registerPreservedProperties(preservedProperties));
-
-            } else if (BLACKLISTED_PROPERTIES.equals(elementName)) {
-                doRegisterExtension(element, IBlacklistedProperties.class,
-                        (blacklistedProperties) -> registerBlacklistedProperties(blacklistedProperties));
-            
+  
             } else if (ELEMENT_STARTUP_HOOK.equals(elementName)) {
                 doRegisterExtension(element, IKlighdStartupHook.class,
                         (startupHook) -> {
@@ -385,10 +381,6 @@ public final class KlighdDataManager {
         for (IPreservedProperties preservedProperties : ServiceLoader.load(IPreservedProperties.class,
                 KlighdDataManager.class.getClassLoader())) {
             registerPreservedProperties(preservedProperties);
-        }
-        for (IBlacklistedProperties blacklistedProperties : ServiceLoader.load(IBlacklistedProperties.class,
-                KlighdDataManager.class.getClassLoader())) {
-            registerBlacklistedProperties(blacklistedProperties);
         }
         for (IKlighdStartupHook startupHook : ServiceLoader.load(IKlighdStartupHook.class,
                 KlighdDataManager.class.getClassLoader())) {
