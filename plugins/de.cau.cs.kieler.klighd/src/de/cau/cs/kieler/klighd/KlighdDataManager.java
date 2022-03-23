@@ -98,6 +98,9 @@ public final class KlighdDataManager {
     
     /** name of the 'preservedProperties' element. */
     private static final String PRESERVED_PROPERTIES = "preservedProperties";
+    
+    /** name of the 'blacklistedProperties' element. */
+    private static final String BLACKLISTED_PROPERTIES = "blacklistedProperties";
 
     /** name of the 'startupHook' element. */
     private static final String ELEMENT_STARTUP_HOOK = "startupHook";
@@ -237,6 +240,9 @@ public final class KlighdDataManager {
     
     /** the properties that shall be preserved from the layout graph to the kgraph */
     private final List<IProperty<?>> preservedProperties = Lists.newArrayList();
+    
+    /** the properties that are not allowed to be preserved */
+    private final List<IProperty<?>> blacklistedProperties = Lists.newArrayList();
 
     /**
      * A private constructor to prevent instantiation.
@@ -293,6 +299,10 @@ public final class KlighdDataManager {
                 doRegisterExtension(element, IPreservedProperties.class,
                         (preservedProperties) -> registerPreservedProperties(preservedProperties));
 
+            } else if (BLACKLISTED_PROPERTIES.equals(elementName)) {
+                doRegisterExtension(element, IBlacklistedProperties.class,
+                        (blacklistedProperties) -> registerBlacklistedProperties(blacklistedProperties));
+            
             } else if (ELEMENT_STARTUP_HOOK.equals(elementName)) {
                 doRegisterExtension(element, IKlighdStartupHook.class,
                         (startupHook) -> {
@@ -375,6 +385,10 @@ public final class KlighdDataManager {
         for (IPreservedProperties preservedProperties : ServiceLoader.load(IPreservedProperties.class,
                 KlighdDataManager.class.getClassLoader())) {
             registerPreservedProperties(preservedProperties);
+        }
+        for (IBlacklistedProperties blacklistedProperties : ServiceLoader.load(IBlacklistedProperties.class,
+                KlighdDataManager.class.getClassLoader())) {
+            registerBlacklistedProperties(blacklistedProperties);
         }
         for (IKlighdStartupHook startupHook : ServiceLoader.load(IKlighdStartupHook.class,
                 KlighdDataManager.class.getClassLoader())) {
@@ -667,6 +681,18 @@ public final class KlighdDataManager {
     public KlighdDataManager registerPreservedProperties(Iterable<IProperty<?>> preservedProperties) {
         for (IProperty<?> preservedProperty : preservedProperties) {
             registerPreservedProperty(preservedProperty);
+        }
+        return this;
+    }
+    
+    public KlighdDataManager registerBlacklistedProperty(IProperty<?> blacklistedProperty) {
+        this.blacklistedProperties.add(blacklistedProperty);
+        return this;
+    }
+    
+    public KlighdDataManager registerBlacklistedProperties(Iterable<IProperty<?>> blacklistedProperties) {
+        for (IProperty<?> blacklistedProperty : blacklistedProperties) {
+            registerBlacklistedProperty(blacklistedProperty);
         }
         return this;
     }
@@ -1150,5 +1176,13 @@ public final class KlighdDataManager {
     public List<IProperty<?>> getPreservedProperties() {
         return this.preservedProperties;
     }
-
+    
+    /**
+     * Returns the list of registered properties that have been blacklisted.
+     * 
+     * @return the {@link List} of blacklisted properties
+     */
+    public List<IProperty<?>> getBlacklistedProperties() {
+        return this.blacklistedProperties;
+    }
 }

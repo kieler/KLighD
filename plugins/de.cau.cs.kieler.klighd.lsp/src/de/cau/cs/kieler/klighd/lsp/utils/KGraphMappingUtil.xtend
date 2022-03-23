@@ -37,6 +37,8 @@ import org.eclipse.sprotty.SShapeElement
 import de.cau.cs.kieler.klighd.KlighdDataManager
 import org.eclipse.elk.core.math.KVectorChain
 import org.eclipse.elk.core.math.KVector
+import org.eclipse.elk.graph.properties.IProperty
+import java.util.List
 
 /**
  * A helper class containing static methods for mapping of KGraph and SGraph bounds.
@@ -126,24 +128,25 @@ class KGraphMappingUtil {
         
         skNode.position = new Point(kNode.xpos + leftInset, kNode.ypos + topInset)
         skNode.size = new Dimension(kNode.width, kNode.height)
-        /*for (property : KlighdDataManager.instance.preservedProperties) {
-            skNode.properties.put(property.id.substring(property.id.lastIndexOf('.') + 1), kNode.getProperty(property))
-            
-        }*/
-        // TODO: make this nices
-        var blackList = new ArrayList<String>();
-        blackList.add("klighd.modelElement");
-        blackList.add("de.cau.cs.kieler.sccharts.ui.tracker");
-        // couldn't find anything else that causes problems yet 
-        // (checked elkgraph, sccharts, elkt with some different options)
+
         var properties = kNode.allProperties;
-        var propertyKeys = properties.keySet
+        var propertyKeys = properties.keySet;
+        var blackList = KlighdDataManager.instance.blacklistedProperties;
         for (key : propertyKeys) {
-            System.out.println(key.id + " " + properties.get(key));
-            if (!blackList.contains(key.id)) {
+            if (!containsPropertyWithId(blackList, key.id)) {
                 skNode.properties.put(key.id, properties.get(key));
             }
         }
+
+    }
+    
+    private static def containsPropertyWithId(List<IProperty<?>> propertyList, String id) {
+        for (IProperty<?> property : propertyList) {
+            if (property.id.equals(id)) {
+                return true;
+            }
+        }
+        return false;
     }
     
     /**
