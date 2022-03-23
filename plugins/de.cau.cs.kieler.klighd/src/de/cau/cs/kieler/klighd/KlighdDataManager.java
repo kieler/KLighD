@@ -241,7 +241,7 @@ public final class KlighdDataManager {
     /** the properties that shall be preserved from the layout graph to the kgraph */
     private final List<IProperty<?>> preservedProperties = Lists.newArrayList();
     
-    /** the properties that are not allowed to be preserved */
+    /** the properties that are not allowed to be preserved when sending the skgraph to the client */
     private final List<IProperty<?>> blacklistedProperties = Lists.newArrayList();
 
     /**
@@ -677,11 +677,21 @@ public final class KlighdDataManager {
         return this;
     }
     
+    /**
+     * Register a property to the blacklist which forbids the property to be sent to the client.
+     * @param blacklistedProperty The property to be blacklisted.
+     * @return KlighdDataManager
+     */
     public KlighdDataManager registerBlacklistedProperty(IProperty<?> blacklistedProperty) {
         this.blacklistedProperties.add(blacklistedProperty);
         return this;
     }
     
+    /**
+     * Register a list of properties to the blacklist which forbids the properties to be sent to the client.
+     * @param blacklistedProperty The list of properties to be blacklisted.
+     * @return KlighdDataManager
+     */
     public KlighdDataManager registerBlacklistedProperties(Iterable<IProperty<?>> blacklistedProperties) {
         for (IProperty<?> blacklistedProperty : blacklistedProperties) {
             registerBlacklistedProperty(blacklistedProperty);
@@ -1170,7 +1180,8 @@ public final class KlighdDataManager {
     }
     
     /**
-     * Returns the list of registered properties that have been blacklisted.
+     * Returns the list of registered properties that have been blacklisted from being sent from the server to the
+     * client.
      * 
      * @return the {@link List} of blacklisted properties
      */
