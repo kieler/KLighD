@@ -130,13 +130,13 @@ class KGraphMappingUtil {
         skNode.size = new Dimension(kNode.width, kNode.height)
 
         var properties = kNode.allProperties;
-        var propertyKeys = properties.keySet;
         var blackList = KlighdDataManager.instance.blacklistedProperties;
-        for (key : propertyKeys) {
-            if (!containsPropertyWithId(blackList, key.id)) {
-                // TODO: this should be removed once the semantics repository is updated
-                if (!key.id.equals("de.cau.cs.kieler.sccharts.ui.tracker")) {
-                    skNode.properties.put(key.id, properties.get(key));
+
+        for (propertyKVPair : properties.entrySet()) {
+            if (!containsPropertyWithId(blackList, propertyKVPair.key.id)) {
+                // TODO: remove this check once https://github.com/kieler/semantics/pull/13 has been merged
+                if (!propertyKVPair.key.id.equals("de.cau.cs.kieler.sccharts.ui.tracker")) {
+                    skNode.properties.put(propertyKVPair.key.id, propertyKVPair.value)
                 }
             }
         }
