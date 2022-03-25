@@ -88,7 +88,6 @@ class EObjectSerializer implements JsonSerializer<EObject> {
         // A more efficient testing of properties depending on the sources class.
         if (KRendering.isAssignableFrom(source.class)) {
             val propertyHolder = source as KRendering
-            // TODO: put these properties back in a 'properties' field containing these sub fields.
             
             var properties = propertyHolder.allProperties;
             var blackList = KlighdDataManager.instance.blacklistedProperties;
@@ -104,7 +103,7 @@ class EObjectSerializer implements JsonSerializer<EObject> {
             }
             jsonObject.add("properties", context.serialize(copiedPropertyMap))
             
-            // TODO: remove the manual subfields here and in KRendering/KRenderingRefImpl
+            // TODO: these maps may need more special handling on the client, let's not break too much at once
             if (source.class === KRenderingRefImpl) {
                 // Only KRenderingRefs have the bounds- and decoration maps.
                 if (propertyHolder.hasProperty(SprottyProperties.CALCULATED_BOUNDS_MAP)) {
@@ -115,45 +114,6 @@ class EObjectSerializer implements JsonSerializer<EObject> {
                     jsonObject.add("calculatedDecorationMap", context.serialize(
                         propertyHolder.getProperty(SprottyProperties.CALCULATED_DECORATION_MAP)))
                 }
-            } else {
-                // All other renderings contain calculatedBounds and -Decoration.
-                if (propertyHolder.hasProperty(SprottyProperties.CALCULATED_BOUNDS)) {
-                    jsonObject.add("calculatedBounds", context.serialize(
-                        propertyHolder.getProperty(SprottyProperties.CALCULATED_BOUNDS)))
-                }
-                if (propertyHolder.hasProperty(SprottyProperties.CALCULATED_DECORATION)) {
-                    jsonObject.add("calculatedDecoration", context.serialize(
-                        propertyHolder.getProperty(SprottyProperties.CALCULATED_DECORATION)))
-                }
-                if (propertyHolder.hasProperty(KlighdProperties.IS_NODE_TITLE)) {
-                    jsonObject.add("isNodeTitle", context.serialize(
-                        propertyHolder.getProperty(KlighdProperties.IS_NODE_TITLE)))
-                }
-                if (source.class === KTextImpl) {
-                    // Only KTexts have the additional calculatedTextBounds and calculatedTextLineWidths/Heights
-                    // properties.
-                    if (propertyHolder.hasProperty(KlighdProperties.CALCULATED_TEXT_BOUNDS)) {
-                        jsonObject.add("calculatedTextBounds", context.serialize(
-                            propertyHolder.getProperty(KlighdProperties.CALCULATED_TEXT_BOUNDS)))
-                    }
-                    if (propertyHolder.hasProperty(KlighdProperties.CALCULATED_TEXT_LINE_WIDTHS)) {
-                        jsonObject.add("calculatedTextLineWidths", context.serialize(
-                            propertyHolder.<float[]>getProperty(KlighdProperties.CALCULATED_TEXT_LINE_WIDTHS)))
-                    }
-                    if (propertyHolder.hasProperty(KlighdProperties.CALCULATED_TEXT_LINE_HEIGHTS)) {
-                        jsonObject.add("calculatedTextLineHeights", context.serialize(
-                            propertyHolder.<float[]>getProperty(KlighdProperties.CALCULATED_TEXT_LINE_HEIGHTS)))
-                    }
-                }
-            }
-            // All renderings may have tooltips and rendering IDs again.
-            if (propertyHolder.hasProperty(KlighdProperties.TOOLTIP)) {
-                jsonObject.add("tooltip", context.serialize(
-                    propertyHolder.getProperty(KlighdProperties.TOOLTIP)))
-            }
-            if (propertyHolder.hasProperty(SprottyProperties.RENDERING_ID)) {
-                jsonObject.add("renderingId", context.serialize(
-                    propertyHolder.getProperty(SprottyProperties.RENDERING_ID)))
             }
         }
         return jsonObject
