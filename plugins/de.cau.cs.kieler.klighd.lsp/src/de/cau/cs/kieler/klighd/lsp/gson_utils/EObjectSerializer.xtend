@@ -102,19 +102,6 @@ class EObjectSerializer implements JsonSerializer<EObject> {
                 }
             }
             jsonObject.add("properties", context.serialize(copiedPropertyMap))
-            
-            // TODO: these maps may need more special handling on the client, let's not break too much at once
-            if (source.class === KRenderingRefImpl) {
-                // Only KRenderingRefs have the bounds- and decoration maps.
-                if (propertyHolder.hasProperty(SprottyProperties.CALCULATED_BOUNDS_MAP)) {
-                    jsonObject.add("calculatedBoundsMap", context.serialize(
-                        propertyHolder.getProperty(SprottyProperties.CALCULATED_BOUNDS_MAP)))
-                }
-                if (propertyHolder.hasProperty(SprottyProperties.CALCULATED_DECORATION_MAP)) {
-                    jsonObject.add("calculatedDecorationMap", context.serialize(
-                        propertyHolder.getProperty(SprottyProperties.CALCULATED_DECORATION_MAP)))
-                }
-            }
         }
         return jsonObject
     }
