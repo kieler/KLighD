@@ -107,8 +107,6 @@ class KGraphMappingUtil {
         skedge.junctionPoints.addAllAsCopies(0,kedge.getProperty(CoreOptions.JUNCTION_POINTS))
         skedge.junctionPoints.offset(new KVector(leftInset, topInset))
 
-        // TODO: not sure whether the above specially handled junction/routing points can be handled with the 
-        //       new property copying mechanism
         // map all properties excepts those that are blacklisted
         var properties = kedge.allProperties;
         var blackList = KlighdDataManager.instance.blacklistedProperties;
