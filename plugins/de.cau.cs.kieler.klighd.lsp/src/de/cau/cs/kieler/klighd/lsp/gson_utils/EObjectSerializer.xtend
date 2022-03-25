@@ -39,6 +39,9 @@ import java.lang.reflect.Modifier
 import java.lang.reflect.Type
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.impl.EObjectImpl
+import de.cau.cs.kieler.klighd.KlighdDataManager
+import de.cau.cs.kieler.klighd.lsp.utils.KGraphMappingUtil
+import java.util.HashMap
 
 /**
  * Serializer that serializes any sub class of {@link EMapPropertyHolder} via reflection while ignoring fields of the
@@ -86,6 +89,22 @@ class EObjectSerializer implements JsonSerializer<EObject> {
         if (KRendering.isAssignableFrom(source.class)) {
             val propertyHolder = source as KRendering
             // TODO: put these properties back in a 'properties' field containing these sub fields.
+            
+            var properties = propertyHolder.allProperties;
+            var blackList = KlighdDataManager.instance.blacklistedProperties;
+            var HashMap<String, Object> copiedPropertyMap = newHashMap
+    
+            for (propertyKVPair : properties.entrySet()) {
+                if (!KGraphMappingUtil.containsPropertyWithId(blackList, propertyKVPair.key.id)) {
+                    // TODO: remove this check once https://github.com/kieler/semantics/pull/13 has been merged
+                    if (!propertyKVPair.key.id.equals("de.cau.cs.kieler.sccharts.ui.tracker")) {
+                        copiedPropertyMap.put(propertyKVPair.key.id, propertyKVPair.value)
+                    }
+                }
+            }
+            jsonObject.add("properties", context.serialize(copiedPropertyMap))
+            
+            // TODO: remove the manual subfields here and in KRendering/KRenderingRefImpl
             if (source.class === KRenderingRefImpl) {
                 // Only KRenderingRefs have the bounds- and decoration maps.
                 if (propertyHolder.hasProperty(SprottyProperties.CALCULATED_BOUNDS_MAP)) {

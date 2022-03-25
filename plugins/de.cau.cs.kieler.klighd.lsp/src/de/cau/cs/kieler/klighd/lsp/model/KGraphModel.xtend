@@ -56,6 +56,7 @@ class SKNode extends SNode {
 class SKLabel extends SLabel {
     List<KGraphData> data
     String tooltip
+    HashMap<String, Object> properties = newHashMap
 }
 
 /**
@@ -69,7 +70,7 @@ class SKEdge extends SEdge {
     List<KGraphData> data
     String tooltip
     KVectorChain junctionPoints
-    Double renderScale
+    HashMap<String, Object> properties = newHashMap
 }
 
 /**
@@ -82,6 +83,7 @@ class SKEdge extends SEdge {
 class SKPort extends SPort {
     List<KGraphData> data
     String tooltip
+    HashMap<String, Object> properties = newHashMap
 }
 
 /**
@@ -93,4 +95,5 @@ class SKPort extends SPort {
 @Accessors
 class SKGraph extends SGraph {
     List<KGraphData> data
+    HashMap<String, Object> properties = newHashMap
 }
