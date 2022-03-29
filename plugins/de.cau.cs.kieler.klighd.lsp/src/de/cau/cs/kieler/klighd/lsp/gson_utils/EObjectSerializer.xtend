@@ -20,6 +20,7 @@ import com.google.gson.JsonNull
 import com.google.gson.JsonObject
 import com.google.gson.JsonSerializationContext
 import com.google.gson.JsonSerializer
+import de.cau.cs.kieler.klighd.KlighdDataManager
 import de.cau.cs.kieler.klighd.kgraph.EMapPropertyHolder
 import de.cau.cs.kieler.klighd.kgraph.KInsets
 import de.cau.cs.kieler.klighd.kgraph.impl.EMapPropertyHolderImpl
@@ -30,18 +31,13 @@ import de.cau.cs.kieler.klighd.krendering.KRenderingRef
 import de.cau.cs.kieler.klighd.krendering.KStyle
 import de.cau.cs.kieler.klighd.krendering.KXPosition
 import de.cau.cs.kieler.klighd.krendering.KYPosition
-import de.cau.cs.kieler.klighd.krendering.impl.KRenderingRefImpl
-import de.cau.cs.kieler.klighd.krendering.impl.KTextImpl
-import de.cau.cs.kieler.klighd.lsp.utils.SprottyProperties
-import de.cau.cs.kieler.klighd.util.KlighdProperties
+import de.cau.cs.kieler.klighd.lsp.utils.KGraphMappingUtil
 import java.lang.reflect.Field
 import java.lang.reflect.Modifier
 import java.lang.reflect.Type
+import java.util.HashMap
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.impl.EObjectImpl
-import de.cau.cs.kieler.klighd.KlighdDataManager
-import de.cau.cs.kieler.klighd.lsp.utils.KGraphMappingUtil
-import java.util.HashMap
 
 /**
  * Serializer that serializes any sub class of {@link EMapPropertyHolder} via reflection while ignoring fields of the
