@@ -27,7 +27,6 @@
             <element ref="wrapper"/>
             <element ref="offscreenRenderer"/>
             <element ref="handler"/>
-            <element ref="preservedProperties"/>
             <element ref="startupHook"/>
          </choice>
          <attribute name="point" type="string" use="required">
@@ -299,21 +298,6 @@ Note: Implementations should not directly implement the required interface but s
                </documentation>
                <appinfo>
                   <meta.attribute kind="java" basedOn=":de.cau.cs.kieler.klighd.IModifyModelHandler"/>
-               </appinfo>
-            </annotation>
-         </attribute>
-      </complexType>
-   </element>
-
-   <element name="preservedProperties">
-      <complexType>
-         <attribute name="class" type="string" use="required">
-            <annotation>
-               <documentation>
-                  Class that provides properties which shall be preserved.
-               </documentation>
-               <appinfo>
-                  <meta.attribute kind="java" basedOn=":de.cau.cs.kieler.klighd.IPreservedProperties"/>
                </appinfo>
             </annotation>
          </attribute>

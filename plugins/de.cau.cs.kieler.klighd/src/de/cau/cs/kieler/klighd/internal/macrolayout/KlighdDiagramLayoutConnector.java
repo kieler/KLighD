@@ -19,6 +19,7 @@ package de.cau.cs.kieler.klighd.internal.macrolayout;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
@@ -672,15 +673,15 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
                 public Boolean caseElkNode(final ElkNode layoutNode) {
                     final KNode node = (KNode) element;
                     
-                    // Get properties that shall be preserved from ElkGraph to KGraph
-                    List<IProperty<?>> propertiesToPreserve = KlighdDataManager.getInstance().getPreservedProperties();
-                    
-                    // Preserve properties
-                    for (IProperty<?> property : propertiesToPreserve) {
-                        if (layoutNode.hasProperty(property)) {
-                            node.setProperty((IProperty<Object>) property, (Object) layoutNode.getProperty(property));
-                        }
-                    }                  
+//                    // Get properties that shall be preserved from ElkGraph to KGraph
+//                    List<IProperty<?>> propertiesToPreserve = KlighdDataManager.getInstance().getPreservedProperties();
+//                    
+//                    // Preserve properties
+//                    for (IProperty<?> property : propertiesToPreserve) {
+//                        if (layoutNode.hasProperty(property)) {
+//                            node.setProperty((IProperty<Object>) property, (Object) layoutNode.getProperty(property));
+//                        }
+//                    }        
                     
                     shapeToViewModel(mapping, layoutNode, node, true, true);
                     node.setProperty(INITIAL_NODE_SIZE, false);

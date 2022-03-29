@@ -96,9 +96,6 @@ public final class KlighdDataManager {
     /** name of the 'offscreenRenderer' element. */
     private static final String ELEMENT_OFFSCREEN_RENDERER = "offscreenRenderer";
     
-    /** name of the 'preservedProperties' element. */
-    private static final String PRESERVED_PROPERTIES = "preservedProperties";
-    
     /** name of the 'blacklistedProperties' element. */
     private static final String BLACKLISTED_PROPERTIES = "blacklistedProperties";
 
@@ -238,9 +235,6 @@ public final class KlighdDataManager {
     /** the mapping of custom figure types to wrapper figure type being supported by KLighD. */
     private final List<CustomFigureWrapperDescriptor> customFigureWrapperMapping = Lists.newArrayList();
     
-    /** the properties that shall be preserved from the layout graph to the kgraph */
-    private final List<IProperty<?>> preservedProperties = Lists.newArrayList();
-    
     /** the properties that are not allowed to be preserved when sending the skgraph to the client */
     private final List<IProperty<?>> blacklistedProperties = Lists.newArrayList();
 
@@ -295,10 +289,6 @@ public final class KlighdDataManager {
             if (ELEMENT_WRAPPER.equals(elementName)) {
                 registerCustomFigureWrapper(element);
 
-            } else if (PRESERVED_PROPERTIES.equals(elementName)) {
-                doRegisterExtension(element, IPreservedProperties.class,
-                        (preservedProperties) -> registerPreservedProperties(preservedProperties));
-  
             } else if (ELEMENT_STARTUP_HOOK.equals(elementName)) {
                 doRegisterExtension(element, IKlighdStartupHook.class,
                         (startupHook) -> {
@@ -377,10 +367,6 @@ public final class KlighdDataManager {
         for (IAction action : ServiceLoader.load(IAction.class,
                 KlighdDataManager.class.getClassLoader())) {
             registerAction(action.getClass().getName(), action);
-        }
-        for (IPreservedProperties preservedProperties : ServiceLoader.load(IPreservedProperties.class,
-                KlighdDataManager.class.getClassLoader())) {
-            registerPreservedProperties(preservedProperties);
         }
         for (IKlighdStartupHook startupHook : ServiceLoader.load(IKlighdStartupHook.class,
                 KlighdDataManager.class.getClassLoader())) {
@@ -662,18 +648,6 @@ public final class KlighdDataManager {
         registerDiagramSynthesisClass(id, clazz, wrapWithReinitializer,
                 this.idSynthesisMapping, this.typeSynthesisMapping);
 
-        return this;
-    }
-    
-    public KlighdDataManager registerPreservedProperty(IProperty<?> preservedProperty) {
-        this.preservedProperties.add(preservedProperty);
-        return this;
-    }
-    
-    public KlighdDataManager registerPreservedProperties(Iterable<IProperty<?>> preservedProperties) {
-        for (IProperty<?> preservedProperty : preservedProperties) {
-            registerPreservedProperty(preservedProperty);
-        }
         return this;
     }
     
@@ -1168,15 +1142,6 @@ public final class KlighdDataManager {
      */
     public List<CustomFigureWrapperDescriptor> getCustomFigureWrapperDescriptors() {
         return Collections.unmodifiableList(customFigureWrapperMapping);
-    }
-    
-    /**
-     * Returns the list of registered properties that shall be preserved from the layout graph.
-     * 
-     * @return the {@link List} of registered properties to preserve
-     */
-    public List<IProperty<?>> getPreservedProperties() {
-        return this.preservedProperties;
     }
     
     /**
