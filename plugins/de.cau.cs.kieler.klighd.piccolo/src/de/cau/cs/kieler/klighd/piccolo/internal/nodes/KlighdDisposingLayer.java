@@ -91,6 +91,32 @@ public class KlighdDisposingLayer extends PLayer implements IKlighdNode {
     }
     
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public PBounds getUnionOfChildrenBounds(PBounds dstBounds) {
+        // cs: had to copy the entire method for adding the 'if (each.getVisible())' guard
+        final PBounds resultBounds;
+        if (dstBounds == null) {
+            resultBounds = new PBounds();
+        }
+        else {
+            resultBounds = dstBounds;
+            resultBounds.resetToZero();
+        }
+        
+        final int count = getChildrenCount();
+        for (int i = 0; i < count; i++) {
+            final PNode each = (PNode) getChildrenReference().get(i);
+            if (each.getVisible()) { // cs: added this check in order to ignore invisible children while computing the bounding box
+                resultBounds.add(each.getFullBoundsReference());
+            }
+        }
+
+        return resultBounds;
+    }
+    
+    /**
      * {@inheritDoc}<br>
      * <br>
      * This specialization always returns <code>true</code> since instances of this class will
