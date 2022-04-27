@@ -99,9 +99,6 @@ public final class KlighdDataManager {
     /** name of the 'preservedProperties' element. */
     private static final String PRESERVED_PROPERTIES = "preservedProperties";
     
-    /** name of the 'blacklistedProperties' element. */
-    private static final String BLACKLISTED_PROPERTIES = "blacklistedProperties";
-
     /** name of the 'startupHook' element. */
     private static final String ELEMENT_STARTUP_HOOK = "startupHook";
 
