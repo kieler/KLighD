@@ -98,7 +98,7 @@ public final class KlighdDataManager {
     
     /** name of the 'preservedProperties' element. */
     private static final String PRESERVED_PROPERTIES = "preservedProperties";
-
+    
     /** name of the 'startupHook' element. */
     private static final String ELEMENT_STARTUP_HOOK = "startupHook";
 
@@ -237,6 +237,9 @@ public final class KlighdDataManager {
     
     /** the properties that shall be preserved from the layout graph to the kgraph */
     private final List<IProperty<?>> preservedProperties = Lists.newArrayList();
+    
+    /** the properties that are not allowed to be preserved when sending the skgraph to the client */
+    private final List<IProperty<?>> blacklistedProperties = Lists.newArrayList();
 
     /**
      * A private constructor to prevent instantiation.
@@ -292,7 +295,7 @@ public final class KlighdDataManager {
             } else if (PRESERVED_PROPERTIES.equals(elementName)) {
                 doRegisterExtension(element, IPreservedProperties.class,
                         (preservedProperties) -> registerPreservedProperties(preservedProperties));
-
+  
             } else if (ELEMENT_STARTUP_HOOK.equals(elementName)) {
                 doRegisterExtension(element, IKlighdStartupHook.class,
                         (startupHook) -> {
@@ -667,6 +670,28 @@ public final class KlighdDataManager {
     public KlighdDataManager registerPreservedProperties(Iterable<IProperty<?>> preservedProperties) {
         for (IProperty<?> preservedProperty : preservedProperties) {
             registerPreservedProperty(preservedProperty);
+        }
+        return this;
+    }
+    
+    /**
+     * Register a property to the blacklist which forbids the property to be sent to the client.
+     * @param blacklistedProperty The property to be blacklisted.
+     * @return KlighdDataManager
+     */
+    public KlighdDataManager registerBlacklistedProperty(IProperty<?> blacklistedProperty) {
+        this.blacklistedProperties.add(blacklistedProperty);
+        return this;
+    }
+    
+    /**
+     * Register a list of properties to the blacklist which forbids the properties to be sent to the client.
+     * @param blacklistedProperty The list of properties to be blacklisted.
+     * @return KlighdDataManager
+     */
+    public KlighdDataManager registerBlacklistedProperties(Iterable<IProperty<?>> blacklistedProperties) {
+        for (IProperty<?> blacklistedProperty : blacklistedProperties) {
+            registerBlacklistedProperty(blacklistedProperty);
         }
         return this;
     }
@@ -1150,5 +1175,14 @@ public final class KlighdDataManager {
     public List<IProperty<?>> getPreservedProperties() {
         return this.preservedProperties;
     }
-
+    
+    /**
+     * Returns the list of registered properties that have been blacklisted from being sent from the server to the
+     * client.
+     * 
+     * @return the {@link List} of blacklisted properties
+     */
+    public List<IProperty<?>> getBlacklistedProperties() {
+        return this.blacklistedProperties;
+    }
 }

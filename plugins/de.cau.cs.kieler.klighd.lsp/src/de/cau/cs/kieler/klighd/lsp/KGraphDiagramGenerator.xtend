@@ -293,15 +293,6 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
      * Set all properties supported by the client.
      */
     def setProperties(SKNode nodeElement, KNode node) {
-        nodeElement.properties.put("layerId", node.getProperty(LayeredOptions.LAYERING_LAYER_ID))
-        nodeElement.properties.put("positionId", node.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_ID))
-        nodeElement.properties.put("layerConstraint", node.getProperty(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT))
-        nodeElement.properties.put("positionConstraint", node.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT))
-        nodeElement.properties.put("interactiveLayout", node.getProperty(CoreOptions.INTERACTIVE_LAYOUT))
-        nodeElement.properties.put("algorithm", node.getProperty(CoreOptions.ALGORITHM))
-        nodeElement.properties.put("desiredPosition", node.getProperty(RectPackingOptions.DESIRED_POSITION))
-        nodeElement.properties.put("currentPosition", node.getProperty(RectPackingOptions.CURRENT_POSITION))
-        nodeElement.properties.put("aspectRatio", node.getProperty(RectPackingOptions.ASPECT_RATIO))
         
         var parent = node
         if (node.parent !== null) {

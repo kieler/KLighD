@@ -37,6 +37,8 @@ import org.eclipse.sprotty.SShapeElement
 import de.cau.cs.kieler.klighd.KlighdDataManager
 import org.eclipse.elk.core.math.KVectorChain
 import org.eclipse.elk.core.math.KVector
+import org.eclipse.elk.graph.properties.IProperty
+import java.util.List
 
 /**
  * A helper class containing static methods for mapping of KGraph and SGraph bounds.
@@ -104,8 +106,19 @@ class KGraphMappingUtil {
         skedge.junctionPoints = new KVectorChain()
         skedge.junctionPoints.addAllAsCopies(0,kedge.getProperty(CoreOptions.JUNCTION_POINTS))
         skedge.junctionPoints.offset(new KVector(leftInset, topInset))
-        // Copy render scale.
-//        skedge.renderScale = kedge.getProperty(CoreOptions.TOP_DOWN_LAYOUT_RENDER_SCALE);
+
+        // map all properties excepts those that are blacklisted
+        var properties = kedge.allProperties;
+        var blackList = KlighdDataManager.instance.blacklistedProperties;
+
+        for (propertyKVPair : properties.entrySet()) {
+            if (!containsPropertyWithId(blackList, propertyKVPair.key.id)) {
+                // TODO: remove this check once https://github.com/kieler/semantics/pull/13 has been merged
+                if (!propertyKVPair.key.id.equals("de.cau.cs.kieler.sccharts.ui.tracker")) {
+                    skedge.properties.put(propertyKVPair.key.id, propertyKVPair.value)
+                }
+            }
+        }
     }
     
     /**
@@ -126,9 +139,34 @@ class KGraphMappingUtil {
         
         skNode.position = new Point(kNode.xpos + leftInset, kNode.ypos + topInset)
         skNode.size = new Dimension(kNode.width, kNode.height)
-        for (property : KlighdDataManager.instance.preservedProperties) {
-            skNode.properties.put(property.id.substring(property.id.lastIndexOf('.') + 1), kNode.getProperty(property))
+
+        var properties = kNode.allProperties;
+        var blackList = KlighdDataManager.instance.blacklistedProperties;
+
+        for (propertyKVPair : properties.entrySet()) {
+            if (!containsPropertyWithId(blackList, propertyKVPair.key.id)) {
+                // TODO: remove this check once https://github.com/kieler/semantics/pull/13 has been merged
+                if (!propertyKVPair.key.id.equals("de.cau.cs.kieler.sccharts.ui.tracker")) {
+                    skNode.properties.put(propertyKVPair.key.id, propertyKVPair.value)
+                }
+            }
         }
+    }
+    
+    /**
+     * Utility method for checking whether a list of {@link IProperty}s contains a property
+     * with the given id.
+     * @param propertyList list of properties to check
+     * @param id id to be searched for
+     * @return true if the list contains a property with the given id, false otherwise
+     */
+    static def containsPropertyWithId(List<IProperty<?>> propertyList, String id) {
+        for (IProperty<?> property : propertyList) {
+            if (property.id.equals(id)) {
+                return true;
+            }
+        }
+        return false;
     }
     
     /**
@@ -140,6 +178,9 @@ class KGraphMappingUtil {
     private static def mapLayout(KShapeLayout kElement, SShapeElement sElement) {
         var leftInset = 0.0; 
         var topInset = 0.0;
+        
+        var properties = kElement.allProperties;
+        var blackList = KlighdDataManager.instance.blacklistedProperties;
         
         if (kElement instanceof KLabel){
             var parent = kElement.getParent();
@@ -158,6 +199,15 @@ class KGraphMappingUtil {
                 leftInset = inset.left;
                 topInset = inset.top;
             }
+            
+            for (propertyKVPair : properties.entrySet()) {
+                if (!containsPropertyWithId(blackList, propertyKVPair.key.id)) {
+                    // TODO: remove this check once https://github.com/kieler/semantics/pull/13 has been merged
+                    if (!propertyKVPair.key.id.equals("de.cau.cs.kieler.sccharts.ui.tracker")) {
+                        (sElement as SKLabel).properties.put(propertyKVPair.key.id, propertyKVPair.value)
+                    }
+                }
+            }
         } else if (kElement instanceof KPort) {
             var parent = kElement.getNode().getParent();
             if (parent !== null) {
@@ -165,9 +215,19 @@ class KGraphMappingUtil {
                 leftInset = inset.left;
                 topInset = inset.top;
             }
+            
+            for (propertyKVPair : properties.entrySet()) {
+                if (!containsPropertyWithId(blackList, propertyKVPair.key.id)) {
+                    // TODO: remove this check once https://github.com/kieler/semantics/pull/13 has been merged
+                    if (!propertyKVPair.key.id.equals("de.cau.cs.kieler.sccharts.ui.tracker")) {
+                        (sElement as SKPort).properties.put(propertyKVPair.key.id, propertyKVPair.value)
+                    }
+                }
+            }
         }      
         
         sElement.position = new Point(kElement.xpos + leftInset, kElement.ypos + topInset)
         sElement.size = new Dimension(kElement.width, kElement.height)
+        
     }
 }
