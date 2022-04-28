@@ -382,7 +382,7 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
                 && initialValue.equals(initialValue.intValue())) {
                 // The option contains an Integer
                 if (value instanceof Double) {
-                    viewContext.configureOption(option, Math.rint(value))
+                    viewContext.configureOption(option, Math.round(value))
                 } else {
                     viewContext.configureOption(option, Integer.parseInt(value as String))
                 }
