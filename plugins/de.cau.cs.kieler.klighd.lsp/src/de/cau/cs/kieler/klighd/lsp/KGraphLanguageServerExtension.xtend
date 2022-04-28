@@ -385,7 +385,11 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
                 return
             } else {
                 // The option contains a Float
-                viewContext.configureOption(option, Float.parseFloat(value as String))
+                if (value instanceof Double) {
+                    viewContext.configureOption(option, value)
+                } else {
+                    viewContext.configureOption(option, Float.parseFloat(value as String))
+                }
                 return
             }
         } else {
