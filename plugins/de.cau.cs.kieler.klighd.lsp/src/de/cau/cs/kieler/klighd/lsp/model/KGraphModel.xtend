@@ -3,7 +3,7 @@
  *
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright 2018,2019 by
+ * Copyright 2018-2022 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -33,13 +33,22 @@ import org.eclipse.sprotty.SPort
 import org.eclipse.xtend.lib.annotations.Accessors
 
 /**
+ * Abstract base class for Sprotty-based KGraph Elements.
+ */
+abstract interface SKElement {
+    def List<KGraphData> getData()
+    def void setData(List<KGraphData> data)
+    def HashMap<String, Object> getProperties()
+}
+
+/**
  * Sprotty node with additional fields needed by the translation from a
  * {@link KNode KNode}.
  * 
  * @author nre
  */
 @Accessors
-class SKNode extends SNode {
+class SKNode extends SNode implements SKElement {
     List<KGraphData> data
     HashMap<String, Object> properties = newHashMap
     Direction direction
@@ -53,7 +62,7 @@ class SKNode extends SNode {
  * @author nre
  */
 @Accessors
-class SKLabel extends SLabel {
+class SKLabel extends SLabel implements SKElement {
     List<KGraphData> data
     String tooltip
     HashMap<String, Object> properties = newHashMap
@@ -66,7 +75,7 @@ class SKLabel extends SLabel {
  * @author nre
  */
 @Accessors
-class SKEdge extends SEdge {
+class SKEdge extends SEdge implements SKElement {
     List<KGraphData> data
     String tooltip
     KVectorChain junctionPoints
@@ -80,7 +89,7 @@ class SKEdge extends SEdge {
  * @author nre
  */
 @Accessors
-class SKPort extends SPort {
+class SKPort extends SPort implements SKElement {
     List<KGraphData> data
     String tooltip
     HashMap<String, Object> properties = newHashMap
@@ -93,7 +102,7 @@ class SKPort extends SPort {
  * @author nre
  */
 @Accessors
-class SKGraph extends SGraph {
+class SKGraph extends SGraph implements SKElement {
     List<KGraphData> data
     HashMap<String, Object> properties = newHashMap
 }
