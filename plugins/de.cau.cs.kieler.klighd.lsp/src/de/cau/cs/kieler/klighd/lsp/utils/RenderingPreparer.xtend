@@ -3,7 +3,7 @@
  *
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright 2018,2020 by
+ * Copyright 2018-2022 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -22,11 +22,11 @@ import de.cau.cs.kieler.klighd.IStyleModifier.StyleModificationContext
 import de.cau.cs.kieler.klighd.KlighdDataManager
 import de.cau.cs.kieler.klighd.kgraph.KEdge
 import de.cau.cs.kieler.klighd.kgraph.KGraphElement
-import de.cau.cs.kieler.klighd.kgraph.KLabel
 import de.cau.cs.kieler.klighd.kgraph.KLabeledGraphElement
 import de.cau.cs.kieler.klighd.kgraph.KNode
 import de.cau.cs.kieler.klighd.kgraph.KPoint
 import de.cau.cs.kieler.klighd.kgraph.KShapeLayout
+import de.cau.cs.kieler.klighd.kgraph.util.KGraphUtil
 import de.cau.cs.kieler.klighd.krendering.KAreaPlacementData
 import de.cau.cs.kieler.klighd.krendering.KContainerRendering
 import de.cau.cs.kieler.klighd.krendering.KDecoratorPlacementData
@@ -53,7 +53,6 @@ import java.util.Map
 import static com.google.common.collect.Iterables.filter
 
 import static extension de.cau.cs.kieler.klighd.lsp.utils.SprottyProperties.*
-import de.cau.cs.kieler.klighd.kgraph.KPort
 
 /**
  * Utility class to provide some functionality to persist prepare the rendering of a {@link KGraphElement}.
@@ -292,8 +291,13 @@ final class RenderingPreparer {
                 var float leftInset = 0
                 var float topInset = 0
                 if (parent instanceof KEdge) {
-                    leftInset = parent.source.parent.insets.left
-                    topInset = parent.source.parent.insets.top
+                    if (KGraphUtil.isDescendant(parent.target, parent.source)) {
+                        leftInset = parent.source.insets.left
+                        topInset = parent.source.insets.top
+                    } else {
+                        leftInset = parent.source.parent.insets.left
+                        topInset = parent.source.parent.insets.top
+                    }
                 } 
                 if (parentRendering instanceof KPolygon) {
                     // For a KPolygon as the parent rendering the points it have to be evaluated first.
