@@ -36,9 +36,9 @@ import org.eclipse.xtend.lib.annotations.Accessors
  * Abstract base class for Sprotty-based KGraph Elements.
  */
 abstract interface SKElement {
-    def List<KGraphData> getData() {}
-    def void setData(List<KGraphData> data) {}
-    def HashMap<String, Object> getProperties() {}
+    def List<KGraphData> getData()
+    def void setData(List<KGraphData> data)
+    def HashMap<String, Object> getProperties()
 }
 
 /**
