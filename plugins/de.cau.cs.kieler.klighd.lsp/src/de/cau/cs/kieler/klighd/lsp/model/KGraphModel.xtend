@@ -52,7 +52,6 @@ class SKNode extends SNode implements SKElement {
     List<KGraphData> data
     HashMap<String, Object> properties = newHashMap
     Direction direction
-    String tooltip
 }
 
 /**
@@ -64,7 +63,6 @@ class SKNode extends SNode implements SKElement {
 @Accessors
 class SKLabel extends SLabel implements SKElement {
     List<KGraphData> data
-    String tooltip
     HashMap<String, Object> properties = newHashMap
 }
 
@@ -77,7 +75,6 @@ class SKLabel extends SLabel implements SKElement {
 @Accessors
 class SKEdge extends SEdge implements SKElement {
     List<KGraphData> data
-    String tooltip
     KVectorChain junctionPoints
     HashMap<String, Object> properties = newHashMap
 }
@@ -91,7 +88,6 @@ class SKEdge extends SEdge implements SKElement {
 @Accessors
 class SKPort extends SPort implements SKElement {
     List<KGraphData> data
-    String tooltip
     HashMap<String, Object> properties = newHashMap
 }
 
