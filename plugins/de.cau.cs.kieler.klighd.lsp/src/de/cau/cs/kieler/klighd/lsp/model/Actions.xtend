@@ -3,7 +3,7 @@
  *
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright 2018-2021 by
+ * Copyright 2018-2022 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -16,7 +16,6 @@
  */
 package de.cau.cs.kieler.klighd.lsp.model
 
-import de.cau.cs.kieler.klighd.DisplayedActionData
 import de.cau.cs.kieler.klighd.krendering.KImage
 import java.util.List
 import java.util.Set
@@ -115,7 +114,7 @@ class UpdateDiagramOptionsAction implements Action {
     /**
      * The list of all displayed actions.
      */
-    List<DisplayedActionData> actions
+    List<DisplayedActionUIData> actions
     
     /**
      * The uri for identifying the model these options are for.
@@ -131,7 +130,7 @@ class UpdateDiagramOptionsAction implements Action {
      * Constructor to call when creating this.
      */
     new(List<ValuedSynthesisOption> valuedSynthesisOptions, List<LayoutOptionUIData> layoutOptions,
-        List<DisplayedActionData> actions, String modelUri) {
+        List<DisplayedActionUIData> actions, String modelUri) {
         this.valuedSynthesisOptions = valuedSynthesisOptions
         this.layoutOptions = layoutOptions
         this.actions = actions
