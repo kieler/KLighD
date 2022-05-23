@@ -23,9 +23,11 @@ import org.eclipse.elk.core.math.Spacing;
 import org.eclipse.elk.core.options.PortSide;
 import org.eclipse.elk.graph.properties.IProperty;
 import org.eclipse.elk.graph.properties.Property;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 
 import de.cau.cs.kieler.klighd.KlighdConstants;
+import de.cau.cs.kieler.klighd.kgraph.KGraphData;
 import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
 import de.cau.cs.kieler.klighd.kgraph.KNode;
 import de.cau.cs.kieler.klighd.krendering.KText;
@@ -379,4 +381,16 @@ public final class KlighdProperties {
      */
     public static final IProperty<Boolean> IS_NODE_TITLE =
             new Property<Boolean>("klighd.isNodeTitle", false);
+    
+    /**
+     * Property determining how a proxy of this node should be rendered.
+     */
+    public static final IProperty<EList<KGraphData>> PROXY_RENDERING =
+            new Property<EList<KGraphData>>("de.cau.cs.kieler.klighd.proxyRendering", null);
+    
+    /**
+     * Property determining whether this node should be rendered as a proxy.
+     */
+    public static final IProperty<Boolean> RENDER_NODE_AS_PROXY =
+            new Property<Boolean>("de.cau.cs.kieler.klighd.renderNodeAsProxy", true);
 }
