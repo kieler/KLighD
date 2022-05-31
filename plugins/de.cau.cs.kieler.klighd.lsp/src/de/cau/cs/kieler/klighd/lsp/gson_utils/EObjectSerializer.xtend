@@ -86,18 +86,10 @@ class EObjectSerializer implements JsonSerializer<EObject> {
             val propertyHolder = source as KRendering
             
             var properties = propertyHolder.allProperties;
-            var blackList = KlighdDataManager.instance.blacklistedProperties;
-            var whiteList = KlighdDataManager.instance.whitelistedProperties;
             var HashMap<String, Object> copiedPropertyMap = newHashMap
     
             for (propertyKVPair : properties.entrySet()) {
-                if (!KGraphMappingUtil.containsPropertyWithId(blackList, propertyKVPair.key.id) 
-                    && (propertyKVPair.key.id.startsWith("de.cau.cs.kieler.klighd")
-                        || propertyKVPair.key.id.startsWith("klighd")
-                        || propertyKVPair.key.id.startsWith("org.eclipse.elk")
-                        || KGraphMappingUtil.containsPropertyWithId(whiteList, propertyKVPair.key.id)
-                    )
-                ) {
+                if (KGraphMappingUtil.keepProperty(propertyKVPair.key)) {
                     copiedPropertyMap.put(propertyKVPair.key.id, propertyKVPair.value)
                 }
             }

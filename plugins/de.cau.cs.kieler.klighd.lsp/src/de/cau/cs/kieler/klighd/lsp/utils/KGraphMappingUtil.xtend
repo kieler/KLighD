@@ -111,17 +111,9 @@ class KGraphMappingUtil {
         // map all properties excepts those that are blacklisted
         // also include external whitelisted properties
         var properties = kEdge.allProperties;
-        var blackList = KlighdDataManager.instance.blacklistedProperties;
-        var whiteList = KlighdDataManager.instance.whitelistedProperties;
 
         for (propertyKVPair : properties.entrySet()) {
-            if (!containsPropertyWithId(blackList, propertyKVPair.key.id) 
-                && (propertyKVPair.key.id.startsWith("de.cau.cs.kieler.klighd")
-                    || propertyKVPair.key.id.startsWith("klighd")
-                    || propertyKVPair.key.id.startsWith("org.eclipse.elk")
-                    || containsPropertyWithId(whiteList, propertyKVPair.key.id)
-                )
-            ) {
+            if (keepProperty(propertyKVPair.key)) {
                 skEdge.properties.put(propertyKVPair.key.id, propertyKVPair.value)
             }
         }
@@ -147,17 +139,9 @@ class KGraphMappingUtil {
         skNode.size = new Dimension(kNode.width, kNode.height)
 
         var properties = kNode.allProperties;
-        var blackList = KlighdDataManager.instance.blacklistedProperties;
-        var whiteList = KlighdDataManager.instance.whitelistedProperties;
 
         for (propertyKVPair : properties.entrySet()) {
-            if (!containsPropertyWithId(blackList, propertyKVPair.key.id) 
-                && (propertyKVPair.key.id.startsWith("de.cau.cs.kieler.klighd") 
-                    || propertyKVPair.key.id.startsWith("klighd")
-                    || propertyKVPair.key.id.startsWith("org.eclipse.elk")
-                    || containsPropertyWithId(whiteList, propertyKVPair.key.id)
-                )
-            ) {
+            if (keepProperty(propertyKVPair.key)) {
                 skNode.properties.put(propertyKVPair.key.id, propertyKVPair.value)
             }
         }
@@ -177,6 +161,21 @@ class KGraphMappingUtil {
             }
         }
         return false;
+    }
+    
+    /**
+     * Check white- and blacklists whether a property should be kept or not. Properties starting with
+     * "de.cau.cs.kieler.klighd", "klighd" or "org.eclipse.elk" are kept by default unless forbidden by
+     * the blacklist.
+     */
+    static def keepProperty(IProperty<?> property) {
+        var blackList = KlighdDataManager.instance.blacklistedProperties;
+        var whiteList = KlighdDataManager.instance.whitelistedProperties;
+        return !containsPropertyWithId(blackList, property.id) 
+                && (property.id.startsWith("de.cau.cs.kieler.klighd") 
+                    || property.id.startsWith("klighd")
+                    || property.id.startsWith("org.eclipse.elk")
+                    || containsPropertyWithId(whiteList, property.id));
     }
     
     /**
@@ -205,17 +204,9 @@ class KGraphMappingUtil {
         }
         
         var properties = kElement.allProperties;
-        var blackList = KlighdDataManager.instance.blacklistedProperties;
-        var whiteList = KlighdDataManager.instance.whitelistedProperties;
         
         for (propertyKVPair : properties.entrySet()) {
-            if (!containsPropertyWithId(blackList, propertyKVPair.key.id) 
-                && (propertyKVPair.key.id.startsWith("de.cau.cs.kieler.klighd")
-                    || propertyKVPair.key.id.startsWith("klighd")
-                    || propertyKVPair.key.id.startsWith("org.eclipse.elk")
-                    || containsPropertyWithId(whiteList, propertyKVPair.key.id)
-                )
-            ) {
+            if (keepProperty(propertyKVPair.key)) {
                 (sElement as SKElement).properties.put(propertyKVPair.key.id, propertyKVPair.value)
             }
         }
