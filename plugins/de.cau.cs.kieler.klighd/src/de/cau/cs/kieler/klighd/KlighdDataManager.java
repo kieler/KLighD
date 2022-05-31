@@ -678,7 +678,10 @@ public final class KlighdDataManager {
     }
     
     /**
-     * Register a property to the blacklist which forbids the property to be sent to the client.
+     * Register a property to the blacklist which forbids the property to be sent to the client. The blacklist only
+     * applies to properties that would otherwise be included i.e. properties starting with "de.cau.cs.kieler.klighd", 
+     * "klighd" or "org.eclipse.elk" or explicitly whitelisted properties. The  blacklist is applied before the 
+     * whitelist is compared.
      * @param blacklistedProperty The property to be blacklisted.
      * @return KlighdDataManager
      */
@@ -688,7 +691,10 @@ public final class KlighdDataManager {
     }
     
     /**
-     * Register a list of properties to the blacklist which forbids the properties to be sent to the client.
+     * Register a list of properties to the blacklist which forbids the properties to be sent to the client. The blacklist 
+     * only applies to properties that would otherwise be included i.e. properties starting with "de.cau.cs.kieler.klighd", 
+     * "klighd" or "org.eclipse.elk" or explicitly whitelisted properties. The  blacklist is applied before the 
+     * whitelist is compared.
      * @param blacklistedProperty The list of properties to be blacklisted.
      * @return KlighdDataManager
      */
@@ -701,7 +707,9 @@ public final class KlighdDataManager {
     
     /**
      * Register a property to the whitelist which ensures the property will be sent to the client. Properties
-     * added here must be serializable by gson.
+     * added here must be serializable by gson. By default only properties starting with "de.cau.cs.kieler.klighd", 
+     * "klighd" or "org.eclipse.elk" are included. Properties outside this namespace can be included by adding them to 
+     * the whitelist. The whitelist is checked after the blacklist.
      * @param whitelistedProperty The property to be whitelisted.
      * @return KlighdDataManager
      */
@@ -712,7 +720,9 @@ public final class KlighdDataManager {
     
     /**
      * Register a list of properties to the whitelist which ensures these properties will be sent to the client.
-     * It must be ensured that all properties can be serialized by gson.
+     * It must be ensured that all properties can be serialized by gson. By default only properties starting with 
+     * "de.cau.cs.kieler.klighd", "klighd" or "org.eclipse.elk" are included. Properties outside this namespace can be 
+     * included by adding them to the whitelist. The whitelist is checked after the blacklist.
      * @param whitelistedProperties The list of properties to be whitelisted.
      * @return KlighdDataManager
      */
