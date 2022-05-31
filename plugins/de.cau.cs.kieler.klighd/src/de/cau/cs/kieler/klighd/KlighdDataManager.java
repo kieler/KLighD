@@ -240,6 +240,9 @@ public final class KlighdDataManager {
     
     /** the properties that are not allowed to be preserved when sending the skgraph to the client */
     private final List<IProperty<?>> blacklistedProperties = Lists.newArrayList();
+    
+    /** the properties that are outside the klighd/elk namespace that are explicitly allowed to be sent to the client */
+    private final List<IProperty<?>> whitelistedProperties = Lists.newArrayList();
 
     /**
      * A private constructor to prevent instantiation.
@@ -692,6 +695,30 @@ public final class KlighdDataManager {
     public KlighdDataManager registerBlacklistedProperties(Iterable<IProperty<?>> blacklistedProperties) {
         for (IProperty<?> blacklistedProperty : blacklistedProperties) {
             registerBlacklistedProperty(blacklistedProperty);
+        }
+        return this;
+    }
+    
+    /**
+     * Register a property to the whitelist which ensures the property will be sent to the client. Properties
+     * added here must be serializable by gson.
+     * @param whitelistedProperty The property to be whitelisted.
+     * @return KlighdDataManager
+     */
+    public KlighdDataManager registerWhitelistedProperty(IProperty<?> whitelistedProperty) {
+        this.whitelistedProperties.add(whitelistedProperty);
+        return this;
+    }
+    
+    /**
+     * Register a list of properties to the whitelist which ensures these properties will be sent to the client.
+     * It must be ensured that all properties can be serialized by gson.
+     * @param whitelistedProperties The list of properties to be whitelisted.
+     * @return KlighdDataManager
+     */
+    public KlighdDataManager registerWhitelistedProperties(Iterable<IProperty<?>> whitelistedProperties) {
+        for (IProperty<?> whitelistedProperty : whitelistedProperties) {
+            registerWhitelistedProperty(whitelistedProperty);
         }
         return this;
     }
@@ -1184,5 +1211,14 @@ public final class KlighdDataManager {
      */
     public List<IProperty<?>> getBlacklistedProperties() {
         return this.blacklistedProperties;
+    }
+    
+    /**
+     * Returns the list of registered properties that have been whitelisted for being sent to the client.
+     * 
+     * @return the {@link List} of whitelisted properties
+     */
+    public List<IProperty<?>> getWhitelistedProperties() {
+        return this.whitelistedProperties;
     }
 }
