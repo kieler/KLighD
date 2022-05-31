@@ -53,6 +53,7 @@ import java.util.Map
 import static com.google.common.collect.Iterables.filter
 
 import static extension de.cau.cs.kieler.klighd.lsp.utils.SprottyProperties.*
+import de.cau.cs.kieler.klighd.util.KlighdProperties
 
 /**
  * Utility class to provide some functionality to persist prepare the rendering of a {@link KGraphElement}.
@@ -127,6 +128,44 @@ final class RenderingPreparer {
             }
             for (port : element.ports) {
                 prepareRendering(port)
+            }
+        }
+        
+        // TODO: Afterwards perform micro-layout (reuse KRenderingPreparer)
+        // Also for proxy-view.data after element.data loop, potentially union
+        val proxyRendering = element.getProperty(KlighdProperties.PROXY_RENDERING)
+        if (element.getProperty(KlighdProperties.RENDER_NODE_AS_PROXY) && proxyRendering !== null) {
+            for (data : proxyRendering) {
+                switch(data) {
+                    KRenderingLibrary: {
+                        // The library needs to generate ids for all later KRenderingRefs to refer to, but no own bounds,
+                        // since these are generic renderings.
+                        for (rendering : data.renderings) {
+                            if (rendering instanceof KRendering) {
+                                KRenderingIdGenerator.generateIdsRecursive(rendering)
+                            }
+                        }
+                    }
+                    KRenderingRef: {
+                        // all references to KRenderings need to place a map with the ids of the renderings and their 
+                        // sizes and their decoration in this case in the properties of the reference.
+                        var boundsMap = new HashMap<String, Bounds>
+                        var decorationMap = new HashMap<String, Decoration>
+                        handleKRendering(element, data.rendering, boundsMap, decorationMap)
+                        // add new Property to contain the boundsMap
+                        data.properties.put(CALCULATED_BOUNDS_MAP, boundsMap)
+                        // and the decorationMap
+                        data.properties.put(CALCULATED_DECORATION_MAP, decorationMap)
+                        // remember the id of the rendering in the reference
+                        data.renderingId = data.rendering.renderingId
+                        
+                    }
+                    KRendering: {
+                        // every rendering needs an ID, generate it here
+                        KRenderingIdGenerator.generateIdsRecursive(data)
+                        handleKRendering(data.eContainer as KGraphElement, data, null, null)
+                    }
+                }
             }
         }
     }
