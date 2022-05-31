@@ -131,8 +131,7 @@ final class RenderingPreparer {
             }
         }
         
-        // TODO: Afterwards perform micro-layout (reuse KRenderingPreparer)
-        // Also for proxy-view.data after element.data loop, potentially union
+        // Also calculate the sizes of all proxy-renderings
         val proxyRendering = element.getProperty(KlighdProperties.PROXY_RENDERING)
         if (element.getProperty(KlighdProperties.RENDER_NODE_AS_PROXY) && proxyRendering !== null) {
             for (data : proxyRendering) {
@@ -163,7 +162,9 @@ final class RenderingPreparer {
                     KRendering: {
                         // every rendering needs an ID, generate it here
                         KRenderingIdGenerator.generateIdsRecursive(data)
-                        handleKRendering(data.eContainer as KGraphElement, data, null, null)
+                        if (data.eContainer instanceof KGraphElement) {
+                            handleKRendering(data.eContainer as KGraphElement, data, null, null)
+                        }
                     }
                 }
             }
