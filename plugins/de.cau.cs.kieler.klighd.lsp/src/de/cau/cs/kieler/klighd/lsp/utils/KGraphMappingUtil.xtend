@@ -109,15 +109,12 @@ class KGraphMappingUtil {
         skEdge.junctionPoints.offset(new KVector(leftInset, topInset))
 
         // map all properties excepts those that are blacklisted
+        // also include external whitelisted properties
         var properties = kEdge.allProperties;
-        var blackList = KlighdDataManager.instance.blacklistedProperties;
 
         for (propertyKVPair : properties.entrySet()) {
-            if (!containsPropertyWithId(blackList, propertyKVPair.key.id)) {
-                // TODO: remove this check once https://github.com/kieler/semantics/pull/13 has been merged
-                if (!propertyKVPair.key.id.equals("de.cau.cs.kieler.sccharts.ui.tracker")) {
-                    skEdge.properties.put(propertyKVPair.key.id, propertyKVPair.value)
-                }
+            if (keepProperty(propertyKVPair.key)) {
+                skEdge.properties.put(propertyKVPair.key.id, propertyKVPair.value)
             }
         }
     }
@@ -142,14 +139,10 @@ class KGraphMappingUtil {
         skNode.size = new Dimension(kNode.width, kNode.height)
 
         var properties = kNode.allProperties;
-        var blackList = KlighdDataManager.instance.blacklistedProperties;
 
         for (propertyKVPair : properties.entrySet()) {
-            if (!containsPropertyWithId(blackList, propertyKVPair.key.id)) {
-                // TODO: remove this check once https://github.com/kieler/semantics/pull/13 has been merged
-                if (!propertyKVPair.key.id.equals("de.cau.cs.kieler.sccharts.ui.tracker")) {
-                    skNode.properties.put(propertyKVPair.key.id, propertyKVPair.value)
-                }
+            if (keepProperty(propertyKVPair.key)) {
+                skNode.properties.put(propertyKVPair.key.id, propertyKVPair.value)
             }
         }
     }
@@ -168,6 +161,21 @@ class KGraphMappingUtil {
             }
         }
         return false;
+    }
+    
+    /**
+     * Check white- and blacklists whether a property should be kept or not. Properties starting with
+     * "de.cau.cs.kieler.klighd", "klighd" or "org.eclipse.elk" are kept by default unless forbidden by
+     * the blacklist.
+     */
+    static def keepProperty(IProperty<?> property) {
+        var blackList = KlighdDataManager.instance.blacklistedProperties;
+        var whiteList = KlighdDataManager.instance.whitelistedProperties;
+        return !containsPropertyWithId(blackList, property.id) 
+                && (property.id.startsWith("de.cau.cs.kieler.klighd") 
+                    || property.id.startsWith("klighd")
+                    || property.id.startsWith("org.eclipse.elk")
+                    || containsPropertyWithId(whiteList, property.id));
     }
     
     /**
@@ -196,14 +204,10 @@ class KGraphMappingUtil {
         }
         
         var properties = kElement.allProperties;
-        var blackList = KlighdDataManager.instance.blacklistedProperties;
         
         for (propertyKVPair : properties.entrySet()) {
-            if (!containsPropertyWithId(blackList, propertyKVPair.key.id)) {
-                // TODO: remove this check once https://github.com/kieler/semantics/pull/13 has been merged
-                if (!propertyKVPair.key.id.equals("de.cau.cs.kieler.sccharts.ui.tracker")) {
-                        (sElement as SKElement).properties.put(propertyKVPair.key.id, propertyKVPair.value)
-                }
+            if (keepProperty(propertyKVPair.key)) {
+                (sElement as SKElement).properties.put(propertyKVPair.key.id, propertyKVPair.value)
             }
         }
         
