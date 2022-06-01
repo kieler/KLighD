@@ -3,7 +3,7 @@
  *
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright 2019,2020 by
+ * Copyright 2019-2022 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -17,6 +17,7 @@
 package de.cau.cs.kieler.klighd.lsp.launch
 
 import com.google.inject.Guice
+import de.cau.cs.kieler.klighd.lsp.gson_utils.ReflectiveMessageValidatorExcludingSKGraph
 import java.net.InetSocketAddress
 import java.nio.channels.AsynchronousServerSocketChannel
 import java.nio.channels.Channels
@@ -155,7 +156,7 @@ abstract class AbstractLanguageServer implements Runnable {
                 val injector = Guice.createInjector(createLSModules(true))
                 val ls = injector.getInstance(LanguageServerImpl)
                 LOG.info("Starting language server for client " + socketChannel.remoteAddress)
-                buildAndStartLS(injector, ls, in, out, threadPool, [it], true)
+                buildAndStartLS(injector, ls, in, out, threadPool, [new ReflectiveMessageValidatorExcludingSKGraph(it)], true)
                 LOG.info("Finished language server for client " + socketChannel.remoteAddress)
             }
         } else {
