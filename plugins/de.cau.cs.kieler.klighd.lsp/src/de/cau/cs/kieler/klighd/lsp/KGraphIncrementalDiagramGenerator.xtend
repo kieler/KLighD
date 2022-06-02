@@ -223,7 +223,6 @@ class KGraphIncrementalDiagramGenerator extends KGraphDiagramGenerator {
         val nodeElement = configSElement(SKNode, idGen.getId(node))
         
         nodeElement.size = new Dimension(node.width, node.height)
-        nodeElement.tooltip = node.getProperty(KlighdProperties.TOOLTIP)
         val filteredData = node.data.filter [
             KRendering.isAssignableFrom(it.class) || KRenderingLibrary.isAssignableFrom(it.class)
         ].toList

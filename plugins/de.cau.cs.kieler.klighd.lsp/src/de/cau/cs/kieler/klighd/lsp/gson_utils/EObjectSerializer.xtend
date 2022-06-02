@@ -86,17 +86,14 @@ class EObjectSerializer implements JsonSerializer<EObject> {
             val propertyHolder = source as KRendering
             
             var properties = propertyHolder.allProperties;
-            var blackList = KlighdDataManager.instance.blacklistedProperties;
             var HashMap<String, Object> copiedPropertyMap = newHashMap
     
             for (propertyKVPair : properties.entrySet()) {
-                if (!KGraphMappingUtil.containsPropertyWithId(blackList, propertyKVPair.key.id)) {
-                    // TODO: remove this check once https://github.com/kieler/semantics/pull/13 has been merged
-                    if (!propertyKVPair.key.id.equals("de.cau.cs.kieler.sccharts.ui.tracker")) {
-                        copiedPropertyMap.put(propertyKVPair.key.id, propertyKVPair.value)
-                    }
+                if (KGraphMappingUtil.keepProperty(propertyKVPair.key)) {
+                    copiedPropertyMap.put(propertyKVPair.key.id, propertyKVPair.value)
                 }
             }
+
             jsonObject.add("properties", context.serialize(copiedPropertyMap))
         }
         return jsonObject
