@@ -40,10 +40,12 @@ import java.awt.image.BufferedImageOp;
 import java.awt.image.ImageObserver;
 import java.awt.image.RenderedImage;
 import java.awt.image.renderable.RenderableImage;
+import java.lang.ref.SoftReference;
 import java.text.AttributedCharacterIterator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.WeakHashMap;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
@@ -667,16 +669,18 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
         gc.drawImage(image, 0, 0, bounds.width, bounds.height, 0, 0, (int) width, (int) height);
     }
 
-    private Map<ImageData, Image> images = Maps.newHashMap();
+    // Memory-sensitive cache for images
+    private Map<ImageData, SoftReference<Image>> images = new WeakHashMap<>();
 
     /**
      * {@inheritDoc}
      */
     public void drawImage(final ImageData imageData, final double width, final double height) {
-        Image image = images.get(imageData);
+        SoftReference<Image> imageRef = images.get(imageData);
+        Image image = imageRef != null ? imageRef.get() : null;
         if (image == null) {
             image = new Image(this.device, imageData);
-            images.put(imageData, image);
+            images.put(imageData, new SoftReference<Image>(image));
         }
 
         this.drawImage(image, width, height);
@@ -1052,8 +1056,11 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
             this.textLayout.dispose();
         }
 
-        for (final Image image : images.values()) {
-            image.dispose();
+        for (final SoftReference<Image> imageRef : images.values()) {
+            Image image = imageRef != null ? imageRef.get() : null;
+            if (image != null) {
+                image.dispose();
+            }
         }
         images.clear();
     }
