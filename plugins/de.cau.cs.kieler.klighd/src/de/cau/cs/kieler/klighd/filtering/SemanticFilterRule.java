@@ -21,5 +21,19 @@ package de.cau.cs.kieler.klighd.filtering;
  *
  */
 public abstract class SemanticFilterRule {
+    
+    private String ruleName;
+    
+    public SemanticFilterRule() {
+        
+    }
+    
+    public SemanticFilterRule(String ruleName) {
+        this.ruleName = ruleName;
+    }
+    
+    public String getRuleName() { 
+        return this.ruleName;
+    }
 
 }

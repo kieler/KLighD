@@ -28,6 +28,11 @@ public class SemanticFilterTag extends SemanticFilterRule {
         this.tag = tag;
     }
     
+    public SemanticFilterTag(String tag, String ruleName) {
+        super(ruleName);
+        this.tag = tag;
+    }
+    
     public String getTag() {
         return this.tag;
     }

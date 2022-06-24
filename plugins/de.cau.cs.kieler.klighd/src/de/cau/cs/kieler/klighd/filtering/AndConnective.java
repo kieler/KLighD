@@ -27,5 +27,12 @@ public class AndConnective extends BinaryConnective {
         this.leftOperand = leftOperand;
         this.rightOperand = rightOperand;
     }
+    
+    public AndConnective(SemanticFilterRule leftOperand, SemanticFilterRule rightOperand, String ruleName) {
+        super(ruleName);
+        this.name = "AND";
+        this.leftOperand = leftOperand;
+        this.rightOperand = rightOperand;
+    }
 
 }

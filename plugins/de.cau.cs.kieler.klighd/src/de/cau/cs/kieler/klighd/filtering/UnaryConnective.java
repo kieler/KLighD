@@ -25,6 +25,14 @@ public abstract class UnaryConnective extends SemanticFilterRule {
     protected String name;
     protected SemanticFilterRule operand;
     
+    public UnaryConnective() {
+        
+    }
+    
+    public UnaryConnective(String ruleName) {
+        super(ruleName);
+    }
+    
     public String toString() {
         return "(" + name + " " + this.operand + ")";
     }

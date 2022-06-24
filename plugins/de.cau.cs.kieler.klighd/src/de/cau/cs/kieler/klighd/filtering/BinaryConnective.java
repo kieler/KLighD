@@ -26,6 +26,14 @@ public abstract class BinaryConnective extends SemanticFilterRule {
     protected SemanticFilterRule leftOperand;
     protected SemanticFilterRule rightOperand;
     
+    public BinaryConnective() {
+        
+    }
+    
+    public BinaryConnective(String ruleName) {
+        super(ruleName);
+    }
+    
     public String getString() {
         return "(" + leftOperand + " name " + rightOperand + ")";
     }

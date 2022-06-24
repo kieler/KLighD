@@ -27,5 +27,12 @@ public class OrConnective extends BinaryConnective {
         this.leftOperand = leftOperand;
         this.rightOperand = rightOperand;
     }
+    
+    public OrConnective(SemanticFilterRule leftOperand, SemanticFilterRule rightOperand, String ruleName) {
+        super(ruleName);
+        this.name = "OR";
+        this.leftOperand = leftOperand;
+        this.rightOperand = rightOperand;
+    }
 
 }

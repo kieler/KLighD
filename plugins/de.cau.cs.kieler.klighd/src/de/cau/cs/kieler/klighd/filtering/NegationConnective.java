@@ -26,5 +26,11 @@ public class NegationConnective extends UnaryConnective {
         this.name = "NOT";
         this.operand = operand;
     }
+    
+    public NegationConnective(SemanticFilterRule operand, String ruleName) {
+        super(ruleName);
+        this.name = "NOT";
+        this.operand = operand;
+    }
 
 }
