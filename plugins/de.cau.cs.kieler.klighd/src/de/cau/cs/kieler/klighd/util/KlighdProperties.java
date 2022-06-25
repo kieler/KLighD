@@ -385,12 +385,28 @@ public final class KlighdProperties {
     /**
      * Property determining whether this node should be rendered as a proxy.
      */
-    public static final IProperty<Boolean> RENDER_NODE_AS_PROXY =
-            new Property<Boolean>("de.cau.cs.kieler.klighd.renderNodeAsProxy", true);
+    public static final IProperty<Boolean> PROXY_VIEW_RENDER_NODE_AS_PROXY =
+            new Property<Boolean>("de.cau.cs.kieler.klighd.proxy-view.renderNodeAsProxy", true);
     
     /**
      * Property determining how a proxy of this node should be rendered.
      */
-    public static final IProperty<List<KGraphData>> PROXY_RENDERING =
-            new Property<List<KGraphData>>("de.cau.cs.kieler.klighd.proxyRendering", null);
+    public static final IProperty<List<KGraphData>> PROXY_VIEW_PROXY_RENDERING =
+            new Property<List<KGraphData>>("de.cau.cs.kieler.klighd.proxy-view.proxyRendering", null);
+    
+    /**
+     * Property determining depth of going into hierarchical off-screen nodes.
+     * Only relevant for the root. <br>
+     * Choose {@code 0} for default, showing only the outermost node as a proxy. <br>
+     * Choose a value {@code x>0} to show proxies up to x layers deep inside a hierarchical node. <br>
+     * Choose a value {@code x<0} to always show proxies for all layers.
+     */
+    public static final IProperty<Integer> PROXY_VIEW_HIERARCHICAL_OFF_SCREEN_DEPTH =
+            new Property<Integer>("de.cau.cs.kieler.klighd.proxy-view.hierarchicalOffScreenDepth", 0);
+    
+    /**
+     * Property determining the semantic type of a node.
+     */
+    public static final IProperty<String> NODE_TYPE =
+            new Property<String>("de.cau.cs.kieler.klighd.nodeType", null);
 }

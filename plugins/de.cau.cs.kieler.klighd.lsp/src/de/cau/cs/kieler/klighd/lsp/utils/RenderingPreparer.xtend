@@ -132,8 +132,8 @@ final class RenderingPreparer {
         }
         
         // Also calculate the sizes of all proxy-renderings
-        val proxyRendering = element.getProperty(KlighdProperties.PROXY_RENDERING)
-        if (element.getProperty(KlighdProperties.RENDER_NODE_AS_PROXY) && proxyRendering !== null) {
+        val proxyRendering = element.getProperty(KlighdProperties.PROXY_VIEW_PROXY_RENDERING)
+        if (element.getProperty(KlighdProperties.PROXY_VIEW_RENDER_NODE_AS_PROXY) && proxyRendering !== null) {
             for (data : proxyRendering) {
                 switch(data) {
                     KRenderingLibrary: {
