@@ -17,16 +17,27 @@
 package de.cau.cs.kieler.klighd.filtering;
 
 /**
+ * A NOT Connective takes a rule R and evaluates to true iff R evaluates to false.
+ * 
  * @author mka
  *
  */
 public class NegationConnective extends UnaryConnective {
     
+    /**
+     * Constructor for unnamed rule.
+     * @param operand the operand
+     */
     public NegationConnective(SemanticFilterRule operand) {
         this.name = "NOT";
         this.operand = operand;
     }
     
+    /**
+     * Constructor for named rule.
+     * @param operand the operand
+     * @param ruleName rule name
+     */
     public NegationConnective(SemanticFilterRule operand, String ruleName) {
         super(ruleName);
         this.name = "NOT";

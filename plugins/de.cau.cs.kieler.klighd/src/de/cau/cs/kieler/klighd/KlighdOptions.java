@@ -130,23 +130,26 @@ public class KlighdOptions implements ILayoutMetaDataProvider {
                 .optionClass(String.class).targets(EnumSet.of(LayoutOptionData.Target.LABELS))
                 .visibility(LayoutOptionData.Visibility.HIDDEN).create());
         
-        // TODO: check if these are sensible settings (all below options)
         registry.register(new LayoutOptionData.Builder()
                 .id("de.cau.cs.kieler.klighd.semanticFilter.tags").group("semanticFilter")
                 .name("Semantic Filter Tags")
-                .description("TODO")
+                .description("Tags to provide semantic context in a diagram. Used by semantic filter rules to include"
+                        + " or exclude an element.")
                 .defaultValue(SEMANTIC_FILTER_TAGS_DEFAULT).type(LayoutOptionData.Type.OBJECT)
                 .optionClass(Collection.class)
-                .targets(EnumSet.of(LayoutOptionData.Target.NODES)) // TODO: also other element types
+                .targets(EnumSet.of(LayoutOptionData.Target.NODES, LayoutOptionData.Target.EDGES, 
+                        LayoutOptionData.Target.LABELS, LayoutOptionData.Target.PORTS))
                 .visibility(LayoutOptionData.Visibility.HIDDEN).create());
         
         registry.register(new LayoutOptionData.Builder()
                 .id("de.cau.cs.kieler.klighd.semanticFilter.rules").group("semanticFilter")
                 .name("Semantic Filter Rules")
-                .description("TODO")
+                .description("Semantic filter rules that can be constructed through the combination of other semantic "
+                        + "filter rules and logical connectives. A semantic filter tag T is used as an atomic rule with "
+                        + "the semantics 'graph element has tag T'.")
                 .defaultValue(SEMANTIC_FILTER_RULES_DEFAULT).type(LayoutOptionData.Type.OBJECT)
                 .optionClass(Collection.class)
-                .targets(EnumSet.of(LayoutOptionData.Target.PARENTS)) // TODO: really only want this on top level of graph
+                .targets(EnumSet.of(LayoutOptionData.Target.PARENTS))
                 .visibility(LayoutOptionData.Visibility.HIDDEN).create());
     }
 }
