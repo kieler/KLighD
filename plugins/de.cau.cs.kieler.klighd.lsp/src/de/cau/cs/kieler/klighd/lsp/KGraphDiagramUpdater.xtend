@@ -147,8 +147,8 @@ class KGraphDiagramUpdater extends DiagramUpdater {
             }
             var Object model = null
             if (snapshotModel === null) {
-                if (resource === null) {
-                    model = new MessageModel("No model in editor")
+                if (resource === null || resource.contents.empty) {
+                    model = new MessageModel("No model in resource")
                 } else {
                     model = resource.contents.head
                 }
