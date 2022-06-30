@@ -403,10 +403,4 @@ public final class KlighdProperties {
      */
     public static final IProperty<Integer> PROXY_VIEW_HIERARCHICAL_OFF_SCREEN_DEPTH =
             new Property<Integer>("de.cau.cs.kieler.klighd.proxy-view.hierarchicalOffScreenDepth", 0);
-    
-    /**
-     * Property determining the semantic type of a node.
-     */
-    public static final IProperty<String> NODE_TYPE =
-            new Property<String>("de.cau.cs.kieler.klighd.nodeType", null);
 }
