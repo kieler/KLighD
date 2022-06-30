@@ -71,13 +71,6 @@
       </action>
    </extension>
    <extension
-         point="org.eclipse.elk.core.layoutProviders">
-      <provider
-            class="de.cau.cs.kieler.klighd.KlighdOptions">
-      </provider>
-
-   </extension>
-   <extension
          point="de.cau.cs.kieler.klighd.extensions">
       <startupHook
             class="de.cau.cs.kieler.klighd.KlighdSetup"
