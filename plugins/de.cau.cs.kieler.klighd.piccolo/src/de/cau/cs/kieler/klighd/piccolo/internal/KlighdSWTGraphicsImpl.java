@@ -681,7 +681,7 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
         if (!images.isEmpty() && System.currentTimeMillis() - imagesLastCleanup > IMAGES_CLEANUP_THRESHOLD) {
             // Dispose images which image data is no longer in use (referenced by the user).
             images.entrySet().removeIf(kv -> {
-                var key = kv.getKey();
+                WeakReference<ImageData> key = kv.getKey();
                 if (key.get() == null) {
                     kv.getValue().dispose();
                     return true;
@@ -692,7 +692,7 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
         }
         
         // Create a weak reference to the image data that can be used as key for the map (redirecting hash and equals)
-        WeakReference<ImageData> imageDataRef = new WeakReference<>(imageData) {
+        WeakReference<ImageData> imageDataRef = new WeakReference<ImageData>(imageData) {
             private final int refHashCode = get().hashCode();
 
             @Override
