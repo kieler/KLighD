@@ -40,12 +40,11 @@ import java.awt.image.BufferedImageOp;
 import java.awt.image.ImageObserver;
 import java.awt.image.RenderedImage;
 import java.awt.image.renderable.RenderableImage;
-import java.lang.ref.SoftReference;
+import java.lang.ref.WeakReference;
 import java.text.AttributedCharacterIterator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.WeakHashMap;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
@@ -67,7 +66,6 @@ import org.eclipse.swt.graphics.Transform;
 import org.eclipse.swt.widgets.Display;
 
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 
 import de.cau.cs.kieler.klighd.Klighd;
 import de.cau.cs.kieler.klighd.KlighdConstants;
@@ -669,18 +667,58 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
         gc.drawImage(image, 0, 0, bounds.width, bounds.height, 0, 0, (int) width, (int) height);
     }
 
-    // Memory-sensitive cache for images
-    private Map<ImageData, SoftReference<Image>> images = new WeakHashMap<>();
+    // Map of all created images. Images must be properly disposed when this class is disposed.
+    // Since this map can cause memory issues during runtime, it needs to be freed from unused images regularly.
+    private Map<WeakReference<ImageData>, Image> images = new HashMap<>();
+    private static long IMAGES_CLEANUP_THRESHOLD = 1000;
+    private long imagesLastCleanup = System.currentTimeMillis();
 
     /**
      * {@inheritDoc}
      */
     public void drawImage(final ImageData imageData, final double width, final double height) {
-        SoftReference<Image> imageRef = images.get(imageData);
-        Image image = imageRef != null ? imageRef.get() : null;
+        // Clean up images, but not too eagerly to negatively impact performance.
+        if (!images.isEmpty() && System.currentTimeMillis() - imagesLastCleanup > IMAGES_CLEANUP_THRESHOLD) {
+            // Dispose images which image data is no longer in use (referenced by the user).
+            images.entrySet().removeIf(kv -> {
+                var key = kv.getKey();
+                if (key.get() == null) {
+                    kv.getValue().dispose();
+                    return true;
+                }
+                return false;
+            });
+            imagesLastCleanup = System.currentTimeMillis();
+        }
+        
+        // Create a weak reference to the image data that can be used as key for the map (redirecting hash and equals)
+        WeakReference<ImageData> imageDataRef = new WeakReference<>(imageData) {
+            private final int refHashCode = get().hashCode();
+
+            @Override
+            public int hashCode() {
+                return refHashCode;
+            }
+            
+            @Override
+            public boolean equals(Object obj) {
+                if (this == obj) {
+                    return true;
+                } else {
+                    ImageData ref = get();
+                    if (ref != null && obj instanceof WeakReference) {
+                        return ref.equals(((WeakReference<?>)obj).get());
+                    }
+                }
+                return false;
+            }
+        };
+        
+        // Get or create image
+        Image image = images.get(imageDataRef);
         if (image == null) {
             image = new Image(this.device, imageData);
-            images.put(imageData, new SoftReference<Image>(image));
+            images.put(imageDataRef, image);
         }
 
         this.drawImage(image, width, height);
@@ -1056,11 +1094,8 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
             this.textLayout.dispose();
         }
 
-        for (final SoftReference<Image> imageRef : images.values()) {
-            Image image = imageRef != null ? imageRef.get() : null;
-            if (image != null) {
-                image.dispose();
-            }
+        for (final Image image : images.values()) {
+            image.dispose();
         }
         images.clear();
     }
