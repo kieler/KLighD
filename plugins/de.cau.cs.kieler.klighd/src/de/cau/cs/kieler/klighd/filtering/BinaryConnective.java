@@ -42,11 +42,11 @@ public abstract class BinaryConnective extends SemanticFilterRule {
     }
     
     /**
-     * Returns a string representation of the rule of the form '(R1 C R2)'.
+     * Returns a string representation of the rule of the form 'C(R1, R2)'.
      * @return the rule string
      */
     public String getString() {
-        return "(" + leftOperand + " name " + rightOperand + ")";
+        return name + "(" + leftOperand + ", " + rightOperand + ")";
     }
 
 }

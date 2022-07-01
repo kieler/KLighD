@@ -17,21 +17,20 @@
 package de.cau.cs.kieler.klighd.filtering;
 
 /**
- * A Not Connective takes a rule R and evaluates to true
+ * A LessThan Connective takes one rule R and evaluates to true
  * iff
- * R evaluates to false.
- * 
- * @author mka
+ * R evaluates to true and R.num < correspondingTag.num.
+ * @author tik
  *
  */
-public class NegationConnective extends UnaryConnective {
-    protected static final String NAME = "NOT";
+public class LessThanConnective extends UnaryConnective {
+    protected static final String NAME = "LESSTHAN";
     
     /**
      * Constructor for unnamed rule.
      * @param operand the operand
      */
-    public NegationConnective(SemanticFilterRule operand) {
+    public LessThanConnective(SemanticFilterTag operand) {
         this.name = NAME;
         this.operand = operand;
     }
@@ -41,7 +40,7 @@ public class NegationConnective extends UnaryConnective {
      * @param operand the operand
      * @param ruleName rule name
      */
-    public NegationConnective(SemanticFilterRule operand, String ruleName) {
+    public LessThanConnective(SemanticFilterTag operand, String ruleName) {
         super(ruleName);
         this.name = NAME;
         this.operand = operand;

@@ -17,22 +17,22 @@
 package de.cau.cs.kieler.klighd.filtering;
 
 /**
- * An And Connective takes two rules R1 and R2 and evaluates to true
+ * An Equal Connective takes two rules R1 and R2 and evaluates to true
  * iff
- * R1 and R2 evaluate to true.
+ * R1 and R2 evaluate to true or R1 and R2 evaluate to false.
  * 
- * @author mka
+ * @author tik
  *
  */
-public class AndConnective extends BinaryConnective {
-    protected static final String NAME = "AND";
+public class LogicEqualConnective extends BinaryConnective {
+    protected static final String NAME = "LOGICEQUAL";
     
     /**
      * Constructor for unnamed rule.
      * @param leftOperand left operand
      * @param rightOperand right operand
      */
-    public AndConnective(SemanticFilterRule leftOperand, SemanticFilterRule rightOperand) {
+    public LogicEqualConnective(SemanticFilterRule leftOperand, SemanticFilterRule rightOperand) {
         this.name = NAME;
         this.leftOperand = leftOperand;
         this.rightOperand = rightOperand;
@@ -44,11 +44,11 @@ public class AndConnective extends BinaryConnective {
      * @param rightOperand right operand
      * @param ruleName rule name
      */
-    public AndConnective(SemanticFilterRule leftOperand, SemanticFilterRule rightOperand, String ruleName) {
+    public LogicEqualConnective(SemanticFilterRule leftOperand, SemanticFilterRule rightOperand, String ruleName) {
         super(ruleName);
         this.name = NAME;
         this.leftOperand = leftOperand;
         this.rightOperand = rightOperand;
     }
-
+    
 }

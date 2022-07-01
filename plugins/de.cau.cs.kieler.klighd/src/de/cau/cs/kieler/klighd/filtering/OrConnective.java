@@ -17,12 +17,15 @@
 package de.cau.cs.kieler.klighd.filtering;
 
 /**
- * An OR Connective takes two rules R1 and R2 and evaluates to true iff R1 or R2 evaluates to true.
+ * An Or Connective takes two rules R1 and R2 and evaluates to true
+ * iff
+ * R1 or R2 evaluate to true.
  * 
  * @author mka
  *
  */
 public class OrConnective extends BinaryConnective {
+    protected static final String NAME = "OR";
     
     /**
      * Constructor for unnamed rule.
@@ -30,7 +33,7 @@ public class OrConnective extends BinaryConnective {
      * @param rightOperand right operand
      */
     public OrConnective(SemanticFilterRule leftOperand, SemanticFilterRule rightOperand) {
-        this.name = "OR";
+        this.name = NAME;
         this.leftOperand = leftOperand;
         this.rightOperand = rightOperand;
     }
@@ -43,7 +46,7 @@ public class OrConnective extends BinaryConnective {
      */
     public OrConnective(SemanticFilterRule leftOperand, SemanticFilterRule rightOperand, String ruleName) {
         super(ruleName);
-        this.name = "OR";
+        this.name = NAME;
         this.leftOperand = leftOperand;
         this.rightOperand = rightOperand;
     }

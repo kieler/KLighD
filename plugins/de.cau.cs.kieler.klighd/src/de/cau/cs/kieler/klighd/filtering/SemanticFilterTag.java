@@ -27,6 +27,7 @@ package de.cau.cs.kieler.klighd.filtering;
 public class SemanticFilterTag extends SemanticFilterRule {
     
     private String tag;
+    private Double num = 0.0;
     
     /**
      * Constructor for tag.
@@ -34,6 +35,16 @@ public class SemanticFilterTag extends SemanticFilterRule {
      */
     public SemanticFilterTag(String tag) {
         this.tag = tag;
+    }
+    
+    /**
+     * Constructor for tag.
+     * @param tag string identifier
+     * @param num the number
+     */
+    public SemanticFilterTag(String tag, Double num) {
+        this.tag = tag;
+        this.num = num;
     }
     
     /**
@@ -48,6 +59,19 @@ public class SemanticFilterTag extends SemanticFilterRule {
     }
     
     /**
+     * Constructor for tag as a semantic filter rule. Here an additional rule name is required as this is later used
+     * to differentiate between multiple rules.
+     * @param tag string identifier of the tag the rule applies to
+     * @param num the number
+     * @param ruleName string identifier of the rule itself, can be anything
+     */
+    public SemanticFilterTag(String tag, Double num, String ruleName) {
+        super(ruleName);
+        this.tag = tag;
+        this.num = num;
+    }
+    
+    /**
      * Returns the tag.
      * @return the tag
      */
@@ -56,11 +80,19 @@ public class SemanticFilterTag extends SemanticFilterRule {
     }
     
     /**
+     * Returns the num.
+     * @return the num
+     */
+    public Double getNum() {
+        return this.num;
+    }
+
+    /**
      * Returns a string representation of the rule/tag.
      * @return the rule string
      */
     public String toString() {
-        return this.tag;
+        return "(tag=" + this.tag + ", num=" + this.num + ")";
     }
 
 }

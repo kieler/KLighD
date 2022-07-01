@@ -17,34 +17,38 @@
 package de.cau.cs.kieler.klighd.filtering;
 
 /**
- * A Not Connective takes a rule R and evaluates to true
+ * An IfThen Connective takes two rules R1 and R2 and evaluates to true
  * iff
- * R evaluates to false.
+ * R1 evaluates to false or R2 evaluates to true.
  * 
- * @author mka
+ * @author tik
  *
  */
-public class NegationConnective extends UnaryConnective {
-    protected static final String NAME = "NOT";
+public class IfThenConnective extends BinaryConnective {
+    protected static final String NAME = "IFTHEN";
     
     /**
      * Constructor for unnamed rule.
-     * @param operand the operand
+     * @param leftOperand left operand
+     * @param rightOperand right operand
      */
-    public NegationConnective(SemanticFilterRule operand) {
+    public IfThenConnective(SemanticFilterRule leftOperand, SemanticFilterRule rightOperand) {
         this.name = NAME;
-        this.operand = operand;
+        this.leftOperand = leftOperand;
+        this.rightOperand = rightOperand;
     }
     
     /**
      * Constructor for named rule.
-     * @param operand the operand
+     * @param leftOperand left operand
+     * @param rightOperand right operand
      * @param ruleName rule name
      */
-    public NegationConnective(SemanticFilterRule operand, String ruleName) {
+    public IfThenConnective(SemanticFilterRule leftOperand, SemanticFilterRule rightOperand, String ruleName) {
         super(ruleName);
         this.name = NAME;
-        this.operand = operand;
+        this.leftOperand = leftOperand;
+        this.rightOperand = rightOperand;
     }
 
 }

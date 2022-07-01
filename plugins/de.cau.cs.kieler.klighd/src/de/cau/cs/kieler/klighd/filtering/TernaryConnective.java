@@ -17,36 +17,37 @@
 package de.cau.cs.kieler.klighd.filtering;
 
 /**
- * An unary connective C takes a single filter rule R as an operand and creates the new rule C(R).
+ * A ternary connective C takes three filter rules R1, R2 and R3 as operands and creates the new rule C R1 R2 R3.
  * 
- * @author mka
+ * @author tik
  *
  */
-public abstract class UnaryConnective extends SemanticFilterRule {
+public abstract class TernaryConnective extends SemanticFilterRule {
     
     protected String name;
-    protected SemanticFilterRule operand;
+    protected SemanticFilterRule firstOperand;
+    protected SemanticFilterRule secondOperand;
+    protected SemanticFilterRule thirdOperand;
     
     /**
      * {@inheritDoc}
      */
-    public UnaryConnective() {
+    public TernaryConnective() {
         
     }
     
     /**
      * {@inheritDoc}
      */
-    public UnaryConnective(String ruleName) {
+    public TernaryConnective(String ruleName) {
         super(ruleName);
     }
     
     /**
-     * Returns a string representation of the rule in the form 'C(R)'.
+     * Returns a string representation of the rule of the form 'C(R1, R2, R3)'.
      * @return the rule string
      */
-    public String toString() {
-        return name + "(" + this.operand + ")";
+    public String getString() {
+        return name + "(" + firstOperand + ", " + secondOperand + ", " + thirdOperand + ")";
     }
-
 }
