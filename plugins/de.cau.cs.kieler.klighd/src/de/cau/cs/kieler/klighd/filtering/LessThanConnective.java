@@ -19,7 +19,7 @@ package de.cau.cs.kieler.klighd.filtering;
 /**
  * A LessThan Connective takes one rule R and evaluates to true
  * iff
- * R evaluates to true and R.num < correspondingTag.num.
+ * R.num < correspondingTag.num.
  * @author tik
  *
  */
