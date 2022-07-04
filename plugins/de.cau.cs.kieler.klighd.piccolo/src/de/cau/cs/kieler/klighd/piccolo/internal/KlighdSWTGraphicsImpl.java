@@ -1098,6 +1098,10 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
             image.dispose();
         }
         images.clear();
+        swtTransform.dispose();
+        if (this.lastPattern != null) {
+            this.lastPattern.dispose();
+        }
     }
 
 
