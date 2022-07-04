@@ -22,7 +22,7 @@ package de.cau.cs.kieler.klighd.filtering;
  * @author tik
  *
  */
-public abstract class ConnectiveUtil {
+public abstract class SemanticFilterRuleUtil {
     /** An empty tag used to define constants. */
     private static final SemanticFilterTag EMPTY = new SemanticFilterTag("");
     /** A rule that is always evaluated to false. */
