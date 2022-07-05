@@ -170,8 +170,10 @@ class KGraphDiagramUpdater extends DiagramUpdater {
             (diagramServers as List<KGraphDiagramServer>).forEach [ KGraphDiagramServer server |
                 // Only update an erroneous model if there was no diagram shown before.
                 if (!hasErrors || server.currentRoot.type == "NONE") {
-                    prepareModel(server, model_, uri)
-                    updateLayout(server)
+                    synchronized (diagramState) {
+                        prepareModel(server, model_, uri)
+                        updateLayout(server)
+                    }
                 }
             ]
             return null as Void
