@@ -27,6 +27,8 @@ import org.eclipse.elk.graph.properties.Property;
 import org.eclipse.emf.ecore.EObject;
 
 import de.cau.cs.kieler.klighd.KlighdConstants;
+import de.cau.cs.kieler.klighd.filtering.SemanticFilterRule;
+import de.cau.cs.kieler.klighd.filtering.SemanticFilterTag;
 import de.cau.cs.kieler.klighd.kgraph.KGraphData;
 import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
 import de.cau.cs.kieler.klighd.kgraph.KNode;
@@ -403,4 +405,16 @@ public final class KlighdProperties {
      */
     public static final IProperty<Integer> PROXY_VIEW_HIERARCHICAL_OFF_SCREEN_DEPTH =
             new Property<Integer>("de.cau.cs.kieler.klighd.proxy-view.hierarchicalOffScreenDepth", 0);
+    
+    public static final List<SemanticFilterTag> SEMANTIC_FILTER_TAGS_DEFAULT = null;
+    
+    public static final IProperty<List<SemanticFilterTag>> SEMANTIC_FILTER_TAGS = 
+            new Property<List<SemanticFilterTag>>("de.cau.cs.kieler.klighd.semanticFilter.tags",
+                    SEMANTIC_FILTER_TAGS_DEFAULT, null, null);
+    
+    public static final List<SemanticFilterRule> SEMANTIC_FILTER_RULES_DEFAULT = null;
+    
+    public static final IProperty<List<SemanticFilterRule>> SEMANTIC_FILTER_RULES = 
+            new Property<List<SemanticFilterRule>>("de.cau.cs.kieler.klighd.semanticFilter.rules",
+                    SEMANTIC_FILTER_RULES_DEFAULT, null, null);
 }
