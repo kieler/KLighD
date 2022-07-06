@@ -17,6 +17,7 @@
 package de.cau.cs.kieler.klighd.util;
 
 import java.awt.Color;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.elk.core.math.KVector;
@@ -406,15 +407,19 @@ public final class KlighdProperties {
     public static final IProperty<Integer> PROXY_VIEW_HIERARCHICAL_OFF_SCREEN_DEPTH =
             new Property<Integer>("de.cau.cs.kieler.klighd.proxy-view.hierarchicalOffScreenDepth", 0);
     
-    public static final List<SemanticFilterTag> SEMANTIC_FILTER_TAGS_DEFAULT = null;
-    
+    /**
+     * Property determining an element's semantic filter tags.
+     */
     public static final IProperty<List<SemanticFilterTag>> SEMANTIC_FILTER_TAGS = 
             new Property<List<SemanticFilterTag>>("de.cau.cs.kieler.klighd.semanticFilter.tags",
-                    SEMANTIC_FILTER_TAGS_DEFAULT, null, null);
-    
-    public static final List<SemanticFilterRule> SEMANTIC_FILTER_RULES_DEFAULT = null;
-    
+                    // ArrayList is cloneable, no problem here
+                    new ArrayList<>());
+
+    /**
+     * Property determining an element's semantic filter rules.
+     * Only relevant for the root.
+     */
     public static final IProperty<List<SemanticFilterRule>> SEMANTIC_FILTER_RULES = 
             new Property<List<SemanticFilterRule>>("de.cau.cs.kieler.klighd.semanticFilter.rules",
-                    SEMANTIC_FILTER_RULES_DEFAULT, null, null);
+                    new ArrayList<>());
 }

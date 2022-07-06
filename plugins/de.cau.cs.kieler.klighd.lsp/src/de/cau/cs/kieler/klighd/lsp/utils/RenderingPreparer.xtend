@@ -44,6 +44,7 @@ import de.cau.cs.kieler.klighd.microlayout.DecoratorPlacementUtil
 import de.cau.cs.kieler.klighd.microlayout.DecoratorPlacementUtil.Decoration
 import de.cau.cs.kieler.klighd.microlayout.GridPlacementUtil
 import de.cau.cs.kieler.klighd.microlayout.PlacementUtil
+import de.cau.cs.kieler.klighd.util.KlighdProperties
 import java.awt.geom.Point2D
 import java.util.ArrayList
 import java.util.HashMap
@@ -53,7 +54,6 @@ import java.util.Map
 import static com.google.common.collect.Iterables.filter
 
 import static extension de.cau.cs.kieler.klighd.lsp.utils.SprottyProperties.*
-import de.cau.cs.kieler.klighd.util.KlighdProperties
 
 /**
  * Utility class to provide some functionality to persist prepare the rendering of a {@link KGraphElement}.

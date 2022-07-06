@@ -131,11 +131,6 @@ public class KlighdStandaloneSetup {
         final GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
         for (int i = 0; i < filePaths.length; ++i) {
             try (InputStream fontStream = this.getClass().getResourceAsStream(filePaths[i])) {
-                
-                // TODO Hacky workaround for opening fonts
-                String path = this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath() + ".." + filePaths[i];
-                InputStream temp = new FileInputStream(new File(path));
-                
                 ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, fontStream));
             } catch (Throwable e) {
                 System.out.println("could not load font file " + filePaths[i]);
