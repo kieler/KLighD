@@ -18,6 +18,7 @@ package de.cau.cs.kieler.klighd.lsp
 
 import com.google.inject.Inject
 import de.cau.cs.kieler.klighd.LightDiagramLayoutConfig
+import de.cau.cs.kieler.klighd.graphanalysis.KGraphAnalysis
 import de.cau.cs.kieler.klighd.lsp.utils.KGraphMappingUtil
 import de.cau.cs.kieler.klighd.lsp.utils.RenderingPreparer
 import java.io.ByteArrayOutputStream
@@ -81,6 +82,11 @@ class KGraphLayoutEngine extends ElkLayoutEngine {
         synchronized (kGraphContext.viewModel) {
             lightDiagramLayoutConfig.performLayout
             RenderingPreparer.prepareRendering(kGraphContext.viewModel)
+            
+            // ANALYSIS
+            val analysis = new KGraphAnalysis(kGraphContext.viewModel);
+            analysis.runAnalysis(0.1);
+            System.out.println(analysis.formattedOuput());
         }
     }
 
