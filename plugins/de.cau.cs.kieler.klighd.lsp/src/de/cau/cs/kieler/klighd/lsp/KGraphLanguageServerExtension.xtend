@@ -32,7 +32,6 @@ import de.cau.cs.kieler.klighd.lsp.model.SetSynthesesAction
 import de.cau.cs.kieler.klighd.lsp.model.SetSynthesesActionData
 import de.cau.cs.kieler.klighd.lsp.model.SetSynthesisOptionsParam
 import de.cau.cs.kieler.klighd.syntheses.ReinitializingDiagramSynthesisProxy
-import java.net.URLDecoder
 import java.util.ArrayList
 import java.util.List
 import java.util.Map
@@ -196,7 +195,7 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
     }
     
     override setSynthesisOptions(SetSynthesisOptionsParam param) {
-        val decodedUri = URLDecoder.decode(param.uri, "UTF-8")
+        val decodedUri = param.uri.toUri.toString
         doRead(decodedUri) [ resource, ci |
             synchronized (diagramState) {
                 val ViewContext viewContext = diagramState.getKGraphContext(decodedUri)
@@ -229,7 +228,7 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
                 if (diagramUpdater instanceof KGraphDiagramUpdater) {
                     if (update) {
                         AbstractLanguageServer.addToMainThreadQueue([
-                            (diagramUpdater as KGraphDiagramUpdater).updateDiagrams2(#[_uriExtensions.toUri(decodedUri)])
+                            (diagramUpdater as KGraphDiagramUpdater).updateDiagrams2(#[toUri(decodedUri)])
                         ])
                     } 
                     return null
@@ -240,7 +239,7 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
     }
     
     override setLayoutOptions(SetLayoutOptionsParam param) {
-        val decodedUri = URLDecoder.decode(param.uri, "UTF-8")
+        val decodedUri = param.uri.toUri.toString
         doRead(decodedUri) [ resource, ci |
             synchronized (diagramState) {
                 val LayoutConfigurator layoutConfig = diagramState.getLayoutConfig(decodedUri)
@@ -282,7 +281,7 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
     }
     
     override performAction(PerformActionParam param) {
-        val decodedUri = URLDecoder.decode(param.uri, "UTF-8")
+        val decodedUri = param.uri.toUri.toString
         try {
             synchronized (diagramState) {
                 // Find the action and execute it.
@@ -523,7 +522,7 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
         if (diagramUpdater instanceof KGraphDiagramUpdater) {
             (diagramUpdater as KGraphDiagramUpdater).updateLayout(
                 diagramServerManager.findDiagramServersByUri(
-                        URLDecoder.decode(uri, "UTF-8")
+                        uri.toUri.toString
                     )?.head as KGraphDiagramServer
                 )
         }
@@ -537,7 +536,7 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
      */
     def void updateDiagram(String uri) {
         if (diagramUpdater instanceof KGraphDiagramUpdater) {
-            (diagramUpdater as KGraphDiagramUpdater).updateDiagrams2(#[URI.createURI(URLDecoder.decode(uri, "UTF-8"))])
+            (diagramUpdater as KGraphDiagramUpdater).updateDiagrams2(#[URI.createURI(uri.toUri.toString)])
         }
     }
     
@@ -554,7 +553,7 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
     def <T> CompletableFuture<T> doRead(String path, (Resource, CancelIndicator)=>T work) {
         return requestManager.runRead [ ci |
             try {
-                val resource = getResource(_uriExtensions.toUri(path))
+                val resource = getResource(toUri(path))
                 return work.apply(resource, ci)
             } catch (Exception e) {
                 sendErrorAndThrow(e)
@@ -580,7 +579,7 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
      * @return The resource created by the file located by the URI's path.
      */
     def Resource getResource(String uriPath) {
-        return getResource(_uriExtensions.toUri(uriPath))
+        return getResource(toUri(uriPath))
     }
     
     /**
