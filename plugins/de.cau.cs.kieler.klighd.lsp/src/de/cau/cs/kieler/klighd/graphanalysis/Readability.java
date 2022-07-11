@@ -16,6 +16,9 @@
  */
 package de.cau.cs.kieler.klighd.graphanalysis;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import de.cau.cs.kieler.klighd.krendering.KText;
 
 /**
@@ -62,6 +65,17 @@ public class Readability implements IZSampleable<Double>{
     
     public String toString() {
         return "(" + text.getText() + ", " + textScale +", " + scaleLimit + ")";
+    }
+    
+    public String plot(double stepSize) {
+        List<Double> yPoints = new ArrayList<>();
+        int sampleCount = (int) (1 / stepSize);
+        for (int i = (int) 0; i <= sampleCount; i++) {
+            double z = (float) i / sampleCount;
+            yPoints.add(this.getZSample(z));
+            
+        }
+        return yPoints.toString();
     }
 
 }

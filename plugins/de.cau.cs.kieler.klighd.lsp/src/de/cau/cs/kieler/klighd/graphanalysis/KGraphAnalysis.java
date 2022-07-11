@@ -16,6 +16,11 @@
  */
 package de.cau.cs.kieler.klighd.graphanalysis;
 
+import java.io.BufferedWriter;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,6 +38,8 @@ public class KGraphAnalysis {
     @SuppressWarnings("rawtypes")
     private List<ZSampler> zSamplers;
     private List<List<?>> results;
+    private double sampleStepSize;
+    
     
     public KGraphAnalysis(KNode graph) {
         this.graph = graph;
@@ -49,6 +56,7 @@ public class KGraphAnalysis {
             scaleLimit = Math.exp(Math.abs(Math.log(zoomOutScale)));
         }
         System.out.println("scalelimit " + scaleLimit);
+        this.sampleStepSize = Math.max((double) 1 / scaleLimit, 0.0001);
         zSamplers = new ArrayList<>();
         // Set up z samplers, need to know this order to know what results mean, an additional field for a string id 
         // somewhere could be useful
@@ -59,10 +67,20 @@ public class KGraphAnalysis {
         double threshold = 0.8;
         ReadabilityThresholdCountAggregator threshCountAgg = new ReadabilityThresholdCountAggregator(threshold);
         zSamplers.add(new ZSampler<>(readEval, threshCountAgg, "Readability Threshold " + threshold));
+        
+        // plot readabilities
+        // for large graphs with many texts the resulting python script is too large
+        try (Writer writer = new BufferedWriter(new OutputStreamWriter(
+                new FileOutputStream("/home/mka/projects/readability-measure/plot_readabilities.py"), "utf-8"))) {
+            ReadabilityPyPlotter.plotAllReadabilities(readEval.evaluate(graph), sampleStepSize, writer);
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        
     }
 
     
-    public void runAnalysis(double sampleStepSize) {
+    public void runAnalysis() {
         
         results = new ArrayList<>();
         for (ZSampler<?,?,?> sampler : zSamplers) {

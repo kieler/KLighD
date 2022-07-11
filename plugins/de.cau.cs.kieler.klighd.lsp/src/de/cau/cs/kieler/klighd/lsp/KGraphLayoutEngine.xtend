@@ -85,8 +85,8 @@ class KGraphLayoutEngine extends ElkLayoutEngine {
             
             // ANALYSIS
             val analysis = new KGraphAnalysis(kGraphContext.viewModel);
-            analysis.runAnalysis(0.1);
-            System.out.println(analysis.formattedOuput());
+            analysis.runAnalysis();
+            //System.out.println(analysis.formattedOuput());
         }
     }
 
