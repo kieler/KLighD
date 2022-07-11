@@ -45,12 +45,15 @@ public class Readability implements IZSampleable<Double>{
         double dampening = 100; // TODO: this value may need to be tweaked or automatically tweakable 
         double steepness = this.scaleLimit / dampening;
         double res = -steepness * Math.pow(z - zOpt(),2) + 1;
-        // System.out.println("z: " + z + ", zOpt: " + zOpt() + "steepness: " + steepness + " ==> " + res);
-        return res;
+        //System.out.println("z: " + z + ", zOpt: " + zOpt() + " steepness: " + steepness + " ==> " + res);
+        return Math.max(0, res);
     }
     
     private double zOpt() {
-        return (1/this.textScale - this.scaleLimit) / (1-this.scaleLimit);
+        double res = (1/this.textScale - this.scaleLimit) / (1-this.scaleLimit);
+        //System.out.println(this.scaleLimit + " " + this.textScale);
+        //System.out.println(res);
+        return res;
     }
     
     public KText getText() {

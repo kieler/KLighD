@@ -54,10 +54,13 @@ public class ReadabilityEvaluator implements IKGraphLayoutEvaluator<Readability,
         double topdownScaleFactor = node.getProperty(CoreOptions.TOPDOWN_SCALE_FACTOR);
         for (KGraphData datum : node.getData()) {
             if (datum instanceof KText) {
-                resultList.add(new Readability((KText) datum, scale, scaleLimit));
+                Readability readability = new Readability((KText) datum, scale, scaleLimit);
+                System.out.println(readability);
+                resultList.add(readability);
             }
             if (datum instanceof KContainerRendering) {
-                traverseKGraphData((KContainerRendering) datum, topdownScaleFactor, resultList);
+                // this should not be scaled I think use scale instead
+                traverseKGraphData((KContainerRendering) datum, scale, resultList);
             }
         }
         
@@ -70,7 +73,9 @@ public class ReadabilityEvaluator implements IKGraphLayoutEvaluator<Readability,
         for (KGraphData datum : container.getChildren()) {
             // TODO: do i need to check whether there is a KChildArea in here, and if there is then apply topdownscale?
             if (datum instanceof KText) {
-                resultList.add(new Readability((KText) datum, scale, scaleLimit));
+                Readability readability = new Readability((KText) datum, scale, scaleLimit);
+                System.out.println(readability);
+                resultList.add(readability);
             }
             if (datum instanceof KContainerRendering) {
                 traverseKGraphData((KContainerRendering) datum, scale, resultList);

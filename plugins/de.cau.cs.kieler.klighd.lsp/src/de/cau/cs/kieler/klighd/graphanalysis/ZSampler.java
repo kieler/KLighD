@@ -25,13 +25,15 @@ public class ZSampler<T extends IZSampleable<U>, S, U> {
 
     private IKGraphLayoutEvaluator<T, U> evaluator;
     private IZLevelAggregator<T, S, U> aggregator;
+    private String name;
     
     private final double Z_MIN = 0;
     private final double Z_MAX = 1;
     
-    public ZSampler(IKGraphLayoutEvaluator<T, U> evaluator, IZLevelAggregator<T, S, U> aggregator) {
+    public ZSampler(IKGraphLayoutEvaluator<T, U> evaluator, IZLevelAggregator<T, S, U> aggregator, String name) {
         this.evaluator = evaluator;
         this.aggregator = aggregator;
+        this.name = name;
     }
     
     public List<S> getSamples(KNode graph, double sampleStepSize) {
@@ -42,11 +44,15 @@ public class ZSampler<T extends IZSampleable<U>, S, U> {
         List<S> result = new ArrayList<>();
         int sampleCount = (int) (Z_MAX / sampleStepSize);
         for (int i = (int) Z_MIN; i <= sampleCount; i++) {
-            double z = i / sampleCount;
+            double z = (float) i / sampleCount;
             result.add(aggregator.aggregate(sampleables, z));
             
         }
         return result;
+    }
+    
+    public String getName() {
+        return this.name;
     }
 
 }

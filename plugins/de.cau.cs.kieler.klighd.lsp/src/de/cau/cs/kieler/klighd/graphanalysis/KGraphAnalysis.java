@@ -48,12 +48,17 @@ public class KGraphAnalysis {
             double zoomOutScale = Math.min(assumedViewportWidth / graph.getWidth(), 0.999999);
             scaleLimit = Math.exp(Math.abs(Math.log(zoomOutScale)));
         }
+        System.out.println("scalelimit " + scaleLimit);
         zSamplers = new ArrayList<>();
         // Set up z samplers, need to know this order to know what results mean, an additional field for a string id 
         // somewhere could be useful
         AverageReadabilityAggregator avgReadAgg = new AverageReadabilityAggregator();
         ReadabilityEvaluator readEval = new ReadabilityEvaluator(scaleLimit);
-        zSamplers.add(new ZSampler<Readability, Double, Double>(readEval, avgReadAgg));
+        zSamplers.add(new ZSampler<Readability, Double, Double>(readEval, avgReadAgg, "Average Readability"));
+        
+        double threshold = 0.8;
+        ReadabilityThresholdCountAggregator threshCountAgg = new ReadabilityThresholdCountAggregator(threshold);
+        zSamplers.add(new ZSampler<>(readEval, threshCountAgg, "Readability Threshold " + threshold));
     }
 
     
@@ -66,7 +71,11 @@ public class KGraphAnalysis {
     }
     
     public String formattedOuput() {
-        return results.toString();
+        List<String> samplerNames = new ArrayList<>(this.zSamplers.size());
+        for (ZSampler sampler : this.zSamplers) {
+            samplerNames.add(sampler.getName());
+        }
+        return samplerNames.toString() + "\n" + results.toString();
     }
     
     private double getMinScale(KNode graph, double scale) {
