@@ -69,10 +69,9 @@ public class KGraphAnalysis {
         zSamplers.add(new ZSampler<>(readEval, threshCountAgg, "Readability Threshold " + threshold));
         
         // plot readabilities
-        // for large graphs with many texts the resulting python script is too large
         try (Writer writer = new BufferedWriter(new OutputStreamWriter(
                 new FileOutputStream("/home/mka/projects/readability-measure/plot_readabilities.py"), "utf-8"))) {
-            ReadabilityPyPlotter.plotAllReadabilities(readEval.evaluate(graph), Math.max(sampleStepSize, 0.0001), writer);
+            PyPlotterUtil.plotAllReadabilities(readEval.evaluate(graph), Math.max(sampleStepSize, 0.0001), writer);
         } catch(Exception e) {
             e.printStackTrace();
         }
@@ -82,9 +81,17 @@ public class KGraphAnalysis {
     
     public void runAnalysis() {
         
-        results = new ArrayList<>();
+        this.results = new ArrayList<>();
         for (ZSampler<?,?,?> sampler : zSamplers) {
             results.add(sampler.getSamples(graph, sampleStepSize));
+        }
+        
+        // plot sampler results
+        try (Writer writer = new BufferedWriter(new OutputStreamWriter(
+                new FileOutputStream("/home/mka/projects/readability-measure/plot_samplers.py"), "utf-8"))) {
+            PyPlotterUtil.plotAggregatedResults(this.zSamplers, this.results, writer);
+        } catch(Exception e) {
+            e.printStackTrace();
         }
     }
     

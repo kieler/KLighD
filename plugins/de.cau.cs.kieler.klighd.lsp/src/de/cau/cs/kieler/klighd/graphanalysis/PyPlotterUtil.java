@@ -22,7 +22,7 @@ import java.util.List;
  * @author mka
  *
  */
-public class ReadabilityPyPlotter {
+public class PyPlotterUtil {
     
     public static void plotAllReadabilities(List<Readability> readabilities, double stepSize, Writer writer) throws IOException {
         
@@ -62,6 +62,33 @@ public class ReadabilityPyPlotter {
         writer.write("plt.show()");
         System.out.println("Unique Text Scales: " + uniqueTextScales.size());
         
+    }
+    
+    // uses plot rather than bar, because the performance is much better and we can read the same info from the graph
+    public static void plotAggregatedResults(@SuppressWarnings("rawtypes") List<ZSampler> samplers, List<List<?>> results, Writer writer) throws IOException {
+        
+        List<Double> xPoints = new ArrayList<>();
+        
+        int sampleCount = results.get(0).size();
+        for (int i = (int) 0; i < sampleCount; i++) {
+            double z = (float) i / (sampleCount - 1);
+            xPoints.add(z);            
+        }
+        
+        writer.write("import matplotlib.pyplot as plt\n");
+        
+        // make a subplot for each sampler
+        writer.write("fig, axs = plt.subplots(" + samplers.size() + ")\n");
+        writer.write("plt.xlabel('z Level')\n");
+        writer.write("samples = " + results.get(0).size() + "\n");
+        writer.write("xPoints = " + xPoints.toString() + "\n");
+        
+        for (int i = 0; i < samplers.size(); i++) {
+            writer.write("axs[" + i + "].set(ylabel='" + samplers.get(i).getName() + "')\n");
+            writer.write("axs[" + i + "].plot(xPoints, "  + results.get(i).toString() + ")\n");
+        }
+        
+        writer.write("plt.show()");
     }
 
 }

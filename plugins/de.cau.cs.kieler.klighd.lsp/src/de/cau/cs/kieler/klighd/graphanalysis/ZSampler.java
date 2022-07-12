@@ -46,7 +46,6 @@ public class ZSampler<T extends IZSampleable<U>, S, U> {
         for (int i = (int) Z_MIN; i <= sampleCount; i++) {
             double z = (float) i / sampleCount;
             result.add(aggregator.aggregate(sampleables, z));
-            
         }
         return result;
     }
