@@ -1,9 +1,10 @@
 <?compositeArtifactRepository version='1.0.0'?>
 <repository name="KLighD Update Site (Releases)" type="org.eclipse.equinox.internal.p2.metadata.repository.CompositeMetadataRepository" version="1.0.0">
   <properties size="1">
-    <property name="p2.timestamp" value="1623750000000"/>
+    <property name="p2.timestamp" value="1657600000000"/>
   </properties>
-  <children size="5">
+  <children size="6">
+    <child location="v2.2.0"/>
     <child location="v2.1.0"/>
     <child location="v2.0.0"/>
     <child location="v1.1.1"/>
