@@ -61,7 +61,7 @@ pipeline {
 
     success {
       archiveArtifacts 'updatesite/**/*.*'
-      archiveArtifacts 'klighd-snapshots/**/*.*'
+      archiveArtifacts 'klighd/**/*.*'
     }
 
     failure {
