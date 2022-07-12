@@ -50,13 +50,15 @@ public class KGraphAnalysis {
             scaleLimit = 1.0 / getMinScale(graph, 1);
         } else {
             // use dimensions of graph to determine scaleLimit
-            double assumedViewportWidth = 500;
+            double assumedViewportWidth = 700;
             // for graphs smaller than the viewport use a scale nearly 1
             double zoomOutScale = Math.min(assumedViewportWidth / graph.getWidth(), 0.999999);
-            scaleLimit = Math.exp(Math.abs(Math.log(zoomOutScale)));
+            // can't do this normalisation trick because the text scales are also invertedly associated
+            // scaleLimit = Math.exp(Math.abs(Math.log(zoomOutScale)));
+            scaleLimit = zoomOutScale;
         }
         System.out.println("scalelimit " + scaleLimit);
-        this.sampleStepSize = (double) 1 / scaleLimit;
+        this.sampleStepSize = Math.min((double) 1 / scaleLimit, scaleLimit);
         zSamplers = new ArrayList<>();
         // Set up z samplers, need to know this order to know what results mean, an additional field for a string id 
         // somewhere could be useful

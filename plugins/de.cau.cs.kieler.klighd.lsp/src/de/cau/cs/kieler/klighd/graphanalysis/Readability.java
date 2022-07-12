@@ -45,18 +45,30 @@ public class Readability implements IZSampleable<Double>{
         if (z < 0 || z > 1) {
             throw new IllegalArgumentException("z must be between 0 and 1");
         }
-        double dampening = 100; // TODO: this value may need to be tweaked or automatically tweakable 
-        double steepness = this.scaleLimit / dampening;
+        double dampening = 1; // TODO: this value may need to be tweaked or automatically tweakable, useful for visualizing what readability represents 
+        double steepness = this.normalizedScaleLimit() / dampening;
         double res = -steepness * Math.pow(z - zOpt(),2) + 1;
         //System.out.println("z: " + z + ", zOpt: " + zOpt() + " steepness: " + steepness + " ==> " + res);
         return Math.max(0, res);
     }
     
     private double zOpt() {
-        double res = (1/this.textScale - this.scaleLimit) / (1-this.scaleLimit);
-        //System.out.println(this.scaleLimit + " " + this.textScale);
-        //System.out.println(res);
+        double res;
+        if (this.scaleLimit > 1) {
+            res = (1/this.textScale - this.scaleLimit) / (1-this.scaleLimit);
+        } else {
+            res = (1/this.textScale - 1) / (this.scaleLimit - 1);
+        }
+        
+//        System.out.println(this.scaleLimit + " " + this.textScale);
+//        System.out.println(res);
         return res;
+    }
+    
+    // returns the normalized scale limit, when we are only interested in the magnitude of the scaling range and not 
+    // in the direction
+    private double normalizedScaleLimit() {
+        return Math.exp(Math.abs(Math.log(scaleLimit)));
     }
     
     public KText getText() {
