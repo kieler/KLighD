@@ -56,7 +56,7 @@ public class KGraphAnalysis {
             scaleLimit = Math.exp(Math.abs(Math.log(zoomOutScale)));
         }
         System.out.println("scalelimit " + scaleLimit);
-        this.sampleStepSize = Math.max((double) 1 / scaleLimit, 0.0001);
+        this.sampleStepSize = (double) 1 / scaleLimit;
         zSamplers = new ArrayList<>();
         // Set up z samplers, need to know this order to know what results mean, an additional field for a string id 
         // somewhere could be useful
@@ -72,7 +72,7 @@ public class KGraphAnalysis {
         // for large graphs with many texts the resulting python script is too large
         try (Writer writer = new BufferedWriter(new OutputStreamWriter(
                 new FileOutputStream("/home/mka/projects/readability-measure/plot_readabilities.py"), "utf-8"))) {
-            ReadabilityPyPlotter.plotAllReadabilities(readEval.evaluate(graph), sampleStepSize, writer);
+            ReadabilityPyPlotter.plotAllReadabilities(readEval.evaluate(graph), Math.max(sampleStepSize, 0.0001), writer);
         } catch(Exception e) {
             e.printStackTrace();
         }

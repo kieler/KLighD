@@ -77,5 +77,9 @@ public class Readability implements IZSampleable<Double>{
         }
         return yPoints.toString();
     }
+    
+    public double getTextScale() {
+        return this.textScale;
+    }
 
 }
