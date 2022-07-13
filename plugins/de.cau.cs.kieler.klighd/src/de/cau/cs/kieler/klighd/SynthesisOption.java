@@ -407,7 +407,7 @@ public final class SynthesisOption {
     /**
      * The standard step size of floating-point-based 'range' options.
      */
-    public static final float DEFAULT_STEP_SIZE_FLOAT = 10 ^ -1; // SUPPRESS CHECKSTYLE MagicNumber
+    public static final float DEFAULT_STEP_SIZE_FLOAT = 0.1f; // SUPPRESS CHECKSTYLE MagicNumber
     
     /**
      * The standard step size of integer-based 'range' options.

@@ -115,22 +115,28 @@ public final class KlighdConstants {
      * 
      * Note: This is a AWT constant!
      */
-    public static final String DEFAULT_FONT_NAME = Klighd.IS_PLATFORM_RUNNING
-            ? Klighd.IS_WINDOWS 
-                    ? "Arial"
-                    : Font.SANS_SERIF
-            : "Overpass";
+    public static final String DEFAULT_FONT_NAME =
+            System.getenv("KLIGHD_DEFAULT_FONT_NAME") != null
+                ? System.getenv("KLIGHD_DEFAULT_FONT_NAME")
+                : Klighd.IS_PLATFORM_RUNNING
+                    ? Klighd.IS_WINDOWS
+                        ? "Arial"
+                        : Font.SANS_SERIF
+                    : "Overpass";
 
     /**
      * A platform independent font name identifier for a default monospaced font.
      */
-    public static final String DEFAULT_MONOSPACE_FONT_NAME = Klighd.IS_PLATFORM_RUNNING
-            ? Klighd.IS_WINDOWS
-                ? "Consolas"
-                : Klighd.IS_MACOSX 
-                    ? "Monaco" 
-                    : "Monospace"
-            : "Overpass Mono";
+    public static final String DEFAULT_MONOSPACE_FONT_NAME =
+            System.getenv("KLIGHD_DEFAULT_MONOSPACE_FONT_NAME") != null
+                ? System.getenv("KLIGHD_DEFAULT_MONOSPACE_FONT_NAME")
+                : Klighd.IS_PLATFORM_RUNNING
+                    ? Klighd.IS_WINDOWS
+                        ? "Consolas"
+                        : Klighd.IS_MACOSX
+                            ? "Monaco"
+                            : "Monospace"
+                    : "Overpass Mono";
 
     /**
      * This font size is used for {@link de.cau.cs.kieler.klighd.krendering.KText KTexts}, if no
