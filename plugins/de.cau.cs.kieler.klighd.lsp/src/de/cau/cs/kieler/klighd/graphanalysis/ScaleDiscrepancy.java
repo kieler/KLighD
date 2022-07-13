@@ -39,7 +39,7 @@ public class ScaleDiscrepancy implements IZSampleable<Double> {
      */
     @Override
     public Double getZSample(double z) {
-        // check wether z is between both scales
+        // check whether z is between both scales
         double zA = scaleToZlevel(nodeScaleA);
         double zB = scaleToZlevel(nodeScaleB);
         if (zA >= z && zB <= z || zB >= z && zA <= z) {
@@ -56,16 +56,20 @@ public class ScaleDiscrepancy implements IZSampleable<Double> {
         // have to hold in the general case
         
         // adjust this to modify how quickly the discrepancy rises
+        // can also simply be used to highlight small or large discrepancies
         // 1 > w > 0: discrepancy rises very quickly then slows down, we don't want that
         // w > 1: discrepancy rises slowly and then fast i.e. small discrepancies are not so bad, and large discrepancies are very bad
         // w = 1: linear
-        double weightingFactor = 3;
+        double weightingFactor = 1;
         
         // use z level of the nodes to get comparable discrepancies that are bounded to [0,1]
         double zA = scaleToZlevel(nodeScaleA);
         double zB = scaleToZlevel(nodeScaleB);
         
         double D = Math.abs(zA - zB);
+        if (D > 1) {
+            System.out.println("Abnormal scale discrepancy: " + this);
+        }
         return Math.pow(D, weightingFactor);
     }
     

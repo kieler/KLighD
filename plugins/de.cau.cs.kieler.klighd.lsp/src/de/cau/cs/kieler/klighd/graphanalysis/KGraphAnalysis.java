@@ -104,6 +104,7 @@ public class KGraphAnalysis {
         } catch(Exception e) {
             e.printStackTrace();
         }
+        System.out.println("analysis done");
     }
     
     public String formattedOuput() {
