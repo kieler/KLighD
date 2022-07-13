@@ -62,13 +62,19 @@ public class KGraphAnalysis {
         zSamplers = new ArrayList<>();
         // Set up z samplers, need to know this order to know what results mean, an additional field for a string id 
         // somewhere could be useful
-        AverageReadabilityAggregator avgReadAgg = new AverageReadabilityAggregator();
+        IZLevelAggregator avgAgg = new AverageAggregator();
         ReadabilityEvaluator readEval = new ReadabilityEvaluator(graph, scaleLimit);
-        zSamplers.add(new ZSampler<Readability, Double, Double>(readEval, avgReadAgg, "Average Readability"));
+        zSamplers.add(new ZSampler<Readability, Double, Double>(readEval, avgAgg, "Average Readability"));
         
         double threshold = 0.8;
         ReadabilityThresholdCountAggregator threshCountAgg = new ReadabilityThresholdCountAggregator(threshold);
         zSamplers.add(new ZSampler<>(readEval, threshCountAgg, "Readability Threshold " + threshold));
+        
+        GlobalScaleDiscrepancyEvaluator globScDiscEval = new GlobalScaleDiscrepancyEvaluator(graph, scaleLimit);
+        zSamplers.add(new ZSampler<ScaleDiscrepancy, Double, Double>(globScDiscEval, avgAgg, "Average Global Scale Discrepancy"));
+        
+        LocalScaleDiscrepancyEvaluator locScDiscEval = new LocalScaleDiscrepancyEvaluator(graph, scaleLimit);
+        zSamplers.add(new ZSampler<ScaleDiscrepancy, Double, Double>(locScDiscEval, avgAgg, "Average Local Scale Discrepancy"));
         
         // plot readabilities
         try (Writer writer = new BufferedWriter(new OutputStreamWriter(

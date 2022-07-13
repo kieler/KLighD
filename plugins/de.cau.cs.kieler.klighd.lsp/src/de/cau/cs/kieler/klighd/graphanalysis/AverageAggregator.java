@@ -18,15 +18,15 @@ import java.util.List;
  * @author mka
  *
  */
-public class AverageReadabilityAggregator implements IZLevelAggregator<Readability, Double, Double> {
+public class AverageAggregator implements IZLevelAggregator<IZSampleable<Double>, Double, Double> {
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Double aggregate(List<Readability> sampleables, double z) {
+    public Double aggregate(List<IZSampleable<Double>> sampleables, double z) {
         double result = 0;
-        for (Readability readability : sampleables) {
+        for (IZSampleable<Double> readability : sampleables) {
             result += readability.getZSample(z);
         }
         return result / sampleables.size();
