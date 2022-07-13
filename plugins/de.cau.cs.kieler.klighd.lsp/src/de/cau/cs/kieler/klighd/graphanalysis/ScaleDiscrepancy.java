@@ -59,8 +59,13 @@ public class ScaleDiscrepancy implements IZSampleable<Double> {
         // 1 > w > 0: discrepancy rises very quickly then slows down, we don't want that
         // w > 1: discrepancy rises slowly and then fast i.e. small discrepancies are not so bad, and large discrepancies are very bad
         // w = 1: linear
-        double weightingFactor = 3; 
-        double D = Math.abs(nodeScaleA - nodeScaleB);
+        double weightingFactor = 3;
+        
+        // use z level of the nodes to get comparable discrepancies that are bounded to [0,1]
+        double zA = scaleToZlevel(nodeScaleA);
+        double zB = scaleToZlevel(nodeScaleB);
+        
+        double D = Math.abs(zA - zB);
         return Math.pow(D, weightingFactor);
     }
     
