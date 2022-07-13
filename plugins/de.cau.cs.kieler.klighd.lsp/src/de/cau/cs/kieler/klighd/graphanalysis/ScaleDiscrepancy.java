@@ -73,10 +73,14 @@ public class ScaleDiscrepancy implements IZSampleable<Double> {
         // for a > 1, s = z - az + a
         // for a <= 1, s = -z + az + 1
         if (scaleLimit > 1) {
-            return (scale - scaleLimit) / (1 - scaleLimit);
+            return (1/scale - scaleLimit) / (1 - scaleLimit); // invert scale of text for this equation to hold
         } else {
-            return (scale - 1) / (scaleLimit - 1);
+            return (scale - 1) / (scaleLimit - 1); // this case should only happen for topdown layout, where scale should always be 1 and therefore z should always be 0
         }
+    }
+    
+    public String toString() {
+        return "(" + nodeScaleA + " (" + scaleToZlevel(nodeScaleA) + "), " + nodeScaleB + "(" +  scaleToZlevel(nodeScaleB) + "), " + getScaleDiscrepancy() +", " + scaleLimit + ")";
     }
 
 }

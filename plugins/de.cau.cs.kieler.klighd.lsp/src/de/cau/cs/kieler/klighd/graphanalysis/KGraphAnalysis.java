@@ -73,6 +73,9 @@ public class KGraphAnalysis {
         GlobalScaleDiscrepancyEvaluator globScDiscEval = new GlobalScaleDiscrepancyEvaluator(graph, scaleLimit);
         zSamplers.add(new ZSampler<ScaleDiscrepancy, Double, Double>(globScDiscEval, avgAgg, "Average Global Scale Discrepancy"));
         
+        // TODO: for sccharts it would be more insightful to look at discrepancies up to certain local deth
+        //       to capture discrepancies between regions in neighbouring states, essentially skipping the 
+        //       unscaled parallel nodes
         LocalScaleDiscrepancyEvaluator locScDiscEval = new LocalScaleDiscrepancyEvaluator(graph, scaleLimit);
         zSamplers.add(new ZSampler<ScaleDiscrepancy, Double, Double>(locScDiscEval, avgAgg, "Average Local Scale Discrepancy"));
         
