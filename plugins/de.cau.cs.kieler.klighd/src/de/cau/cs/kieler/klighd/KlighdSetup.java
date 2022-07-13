@@ -16,7 +16,10 @@
  */
 package de.cau.cs.kieler.klighd;
 
+import org.eclipse.elk.core.labels.LabelManagementOptions;
+
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
+import de.cau.cs.kieler.klighd.microlayout.GridPlacementUtil;
 
 /**
  * @author mka
@@ -29,8 +32,10 @@ public class KlighdSetup implements IKlighdStartupHook {
      */
     @Override
     public void execute() {
-        KlighdDataManager.getInstance().registerBlacklistedProperty(KlighdInternalProperties.MODEL_ELEMEMT);
-
+        KlighdDataManager.getInstance()
+            .registerBlacklistedProperty(KlighdInternalProperties.MODEL_ELEMEMT)
+            .registerBlacklistedProperty(LabelManagementOptions.LABEL_MANAGER)
+            .registerBlacklistedProperty(GridPlacementUtil.ESTIMATED_GRID_DATA)
+            .registerBlacklistedProperty(GridPlacementUtil.CHILD_AREA_POSITION);
     }
-
 }
