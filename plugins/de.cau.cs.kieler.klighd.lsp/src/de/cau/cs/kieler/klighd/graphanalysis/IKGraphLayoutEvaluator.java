@@ -27,6 +27,6 @@ import de.cau.cs.kieler.klighd.kgraph.KNode;
  */
 public interface IKGraphLayoutEvaluator<T extends IZSampleable<S>, S> {
     
-    public List<T> evaluate(KNode graph);
+    public List<T> getResults();
 
 }

@@ -40,7 +40,7 @@ public class ZSampler<T extends IZSampleable<U>, S, U> {
         if (sampleStepSize >= Z_MAX) {
             throw new IllegalArgumentException("Step size must be less than " + Z_MAX);
         }
-        List<T> sampleables = evaluator.evaluate(graph);
+        List<T> sampleables = evaluator.getResults();
         List<S> result = new ArrayList<>();
         int sampleCount = (int) (Z_MAX / sampleStepSize);
         for (int i = (int) Z_MIN; i <= sampleCount; i++) {

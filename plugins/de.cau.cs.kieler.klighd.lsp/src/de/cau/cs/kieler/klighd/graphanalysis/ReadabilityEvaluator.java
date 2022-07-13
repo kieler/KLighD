@@ -33,19 +33,20 @@ import de.cau.cs.kieler.klighd.krendering.KText;
 public class ReadabilityEvaluator implements IKGraphLayoutEvaluator<Readability, Double> {
 
     private double scaleLimit;
+    private ArrayList<Readability> result;
     
-    public ReadabilityEvaluator(double scaleLimit) {
+    public ReadabilityEvaluator(KNode graph, double scaleLimit) {
         this.scaleLimit = scaleLimit;
+        result = new ArrayList<>();
+        
+        // Traverse graph computing scales along the way and creating Readability objects for all KTexts
+        traverseGraph(graph, 1, result);
     }
     /**
      * {@inheritDoc}
      */
     @Override
-    public List<Readability> evaluate(KNode graph) {
-        ArrayList<Readability> result= new ArrayList<>();
-        
-        // Traverse graph computing scales along the way and creating Readability objects for all KTexts
-        traverseGraph(graph, 1, result);
+    public List<Readability> getResults() {
         
         return result;
     }

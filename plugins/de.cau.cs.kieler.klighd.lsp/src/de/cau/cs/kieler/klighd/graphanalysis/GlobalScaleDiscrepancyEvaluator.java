@@ -25,21 +25,14 @@ import de.cau.cs.kieler.klighd.kgraph.KNode;
  */
 public class GlobalScaleDiscrepancyEvaluator implements IKGraphLayoutEvaluator<ScaleDiscrepancy, Double> {
 
-    private double scaleLimit;
     private List<List<NodeScalePair>> topologyMap;
+    private List<ScaleDiscrepancy> results;
     
-    public GlobalScaleDiscrepancyEvaluator(double scaleLimit) {
-        this.scaleLimit = scaleLimit;
-    }
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<ScaleDiscrepancy> evaluate(KNode graph) {
+    public GlobalScaleDiscrepancyEvaluator(KNode graph, double scaleLimit) {
         this.topologyMap = new ArrayList<>();
         constructTopologyMap(graph, 1.0, 0);
         
-        List<ScaleDiscrepancy> results = new ArrayList<>();
+        results = new ArrayList<>();
         
         // for each topology level, construct pairs of scale discrepancies
         // TODO: this pairs all nodes on one level, it might also make sense to only do this for siblings as another measure
@@ -53,6 +46,13 @@ public class GlobalScaleDiscrepancyEvaluator implements IKGraphLayoutEvaluator<S
                 }
             }
         }
+    }
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<ScaleDiscrepancy> getResults() {
+        
         return results;
     }
     
@@ -62,7 +62,7 @@ public class GlobalScaleDiscrepancyEvaluator implements IKGraphLayoutEvaluator<S
             // create new entry for this hierarchy level
             this.topologyMap.add(new ArrayList<>());
         }
-        this.topologyMap.get(hierarchyLevel).add(new NodeScalePair(node, scale));
+        this.topologyMap.get(hierarchyLevel).add(new NodeScalePair(node, scale * topdownScaleFactor));
         
         
         for (KNode child : node.getChildren()) {

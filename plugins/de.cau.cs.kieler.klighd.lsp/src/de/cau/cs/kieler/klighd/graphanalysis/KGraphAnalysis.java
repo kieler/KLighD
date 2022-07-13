@@ -63,7 +63,7 @@ public class KGraphAnalysis {
         // Set up z samplers, need to know this order to know what results mean, an additional field for a string id 
         // somewhere could be useful
         AverageReadabilityAggregator avgReadAgg = new AverageReadabilityAggregator();
-        ReadabilityEvaluator readEval = new ReadabilityEvaluator(scaleLimit);
+        ReadabilityEvaluator readEval = new ReadabilityEvaluator(graph, scaleLimit);
         zSamplers.add(new ZSampler<Readability, Double, Double>(readEval, avgReadAgg, "Average Readability"));
         
         double threshold = 0.8;
@@ -73,7 +73,7 @@ public class KGraphAnalysis {
         // plot readabilities
         try (Writer writer = new BufferedWriter(new OutputStreamWriter(
                 new FileOutputStream("/home/mka/projects/readability-measure/plot_readabilities.py"), "utf-8"))) {
-            PyPlotterUtil.plotAllReadabilities(readEval.evaluate(graph), Math.max(sampleStepSize, 0.0001), writer);
+            PyPlotterUtil.plotAllReadabilities(readEval.getResults(), Math.max(sampleStepSize, 0.0001), writer);
         } catch(Exception e) {
             e.printStackTrace();
         }
