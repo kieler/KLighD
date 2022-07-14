@@ -63,6 +63,8 @@ public class KGraphAnalysis {
         // Set up z samplers, need to know this order to know what results mean, an additional field for a string id 
         // somewhere could be useful
         IZLevelAggregator avgAgg = new AverageAggregator();
+        IZLevelAggregator maxAgg = new MaxAggregator<Double>();
+        
         ReadabilityEvaluator readEval = new ReadabilityEvaluator(graph, scaleLimit);
         zSamplers.add(new ZSampler<Readability, Double, Double>(readEval, avgAgg, "Average Readability"));
         
@@ -72,13 +74,15 @@ public class KGraphAnalysis {
         
         GlobalScaleDiscrepancyEvaluator globScDiscEval = new GlobalScaleDiscrepancyEvaluator(graph, scaleLimit);
         zSamplers.add(new ZSampler<ScaleDiscrepancy, Double, Double>(globScDiscEval, avgAgg, "Average Global Scale Discrepancy"));
-        
+                
         // TODO: for sccharts it would be more insightful to look at discrepancies up to certain local deth
         //       to capture discrepancies between regions in neighbouring states, essentially skipping the 
         //       unscaled parallel nodes
         LocalScaleDiscrepancyEvaluator locScDiscEval = new LocalScaleDiscrepancyEvaluator(graph, scaleLimit);
         zSamplers.add(new ZSampler<ScaleDiscrepancy, Double, Double>(locScDiscEval, avgAgg, "Average Local Scale Discrepancy"));
         
+        zSamplers.add(new ZSampler<ScaleDiscrepancy, Double, Double>(locScDiscEval, maxAgg, "Max Local Scale Discrepancy"));
+
         // plot readabilities
         try (Writer writer = new BufferedWriter(new OutputStreamWriter(
                 new FileOutputStream("/home/mka/projects/readability-measure/plot_readabilities.py"), "utf-8"))) {
