@@ -27,6 +27,7 @@ import de.cau.cs.kieler.klighd.kgraph.KNode
 import de.cau.cs.kieler.klighd.kgraph.KPort
 import de.cau.cs.kieler.klighd.kgraph.util.KGraphUtil
 import de.cau.cs.kieler.klighd.krendering.KRenderingFactory
+import de.cau.cs.kieler.klighd.microlayout.PlacementUtil
 import de.cau.cs.kieler.klighd.piccolo.export.SVGOffscreenRenderer
 import de.cau.cs.kieler.klighd.util.KlighdSemanticDiagramData
 import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties
@@ -37,6 +38,7 @@ import org.eclipse.elk.core.options.PortConstraints
 import org.eclipse.elk.core.options.PortLabelPlacement
 import org.eclipse.elk.core.options.PortSide
 import org.eclipse.swt.widgets.Display
+import org.eclipse.xtext.util.Wrapper
 import org.junit.BeforeClass
 import org.junit.FixMethodOrder
 import org.junit.Test
@@ -139,6 +141,51 @@ class FreeHEPSVGOffscreenRenderingTest {
 			addKNodeWithSizeOf(100, 100) => [
 				createInitializedLabel(it) => [
 					text = "NodeLabel"
+					addKTextWithAssumedSizeOf(50, 10)
+				]
+			]
+		]
+	}
+	
+	@Test
+	def void test03b_singleKNodeWithLabel_with_leading_LF() {
+		val width = Wrapper.forType(Double)
+		val node = createInitializedNode.addKNodeWithSizeOf(100, 100) => [
+			createInitializedLabel(it) => [
+				text = "\nNodeLabel"
+				addKTextWithAssumedSizeOf(52, 10)
+				width.set(PlacementUtil.estimateTextSize(PlacementUtil.fontDataFor(it), text).width as double)
+			]
+		]
+		
+		'''
+			<g stroke-linejoin="miter" stroke-dashoffset="0" stroke-dasharray="none" stroke-width="1" stroke-miterlimit="10" stroke-linecap="butt">
+			<g fill="none" stroke-opacity="1" stroke="#000000">
+			  <path d="M 0.5 0.5 L 99.5 0.5 L 99.5 99.5 L 0.5 99.5 L 0.5 0.5 z"/>
+			</g>
+			<g fill-opacity="1" font-style="normal" font-family="Helvetica" font-weight="normal" stroke="none" fill="#000000" font-size="<FONT_SIZE>">
+			  <text x="0" y="<Y>" style="white-space: pre" textLength="0.0px" lengthAdjust="spacingAndGlyphs"></text>
+			  <text x="0" y="<Y>" style="white-space: pre" textLength="«width.get»px" lengthAdjust="spacingAndGlyphs">NodeLabel</text>
+			</g>
+			</g>
+		'''.equalsSVGwithTextLengthsOf[
+			children += node
+		]
+	}
+	
+	@Test
+	def void test03c_singleKNodeWithLabel_with_trailing_LF() {
+		'''
+			<g stroke-linejoin="miter" stroke-dashoffset="0" stroke-dasharray="none" stroke-width="1" stroke-miterlimit="10" stroke-linecap="butt">
+			<g fill="none" stroke-opacity="1" stroke="#000000">
+			  <path d="M 0.5 0.5 L 99.5 0.5 L 99.5 99.5 L 0.5 99.5 L 0.5 0.5 z"/>
+			</g>
+			<text x="0" y="<Y>" fill-opacity="1" font-style="normal" font-family="Helvetica" style="white-space: pre" font-weight="normal" stroke="none" fill="#000000" font-size="<FONT_SIZE>" textLength="50.0px" lengthAdjust="spacingAndGlyphs">NodeLabel</text>
+			</g>
+		'''.equalsSVGwithTextLengthsOf[
+			addKNodeWithSizeOf(100, 100) => [
+				createInitializedLabel(it) => [
+					text = "NodeLabel\n"
 					addKTextWithAssumedSizeOf(50, 10)
 				]
 			]

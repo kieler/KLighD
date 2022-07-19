@@ -191,7 +191,7 @@ public class KlighdLayoutConfigurationStore implements ILayoutConfigurationStore
                 && (getContainer() == null || isSingleNodeOnRootLevel())) {
             // Get aspect ratio for the current diagram
             final IViewer viewer = getViewer();
-            if (viewer == null || viewer.getControl() == null) {
+            if (viewer == null || viewer.getControl() == null || viewer.getControl().isDisposed()) {
                 return null;
             }
 

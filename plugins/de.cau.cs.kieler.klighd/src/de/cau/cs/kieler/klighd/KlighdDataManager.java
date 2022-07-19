@@ -98,7 +98,7 @@ public final class KlighdDataManager {
     
     /** name of the 'preservedProperties' element. */
     private static final String PRESERVED_PROPERTIES = "preservedProperties";
-
+    
     /** name of the 'startupHook' element. */
     private static final String ELEMENT_STARTUP_HOOK = "startupHook";
 
@@ -237,6 +237,12 @@ public final class KlighdDataManager {
     
     /** the properties that shall be preserved from the layout graph to the kgraph */
     private final List<IProperty<?>> preservedProperties = Lists.newArrayList();
+    
+    /** the properties that are not allowed to be preserved when sending the skgraph to the client */
+    private final List<IProperty<?>> blacklistedProperties = Lists.newArrayList();
+    
+    /** the properties that are outside the klighd/elk namespace that are explicitly allowed to be sent to the client */
+    private final List<IProperty<?>> whitelistedProperties = Lists.newArrayList();
 
     /**
      * A private constructor to prevent instantiation.
@@ -292,7 +298,7 @@ public final class KlighdDataManager {
             } else if (PRESERVED_PROPERTIES.equals(elementName)) {
                 doRegisterExtension(element, IPreservedProperties.class,
                         (preservedProperties) -> registerPreservedProperties(preservedProperties));
-
+  
             } else if (ELEMENT_STARTUP_HOOK.equals(elementName)) {
                 doRegisterExtension(element, IKlighdStartupHook.class,
                         (startupHook) -> {
@@ -667,6 +673,62 @@ public final class KlighdDataManager {
     public KlighdDataManager registerPreservedProperties(Iterable<IProperty<?>> preservedProperties) {
         for (IProperty<?> preservedProperty : preservedProperties) {
             registerPreservedProperty(preservedProperty);
+        }
+        return this;
+    }
+    
+    /**
+     * Register a property to the blacklist which forbids the property to be sent to the client. The blacklist only
+     * applies to properties that would otherwise be included i.e. properties starting with "de.cau.cs.kieler.klighd", 
+     * "klighd" or "org.eclipse.elk" or explicitly whitelisted properties. The  blacklist is applied before the 
+     * whitelist is compared.
+     * @param blacklistedProperty The property to be blacklisted.
+     * @return KlighdDataManager
+     */
+    public KlighdDataManager registerBlacklistedProperty(IProperty<?> blacklistedProperty) {
+        this.blacklistedProperties.add(blacklistedProperty);
+        return this;
+    }
+    
+    /**
+     * Register a list of properties to the blacklist which forbids the properties to be sent to the client. The blacklist 
+     * only applies to properties that would otherwise be included i.e. properties starting with "de.cau.cs.kieler.klighd", 
+     * "klighd" or "org.eclipse.elk" or explicitly whitelisted properties. The  blacklist is applied before the 
+     * whitelist is compared.
+     * @param blacklistedProperty The list of properties to be blacklisted.
+     * @return KlighdDataManager
+     */
+    public KlighdDataManager registerBlacklistedProperties(Iterable<IProperty<?>> blacklistedProperties) {
+        for (IProperty<?> blacklistedProperty : blacklistedProperties) {
+            registerBlacklistedProperty(blacklistedProperty);
+        }
+        return this;
+    }
+    
+    /**
+     * Register a property to the whitelist which ensures the property will be sent to the client. Properties
+     * added here must be serializable by gson. By default only properties starting with "de.cau.cs.kieler.klighd", 
+     * "klighd" or "org.eclipse.elk" are included. Properties outside this namespace can be included by adding them to 
+     * the whitelist. The whitelist is checked after the blacklist.
+     * @param whitelistedProperty The property to be whitelisted.
+     * @return KlighdDataManager
+     */
+    public KlighdDataManager registerWhitelistedProperty(IProperty<?> whitelistedProperty) {
+        this.whitelistedProperties.add(whitelistedProperty);
+        return this;
+    }
+    
+    /**
+     * Register a list of properties to the whitelist which ensures these properties will be sent to the client.
+     * It must be ensured that all properties can be serialized by gson. By default only properties starting with 
+     * "de.cau.cs.kieler.klighd", "klighd" or "org.eclipse.elk" are included. Properties outside this namespace can be 
+     * included by adding them to the whitelist. The whitelist is checked after the blacklist.
+     * @param whitelistedProperties The list of properties to be whitelisted.
+     * @return KlighdDataManager
+     */
+    public KlighdDataManager registerWhitelistedProperties(Iterable<IProperty<?>> whitelistedProperties) {
+        for (IProperty<?> whitelistedProperty : whitelistedProperties) {
+            registerWhitelistedProperty(whitelistedProperty);
         }
         return this;
     }
@@ -1150,5 +1212,23 @@ public final class KlighdDataManager {
     public List<IProperty<?>> getPreservedProperties() {
         return this.preservedProperties;
     }
-
+    
+    /**
+     * Returns the list of registered properties that have been blacklisted from being sent from the server to the
+     * client.
+     * 
+     * @return the {@link List} of blacklisted properties
+     */
+    public List<IProperty<?>> getBlacklistedProperties() {
+        return this.blacklistedProperties;
+    }
+    
+    /**
+     * Returns the list of registered properties that have been whitelisted for being sent to the client.
+     * 
+     * @return the {@link List} of whitelisted properties
+     */
+    public List<IProperty<?>> getWhitelistedProperties() {
+        return this.whitelistedProperties;
+    }
 }

@@ -147,8 +147,8 @@ class KGraphDiagramUpdater extends DiagramUpdater {
             }
             var Object model = null
             if (snapshotModel === null) {
-                if (resource === null) {
-                    model = new MessageModel("No model in editor")
+                if (resource === null || resource.contents.empty) {
+                    model = new MessageModel("No model in resource")
                 } else {
                     model = resource.contents.head
                 }
@@ -170,8 +170,10 @@ class KGraphDiagramUpdater extends DiagramUpdater {
             (diagramServers as List<KGraphDiagramServer>).forEach [ KGraphDiagramServer server |
                 // Only update an erroneous model if there was no diagram shown before.
                 if (!hasErrors || server.currentRoot.type == "NONE") {
-                    prepareModel(server, model_, uri)
-                    updateLayout(server)
+                    synchronized (diagramState) {
+                        prepareModel(server, model_, uri)
+                        updateLayout(server)
+                    }
                 }
             ]
             return null as Void

@@ -3,7 +3,7 @@
  *
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright 2019,2020 by
+ * Copyright 2019-2022 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -18,18 +18,19 @@ package de.cau.cs.kieler.klighd.lsp.gson_utils
 
 import de.cau.cs.kieler.klighd.kgraph.EMapPropertyHolder
 import de.cau.cs.kieler.klighd.krendering.KImage
-import de.cau.cs.kieler.klighd.lsp.model.SKGraph
 import java.util.Deque
 import java.util.List
 import org.eclipse.lsp4j.jsonrpc.MessageConsumer
 import org.eclipse.lsp4j.jsonrpc.messages.MessageIssue
 import org.eclipse.lsp4j.jsonrpc.validation.ReflectiveMessageValidator
+import org.eclipse.sprotty.SModelElement
 
 /**
  * Extension to the lsp4j {@link ReflectiveMessageValidator} to ignore direct or indirect circular references in sent
  * messages for known elements that are or may contain {@link EMapPropertyHolder}, where the map may cause circular
  * paths, that have to be excluded from the Gson serialization to prevent StackOverflowErrors.
- * Excludes {@link SKGraph}s and {@link KImage}s from checking for circular dependencies. 
+ * Excludes {@link SModelElement}s and {@link KImage}s from checking for circular dependencies. This expects the
+ * serializer to handle the circular dependencies by not serializing them.
  * 
  * @author nre
  */
@@ -38,7 +39,7 @@ class ReflectiveMessageValidatorExcludingSKGraph extends ReflectiveMessageValida
         super(delegate)
     }
     override validate(Object object, List<MessageIssue> issues, Deque<Object> objectStack, Deque<Object> accessorStack) {
-        if (object instanceof SKGraph ||
+        if (object instanceof SModelElement ||
             object instanceof KImage) {
             return
         }

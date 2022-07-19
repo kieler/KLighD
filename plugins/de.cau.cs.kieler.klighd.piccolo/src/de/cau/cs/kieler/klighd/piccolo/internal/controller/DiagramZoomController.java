@@ -161,10 +161,8 @@ public class DiagramZoomController {
      *            time to animate in ms
      */
     private void zoomToActualSize(final int duration) {
-        final KNode displayedKNode = this.canvasCamera.getDisplayedKNodeNode().getViewModelElement();
-        
-        final PBounds newBounds = toPBoundsIncludingPortsAndLabels(displayedKNode);
-        
+        final PBounds newBounds = toPBoundsIncludingPortsAndLabelsOfDisplayedKNode();
+
         this.canvasCamera.animateViewToTransform(
                 PAffineTransform.getTranslateInstance(-newBounds.x, -newBounds.y), duration);
     }
@@ -185,10 +183,8 @@ public class DiagramZoomController {
      */
     private void zoomToFit(final int duration, boolean narrowDownToContents,
             final Spacing defaultZoomToFitContentSpacing) {
-        final KNode displayedKNode = this.canvasCamera.getDisplayedKNodeNode().getViewModelElement();
-
-        final PBounds newBounds = toPBoundsIncludingPortsAndLabels(
-                displayedKNode, narrowDownToContents, defaultZoomToFitContentSpacing);
+        final PBounds newBounds = toPBoundsIncludingPortsAndLabelsOfDisplayedKNode(
+                narrowDownToContents, defaultZoomToFitContentSpacing);
 
         if (this.canvasCamera.getBoundsReference().isEmpty()) {
             // this case occurs while initializing the DiagramEditorPart
@@ -225,18 +221,23 @@ public class DiagramZoomController {
      *            diagram canvas area, see also {@link ZoomStyle#ZOOM_TO_FOCUS_OR_INCREASE_TO_FIT}
      */
     private void zoomToFocus(final KNode focus, final int duration, final boolean increaseToFit) {
+        final PBounds diagramBounds = toPBoundsIncludingPortsAndLabelsOfDisplayedKNode();
         final KNode displayedKNode = this.canvasCamera.getDisplayedKNodeNode().getViewModelElement();
 
         // fetch bounds of the whole visible diagram
-        final PBounds focusBounds = toPBoundsIncludingPortsAndLabels(focus);
+        final PBounds focusBounds;
 
-        // we need the bounds in view coordinates (absolute), hence for
-        // a KNode add the translations of all parent nodes
+        if (focus == displayedKNode) {
+            focusBounds = diagramBounds;
 
-        if (focus != displayedKNode) {
+        } else {
+            focusBounds = toPBoundsIncludingPortsAndLabels(focus);
             KNode parent = focus.getParent();
 
-            while (parent != null && parent != displayedKNode.getParent()) {
+            // we need the bounds in view coordinates (absolute), hence for
+            // a KNode add the translations of all parent nodes
+            
+            while (parent != null && parent != displayedKNode) {
                 final double scale = parent.getProperty(CoreOptions.SCALE_FACTOR).doubleValue();
 
                 focusBounds.setSize(scale * focusBounds.width, scale * focusBounds.height);
@@ -253,7 +254,6 @@ public class DiagramZoomController {
         final PBounds viewBounds = canvasCamera.getViewBounds();
 
         if (increaseToFit) {
-            final PBounds diagramBounds = toPBoundsIncludingPortsAndLabels(displayedKNode);
             final boolean fullyContains = viewBounds.getWidth() > diagramBounds.getWidth()
                     && viewBounds.getHeight() > diagramBounds.getHeight();
 
@@ -285,9 +285,7 @@ public class DiagramZoomController {
      *            time to animate
      */
     public void zoomToLevel(final float newZoomLevel, final int duration) {
-        final KNode displayedKNode = this.canvasCamera.getDisplayedKNodeNode().getViewModelElement();
-
-        final PBounds nodeBounds = toPBoundsIncludingPortsAndLabels(displayedKNode);
+        final PBounds nodeBounds = toPBoundsIncludingPortsAndLabelsOfDisplayedKNode();
 
         // it would be possible to use PCamera#scaleViewAboutPoint(scale, x, y),
         // however this method does not allow for animation
@@ -301,12 +299,9 @@ public class DiagramZoomController {
                 origBounds.height * oldZoomLevel / newZoomLevel);
 
         // add the necessary translation
-        final double normalizedWidth = origBounds.width * oldZoomLevel;
-        final double normalizedHeight = origBounds.height * oldZoomLevel;
-        final double transX = (origBounds.width - normalizedWidth / newZoomLevel) / 2f;
-        final double transY = (origBounds.height - normalizedHeight / newZoomLevel) / 2f;
-
-        newBounds.moveBy(transX, transY);
+        newBounds.moveBy(
+                (origBounds.width - newBounds.width) / 2f,
+                (origBounds.height - newBounds.height) / 2f);
 
         // make sure at least some of the diagram is visible after zooming to scale 1
         final PDimension dim = newBounds.deltaRequiredToContain(nodeBounds);
@@ -336,13 +331,18 @@ public class DiagramZoomController {
         final KNode displayedKNode = this.canvasCamera.getDisplayedKNodeNode().getViewModelElement();
 
         // Fetch bounds of the focused element.
-        final PBounds focusBounds = boundsComputer.toPBounds(focus);
+        final PBounds focusBounds;
 
-        // We need the bounds in view coordinates (absolute), hence for
-        // an element add the translations of all parent elements.
+        if (focus == displayedKNode) {
+            focusBounds = toPBoundsIncludingPortsAndLabelsOfDisplayedKNode();
 
-        if (focus != displayedKNode) {
+        } else {
+            focusBounds = boundsComputer.toPBounds(focus);
             EObject parent = focus.eContainer();
+
+            // We need the bounds in view coordinates (absolute), hence for
+            // an element add the translations of all parent elements.
+
             while (parent != null && parent != displayedKNode.getParent()) {
                 while (!(parent instanceof KShapeLayout) && !(parent instanceof EMapPropertyHolder) && parent != null) {
                     parent = parent.eContainer();
@@ -369,6 +369,41 @@ public class DiagramZoomController {
         transform.translate(previousPosition.x - focusBounds.x, previousPosition.y - focusBounds.y);
 
         canvasCamera.animateViewToTransform(transform, duration);
+    }
+
+    /**
+     * Converts the current diagram clip KNode's layout data into {@link PBounds} s.t. its ports
+     * and labels are included, while its scale and offset are excluded.
+     *
+     * @return the requested bounding box in form of a {@link PBounds}
+     */
+    private PBounds toPBoundsIncludingPortsAndLabelsOfDisplayedKNode() {
+        return toPBoundsIncludingPortsAndLabelsOfDisplayedKNode(false, null);
+    }
+
+    /**
+     * Converts the current diagram clip KNode's layout data into {@link PBounds} s.t. its ports
+     * and labels are included, while its scale and offset are excluded.
+     *
+     * @param doComputeSubDiagramSize
+     *            set to <code>true</code> yields the bounding box of the nested diagram's content
+     *            including <code>node</code>'s ports and labels if visible, with <code>false</code>
+     *            the bounds of the given <code>node</code> including its port and labels if visible
+     *            are returned
+     * @param defaultZoomToFitContentSpacing
+     *            default spacing to be applied if <code>narrowDownToContents</code> is
+     *            <code>true</code>, see also
+     *            {@link de.cau.cs.kieler.klighd.util.KlighdProperties#ZOOM_TO_FIT_CONTENT_SPACING},
+     *            may be <code>null</code>.
+     * @return the requested bounding box in form of a {@link PBounds}
+     */
+    private PBounds toPBoundsIncludingPortsAndLabelsOfDisplayedKNode(
+            final boolean doComputeSubDiagramSize, final Spacing defaultZoomToFitContentSpacing) {
+        final KNode displayedKNode = this.canvasCamera.getDisplayedKNodeNode().getViewModelElement();
+
+        final PBounds bounds = toPBoundsIncludingPortsAndLabels(displayedKNode,
+                doComputeSubDiagramSize, defaultZoomToFitContentSpacing);
+        return eliminateOffsetAndScale(bounds, displayedKNode);
     }
 
     /**
@@ -405,5 +440,36 @@ public class DiagramZoomController {
             final boolean doComputeSubDiagramSize, final Spacing defaultZoomToFitContentSpacing) {
         return boundsComputer.toPBoundsIncludingPortsAndLabels(
                 node, doComputeSubDiagramSize, defaultZoomToFitContentSpacing, true);
+    }
+
+    /**
+     * Reduces the given <code>bounds</code> by <code>node</code>'s translation and scale.
+     * It's required for computing the visible diagram's bounding box as clipped diagrams are drawn
+     * without applying the clip node's transform (containing the scale and offset), see
+     * KNodeNode#fullPaint(PPaintContext), and scaling and translating the KNodeTopNode (root node)
+     * is invalid.
+     *
+     * Note that <code>bounds</code>' (x,y) translation may differ from <code>node</code>'s (x,y)
+     * translation because of labels, ports, and port labels having negative x and y coordinates,
+     * i.e., are placed in left/above <code>node</code>. In that case <code>bounds</code> will than
+     * have negative x and/or y coordinates, which is on purpose.
+     *
+     * @param bounds
+     *            full bounds of some {@link KNode} including its ports and labels, scaled by
+     *            <code>node</code>'s scale and translated by <code>node</code>'s (x,y)
+     * @param node
+     *            the {@link KNode} containing the reference scale and offset
+     * @return <code>bounds</code> being adjusted as described above (within the argument object)
+     */
+    protected PBounds eliminateOffsetAndScale(final PBounds bounds, final KNode node) {
+
+        bounds.moveBy(-node.getXpos(), -node.getYpos());
+
+        final float scaleInverse = 1 / node.getProperty(CoreOptions.SCALE_FACTOR).floatValue();
+        bounds.setRect(
+                bounds.getX()     * scaleInverse, bounds.getY()      * scaleInverse,
+                bounds.getWidth() * scaleInverse, bounds.getHeight() * scaleInverse);
+
+        return bounds;
     }
 }

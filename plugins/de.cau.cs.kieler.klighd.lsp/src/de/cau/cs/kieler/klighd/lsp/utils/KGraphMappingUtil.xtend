@@ -3,7 +3,7 @@
  *
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright 2018,2019 by
+ * Copyright 2018-2022 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -16,27 +16,30 @@
  */
 package de.cau.cs.kieler.klighd.lsp.utils
 
+import de.cau.cs.kieler.klighd.KlighdDataManager
 import de.cau.cs.kieler.klighd.kgraph.KEdge
-import de.cau.cs.kieler.klighd.kgraph.KEdgeLayout
 import de.cau.cs.kieler.klighd.kgraph.KGraphElement
 import de.cau.cs.kieler.klighd.kgraph.KLabel
 import de.cau.cs.kieler.klighd.kgraph.KNode
 import de.cau.cs.kieler.klighd.kgraph.KPort
 import de.cau.cs.kieler.klighd.kgraph.KShapeLayout
 import de.cau.cs.kieler.klighd.lsp.model.SKEdge
+import de.cau.cs.kieler.klighd.lsp.model.SKElement
 import de.cau.cs.kieler.klighd.lsp.model.SKLabel
 import de.cau.cs.kieler.klighd.lsp.model.SKNode
 import de.cau.cs.kieler.klighd.lsp.model.SKPort
 import java.util.ArrayList
+import java.util.List
 import java.util.Map
+import org.eclipse.elk.core.math.KVector
+import org.eclipse.elk.core.math.KVectorChain
 import org.eclipse.elk.core.options.CoreOptions
+import org.eclipse.elk.graph.properties.IProperty
 import org.eclipse.sprotty.Dimension
 import org.eclipse.sprotty.Point
 import org.eclipse.sprotty.SModelElement
 import org.eclipse.sprotty.SShapeElement
-import de.cau.cs.kieler.klighd.KlighdDataManager
-import org.eclipse.elk.core.math.KVectorChain
-import org.eclipse.elk.core.math.KVector
+import de.cau.cs.kieler.klighd.kgraph.util.KGraphUtil
 
 /**
  * A helper class containing static methods for mapping of KGraph and SGraph bounds.
@@ -57,10 +60,9 @@ class KGraphMappingUtil {
                 mapLayout(kGraphElement as KNode, sModelElement as SKNode)
             } else if (kGraphElement instanceof KEdge && sModelElement instanceof SKEdge) {
                 mapLayout(kGraphElement as KEdge, sModelElement as SKEdge)
-            } else if (kGraphElement instanceof KPort && sModelElement instanceof SKPort) {
-                mapLayout(kGraphElement as KPort, sModelElement as SKPort)
-            } else if (kGraphElement instanceof KLabel && sModelElement instanceof SKLabel) {
-                mapLayout(kGraphElement as KLabel, sModelElement as SKLabel)
+            } else if (kGraphElement instanceof KPort && sModelElement instanceof SKPort
+                || kGraphElement instanceof KLabel && sModelElement instanceof SKLabel) {
+                mapLayout(kGraphElement as KShapeLayout, sModelElement as SShapeElement)
             } else {
                 throw new IllegalArgumentException("The KGraph and SGraph classes do not map to each other: " 
                     + kGraphElement.class + ", " + sModelElement.class)
@@ -71,41 +73,50 @@ class KGraphMappingUtil {
     /**
      * Maps an edge from KGraph to SGraph
      * 
-     * @param kedge The KGraph edge
-     * @param skedge The SkGraph edge
+     * @param kEdge The KGraph edge
+     * @param skEdge The SkGraph edge
      */
-    private static def mapLayout(KEdgeLayout kedge, SKEdge skedge) {
-        var leftInset = 0.0;
-        var topInset = 0.0;
-        if (kedge instanceof KEdge) {
-            var parent = kedge.getSource().getParent();
-            var inset = parent.getInsets();
-            leftInset = inset.left;
-            topInset = inset.top;
+    private static def mapLayout(KEdge kEdge, SKEdge skEdge) {
+        var KNode parent
+        if (KGraphUtil.isDescendant(kEdge.target, kEdge.source)) {
+            parent = kEdge.source
+        } else {
+            parent = kEdge.source.parent
         }
+        var inset = parent.getInsets();
+        val leftInset = inset.left;
+        val topInset = inset.top;
         
         // Copy all routing points.
         var ArrayList<Point> routingPoints = new ArrayList<Point>
-        val sourcePoint = kedge.sourcePoint
-        val targetPoint = kedge.targetPoint
+        val sourcePoint = kEdge.sourcePoint
+        val targetPoint = kEdge.targetPoint
         
         if (sourcePoint !== null) {
             routingPoints.add(new Point(sourcePoint.x + leftInset, sourcePoint.y + topInset))
         }
-        for (bendPoint : kedge.bendPoints) {
+        for (bendPoint : kEdge.bendPoints) {
             routingPoints.add(new Point(bendPoint.x + leftInset, bendPoint.y + topInset))
         }
         if (targetPoint !== null) {
             routingPoints.add(new Point(targetPoint.x + leftInset, targetPoint.y + topInset))
         }
-        skedge.routingPoints = routingPoints
+        skEdge.routingPoints = routingPoints
         
         // Copy the bend points.
-        skedge.junctionPoints = new KVectorChain()
-        skedge.junctionPoints.addAllAsCopies(0,kedge.getProperty(CoreOptions.JUNCTION_POINTS))
-        skedge.junctionPoints.offset(new KVector(leftInset, topInset))
-        // Copy render scale.
-//        skedge.renderScale = kedge.getProperty(CoreOptions.TOP_DOWN_LAYOUT_RENDER_SCALE);
+        skEdge.junctionPoints = new KVectorChain()
+        skEdge.junctionPoints.addAllAsCopies(0, kEdge.getProperty(CoreOptions.JUNCTION_POINTS))
+        skEdge.junctionPoints.offset(new KVector(leftInset, topInset))
+
+        // map all properties excepts those that are blacklisted
+        // also include external whitelisted properties
+        var properties = kEdge.allProperties;
+
+        for (propertyKVPair : properties.entrySet()) {
+            if (keepProperty(propertyKVPair.key)) {
+                skEdge.properties.put(propertyKVPair.key.id, propertyKVPair.value)
+            }
+        }
     }
     
     /**
@@ -126,9 +137,45 @@ class KGraphMappingUtil {
         
         skNode.position = new Point(kNode.xpos + leftInset, kNode.ypos + topInset)
         skNode.size = new Dimension(kNode.width, kNode.height)
-        for (property : KlighdDataManager.instance.preservedProperties) {
-            skNode.properties.put(property.id.substring(property.id.lastIndexOf('.') + 1), kNode.getProperty(property))
+
+        var properties = kNode.allProperties;
+
+        for (propertyKVPair : properties.entrySet()) {
+            if (keepProperty(propertyKVPair.key)) {
+                skNode.properties.put(propertyKVPair.key.id, propertyKVPair.value)
+            }
         }
+    }
+    
+    /**
+     * Utility method for checking whether a list of {@link IProperty}s contains a property
+     * with the given id.
+     * @param propertyList list of properties to check
+     * @param id id to be searched for
+     * @return true if the list contains a property with the given id, false otherwise
+     */
+    static def containsPropertyWithId(List<IProperty<?>> propertyList, String id) {
+        for (IProperty<?> property : propertyList) {
+            if (property.id.equals(id)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    /**
+     * Check white- and blacklists whether a property should be kept or not. Properties starting with
+     * "de.cau.cs.kieler.klighd", "klighd" or "org.eclipse.elk" are kept by default unless forbidden by
+     * the blacklist.
+     */
+    static def keepProperty(IProperty<?> property) {
+        var blackList = KlighdDataManager.instance.blacklistedProperties;
+        var whiteList = KlighdDataManager.instance.whitelistedProperties;
+        return !containsPropertyWithId(blackList, property.id) 
+                && (property.id.startsWith("de.cau.cs.kieler.klighd") 
+                    || property.id.startsWith("klighd")
+                    || property.id.startsWith("org.eclipse.elk")
+                    || containsPropertyWithId(whiteList, property.id));
     }
     
     /**
@@ -137,37 +184,35 @@ class KGraphMappingUtil {
      * @param kElement The KGraph shape
      * @param sElement The SGraph shape
      */
-    private static def mapLayout(KShapeLayout kElement, SShapeElement sElement) {
+    private static def mapLayout(KShapeLayout kElement, SShapeElement /*& SKElement*/ sElement) {
         var leftInset = 0.0; 
         var topInset = 0.0;
+        // Edge labels behave differently: the reference point for the position is the source node child area if the
+        // target node is directly or indirectly contained by the source node, the source node's parent child area
+        // otherwise
+        if (kElement instanceof KLabel && (kElement as KLabel).parent instanceof KEdge) {
+            val kEdge = (kElement as KLabel).parent as KEdge
+            var KNode parent
+            if (KGraphUtil.isDescendant(kEdge.target, kEdge.source)) {
+                parent = kEdge.source
+            } else {
+                parent = kEdge.source.parent
+            }
+            var inset = parent.getInsets();
+            leftInset = inset.left;
+            topInset = inset.top;
+        }
         
-        if (kElement instanceof KLabel){
-            var parent = kElement.getParent();
-            var KNode grandParent = null;
-            
-            if (parent instanceof KNode) {
-                grandParent = parent.getParent();
-            } else if (parent instanceof KEdge) {
-                grandParent = parent.getSource().getParent();
-            } else if (parent instanceof KPort) {
-                grandParent = parent.getNode().getParent();
+        var properties = kElement.allProperties;
+        
+        for (propertyKVPair : properties.entrySet()) {
+            if (keepProperty(propertyKVPair.key)) {
+                (sElement as SKElement).properties.put(propertyKVPair.key.id, propertyKVPair.value)
             }
-            
-            if (grandParent !== null) {
-                var inset = grandParent.getInsets();
-                leftInset = inset.left;
-                topInset = inset.top;
-            }
-        } else if (kElement instanceof KPort) {
-            var parent = kElement.getNode().getParent();
-            if (parent !== null) {
-                var inset = parent.getInsets();
-                leftInset = inset.left;
-                topInset = inset.top;
-            }
-        }      
+        }
         
         sElement.position = new Point(kElement.xpos + leftInset, kElement.ypos + topInset)
         sElement.size = new Dimension(kElement.width, kElement.height)
+        
     }
 }

@@ -516,7 +516,7 @@ public class KNodeNode extends KNodeAbstractNode implements
         // instead we want this kNodeNode be the picked node anyway so, ...
         if (!fullPick && isRootLayer) {
             pickPath.pushNode(this);
-            pickPath.pushTransform(getTransform());
+            pickPath.pushTransform(new PAffineTransform());
 
             return true;
         }
@@ -538,10 +538,14 @@ public class KNodeNode extends KNodeAbstractNode implements
 
         // The filter is in charge of masking out the rendering while the diagram is
         //  clipped to this node and it's being drawn via the diagram's main camera!
+        final boolean isRootLayer = this.isRootLayer;
         if (getVisible() && (getPickable() || getChildrenPickable())
-                && fullIntersectsOri(pickPath.getPickBounds())) {
+                && (isRootLayer || fullIntersectsOri(pickPath.getPickBounds()))) {
+            final PAffineTransform transform = isRootLayer ? new PAffineTransform() : getTransformReference(true);
+
             pickPath.pushNode(this);
-            pickPath.pushTransform(getTransformReference(true));
+            pickPath.pushTransform(transform);
+            
 
             final boolean applyScale = nodeScale != null;
 
@@ -563,7 +567,7 @@ public class KNodeNode extends KNodeAbstractNode implements
                 final int count = getChildrenCount();
                 for (int i = count - 1; i >= 0; i--) {
                     final PNode each = (PNode) getChildrenReference().get(i);
-                    if (this.isRootLayer) {
+                    if (isRootLayer) {
                         if (i == 0 && each != this.childArea) {
                             // do not try to pick the node's figure if the main diagram is clipped to
                             //  this node
@@ -592,21 +596,58 @@ public class KNodeNode extends KNodeAbstractNode implements
                 kpp.popNodeScale();
             }
 
-            pickPath.popTransform(getTransformReference(false));
+            pickPath.popTransform(transform);
             pickPath.popNode(this);
         }
 
         return false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void repaintFrom(PBounds localBounds, PNode childOrThis) {
+        if (this.isRootLayer) {
+            // This customization reports a dirty area, e.g. reported by some child, to the attached
+            //  cameras without adjusting its bounds by 'this.transform'. Attached cameras are expected
+            //  only in case the (main) diagram is clipped to this node. In that case the main camera
+            //  and optionally the magnifier lens camera.
+            // The customization is necessary as we now ignore this node's 'transform' once the (main))
+            //  diagram is clipped to this node, because of https://github.com/kieler/KLighD/issues/56,
+            //  see also the corresponding changes in #fullPickOri(...) and #fullPaint(...) above and below.
+            // 
+            // The above check of 'this.isRootLayer' is actually redundant, as cameras should only be
+            //  registered in case of 'this.isRootLayer' is equal to 'true', but is kept for documentation
+            //  and easier understanding.
+            super.notifyCameras(localBounds);
+        }
+        
+        // Apart from the above immediate camera notification, the usual propagation is kept in order to
+        //  always keep the outline up to date, which happens via propagating up to the root KNodeTopNode
+        //  and along that way to the outline camera.
+        super.repaintFrom(localBounds, childOrThis);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void notifyCameras(PBounds parentBounds) {
+        // this customization is symmetric to the above one and just suppresses superfluous repaint
+        //  requests of potentially incorrect bounds, as we ignore 'this.transform' if the (main)
+        //  diagram is clipped to this node, see above.
+        // Otherwise, no attached cameras are expected at the time of writing this.
+    }
 
     /**
      * {@inheritDoc}
      */
     @Override
     public void fullPaint(final PPaintContext paintContext) {
+        final boolean isRootLayer = this.isRootLayer;
         final KlighdPaintContext kpc = (KlighdPaintContext) paintContext;
-        if (!this.isRootLayer && this.visibilityHelper != null
+        if (!isRootLayer && this.visibilityHelper != null
                 && this.visibilityHelper.isNotVisibleOn(kpc)) {
             return;
         }
@@ -621,8 +662,12 @@ public class KNodeNode extends KNodeAbstractNode implements
         // In contrast, the rendering figure is supposed to be drawn at all times
         //  while the diagram is drawn via the outline view's camera!
 
-        if (getVisible() && (kpc.isOutline() || fullIntersectsOri(paintContext.getLocalClip()))) {
-            final PAffineTransform transform = getTransformReference(false);
+        // the following flag is false if drawn on the outline view, for example
+        final boolean isRootAndDrawnViaMainCamera = isRootLayer && this.getCamerasReference().contains(paintContext.getCamera());
+
+        if (getVisible() && (kpc.isOutline() || isRootAndDrawnViaMainCamera || fullIntersectsOri(paintContext.getLocalClip()))) {
+            final PAffineTransform transform = isRootAndDrawnViaMainCamera ? new PAffineTransform() : getTransformReference(false);
+
             paintContext.pushTransform(transform);
             paintContext.pushTransparency(getTransparency());
 
@@ -641,10 +686,8 @@ public class KNodeNode extends KNodeAbstractNode implements
             for (int i = 0; i < count; i++) {
                 final PNode each = (PNode) getChildrenReference().get(i);
 
-                if (this.isRootLayer) {
-                    // the following flag is false if drawn on the outline view, for example
-                    final boolean drawnViaMainCamera = this.getCamerasReference().contains(paintContext.getCamera());
-                    if (drawnViaMainCamera) {
+                if (isRootLayer) {
+                    if (isRootAndDrawnViaMainCamera) {
                         if (i == 0 && each != this.childArea) {
                             // do not draw the node's figure on the main diagram if it is clipped to this node
                             continue;

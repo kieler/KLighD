@@ -452,16 +452,7 @@ public class KGraphMerger {
         baseElement.copyProperties(newElement);
         EMap<IProperty<?>, Object> baseProperties = baseElement.getProperties();
         LinkedList<IProperty<?>> removedProperties = Lists.newLinkedList(
-                Sets.difference(baseProperties.keySet(), newElement.getProperties().keySet()));
-        // Do not remove properties that are set by the layout algorithm to save the position of a node.
-        
-        // Get properties that shall be preserved from ElkGraph to KGraph
-        List<IProperty<?>> propertiesToPreserve = KlighdDataManager.getInstance().getPreservedProperties();
-        
-        // Preserve properties
-        for (IProperty<?> property : propertiesToPreserve) {
-            removedProperties.remove(property);
-        }
+                Sets.difference(baseProperties.keySet(), newElement.getProperties().keySet()));        
         
         for (IProperty<?> property : removedProperties) {
             baseProperties.removeKey(property);

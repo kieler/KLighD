@@ -32,6 +32,7 @@ import edu.umd.cs.piccolo.PCamera;
 import edu.umd.cs.piccolo.PLayer;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.PRoot;
+import edu.umd.cs.piccolo.activities.PTransformActivity;
 import edu.umd.cs.piccolo.util.PBounds;
 import edu.umd.cs.piccolo.util.PPaintContext;
 import edu.umd.cs.piccolo.util.PPickPath;
@@ -135,6 +136,36 @@ public class KlighdMainCamera extends PCamera {
     }
 
     /**
+     * Return the bounds of this camera in the view coordinate system with the clip node's scale being applied!
+     * 
+     * @return the bounds of this camera in the view coordinate system
+     */
+    public PBounds getViewBoundsAdjustedByClipNodeScale() {
+        // determine the bounds of the currently visible main diagram area (excerpt) in diagram coordinates ...
+        final PBounds viewBounds = super.getViewBounds();
+        // ... and adjust them by the scale of the main diagram's current clip node, as that scale is *not* included
+        //  in the main camera's view transform
+        final double clipScale = getDisplayedKNodeNode().getScale();
+        viewBounds.setRect(viewBounds.x * clipScale, viewBounds.y * clipScale, viewBounds.width * clipScale, viewBounds.height * clipScale);
+
+        return viewBounds;
+    }
+
+    /**
+     * Translate the view transform applied to the list of layers viewed by this
+     * camera by <code>[dx, dy]</code>, with both offset coordinates divided by the clip node's scale.
+     * 
+     * @param dx translate delta x
+     * @param dy translate delta y
+     */
+    public void translateViewAdjustedByClipNodeScale(double dx, double dy) {
+        // since the main diagram's current clip node's scale is *not* included in the main camera's view transform
+        //  reduce the delta clip by the clip node's scale to match the main camera's coordinate system
+        final double clipScale = getDisplayedKNodeNode().getScale();
+        super.translateView(dx / clipScale, dy / clipScale);
+    }
+
+    /**
      * Re-targets <code>this</code> camera to the given <code>node</code> by detaching the currently
      * displayed {@link PLayer}, if the <code>node</code> is a {@link PLayer}; does nothing
      * otherwise.
@@ -202,13 +233,13 @@ public class KlighdMainCamera extends PCamera {
             //  resizing, translation, and integration into the parent inode's figure of that
             //  child area node is automatically respected.
 
-            t = NodeUtil.localToParent(node.getParent(), prevNode.getParent());
+            t = NodeUtil.localToParent(node, prevNode);
 
         } else if (node.isAncestorOf(prevNode)) {
             // Case b) is symmetric to a): child & ancestor are exchanged and the resulting
             //  transform must be inverted since it is to be applied "outward".
 
-            t = NodeUtil.invert(NodeUtil.localToParent(prevNode.getParent(), node.getParent()));
+            t = NodeUtil.invert(NodeUtil.localToParent(prevNode, node));
 
         } else {
             // In case c) first the closest common ancestor (iKNodeNode) is determined
@@ -229,11 +260,11 @@ public class KlighdMainCamera extends PCamera {
 
                 // ... apply case b) between 'prevNode's parent (child area node) and
                 //  'commonAncestor's child area node, ...
-                t = NodeUtil.invert(NodeUtil.localToParent(prevNode.getParent(), caChildArea));
+                t = NodeUtil.invert(NodeUtil.localToParent(prevNode, caChildArea));
 
                 // ... and apply case a) between 'node's parent (child area node) and
                 //  'commonAncestor's child area node.
-                t.concatenate(NodeUtil.localToParent(node.getParent(), caChildArea));
+                t.concatenate(NodeUtil.localToParent(node, caChildArea));
             }
         }
 
@@ -242,6 +273,17 @@ public class KlighdMainCamera extends PCamera {
         this.addLayer(0, node);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public PTransformActivity animateViewToTransform(AffineTransform destTransform, long duration) {
+        // just a bit of performance saving
+        if (destTransform == null || destTransform.equals(getViewTransformReference()))
+            return null;
+        else
+            return super.animateViewToTransform(destTransform, duration);
+    }
 
     /**
      * A specialized {@link PPickPath}.

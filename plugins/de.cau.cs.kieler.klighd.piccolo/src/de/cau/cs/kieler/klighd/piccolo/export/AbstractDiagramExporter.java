@@ -440,7 +440,6 @@ public abstract class AbstractDiagramExporter {
 
         } else if (exportedLayer != null) {
             paintContext.pushCamera(camera);
-            paintContext.pushTransform(exportedLayer.getInverseTransform());
 
             exportedLayer.fullPaint(paintContext);
 

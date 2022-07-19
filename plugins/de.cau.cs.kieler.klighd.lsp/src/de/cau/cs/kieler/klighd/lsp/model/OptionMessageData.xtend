@@ -3,7 +3,7 @@
  *
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright 2018 by
+ * Copyright 2018-2022 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -19,6 +19,7 @@ package de.cau.cs.kieler.klighd.lsp.model
 import de.cau.cs.kieler.klighd.DisplayedActionData
 import de.cau.cs.kieler.klighd.SynthesisOption
 import java.util.List
+import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.xtend.lib.annotations.Data
 
 // This is a collection of data classes needed for communication with the client.
@@ -164,4 +165,21 @@ class ValuedSynthesisOption {
      * The current value of the synthesisOption.
      */
     Object currentValue
+}
+
+/**
+ * Data class to hold data for actions displayed in the diagram sidebar. Simpler version of {@link DisplayedActionData}
+ * without references to possible SWT objects.
+ */
+@Accessors(PUBLIC_GETTER)
+class DisplayedActionUIData {
+    String actionId
+    String displayedName
+    String tooltipText
+    
+    new(DisplayedActionData data) {
+        this.actionId = data.actionId
+        this.displayedName = data.displayedName
+        this.tooltipText = data.tooltipText
+    }
 }

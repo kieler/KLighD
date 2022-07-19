@@ -3,7 +3,7 @@
  *
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright 2018-2021 by
+ * Copyright 2018-2022 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -31,6 +31,7 @@ import de.cau.cs.kieler.klighd.lsp.interactive.rectpacking.RectpackingInteractiv
 import de.cau.cs.kieler.klighd.lsp.launch.AbstractLanguageServer
 import de.cau.cs.kieler.klighd.lsp.model.CheckImagesAction
 import de.cau.cs.kieler.klighd.lsp.model.CheckedImagesAction
+import de.cau.cs.kieler.klighd.lsp.model.DisplayedActionUIData
 import de.cau.cs.kieler.klighd.lsp.model.LayoutOptionUIData
 import de.cau.cs.kieler.klighd.lsp.model.PerformActionAction
 import de.cau.cs.kieler.klighd.lsp.model.RefreshDiagramAction
@@ -197,7 +198,7 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
                     synthesisOptions.add(new ValuedSynthesisOption(option, currentValue))
                 }
                 val layoutOptionUIData = calculateLayoutOptionUIData(viewContext.displayedLayoutOptions)
-                val actionData = viewContext.displayedActions
+                val actionData = viewContext.displayedActions.map[new DisplayedActionUIData(it)]
                 dispatch(new UpdateDiagramOptionsAction(synthesisOptions, layoutOptionUIData, actionData, uri))
             }
         }
