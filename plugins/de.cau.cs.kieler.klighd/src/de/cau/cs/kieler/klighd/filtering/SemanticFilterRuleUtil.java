@@ -112,7 +112,7 @@ public abstract class SemanticFilterRuleUtil {
     }
 
     /**
-     * Constructs a named rule from a given potentially unnamed rule.
+     * Constructs a new named rule from a given potentially unnamed rule.
      * 
      * @param ruleName
      *            The rule name.

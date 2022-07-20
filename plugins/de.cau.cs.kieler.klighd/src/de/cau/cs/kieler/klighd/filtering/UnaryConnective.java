@@ -20,6 +20,7 @@ package de.cau.cs.kieler.klighd.filtering;
  * An unary connective C takes a single filter rule R as an operand and creates the new rule C(R).
  * 
  * @author mka
+ * @author tik
  *
  */
 public abstract class UnaryConnective extends SemanticFilterRule {
@@ -37,8 +38,22 @@ public abstract class UnaryConnective extends SemanticFilterRule {
     /**
      * {@inheritDoc}
      */
+    public UnaryConnective(Boolean defaultValue) {
+        super(defaultValue);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
     public UnaryConnective(String ruleName) {
         super(ruleName);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public UnaryConnective(Boolean defaultValue, String ruleName) {
+        super(defaultValue, ruleName);
     }
     
     /**

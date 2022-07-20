@@ -22,6 +22,7 @@ package de.cau.cs.kieler.klighd.filtering;
  * R1 or R2 evaluate to true.
  * 
  * @author mka
+ * @author tik
  *
  */
 public class OrConnective extends BinaryConnective {
@@ -33,9 +34,17 @@ public class OrConnective extends BinaryConnective {
      * @param rightOperand right operand
      */
     public OrConnective(SemanticFilterRule leftOperand, SemanticFilterRule rightOperand) {
-        this.name = NAME;
-        this.leftOperand = leftOperand;
-        this.rightOperand = rightOperand;
+        this(leftOperand, rightOperand, null, null);
+    }
+    
+    /**
+     * Constructor for unnamed rule with default value.
+     * @param leftOperand left operand
+     * @param rightOperand right operand
+     * @param defaultValue the default value
+     */
+    public OrConnective(SemanticFilterRule leftOperand, SemanticFilterRule rightOperand, Boolean defaultValue) {
+        this(leftOperand, rightOperand, defaultValue, null);
     }
     
     /**
@@ -45,7 +54,18 @@ public class OrConnective extends BinaryConnective {
      * @param ruleName rule name
      */
     public OrConnective(SemanticFilterRule leftOperand, SemanticFilterRule rightOperand, String ruleName) {
-        super(ruleName);
+        this(leftOperand, rightOperand, null, ruleName);
+    }
+    
+    /**
+     * Constructor for named rule with default value.
+     * @param leftOperand left operand
+     * @param rightOperand right operand
+     * @param defaultValue the default value
+     * @param ruleName rule name
+     */
+    public OrConnective(SemanticFilterRule leftOperand, SemanticFilterRule rightOperand, Boolean defaultValue, String ruleName) {
+        super(defaultValue, ruleName);
         this.name = NAME;
         this.leftOperand = leftOperand;
         this.rightOperand = rightOperand;

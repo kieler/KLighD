@@ -22,6 +22,7 @@ package de.cau.cs.kieler.klighd.filtering;
  * R evaluates to false.
  * 
  * @author mka
+ * @author tik
  *
  */
 public class NegationConnective extends UnaryConnective {
@@ -32,8 +33,16 @@ public class NegationConnective extends UnaryConnective {
      * @param operand the operand
      */
     public NegationConnective(SemanticFilterRule operand) {
-        this.name = NAME;
-        this.operand = operand;
+        this(operand, null, null);
+    }
+    
+    /**
+     * Constructor for unnamed rule with default value.
+     * @param operand the operand
+     * @param defaultValue the default value
+     */
+    public NegationConnective(SemanticFilterRule operand, Boolean defaultValue) {
+        this(operand, defaultValue, null);
     }
     
     /**
@@ -42,7 +51,17 @@ public class NegationConnective extends UnaryConnective {
      * @param ruleName rule name
      */
     public NegationConnective(SemanticFilterRule operand, String ruleName) {
-        super(ruleName);
+        this(operand, null, ruleName);
+    }
+    
+    /**
+     * Constructor for named rule with default value.
+     * @param operand the operand
+     * @param defaultValue the default value
+     * @param ruleName rule name
+     */
+    public NegationConnective(SemanticFilterRule operand, Boolean defaultValue, String ruleName) {
+        super(defaultValue, ruleName);
         this.name = NAME;
         this.operand = operand;
     }

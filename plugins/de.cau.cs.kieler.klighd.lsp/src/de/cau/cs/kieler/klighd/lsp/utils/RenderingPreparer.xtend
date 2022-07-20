@@ -136,15 +136,6 @@ final class RenderingPreparer {
         if (element.getProperty(KlighdProperties.PROXY_VIEW_RENDER_NODE_AS_PROXY) && proxyRendering !== null) {
             for (data : proxyRendering) {
                 switch(data) {
-                    KRenderingLibrary: {
-                        // The library needs to generate ids for all later KRenderingRefs to refer to, but no own bounds,
-                        // since these are generic renderings.
-                        for (rendering : data.renderings) {
-                            if (rendering instanceof KRendering) {
-                                KRenderingIdGenerator.generateIdsRecursive(rendering)
-                            }
-                        }
-                    }
                     KRenderingRef: {
                         // all references to KRenderings need to place a map with the ids of the renderings and their 
                         // sizes and their decoration in this case in the properties of the reference.

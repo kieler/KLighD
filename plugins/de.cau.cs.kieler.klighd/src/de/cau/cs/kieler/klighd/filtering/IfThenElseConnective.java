@@ -35,10 +35,19 @@ public class IfThenElseConnective extends TernaryConnective {
      */
     public IfThenElseConnective(SemanticFilterRule firstOperand, SemanticFilterRule secondOperand,
             SemanticFilterRule thirdOperand) {
-        this.name = NAME;
-        this.firstOperand = firstOperand;
-        this.secondOperand = secondOperand;
-        this.thirdOperand = thirdOperand;
+        this(firstOperand, secondOperand, thirdOperand, null, null);
+    }
+    
+    /**
+     * Constructor for unnamed rule with default value.
+     * @param firstOperand first operand
+     * @param secondOperand second operand
+     * @param thirdOperand third operand
+     * @param defaultValue the default value
+     */
+    public IfThenElseConnective(SemanticFilterRule firstOperand, SemanticFilterRule secondOperand,
+            SemanticFilterRule thirdOperand, Boolean defaultValue) {
+        this(firstOperand, secondOperand, thirdOperand, defaultValue, null);
     }
     
     /**
@@ -50,7 +59,20 @@ public class IfThenElseConnective extends TernaryConnective {
      */
     public IfThenElseConnective(SemanticFilterRule firstOperand, SemanticFilterRule secondOperand,
             SemanticFilterRule thirdOperand, String ruleName) {
-        super(ruleName);
+        this(firstOperand, secondOperand, thirdOperand, null, ruleName);
+    }
+    
+    /**
+     * Constructor for named rule with default value.
+     * @param firstOperand first operand
+     * @param secondOperand second operand
+     * @param thirdOperand third operand
+     * @param defaultValue the default value
+     * @param ruleName rule name
+     */
+    public IfThenElseConnective(SemanticFilterRule firstOperand, SemanticFilterRule secondOperand,
+            SemanticFilterRule thirdOperand, Boolean defaultValue, String ruleName) {
+        super(defaultValue, ruleName);
         this.name = NAME;
         this.firstOperand = firstOperand;
         this.secondOperand = secondOperand;

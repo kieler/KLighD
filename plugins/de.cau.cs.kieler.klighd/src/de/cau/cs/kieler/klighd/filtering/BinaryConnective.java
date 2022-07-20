@@ -19,6 +19,7 @@ package de.cau.cs.kieler.klighd.filtering;
 /**
  * A binary connective C takes two filter rules R1 and R2 as operands and creates the new rule R1 C R2.
  * @author mka
+ * @author tik
  *
  */
 public abstract class BinaryConnective extends SemanticFilterRule {
@@ -37,15 +38,29 @@ public abstract class BinaryConnective extends SemanticFilterRule {
     /**
      * {@inheritDoc}
      */
+    public BinaryConnective(Boolean defaultValue) {
+        super(defaultValue);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
     public BinaryConnective(String ruleName) {
         super(ruleName);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public BinaryConnective(Boolean defaultValue, String ruleName) {
+        super(defaultValue, ruleName);
     }
     
     /**
      * Returns a string representation of the rule of the form 'C(R1, R2)'.
      * @return the rule string
      */
-    public String getString() {
+    public String toString() {
         return name + "(" + leftOperand + ", " + rightOperand + ")";
     }
 

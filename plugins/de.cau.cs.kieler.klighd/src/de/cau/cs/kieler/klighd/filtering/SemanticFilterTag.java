@@ -21,13 +21,18 @@ package de.cau.cs.kieler.klighd.filtering;
  * be conveyed otherwise and as an atomic filter rule that can be combined with other rules to construct more complex
  * rules.
  * 
+ * When using a tag in numeric expressions, keep in mind that not defining the number results in it defaulting to 0.
+ * It's best practice to always set the number explicitly, if one can be assigned.
+ * 
  * @author mka
+ * @author tik
  *
  */
 public class SemanticFilterTag extends SemanticFilterRule {
     
     private String tag;
-    private Double num = 0.0;
+    /** If unset, defaults to 0. */
+    private Double num;
     
     /**
      * Constructor for tag.
@@ -38,7 +43,7 @@ public class SemanticFilterTag extends SemanticFilterRule {
     }
     
     /**
-     * Constructor for tag.
+     * Constructor for tag with a number.
      * @param tag string identifier
      * @param num the number
      */
@@ -48,8 +53,8 @@ public class SemanticFilterTag extends SemanticFilterRule {
     }
     
     /**
-     * Constructor for tag as a semantic filter rule. Here an additional rule name is required as this is later used
-     * to differentiate between multiple rules.
+     * Constructor for tag as a semantic filter rule.
+     * Here, an additional rule name is required as this is later used to differentiate between multiple rules.
      * @param tag string identifier of the tag the rule applies to
      * @param ruleName string identifier of the rule itself, can be anything
      */
@@ -59,8 +64,8 @@ public class SemanticFilterTag extends SemanticFilterRule {
     }
     
     /**
-     * Constructor for tag as a semantic filter rule. Here an additional rule name is required as this is later used
-     * to differentiate between multiple rules.
+     * Constructor for tag with a number as a semantic filter rule.
+     * Here, an additional rule name is required as this is later used to differentiate between multiple rules.
      * @param tag string identifier of the tag the rule applies to
      * @param num the number
      * @param ruleName string identifier of the rule itself, can be anything

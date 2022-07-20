@@ -39,15 +39,29 @@ public abstract class TernaryConnective extends SemanticFilterRule {
     /**
      * {@inheritDoc}
      */
+    public TernaryConnective(Boolean defaultValue) {
+        super(defaultValue);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
     public TernaryConnective(String ruleName) {
         super(ruleName);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public TernaryConnective(Boolean defaultValue, String ruleName) {
+        super(defaultValue, ruleName);
     }
     
     /**
      * Returns a string representation of the rule of the form 'C(R1, R2, R3)'.
      * @return the rule string
      */
-    public String getString() {
+    public String toString() {
         return name + "(" + firstOperand + ", " + secondOperand + ", " + thirdOperand + ")";
     }
 }

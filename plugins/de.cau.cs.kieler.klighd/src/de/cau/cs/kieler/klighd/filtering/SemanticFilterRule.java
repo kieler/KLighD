@@ -21,24 +21,50 @@ package de.cau.cs.kieler.klighd.filtering;
  * The rules are constructed through the combination of filter rules with logical connectives.
  * 
  * @author mka
+ * @author tik
  *
  */
 public abstract class SemanticFilterRule {
     
+    /** The rule name is used to identify rules and distinguish them from one another. */
     private String ruleName;
+    /** The default value is used to indicate whether the semantic filter should be on or off by default. */
+    private Boolean defaultValue;
     
     /**
      * Basic constructor
      */
     public SemanticFilterRule() {
-        
+        this(null, null);
     }
     
     /**
-     * Constructor that takes a rule name. The rule name is used to identify rules and distinguish them from one another.
-     * @param ruleName
+     * Constructor that takes a default value.
+     * The default value is used to indicate whether the semantic filter should be on or off by default.
+     * @param defaultValue the default value
+     */
+    public SemanticFilterRule(Boolean defaultValue) {
+        this(defaultValue, null);
+    }
+    
+    /**
+     * Constructor that takes a rule name.
+     * The rule name is used to identify rules and distinguish them from one another.
+     * @param ruleName the rule name
      */
     public SemanticFilterRule(String ruleName) {
+        this(null, ruleName);
+    }
+    
+    /**
+     * Constructor that takes a rule name and default value.
+     * The default value is used to indicate whether the semantic filter should be on or off by default.
+     * The rule name is used to identify rules and distinguish them from one another.
+     * @param defaultValue the default value
+     * @param ruleName the rule name
+     */
+    public SemanticFilterRule(Boolean defaultValue, String ruleName) {
+        this.defaultValue = defaultValue;
         this.ruleName = ruleName;
     }
     
@@ -49,5 +75,12 @@ public abstract class SemanticFilterRule {
     public String getRuleName() { 
         return this.ruleName;
     }
-
+    
+    /**
+     * Returns the default value.
+     * @return the default value
+     */
+    public boolean getDefaultValue() { 
+        return this.defaultValue;
+    }
 }
