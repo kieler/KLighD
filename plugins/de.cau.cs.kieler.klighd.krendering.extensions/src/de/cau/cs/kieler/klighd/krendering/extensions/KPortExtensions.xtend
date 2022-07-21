@@ -16,6 +16,7 @@
  */
 package de.cau.cs.kieler.klighd.krendering.extensions
 
+import com.google.inject.Inject
 import com.google.inject.Injector
 import com.google.inject.Scope
 import de.cau.cs.kieler.klighd.kgraph.KNode
@@ -30,7 +31,6 @@ import de.cau.cs.kieler.klighd.krendering.KText
 import de.cau.cs.kieler.klighd.krendering.VerticalAlignment
 import de.cau.cs.kieler.klighd.krendering.ViewSynthesisShared
 import java.util.ArrayList
-import javax.inject.Inject
 import org.eclipse.elk.core.options.CoreOptions
 import org.eclipse.elk.core.options.PortSide
 import org.eclipse.elk.core.util.Maybe

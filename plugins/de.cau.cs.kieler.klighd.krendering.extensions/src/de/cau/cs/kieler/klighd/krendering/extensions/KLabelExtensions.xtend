@@ -16,6 +16,7 @@
  */
 package de.cau.cs.kieler.klighd.krendering.extensions
 
+import com.google.inject.Inject
 import com.google.inject.Injector
 import com.google.inject.Scope
 import de.cau.cs.kieler.klighd.kgraph.KEdge
@@ -31,7 +32,6 @@ import de.cau.cs.kieler.klighd.krendering.KRenderingFactory
 import de.cau.cs.kieler.klighd.krendering.KText
 import de.cau.cs.kieler.klighd.krendering.ViewSynthesisShared
 import java.util.EnumSet
-import javax.inject.Inject
 import org.eclipse.elk.core.options.CoreOptions
 import org.eclipse.elk.core.options.EdgeLabelPlacement
 import org.eclipse.elk.core.options.NodeLabelPlacement

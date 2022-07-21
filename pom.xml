@@ -26,7 +26,7 @@
     <module>plugins/de.cau.cs.kieler.klighd.standalone</module>
     <module>test/de.cau.cs.kieler.klighd.test</module>
     <module>test/de.cau.cs.kieler.klighd.piccolo.test</module>
-    <module>plugins/de.cau.cs.kieler.klighd.piccolo.batik</module>
+    <!-- <module>plugins/de.cau.cs.kieler.klighd.piccolo.batik</module> -->
     <module>plugins/de.cau.cs.kieler.klighd.piccolo.draw2d</module>
     <module>plugins/de.cau.cs.kieler.klighd.piccolo.freehep</module>
     <module>plugins/de.cau.cs.kieler.klighd.ui</module>
@@ -52,9 +52,12 @@
   <!-- Define a few properties used throughout all build profiles. -->
   <properties>
     <tycho-version>2.6.0</tycho-version>
-    <targetJdk>11</targetJdk>
     <xtext-version>2.25.0</xtext-version>
+    <!-- TODO: add more global version definitions -->
     <elk-version>0.8.1</elk-version>
+    <targetJdk>11</targetJdk>
+    <maven.compiler.source>11</maven.compiler.source>
+    <maven.compiler.target>11</maven.compiler.target>
 
     <!-- chsch: copied from https://eclipse.googlesource.com/recommenders/org.eclipse.recommenders/+/3dae4575d3370da2da25a1cbce3dfcff198f0611/features/pom.xml -->
     <!-- Non-breakable space, as normal spaces are trimmed. -->
@@ -146,6 +149,7 @@
 
   <!-- Modify the build process to add Tycho and configure some utility plug-ins. -->
   <build>
+    <sourceDirectory>src</sourceDirectory>
     <plugins>
       <!-- we need tycho plugin to build eclipse plugins -->
       <plugin>

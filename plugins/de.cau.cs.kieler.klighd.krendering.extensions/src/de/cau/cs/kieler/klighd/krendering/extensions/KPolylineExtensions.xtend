@@ -16,18 +16,17 @@
  */
 package de.cau.cs.kieler.klighd.krendering.extensions
 
-import javax.inject.Inject
-
+import com.google.inject.Inject
+import de.cau.cs.kieler.klighd.krendering.HorizontalAlignment
 import de.cau.cs.kieler.klighd.krendering.KPolyline
 import de.cau.cs.kieler.klighd.krendering.KPosition
 import de.cau.cs.kieler.klighd.krendering.KRendering
 import de.cau.cs.kieler.klighd.krendering.KRenderingFactory
+import de.cau.cs.kieler.klighd.krendering.KText
 import de.cau.cs.kieler.klighd.krendering.KXPosition
 import de.cau.cs.kieler.klighd.krendering.KYPosition
 import de.cau.cs.kieler.klighd.krendering.LineCap
-import de.cau.cs.kieler.klighd.krendering.HorizontalAlignment
 import de.cau.cs.kieler.klighd.krendering.VerticalAlignment
-import de.cau.cs.kieler.klighd.krendering.KText
 
 /**
  * @author chsch, alb
