@@ -19,18 +19,10 @@ package de.cau.cs.kieler.klighd.filtering;
 /**
  * Util for easily getting some rules.
  * 
- * @author tik
+ * @author tik, mka
  *
  */
 public abstract class SemanticFilterRuleUtil {
-    /** An empty tag used to define constants. */
-    private static final SemanticFilterTag EMPTY = new SemanticFilterTag("");
-    /** A rule that is always evaluated to false. */
-    public static final SemanticFilterRule FALSE =
-            new AndConnective(EMPTY, new NegationConnective(EMPTY));
-    /** A rule that is always evaluated to true. */
-    public static final SemanticFilterRule TRUE =
-            new OrConnective(EMPTY, new NegationConnective(EMPTY));
 
     /**
      * Constructs an unnamed rule with all operands connected via OR. If no operands are given, this
@@ -58,7 +50,7 @@ public abstract class SemanticFilterRuleUtil {
             SemanticFilterRule... operands) {
         if (operands.length <= 0) {
             // No rules, automatically evaluate to false
-            return FALSE;
+            return new FalseConnective();
         } else if (operands.length <= 1) {
             // Just one rule, true iff rule is true
             // Add ruleName instead of just using first operand twice to avoid double evaluation
@@ -97,7 +89,7 @@ public abstract class SemanticFilterRuleUtil {
             SemanticFilterRule... operands) {
         if (operands.length <= 0) {
             // No rules, automatically evaluate to false
-            return FALSE;
+            return new FalseConnective();
         } else if (operands.length <= 1) {
             // Just one rule, true iff rule is true
             // Add ruleName instead of just using first operand twice to avoid double evaluation
@@ -121,6 +113,6 @@ public abstract class SemanticFilterRuleUtil {
      * @return A named rule.
      */
     public static SemanticFilterRule addRuleName(String ruleName, SemanticFilterRule rule) {
-        return new NegationConnective(new NegationConnective(rule), ruleName);
+        return new IdentityConnective((rule), ruleName);
     }
 }
