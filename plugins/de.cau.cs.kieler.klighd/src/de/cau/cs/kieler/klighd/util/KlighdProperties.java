@@ -17,6 +17,8 @@
 package de.cau.cs.kieler.klighd.util;
 
 import java.awt.Color;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.elk.core.math.KVector;
 import org.eclipse.elk.core.math.Spacing;
@@ -26,6 +28,8 @@ import org.eclipse.elk.graph.properties.Property;
 import org.eclipse.emf.ecore.EObject;
 
 import de.cau.cs.kieler.klighd.KlighdConstants;
+import de.cau.cs.kieler.klighd.filtering.SemanticFilterRule;
+import de.cau.cs.kieler.klighd.filtering.SemanticFilterTag;
 import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
 import de.cau.cs.kieler.klighd.kgraph.KNode;
 import de.cau.cs.kieler.klighd.krendering.KText;
@@ -379,4 +383,20 @@ public final class KlighdProperties {
      */
     public static final IProperty<Boolean> IS_NODE_TITLE =
             new Property<Boolean>("klighd.isNodeTitle", false);
+    
+    /**
+     * Property determining an element's semantic filter tags.
+     */
+    public static final IProperty<List<SemanticFilterTag>> SEMANTIC_FILTER_TAGS = 
+            new Property<List<SemanticFilterTag>>("de.cau.cs.kieler.klighd.semanticFilter.tags",
+                    // ArrayList is cloneable, no problem here
+                    new ArrayList<>());
+
+    /**
+     * Property determining an element's semantic filter rules.
+     * Only relevant for the root.
+     */
+    public static final IProperty<List<SemanticFilterRule>> SEMANTIC_FILTER_RULES = 
+            new Property<List<SemanticFilterRule>>("de.cau.cs.kieler.klighd.semanticFilter.rules",
+                    new ArrayList<>());
 }
