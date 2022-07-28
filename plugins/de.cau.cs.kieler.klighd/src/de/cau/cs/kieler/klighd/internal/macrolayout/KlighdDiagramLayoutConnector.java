@@ -739,17 +739,17 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
                 @Override
                 public Boolean caseElkPort(final ElkPort layoutPort) {
                     final KPort port = (KPort) element;
-//                    ElkNode parent = layoutPort.getParent().getParent();
-//                    if (parent !=null && parent.hasProperty(CoreOptions.TOPDOWN_SCALE_FACTOR)) {
-//                        double scaleFactor = parent.getProperty(CoreOptions.TOPDOWN_SCALE_FACTOR)
+                    ElkNode parent = layoutPort.getParent().getParent();
+                    if (parent !=null && parent.hasProperty(CoreOptions.TOPDOWN_SCALE_FACTOR)) {
+                        double scaleFactor = parent.getProperty(CoreOptions.TOPDOWN_SCALE_FACTOR);
 //                                * 1 / parent.getProperty(CoreOptions.SCALE_FACTOR);
-//                        layoutPort.setProperty(CoreOptions.SCALE_FACTOR, 1 / scaleFactor);
+                        layoutPort.setProperty(CoreOptions.SCALE_FACTOR, scaleFactor);
 //                        layoutPort.setLocation(
 //                                (layoutPort.getX()) * scaleFactor,
 //                                (layoutPort.getY()) * scaleFactor
 //                                );
 //                        layoutPort.setDimensions(layoutPort.getWidth() * scaleFactor, layoutPort.getHeight() * scaleFactor);
-//                    }
+                    }
 //                    
                     shapeToViewModel(mapping, layoutPort, port, false, true);
                     port.setProperty(KlighdProperties.LAYOUT_PORT_SIDE,
@@ -879,10 +879,10 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
                         (float) (sourceShape.getWidth()),
                         (float) (sourceShape.getHeight()));
             } else if (sourceShape instanceof ElkPort || sourceShape instanceof ElkLabel) {
-                final double scale = ModelingUtil.eContainerOfType(sourceShape, ElkNode.class).getProperty(CoreOptions.SCALE_FACTOR);
+                final double scale = sourceShape.getProperty(CoreOptions.SCALE_FACTOR);
                 targetShapeLayout.setPos(
-                        (float) (sourceShape.getX() * scale),
-                        (float) (sourceShape.getY() * scale));
+                        (float) (sourceShape.getX() * scale+ offset.x),
+                        (float) (sourceShape.getY() * scale+ offset.y));
                 targetShapeLayout.setSize(
                         (float) (sourceShape.getWidth() * scale),
                         (float) (sourceShape.getHeight() * scale));
