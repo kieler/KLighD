@@ -721,8 +721,7 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
                     ElkNode parent = layoutEdge.getContainingNode();
                     if (parent.hasProperty(CoreOptions.TOPDOWN_SCALE_FACTOR)) {
 //                        // Scale edge
-                        double scaleFactor = parent.getProperty(CoreOptions.TOPDOWN_SCALE_FACTOR)
-                                * parent.getProperty(CoreOptions.SCALE_FACTOR);
+                        double scaleFactor = parent.getProperty(CoreOptions.TOPDOWN_SCALE_FACTOR);
 //                        layoutEdge.getSections().forEach(section -> {
 //                            section.setStartLocation(
 //                                    section.getStartX() * scaleFactor, section.getStartY() * scaleFactor);
@@ -731,7 +730,7 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
 //                        });
                         layoutEdge.setProperty(CoreOptions.SCALE_FACTOR, scaleFactor);
                     }
-                    edge.setProperty(CoreOptions.SCALE_FACTOR, layoutEdge.getProperty(CoreOptions.SCALE_FACTOR));
+//                    edge.setProperty(CoreOptions.SCALE_FACTOR, layoutEdge.getProperty(CoreOptions.SCALE_FACTOR));
                     edgeToViewModel(layoutEdge, edge, mapping, !suppressEdgeAdjustment);
                     
                     return true;
@@ -761,11 +760,10 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
                 @Override
                 public Boolean caseElkLabel(final ElkLabel layoutLabel) {
                     // Store the label for later use
-                    double scaleFactor = ((ElkNode)layoutLabel.getParent().eContainer()).getProperty(CoreOptions.TOPDOWN_SCALE_FACTOR)
-                            * ((ElkNode)layoutLabel.getParent().eContainer()).getProperty(CoreOptions.SCALE_FACTOR);
+                    double scaleFactor = ((ElkNode)layoutLabel.getParent().eContainer()).getProperty(CoreOptions.TOPDOWN_SCALE_FACTOR);
 //                    layoutLabel.setLocation(layoutLabel.getX() * scaleFactor, layoutLabel.getY() * scaleFactor);
 //                    layoutLabel.setDimensions(layoutLabel.getWidth() * scaleFactor, layoutLabel.getHeight() * scaleFactor);
-                    layoutLabel.setProperty(CoreOptions.SCALE_FACTOR, Math.sqrt(scaleFactor));
+                    layoutLabel.setProperty(CoreOptions.SCALE_FACTOR, scaleFactor);
 //                    layoutLabel.setProperty(CoreOptions.FONT_SIZE, (int) (layoutLabel.getProperty(CoreOptions.FONT_SIZE) * scaleFactor));
 
                     graphLabels.add(layoutLabel);
@@ -1020,7 +1018,7 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
      */
     private void edgeToViewModel(final ElkEdge layoutEdge,
             final KEdge viewModelEdge, final LayoutMapping mapping, final boolean adjustments) {
-        final double scale = 1; // layoutEdge.getProperty(CoreOptions.SCALE_FACTOR);
+        final double scale = layoutEdge.getProperty(CoreOptions.SCALE_FACTOR);
 
         // Do not notify listeners about any change on the displayed KGraph in order
         // to avoid unnecessary diagram refresh cycles
@@ -1053,8 +1051,8 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
         }
         final boolean sourcePointDeliver = viewModelEdge.getSourcePoint().eDeliver();
         viewModelEdge.getSourcePoint().eSetDeliver(false);
-        viewModelEdge.getSourcePoint().setPos((float) (layoutEdgeSection.getStartX() / scale),
-                (float) (layoutEdgeSection.getStartY() / scale));
+        viewModelEdge.getSourcePoint().setPos((float) (layoutEdgeSection.getStartX() * scale),
+                (float) (layoutEdgeSection.getStartY() * scale));
         viewModelEdge.getSourcePoint().eSetDeliver(sourcePointDeliver);
         
         // - - - - - BEND POINTS - - - - - 
@@ -1071,7 +1069,7 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
                 destPoint = KGraphFactory.eINSTANCE.createKPoint();
                 destBendIter.add(destPoint);
             }
-            destPoint.setPos((float) (originPoint.getX() / scale), (float) (originPoint.getY() / scale));
+            destPoint.setPos((float) (originPoint.getX() * scale), (float) (originPoint.getY() * scale));
         }
         
         // remove any superfluous points
@@ -1086,8 +1084,8 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
         }
         final boolean targetPointDeliver = viewModelEdge.getTargetPoint().eDeliver();
         viewModelEdge.getTargetPoint().eSetDeliver(false);
-        viewModelEdge.getTargetPoint().setPos((float) (layoutEdgeSection.getEndX() / scale),
-                (float) (layoutEdgeSection.getEndY() / scale));
+        viewModelEdge.getTargetPoint().setPos((float) (layoutEdgeSection.getEndX() * scale),
+                (float) (layoutEdgeSection.getEndY() * scale));
         viewModelEdge.getTargetPoint().eSetDeliver(targetPointDeliver);
 
         // reactivate notifications & fire a notification
