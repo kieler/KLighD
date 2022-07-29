@@ -1761,7 +1761,6 @@ public class DiagramController {
 
         NodeUtil.applyBounds(nodeNode, (KShapeLayout) nodeNode.getViewModelElement());
         Double scale = nodeNode.getViewModelElement().getProperty(CoreOptions.SCALE_FACTOR);
-        Double topdownScale = nodeNode.getViewModelElement().getProperty(CoreOptions.TOPDOWN_SCALE_FACTOR);
         if (scale != null && scale != 1.0) {
             nodeNode.setScale(scale.doubleValue());
         }
