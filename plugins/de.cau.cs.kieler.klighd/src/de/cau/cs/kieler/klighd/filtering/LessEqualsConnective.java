@@ -32,7 +32,7 @@ protected static final String NAME = "LESSEQUALS";
      * Constructor for unnamed rule.
      * @param operand the operand
      */
-    public LessEqualsConnective(SemanticFilterTag operand) {
+    public LessEqualsConnective(NumericResult operand) {
         this(operand, null, null);
     }
     
@@ -41,7 +41,7 @@ protected static final String NAME = "LESSEQUALS";
      * @param operand the operand
      * @param defaultValue the default value
      */
-    public LessEqualsConnective(SemanticFilterTag operand, Boolean defaultValue) {
+    public LessEqualsConnective(NumericResult operand, Boolean defaultValue) {
         this(operand, defaultValue, null);
     }
     
@@ -50,7 +50,7 @@ protected static final String NAME = "LESSEQUALS";
      * @param operand the operand
      * @param ruleName rule name
      */
-    public LessEqualsConnective(SemanticFilterTag operand, String ruleName) {
+    public LessEqualsConnective(NumericResult operand, String ruleName) {
         this(operand, null, ruleName);
     }
     
@@ -60,10 +60,10 @@ protected static final String NAME = "LESSEQUALS";
      * @param defaultValue the default value
      * @param ruleName rule name
      */
-    public LessEqualsConnective(SemanticFilterTag operand, Boolean defaultValue, String ruleName) {
+    public LessEqualsConnective(NumericResult operand, Boolean defaultValue, String ruleName) {
         super(defaultValue, ruleName);
         this.name = NAME;
-        this.operand = operand;
+        this.operand = (SemanticFilterRule) operand;
     }
 
 }

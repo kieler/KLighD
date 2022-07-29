@@ -30,7 +30,7 @@ public class NumericEqualConnective extends UnaryConnective {
      * Constructor for unnamed rule.
      * @param operand the operand
      */
-    public NumericEqualConnective(SemanticFilterTag operand) {
+    public NumericEqualConnective(NumericResult operand) {
         this(operand, null, null);
     }
     
@@ -39,7 +39,7 @@ public class NumericEqualConnective extends UnaryConnective {
      * @param operand the operand
      * @param defaultValue the default value
      */
-    public NumericEqualConnective(SemanticFilterTag operand, Boolean defaultValue) {
+    public NumericEqualConnective(NumericResult operand, Boolean defaultValue) {
         this(operand, defaultValue, null);
     }
     
@@ -48,7 +48,7 @@ public class NumericEqualConnective extends UnaryConnective {
      * @param operand the operand
      * @param ruleName rule name
      */
-    public NumericEqualConnective(SemanticFilterTag operand, String ruleName) {
+    public NumericEqualConnective(NumericResult operand, String ruleName) {
         this(operand, null, ruleName);
     }
     
@@ -58,10 +58,10 @@ public class NumericEqualConnective extends UnaryConnective {
      * @param defaultValue the default value
      * @param ruleName rule name
      */
-    public NumericEqualConnective(SemanticFilterTag operand, Boolean defaultValue, String ruleName) {
+    public NumericEqualConnective(NumericResult operand, Boolean defaultValue, String ruleName) {
         super(defaultValue, ruleName);
         this.name = NAME;
-        this.operand = operand;
+        this.operand = (SemanticFilterRule) operand;
     }
 
 }

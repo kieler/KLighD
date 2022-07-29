@@ -31,7 +31,7 @@ protected static final String NAME = "GREATEREQUALS";
      * Constructor for unnamed rule.
      * @param operand the operand
      */
-    public GreaterEqualsConnective(SemanticFilterTag operand) {
+    public GreaterEqualsConnective(NumericResult operand) {
         this(operand, null, null);
     }
     
@@ -40,7 +40,7 @@ protected static final String NAME = "GREATEREQUALS";
      * @param operand the operand
      * @param defaultValue the default value
      */
-    public GreaterEqualsConnective(SemanticFilterTag operand, Boolean defaultValue) {
+    public GreaterEqualsConnective(NumericResult operand, Boolean defaultValue) {
         this(operand, defaultValue, null);
     }
     
@@ -49,7 +49,7 @@ protected static final String NAME = "GREATEREQUALS";
      * @param operand the operand
      * @param ruleName rule name
      */
-    public GreaterEqualsConnective(SemanticFilterTag operand, String ruleName) {
+    public GreaterEqualsConnective(NumericResult operand, String ruleName) {
         this(operand, null, ruleName);
     }
     
@@ -59,10 +59,10 @@ protected static final String NAME = "GREATEREQUALS";
      * @param defaultValue the default value
      * @param ruleName rule name
      */
-    public GreaterEqualsConnective(SemanticFilterTag operand, Boolean defaultValue, String ruleName) {
+    public GreaterEqualsConnective(NumericResult operand, Boolean defaultValue, String ruleName) {
         super(defaultValue, ruleName);
         this.name = NAME;
-        this.operand = operand;
+        this.operand = (SemanticFilterRule) operand;
     }
 
 }

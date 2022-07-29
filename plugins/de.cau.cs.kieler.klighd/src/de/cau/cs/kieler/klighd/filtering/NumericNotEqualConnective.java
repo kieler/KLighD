@@ -32,7 +32,7 @@ protected static final String NAME = "NUMERICNOTEQUAL";
      * Constructor for unnamed rule.
      * @param operand the operand
      */
-    public NumericNotEqualConnective(SemanticFilterTag operand) {
+    public NumericNotEqualConnective(NumericResult operand) {
         this(operand, null, null);
     }
     
@@ -41,7 +41,7 @@ protected static final String NAME = "NUMERICNOTEQUAL";
      * @param operand the operand
      * @param defaultValue the default value
      */
-    public NumericNotEqualConnective(SemanticFilterTag operand, Boolean defaultValue) {
+    public NumericNotEqualConnective(NumericResult operand, Boolean defaultValue) {
         this(operand, defaultValue, null);
     }
     
@@ -50,7 +50,7 @@ protected static final String NAME = "NUMERICNOTEQUAL";
      * @param operand the operand
      * @param ruleName rule name
      */
-    public NumericNotEqualConnective(SemanticFilterTag operand, String ruleName) {
+    public NumericNotEqualConnective(NumericResult operand, String ruleName) {
         this(operand, null, ruleName);
     }
     
@@ -60,10 +60,10 @@ protected static final String NAME = "NUMERICNOTEQUAL";
      * @param defaultValue the default value
      * @param ruleName rule name
      */
-    public NumericNotEqualConnective(SemanticFilterTag operand, Boolean defaultValue, String ruleName) {
+    public NumericNotEqualConnective(NumericResult operand, Boolean defaultValue, String ruleName) {
         super(defaultValue, ruleName);
         this.name = NAME;
-        this.operand = operand;
+        this.operand = (SemanticFilterRule) operand;
     }
 
 }
