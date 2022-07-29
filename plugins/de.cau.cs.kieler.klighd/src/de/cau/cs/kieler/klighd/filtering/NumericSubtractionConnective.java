@@ -17,8 +17,8 @@
 package de.cau.cs.kieler.klighd.filtering;
 
 /**
- * A Numeric Times Connective takes two numeric operands and evaluates
- * to their product.
+ * A Numeric Subtraction Connective takes two numeric operands and evaluates
+ * to their difference.
  * 
  * Operands must implement {@link NumericResult} and be a {@link SemanticFilterTag}. This connective is an internal
  * connective and should never be treated as a rule and thus does not need a name.
@@ -26,8 +26,8 @@ package de.cau.cs.kieler.klighd.filtering;
  * @author mka
  *
  */
-public class NumericTimesConnective extends BinaryConnective implements NumericResult {
-    protected static final String NAME = "NUMERICTIMES";
+public class NumericSubtractionConnective extends BinaryConnective implements NumericResult {
+    protected static final String NAME = "NUMERICSUBSTRACTION";
     
     /**
      * Constructor for named rule with default value.
@@ -36,7 +36,7 @@ public class NumericTimesConnective extends BinaryConnective implements NumericR
      * @param defaultValue the default value
      * @param ruleName rule name
      */
-    public NumericTimesConnective(NumericResult leftOperand, NumericResult rightOperand) {
+    public NumericSubtractionConnective(NumericResult leftOperand, NumericResult rightOperand) {
         super();
         this.name = NAME;
         this.leftOperand = (SemanticFilterRule) leftOperand;

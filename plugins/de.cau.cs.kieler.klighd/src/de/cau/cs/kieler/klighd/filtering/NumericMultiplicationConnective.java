@@ -17,8 +17,8 @@
 package de.cau.cs.kieler.klighd.filtering;
 
 /**
- * A Numeric Plus Connective takes two numeric operands and evaluates
- * to their sum.
+ * A Numeric Multiplication Connective takes two numeric operands and evaluates
+ * to their product.
  * 
  * Operands must implement {@link NumericResult} and be a {@link SemanticFilterTag}. This connective is an internal
  * connective and should never be treated as a rule and thus does not need a name.
@@ -26,8 +26,8 @@ package de.cau.cs.kieler.klighd.filtering;
  * @author mka
  *
  */
-public class NumericPlusConnective extends BinaryConnective implements NumericResult {
-    protected static final String NAME = "NUMERICPLUS";
+public class NumericMultiplicationConnective extends BinaryConnective implements NumericResult {
+    protected static final String NAME = "NUMERICMULTIPLICATION";
     
     /**
      * Constructor for named rule with default value.
@@ -36,7 +36,7 @@ public class NumericPlusConnective extends BinaryConnective implements NumericRe
      * @param defaultValue the default value
      * @param ruleName rule name
      */
-    public NumericPlusConnective(NumericResult leftOperand, NumericResult rightOperand) {
+    public NumericMultiplicationConnective(NumericResult leftOperand, NumericResult rightOperand) {
         super();
         this.name = NAME;
         this.leftOperand = (SemanticFilterRule) leftOperand;

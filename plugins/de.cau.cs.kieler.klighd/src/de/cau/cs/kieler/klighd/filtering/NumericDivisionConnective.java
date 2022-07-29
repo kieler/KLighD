@@ -17,8 +17,8 @@
 package de.cau.cs.kieler.klighd.filtering;
 
 /**
- * A Numeric Minus Connective takes two numeric operands and evaluates
- * to their difference.
+ * A Numeric Division Connective takes two numeric operands and evaluates
+ * to their quotient.
  * 
  * Operands must implement {@link NumericResult} and be a {@link SemanticFilterTag}. This connective is an internal
  * connective and should never be treated as a rule and thus does not need a name.
@@ -26,8 +26,8 @@ package de.cau.cs.kieler.klighd.filtering;
  * @author mka
  *
  */
-public class NumericMinusConnective extends BinaryConnective implements NumericResult {
-    protected static final String NAME = "NUMERICMINUS";
+public class NumericDivisionConnective extends BinaryConnective implements NumericResult {
+    protected static final String NAME = "NUMERICDIVISION";
     
     /**
      * Constructor for named rule with default value.
@@ -36,7 +36,7 @@ public class NumericMinusConnective extends BinaryConnective implements NumericR
      * @param defaultValue the default value
      * @param ruleName rule name
      */
-    public NumericMinusConnective(NumericResult leftOperand, NumericResult rightOperand) {
+    public NumericDivisionConnective(NumericResult leftOperand, NumericResult rightOperand) {
         super();
         this.name = NAME;
         this.leftOperand = (SemanticFilterRule) leftOperand;

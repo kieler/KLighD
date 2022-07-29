@@ -17,8 +17,8 @@
 package de.cau.cs.kieler.klighd.filtering;
 
 /**
- * A Numeric Divides Connective takes two numeric operands and evaluates
- * to their quotient.
+ * A Numeric Addition Connective takes two numeric operands and evaluates
+ * to their sum.
  * 
  * Operands must implement {@link NumericResult} and be a {@link SemanticFilterTag}. This connective is an internal
  * connective and should never be treated as a rule and thus does not need a name.
@@ -26,8 +26,8 @@ package de.cau.cs.kieler.klighd.filtering;
  * @author mka
  *
  */
-public class NumericDividesConnective extends BinaryConnective implements NumericResult {
-    protected static final String NAME = "NUMERICDIVIDES";
+public class NumericAdditionConnective extends BinaryConnective implements NumericResult {
+    protected static final String NAME = "NUMERICADDITION";
     
     /**
      * Constructor for named rule with default value.
@@ -36,7 +36,7 @@ public class NumericDividesConnective extends BinaryConnective implements Numeri
      * @param defaultValue the default value
      * @param ruleName rule name
      */
-    public NumericDividesConnective(NumericResult leftOperand, NumericResult rightOperand) {
+    public NumericAdditionConnective(NumericResult leftOperand, NumericResult rightOperand) {
         super();
         this.name = NAME;
         this.leftOperand = (SemanticFilterRule) leftOperand;
