@@ -20,13 +20,13 @@
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>de.cau.cs.kieler.klighd.krendering.extensions</artifactId>
+      <artifactId>de.cau.cs.kieler.klighd.kgraph</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
-      <version>30.1-jre</version>
+      <version>${guava-version}</version>
     </dependency>
   </dependencies>
 </project>

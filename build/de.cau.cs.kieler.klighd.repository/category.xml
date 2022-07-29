@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
 
-   <description name="KIELER Lightweight Diagrams" url="http://services.typefox.io/open-source/jenkins/job/KLighD/job/master/lastSuccessfulBuild/artifact/updatesite/">
+   <description name="KIELER Lightweight Diagrams" url="https://rtsys.informatik.uni-kiel.de/~kieler/updatesite/nightly/klighd/">
       Update site for KIELER Lightweight Diagrams nightly builds.
    </description>
 
@@ -59,11 +59,10 @@
       <category name="kieler-klighd"/>
    </feature>
 
-   <repository-reference location="https://download.eclipse.org/releases/2020-06/" enabled="true" />
+   <repository-reference location="https://download.eclipse.org/releases/2022-06/" enabled="true" />
    <repository-reference location="https://download.eclipse.org/modeling/mdt/uml2/updates/5.4/" enabled="true" />
    <repository-reference location="https://download.eclipse.org/elk/updates/releases/0.8.1/" enabled="true" />
-   <repository-reference location="https://download.eclipse.org/modeling/tmf/xtext/updates/releases/2.22.0/" enabled="true" />
+   <repository-reference location="https://download.eclipse.org/modeling/tmf/xtext/updates/releases/2.27.0/" enabled="true" />
    <repository-reference location="https://xtext.github.io/download/updates/releases/2.1.1/" enabled="true" />
-   <repository-reference location="https://download.eclipse.org/tools/orbit/downloads/drops/R20200529191137/repository/" enabled="true" />
-   <repository-reference location="https://rtsys.informatik.uni-kiel.de/~kieler/updatesite/sprotty/0.9.0/" enabled="true" />
+   <repository-reference location="https://download.eclipse.org/tools/orbit/downloads/drops/R20220531185310/repository/" enabled="true" />
 </site>

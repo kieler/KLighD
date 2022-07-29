@@ -8,9 +8,17 @@
     <version>2.2.1-SNAPSHOT</version>
     <relativePath>../../pom.xml</relativePath>
   </parent>
+  
+  <!-- Use this version and replace the content of pom.xml for debugging the LS from Eclipse with the SWT mock instead
+  of real SWT artifacts. Also remove the Plug-in dependencies from the classpath.
+  To revert to the Eclipse version, replace the content of pom.xml with pom.eclipse.xml again and re-add Plug-in
+  dependencies to the classpath.
+  
+  This is not necessary for the Maven build process, as dependency exclusion handles the resolved dependencies
+  correctly, only Eclipse cannot handle that while using a mix of 'normal' Maven poms and Eclipse Plugins with mixed
+  Maven and pom dependencies. -->
 
   <artifactId>de.cau.cs.kieler.klighd</artifactId>
-  <packaging>eclipse-plugin</packaging>
   
   <dependencies>
     <dependency>
@@ -32,6 +40,16 @@
       <groupId>org.eclipse.elk</groupId>
       <artifactId>org.eclipse.elk.core.service</artifactId>
       <version>${elk-version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.eclipse.platform</groupId>
+          <artifactId>org.eclipse.ui.workbench</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.eclipse.platform</groupId>
+          <artifactId>org.eclipse.jface</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.eclipse.emf</groupId>
@@ -44,19 +62,19 @@
       <version>${emf-edit-version}</version>
     </dependency>
     <dependency>
-      <groupId>org.eclipse.platform</groupId>
+      <groupId>de.cau.cs.kieler.swt.mock</groupId>
       <artifactId>org.eclipse.jface</artifactId>
-      <version>3.26.0</version>
+      <version>${swt-mock-version}</version>
     </dependency>
     <dependency>
-      <groupId>org.eclipse.platform</groupId>
+      <groupId>de.cau.cs.kieler.swt.mock</groupId>
       <artifactId>org.eclipse.swt</artifactId>
-      <version>3.120.0</version>
+      <version>${swt-mock-version}</version>
     </dependency>
     <dependency>
-      <groupId>org.eclipse.platform</groupId>
-      <artifactId>org.eclipse.ui.workbench</artifactId>
-      <version>3.125.0</version>
+      <groupId>de.cau.cs.kieler.swt.mock</groupId>
+      <artifactId>org.eclipse.ui</artifactId>
+      <version>${swt-mock-version}</version>
     </dependency>
     <dependency>
       <groupId>com.google.inject</groupId>

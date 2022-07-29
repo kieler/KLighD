@@ -32,7 +32,7 @@ import com.google.common.collect.Iterators;
 import de.cau.cs.kieler.klighd.Klighd;
 import de.cau.cs.kieler.klighd.kgraph.KNode;
 import de.cau.cs.kieler.klighd.kgraph.util.KGraphDataUtil;
-import de.cau.cs.kieler.klighd.standalone.KlighdStandaloneSetup;
+//import de.cau.cs.kieler.klighd.standalone.KlighdStandaloneSetup;
 
 /**
  * The activator class controls the plug-in life cycle.
@@ -47,8 +47,11 @@ public class KlighdTestPlugin extends Plugin {
     private static KlighdTestPlugin plugin;
     
     static {
-        if (!Klighd.IS_PLATFORM_RUNNING)
-            KlighdStandaloneSetup.initialize();
+        if (!Klighd.IS_PLATFORM_RUNNING) {
+            // FIXME: make this work again. Can we do the entire testing as a non-plugin?
+            // What case do we have here anyways during testing in Eclipse/in the build process?
+//            KlighdStandaloneSetup.initialize();
+        }
     }
     
     /**
