@@ -17,51 +17,56 @@
 package de.cau.cs.kieler.klighd.filtering;
 
 /**
- * A GreaterThan Connective takes one rule R and evaluates to true
+ * A GreaterThan Connective takes two numeric rules R1 and R2 and evaluates to true
  * iff
- * R.num > correspondingTag.num.
- * @author tik
+ * R1 > R2
+ * @author tik, mka
  *
  */
-public class GreaterThanConnective extends UnaryConnective {
+public class GreaterThanConnective extends BinaryConnective {
     protected static final String NAME = "GREATERTHAN";
     
     /**
      * Constructor for unnamed rule.
-     * @param operand the operand
+     * @param leftOperand left operand
+     * @param rightOperand right operand
      */
-    public GreaterThanConnective(NumericResult operand) {
-        this(operand, null, null);
+    public GreaterThanConnective(SemanticFilterRule leftOperand, SemanticFilterRule rightOperand) {
+        this(leftOperand, rightOperand, null, null);
     }
     
     /**
      * Constructor for unnamed rule with default value.
-     * @param operand the operand
+     * @param leftOperand left operand
+     * @param rightOperand right operand
      * @param defaultValue the default value
      */
-    public GreaterThanConnective(NumericResult operand, Boolean defaultValue) {
-        this(operand, defaultValue, null);
+    public GreaterThanConnective(SemanticFilterRule leftOperand, SemanticFilterRule rightOperand, Boolean defaultValue) {
+        this(leftOperand, rightOperand, defaultValue, null);
     }
     
     /**
      * Constructor for named rule.
-     * @param operand the operand
+     * @param leftOperand left operand
+     * @param rightOperand right operand
      * @param ruleName rule name
      */
-    public GreaterThanConnective(NumericResult operand, String ruleName) {
-        this(operand, null, ruleName);
+    public GreaterThanConnective(SemanticFilterRule leftOperand, SemanticFilterRule rightOperand, String ruleName) {
+        this(leftOperand, rightOperand, null, ruleName);
     }
     
     /**
      * Constructor for named rule with default value.
-     * @param operand the operand
+     * @param leftOperand left operand
+     * @param rightOperand right operand
      * @param defaultValue the default value
      * @param ruleName rule name
      */
-    public GreaterThanConnective(NumericResult operand, Boolean defaultValue, String ruleName) {
+    public GreaterThanConnective(SemanticFilterRule leftOperand, SemanticFilterRule rightOperand, Boolean defaultValue, String ruleName) {
         super(defaultValue, ruleName);
         this.name = NAME;
-        this.operand = (SemanticFilterRule) operand;
+        this.leftOperand = leftOperand;
+        this.rightOperand = rightOperand;
     }
 
 }

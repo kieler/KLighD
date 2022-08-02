@@ -17,52 +17,57 @@
 package de.cau.cs.kieler.klighd.filtering;
 
 /**
- * A GreaterEquals Connective takes one rule R and evaluates to true
+ * A GreaterEquals Connective takes two numeric rules R1 and R2 and evaluates to true
  * iff
- * R.num >= correspondingTag.num.
+ * R1 >= R2
  * 
  * @author mka
  *
  */
-public class GreaterEqualsConnective extends UnaryConnective {
+public class GreaterEqualsConnective extends BinaryConnective {
 protected static final String NAME = "GREATEREQUALS";
     
-    /**
-     * Constructor for unnamed rule.
-     * @param operand the operand
-     */
-    public GreaterEqualsConnective(NumericResult operand) {
-        this(operand, null, null);
-    }
-    
-    /**
-     * Constructor for unnamed rule with default value.
-     * @param operand the operand
-     * @param defaultValue the default value
-     */
-    public GreaterEqualsConnective(NumericResult operand, Boolean defaultValue) {
-        this(operand, defaultValue, null);
-    }
-    
-    /**
-     * Constructor for named rule.
-     * @param operand the operand
-     * @param ruleName rule name
-     */
-    public GreaterEqualsConnective(NumericResult operand, String ruleName) {
-        this(operand, null, ruleName);
-    }
-    
-    /**
-     * Constructor for named rule with default value.
-     * @param operand the operand
-     * @param defaultValue the default value
-     * @param ruleName rule name
-     */
-    public GreaterEqualsConnective(NumericResult operand, Boolean defaultValue, String ruleName) {
-        super(defaultValue, ruleName);
-        this.name = NAME;
-        this.operand = (SemanticFilterRule) operand;
-    }
+/**
+ * Constructor for unnamed rule.
+ * @param leftOperand left operand
+ * @param rightOperand right operand
+ */
+public GreaterEqualsConnective(SemanticFilterRule leftOperand, SemanticFilterRule rightOperand) {
+    this(leftOperand, rightOperand, null, null);
+}
+
+/**
+ * Constructor for unnamed rule with default value.
+ * @param leftOperand left operand
+ * @param rightOperand right operand
+ * @param defaultValue the default value
+ */
+public GreaterEqualsConnective(SemanticFilterRule leftOperand, SemanticFilterRule rightOperand, Boolean defaultValue) {
+    this(leftOperand, rightOperand, defaultValue, null);
+}
+
+/**
+ * Constructor for named rule.
+ * @param leftOperand left operand
+ * @param rightOperand right operand
+ * @param ruleName rule name
+ */
+public GreaterEqualsConnective(SemanticFilterRule leftOperand, SemanticFilterRule rightOperand, String ruleName) {
+    this(leftOperand, rightOperand, null, ruleName);
+}
+
+/**
+ * Constructor for named rule with default value.
+ * @param leftOperand left operand
+ * @param rightOperand right operand
+ * @param defaultValue the default value
+ * @param ruleName rule name
+ */
+public GreaterEqualsConnective(SemanticFilterRule leftOperand, SemanticFilterRule rightOperand, Boolean defaultValue, String ruleName) {
+    super(defaultValue, ruleName);
+    this.name = NAME;
+    this.leftOperand = leftOperand;
+    this.rightOperand = rightOperand;
+}
 
 }
