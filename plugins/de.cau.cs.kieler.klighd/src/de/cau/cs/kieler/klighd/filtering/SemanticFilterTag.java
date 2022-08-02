@@ -28,7 +28,7 @@ package de.cau.cs.kieler.klighd.filtering;
  * @author tik
  *
  */
-public class SemanticFilterTag extends SemanticFilterRule {
+public class SemanticFilterTag extends SemanticFilterRule implements NumericResult {
     
     private String tag;
     /** If unset, defaults to 0. */

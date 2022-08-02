@@ -30,7 +30,7 @@ public class LessThanConnective extends UnaryConnective {
      * Constructor for unnamed rule.
      * @param operand the operand
      */
-    public LessThanConnective(SemanticFilterTag operand) {
+    public LessThanConnective(NumericResult operand) {
         this(operand, null, null);
     }
     
@@ -39,7 +39,7 @@ public class LessThanConnective extends UnaryConnective {
      * @param operand the operand
      * @param defaultValue the default value
      */
-    public LessThanConnective(SemanticFilterTag operand, Boolean defaultValue) {
+    public LessThanConnective(NumericResult operand, Boolean defaultValue) {
         this(operand, defaultValue, null);
     }
     
@@ -48,7 +48,7 @@ public class LessThanConnective extends UnaryConnective {
      * @param operand the operand
      * @param ruleName rule name
      */
-    public LessThanConnective(SemanticFilterTag operand, String ruleName) {
+    public LessThanConnective(NumericResult operand, String ruleName) {
         this(operand, null, ruleName);
     }
     
@@ -58,10 +58,10 @@ public class LessThanConnective extends UnaryConnective {
      * @param defaultValue the default value
      * @param ruleName rule name
      */
-    public LessThanConnective(SemanticFilterTag operand, Boolean defaultValue, String ruleName) {
+    public LessThanConnective(NumericResult operand, Boolean defaultValue, String ruleName) {
         super(defaultValue, ruleName);
         this.name = NAME;
-        this.operand = operand;
+        this.operand = (SemanticFilterRule) operand;
     }
 
 }

@@ -17,20 +17,21 @@
 package de.cau.cs.kieler.klighd.filtering;
 
 /**
- * A NumericEqual Connective takes one rule R and evaluates to true
+ * A GreaterEquals Connective takes one rule R and evaluates to true
  * iff
- * R.num == correspondingTag.num.
- * @author tik
+ * R.num >= correspondingTag.num.
+ * 
+ * @author mka
  *
  */
-public class NumericEqualConnective extends UnaryConnective {
-    protected static final String NAME = "NUMERICEQUAL";
+public class GreaterEqualsConnective extends UnaryConnective {
+protected static final String NAME = "GREATEREQUALS";
     
     /**
      * Constructor for unnamed rule.
      * @param operand the operand
      */
-    public NumericEqualConnective(NumericResult operand) {
+    public GreaterEqualsConnective(NumericResult operand) {
         this(operand, null, null);
     }
     
@@ -39,7 +40,7 @@ public class NumericEqualConnective extends UnaryConnective {
      * @param operand the operand
      * @param defaultValue the default value
      */
-    public NumericEqualConnective(NumericResult operand, Boolean defaultValue) {
+    public GreaterEqualsConnective(NumericResult operand, Boolean defaultValue) {
         this(operand, defaultValue, null);
     }
     
@@ -48,7 +49,7 @@ public class NumericEqualConnective extends UnaryConnective {
      * @param operand the operand
      * @param ruleName rule name
      */
-    public NumericEqualConnective(NumericResult operand, String ruleName) {
+    public GreaterEqualsConnective(NumericResult operand, String ruleName) {
         this(operand, null, ruleName);
     }
     
@@ -58,7 +59,7 @@ public class NumericEqualConnective extends UnaryConnective {
      * @param defaultValue the default value
      * @param ruleName rule name
      */
-    public NumericEqualConnective(NumericResult operand, Boolean defaultValue, String ruleName) {
+    public GreaterEqualsConnective(NumericResult operand, Boolean defaultValue, String ruleName) {
         super(defaultValue, ruleName);
         this.name = NAME;
         this.operand = (SemanticFilterRule) operand;

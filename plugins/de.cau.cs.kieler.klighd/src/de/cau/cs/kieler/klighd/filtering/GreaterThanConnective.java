@@ -30,7 +30,7 @@ public class GreaterThanConnective extends UnaryConnective {
      * Constructor for unnamed rule.
      * @param operand the operand
      */
-    public GreaterThanConnective(SemanticFilterTag operand) {
+    public GreaterThanConnective(NumericResult operand) {
         this(operand, null, null);
     }
     
@@ -39,7 +39,7 @@ public class GreaterThanConnective extends UnaryConnective {
      * @param operand the operand
      * @param defaultValue the default value
      */
-    public GreaterThanConnective(SemanticFilterTag operand, Boolean defaultValue) {
+    public GreaterThanConnective(NumericResult operand, Boolean defaultValue) {
         this(operand, defaultValue, null);
     }
     
@@ -48,7 +48,7 @@ public class GreaterThanConnective extends UnaryConnective {
      * @param operand the operand
      * @param ruleName rule name
      */
-    public GreaterThanConnective(SemanticFilterTag operand, String ruleName) {
+    public GreaterThanConnective(NumericResult operand, String ruleName) {
         this(operand, null, ruleName);
     }
     
@@ -58,10 +58,10 @@ public class GreaterThanConnective extends UnaryConnective {
      * @param defaultValue the default value
      * @param ruleName rule name
      */
-    public GreaterThanConnective(SemanticFilterTag operand, Boolean defaultValue, String ruleName) {
+    public GreaterThanConnective(NumericResult operand, Boolean defaultValue, String ruleName) {
         super(defaultValue, ruleName);
         this.name = NAME;
-        this.operand = operand;
+        this.operand = (SemanticFilterRule) operand;
     }
 
 }

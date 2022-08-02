@@ -17,51 +17,55 @@
 package de.cau.cs.kieler.klighd.filtering;
 
 /**
- * A NumericEqual Connective takes one rule R and evaluates to true
- * iff
- * R.num == correspondingTag.num.
- * @author tik
+ * An Identity Connective evaluates its operand. For example ID (R) is equivalent to R.
+ * 
+ * @author mka
  *
  */
-public class NumericEqualConnective extends UnaryConnective {
-    protected static final String NAME = "NUMERICEQUAL";
+public class IdentityConnective extends UnaryConnective {
+
+    protected static final String NAME = "ID";
     
     /**
      * Constructor for unnamed rule.
-     * @param operand the operand
+     * @param leftOperand left operand
+     * @param rightOperand right operand
      */
-    public NumericEqualConnective(NumericResult operand) {
+    public IdentityConnective(SemanticFilterRule operand) {
         this(operand, null, null);
     }
     
     /**
      * Constructor for unnamed rule with default value.
-     * @param operand the operand
+     * @param leftOperand left operand
+     * @param rightOperand right operand
      * @param defaultValue the default value
      */
-    public NumericEqualConnective(NumericResult operand, Boolean defaultValue) {
+    public IdentityConnective(SemanticFilterRule operand, Boolean defaultValue) {
         this(operand, defaultValue, null);
     }
     
     /**
      * Constructor for named rule.
-     * @param operand the operand
+     * @param leftOperand left operand
+     * @param rightOperand right operand
      * @param ruleName rule name
      */
-    public NumericEqualConnective(NumericResult operand, String ruleName) {
+    public IdentityConnective(SemanticFilterRule operand, String ruleName) {
         this(operand, null, ruleName);
     }
     
     /**
      * Constructor for named rule with default value.
-     * @param operand the operand
+     * @param leftOperand left operand
+     * @param rightOperand right operand
      * @param defaultValue the default value
      * @param ruleName rule name
      */
-    public NumericEqualConnective(NumericResult operand, Boolean defaultValue, String ruleName) {
+    public IdentityConnective(SemanticFilterRule operand, Boolean defaultValue, String ruleName) {
         super(defaultValue, ruleName);
         this.name = NAME;
-        this.operand = (SemanticFilterRule) operand;
+        this.operand = operand;
     }
-
+    
 }
