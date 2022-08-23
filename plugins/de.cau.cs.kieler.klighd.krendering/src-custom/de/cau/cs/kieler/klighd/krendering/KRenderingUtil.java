@@ -96,7 +96,7 @@ public final class KRenderingUtil {
      * @return the requested {@link KPlacementData}
      */
     public static KPlacementData getPlacementData(final KRendering rendering) {
-        if (rendering.getPlacementData() != null) {
+        if (rendering != null && rendering.getPlacementData() != null) {
             return rendering.getPlacementData();
         } else if (PACKAGE.getKRenderingRef().isInstance(rendering)) {
             // ... and the ref doesn't contain explicit placement data
