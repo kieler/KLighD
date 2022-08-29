@@ -52,7 +52,7 @@
   <!-- Define a few properties used throughout all build profiles. -->
   <properties>
     <tycho-version>1.7.0</tycho-version>
-    <targetJdk>1.8</targetJdk>
+    <targetJdk>11</targetJdk>
     <xtext-version>2.22.0</xtext-version>
     <elk-version>0.8.1</elk-version>
 
