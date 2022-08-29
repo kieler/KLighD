@@ -64,5 +64,10 @@ private Double num;
         this.name = NAME;
         this.num = num;
     }
+    
+    @Override
+    public String toString() {
+        return this.name + "(" + num + ")";
+    }
 
 }

@@ -31,7 +31,7 @@ public class GreaterThanConnective extends BinaryConnective {
      * @param leftOperand left operand
      * @param rightOperand right operand
      */
-    public GreaterThanConnective(SemanticFilterRule leftOperand, SemanticFilterRule rightOperand) {
+    public GreaterThanConnective(NumericResult leftOperand, NumericResult rightOperand) {
         this(leftOperand, rightOperand, null, null);
     }
     
@@ -41,7 +41,7 @@ public class GreaterThanConnective extends BinaryConnective {
      * @param rightOperand right operand
      * @param defaultValue the default value
      */
-    public GreaterThanConnective(SemanticFilterRule leftOperand, SemanticFilterRule rightOperand, Boolean defaultValue) {
+    public GreaterThanConnective(NumericResult leftOperand, NumericResult rightOperand, Boolean defaultValue) {
         this(leftOperand, rightOperand, defaultValue, null);
     }
     
@@ -51,7 +51,7 @@ public class GreaterThanConnective extends BinaryConnective {
      * @param rightOperand right operand
      * @param ruleName rule name
      */
-    public GreaterThanConnective(SemanticFilterRule leftOperand, SemanticFilterRule rightOperand, String ruleName) {
+    public GreaterThanConnective(NumericResult leftOperand, NumericResult rightOperand, String ruleName) {
         this(leftOperand, rightOperand, null, ruleName);
     }
     
@@ -62,11 +62,11 @@ public class GreaterThanConnective extends BinaryConnective {
      * @param defaultValue the default value
      * @param ruleName rule name
      */
-    public GreaterThanConnective(SemanticFilterRule leftOperand, SemanticFilterRule rightOperand, Boolean defaultValue, String ruleName) {
+    public GreaterThanConnective(NumericResult leftOperand, NumericResult rightOperand, Boolean defaultValue, String ruleName) {
         super(defaultValue, ruleName);
         this.name = NAME;
-        this.leftOperand = leftOperand;
-        this.rightOperand = rightOperand;
+        this.leftOperand = (SemanticFilterRule) leftOperand;
+        this.rightOperand = (SemanticFilterRule) rightOperand;
     }
 
 }

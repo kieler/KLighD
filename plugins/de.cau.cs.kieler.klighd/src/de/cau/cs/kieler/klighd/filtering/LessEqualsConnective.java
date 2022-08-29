@@ -33,7 +33,7 @@ protected static final String NAME = "LESSEQUALS";
  * @param leftOperand left operand
  * @param rightOperand right operand
  */
-public LessEqualsConnective(SemanticFilterRule leftOperand, SemanticFilterRule rightOperand) {
+public LessEqualsConnective(NumericResult leftOperand, NumericResult rightOperand) {
     this(leftOperand, rightOperand, null, null);
 }
 
@@ -43,7 +43,7 @@ public LessEqualsConnective(SemanticFilterRule leftOperand, SemanticFilterRule r
  * @param rightOperand right operand
  * @param defaultValue the default value
  */
-public LessEqualsConnective(SemanticFilterRule leftOperand, SemanticFilterRule rightOperand, Boolean defaultValue) {
+public LessEqualsConnective(NumericResult leftOperand, NumericResult rightOperand, Boolean defaultValue) {
     this(leftOperand, rightOperand, defaultValue, null);
 }
 
@@ -53,7 +53,7 @@ public LessEqualsConnective(SemanticFilterRule leftOperand, SemanticFilterRule r
  * @param rightOperand right operand
  * @param ruleName rule name
  */
-public LessEqualsConnective(SemanticFilterRule leftOperand, SemanticFilterRule rightOperand, String ruleName) {
+public LessEqualsConnective(NumericResult leftOperand, NumericResult rightOperand, String ruleName) {
     this(leftOperand, rightOperand, null, ruleName);
 }
 
@@ -64,11 +64,11 @@ public LessEqualsConnective(SemanticFilterRule leftOperand, SemanticFilterRule r
  * @param defaultValue the default value
  * @param ruleName rule name
  */
-public LessEqualsConnective(SemanticFilterRule leftOperand, SemanticFilterRule rightOperand, Boolean defaultValue, String ruleName) {
+public LessEqualsConnective(NumericResult leftOperand, NumericResult rightOperand, Boolean defaultValue, String ruleName) {
     super(defaultValue, ruleName);
     this.name = NAME;
-    this.leftOperand = leftOperand;
-    this.rightOperand = rightOperand;
+    this.leftOperand = (SemanticFilterRule) leftOperand;
+    this.rightOperand = (SemanticFilterRule) rightOperand;
 }
 
 }
