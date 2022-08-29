@@ -31,7 +31,7 @@ public class NumericEqualConnective extends BinaryConnective {
      * @param leftOperand left operand
      * @param rightOperand right operand
      */
-    public NumericEqualConnective(SemanticFilterRule leftOperand, SemanticFilterRule rightOperand) {
+    public NumericEqualConnective(NumericResult leftOperand, NumericResult rightOperand) {
         this(leftOperand, rightOperand, null, null);
     }
     
@@ -41,7 +41,7 @@ public class NumericEqualConnective extends BinaryConnective {
      * @param rightOperand right operand
      * @param defaultValue the default value
      */
-    public NumericEqualConnective(SemanticFilterRule leftOperand, SemanticFilterRule rightOperand, Boolean defaultValue) {
+    public NumericEqualConnective(NumericResult leftOperand, NumericResult rightOperand, Boolean defaultValue) {
         this(leftOperand, rightOperand, defaultValue, null);
     }
     
@@ -51,7 +51,7 @@ public class NumericEqualConnective extends BinaryConnective {
      * @param rightOperand right operand
      * @param ruleName rule name
      */
-    public NumericEqualConnective(SemanticFilterRule leftOperand, SemanticFilterRule rightOperand, String ruleName) {
+    public NumericEqualConnective(NumericResult leftOperand, NumericResult rightOperand, String ruleName) {
         this(leftOperand, rightOperand, null, ruleName);
     }
     
@@ -62,11 +62,11 @@ public class NumericEqualConnective extends BinaryConnective {
      * @param defaultValue the default value
      * @param ruleName rule name
      */
-    public NumericEqualConnective(SemanticFilterRule leftOperand, SemanticFilterRule rightOperand, Boolean defaultValue, String ruleName) {
+    public NumericEqualConnective(NumericResult leftOperand, NumericResult rightOperand, Boolean defaultValue, String ruleName) {
         super(defaultValue, ruleName);
         this.name = NAME;
-        this.leftOperand = leftOperand;
-        this.rightOperand = rightOperand;
+        this.leftOperand = (SemanticFilterRule) leftOperand;
+        this.rightOperand = (SemanticFilterRule) rightOperand;
     }
 
 }

@@ -32,7 +32,7 @@ protected static final String NAME = "GREATEREQUALS";
  * @param leftOperand left operand
  * @param rightOperand right operand
  */
-public GreaterEqualsConnective(SemanticFilterRule leftOperand, SemanticFilterRule rightOperand) {
+public GreaterEqualsConnective(NumericResult leftOperand, NumericResult rightOperand) {
     this(leftOperand, rightOperand, null, null);
 }
 
@@ -42,7 +42,7 @@ public GreaterEqualsConnective(SemanticFilterRule leftOperand, SemanticFilterRul
  * @param rightOperand right operand
  * @param defaultValue the default value
  */
-public GreaterEqualsConnective(SemanticFilterRule leftOperand, SemanticFilterRule rightOperand, Boolean defaultValue) {
+public GreaterEqualsConnective(NumericResult leftOperand, NumericResult rightOperand, Boolean defaultValue) {
     this(leftOperand, rightOperand, defaultValue, null);
 }
 
@@ -52,7 +52,7 @@ public GreaterEqualsConnective(SemanticFilterRule leftOperand, SemanticFilterRul
  * @param rightOperand right operand
  * @param ruleName rule name
  */
-public GreaterEqualsConnective(SemanticFilterRule leftOperand, SemanticFilterRule rightOperand, String ruleName) {
+public GreaterEqualsConnective(NumericResult leftOperand, NumericResult rightOperand, String ruleName) {
     this(leftOperand, rightOperand, null, ruleName);
 }
 
@@ -63,11 +63,11 @@ public GreaterEqualsConnective(SemanticFilterRule leftOperand, SemanticFilterRul
  * @param defaultValue the default value
  * @param ruleName rule name
  */
-public GreaterEqualsConnective(SemanticFilterRule leftOperand, SemanticFilterRule rightOperand, Boolean defaultValue, String ruleName) {
+public GreaterEqualsConnective(NumericResult leftOperand, NumericResult rightOperand, Boolean defaultValue, String ruleName) {
     super(defaultValue, ruleName);
     this.name = NAME;
-    this.leftOperand = leftOperand;
-    this.rightOperand = rightOperand;
+    this.leftOperand = (SemanticFilterRule) leftOperand;
+    this.rightOperand = (SemanticFilterRule) rightOperand;
 }
 
 }
