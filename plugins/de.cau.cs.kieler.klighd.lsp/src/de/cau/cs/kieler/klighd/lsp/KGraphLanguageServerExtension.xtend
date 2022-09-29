@@ -180,17 +180,19 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
      * @return A list of the IDs and displayable names of all available syntheses.
      */
     def List<SetSynthesesActionData> getAvailableSynthesesData(Class<?> currentModelClass) {
-        val KlighdDataManager kdm = KlighdDataManager.instance
-        return kdm.getAvailableSyntheses(currentModelClass).map [
-            val synthesisId = kdm.getSynthesisID(it)
-            var displayedName = ""
-            if (it instanceof ReinitializingDiagramSynthesisProxy) {
-                displayedName = it.delegate.class.simpleName
-            } else {
-                displayedName = it.class.simpleName
-            }
-            return new SetSynthesesActionData(synthesisId, displayedName)
-        ].toList
+        synchronized (diagramState) {
+            val KlighdDataManager kdm = KlighdDataManager.instance
+            return kdm.getAvailableSyntheses(currentModelClass).map [
+                val synthesisId = kdm.getSynthesisID(it)
+                var displayedName = ""
+                if (it instanceof ReinitializingDiagramSynthesisProxy) {
+                    displayedName = it.delegate.class.simpleName
+                } else {
+                    displayedName = it.class.simpleName
+                }
+                return new SetSynthesesActionData(synthesisId, displayedName)
+            ].toList
+        }
     }
     
     override setSynthesisOptions(SetSynthesisOptionsParam param) {
@@ -381,11 +383,19 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
                 && stepSize.equals(stepSize.intValue())
                 && initialValue.equals(initialValue.intValue())) {
                 // The option contains an Integer
-                viewContext.configureOption(option, Integer.parseInt(value as String))
+                if (value instanceof Double) {
+                    viewContext.configureOption(option, Math.round(value))
+                } else {
+                    viewContext.configureOption(option, Integer.parseInt(value as String))
+                }
                 return
             } else {
                 // The option contains a Float
-                viewContext.configureOption(option, Float.parseFloat(value as String))
+                if (value instanceof Double) {
+                    viewContext.configureOption(option, value)
+                } else {
+                    viewContext.configureOption(option, Float.parseFloat(value as String))
+                }
                 return
             }
         } else {
@@ -428,10 +438,12 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
             // With that new diagram server, do a similar procedure to generate a diagram as for usual diagrams (except,
             // use the 'model' as its model.
             if (diagramUpdater instanceof KGraphDiagramUpdater) {
-                (diagramUpdater as KGraphDiagramUpdater).prepareModel(diagramServer, model, uri)
-                AbstractLanguageServer.addToMainThreadQueue([
-                    (diagramUpdater as KGraphDiagramUpdater).updateLayout(diagramServer)
-                ])
+                synchronized (diagramState) {
+                    (diagramUpdater as KGraphDiagramUpdater).prepareModel(diagramServer, model, uri)
+                    AbstractLanguageServer.addToMainThreadQueue([
+                        (diagramUpdater as KGraphDiagramUpdater).updateLayout(diagramServer)
+                    ])
+                }
                 // Also, update the syntheses available for the given diagram.
                 if (!update) {
                     val availableSynthesesData = getAvailableSynthesesData(model.class)

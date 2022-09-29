@@ -553,6 +553,8 @@ public class DiagramController {
         }
 
         final KNodeAbstractNode clip = getClipNode();
+        // use the camera's non-adjusted viewBounds here, not 'canvasCamera.getViewBoundsAdjustedByClipNodeScale()',
+        //  since the clip node scaling is ignored by 'NodeUtil.clipRelativeGlobalBoundsOf(p, clip)' below as well!
         final PBounds camBounds = canvasCamera.getViewBounds();
         final PBounds elemFullBounds = NodeUtil.clipRelativeGlobalBoundsOf(p, clip);
         return elemFullBounds != null && elemFullBounds.intersects(camBounds);

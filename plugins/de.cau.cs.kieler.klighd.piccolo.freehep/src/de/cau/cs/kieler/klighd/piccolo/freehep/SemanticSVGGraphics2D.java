@@ -860,7 +860,8 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
 
         final AffineTransform textOffset = new AffineTransform(1, 0, 0, 1, x, y);
         textOffset.concatenate(getTransform());
-        final boolean isSingleLine = str.indexOf('\n') == -1;
+        final String[] lines = str.split("\\r?\\n|\\r");
+        final boolean isSingleLine = lines.length <= 1;
         os.println(
             isSingleLine
                 ? getTransformedString(
@@ -870,7 +871,7 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
                         // font transformation and text
                         getFont().getTransform(),
                         getTextsString(
-                            str, style,
+                            lines, style,
                             // indentation
                             textOffset.isIdentity() ? "" : "  "
                         )
@@ -886,7 +887,7 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
                         // font transformation and text
                         getFont().getTransform(),
                         getTextsString(
-                            str, null /* properties are added to the group */,
+                            lines, null /* properties are added to the group */,
                             // indentation
                             "  "
                         )
@@ -897,8 +898,7 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
         resetSemanticData();
     }
 
-    private String getTextsString(String text, Properties style, String indentation) {
-        final String[] lines = text.split("\\r?\\n|\\r");
+    private String getTextsString(String[] lines, Properties style, String indentation) {
         final boolean isSingleLine = lines.length <= 1;
         final StringBuffer content = new StringBuffer();
 

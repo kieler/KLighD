@@ -24,6 +24,8 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.RGB;
 
+import com.google.common.collect.Lists;
+
 import de.cau.cs.kieler.klighd.IKlighdPreferenceStore;
 import de.cau.cs.kieler.klighd.KlighdPreferences;
 import de.cau.cs.kieler.klighd.piccolo.internal.KlighdCanvas;
@@ -31,6 +33,7 @@ import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMagnificationLensCam
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdPath;
 import edu.umd.cs.piccolo.PCamera;
+import edu.umd.cs.piccolo.PLayer;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.event.PInputEvent;
 import edu.umd.cs.piccolo.util.PAffineTransform;
@@ -153,8 +156,16 @@ public class KlighdMagnificationLensEventHandler extends KlighdBasicInputEventHa
 
     /**
      * Composes a {@link PAffineTransform} incorporating the lens magnification according to the
-     * corresponding preference setting, the inverse of the clip node's scaling, and event's mouse
-     * pointer position in terms the diagram coordinates (rather than canvas coordinates).
+     * corresponding preference setting and event's mouse pointer position in terms the
+     * diagram coordinates (rather than canvas coordinates).
+     * 
+     * Note that no attention need to be paid to the current diagram clip node's scale and offset.
+     * They're not applied while drawing them via the main camera, and since 'mainCamera' is
+     * the top element in the paintContext's cameraStack while drawing via 'lensCamera'
+     * (as its a transitive parent of 'lensCamera') KNodeNode#fullPaint(PPaintContext)
+     * will behave the same way as when called via 'mainCamera'.
+     * 
+     * See also {@link PCamera#fullPaint(edu.umd.cs.piccolo.util.PPaintContext)}.
      * 
      * @param event
      *            the {@link PInputEvent} to get the diagram position from
@@ -167,9 +178,6 @@ public class KlighdMagnificationLensEventHandler extends KlighdBasicInputEventHa
         final float scale = STORE.getFloat(KlighdPreferences.MAGNIFICATION_LENS_SCALE) / 100f;
         viewTransform.scale(scale, scale);
 
-        final double clipScale = mainCamera.getDisplayedKNodeNode().getScale();
-        viewTransform.scale(1 / clipScale, 1 / clipScale);
-        
         final Point2D pos = event.getPosition();
         viewTransform.translate(-pos.getX(), -pos.getY());
         return viewTransform;
@@ -188,7 +196,7 @@ public class KlighdMagnificationLensEventHandler extends KlighdBasicInputEventHa
             lensCamera.getParent().setOffset(determineLensOffset(event));            
             lensCamera.setViewTransform(createViewTransform(event));
 
-            lensCamera.getLayersReference().clear();
+            detachCameraFromLayers();
             lensCamera.addLayer(mainCamera.getDisplayedKNodeNode());
             lensVisible = true;
             lensCamera.getParent().setVisible(true);
@@ -203,10 +211,10 @@ public class KlighdMagnificationLensEventHandler extends KlighdBasicInputEventHa
 
             lensCamera.getParent().setVisible(false);
             lensVisible = false;
-            lensCamera.getLayersReference().clear();
+            detachCameraFromLayers();
         }
     }
-    
+
     @Override
     public void mouseMoved(final PInputEvent event) {
         if (event.isAltDown() && event.isControlDown()) {
@@ -221,7 +229,17 @@ public class KlighdMagnificationLensEventHandler extends KlighdBasicInputEventHa
 
             lensCamera.getParent().setVisible(false);
             lensVisible = false;
-            lensCamera.getLayersReference().clear();
+            detachCameraFromLayers();
         }
+    }
+
+    private void detachCameraFromLayers() {
+        @SuppressWarnings("unchecked")
+        final Iterable<PLayer> layers = Lists.reverse(
+            Lists.<PLayer>newArrayList(lensCamera.getLayersReference())
+        );
+
+        for (PLayer layer : layers)
+            lensCamera.removeLayer(layer);
     }
 }

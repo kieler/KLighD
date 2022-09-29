@@ -71,11 +71,11 @@
       </action>
    </extension>
    <extension
-         point="org.eclipse.elk.core.layoutProviders">
-      <provider
-            class="de.cau.cs.kieler.klighd.KlighdOptions">
-      </provider>
-
+         point="de.cau.cs.kieler.klighd.extensions">
+      <startupHook
+            class="de.cau.cs.kieler.klighd.KlighdSetup"
+            id="de.cau.cs.kieler.klighd.KlighdSetup">
+      </startupHook>
    </extension>
 
 </plugin>

@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: KIELER Lightweight Diagrams as Language Server
 Bundle-SymbolicName: de.cau.cs.kieler.klighd.lsp;singleton:=true
-Bundle-Version: 2.1.1.qualifier
+Bundle-Version: 2.2.1.qualifier
 Bundle-ClassPath: .
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: de.cau.cs.kieler.klighd.lsp,
@@ -21,7 +21,6 @@ Require-Bundle: de.cau.cs.kieler.kgraph.text,
  de.cau.cs.kieler.klighd,
  de.cau.cs.kieler.klighd.ide,
  de.cau.cs.kieler.klighd.kgraph,
- de.cau.cs.kieler.klighd.krendering.extensions,
  de.cau.cs.kieler.klighd.standalone,
  com.google.gson;bundle-version="2.8.2",
  com.google.inject;bundle-version="3.0.0",

@@ -326,7 +326,8 @@ public class SynthesisOptionControlFactory {
         // Create category container for diagram synthesis options
         Section categorySection = formToolkit.createSection(parent,
                 Section.CLIENT_INDENT | Section.NO_TITLE_FOCUS_BOX | Section.TWISTIE);
-
+        
+        categorySection.setToolTipText(option.getDescription());
         if (option.getName() != null && !option.getName().isEmpty()) {
             categorySection.setText(option.getName());
         } else {
@@ -406,7 +407,7 @@ public class SynthesisOptionControlFactory {
             final ViewContext context) {
 
         final Button checkButton = formToolkit.createButton(parent, option.getName(), SWT.CHECK);
-        checkButton.setToolTipText(option.getName());
+        checkButton.setToolTipText(option.getDescription());
         controls.add(checkButton);
 
         // set initial value
@@ -462,7 +463,8 @@ public class SynthesisOptionControlFactory {
         controls.add(valuesContainer);
 
         // add the radio group label ...
-        formToolkit.createLabel(valuesContainer, option.getName() + ":");
+        Label label = formToolkit.createLabel(valuesContainer, option.getName() + ":");
+        label.setToolTipText(option.getDescription());
         
         // ... and a radio button for each possible value
         GridData vGd;
@@ -472,7 +474,7 @@ public class SynthesisOptionControlFactory {
             
             // create the button ...
             final Button button = formToolkit.createButton(valuesContainer, value.toString(), SWT.RADIO);
-            button.setToolTipText(value.toString());
+            button.setToolTipText(option.getDescription());;
             button.setLayoutData(vGd);
 
             final String us = option.getUpdateStrategy();
@@ -533,12 +535,13 @@ public class SynthesisOptionControlFactory {
         
         // add the label ...
         final Label label = formToolkit.createLabel(container, "");
+        label.setToolTipText(option.getDescription());
         
         // ... and the scaler for choosing the value
         final Scale scale = new Scale(container, SWT.NONE);
         // the following setting is needed on windows
         scale.setBackground(container.getBackground());
-        scale.setToolTipText(option.getName());
+        scale.setToolTipText(option.getDescription());
 
         // configure its layout, esp. the minimal width and the 'grab additional space' 
         final GridData gridData = new GridData(SWT.FILL, SWT.CENTER, true, false);
@@ -678,9 +681,11 @@ public class SynthesisOptionControlFactory {
         
         // add the label ...
         final Label label = formToolkit.createLabel(container, "");
+        label.setToolTipText(option.getDescription());
         
         // ... and the text box for choosing the value
         final Text text = formToolkit.createText(container, (String) context.getOptionValue(option));
+        text.setToolTipText(option.getDescription());
 
         // configure its layout
         final GridData gridData = new GridData(SWT.FILL, SWT.CENTER, true, false);

@@ -1049,7 +1049,14 @@ public final class PlacementUtil {
      * @return the minimal bounds for the string
      */
     public static Bounds estimateTextSize(final FontData fontData, final String text) {
-        final Display display = Display.getCurrent();
+        Display display = null;
+        try {
+            display = Display.getCurrent();
+        } catch (Throwable t) {
+            // Show the error, but continue as normal with the AWT fallback.
+            t.printStackTrace();
+        }
+        
         // if a GC has been instantiated before or a display is available.
         if (gc != null || display != null) {
             return estimateTextSizeSWT(fontData, text, display);
