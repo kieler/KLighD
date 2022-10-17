@@ -140,4 +140,103 @@ class DeleteLayerConstraintAction implements Action {
     new(Consumer<DeleteLayerConstraintAction> initializer) {
         initializer.accept(this)
     }
+}/**
+ * Sets a 'in layer predecessor of'-constraint for a node.
+ * 
+ * @author jet
+ */
+@Accessors
+@EqualsHashCode
+@ToString(skipNulls = true)
+class SetILPredOfConstraintAction implements Action {
+    public static val KIND = 'setILPredOfConstraint'
+    String kind = KIND
+    
+    ILPredOfConstraint constraint
+    
+    new() {}
+    new(Consumer<SetILPredOfConstraintAction> initializer) {
+        initializer.accept(this)
+    }
 }
+
+/**
+ * Sets a 'in layer successor of'-constraint for a node.
+ * 
+ * @author jet
+ */
+@Accessors
+@EqualsHashCode
+@ToString(skipNulls = true)
+class SetILSuccOfConstraintAction implements Action {
+    public static val KIND = 'setILSuccOfConstraint'
+    String kind = KIND
+    
+    ILSuccOfConstraint constraint
+    
+    new() {}
+    new(Consumer<SetILSuccOfConstraintAction> initializer) {
+        initializer.accept(this)
+    }
+}
+
+/**
+ * Deletes the relative constraints on the node that is identified by the given id.
+ * 
+ * @author jet
+ */
+@Accessors
+@EqualsHashCode
+@ToString(skipNulls = true)
+class DeleteRelativeConstraintsAction implements Action {
+    public static val KIND = 'deleteRelativeConstraints'
+    String kind = KIND
+    
+    DeleteConstraint constraint
+    
+    new() {}
+    new(Consumer<DeleteRelativeConstraintsAction> initializer) {
+        initializer.accept(this)
+    }
+}
+
+/**
+ * Deletes the iLPredOf constraint on the node that is identified by the given id.
+ * 
+ * @author jet
+ */
+@Accessors
+@EqualsHashCode
+@ToString(skipNulls = true)
+class DeleteILPredOfConstraintAction implements Action {
+    public static val KIND = 'deleteILPredOfConstraint'
+    String kind = KIND
+    
+    DeleteConstraint constraint
+    
+    new() {}
+    new(Consumer<DeleteILPredOfConstraintAction> initializer) {
+        initializer.accept(this)
+    }
+}
+
+/**
+ * Deletes the iLSuccOf constraint on the node that is identified by the given id.
+ * 
+ * @author jet
+ */
+@Accessors
+@EqualsHashCode
+@ToString(skipNulls = true)
+class DeleteILSuccOfConstraintAction implements Action {
+    public static val KIND = 'deleteILSuccOfConstraint'
+    String kind = KIND
+    
+    DeleteConstraint constraint
+    
+    new() {}
+    new(Consumer<DeleteILSuccOfConstraintAction> initializer) {
+        initializer.accept(this)
+    }
+}
+

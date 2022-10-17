@@ -8,11 +8,7 @@
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
  * 
- * This program and the accompanying materials are made available under the
- * terms of the Eclipse Public License 2.0 which is available at
- * http://www.eclipse.org/legal/epl-2.0.
- *
- * SPDX-License-Identifier: EPL-2.0
+ * This code is provided under the terms of the Eclipse Public License (EPL).
  */
 package de.cau.cs.kieler.klighd.lsp.interactive
 
@@ -24,6 +20,9 @@ import org.eclipse.elk.alg.rectpacking.options.RectPackingOptions
 import org.eclipse.elk.core.options.CoreOptions
 import org.eclipse.elk.graph.ElkNode
 import org.eclipse.elk.graph.properties.IProperty
+//import de.cau.cs.kieler.annotations.Annotatable
+//import de.cau.cs.kieler.annotations.TypedStringAnnotation
+//import de.cau.cs.kieler.annotations.AnnotationsFactory
 
 /**
  * Provides utility methods for interactive layout.
@@ -82,6 +81,45 @@ class InteractiveUtil {
             }
         }
     }
+    
+    /**
+     * Copies an arbitrary IProperty of a KNode to a State if the value on the KNode 
+     * is different to the value on the State.
+     * If the new value on the KNode was the default value of the property 
+     * then the property is set to null on the State.
+     * @param state The target sate
+     * @param kNode The source KNode of the property
+     * @param annotation The annotation that should be set
+     * @param prop Determines which IProperty should be copied
+     */
+     // FIXME
+//    static def <T> copyConstraintAnnotations(Annotatable state, KNode kNode, String annotation, IProperty<T> prop) {
+//        val String value = "" + kNode.getProperty(prop)
+//        
+//        val anns = state.getAnnotations().filter(TypedStringAnnotation)
+//
+//        // remove old annotation if it exists
+//        var TypedStringAnnotation removeA = null
+//        for (ann : anns) {
+//            if (ann.type.equals(annotation)) {
+//                removeA = ann
+//            }
+//        }
+//        if (removeA !== null) {
+//            state.annotations.remove(removeA)
+//        }
+//        
+//        // add annotation with new value if the value is not the default one
+//        if (kNode.getProperty(prop) !== null && !kNode.getProperty(prop).equals(prop.^default)) {
+//            var newA = AnnotationsFactory::eINSTANCE.createTypedStringAnnotation => [
+//                it.name = "layout"
+//                it.type = annotation
+//                it.values += value
+//            ]
+//            state.annotations.add(newA)    
+//        }
+//        
+//    }
 
     /**
      * Copies constraint properties depending on the algorithm from kNode to elkNode 
@@ -90,23 +128,46 @@ class InteractiveUtil {
      * @param elkNode The target ElkNode
      * @param kNode The source KNode of the property
      */
-    static def copyAllConstraints(ElkNode elkNode, KNode kNode) {
+    static def copyAllConstraints(Object node, KNode kNode) {
         val algorithm = kNode.parent.getProperty(CoreOptions.ALGORITHM)
+        
         var List<IProperty<?>> props = #[]
-        if(algorithm === null || algorithm == 'layered') {
+        var List<String> annos = #[]
+        if(algorithm === null || algorithm == 'layered' || algorithm == 'org.eclipse.elk.layered') {
             props = #[
                 LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT,
-                LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT
+                LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT,
+                LayeredOptions.CROSSING_MINIMIZATION_IN_LAYER_PRED_OF,
+                LayeredOptions.CROSSING_MINIMIZATION_IN_LAYER_SUCC_OF
+            ]
+            annos = #[
+                "layering.layerChoiceConstraint",
+                "crossingMinimization.positionChoiceConstraint",
+                "crossingMinimization.inLayerPredOf",
+                "crossingMinimization.inLayerSuccOf"
             ]
         } else if ("rectpacking".equals(algorithm)) {
             props = #[
                 RectPackingOptions.DESIRED_POSITION,
                 RectPackingOptions.ASPECT_RATIO
             ]
+            annos = #[
+                "desiredPosition",
+                "aspectRatio"
+            ]
         }
-        for (prop : props) {
-            copyConstraintProp(elkNode, kNode, prop)
+            
+        if (node instanceof ElkNode) {
+            for (prop : props) {
+                copyConstraintProp(node, kNode, prop)
+            }
         }
+        // FIXME 
+//        else if (node instanceof Annotatable) {
+//            for (var i = 0; i< annos.size; i++) {
+//                copyConstraintAnnotations(node, kNode, annos.get(i), props.get(i))
+//            }
+//        }
     }
 
     /**
@@ -122,4 +183,69 @@ class InteractiveUtil {
         }
         return parent
     }
+    
+    /**
+     * Determines the nodes that are connected to {@code node} by relative constraints.
+     * The returned list of nodes is sorted based on the position of the nodes.
+     * 
+     * @param node One node of the chain
+     * @param layerNodes Nodes that are in the same layer as {@code node}
+     */
+    static def getChain(KNode node, List<KNode> layerNodes) {
+        var pos = layerNodes.indexOf(node)
+        var chainNodes = new ArrayList<KNode>();
+        chainNodes.add(node)
+        
+        // from node to the start
+        for (var i = pos - 1; i >= 0; i--) {
+            if (layerNodes.get(i).getProperty(LayeredOptions.CROSSING_MINIMIZATION_IN_LAYER_PRED_OF) !== null
+                || layerNodes.get(i + 1).getProperty(LayeredOptions.CROSSING_MINIMIZATION_IN_LAYER_SUCC_OF) !== null) {
+                    chainNodes.add(0, layerNodes.get(i))
+            } else {
+                i = -1
+            }
+        }
+        
+        // count from node to the end
+        for (var i = pos + 1; i < layerNodes.size; i++) {
+            if (layerNodes.get(i).getProperty(LayeredOptions.CROSSING_MINIMIZATION_IN_LAYER_SUCC_OF) !== null
+                || layerNodes.get(i - 1).getProperty(LayeredOptions.CROSSING_MINIMIZATION_IN_LAYER_PRED_OF) !== null) {
+                    chainNodes.add(layerNodes.get(i))
+            } else {
+                i = layerNodes.size
+            }
+        }
+        
+        return chainNodes
+    }
+    
+        
+    /**
+     * Checks whether the nodes of {@code chain1} and the nodes {@code chain2} can be merged to one chain
+     * 
+     * @param chain1 One of the two chains.
+     * @param chain2 Other one of the two chains.
+     */
+    static def isMergeImpossible(List<KNode> chain1, List<KNode> chain2) {
+        var connectedNodes = new ArrayList<KNode>()
+        for (n : chain1) {
+            var edges = n.outgoingEdges
+            for (e : edges) {
+                connectedNodes.add(e.target)
+            }
+            edges = n.incomingEdges
+            for (e : edges) {
+                connectedNodes.add(e.source)
+            }
+        }
+        
+        for (n : connectedNodes) {
+            if (chain2.contains(n)) {
+                return true
+            }
+        }
+        
+        return false
+    }
+    
 }

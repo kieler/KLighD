@@ -3,7 +3,7 @@
  * 
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright 2019, 2020 by
+ * Copyright 2019-2022 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -29,7 +29,7 @@ import org.eclipse.xtend.lib.annotations.Accessors
  * Class to reevaluate constraint set for the layered algorithm since they may become obsolete or have to be changed
  * if some node is moved.
  * 
- * @author cos, sdo
+ * @author cos, sdo, jep
  */
 class LayeredConstraintReevaluation {
 
@@ -53,15 +53,15 @@ class LayeredConstraintReevaluation {
      */
     def reevaluatePositionConstraintsAfterLayerSwap(List<KNode> newNodesOfLayer, List<KNode> oldNodesOfLayer, KNode target,
         int newPos) {
-
+        val chainLength = InteractiveUtil.getChain(target, oldNodesOfLayer).size
         // formerLayer != newLayer -- should always be true - it doesn't cause errors if it's not, though.
         // The node is "deleted" from its old layer if it had a position constraint the old layer 
         // needs to be reevaluated
-        offsetPosConstraintsOfLayerFrom(oldNodesOfLayer, -1,
+        offsetPosConstraintsOfLayerFrom(oldNodesOfLayer, -chainLength,
             target.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_ID), target)
 
         // The node is added at the new position in the new layer.
-        offsetPosConstraintsOfLayerFrom(newNodesOfLayer, 1, newPos, target)
+        offsetPosConstraintsOfLayerFrom(newNodesOfLayer, chainLength, newPos, target)
     }
 
     /**
@@ -74,15 +74,16 @@ class LayeredConstraintReevaluation {
     def reevaluatePositionConstraintsAfterPosChangeInLayer(List<KNode> nodesOfLayer, KNode target, int newPos) {
         val oldPos = target.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_ID)
 
+        val chainLength = InteractiveUtil.getChain(target, nodesOfLayer).size
         if (newPos < oldPos) {
             // new position constraint is above the old position
             // increment all position constraints of nodes that weren't below the target beforehand
-            offsetPosConstraintsOfLayerFromTo(nodesOfLayer, 1, newPos, oldPos, target)
+            offsetPosConstraintsOfLayerFromTo(nodesOfLayer, chainLength, newPos, oldPos, target)
 
         } else {
             // oldPos < newPos new position constraint is below the old position
             // Decrement all position constraints of nodes that weren't above the target beforehand
-            offsetPosConstraintsOfLayerFromTo(nodesOfLayer, -1, oldPos, newPos, target)
+            offsetPosConstraintsOfLayerFromTo(nodesOfLayer, -chainLength, oldPos, newPos, target)
         }
     }
 
@@ -231,5 +232,37 @@ class LayeredConstraintReevaluation {
      */
     def private offsetPosConstraintsOfLayerFrom(List<KNode> layer, int offset, int startPos, KNode target) {
         offsetPosConstraintsOfLayerFromTo(layer, offset, startPos, layer.length - 1, target)
+    }
+    
+    /**
+     * Updates position constraints of the moved node and the one in its chain.
+     * 
+     * @param node The moved node.
+     * @param newPos The new position of the moved node
+     * @param chain The chain of {@code node}
+     */
+    def reevaluatePosConsInChain(KNode node, int newPos, List<KNode> chain) {
+        val offset = chain.indexOf(node)
+        for (var i = 0; i < chain.size; i++) {
+            val n = chain.get(i)
+            if (n.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT) !== -1) {
+                val pos = newPos - (offset - i)
+                changedNodes.put(new ConstraintProperty(n, LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT), pos)
+            }
+        }
+    }
+    
+    /**
+     * Updates layer constraint of the moved node and all other nodes in the chain to the layer of the target.
+     * 
+     * @param layer New value of the layer constraints
+     * @chain Nodes of the chain the moved node is in
+     */
+    def reevaluateLayerConstraintsInChain(int layer, List<KNode> chain) {
+        for (n : chain) {
+            if (n.getProperty(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT) != -1) {
+                changedNodes.put(new ConstraintProperty(n, LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT), layer)
+            }
+        }
     }
 }

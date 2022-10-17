@@ -3,7 +3,7 @@
  *
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright 2018-2021 by
+ * Copyright 2018-2022 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -18,9 +18,14 @@ package de.cau.cs.kieler.klighd.lsp.gson_utils
 
 import com.google.gson.GsonBuilder
 import de.cau.cs.kieler.klighd.SynthesisOption
+import de.cau.cs.kieler.klighd.lsp.interactive.layered.DeleteILPredOfConstraintAction
+import de.cau.cs.kieler.klighd.lsp.interactive.layered.DeleteILSuccOfConstraintAction
 import de.cau.cs.kieler.klighd.lsp.interactive.layered.DeleteLayerConstraintAction
 import de.cau.cs.kieler.klighd.lsp.interactive.layered.DeletePositionConstraintAction
+import de.cau.cs.kieler.klighd.lsp.interactive.layered.DeleteRelativeConstraintsAction
 import de.cau.cs.kieler.klighd.lsp.interactive.layered.DeleteStaticConstraintAction
+import de.cau.cs.kieler.klighd.lsp.interactive.layered.SetILPredOfConstraintAction
+import de.cau.cs.kieler.klighd.lsp.interactive.layered.SetILSuccOfConstraintAction
 import de.cau.cs.kieler.klighd.lsp.interactive.layered.SetLayerConstraintAction
 import de.cau.cs.kieler.klighd.lsp.interactive.layered.SetPositionConstraintAction
 import de.cau.cs.kieler.klighd.lsp.interactive.layered.SetStaticConstraintAction
@@ -61,6 +66,13 @@ class KGraphTypeAdapterUtil {
                 addActionKind(DeleteStaticConstraintAction.KIND, DeleteStaticConstraintAction)
                 addActionKind(DeletePositionConstraintAction.KIND, DeletePositionConstraintAction)
                 addActionKind(DeleteLayerConstraintAction.KIND, DeleteLayerConstraintAction)
+                //relative constraints                
+                addActionKind(SetILPredOfConstraintAction.KIND, SetILPredOfConstraintAction)
+                addActionKind(SetILSuccOfConstraintAction.KIND, SetILSuccOfConstraintAction)
+                addActionKind(DeleteRelativeConstraintsAction.KIND, DeleteRelativeConstraintsAction)
+                addActionKind(DeleteILPredOfConstraintAction.KIND, DeleteILPredOfConstraintAction)
+                addActionKind(DeleteILSuccOfConstraintAction.KIND, DeleteILSuccOfConstraintAction)
+                
                 
                 // Interactive rectpacking actions
                 addActionKind(RectpackingSetPositionConstraintAction.KIND, RectpackingSetPositionConstraintAction)

@@ -3,7 +3,7 @@
  *
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright 2019, 2020 by
+ * Copyright 2019-2022 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -24,7 +24,7 @@ import org.eclipse.sprotty.Action
 /**
  * Handles all sprotty actions for the layered interactive algorithm.
  *
- * @author sdo
+ * @author sdo, jep
  */
 class LayeredInteractiveActionHandler extends AbstractActionHandler {
     
@@ -38,7 +38,12 @@ class LayeredInteractiveActionHandler extends AbstractActionHandler {
             SetLayerConstraintAction.KIND -> SetLayerConstraintAction,
             DeleteStaticConstraintAction.KIND -> DeleteStaticConstraintAction,
             DeletePositionConstraintAction.KIND -> DeletePositionConstraintAction,
-            DeleteLayerConstraintAction.KIND -> DeleteLayerConstraintAction
+            DeleteLayerConstraintAction.KIND -> DeleteLayerConstraintAction,
+            SetILPredOfConstraintAction.KIND -> SetILPredOfConstraintAction,
+            SetILSuccOfConstraintAction.KIND -> SetILSuccOfConstraintAction,
+            DeleteRelativeConstraintsAction.KIND -> DeleteRelativeConstraintsAction,
+            DeleteILPredOfConstraintAction.KIND -> DeleteILPredOfConstraintAction,
+            DeleteILSuccOfConstraintAction.KIND -> DeleteILSuccOfConstraintAction
         )
     }
     
@@ -66,6 +71,26 @@ class LayeredInteractiveActionHandler extends AbstractActionHandler {
         } else if (action instanceof DeleteLayerConstraintAction) {
             synchronized (server.modelLock) {
                 constraintLS.deleteLayerConstraint(action.constraint, clientId)
+            }
+        } else if (action instanceof SetILPredOfConstraintAction) {
+            synchronized (server.modelLock) {
+                constraintLS.setILPredOfConstraint(action.constraint, clientId)
+            }
+        } else if (action instanceof SetILSuccOfConstraintAction) {
+            synchronized (server.modelLock) {
+                constraintLS.setILSuccOfConstraint(action.constraint, clientId)
+            }
+        } else if (action instanceof DeleteRelativeConstraintsAction) {
+            synchronized (server.modelLock) {
+                constraintLS.deleteRelativeConstraints(action.constraint, clientId)
+            }
+        } else if (action instanceof DeleteILPredOfConstraintAction) {
+            synchronized (server.modelLock) {
+                constraintLS.deleteILPredOfConstraint(action.constraint, clientId)
+            }
+        } else if (action instanceof DeleteILSuccOfConstraintAction) {
+            synchronized (server.modelLock) {
+                constraintLS.deleteILSuccOfConstraint(action.constraint, clientId)
             }
         } else {
             throw new IllegalArgumentException("Action " + action.kind + " not supported by handler " +
