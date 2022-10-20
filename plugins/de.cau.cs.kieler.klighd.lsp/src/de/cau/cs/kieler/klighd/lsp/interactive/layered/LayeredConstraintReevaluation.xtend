@@ -34,7 +34,7 @@ import org.eclipse.xtend.lib.annotations.Accessors
 class LayeredConstraintReevaluation {
 
     @Accessors(PUBLIC_GETTER)
-    HashMap<ConstraintProperty, Integer> changedNodes = newHashMap()
+    HashMap<ConstraintProperty<Integer>, Integer> changedNodes = newHashMap()
     
     @Accessors(PUBLIC_GETTER)
     KNode target

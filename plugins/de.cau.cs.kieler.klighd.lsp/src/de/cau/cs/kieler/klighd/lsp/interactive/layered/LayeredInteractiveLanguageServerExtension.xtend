@@ -19,27 +19,27 @@ package de.cau.cs.kieler.klighd.lsp.interactive.layered
 import com.google.inject.Inject
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties
 import de.cau.cs.kieler.klighd.kgraph.KNode
+import de.cau.cs.kieler.klighd.kgraph.util.KGraphUtil
 import de.cau.cs.kieler.klighd.lsp.KGraphDiagramState
 import de.cau.cs.kieler.klighd.lsp.KGraphLanguageClient
 import de.cau.cs.kieler.klighd.lsp.KGraphLanguageServerExtension
 import de.cau.cs.kieler.klighd.lsp.LSPUtil
 import de.cau.cs.kieler.klighd.lsp.interactive.ConstraintProperty
 import de.cau.cs.kieler.klighd.lsp.interactive.InteractiveUtil
-import java.io.ByteArrayOutputStream
 import java.util.HashMap
 import java.util.List
-import java.util.Map
 import javax.inject.Singleton
 import org.eclipse.elk.alg.layered.options.LayeredOptions
 import org.eclipse.elk.graph.ElkNode
 import org.eclipse.elk.graph.properties.IProperty
-import org.eclipse.lsp4j.Position
-import org.eclipse.lsp4j.Range
-import org.eclipse.lsp4j.TextEdit
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.xtext.ide.server.ILanguageServerAccess
 import org.eclipse.xtext.ide.server.ILanguageServerExtension
-import de.cau.cs.kieler.klighd.lsp.interactive.RelativeConstraintProperty
+import org.eclipse.xtext.util.CancelIndicator
+import de.cau.cs.kieler.klighd.lsp.interactive.IConstraintSerializer
+import java.util.ServiceLoader
+import de.cau.cs.kieler.klighd.KlighdDataManager
+
 //import de.cau.cs.kieler.sccharts.impl.StateImpl
 
 /**
@@ -70,7 +70,7 @@ class LayeredInteractiveLanguageServerExtension implements ILanguageServerExtens
     def setILPredOfConstraint(ILPredOfConstraint cons, String clientId) {
         val uri = diagramState.getURIString(clientId)
         setRelativeConstraint(LayeredOptions.CROSSING_MINIMIZATION_IN_LAYER_PRED_OF, uri, cons.id,
-            cons.otherNode)
+            cons.otherNode, clientId)
     }
     
     /**
@@ -81,7 +81,7 @@ class LayeredInteractiveLanguageServerExtension implements ILanguageServerExtens
     def setILSuccOfConstraint(ILSuccOfConstraint cons, String clientId) {
         val uri = diagramState.getURIString(clientId)
         setRelativeConstraint(LayeredOptions.CROSSING_MINIMIZATION_IN_LAYER_SUCC_OF, uri, cons.id,
-            cons.otherNode)
+            cons.otherNode, clientId)
     }
     
     /**
@@ -94,9 +94,9 @@ class LayeredInteractiveLanguageServerExtension implements ILanguageServerExtens
         val kNode = getKNode(uri, dc.id)
         if (kNode !== null) {
             val changedNodes = newHashMap()
-            changedNodes.put(new RelativeConstraintProperty(kNode, LayeredOptions.CROSSING_MINIMIZATION_IN_LAYER_PRED_OF), null)
-            changedNodes.put(new RelativeConstraintProperty(kNode, LayeredOptions.CROSSING_MINIMIZATION_IN_LAYER_SUCC_OF), null)
-            refreshModelInEditorForRC(changedNodes, uri)
+            changedNodes.put(new ConstraintProperty(kNode, LayeredOptions.CROSSING_MINIMIZATION_IN_LAYER_PRED_OF), null)
+            changedNodes.put(new ConstraintProperty(kNode, LayeredOptions.CROSSING_MINIMIZATION_IN_LAYER_SUCC_OF), null)
+            refreshModelInEditor(newHashMap, changedNodes, KGraphUtil.getRootNodeOf(kNode), uri, clientId)
         }
     }
     
@@ -110,8 +110,8 @@ class LayeredInteractiveLanguageServerExtension implements ILanguageServerExtens
         val kNode = getKNode(uri, dc.id)
         if (kNode !== null) {
             val changedNodes = newHashMap()
-            changedNodes.put(new RelativeConstraintProperty(kNode, LayeredOptions.CROSSING_MINIMIZATION_IN_LAYER_PRED_OF), null)
-            refreshModelInEditorForRC(changedNodes, uri)
+            changedNodes.put(new ConstraintProperty(kNode, LayeredOptions.CROSSING_MINIMIZATION_IN_LAYER_PRED_OF), null)
+            refreshModelInEditor(newHashMap, changedNodes, KGraphUtil.getRootNodeOf(kNode), uri, clientId)
         }
     }
     
@@ -125,8 +125,8 @@ class LayeredInteractiveLanguageServerExtension implements ILanguageServerExtens
         val kNode = getKNode(uri, dc.id)
         if (kNode !== null) {
             val changedNodes = newHashMap()
-            changedNodes.put(new RelativeConstraintProperty(kNode, LayeredOptions.CROSSING_MINIMIZATION_IN_LAYER_SUCC_OF), null)
-            refreshModelInEditorForRC(changedNodes, uri)
+            changedNodes.put(new ConstraintProperty(kNode, LayeredOptions.CROSSING_MINIMIZATION_IN_LAYER_SUCC_OF), null)
+            refreshModelInEditor(newHashMap, changedNodes, KGraphUtil.getRootNodeOf(kNode), uri, clientId)
         }
     }
     
@@ -139,7 +139,7 @@ class LayeredInteractiveLanguageServerExtension implements ILanguageServerExtens
      * @param targetId The id of the node on which the constraint should be set.
      * @param node the id of the node to which the relation should be set.
      */
-    private def setRelativeConstraint(IProperty<String> property, String uri, String targetId, String node) {
+    private def setRelativeConstraint(IProperty<String> property, String uri, String targetId, String node, String clientId) {
         val kNode = LSPUtil.getKNode(diagramState, uri, targetId)
         val parentOfNode = kNode.parent
         
@@ -149,6 +149,7 @@ class LayeredInteractiveLanguageServerExtension implements ILanguageServerExtens
         val test = otherNode.getProperty(KlighdInternalProperties.MODEL_ELEMEMT)
         var value = ""
         // FIXME
+        // Add service interface to get id of node
 //        if (test instanceof StateImpl) {
 //            value = test.name
 //        } else
@@ -198,9 +199,6 @@ class LayeredInteractiveLanguageServerExtension implements ILanguageServerExtens
             }
 
             reval.reevaluatePosConsInChain(kNode, posCons, chain)
-            if (!reval.changedNodes.isEmpty) {
-                refreshModelInEditor(reval.changedNodes, uri)
-            }
             
             // update relative constraints
             if (layerSwap || posID !== kNode.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_ID)) {
@@ -208,8 +206,8 @@ class LayeredInteractiveLanguageServerExtension implements ILanguageServerExtens
                 relReval.reevaluateRelCons(kNode, posID, layerNodes, oldLayerNodes)
             }
             val relChangedNodes = relReval.changedNodes
-            relChangedNodes.put(new RelativeConstraintProperty(kNode, property), value)
-            refreshModelInEditorForRC(relChangedNodes, uri)
+            relChangedNodes.put(new ConstraintProperty(kNode, property), value)
+            refreshModelInEditor(reval.changedNodes, relChangedNodes, KGraphUtil.getRootNodeOf(kNode), uri, clientId)
         }
     }
 
@@ -220,7 +218,7 @@ class LayeredInteractiveLanguageServerExtension implements ILanguageServerExtens
      */
     def setLayerConstraint(LayerConstraint lc, String clientId) {
         val uri = diagramState.getURIString(clientId)
-        setConstraint(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT, uri, lc.id, lc.layer, lc.layerCons)
+        setConstraint(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT, uri, lc.id, lc.layer, lc.layerCons, clientId)
     }
 
     /**
@@ -231,7 +229,7 @@ class LayeredInteractiveLanguageServerExtension implements ILanguageServerExtens
     def setPositionConstraint(PositionConstraint pc, String clientId) {
         val uri = diagramState.getURIString(clientId)
         setConstraint(LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT, uri, pc.id,
-            pc.position, pc.posCons)
+            pc.position, pc.posCons, clientId)
     }
 
     /**
@@ -282,15 +280,12 @@ class LayeredInteractiveLanguageServerExtension implements ILanguageServerExtens
             changedNodes.put(new ConstraintProperty(kNode, LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT), newPosCons)
             changedNodes.put(new ConstraintProperty(kNode, LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT), newLayerCons)
             // Update source code of the model
-            refreshModelInEditor(changedNodes, uri)
             
             // update relative constraints
             var relReval = new RelativeConstraintReevaluation(kNode)
             relReval.reevaluateRelCons(kNode, newPosId, targetLayerNodes, oldLayerNodes)
             val relChangedNodes = relReval.changedNodes
-            if (!relChangedNodes.isEmpty) {
-                refreshModelInEditorForRC(relChangedNodes, uri)
-            }
+            refreshModelInEditor(changedNodes, relChangedNodes, KGraphUtil.getRootNodeOf(kNode), uri, clientId)
         }
     }
 
@@ -306,7 +301,7 @@ class LayeredInteractiveLanguageServerExtension implements ILanguageServerExtens
             val changedNodes = newHashMap()
             changedNodes.put(new ConstraintProperty(kNode, LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT), null)
             changedNodes.put(new ConstraintProperty(kNode, LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT), null)
-            refreshModelInEditor(changedNodes, uri)
+            refreshModelInEditor(changedNodes, newHashMap, KGraphUtil.getRootNodeOf(kNode), uri, clientId)
         }
     }
 
@@ -321,7 +316,7 @@ class LayeredInteractiveLanguageServerExtension implements ILanguageServerExtens
         if (kNode !== null) {
             val changedNodes = newHashMap()
             changedNodes.put(new ConstraintProperty(kNode, LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT), null)
-            refreshModelInEditor(changedNodes, uri)
+            refreshModelInEditor(changedNodes, newHashMap, KGraphUtil.getRootNodeOf(kNode), uri, clientId)
         }
     }
 
@@ -336,7 +331,7 @@ class LayeredInteractiveLanguageServerExtension implements ILanguageServerExtens
         if (kNode !== null) {
             val changedNodes = newHashMap()
             changedNodes.put(new ConstraintProperty(kNode, LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT), null)
-            refreshModelInEditor(changedNodes, uri)
+            refreshModelInEditor(changedNodes, newHashMap, KGraphUtil.getRootNodeOf(kNode), uri, clientId)
         }
     }
 
@@ -350,7 +345,7 @@ class LayeredInteractiveLanguageServerExtension implements ILanguageServerExtens
      * @param targetId The id of the node on which the constraint should be set.
      * @param value Either the id of the position or the id of the layer.
      */
-    private def setConstraint(IProperty<Integer> property, String uri, String targetId, int valueId, int valueCons) {
+    private def setConstraint(IProperty<Integer> property, String uri, String targetId, int valueId, int valueCons, String clientId) {
         val kNode = LSPUtil.getKNode(diagramState, uri, targetId)
         val parentOfNode = kNode.parent
 
@@ -394,16 +389,14 @@ class LayeredInteractiveLanguageServerExtension implements ILanguageServerExtens
             
             var changedNodes = reval.changedNodes
             changedNodes.put(new ConstraintProperty(kNode, property), newValueCons)
-            refreshModelInEditor(changedNodes, uri)
             
             // update relative constraints
+            var relChangedNodes = newHashMap
             if (posID != -1) {
                 relReval.reevaluateRelCons(kNode, posID, layerNodes, oldLayerNodes)
-                val relChangedNodes = relReval.changedNodes
-                if (!relChangedNodes.isEmpty) {
-                    refreshModelInEditorForRC(relChangedNodes, uri)
-                }
+                relChangedNodes = relReval.changedNodes
             }
+            refreshModelInEditor(changedNodes, relChangedNodes, KGraphUtil.getRootNodeOf(kNode), uri, clientId)
         }
     }
 
@@ -429,92 +422,71 @@ class LayeredInteractiveLanguageServerExtension implements ILanguageServerExtens
      * @param changedNodes list of all changes to nodes
      * @param uri uri of resource
      */
-    def refreshModelInEditor(HashMap<ConstraintProperty, Integer> changedNodes, String uri) {
-        val resource = languageServer.getResource(uri)
-            
-        // Get previous file content as String
-        var outputStream = new ByteArrayOutputStream
-        resource.save(outputStream, emptyMap)
-        val codeBefore = outputStream.toString
-        
-        var changed = false
-        for (entry : changedNodes.keySet) {
-            // set Property/annotation of corresponding model element 
-            val kNode = entry.KNode
-            val node = kNode.getProperty(KlighdInternalProperties.MODEL_ELEMEMT)
-
-            if (node instanceof ElkNode /*FIXME || node instanceof StateImpl*/) {
-                val value = changedNodes.get(entry)
-                if (kNode.getProperty(entry.property) !== value) {
-                    kNode.setProperty(entry.property, value)
-                    InteractiveUtil.copyAllConstraints(node, kNode)
-                    changed = true;
-                }
+    def refreshModelInEditor(HashMap<ConstraintProperty<Integer>, Integer> changedNodes,
+        HashMap<ConstraintProperty<String>, String> relChangedNodes,
+        KNode model, String uri, String clientId
+    ) {
+        changedNodes.forEach[constraint, index|
+            val KNode kNode = constraint.KNode
+            kNode.setProperty(constraint.property, index)
+        ]
+        relChangedNodes.forEach[constraint, id|
+            val KNode kNode = constraint.KNode
+            kNode.setProperty(constraint.property, id)
+        ]
+        var serializer = false
+        for (IConstraintSerializer cs : ServiceLoader.load(IConstraintSerializer,
+                KlighdDataManager.getClassLoader())) {
+            val sourceModel = model.getProperty(KlighdInternalProperties.MODEL_ELEMEMT)
+            if (cs.canHandle(sourceModel)) {
+                changedNodes.forEach[c, i |]
+                cs.serializeConstraints(changedNodes, relChangedNodes, model, uri, languageServer, client)
+                serializer = true
             }
         }
-
-        if (changed) {
-            val Map<String, List<TextEdit>> changes = newHashMap
-            
-            // Get changed file as String
-            outputStream = new ByteArrayOutputStream
-            resource.save(outputStream, emptyMap)
-            val String codeAfter = outputStream.toString().trim
-            // The range is the length of the previous file.
-            val Range range = new Range(new Position(0, 0), new Position(codeBefore.split("\r\n|\r|\n").length, 0))
-            val TextEdit textEdit = new TextEdit(range, codeAfter)
-            changes.put(uri, #[textEdit]);
-            this.client.replaceContentInFile(uri, codeAfter, range)
-            return
-        } else {
-            languageServer.updateDiagram(uri)
+        if (!serializer) {
+            languageServer.updateLayout(uri)
         }
-    }
-    
-    
-    /**
-     * Sends request to the client to update the file according to the property changes.
-     * 
-     * @param changedNodes list of all changes to nodes
-     * @param uri uri of resource
-     */
-    def refreshModelInEditorForRC(HashMap<RelativeConstraintProperty, String> changedNodes, String uri) {
-        val resource = languageServer.getResource(uri)
-            
-        // Get previous file content as String
-        var outputStream = new ByteArrayOutputStream
-        resource.save(outputStream, emptyMap)
-        val codeBefore = outputStream.toString
-        
-        var changed = false
-        for (entry : changedNodes.keySet) {
-            // set Property/annotation of corresponding model element  
-            val kNode = entry.KNode
-            val node = kNode.getProperty(KlighdInternalProperties.MODEL_ELEMEMT)
-            // FIXME
-            if (node instanceof ElkNode /*|| node instanceof StateImpl*/) {
-                val value = changedNodes.get(entry)
-                kNode.setProperty(entry.property, value)
-                InteractiveUtil.copyAllConstraints(node, kNode)
-                changed = true;
-            }
-        }
-
-        if (changed) {
-            val Map<String, List<TextEdit>> changes = newHashMap
-            
-            // Get changed file as String
-            outputStream = new ByteArrayOutputStream
-            resource.save(outputStream, emptyMap)
-            val String codeAfter = outputStream.toString().trim
-            // The range is the length of the previous file.
-            val Range range = new Range(new Position(0, 0), new Position(codeBefore.split("\r\n|\r|\n").length, 0))
-            val TextEdit textEdit = new TextEdit(range, codeAfter)
-            changes.put(uri, #[textEdit]);
-            this.client.replaceContentInFile(uri, codeAfter, range)
-            return
-        } else {
-            languageServer.updateDiagram(uri)
-        }
+//        languageServer.showSnapshot(uri, clientId, model, CancelIndicator.NullImpl, true)
+//        val resource = languageServer.getResource(uri)
+//            
+//        // Get previous file content as String
+//        var outputStream = new ByteArrayOutputStream
+//        resource.save(outputStream, emptyMap)
+//        val codeBefore = outputStream.toString
+//        
+//        var changed = false
+//        for (entry : changedNodes.keySet) {
+//            // set Property/annotation of corresponding model element 
+//            val kNode = entry.KNode
+//            val node = kNode.getProperty(KlighdInternalProperties.MODEL_ELEMEMT)
+//
+//            if (node instanceof ElkNode /*FIXME || node instanceof StateImpl*/) {
+//                val value = changedNodes.get(entry)
+//                if (kNode.getProperty(entry.property) !== value) {
+//                    kNode.setProperty(entry.property, value)
+//                    InteractiveUtil.copyAllConstraints(node, kNode)
+//                    changed = true;
+//                }
+//            }
+//        }
+//
+//        if (changed) {
+//            val Map<String, List<TextEdit>> changes = newHashMap
+//            
+//            // Get changed file as String
+//            outputStream = new ByteArrayOutputStream
+//            resource.save(outputStream, emptyMap)
+//            val String codeAfter = outputStream.toString().trim
+//            // The range is the length of the previous file.
+//            val Range range = new Range(new Position(0, 0), new Position(codeBefore.split("\r\n|\r|\n").length, 0))
+//            val TextEdit textEdit = new TextEdit(range, codeAfter)
+//            changes.put(uri, #[textEdit]);
+//            this.client.replaceContentInFile(uri, codeAfter, range)
+//            return
+//        } else {
+//            languageServer.updateDiagram(uri)
+//        }
+        return
     }
 }
