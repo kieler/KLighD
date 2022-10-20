@@ -38,20 +38,15 @@ class ElkGraphConstraintSerializer implements IConstraintSerializer {
         return graph instanceof ElkNode
     }
     
-    override serializeConstraints(HashMap<ConstraintProperty<Integer>, Integer> changedNodes,
-        HashMap<ConstraintProperty<String>, String> relChangedNodes,
+    override serializeConstraints(List<ConstraintProperty<Object>> changedNodes,
         Object graph,
         String uri,
         KGraphLanguageServerExtension ls,
         KGraphLanguageClient client
     ) {
-        changedNodes.forEach[c, index|
+        changedNodes.forEach[c|
             val ElkNode elkNode = c.KNode.getProperty(KlighdInternalProperties.MODEL_ELEMEMT) as ElkNode
-            elkNode.setProperty(c.property, index)
-        ]
-        relChangedNodes.forEach[c, index|
-            val ElkNode elkNode = c.KNode.getProperty(KlighdInternalProperties.MODEL_ELEMEMT) as ElkNode
-            elkNode.setProperty(c.property, index)
+            elkNode.setProperty(c.property, c.value)
         ]
         // Serialize model into given uri.
         val resource = ls.getResource(uri)

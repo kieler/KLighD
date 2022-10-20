@@ -12,9 +12,10 @@
  */
 package de.cau.cs.kieler.klighd.lsp.interactive
 
-import java.util.HashMap
-import de.cau.cs.kieler.klighd.lsp.KGraphLanguageServerExtension
 import de.cau.cs.kieler.klighd.lsp.KGraphLanguageClient
+import de.cau.cs.kieler.klighd.lsp.KGraphLanguageServerExtension
+import java.util.HashMap
+import java.util.List
 
 /**
  * Service interface for implementions that serialize a set constraint in the model.
@@ -36,7 +37,6 @@ interface IConstraintSerializer {
     /**
      * @param 
      */
-    def void serializeConstraints(HashMap<ConstraintProperty<Integer>, Integer> changedNodes,
-        HashMap<ConstraintProperty<String>, String> relChangedNodes, Object graph, String uri,
+    def void serializeConstraints(List<ConstraintProperty<Object>> changedNodes, Object graph, String uri,
         KGraphLanguageServerExtension ls, KGraphLanguageClient client);
 }

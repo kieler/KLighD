@@ -81,45 +81,6 @@ class InteractiveUtil {
             }
         }
     }
-    
-    /**
-     * Copies an arbitrary IProperty of a KNode to a State if the value on the KNode 
-     * is different to the value on the State.
-     * If the new value on the KNode was the default value of the property 
-     * then the property is set to null on the State.
-     * @param state The target sate
-     * @param kNode The source KNode of the property
-     * @param annotation The annotation that should be set
-     * @param prop Determines which IProperty should be copied
-     */
-     // FIXME
-//    static def <T> copyConstraintAnnotations(Annotatable state, KNode kNode, String annotation, IProperty<T> prop) {
-//        val String value = "" + kNode.getProperty(prop)
-//        
-//        val anns = state.getAnnotations().filter(TypedStringAnnotation)
-//
-//        // remove old annotation if it exists
-//        var TypedStringAnnotation removeA = null
-//        for (ann : anns) {
-//            if (ann.type.equals(annotation)) {
-//                removeA = ann
-//            }
-//        }
-//        if (removeA !== null) {
-//            state.annotations.remove(removeA)
-//        }
-//        
-//        // add annotation with new value if the value is not the default one
-//        if (kNode.getProperty(prop) !== null && !kNode.getProperty(prop).equals(prop.^default)) {
-//            var newA = AnnotationsFactory::eINSTANCE.createTypedStringAnnotation => [
-//                it.name = "layout"
-//                it.type = annotation
-//                it.values += value
-//            ]
-//            state.annotations.add(newA)    
-//        }
-//        
-//    }
 
     /**
      * Copies constraint properties depending on the algorithm from kNode to elkNode 
@@ -162,12 +123,6 @@ class InteractiveUtil {
                 copyConstraintProp(node, kNode, prop)
             }
         }
-        // FIXME 
-//        else if (node instanceof Annotatable) {
-//            for (var i = 0; i< annos.size; i++) {
-//                copyConstraintAnnotations(node, kNode, annos.get(i), props.get(i))
-//            }
-//        }
     }
 
     /**

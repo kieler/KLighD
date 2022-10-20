@@ -29,4 +29,5 @@ import de.cau.cs.kieler.klighd.kgraph.KNode
 class ConstraintProperty<T> {
     KNode kNode
     IProperty<T> property
+    T value
 }

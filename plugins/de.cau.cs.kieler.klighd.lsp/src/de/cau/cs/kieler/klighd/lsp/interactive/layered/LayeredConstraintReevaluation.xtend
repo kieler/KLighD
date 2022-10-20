@@ -34,7 +34,7 @@ import org.eclipse.xtend.lib.annotations.Accessors
 class LayeredConstraintReevaluation {
 
     @Accessors(PUBLIC_GETTER)
-    HashMap<ConstraintProperty<Integer>, Integer> changedNodes = newHashMap()
+    List<ConstraintProperty<Object>> changedNodes = newLinkedList()
     
     @Accessors(PUBLIC_GETTER)
     KNode target
@@ -124,7 +124,7 @@ class LayeredConstraintReevaluation {
             for (node : nodes) {
                 val layerCons = ConstraintsUtils.getLayerConstraint(node)
                 if (layerCons >= originalLayerIndex) {
-                    changedNodes.put(new ConstraintProperty(node, LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT), layerCons - 1)
+                    changedNodes.add(new ConstraintProperty(node, LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT, layerCons - 1))
                 }
             }
 
@@ -192,7 +192,7 @@ class LayeredConstraintReevaluation {
         // Reevaluate the position constraints in the source and target layer accordingly
         // Also examine the position constraint of the target node
         if (posCons > 0 && posCons >= posIndexOfShifted) {
-            changedNodes.put(new ConstraintProperty(targetNode, LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT), posCons - 1)
+            changedNodes.add(new ConstraintProperty(targetNode, LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT, posCons - 1))
         }
     }
 
@@ -215,7 +215,7 @@ class LayeredConstraintReevaluation {
                 val posChoiceCons = ConstraintsUtils.getPosConstraint(node)
 
                 if (node != target && posChoiceCons !== -1) {
-                    changedNodes.put(new ConstraintProperty(node, LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT), posChoiceCons + offset)
+                    changedNodes.add(new ConstraintProperty(node, LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT, posChoiceCons + offset))
                 }
             }
         }
@@ -247,7 +247,7 @@ class LayeredConstraintReevaluation {
             val n = chain.get(i)
             if (n.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT) !== -1) {
                 val pos = newPos - (offset - i)
-                changedNodes.put(new ConstraintProperty(n, LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT), pos)
+                changedNodes.add(new ConstraintProperty(n, LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT, pos))
             }
         }
     }
@@ -261,7 +261,7 @@ class LayeredConstraintReevaluation {
     def reevaluateLayerConstraintsInChain(int layer, List<KNode> chain) {
         for (n : chain) {
             if (n.getProperty(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT) != -1) {
-                changedNodes.put(new ConstraintProperty(n, LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT), layer)
+                changedNodes.add(new ConstraintProperty(n, LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT, layer))
             }
         }
     }

@@ -15,7 +15,6 @@ package de.cau.cs.kieler.klighd.lsp.interactive.layered
 import de.cau.cs.kieler.klighd.kgraph.KNode
 import de.cau.cs.kieler.klighd.lsp.interactive.ConstraintProperty
 import de.cau.cs.kieler.klighd.lsp.interactive.InteractiveUtil
-import java.util.HashMap
 import java.util.List
 import org.eclipse.elk.alg.layered.options.LayeredOptions
 import org.eclipse.elk.graph.properties.IProperty
@@ -30,7 +29,7 @@ class RelativeConstraintReevaluation {
     IProperty<String> succProp = LayeredOptions.CROSSING_MINIMIZATION_IN_LAYER_SUCC_OF
     
     @Accessors(PUBLIC_GETTER)
-    HashMap<ConstraintProperty<String>, String> changedNodes = newHashMap()
+    List<ConstraintProperty<Object>> changedNodes = newLinkedList()
     
     @Accessors(PUBLIC_GETTER)
     KNode target
@@ -65,10 +64,10 @@ class RelativeConstraintReevaluation {
             val predNode = newLayerNodes.get(pos - 1)
             val succNode = newLayerNodes.get(pos)
             if (predNode.getProperty(predProp) !== null) {
-                changedNodes.put(new ConstraintProperty(predNode, predProp), startOfChain.labels.get(0).text)
+                changedNodes.add(new ConstraintProperty(predNode, predProp, startOfChain.labels.get(0).text))
             }
             if (succNode.getProperty(succProp) !== null) {
-                changedNodes.put(new ConstraintProperty(succNode, succProp), endOfChain.labels.get(0).text)
+                changedNodes.add(new ConstraintProperty(succNode, succProp, endOfChain.labels.get(0).text))
             }            
         }
     }
@@ -88,30 +87,30 @@ class RelativeConstraintReevaluation {
         switch(prop) {
             case predProp: {
                 if (oldPos + 1 < oldLayerNodes.size) {
-                    changedNodes.put(new ConstraintProperty(oldLayerNodes.get(oldPos + 1), succProp), null)
+                    changedNodes.add(new ConstraintProperty(oldLayerNodes.get(oldPos + 1), succProp, null))
                 }
                 // if the chains can not be merged, delete old rel cons and only merge moved node with chain
                 val chain = InteractiveUtil.getChain(newLayerNodes.get(newPos), newLayerNodes)
                 forbidden = InteractiveUtil.isMergeImpossible(InteractiveUtil.getChain(target, oldLayerNodes), chain)
                 if (forbidden) {
                     if (oldPos - 1 >= 0) {
-                        changedNodes.put(new ConstraintProperty(oldLayerNodes.get(oldPos - 1), predProp), null)
+                        changedNodes.add(new ConstraintProperty(oldLayerNodes.get(oldPos - 1), predProp, null))
                     }
-                    changedNodes.put(new ConstraintProperty(target, succProp), null)
+                    changedNodes.add(new ConstraintProperty(target, succProp, null))
                 }
             }
             case succProp: {
                 if (oldPos - 1 >= 0) {
-                    changedNodes.put(new ConstraintProperty(oldLayerNodes.get(oldPos - 1), predProp), null)
+                    changedNodes.add(new ConstraintProperty(oldLayerNodes.get(oldPos - 1), predProp, null))
                 }
                 // if the chains can not be merged, delete old rel cons and only merge moved node with chain
                 val chain = InteractiveUtil.getChain(newLayerNodes.get(newPos - 1), newLayerNodes)
                 forbidden = InteractiveUtil.isMergeImpossible(InteractiveUtil.getChain(target, oldLayerNodes), chain)
                 if (forbidden) {
                     if (oldPos + 1 < oldLayerNodes.size) {
-                        changedNodes.put(new ConstraintProperty(oldLayerNodes.get(oldPos + 1), succProp), null)
+                        changedNodes.add(new ConstraintProperty(oldLayerNodes.get(oldPos + 1), succProp, null))
                     }
-                    changedNodes.put(new ConstraintProperty(target, predProp), null)
+                    changedNodes.add(new ConstraintProperty(target, predProp, null))
                 }
             }
         }
@@ -124,8 +123,8 @@ class RelativeConstraintReevaluation {
      */
     def reevaluateRCAfterSwapInChain(KNode target, List<KNode> layerNodes) {
         // remove rel cons of target
-        changedNodes.put(new ConstraintProperty(target, predProp), null)
-        changedNodes.put(new ConstraintProperty(target, succProp), null)
+        changedNodes.add(new ConstraintProperty(target, predProp, null))
+        changedNodes.add(new ConstraintProperty(target, succProp, null))
         // must be done in order for correct calculation of the chain in later reevaluation
         target.setProperty(predProp, null)
         target.setProperty(succProp, null)
@@ -135,11 +134,11 @@ class RelativeConstraintReevaluation {
         if (oldPos - 1 >= 0) {
             val oldPred = layerNodes.get(oldPos - 1)
             oldPred.setProperty(predProp, null)
-            changedNodes.put(new ConstraintProperty(oldPred, predProp), null)
+            changedNodes.add(new ConstraintProperty(oldPred, predProp, null))
         }
         if (oldPos + 1 < layerNodes.size) {
             val oldSucc = layerNodes.get(oldPos + 1)
-            changedNodes.put(new ConstraintProperty(oldSucc, succProp), null)
+            changedNodes.add(new ConstraintProperty(oldSucc, succProp, null))
             oldSucc.setProperty(succProp, null)
         }
     }
