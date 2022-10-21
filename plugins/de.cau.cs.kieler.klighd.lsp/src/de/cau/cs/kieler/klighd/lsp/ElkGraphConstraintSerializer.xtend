@@ -13,12 +13,9 @@
 package de.cau.cs.kieler.klighd.lsp
 
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties
-import de.cau.cs.kieler.klighd.lsp.KGraphLanguageClient
-import de.cau.cs.kieler.klighd.lsp.KGraphLanguageServerExtension
 import de.cau.cs.kieler.klighd.lsp.interactive.ConstraintProperty
 import de.cau.cs.kieler.klighd.lsp.interactive.IConstraintSerializer
 import java.io.ByteArrayOutputStream
-import java.util.HashMap
 import java.util.List
 import java.util.Map
 import org.eclipse.elk.graph.ElkNode

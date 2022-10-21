@@ -12,17 +12,19 @@
  */
 package de.cau.cs.kieler.klighd.lsp.interactive
 
+import de.cau.cs.kieler.klighd.KlighdDataManager
+import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties
 import de.cau.cs.kieler.klighd.kgraph.KNode
 import java.util.ArrayList
 import java.util.List
+import java.util.ServiceLoader
 import org.eclipse.elk.alg.layered.options.LayeredOptions
 import org.eclipse.elk.alg.rectpacking.options.RectPackingOptions
 import org.eclipse.elk.core.options.CoreOptions
 import org.eclipse.elk.graph.ElkNode
 import org.eclipse.elk.graph.properties.IProperty
-//import de.cau.cs.kieler.annotations.Annotatable
-//import de.cau.cs.kieler.annotations.TypedStringAnnotation
-//import de.cau.cs.kieler.annotations.AnnotationsFactory
+import de.cau.cs.kieler.klighd.lsp.KGraphLanguageServerExtension
+import de.cau.cs.kieler.klighd.lsp.KGraphLanguageClient
 
 /**
  * Provides utility methods for interactive layout.
@@ -201,6 +203,28 @@ class InteractiveUtil {
         }
         
         return false
+    }
+    
+    static def serializeConstraints(List<ConstraintProperty<Object>> changedNodes, KNode model, String uri,
+        KGraphLanguageServerExtension languageServer, KGraphLanguageClient client
+    ) {
+        var serializer = false
+        
+        var sourceModel = model.getProperty(KlighdInternalProperties.MODEL_ELEMEMT)
+        if (!model.hasProperty(KlighdInternalProperties.MODEL_ELEMEMT)) {
+            sourceModel = model.children.get(0).getProperty(KlighdInternalProperties.MODEL_ELEMEMT)
+        }
+        for (IConstraintSerializer cs : ServiceLoader.load(IConstraintSerializer,
+                KlighdDataManager.getClassLoader())) {
+            if (cs.canHandle(sourceModel)) {
+                cs.serializeConstraints(changedNodes, model, uri, languageServer, client)
+                serializer = true
+            }
+        }
+        if (!serializer) {
+            languageServer.updateLayout(uri)
+        }
+        return
     }
     
 }

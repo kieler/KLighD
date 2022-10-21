@@ -17,8 +17,6 @@
 package de.cau.cs.kieler.klighd.lsp.interactive.rectpacking
 
 import com.google.inject.Inject
-import de.cau.cs.kieler.klighd.KlighdDataManager
-import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties
 import de.cau.cs.kieler.klighd.kgraph.KNode
 import de.cau.cs.kieler.klighd.kgraph.util.KGraphUtil
 import de.cau.cs.kieler.klighd.lsp.KGraphDiagramState
@@ -26,20 +24,12 @@ import de.cau.cs.kieler.klighd.lsp.KGraphLanguageClient
 import de.cau.cs.kieler.klighd.lsp.KGraphLanguageServerExtension
 import de.cau.cs.kieler.klighd.lsp.LSPUtil
 import de.cau.cs.kieler.klighd.lsp.interactive.ConstraintProperty
-import de.cau.cs.kieler.klighd.lsp.interactive.IConstraintSerializer
-import java.io.ByteArrayOutputStream
+import de.cau.cs.kieler.klighd.lsp.interactive.InteractiveUtil
 import java.util.Arrays
-import java.util.HashMap
 import java.util.List
-import java.util.Map
-import java.util.ServiceLoader
 import javax.inject.Singleton
 import org.eclipse.elk.alg.rectpacking.options.RectPackingOptions
 import org.eclipse.elk.core.options.CoreOptions
-import org.eclipse.elk.graph.ElkNode
-import org.eclipse.lsp4j.Position
-import org.eclipse.lsp4j.Range
-import org.eclipse.lsp4j.TextEdit
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.xtext.ide.server.ILanguageServerAccess
 import org.eclipse.xtext.ide.server.ILanguageServerExtension
@@ -104,7 +94,6 @@ class RectpackingInteractiveLanguageServerExtension implements ILanguageServerEx
                     }
                 }
             }
-//            kNode.setProperty(RectPackingOptions.DESIRED_POSITION, desiredPosition)
             refreshModelInEditor(new ConstraintProperty(kNode, RectPackingOptions.DESIRED_POSITION, desiredPosition), KGraphUtil.getRootNodeOf(kNode), uri)
 
         }
@@ -177,23 +166,7 @@ class RectpackingInteractiveLanguageServerExtension implements ILanguageServerEx
     def refreshModelInEditor(ConstraintProperty<Object> constraint, KNode model, String uri) {
         val KNode kNode = constraint.KNode
         kNode.setProperty(constraint.property, constraint.value)
-        var serializer = false
-        
-        var sourceModel = model.getProperty(KlighdInternalProperties.MODEL_ELEMEMT)
-        if (!model.hasProperty(KlighdInternalProperties.MODEL_ELEMEMT)) {
-            sourceModel = model.children.get(0).getProperty(KlighdInternalProperties.MODEL_ELEMEMT)
-        }
-        for (IConstraintSerializer cs : ServiceLoader.load(IConstraintSerializer,
-                KlighdDataManager.getClassLoader())) {
-            if (cs.canHandle(sourceModel)) {
-                val constraints = newLinkedList(constraint)
-                cs.serializeConstraints(constraints, model, uri, languageServer, client)
-                serializer = true
-            }
-        }
-        if (!serializer) {
-            languageServer.updateLayout(uri)
-        }
+        InteractiveUtil.serializeConstraints(#[constraint], model, uri, this.languageServer, this.client)
         return
 
     }

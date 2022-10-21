@@ -26,7 +26,6 @@ import de.cau.cs.kieler.klighd.lsp.KGraphLanguageClient
 import de.cau.cs.kieler.klighd.lsp.KGraphLanguageServerExtension
 import de.cau.cs.kieler.klighd.lsp.LSPUtil
 import de.cau.cs.kieler.klighd.lsp.interactive.ConstraintProperty
-import de.cau.cs.kieler.klighd.lsp.interactive.IConstraintSerializer
 import de.cau.cs.kieler.klighd.lsp.interactive.InteractiveUtil
 import java.util.LinkedList
 import java.util.List
@@ -38,6 +37,7 @@ import org.eclipse.elk.graph.properties.IProperty
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.xtext.ide.server.ILanguageServerAccess
 import org.eclipse.xtext.ide.server.ILanguageServerExtension
+import de.cau.cs.kieler.klighd.lsp.interactive.INodeIdProvider
 
 //import de.cau.cs.kieler.sccharts.impl.StateImpl
 
@@ -145,15 +145,13 @@ class LayeredInteractiveLanguageServerExtension implements ILanguageServerExtens
         // get the actual label of the node
         val otherNode = LSPUtil.getKNode(diagramState, uri, node)
         
-        val test = otherNode.getProperty(KlighdInternalProperties.MODEL_ELEMEMT)
+        val modelElement = otherNode.getProperty(KlighdInternalProperties.MODEL_ELEMEMT)
         var value = ""
-        // FIXME
-        // Add service interface to get id of node
-//        if (test instanceof StateImpl) {
-//            value = test.name
-//        } else
-        if (test instanceof ElkNode) {
-            value = otherNode.labels.get(0).text
+        for (INodeIdProvider ip : ServiceLoader.load(INodeIdProvider,
+                KlighdDataManager.getClassLoader())) {
+            if (ip.canHandle(modelElement)) {
+                value = ip.getNodeId(modelElement)
+            }
         }
         
         if (kNode !== null && parentOfNode !== null) {
@@ -419,33 +417,15 @@ class LayeredInteractiveLanguageServerExtension implements ILanguageServerExtens
      * Sends request to the client to update the file according to the property changes.
      * 
      * @param changedNodes list of all changes to nodes
-     * @param relConstraints list of all changed to nodes with relative constraints
      * @param model The main kNode
      * @param uri uri of resource
      */
-    def refreshModelInEditor(List<ConstraintProperty<Object>> changedNodes,
-        KNode model, String uri
-    ) {
+    def refreshModelInEditor(List<ConstraintProperty<Object>> changedNodes, KNode model, String uri) {
         changedNodes.forEach[constraint|
             val KNode kNode = constraint.KNode
             kNode.setProperty(constraint.property, constraint.value)
         ]
-        var serializer = false
-        
-        var sourceModel = model.getProperty(KlighdInternalProperties.MODEL_ELEMEMT)
-        if (!model.hasProperty(KlighdInternalProperties.MODEL_ELEMEMT)) {
-            sourceModel = model.children.get(0).getProperty(KlighdInternalProperties.MODEL_ELEMEMT)
-        }
-        for (IConstraintSerializer cs : ServiceLoader.load(IConstraintSerializer,
-                KlighdDataManager.getClassLoader())) {
-            if (cs.canHandle(sourceModel)) {
-                cs.serializeConstraints(changedNodes, model, uri, languageServer, client)
-                serializer = true
-            }
-        }
-        if (!serializer) {
-            languageServer.updateLayout(uri)
-        }
+        InteractiveUtil.serializeConstraints(changedNodes, model, uri, this.languageServer, this.client)
         return
     }
 }
