@@ -253,7 +253,28 @@ class LayeredInteractiveLanguageServerExtension implements ILanguageServerExtens
             var allNodes = parentOfNode.children
             var newLayerId = sc.layer
             var newLayerCons = sc.layerCons
-
+            val List<ConstraintProperty<Object>> changedNodes = newLinkedList;
+            // If layerId is -1 all other nodes need to have their layerId and layerChoiceId increased.
+            if (newLayerCons == -1) {
+                newLayerId++
+                newLayerCons++
+                allNodes.forEach[node |
+                    if (node.hasProperty(LayeredOptions.LAYERING_LAYER_ID)) {
+                        node.setProperty(LayeredOptions.LAYERING_LAYER_ID,
+                            node.getProperty(LayeredOptions.LAYERING_LAYER_ID) + 1
+                        )
+                    }
+                    if (node != kNode && node.hasProperty(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT)) { 
+                        node.setProperty(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT,
+                            node.getProperty(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT) + 1
+                        )
+                        changedNodes.add(new ConstraintProperty(node, LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT,
+                            node.getProperty(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT)
+                        ))
+                    }
+                ]
+            }
+            
             val layerId = kNode.getProperty(LayeredOptions.LAYERING_LAYER_ID)
 
             var targetLayerNodes = InteractiveUtil.getNodesOfLayer(newLayerId, allNodes)
@@ -274,7 +295,7 @@ class LayeredInteractiveLanguageServerExtension implements ILanguageServerExtens
             reval.reevaluateLayerConstraintsInChain(newLayerCons, chain)
             reval.reevaluatePosConsInChain(kNode, newPosCons, chain)
 
-            var changedNodes = reval.changedNodes
+            changedNodes.addAll(reval.changedNodes)
             changedNodes.add(new ConstraintProperty(kNode, LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT, newPosCons))
             changedNodes.add(new ConstraintProperty(kNode, LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT, newLayerCons))
             // Update source code of the model
@@ -353,11 +374,35 @@ class LayeredInteractiveLanguageServerExtension implements ILanguageServerExtens
             if (property === LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT) {
                 layerID = valueId
             }
+            var newValueCons = valueCons
+            var newValueId = valueId
+            
+            val List<ConstraintProperty<Object>> changedNodes = newLinkedList;
+            // If layerId is -1 all other nodes need to have their layerId and layerChoiceId increased.
+            if (valueId == -1) {
+                layerID++
+                newValueId++
+                newValueCons++
+                parentOfNode.children.forEach[node |
+                    if (node.hasProperty(LayeredOptions.LAYERING_LAYER_ID)) {
+                        node.setProperty(LayeredOptions.LAYERING_LAYER_ID,
+                            node.getProperty(LayeredOptions.LAYERING_LAYER_ID) + 1
+                        )
+                    }
+                    if (node != kNode && node.hasProperty(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT)) { 
+                        node.setProperty(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT,
+                            node.getProperty(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT) + 1
+                        )
+                        changedNodes.add(new ConstraintProperty(node, LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT,
+                            node.getProperty(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT)
+                        ))
+                    }
+                ]
+            }
             
             var List<KNode> layerNodes = InteractiveUtil.getNodesOfLayer(layerID, parentOfNode.children)
             val oldLayerNodes = InteractiveUtil.getNodesOfLayer(kNode.getProperty(LayeredOptions.LAYERING_LAYER_ID), parentOfNode.children)
-            var newValueCons = valueCons
-            var newValueId = valueId
+
             val oldPos = kNode.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_ID)
             
             var relReval = new RelativeConstraintReevaluation(kNode)
@@ -385,11 +430,11 @@ class LayeredInteractiveLanguageServerExtension implements ILanguageServerExtens
                     reval.reevaluateLayerConstraintsInChain(layerID, chain)
             }
             
-            var changedNodes = reval.changedNodes
+            changedNodes.addAll(reval.changedNodes)
             changedNodes.add(new ConstraintProperty(kNode, property, newValueCons))
             
             // update relative constraints
-            if (posID != -1) {
+            if (posID !== null) {
                 relReval.reevaluateRelCons(kNode, posID, layerNodes, oldLayerNodes)
                 changedNodes.addAll(relReval.changedNodes)
             };
