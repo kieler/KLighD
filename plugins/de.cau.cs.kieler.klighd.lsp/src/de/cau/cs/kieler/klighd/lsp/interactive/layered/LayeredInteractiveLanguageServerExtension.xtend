@@ -17,8 +17,7 @@
 package de.cau.cs.kieler.klighd.lsp.interactive.layered
 
 import com.google.inject.Inject
-import de.cau.cs.kieler.klighd.KlighdDataManager
-import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties
+import de.cau.cs.kieler.klighd.kgraph.KIdentifier
 import de.cau.cs.kieler.klighd.kgraph.KNode
 import de.cau.cs.kieler.klighd.kgraph.util.KGraphUtil
 import de.cau.cs.kieler.klighd.lsp.KGraphDiagramState
@@ -29,15 +28,12 @@ import de.cau.cs.kieler.klighd.lsp.interactive.ConstraintProperty
 import de.cau.cs.kieler.klighd.lsp.interactive.InteractiveUtil
 import java.util.LinkedList
 import java.util.List
-import java.util.ServiceLoader
 import javax.inject.Singleton
 import org.eclipse.elk.alg.layered.options.LayeredOptions
-import org.eclipse.elk.graph.ElkNode
 import org.eclipse.elk.graph.properties.IProperty
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.xtext.ide.server.ILanguageServerAccess
 import org.eclipse.xtext.ide.server.ILanguageServerExtension
-import de.cau.cs.kieler.klighd.lsp.interactive.INodeIdProvider
 
 //import de.cau.cs.kieler.sccharts.impl.StateImpl
 
@@ -145,13 +141,10 @@ class LayeredInteractiveLanguageServerExtension implements ILanguageServerExtens
         // get the actual label of the node
         val otherNode = LSPUtil.getKNode(diagramState, uri, node)
         
-        val modelElement = otherNode.getProperty(KlighdInternalProperties.MODEL_ELEMEMT)
-        var value = ""
-        for (INodeIdProvider ip : ServiceLoader.load(INodeIdProvider,
-                KlighdDataManager.getClassLoader())) {
-            if (ip.canHandle(modelElement)) {
-                value = ip.getNodeId(modelElement)
-            }
+        var value = kNode.toString
+        val id = otherNode.getData(KIdentifier)
+        if (id !== null) {
+            value = id.id
         }
         
         if (kNode !== null && parentOfNode !== null) {
