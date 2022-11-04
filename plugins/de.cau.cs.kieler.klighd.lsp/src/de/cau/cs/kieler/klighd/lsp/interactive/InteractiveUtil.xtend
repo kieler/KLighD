@@ -3,28 +3,30 @@
  *
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright 2020 by
+ * Copyright 2022 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
  * 
- * This code is provided under the terms of the Eclipse Public License (EPL).
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0.
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 package de.cau.cs.kieler.klighd.lsp.interactive
 
 import de.cau.cs.kieler.klighd.KlighdDataManager
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties
 import de.cau.cs.kieler.klighd.kgraph.KNode
+import de.cau.cs.kieler.klighd.lsp.KGraphLanguageClient
+import de.cau.cs.kieler.klighd.lsp.KGraphLanguageServerExtension
 import java.util.ArrayList
 import java.util.List
 import java.util.ServiceLoader
 import org.eclipse.elk.alg.layered.options.LayeredOptions
-import org.eclipse.elk.alg.rectpacking.options.RectPackingOptions
-import org.eclipse.elk.core.options.CoreOptions
 import org.eclipse.elk.graph.ElkNode
 import org.eclipse.elk.graph.properties.IProperty
-import de.cau.cs.kieler.klighd.lsp.KGraphLanguageServerExtension
-import de.cau.cs.kieler.klighd.lsp.KGraphLanguageClient
 
 /**
  * Provides utility methods for interactive layout.
@@ -85,49 +87,6 @@ class InteractiveUtil {
     }
 
     /**
-     * Copies constraint properties depending on the algorithm from kNode to elkNode 
-     * by using {@code copyConstraintProp()}.
-     * 
-     * @param elkNode The target ElkNode
-     * @param kNode The source KNode of the property
-     */
-    static def copyAllConstraints(Object node, KNode kNode) {
-        val algorithm = kNode.parent.getProperty(CoreOptions.ALGORITHM)
-        
-        var List<IProperty<?>> props = #[]
-        var List<String> annos = #[]
-        if(algorithm === null || algorithm == 'layered' || algorithm == 'org.eclipse.elk.layered') {
-            props = #[
-                LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT,
-                LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT,
-                LayeredOptions.CROSSING_MINIMIZATION_IN_LAYER_PRED_OF,
-                LayeredOptions.CROSSING_MINIMIZATION_IN_LAYER_SUCC_OF
-            ]
-            annos = #[
-                "layering.layerChoiceConstraint",
-                "crossingMinimization.positionChoiceConstraint",
-                "crossingMinimization.inLayerPredOf",
-                "crossingMinimization.inLayerSuccOf"
-            ]
-        } else if ("rectpacking".equals(algorithm)) {
-            props = #[
-                RectPackingOptions.DESIRED_POSITION,
-                RectPackingOptions.ASPECT_RATIO
-            ]
-            annos = #[
-                "desiredPosition",
-                "aspectRatio"
-            ]
-        }
-            
-        if (node instanceof ElkNode) {
-            for (prop : props) {
-                copyConstraintProp(node, kNode, prop)
-            }
-        }
-    }
-
-    /**
      * Determines the root of the given node.
      * 
      * @param node ElkNode, which root should be returned.
@@ -147,6 +106,7 @@ class InteractiveUtil {
      * 
      * @param node One node of the chain
      * @param layerNodes Nodes that are in the same layer as {@code node}
+     * @returnAll nodes of the relative constraint chain of the given node present in the given layer nodes.
      */
     static def getChain(KNode node, List<KNode> layerNodes) {
         var pos = layerNodes.indexOf(node)
@@ -182,6 +142,7 @@ class InteractiveUtil {
      * 
      * @param chain1 One of the two chains.
      * @param chain2 Other one of the two chains.
+     * @return Returns true if the chains can be merged.
      */
     static def isMergeImpossible(List<KNode> chain1, List<KNode> chain2) {
         var connectedNodes = new ArrayList<KNode>()
@@ -205,6 +166,13 @@ class InteractiveUtil {
         return false
     }
     
+    /**
+     * Calls serializer for corresponding model type if one was bound.
+     * 
+     * @param changedNodes List of {@code ConstraintProperty} that represent the changed nodes.
+     * @param model The KNode that has to be changed.
+     * @param uri The uri of the model file that will be rewritten if a serializer exists.
+     */
     static def serializeConstraints(List<ConstraintProperty<Object>> changedNodes, KNode model, String uri,
         KGraphLanguageServerExtension languageServer, KGraphLanguageClient client
     ) {

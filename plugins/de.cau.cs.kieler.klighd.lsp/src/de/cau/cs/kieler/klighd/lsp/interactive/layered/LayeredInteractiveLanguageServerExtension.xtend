@@ -35,12 +35,10 @@ import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.xtext.ide.server.ILanguageServerAccess
 import org.eclipse.xtext.ide.server.ILanguageServerExtension
 
-//import de.cau.cs.kieler.sccharts.impl.StateImpl
-
 /**
  * Language server extension to change the layered algorithm in the interactive mode.
  * 
- * @author jet, cos, sdo
+ * @author jep, cos, sdo
  */
 @Singleton
 class LayeredInteractiveLanguageServerExtension implements ILanguageServerExtension {
@@ -134,7 +132,9 @@ class LayeredInteractiveLanguageServerExtension implements ILanguageServerExtens
      * @param targetId The id of the node on which the constraint should be set.
      * @param node the id of the node to which the relation should be set.
      */
-    private def setRelativeConstraint(IProperty<String> property, String uri, String targetId, String node, String clientId) {
+    private def setRelativeConstraint(IProperty<String> property, String uri, String targetId, String node,
+        String clientId
+    ) {
         val kNode = LSPUtil.getKNode(diagramState, uri, targetId)
         val parentOfNode = kNode.parent
         
@@ -158,7 +158,8 @@ class LayeredInteractiveLanguageServerExtension implements ILanguageServerExtens
                 posID++;
             }
             var layerNodes = InteractiveUtil.getNodesOfLayer(layerID, parentOfNode.children)
-            var oldLayerNodes = InteractiveUtil.getNodesOfLayer(kNode.getProperty(LayeredOptions.LAYERING_LAYER_ID), parentOfNode.children)
+            var oldLayerNodes = InteractiveUtil.getNodesOfLayer(kNode.getProperty(LayeredOptions.LAYERING_LAYER_ID),
+                parentOfNode.children)
             
             // update position constraints
             val layerSwap = layerID !== kNode.getProperty(LayeredOptions.LAYERING_LAYER_ID)
@@ -172,12 +173,12 @@ class LayeredInteractiveLanguageServerExtension implements ILanguageServerExtens
                 reval.reevaluatePositionConstraintsAfterLayerSwap(layerNodes, oldLayerNodes, kNode, posID)
                 reval.reevaluateLayerConstraintsInChain(layerID, chain)
             } else {
-                if (posID !== kNode.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_ID) 
-                    && chain.contains(otherNode)
-                    && posID >= chain.get(0).getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_ID)
-                    && posID <= chain.get(chain.size - 1).getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_ID)) {
+                if (posID !== kNode.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_ID) &&
+                    chain.contains(otherNode) &&
+                    posID >= chain.get(0).getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_ID) &&
+                    posID <= chain.get(chain.size - 1).getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_ID)) {
                     // node is moved within its chain
-                    relReval.reevaluateRCAfterSwapInChain(kNode, oldLayerNodes)   
+                    relReval.reevaluateRCAfterSwapInChain(kNode, oldLayerNodes)
                 }
                 reval.reevaluatePositionConstraintsAfterPosChangeInLayer(layerNodes, kNode, posID)
             }
@@ -289,8 +290,11 @@ class LayeredInteractiveLanguageServerExtension implements ILanguageServerExtens
             reval.reevaluatePosConsInChain(kNode, newPosCons, chain)
 
             changedNodes.addAll(reval.changedNodes)
-            changedNodes.add(new ConstraintProperty(kNode, LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT, newPosCons))
-            changedNodes.add(new ConstraintProperty(kNode, LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT, newLayerCons))
+            changedNodes.add(
+                new ConstraintProperty(kNode, LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT,
+                    newPosCons))
+            changedNodes.add(
+                new ConstraintProperty(kNode, LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT, newLayerCons))
             // Update source code of the model
             
             // update relative constraints
@@ -311,7 +315,8 @@ class LayeredInteractiveLanguageServerExtension implements ILanguageServerExtens
         val kNode = getKNode(uri, dc.id)
         if (kNode !== null) {
             val changedNodes = new LinkedList<ConstraintProperty<Object>>
-            changedNodes.add(new ConstraintProperty(kNode, LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT, null))
+            changedNodes.add(
+                new ConstraintProperty(kNode, LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT, null))
             changedNodes.add(new ConstraintProperty(kNode, LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT, null))
             refreshModelInEditor(changedNodes, KGraphUtil.getRootNodeOf(kNode), uri)
         }
@@ -327,7 +332,11 @@ class LayeredInteractiveLanguageServerExtension implements ILanguageServerExtens
         val kNode = getKNode(uri, dc.id)
         if (kNode !== null) {
             val changedNodes = new LinkedList<ConstraintProperty<Object>>
-            changedNodes.add(new ConstraintProperty(kNode, LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT, null))
+            changedNodes.add(new ConstraintProperty(
+                kNode,
+                LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT,
+                null
+            ))
             refreshModelInEditor(changedNodes, KGraphUtil.getRootNodeOf(kNode), uri)
         }
     }
@@ -357,7 +366,9 @@ class LayeredInteractiveLanguageServerExtension implements ILanguageServerExtens
      * @param targetId The id of the node on which the constraint should be set.
      * @param value Either the id of the position or the id of the layer.
      */
-    private def setConstraint(IProperty<Integer> property, String uri, String targetId, int valueId, int valueCons, String clientId) {
+    private def setConstraint(IProperty<Integer> property, String uri, String targetId, int valueId, int valueCons,
+        String clientId
+    ) {
         val kNode = LSPUtil.getKNode(diagramState, uri, targetId)
         val parentOfNode = kNode.parent
 
@@ -394,7 +405,9 @@ class LayeredInteractiveLanguageServerExtension implements ILanguageServerExtens
             }
             
             var List<KNode> layerNodes = InteractiveUtil.getNodesOfLayer(layerID, parentOfNode.children)
-            val oldLayerNodes = InteractiveUtil.getNodesOfLayer(kNode.getProperty(LayeredOptions.LAYERING_LAYER_ID), parentOfNode.children)
+            val oldLayerNodes = InteractiveUtil.getNodesOfLayer(kNode.getProperty(LayeredOptions.LAYERING_LAYER_ID),
+                parentOfNode.children
+            )
 
             val oldPos = kNode.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_ID)
             
@@ -402,10 +415,11 @@ class LayeredInteractiveLanguageServerExtension implements ILanguageServerExtens
             val chain = InteractiveUtil.getChain(kNode, oldLayerNodes)
             if (property === LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT) {
                 posID = valueId
-                if (posID != -1 && posID >= chain.get(0).getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_ID)
-                    && posID <= chain.get(chain.size - 1).getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_ID)) {
+                if (posID != -1 &&
+                    posID >= chain.get(0).getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_ID) &&
+                    posID <= chain.get(chain.size - 1).getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_ID)) {
                     // node is moved within its chain
-                    relReval.reevaluateRCAfterSwapInChain(kNode, oldLayerNodes)   
+                    relReval.reevaluateRCAfterSwapInChain(kNode, oldLayerNodes)
                 } else if (posID < oldPos) {
                     // posID must be increased by the number of predecessors
                     newValueCons += chain.indexOf(kNode)

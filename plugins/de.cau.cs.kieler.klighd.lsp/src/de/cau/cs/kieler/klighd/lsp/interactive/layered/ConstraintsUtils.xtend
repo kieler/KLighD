@@ -22,7 +22,7 @@ import org.eclipse.elk.alg.layered.options.LayeredOptions
 /**
  * Provides a set of utility methods that is used in the constraints package.
  * 
- * @author jet, cos, sdo
+ * @author jep, cos, sdo
  */
 class ConstraintsUtils {
 

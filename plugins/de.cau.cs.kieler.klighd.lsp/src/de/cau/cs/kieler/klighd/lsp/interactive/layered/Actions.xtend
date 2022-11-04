@@ -143,7 +143,7 @@ class DeleteLayerConstraintAction implements Action {
 }/**
  * Sets a 'in layer predecessor of'-constraint for a node.
  * 
- * @author jet
+ * @author jep
  */
 @Accessors
 @EqualsHashCode
@@ -163,7 +163,7 @@ class SetILPredOfConstraintAction implements Action {
 /**
  * Sets a 'in layer successor of'-constraint for a node.
  * 
- * @author jet
+ * @author jep
  */
 @Accessors
 @EqualsHashCode
@@ -183,7 +183,7 @@ class SetILSuccOfConstraintAction implements Action {
 /**
  * Deletes the relative constraints on the node that is identified by the given id.
  * 
- * @author jet
+ * @author jep
  */
 @Accessors
 @EqualsHashCode
@@ -203,7 +203,7 @@ class DeleteRelativeConstraintsAction implements Action {
 /**
  * Deletes the iLPredOf constraint on the node that is identified by the given id.
  * 
- * @author jet
+ * @author jep
  */
 @Accessors
 @EqualsHashCode
