@@ -220,7 +220,9 @@ class LayeredConstraintReevaluation {
                 val posChoiceCons = ConstraintsUtils.getPosConstraint(node)
 
                 if (node != target && posChoiceCons !== null) {
-                    changedNodes.add(new ConstraintProperty(node, LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT, posChoiceCons + offset))
+                    changedNodes.add(
+                        new ConstraintProperty(node, LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT,
+                            Math.max(0, posChoiceCons + offset)))
                 }
             }
         }
