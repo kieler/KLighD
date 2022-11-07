@@ -24,7 +24,7 @@ import org.eclipse.xtend.lib.annotations.Data
  * @author jep
  */
 @Data
-class ILSuccOfConstraint {
+class InLayerSuccessorOfConstraint {
     String id
-    String otherNode
+    String referencedNode
 }

@@ -152,7 +152,7 @@ class SetILPredOfConstraintAction implements Action {
     public static val KIND = 'setILPredOfConstraint'
     String kind = KIND
     
-    ILPredOfConstraint constraint
+    InLayerPredecessorOfConstraint constraint
     
     new() {}
     new(Consumer<SetILPredOfConstraintAction> initializer) {
@@ -172,7 +172,7 @@ class SetILSuccOfConstraintAction implements Action {
     public static val KIND = 'setILSuccOfConstraint'
     String kind = KIND
     
-    ILSuccOfConstraint constraint
+    InLayerSuccessorOfConstraint constraint
     
     new() {}
     new(Consumer<SetILSuccOfConstraintAction> initializer) {

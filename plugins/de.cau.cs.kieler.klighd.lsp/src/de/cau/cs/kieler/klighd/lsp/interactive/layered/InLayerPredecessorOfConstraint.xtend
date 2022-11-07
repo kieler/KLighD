@@ -24,7 +24,7 @@ import org.eclipse.xtend.lib.annotations.Data
  * @author jep
  */
 @Data
-class ILPredOfConstraint {
+class InLayerPredecessorOfConstraint {
     String id
-    String otherNode
+    String referencedNode
 }

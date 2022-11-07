@@ -27,5 +27,5 @@ import org.eclipse.xtend.lib.annotations.Data
 class PositionConstraint {
     String id
     int position
-    int posCons
+    int positionConstraint
 }

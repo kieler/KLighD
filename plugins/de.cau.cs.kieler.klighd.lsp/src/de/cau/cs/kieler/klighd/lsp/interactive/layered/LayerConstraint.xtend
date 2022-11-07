@@ -27,5 +27,5 @@ import org.eclipse.xtend.lib.annotations.Data
 class LayerConstraint {
     String id
     int layer
-    int layerCons
+    int layerConstraint
 }

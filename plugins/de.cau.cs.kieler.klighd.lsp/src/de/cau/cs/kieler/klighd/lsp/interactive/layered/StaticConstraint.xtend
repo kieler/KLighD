@@ -44,11 +44,11 @@ class StaticConstraint {
     /**
      * Value for the layer constraint
      */
-    int layerCons
+    int layerConstraint
     
     /**
      * Value for the position constraint
      */
-    int posCons
+    int positionConstraint
     
 }

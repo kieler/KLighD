@@ -60,10 +60,10 @@ class LayeredInteractiveLanguageServerExtension implements ILanguageServerExtens
      * @param cons the constraint
      * @param clientId the client id
      */
-    def setILPredOfConstraint(ILPredOfConstraint cons, String clientId) {
+    def setILPredOfConstraint(InLayerPredecessorOfConstraint cons, String clientId) {
         val uri = diagramState.getURIString(clientId)
         setRelativeConstraint(LayeredOptions.CROSSING_MINIMIZATION_IN_LAYER_PRED_OF, uri, cons.id,
-            cons.otherNode, clientId)
+            cons.getReferencedNode, clientId)
     }
     
     /**
@@ -71,10 +71,10 @@ class LayeredInteractiveLanguageServerExtension implements ILanguageServerExtens
      * @param cons the constraint
      * @param clientId the client id
      */
-    def setILSuccOfConstraint(ILSuccOfConstraint cons, String clientId) {
+    def setILSuccOfConstraint(InLayerSuccessorOfConstraint cons, String clientId) {
         val uri = diagramState.getURIString(clientId)
         setRelativeConstraint(LayeredOptions.CROSSING_MINIMIZATION_IN_LAYER_SUCC_OF, uri, cons.id,
-            cons.otherNode, clientId)
+            cons.getReferencedNode, clientId)
     }
     
     /**
@@ -210,7 +210,7 @@ class LayeredInteractiveLanguageServerExtension implements ILanguageServerExtens
      */
     def setLayerConstraint(LayerConstraint lc, String clientId) {
         val uri = diagramState.getURIString(clientId)
-        setConstraint(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT, uri, lc.id, lc.layer, lc.layerCons, clientId)
+        setConstraint(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT, uri, lc.id, lc.layer, lc.getLayerConstraint, clientId)
     }
 
     /**
@@ -221,7 +221,7 @@ class LayeredInteractiveLanguageServerExtension implements ILanguageServerExtens
     def setPositionConstraint(PositionConstraint pc, String clientId) {
         val uri = diagramState.getURIString(clientId)
         setConstraint(LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT, uri, pc.id,
-            pc.position, pc.posCons, clientId)
+            pc.position, pc.getPositionConstraint, clientId)
     }
 
     /**
@@ -246,7 +246,7 @@ class LayeredInteractiveLanguageServerExtension implements ILanguageServerExtens
              */
             var allNodes = parentOfNode.children
             var newLayerId = sc.layer
-            var newLayerCons = sc.layerCons
+            var newLayerCons = sc.getLayerConstraint
             val List<ConstraintProperty<Object>> changedNodes = newLinkedList;
             // If layerId is -1 all other nodes need to have their layerId and layerChoiceId increased.
             if (newLayerCons == -1) {
@@ -277,7 +277,7 @@ class LayeredInteractiveLanguageServerExtension implements ILanguageServerExtens
             val chain = InteractiveUtil.getChain(kNode, oldLayerNodes)
             // posID must be increased by the number of predecessors
             val newPosId = sc.position + chain.indexOf(kNode)
-            val newPosCons = sc.posCons + chain.indexOf(kNode)
+            val newPosCons = sc.getPositionConstraint + chain.indexOf(kNode)
             
             // Reevaluate insertion of node to target layer
             var reval = new LayeredConstraintReevaluation(kNode)
