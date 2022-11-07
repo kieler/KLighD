@@ -57,201 +57,221 @@ class LayeredInteractiveLanguageServerExtension implements ILanguageServerExtens
 
     /**
      * Sets a 'in layer predecessor'-constraint.
-     * @param cons the constraint
-     * @param clientId the client id
+     * 
+     * @param constraint The constraint.
+     * @param clientId The client id.
      */
-    def setILPredOfConstraint(InLayerPredecessorOfConstraint cons, String clientId) {
+    def setInLayerPredecessorOfConstraint(InLayerPredecessorOfConstraint constraint, String clientId) {
         val uri = diagramState.getURIString(clientId)
-        setRelativeConstraint(LayeredOptions.CROSSING_MINIMIZATION_IN_LAYER_PRED_OF, uri, cons.id,
-            cons.getReferencedNode, clientId)
+        setRelativeConstraint(LayeredOptions.CROSSING_MINIMIZATION_IN_LAYER_PRED_OF, uri, constraint.id,
+            constraint.getReferencedNode, clientId)
     }
     
     /**
      * Sets a 'in layer successor'-constraint.
-     * @param cons the constraint
-     * @param clientId the client id
+     * 
+     * @param constraint The constraint.
+     * @param clientId The client id.
      */
-    def setILSuccOfConstraint(InLayerSuccessorOfConstraint cons, String clientId) {
+    def setInLayerSuccessorOfConstraint(InLayerSuccessorOfConstraint constraint, String clientId) {
         val uri = diagramState.getURIString(clientId)
-        setRelativeConstraint(LayeredOptions.CROSSING_MINIMIZATION_IN_LAYER_SUCC_OF, uri, cons.id,
-            cons.getReferencedNode, clientId)
+        setRelativeConstraint(LayeredOptions.CROSSING_MINIMIZATION_IN_LAYER_SUCC_OF, uri, constraint.id,
+            constraint.getReferencedNode, clientId)
     }
     
     /**
      * Delete relative constraints.
-     * @param dc the constraint to delete
-     * @param clientId the client id
-     */
-    def deleteRelativeConstraints(DeleteConstraint dc, String clientId) {
-        val uri = diagramState.getURIString(clientId)
-        val kNode = getKNode(uri, dc.id)
-        if (kNode !== null) {
-            val changedNodes = new LinkedList<ConstraintProperty<Object>>
-            changedNodes.add(new ConstraintProperty(kNode, LayeredOptions.CROSSING_MINIMIZATION_IN_LAYER_PRED_OF, null))
-            changedNodes.add(new ConstraintProperty(kNode, LayeredOptions.CROSSING_MINIMIZATION_IN_LAYER_SUCC_OF, null))
-            refreshModelInEditor(changedNodes, KGraphUtil.getRootNodeOf(kNode), uri)
-        }
-    }
-    
-    /**
-     * Delete iLPredOf constraints.
-     * @param dc the constraint to delete
-     * @param clientId the client id
-     */
-    def deleteILPredOfConstraint(DeleteConstraint dc, String clientId) {
-        val uri = diagramState.getURIString(clientId)
-        val kNode = getKNode(uri, dc.id)
-        if (kNode !== null) {
-            val changedNodes = new LinkedList<ConstraintProperty<Object>>
-            changedNodes.add(new ConstraintProperty(kNode, LayeredOptions.CROSSING_MINIMIZATION_IN_LAYER_PRED_OF, null))
-            refreshModelInEditor(changedNodes, KGraphUtil.getRootNodeOf(kNode), uri)
-        }
-    }
-    
-    /**
-     * Delete iLSuccOf constraints.
-     * @param dc the constraint to delete
-     * @param clientId the client id
-     */
-    def deleteILSuccOfConstraint(DeleteConstraint dc, String clientId) {
-        val uri = diagramState.getURIString(clientId)
-        val kNode = getKNode(uri, dc.id)
-        if (kNode !== null) {
-            val changedNodes = new LinkedList<ConstraintProperty<Object>>
-            changedNodes.add(new ConstraintProperty(kNode, LayeredOptions.CROSSING_MINIMIZATION_IN_LAYER_SUCC_OF, null))
-            refreshModelInEditor(changedNodes, KGraphUtil.getRootNodeOf(kNode), uri)
-        }
-    }
-    
-    /**
-     * sets a relative constraint with a chosen {@code value} on the node that is specified by the {@code targetID}.
      * 
-     * @param PropID the type of constraint that should be set (ILPredOfConstraint or ILSuccOfConstraint) 
-     * The IProperty class is expected.
+     * @param constraint The constraint to delete.
+     * @param clientId The client id.
+     */
+    def deleteRelativeConstraints(DeleteConstraint constraint, String clientId) {
+        val uri = diagramState.getURIString(clientId)
+        val kNode = getKNode(uri, constraint.id)
+        if (kNode !== null) {
+            val changedNodes = new LinkedList<ConstraintProperty<Object>>
+            changedNodes.add(new ConstraintProperty(kNode, LayeredOptions.CROSSING_MINIMIZATION_IN_LAYER_PRED_OF, null))
+            changedNodes.add(new ConstraintProperty(kNode, LayeredOptions.CROSSING_MINIMIZATION_IN_LAYER_SUCC_OF, null))
+            refreshModelInEditor(changedNodes, KGraphUtil.getRootNodeOf(kNode), uri)
+        }
+    }
+    
+    /**
+     * Delete in-layer-predecessor-of constraints.
+     * 
+     * @param constraint The constraint to delete.
+     * @param clientId The client id.
+     */
+    def deleteInLayerPredecessorOfConstraint(DeleteConstraint constraint, String clientId) {
+        val uri = diagramState.getURIString(clientId)
+        val kNode = getKNode(uri, constraint.id)
+        if (kNode !== null) {
+            val changedNodes = new LinkedList<ConstraintProperty<Object>>
+            changedNodes.add(new ConstraintProperty(kNode, LayeredOptions.CROSSING_MINIMIZATION_IN_LAYER_PRED_OF, null))
+            refreshModelInEditor(changedNodes, KGraphUtil.getRootNodeOf(kNode), uri)
+        }
+    }
+    
+    /**
+     * Delete in-layer-successor-of constraints.
+     * 
+     * @param constraint The constraint to delete.
+     * @param clientId The client id.
+     */
+    def deleteILSuccOfConstraint(DeleteConstraint constraint, String clientId) {
+        val uri = diagramState.getURIString(clientId)
+        val kNode = getKNode(uri, constraint.id)
+        if (kNode !== null) {
+            val changedNodes = new LinkedList<ConstraintProperty<Object>>
+            changedNodes.add(new ConstraintProperty(kNode, LayeredOptions.CROSSING_MINIMIZATION_IN_LAYER_SUCC_OF, null))
+            refreshModelInEditor(changedNodes, KGraphUtil.getRootNodeOf(kNode), uri)
+        }
+    }
+    
+    /**
+     * Sets a relative constraint with a chosen {@code value} on the node that is specified by the {@code targetId}.
+     * 
+     * @param property The IProperty class of constraint that should be set.
      * @param uri The uri of the diagram/file.
      * @param targetId The id of the node on which the constraint should be set.
-     * @param node the id of the node to which the relation should be set.
+     * @param referencedId The id of the node to which the relation should be set.
+     * @param clientId The client id.
      */
-    private def setRelativeConstraint(IProperty<String> property, String uri, String targetId, String node,
+    private def setRelativeConstraint(
+        IProperty<String> property,
+        String uri,
+        String targetId,
+        String referencedId,
         String clientId
     ) {
-        val kNode = LSPUtil.getKNode(diagramState, uri, targetId)
-        val parentOfNode = kNode.parent
-        
-        // get the actual label of the node
-        val otherNode = LSPUtil.getKNode(diagramState, uri, node)
-        
-        var value = kNode.toString
-        val id = otherNode.getData(KIdentifier)
+        val targetNode = LSPUtil.getKNode(diagramState, uri, targetId)
+        val parentOfNode = targetNode.parent
+
+        // Get the actual label of the node
+        val referencedNode = LSPUtil.getKNode(diagramState, uri, referencedId)
+
+        var nameStringOfReferenceNode = targetNode.toString
+        val id = referencedNode.getData(KIdentifier)
         if (id !== null) {
-            value = id.id
+            nameStringOfReferenceNode = id.id
         }
-        
-        if (kNode !== null && parentOfNode !== null) {
-            var layerID = otherNode.getProperty(LayeredOptions.LAYERING_LAYER_ID);
-            var posID = otherNode.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_ID);
-            if (layerID === kNode.getProperty(LayeredOptions.LAYERING_LAYER_ID)
-                && posID > kNode.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_ID)) {
-                posID--;
+
+        if (targetNode !== null && parentOfNode !== null) {
+            var referenceLayer = referencedNode.getProperty(LayeredOptions.LAYERING_LAYER_ID);
+            var targetPosition = referencedNode.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_ID);
+
+            // Update target position depending on the constraint that should be set.
+            if (referenceLayer === targetNode.getProperty(LayeredOptions.LAYERING_LAYER_ID) &&
+                targetPosition > targetNode.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_ID)) {
+                targetPosition--;
             }
             if (property === LayeredOptions.CROSSING_MINIMIZATION_IN_LAYER_SUCC_OF) {
-                posID++;
-            }
-            var layerNodes = InteractiveUtil.getNodesOfLayer(layerID, parentOfNode.children)
-            var oldLayerNodes = InteractiveUtil.getNodesOfLayer(kNode.getProperty(LayeredOptions.LAYERING_LAYER_ID),
-                parentOfNode.children)
-            
-            // update position constraints
-            val layerSwap = layerID !== kNode.getProperty(LayeredOptions.LAYERING_LAYER_ID)
-            var relReval = new RelativeConstraintReevaluation(kNode)
-            var reval = new LayeredConstraintReevaluation(kNode)
-                        
-            kNode.setProperty(property, null);
-            var List<KNode> chain = InteractiveUtil.getChain(kNode, oldLayerNodes)
-            
-            if (layerSwap) {
-                reval.reevaluatePositionConstraintsAfterLayerSwap(layerNodes, oldLayerNodes, kNode, posID)
-                reval.reevaluateLayerConstraintsInChain(layerID, chain)
-            } else {
-                if (posID !== kNode.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_ID) &&
-                    chain.contains(otherNode) &&
-                    posID >= chain.get(0).getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_ID) &&
-                    posID <= chain.get(chain.size - 1).getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_ID)) {
-                    // node is moved within its chain
-                    relReval.reevaluateRCAfterSwapInChain(kNode, oldLayerNodes)
-                }
-                reval.reevaluatePositionConstraintsAfterPosChangeInLayer(layerNodes, kNode, posID)
-            }
-            
-            var posCons = posID
-            if (layerSwap || posID < kNode.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_ID)) {
-                // posID must be increased by the number of predecessors
-                posCons = posID + chain.indexOf(kNode)
+                targetPosition++;
             }
 
-            reval.reevaluatePosConsInChain(kNode, posCons, chain)
-            
-            // update relative constraints
-            if (layerSwap || posID !== kNode.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_ID)) {
-                relReval.checkRelCons(kNode, posID, layerNodes, oldLayerNodes, property)
-                relReval.reevaluateRelCons(kNode, posID, layerNodes, oldLayerNodes)
+            var layerNodes = InteractiveUtil.getNodesOfLayer(referenceLayer, parentOfNode.children)
+            var oldLayerNodes = InteractiveUtil.getNodesOfLayer(
+                targetNode.getProperty(LayeredOptions.LAYERING_LAYER_ID), parentOfNode.children)
+
+            // Update position constraints.
+            val layerSwap = referenceLayer !== targetNode.getProperty(LayeredOptions.LAYERING_LAYER_ID)
+            var relativeConstraintReevaluation = new RelativeConstraintReevaluation(targetNode)
+            var absoluteConstraintReevaluation = new LayeredConstraintReevaluation(targetNode)
+
+            targetNode.setProperty(property, null);
+            var List<KNode> chain = InteractiveUtil.getChain(targetNode, oldLayerNodes)
+
+            if (layerSwap) {
+                absoluteConstraintReevaluation.
+                    reevaluatePositionConstraintsAfterLayerSwap(layerNodes, oldLayerNodes, targetNode, targetPosition)
+                absoluteConstraintReevaluation.reevaluateLayerConstraintsInChain(referenceLayer, chain)
+            } else {
+                if (targetPosition !== targetNode.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_ID) &&
+                    chain.contains(referencedNode) &&
+                    targetPosition >= chain.get(0).getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_ID) &&
+                    targetPosition <=
+                        chain.get(chain.size - 1).getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_ID)) {
+                    // Node is moved within its chain.
+                    relativeConstraintReevaluation.reevaluateRelativeConstraintAfterSwapInChain(targetNode, oldLayerNodes)
+                }
+                absoluteConstraintReevaluation.
+                    reevaluatePositionConstraintsAfterPositionChangeInLayer(layerNodes, targetNode, targetPosition)
             }
-            val changedNodes = reval.changedNodes
-            changedNodes.addAll(relReval.changedNodes)
-            changedNodes.add(new ConstraintProperty(kNode, property, value))
-            refreshModelInEditor(changedNodes, KGraphUtil.getRootNodeOf(kNode), uri)
+
+            var posCons = targetPosition
+            if (layerSwap ||
+                targetPosition < targetNode.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_ID)) {
+                // Position ids must be increased by the number of predecessors.
+                posCons = targetPosition + chain.indexOf(targetNode)
+            }
+
+            absoluteConstraintReevaluation.reevaluatePositionConstraintInChain(targetNode, posCons, chain)
+
+            // Update relative constraints.
+            if (layerSwap ||
+                targetPosition !== targetNode.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_ID)) {
+                relativeConstraintReevaluation.checkRelativeConstraints(targetNode, targetPosition, layerNodes, oldLayerNodes,
+                    property)
+                relativeConstraintReevaluation.reevaluateRelativeConstraints(targetNode, targetPosition, layerNodes, oldLayerNodes)
+            }
+            val changedNodes = absoluteConstraintReevaluation.changedNodes
+            changedNodes.addAll(relativeConstraintReevaluation.changedNodes)
+            changedNodes.add(new ConstraintProperty(targetNode, property, nameStringOfReferenceNode))
+            refreshModelInEditor(changedNodes, KGraphUtil.getRootNodeOf(targetNode), uri)
         }
     }
 
     /**
      * Sets a layer constraint.
-     * @param lc the layer constraint
-     * @param clientId the client id
+     * 
+     * @param constraint The layer constraint.
+     * @param clientId The client id.
      */
-    def setLayerConstraint(LayerConstraint lc, String clientId) {
+    def setLayerConstraint(LayerConstraint constraint, String clientId) {
         val uri = diagramState.getURIString(clientId)
-        setConstraint(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT, uri, lc.id, lc.layer, lc.getLayerConstraint, clientId)
+        setConstraint(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT, uri, constraint.id, constraint.layer,
+            constraint.getLayerConstraint, clientId)
     }
 
     /**
      * Sets a position constraint.
-     * @param pc the position constraint
-     * @param clientId the client id
+     * 
+     * @param constraint The position constraint.
+     * @param clientId The client id.
      */
-    def setPositionConstraint(PositionConstraint pc, String clientId) {
+    def setPositionConstraint(PositionConstraint constraint, String clientId) {
         val uri = diagramState.getURIString(clientId)
-        setConstraint(LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT, uri, pc.id,
-            pc.position, pc.getPositionConstraint, clientId)
+        setConstraint(LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT, uri, constraint.id,
+            constraint.position, constraint.getPositionConstraint, clientId)
     }
 
     /**
      * Sets a layer constraint and a positional constraint that 
      * are encapsulated in an instance of StaticConstraint.
-     * @param sc the constraint
-     * @param clientId the client id
+     * 
+     * @param constraint The constraint.
+     * @param clientId The client id.
      */
-    def setStaticConstraint(StaticConstraint sc, String clientId) {
+    def setStaticConstraint(StaticConstraint constraint, String clientId) {
         val uri = diagramState.getURIString(clientId)
-        val kNode = LSPUtil.getKNode(diagramState, uri, sc.id)
+        val kNode = LSPUtil.getKNode(diagramState, uri, constraint.id)
         val parentOfNode = kNode.parent
 
         // In case that the interactive mode is active, the viewContext is not null 
         // and the element is actually a KNode. Carry on.
         if (kNode !== null && parentOfNode !== null) {
-            /*
-             * As long as no increased pos constraint is present in the target layer
-             * and no increased layer constraint is present left to the target layer
-             * newLayerId === newLayer Cons && newPosCons = newPosId
-             * In the other cases both values can differ.
-             */
+            // As long as no increased position constraint is present in the target layer
+            // and no increased layer constraint is present left to the target layer
+            // newLayerId === newLayerConstraint && newPosCons = newPosId
+            // In the other cases both values can differ.
             var allNodes = parentOfNode.children
-            var newLayerId = sc.layer
-            var newLayerCons = sc.getLayerConstraint
+            var newLayerId = constraint.layer
+            var newLayerConstraint = constraint.getLayerConstraint
             val List<ConstraintProperty<Object>> changedNodes = newLinkedList;
             // If layerId is -1 all other nodes need to have their layerId and layerChoiceId increased.
-            if (newLayerCons == -1) {
+            if (newLayerConstraint == -1) {
                 newLayerId++
-                newLayerCons++
+                newLayerConstraint++
                 allNodes.forEach[node |
                     if (node.hasProperty(LayeredOptions.LAYERING_LAYER_ID)) {
                         node.setProperty(LayeredOptions.LAYERING_LAYER_ID,
@@ -276,43 +296,45 @@ class LayeredInteractiveLanguageServerExtension implements ILanguageServerExtens
             
             val chain = InteractiveUtil.getChain(kNode, oldLayerNodes)
             // posID must be increased by the number of predecessors
-            val newPosId = sc.position + chain.indexOf(kNode)
-            val newPosCons = sc.getPositionConstraint + chain.indexOf(kNode)
+            val newPositionId = constraint.position + chain.indexOf(kNode)
+            val newPositionConstraint = constraint.getPositionConstraint + chain.indexOf(kNode)
             
             // Reevaluate insertion of node to target layer
-            var reval = new LayeredConstraintReevaluation(kNode)
+            var absoluteConstraintReevaluation = new LayeredConstraintReevaluation(kNode)
 
-            if (reval.reevaluateAfterEmptyingALayer(kNode, newLayerCons, allNodes)) {
-                newLayerCons--
+            if (absoluteConstraintReevaluation.reevaluateAfterEmptyingALayer(kNode, newLayerConstraint, allNodes)) {
+                newLayerConstraint--
             }
-            reval.reevaluatePositionConstraintsAfterLayerSwap(targetLayerNodes, oldLayerNodes, kNode, newPosId)
-            reval.reevaluateLayerConstraintsInChain(newLayerCons, chain)
-            reval.reevaluatePosConsInChain(kNode, newPosCons, chain)
+            absoluteConstraintReevaluation.
+                reevaluatePositionConstraintsAfterLayerSwap(targetLayerNodes, oldLayerNodes, kNode, newPositionId)
+            absoluteConstraintReevaluation.reevaluateLayerConstraintsInChain(newLayerConstraint, chain)
+            absoluteConstraintReevaluation.reevaluatePositionConstraintInChain(kNode, newPositionConstraint, chain)
 
-            changedNodes.addAll(reval.changedNodes)
+            changedNodes.addAll(absoluteConstraintReevaluation.changedNodes)
             changedNodes.add(
                 new ConstraintProperty(kNode, LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT,
-                    newPosCons))
+                    newPositionConstraint))
             changedNodes.add(
-                new ConstraintProperty(kNode, LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT, newLayerCons))
-            // Update source code of the model
+                new ConstraintProperty(kNode, LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT, newLayerConstraint))
             
-            // update relative constraints
-            var relReval = new RelativeConstraintReevaluation(kNode)
-            relReval.reevaluateRelCons(kNode, newPosId, targetLayerNodes, oldLayerNodes)
-            changedNodes.addAll(relReval.changedNodes)
+            // Update relative constraints.
+            var relativeCOnstraintReevaluation = new RelativeConstraintReevaluation(kNode)
+            relativeCOnstraintReevaluation.reevaluateRelativeConstraints(kNode, newPositionId, targetLayerNodes, oldLayerNodes)
+            changedNodes.addAll(relativeCOnstraintReevaluation.changedNodes)
+            // Update source code of the model.
             refreshModelInEditor(changedNodes, KGraphUtil.getRootNodeOf(kNode), uri)
         }
     }
 
     /**
      * Delete a constraint.
-     * @param dc the constraint o delete
-     * @param clientId the client id
+     * 
+     * @param constraint The constraint to delete.
+     * @param clientId The client id.
      */
-    def deleteStaticConstraint(DeleteConstraint dc, String clientId) {
+    def deleteStaticConstraint(DeleteConstraint constraint, String clientId) {
         val uri = diagramState.getURIString(clientId)
-        val kNode = getKNode(uri, dc.id)
+        val kNode = getKNode(uri, constraint.id)
         if (kNode !== null) {
             val changedNodes = new LinkedList<ConstraintProperty<Object>>
             changedNodes.add(
@@ -324,12 +346,13 @@ class LayeredInteractiveLanguageServerExtension implements ILanguageServerExtens
 
     /**
      * Delete a position constraint.
-     * @param dc the position constraint o delete
-     * @param clientId the client id
+     * 
+     * @param constraint The position constraint to delete.
+     * @param clientId The client id.
      */
-    def deletePositionConstraint(DeleteConstraint dc, String clientId) {
+    def deletePositionConstraint(DeleteConstraint constraint, String clientId) {
         val uri = diagramState.getURIString(clientId)
-        val kNode = getKNode(uri, dc.id)
+        val kNode = getKNode(uri, constraint.id)
         if (kNode !== null) {
             val changedNodes = new LinkedList<ConstraintProperty<Object>>
             changedNodes.add(new ConstraintProperty(
@@ -343,12 +366,13 @@ class LayeredInteractiveLanguageServerExtension implements ILanguageServerExtens
 
     /**
      * Delete a layer constraint.
-     * @param dc the layer constraint o delete
-     * @param clientId the client id
+     * 
+     * @param constraint The layer constraint to delete.
+     * @param clientId The client id.
      */
-    def deleteLayerConstraint(DeleteConstraint dc, String clientId) {
+    def deleteLayerConstraint(DeleteConstraint constraint, String clientId) {
         val uri = diagramState.getURIString(clientId)
-        val kNode = getKNode(uri, dc.id)
+        val kNode = getKNode(uri, constraint.id)
         if (kNode !== null) {
             val changedNodes = new LinkedList<ConstraintProperty<Object>>
             changedNodes.add(new ConstraintProperty(kNode, LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT, null))
@@ -360,33 +384,34 @@ class LayeredInteractiveLanguageServerExtension implements ILanguageServerExtens
      * Sets a layer or position constraint with a chosen {@code value} on the node 
      * that is specified by the {@code targetID}.
      * 
-     * @param PropID the type of constraint that should be set (LayerConstraint or PositionConstraint) 
-     * The IProperty class is expected.
+     * @param property The IProperty of constraint that should be set (LayerConstraint or PositionConstraint).
      * @param uri The uri of the diagram/file.
      * @param targetId The id of the node on which the constraint should be set.
-     * @param value Either the id of the position or the id of the layer.
+     * @param oldValue Either the id of the position or the id of the layer.
+     * @param newValue Either the value if the position constraint or the layer constraint.
+     * @param cliendId The client id.
      */
-    private def setConstraint(IProperty<Integer> property, String uri, String targetId, int valueId, int valueCons,
+    private def setConstraint(IProperty<Integer> property, String uri, String targetId, int oldValue, int newValue,
         String clientId
     ) {
         val kNode = LSPUtil.getKNode(diagramState, uri, targetId)
         val parentOfNode = kNode.parent
 
         if (kNode !== null && parentOfNode !== null) {
-            var layerID = kNode.getProperty(LayeredOptions.LAYERING_LAYER_ID)
-            var posID = kNode.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT);
+            var layerId = kNode.getProperty(LayeredOptions.LAYERING_LAYER_ID)
+            var positionId = kNode.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT);
             if (property === LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT) {
-                layerID = valueId
+                layerId = oldValue
             }
-            var newValueCons = valueCons
-            var newValueId = valueId
+            var newValueConstraint = newValue
+            var newValueId = oldValue
             
             val List<ConstraintProperty<Object>> changedNodes = newLinkedList;
             // If layerId is -1 all other nodes need to have their layerId and layerChoiceId increased.
-            if (valueId == -1) {
-                layerID++
+            if (oldValue == -1) {
+                layerId++
                 newValueId++
-                newValueCons++
+                newValueConstraint++
                 parentOfNode.children.forEach[node |
                     if (node.hasProperty(LayeredOptions.LAYERING_LAYER_ID)) {
                         node.setProperty(LayeredOptions.LAYERING_LAYER_ID,
@@ -404,46 +429,46 @@ class LayeredInteractiveLanguageServerExtension implements ILanguageServerExtens
                 ]
             }
             
-            var List<KNode> layerNodes = InteractiveUtil.getNodesOfLayer(layerID, parentOfNode.children)
+            var List<KNode> layerNodes = InteractiveUtil.getNodesOfLayer(layerId, parentOfNode.children)
             val oldLayerNodes = InteractiveUtil.getNodesOfLayer(kNode.getProperty(LayeredOptions.LAYERING_LAYER_ID),
                 parentOfNode.children
             )
 
-            val oldPos = kNode.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_ID)
+            val oldPosition = kNode.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_ID)
             
-            var relReval = new RelativeConstraintReevaluation(kNode)
+            var relativeConstraintReevaluation = new RelativeConstraintReevaluation(kNode)
             val chain = InteractiveUtil.getChain(kNode, oldLayerNodes)
             if (property === LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT) {
-                posID = valueId
-                if (posID != -1 &&
-                    posID >= chain.get(0).getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_ID) &&
-                    posID <= chain.get(chain.size - 1).getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_ID)) {
+                positionId = oldValue
+                if (positionId != -1 &&
+                    positionId >= chain.get(0).getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_ID) &&
+                    positionId <= chain.get(chain.size - 1).getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_ID)) {
                     // node is moved within its chain
-                    relReval.reevaluateRCAfterSwapInChain(kNode, oldLayerNodes)
-                } else if (posID < oldPos) {
+                    relativeConstraintReevaluation.reevaluateRelativeConstraintAfterSwapInChain(kNode, oldLayerNodes)
+                } else if (positionId < oldPosition) {
                     // posID must be increased by the number of predecessors
-                    newValueCons += chain.indexOf(kNode)
+                    newValueConstraint += chain.indexOf(kNode)
                     newValueId += chain.indexOf(kNode)
                 }
             }
         
-            var reval = new LayeredConstraintReevaluation(kNode)
+            var absoluteConstraintReevalution = new LayeredConstraintReevaluation(kNode)
             switch (property) {
                 case LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT: {
-                    reval.reevaluatePositionConstraintsAfterPosChangeInLayer(layerNodes, kNode, newValueId)
-                    reval.reevaluatePosConsInChain(kNode, newValueCons, chain)
+                    absoluteConstraintReevalution.reevaluatePositionConstraintsAfterPositionChangeInLayer(layerNodes, kNode, newValueId)
+                    absoluteConstraintReevalution.reevaluatePositionConstraintInChain(kNode, newValueConstraint, chain)
                 }
                 case LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT:
-                    reval.reevaluateLayerConstraintsInChain(layerID, chain)
+                    absoluteConstraintReevalution.reevaluateLayerConstraintsInChain(layerId, chain)
             }
             
-            changedNodes.addAll(reval.changedNodes)
-            changedNodes.add(new ConstraintProperty(kNode, property, newValueCons))
+            changedNodes.addAll(absoluteConstraintReevalution.changedNodes)
+            changedNodes.add(new ConstraintProperty(kNode, property, newValueConstraint))
             
-            // update relative constraints
-            if (posID !== null) {
-                relReval.reevaluateRelCons(kNode, posID, layerNodes, oldLayerNodes)
-                changedNodes.addAll(relReval.changedNodes)
+            // Update relative constraints.
+            if (positionId !== null) {
+                relativeConstraintReevaluation.reevaluateRelativeConstraints(kNode, positionId, layerNodes, oldLayerNodes)
+                changedNodes.addAll(relativeConstraintReevaluation.changedNodes)
             };
             refreshModelInEditor(changedNodes, KGraphUtil.getRootNodeOf(kNode), uri)
         }
@@ -457,9 +482,9 @@ class LayeredInteractiveLanguageServerExtension implements ILanguageServerExtens
      * This version of getKNode retrieves the root itself. If you already have retrieved the root, 
      * then you should use the other variant.
      * 
-     * @param uri The resource's uri
-     * @param nodeId The Id of the requested KNode
-     * @return The requested node
+     * @param uri The resource's uri.
+     * @param nodeId The Id of the requested KNode.
+     * @return The requested node.
      */
     private def getKNode(String uri, String nodeId) {
         return LSPUtil.getKNode(diagramState, uri, nodeId)
@@ -468,9 +493,9 @@ class LayeredInteractiveLanguageServerExtension implements ILanguageServerExtens
     /**
      * Sends request to the client to update the file according to the property changes.
      * 
-     * @param changedNodes list of all changes to nodes
-     * @param model The main kNode
-     * @param uri uri of resource
+     * @param changedNodes The list of all changes to nodes.
+     * @param model The main kNode.
+     * @param uri The uri of resource.
      */
     def refreshModelInEditor(List<ConstraintProperty<Object>> changedNodes, KNode model, String uri) {
         changedNodes.forEach[constraint|

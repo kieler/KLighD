@@ -18,14 +18,10 @@ package de.cau.cs.kieler.klighd.lsp.gson_utils
 
 import com.google.gson.GsonBuilder
 import de.cau.cs.kieler.klighd.SynthesisOption
-import de.cau.cs.kieler.klighd.lsp.interactive.layered.DeleteILPredOfConstraintAction
-import de.cau.cs.kieler.klighd.lsp.interactive.layered.DeleteILSuccOfConstraintAction
 import de.cau.cs.kieler.klighd.lsp.interactive.layered.DeleteLayerConstraintAction
 import de.cau.cs.kieler.klighd.lsp.interactive.layered.DeletePositionConstraintAction
 import de.cau.cs.kieler.klighd.lsp.interactive.layered.DeleteRelativeConstraintsAction
 import de.cau.cs.kieler.klighd.lsp.interactive.layered.DeleteStaticConstraintAction
-import de.cau.cs.kieler.klighd.lsp.interactive.layered.SetILPredOfConstraintAction
-import de.cau.cs.kieler.klighd.lsp.interactive.layered.SetILSuccOfConstraintAction
 import de.cau.cs.kieler.klighd.lsp.interactive.layered.SetLayerConstraintAction
 import de.cau.cs.kieler.klighd.lsp.interactive.layered.SetPositionConstraintAction
 import de.cau.cs.kieler.klighd.lsp.interactive.layered.SetStaticConstraintAction
@@ -41,6 +37,10 @@ import de.cau.cs.kieler.klighd.lsp.model.SetSynthesisAction
 import java.awt.geom.Point2D
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.sprotty.server.json.ActionTypeAdapter
+import de.cau.cs.kieler.klighd.lsp.interactive.layered.SetInLayerPredecessorOfConstraintAction
+import de.cau.cs.kieler.klighd.lsp.interactive.layered.SetInLayerSuccessorOfConstraintAction
+import de.cau.cs.kieler.klighd.lsp.interactive.layered.DeleteInLayerSuccessorOfConstraintAction
+import de.cau.cs.kieler.klighd.lsp.interactive.layered.DeleteInLayerPredecessorOfConstraintAction
 
 /**
  * Static util class to configure needed gson type adapters for KGraph serialization.
@@ -67,11 +67,11 @@ class KGraphTypeAdapterUtil {
                 addActionKind(DeletePositionConstraintAction.KIND, DeletePositionConstraintAction)
                 addActionKind(DeleteLayerConstraintAction.KIND, DeleteLayerConstraintAction)
                 //relative constraints                
-                addActionKind(SetILPredOfConstraintAction.KIND, SetILPredOfConstraintAction)
-                addActionKind(SetILSuccOfConstraintAction.KIND, SetILSuccOfConstraintAction)
+                addActionKind(SetInLayerPredecessorOfConstraintAction.KIND, SetInLayerPredecessorOfConstraintAction)
+                addActionKind(SetInLayerSuccessorOfConstraintAction.KIND, SetInLayerSuccessorOfConstraintAction)
                 addActionKind(DeleteRelativeConstraintsAction.KIND, DeleteRelativeConstraintsAction)
-                addActionKind(DeleteILPredOfConstraintAction.KIND, DeleteILPredOfConstraintAction)
-                addActionKind(DeleteILSuccOfConstraintAction.KIND, DeleteILSuccOfConstraintAction)
+                addActionKind(DeleteInLayerPredecessorOfConstraintAction.KIND, DeleteInLayerPredecessorOfConstraintAction)
+                addActionKind(DeleteInLayerSuccessorOfConstraintAction.KIND, DeleteInLayerSuccessorOfConstraintAction)
                 
                 
                 // Interactive rectpacking actions

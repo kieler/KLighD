@@ -33,17 +33,17 @@ class ConstraintsUtils {
     /**
      * Returns the value of the position constraint that is set on the node.
      * 
-     * @param node the instance of KNode of which you want the constraint value
+     * @param node The instance of KNode of which you want the constraint value
      * @return The position constraint of the given node.
      */
-    def static getPosConstraint(KNode node) {
+    def static getPositionConstraint(KNode node) {
         return node.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT)
     }
 
     /**
      * Returns the value of the layer constraint that is set on the node.
      * 
-     * @param node the instance of KNode of which you want the constraint value
+     * @param node The instance of KNode of which you want the constraint value
      * @return The layer constraint of the given node.
      */
     def static getLayerConstraint(KNode node) {
@@ -54,17 +54,17 @@ class ConstraintsUtils {
      * Sets the value of the position constraint that is set on the node.
      * 
      * @param node The instance of KNode of which you want the constraint value
-     * @param pos The new desired position of the node.
+     * @param position The new desired position of the node.
      */
-    def static setPosConstraint(KNode node, int pos) {
-        node.setProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT, pos)
+    def static setPositionConstraint(KNode node, int position) {
+        node.setProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT, position)
     }
 
     /**
      * Sets the value of the layer constraint that is set on the node.
      * 
-     * @param node the instance of KNode that should get the constraint.
-     * @param layer the value for the layer constraint
+     * @param node The instance of KNode that should get the constraint.
+     * @param layer The value for the layer constraint.
      */
     def static setLayerConstraint(KNode node, int layer) {
         node.setProperty(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT, layer)
@@ -74,7 +74,7 @@ class ConstraintsUtils {
      * Sets the value of the layer constraint to null.
      * This procedure effectively deletes the constraint from the node.
      * 
-     * @param node the instance of KNode of which the layer constraint is set to null
+     * @param node The instance of KNode of which the layer constraint is set to null
      */
     def static nullifyLayerConstraint(KNode node) {
         node.setProperty(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT, null)
@@ -84,9 +84,9 @@ class ConstraintsUtils {
      * Sets the value of the position constraint to null.
      * This procedure effectively deletes the constraint from the node.
      * 
-     * @param node the instance of KNode of which the position constraint is set to null.
+     * @param node The instance of KNode of which the position constraint is set to null.
      */
-    def static nullifyPosConstraint(KNode node) {
+    def static nullifyPositionConstraint(KNode node) {
         node.setProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT, null)
     }
 }

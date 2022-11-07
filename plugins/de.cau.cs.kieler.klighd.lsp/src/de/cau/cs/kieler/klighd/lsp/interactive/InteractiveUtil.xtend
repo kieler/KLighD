@@ -106,7 +106,7 @@ class InteractiveUtil {
      * 
      * @param node One node of the chain
      * @param layerNodes Nodes that are in the same layer as {@code node}
-     * @returnAll nodes of the relative constraint chain of the given node present in the given layer nodes.
+     * @return All nodes of the relative constraint chain of the given node present in the given layer nodes.
      */
     static def getChain(KNode node, List<KNode> layerNodes) {
         var pos = layerNodes.indexOf(node)

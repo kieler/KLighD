@@ -140,7 +140,9 @@ class DeleteLayerConstraintAction implements Action {
     new(Consumer<DeleteLayerConstraintAction> initializer) {
         initializer.accept(this)
     }
-}/**
+}
+
+/**
  * Sets a 'in layer predecessor of'-constraint for a node.
  * 
  * @author jep
@@ -148,14 +150,14 @@ class DeleteLayerConstraintAction implements Action {
 @Accessors
 @EqualsHashCode
 @ToString(skipNulls = true)
-class SetILPredOfConstraintAction implements Action {
+class SetInLayerPredecessorOfConstraintAction implements Action {
     public static val KIND = 'setILPredOfConstraint'
     String kind = KIND
     
     InLayerPredecessorOfConstraint constraint
     
     new() {}
-    new(Consumer<SetILPredOfConstraintAction> initializer) {
+    new(Consumer<SetInLayerPredecessorOfConstraintAction> initializer) {
         initializer.accept(this)
     }
 }
@@ -168,14 +170,14 @@ class SetILPredOfConstraintAction implements Action {
 @Accessors
 @EqualsHashCode
 @ToString(skipNulls = true)
-class SetILSuccOfConstraintAction implements Action {
+class SetInLayerSuccessorOfConstraintAction implements Action {
     public static val KIND = 'setILSuccOfConstraint'
     String kind = KIND
     
     InLayerSuccessorOfConstraint constraint
     
     new() {}
-    new(Consumer<SetILSuccOfConstraintAction> initializer) {
+    new(Consumer<SetInLayerSuccessorOfConstraintAction> initializer) {
         initializer.accept(this)
     }
 }
@@ -208,14 +210,14 @@ class DeleteRelativeConstraintsAction implements Action {
 @Accessors
 @EqualsHashCode
 @ToString(skipNulls = true)
-class DeleteILPredOfConstraintAction implements Action {
+class DeleteInLayerPredecessorOfConstraintAction implements Action {
     public static val KIND = 'deleteILPredOfConstraint'
     String kind = KIND
     
     DeleteConstraint constraint
     
     new() {}
-    new(Consumer<DeleteILPredOfConstraintAction> initializer) {
+    new(Consumer<DeleteInLayerPredecessorOfConstraintAction> initializer) {
         initializer.accept(this)
     }
 }
@@ -228,14 +230,14 @@ class DeleteILPredOfConstraintAction implements Action {
 @Accessors
 @EqualsHashCode
 @ToString(skipNulls = true)
-class DeleteILSuccOfConstraintAction implements Action {
+class DeleteInLayerSuccessorOfConstraintAction implements Action {
     public static val KIND = 'deleteILSuccOfConstraint'
     String kind = KIND
     
     DeleteConstraint constraint
     
     new() {}
-    new(Consumer<DeleteILSuccOfConstraintAction> initializer) {
+    new(Consumer<DeleteInLayerSuccessorOfConstraintAction> initializer) {
         initializer.accept(this)
     }
 }

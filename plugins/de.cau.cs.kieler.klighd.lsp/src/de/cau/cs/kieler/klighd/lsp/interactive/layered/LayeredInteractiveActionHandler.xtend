@@ -39,11 +39,11 @@ class LayeredInteractiveActionHandler extends AbstractActionHandler {
             DeleteStaticConstraintAction.KIND -> DeleteStaticConstraintAction,
             DeletePositionConstraintAction.KIND -> DeletePositionConstraintAction,
             DeleteLayerConstraintAction.KIND -> DeleteLayerConstraintAction,
-            SetILPredOfConstraintAction.KIND -> SetILPredOfConstraintAction,
-            SetILSuccOfConstraintAction.KIND -> SetILSuccOfConstraintAction,
+            SetInLayerPredecessorOfConstraintAction.KIND -> SetInLayerPredecessorOfConstraintAction,
+            SetInLayerSuccessorOfConstraintAction.KIND -> SetInLayerSuccessorOfConstraintAction,
             DeleteRelativeConstraintsAction.KIND -> DeleteRelativeConstraintsAction,
-            DeleteILPredOfConstraintAction.KIND -> DeleteILPredOfConstraintAction,
-            DeleteILSuccOfConstraintAction.KIND -> DeleteILSuccOfConstraintAction
+            DeleteInLayerPredecessorOfConstraintAction.KIND -> DeleteInLayerPredecessorOfConstraintAction,
+            DeleteInLayerSuccessorOfConstraintAction.KIND -> DeleteInLayerSuccessorOfConstraintAction
         )
     }
     
@@ -72,23 +72,23 @@ class LayeredInteractiveActionHandler extends AbstractActionHandler {
             synchronized (server.modelLock) {
                 constraintLS.deleteLayerConstraint(action.constraint, clientId)
             }
-        } else if (action instanceof SetILPredOfConstraintAction) {
+        } else if (action instanceof SetInLayerPredecessorOfConstraintAction) {
             synchronized (server.modelLock) {
-                constraintLS.setILPredOfConstraint(action.constraint, clientId)
+                constraintLS.setInLayerPredecessorOfConstraint(action.constraint, clientId)
             }
-        } else if (action instanceof SetILSuccOfConstraintAction) {
+        } else if (action instanceof SetInLayerSuccessorOfConstraintAction) {
             synchronized (server.modelLock) {
-                constraintLS.setILSuccOfConstraint(action.constraint, clientId)
+                constraintLS.setInLayerSuccessorOfConstraint(action.constraint, clientId)
             }
         } else if (action instanceof DeleteRelativeConstraintsAction) {
             synchronized (server.modelLock) {
                 constraintLS.deleteRelativeConstraints(action.constraint, clientId)
             }
-        } else if (action instanceof DeleteILPredOfConstraintAction) {
+        } else if (action instanceof DeleteInLayerPredecessorOfConstraintAction) {
             synchronized (server.modelLock) {
-                constraintLS.deleteILPredOfConstraint(action.constraint, clientId)
+                constraintLS.deleteInLayerPredecessorOfConstraint(action.constraint, clientId)
             }
-        } else if (action instanceof DeleteILSuccOfConstraintAction) {
+        } else if (action instanceof DeleteInLayerSuccessorOfConstraintAction) {
             synchronized (server.modelLock) {
                 constraintLS.deleteILSuccOfConstraint(action.constraint, clientId)
             }

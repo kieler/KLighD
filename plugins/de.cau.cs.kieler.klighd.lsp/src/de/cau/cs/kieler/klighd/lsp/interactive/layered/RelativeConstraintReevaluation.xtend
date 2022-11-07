@@ -32,8 +32,8 @@ import org.eclipse.xtend.lib.annotations.Accessors
  */
 class RelativeConstraintReevaluation {
     
-    IProperty<String> predProp = LayeredOptions.CROSSING_MINIMIZATION_IN_LAYER_PRED_OF
-    IProperty<String> succProp = LayeredOptions.CROSSING_MINIMIZATION_IN_LAYER_SUCC_OF
+    IProperty<String> predecessorProperty = LayeredOptions.CROSSING_MINIMIZATION_IN_LAYER_PRED_OF
+    IProperty<String> successorProperty = LayeredOptions.CROSSING_MINIMIZATION_IN_LAYER_SUCC_OF
     
     @Accessors(PUBLIC_GETTER)
     List<ConstraintProperty<Object>> changedNodes = newLinkedList()
@@ -48,33 +48,33 @@ class RelativeConstraintReevaluation {
     /**
      * When a node is moved between two other nodes, the relative constraints of them must be updated.
      * 
-     * @param target The moved node
-     * @param newPos The position {@code target} is moved to
-     * @param newLayerNodes Nodes of the layer {@code target} is moved to
-     * @param oldLayerNodes Nodes of the layer {@code target} was original in
+     * @param target The moved node.
+     * @param newPosition The position {@code target} is moved to.
+     * @param newLayerNodes Nodes of the layer {@code target} is moved to.
+     * @param oldLayerNodes Nodes of the layer {@code target} was original in.
      */
-    def reevaluateRelCons(KNode target, int newPos, List<KNode> newLayerNodes, List<KNode> oldLayerNodes) {
+    def reevaluateRelativeConstraints(KNode target, int newPosition, List<KNode> newLayerNodes, List<KNode> oldLayerNodes) {
         val chainNodes = InteractiveUtil.getChain(target, oldLayerNodes)
         var startOfChain = chainNodes.get(0)
         var endOfChain = chainNodes.get(chainNodes.size - 1)
-        var pos = newPos
-        // determine pos of new successor
+        var position = newPosition
+        // Determine newPosition of new successor.
         if (newLayerNodes.contains(target)) {
             val oldPos = target.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_ID)
-            if (newPos > oldPos) {
-                pos++
+            if (newPosition > oldPos) {
+                position++
             }
         }
         
-        if (pos > 0 && pos < newLayerNodes.size) {
-            // update rel cons of the new pred and succ
-            val predNode = newLayerNodes.get(pos - 1)
-            val succNode = newLayerNodes.get(pos)
-            if (predNode.getProperty(predProp) !== null) {
-                changedNodes.add(new ConstraintProperty(predNode, predProp, startOfChain.labels.get(0).text))
+        if (position > 0 && position < newLayerNodes.size) {
+            // Update relative constraint of the new predecessor and successor.
+            val predecessor = newLayerNodes.get(position - 1)
+            val successor = newLayerNodes.get(position)
+            if (predecessor.getProperty(predecessorProperty) !== null) {
+                changedNodes.add(new ConstraintProperty(predecessor, predecessorProperty, startOfChain.labels.get(0).text))
             }
-            if (succNode.getProperty(succProp) !== null) {
-                changedNodes.add(new ConstraintProperty(succNode, succProp, endOfChain.labels.get(0).text))
+            if (successor.getProperty(successorProperty) !== null) {
+                changedNodes.add(new ConstraintProperty(successor, successorProperty, endOfChain.labels.get(0).text))
             }            
         }
     }
@@ -82,42 +82,45 @@ class RelativeConstraintReevaluation {
     /**
      * Updates relative constraints that have the moved node as target and of the target.
      * 
-     * @param target The moved node
-     * @param newPos The position {@code target} is moved to
-     * @param newLayerNodes Nodes of the layer {@code target} is moved to
-     * @param oldLayerNodes Nodes of the layer {@code target} was original in
+     * @param target The moved node.
+     * @param newPosition The position {@code target} is moved to.
+     * @param newLayerNodes Nodes of the layer {@code target} is moved to.
+     * @param oldLayerNodes Nodes of the layer {@code target} was original in.
+     * @param property The property to check.
      */
-    def checkRelCons(KNode target, int newPos, List<KNode> newLayerNodes, List<KNode> oldLayerNodes, IProperty<String> prop) {
-        val oldPos = target.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_ID)
+    def checkRelativeConstraints(KNode target, int newPosition, List<KNode> newLayerNodes, List<KNode> oldLayerNodes,
+        IProperty<String> property
+    ) {
+        val oldPosition = target.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_ID)
         var forbidden = false
-        // delete relative constraints that are overwritten by new rel cons of the target
-        switch(prop) {
-            case predProp: {
-                if (oldPos + 1 < oldLayerNodes.size) {
-                    changedNodes.add(new ConstraintProperty(oldLayerNodes.get(oldPos + 1), succProp, null))
+        // Delete relative constraints that are overwritten by new relative constraint of the target.
+        switch(property) {
+            case predecessorProperty: {
+                if (oldPosition + 1 < oldLayerNodes.size) {
+                    changedNodes.add(new ConstraintProperty(oldLayerNodes.get(oldPosition + 1), successorProperty, null))
                 }
-                // if the chains can not be merged, delete old rel cons and only merge moved node with chain
-                val chain = InteractiveUtil.getChain(newLayerNodes.get(newPos), newLayerNodes)
+                // If the chains can not be merged, delete old relative constraint and only merge moved node with chain.
+                val chain = InteractiveUtil.getChain(newLayerNodes.get(newPosition), newLayerNodes)
                 forbidden = InteractiveUtil.isMergeImpossible(InteractiveUtil.getChain(target, oldLayerNodes), chain)
                 if (forbidden) {
-                    if (oldPos - 1 >= 0) {
-                        changedNodes.add(new ConstraintProperty(oldLayerNodes.get(oldPos - 1), predProp, null))
+                    if (oldPosition - 1 >= 0) {
+                        changedNodes.add(new ConstraintProperty(oldLayerNodes.get(oldPosition - 1), predecessorProperty, null))
                     }
-                    changedNodes.add(new ConstraintProperty(target, succProp, null))
+                    changedNodes.add(new ConstraintProperty(target, successorProperty, null))
                 }
             }
-            case succProp: {
-                if (oldPos - 1 >= 0) {
-                    changedNodes.add(new ConstraintProperty(oldLayerNodes.get(oldPos - 1), predProp, null))
+            case successorProperty: {
+                if (oldPosition - 1 >= 0) {
+                    changedNodes.add(new ConstraintProperty(oldLayerNodes.get(oldPosition - 1), predecessorProperty, null))
                 }
-                // if the chains can not be merged, delete old rel cons and only merge moved node with chain
-                val chain = InteractiveUtil.getChain(newLayerNodes.get(newPos - 1), newLayerNodes)
+                // If the chains can not be merged, delete old relative constraint and only merge moved node with chain.
+                val chain = InteractiveUtil.getChain(newLayerNodes.get(newPosition - 1), newLayerNodes)
                 forbidden = InteractiveUtil.isMergeImpossible(InteractiveUtil.getChain(target, oldLayerNodes), chain)
                 if (forbidden) {
-                    if (oldPos + 1 < oldLayerNodes.size) {
-                        changedNodes.add(new ConstraintProperty(oldLayerNodes.get(oldPos + 1), succProp, null))
+                    if (oldPosition + 1 < oldLayerNodes.size) {
+                        changedNodes.add(new ConstraintProperty(oldLayerNodes.get(oldPosition + 1), successorProperty, null))
                     }
-                    changedNodes.add(new ConstraintProperty(target, predProp, null))
+                    changedNodes.add(new ConstraintProperty(target, predecessorProperty, null))
                 }
             }
         }
@@ -125,28 +128,29 @@ class RelativeConstraintReevaluation {
     
     /**
      * Reevaluates relative constraints after a node is moved within its chain.
-     * @param target The moved node
-     * @param layerNodes The nodes that are in the same layer as {@code target}
+     * 
+     * @param target The moved node.
+     * @param layerNodes The nodes that are in the same layer as {@code target}.
      */
-    def reevaluateRCAfterSwapInChain(KNode target, List<KNode> layerNodes) {
-        // remove rel cons of target
-        changedNodes.add(new ConstraintProperty(target, predProp, null))
-        changedNodes.add(new ConstraintProperty(target, succProp, null))
-        // must be done in order for correct calculation of the chain in later reevaluation
-        target.setProperty(predProp, null)
-        target.setProperty(succProp, null)
+    def reevaluateRelativeConstraintAfterSwapInChain(KNode target, List<KNode> layerNodes) {
+        // Remove relative constraint of target.
+        changedNodes.add(new ConstraintProperty(target, predecessorProperty, null))
+        changedNodes.add(new ConstraintProperty(target, successorProperty, null))
+        // Must be done in order for correct calculation of the chain in later reevaluation.
+        target.setProperty(predecessorProperty, null)
+        target.setProperty(successorProperty, null)
         
-        // remove rel cons of pred and succ that could have the moved node as target
-        val oldPos = target.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_ID)
-        if (oldPos - 1 >= 0) {
-            val oldPred = layerNodes.get(oldPos - 1)
-            oldPred.setProperty(predProp, null)
-            changedNodes.add(new ConstraintProperty(oldPred, predProp, null))
+        // Remove relative constraint of predecessor and successor that could have the moved node as target.
+        val oldPosition = target.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_ID)
+        if (oldPosition - 1 >= 0) {
+            val oldPredecessor = layerNodes.get(oldPosition - 1)
+            oldPredecessor.setProperty(predecessorProperty, null)
+            changedNodes.add(new ConstraintProperty(oldPredecessor, predecessorProperty, null))
         }
-        if (oldPos + 1 < layerNodes.size) {
-            val oldSucc = layerNodes.get(oldPos + 1)
-            changedNodes.add(new ConstraintProperty(oldSucc, succProp, null))
-            oldSucc.setProperty(succProp, null)
+        if (oldPosition + 1 < layerNodes.size) {
+            val oldSuccessor = layerNodes.get(oldPosition + 1)
+            changedNodes.add(new ConstraintProperty(oldSuccessor, successorProperty, null))
+            oldSuccessor.setProperty(successorProperty, null)
         }
     }
     
