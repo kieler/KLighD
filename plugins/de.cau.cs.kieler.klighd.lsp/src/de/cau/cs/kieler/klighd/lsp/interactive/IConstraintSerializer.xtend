@@ -21,7 +21,7 @@ import de.cau.cs.kieler.klighd.lsp.KGraphLanguageServerExtension
 import java.util.List
 
 /**
- * Service interface for implementions that serialize a set constraint in the model.
+ * Service interface for implementations that serialize a set constraint in the model.
  * E.g. for ElkGraphs a property is added and the graph serialized,
  * for SCCharts an Annotation with a layout constraint is added and the graph serialized.
  * 
@@ -38,7 +38,11 @@ interface IConstraintSerializer {
     def boolean canHandle(Object graph);
     
     /**
-     * @param 
+     * @param changedNodes The added constraints.
+     * @param graph The model, e.g. SCChart or ElkGraph.
+     * @param uri The uri of the main source file.
+     * @param ls The language server.
+     * @param client The language client.
      */
     def void serializeConstraints(List<ConstraintProperty<Object>> changedNodes, Object graph, String uri,
         KGraphLanguageServerExtension ls, KGraphLanguageClient client);
