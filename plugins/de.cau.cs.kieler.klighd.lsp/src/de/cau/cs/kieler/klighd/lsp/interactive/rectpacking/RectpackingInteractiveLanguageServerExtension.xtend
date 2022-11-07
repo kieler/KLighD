@@ -96,6 +96,8 @@ class RectpackingInteractiveLanguageServerExtension implements ILanguageServerEx
             }
             refreshModelInEditor(new ConstraintProperty(kNode, RectPackingOptions.DESIRED_POSITION, desiredPosition), KGraphUtil.getRootNodeOf(kNode), uri)
 
+        } else {
+            languageServer.updateLayout(uri)
         }
     }
 
@@ -139,6 +141,8 @@ class RectpackingInteractiveLanguageServerExtension implements ILanguageServerEx
             kNode.setProperty(RectPackingOptions.DESIRED_POSITION, null)
             refreshModelInEditor(new ConstraintProperty(kNode, RectPackingOptions.DESIRED_POSITION, null), KGraphUtil.getRootNodeOf(kNode), uri)
 
+        } else {
+            languageServer.updateLayout(uri)
         }
     }
     
