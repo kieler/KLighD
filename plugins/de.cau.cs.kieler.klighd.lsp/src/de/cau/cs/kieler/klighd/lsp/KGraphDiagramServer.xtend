@@ -27,6 +27,7 @@ import de.cau.cs.kieler.klighd.KlighdDataManager
 import de.cau.cs.kieler.klighd.ViewContext
 import de.cau.cs.kieler.klighd.kgraph.KNode
 import de.cau.cs.kieler.klighd.lsp.interactive.layered.LayeredInteractiveActionHandler
+import de.cau.cs.kieler.klighd.lsp.interactive.mrtree.MrTreeActionHandler
 import de.cau.cs.kieler.klighd.lsp.interactive.rectpacking.RectpackingInteractiveActionHandler
 import de.cau.cs.kieler.klighd.lsp.launch.AbstractLanguageServer
 import de.cau.cs.kieler.klighd.lsp.model.CheckImagesAction
@@ -87,6 +88,10 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
     
     @Inject
     protected LayeredInteractiveActionHandler constraintActionHandler
+     
+    @Inject
+    protected MrTreeActionHandler mrTreeActionHandler
+    
     
     @Inject
     protected RectpackingInteractiveActionHandler rectpackingActionHandler
@@ -253,6 +258,8 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
                     handle(action as RequestDiagramPieceAction)
                 } else if (constraintActionHandler.canHandleAction(action.getKind)) {
                     constraintActionHandler.handle(action, clientId, this)
+                } else if (mrTreeActionHandler.canHandleAction(action.getKind)) {
+                    mrTreeActionHandler.handle(action, clientId, this)
                 } else if (rectpackingActionHandler.canHandleAction(action.getKind)) {
                     rectpackingActionHandler.handle(action, clientId, this)
                 } else {
