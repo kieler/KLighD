@@ -64,17 +64,6 @@ class MrTreeInteractiveLanguageServerExtension implements ILanguageServerExtensi
         setConstraint(MrTreeOptions.POSITION_CONSTRAINT, uri, pc.id,
             pc.position, pc.positionConstraint)
     }
-
-    def deletePositionConstraint(MrTreeDeletePositionConstraint constraint, String clientId) {
-        // Not implemented
-    }
-    
-    /**
-     * Sets the aspect ratio.
-     */
-    def setAspectRatio(SetAspectRatio constraint, String clientId) {
-        // Not implemented
-    }
     
     /**
      * Sets a layer or position constraint with a chosen {@code value} on the node 

@@ -29,24 +29,13 @@ class MrTreeActionHandler extends AbstractActionHandler {
     MrTreeInteractiveLanguageServerExtension lsExtension
     
     new() {
-        this.supportedMessages = newHashMap(
-        MrTreeSetPositionConstraintAction.KIND -> MrTreeSetPositionConstraintAction,
-        MrTreeDeletePositionConstraintAction.KIND -> MrTreeDeletePositionConstraintAction,
-        SetAspectRatioAction.KIND -> SetAspectRatioAction)
+        this.supportedMessages = newHashMap(MrTreeSetPositionConstraintAction.KIND -> MrTreeSetPositionConstraintAction)
     }
     
     override handle(Action action, String clientId, KGraphDiagramServer server) {
         if (action instanceof MrTreeSetPositionConstraintAction) {
             synchronized((server as KGraphDiagramServer).modelLock) {
                 lsExtension.setPositionConstraint(action.constraint, clientId)
-            }
-        } else if (action instanceof MrTreeDeletePositionConstraintAction) {
-            synchronized((server as KGraphDiagramServer).modelLock) {
-                lsExtension.deletePositionConstraint(action.constraint, clientId)
-            }
-        } else if (action instanceof SetAspectRatioAction) {
-            synchronized((server as KGraphDiagramServer).modelLock) {
-                lsExtension.setAspectRatio(action.constraint, clientId)
             }
         } else {
             throw new IllegalArgumentException("Action " + action.kind + " not supported by handler " + this.class.simpleName)
