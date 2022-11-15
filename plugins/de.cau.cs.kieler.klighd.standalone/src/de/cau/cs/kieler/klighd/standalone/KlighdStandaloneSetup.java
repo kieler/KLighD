@@ -21,6 +21,7 @@ import java.util.Collection;
 import org.eclipse.elk.alg.force.options.ForceMetaDataProvider;
 import org.eclipse.elk.alg.graphviz.layouter.GraphvizMetaDataProvider;
 import org.eclipse.elk.alg.layered.options.LayeredMetaDataProvider;
+import org.eclipse.elk.alg.libavoid.options.LibavoidMetaDataProvider;
 import org.eclipse.elk.alg.mrtree.options.MrTreeMetaDataProvider;
 import org.eclipse.elk.alg.radial.options.RadialMetaDataProvider;
 import org.eclipse.elk.core.data.ILayoutMetaDataProvider;
@@ -66,7 +67,8 @@ public class KlighdStandaloneSetup {
                 getGraphvizMetaDataProvider(),
                 getLayeredMetaDataProvider(),
                 getMrTreeMetaDataProvider(),
-                getRadialMetaDataProvider()
+                getRadialMetaDataProvider(),
+                getLibAvoidMetaDataProvider()
         );
         
         LayoutMetaDataService.getInstance().registerLayoutMetaDataProviders(
@@ -115,6 +117,14 @@ public class KlighdStandaloneSetup {
     protected ILayoutMetaDataProvider getRadialMetaDataProvider() {
         try {
             return new RadialMetaDataProvider();
+        } catch (Throwable t) {
+            return null;
+        }
+    }
+
+    protected ILayoutMetaDataProvider getLibAvoidMetaDataProvider() {
+        try {
+            return new LibavoidMetaDataProvider();
         } catch (Throwable t) {
             return null;
         }
