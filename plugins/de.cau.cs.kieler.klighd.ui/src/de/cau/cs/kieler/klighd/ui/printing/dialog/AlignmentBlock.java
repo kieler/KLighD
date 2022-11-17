@@ -21,7 +21,7 @@ import org.eclipse.core.databinding.beans.typed.BeanProperties;
 import org.eclipse.core.databinding.observable.Realm;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.jface.databinding.swt.ISWTObservableValue;
-import org.eclipse.jface.databinding.swt.WidgetProperties;
+import org.eclipse.jface.databinding.swt.typed.WidgetProperties;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
@@ -82,12 +82,12 @@ final class AlignmentBlock {
         final IObservableValue<Object> centerHorValue = 
                 BeanProperties.value(PrintOptions.class, PrintOptions.PROPERTY_CENTER_HORIZONTALLY)
                     .observe(realm, options);
-        ISWTObservableValue<Object> horObservation = WidgetProperties.selection().observe(centerHorizontally);
+        ISWTObservableValue<Object> horObservation = WidgetProperties.widgetSelection().observe(centerHorizontally);
         bindings.bindValue(horObservation, centerHorValue);
 
         final IObservableValue<Object> centerVerValue = BeanProperties.value(PrintOptions.class, PrintOptions.PROPERTY_CENTER_VERTICALLY)
                 .observe(realm, options);
-        ISWTObservableValue<Object> vertObservation = WidgetProperties.selection().observe(centerVertically);
+        ISWTObservableValue<Object> vertObservation = WidgetProperties.widgetSelection().observe(centerVertically);
         bindings.bindValue(vertObservation, centerVerValue);
 
         result.addListener(SWT.Dispose, event -> {

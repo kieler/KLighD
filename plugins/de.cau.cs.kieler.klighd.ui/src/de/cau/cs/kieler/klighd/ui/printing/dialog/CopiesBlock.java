@@ -32,7 +32,7 @@ import org.eclipse.core.databinding.beans.typed.BeanProperties;
 import org.eclipse.core.databinding.observable.Realm;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.jface.databinding.swt.ISWTObservableValue;
-import org.eclipse.jface.databinding.swt.WidgetProperties;
+import org.eclipse.jface.databinding.swt.typed.WidgetProperties;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
@@ -42,7 +42,6 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Spinner;
-import org.eclipse.swt.widgets.Widget;
 
 import de.cau.cs.kieler.klighd.Klighd;
 import de.cau.cs.kieler.klighd.ui.KlighdUIPlugin;
@@ -103,7 +102,7 @@ final class CopiesBlock {
 
         final IObservableValue<Object> copiesValue = 
                 BeanProperties.value(PrintOptions.class, PrintOptions.PROPERTY_COPIES).observe(realm, options);
-        ISWTObservableValue<Object> copiesObservation = WidgetProperties.selection().observe(copiesSpinner);
+        ISWTObservableValue<Object> copiesObservation = WidgetProperties.widgetSelection().observe(copiesSpinner);
         bindings.bindValue(copiesObservation, copiesValue);
 
         final Image collateOnImage = COLLATE_ON.createImage();
@@ -120,7 +119,7 @@ final class CopiesBlock {
 
         final IObservableValue<Object> collateValue =
                 BeanProperties.value(PrintOptions.class, PrintOptions.PROPERTY_COLLATE).observe(realm, options);
-        ISWTObservableValue<Object> collateObservation =  WidgetProperties.selection().observe((Widget) collateCheck);
+        ISWTObservableValue<Object> collateObservation = WidgetProperties.widgetSelection().observe(collateCheck);
         bindings.bindValue(collateObservation, collateValue);
 
         collateValue.addValueChangeListener(event -> {

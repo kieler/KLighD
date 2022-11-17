@@ -33,7 +33,7 @@ import org.eclipse.core.databinding.observable.Realm;
 import org.eclipse.core.databinding.observable.value.ComputedValue;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.jface.databinding.swt.ISWTObservableValue;
-import org.eclipse.jface.databinding.swt.WidgetProperties;
+import org.eclipse.jface.databinding.swt.typed.WidgetProperties;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
@@ -92,7 +92,7 @@ final class RangeBlock {
         
         final IObservableValue<Object> allValue =
                 BeanProperties.value(PrintOptions.class, PrintOptions.PROPERTY_ALL_PAGES).observe(realm, options);
-        ISWTObservableValue<Object> observedAllPages = WidgetProperties.selection().observe(allRadio); 
+        ISWTObservableValue<Object> observedAllPages = WidgetProperties.widgetSelection().observe(allRadio); 
         bindings.bindValue(observedAllPages, allValue);
 
         // radio button for defining a print range
@@ -118,7 +118,7 @@ final class RangeBlock {
                 return ((Boolean) allValue.getValue()).booleanValue() ? Boolean.FALSE : Boolean.TRUE;
             }
         };
-        ISWTObservableValue<Object> selection = WidgetProperties.selection().observe(rangeRadio);
+        ISWTObservableValue<Object> selection = WidgetProperties.widgetSelection().observe(rangeRadio);
         bindings.bindValue(selection, rangeValue);
 
         // range from (label & textfield)
