@@ -91,7 +91,7 @@ final class RangeBlock {
         DialogUtil.layoutSpanHorizontal(allRadio, columns);
         
         final IObservableValue<Object> allValue =
-                BeanProperties.value(options.getClass().asSubclass(PrintOptions.class), PrintOptions.PROPERTY_ALL_PAGES).observe(realm, options);
+                BeanProperties.value(PrintOptions.class, PrintOptions.PROPERTY_ALL_PAGES).observe(realm, options);
         ISWTObservableValue<Object> observedAllPages = WidgetProperties.selection().observe(allRadio); 
         bindings.bindValue(observedAllPages, allValue);
 
@@ -128,7 +128,7 @@ final class RangeBlock {
         final Text textFrom = DialogUtil.text(result, textWidth);
 
         final IObservableValue<Object> rangeFrom = 
-                BeanProperties.value(options.getClass().asSubclass(PrintOptions.class), PrintOptions.PROPERTY_RANGE_FROM).observe(realm, options);
+                BeanProperties.value(PrintOptions.class, PrintOptions.PROPERTY_RANGE_FROM).observe(realm, options);
         ISWTObservableValue<String> observedModifiedTextFrom = WidgetProperties.text(SWT.Modify).observe(textFrom); 
         bindings.bindValue(observedModifiedTextFrom, rangeFrom);
         ISWTObservableValue<Boolean> observedEnabledFrom = WidgetProperties.enabled().observe(textFrom);
@@ -141,7 +141,7 @@ final class RangeBlock {
         final Text textTo = DialogUtil.text(result, textWidth);
 
         final IObservableValue<Object> rangeTo =
-                BeanProperties.value(options.getClass().asSubclass(PrintOptions.class), PrintOptions.PROPERTY_RANGE_TO).observe(realm, options);
+                BeanProperties.value(PrintOptions.class, PrintOptions.PROPERTY_RANGE_TO).observe(realm, options);
         
         ISWTObservableValue<String> observedModifyTextTo = WidgetProperties.text(SWT.Modify).observe(textTo);
         bindings.bindValue(observedModifyTextTo, rangeTo);

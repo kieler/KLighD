@@ -88,7 +88,7 @@ final class OrientationBlock {
         ISWTObservableValue<Boolean> observeLandscape = WidgetProperties.selection().observe(landscapeRadio);
         orientationGroupValue.addOption(PrinterData.LANDSCAPE, observeLandscape);
 
-        IObservableValue<Object> observeOrientation = BeanProperties.value(options.getClass().asSubclass(PrintOptions.class), PrintOptions.PROPERTY_ORIENTATION)
+        IObservableValue<Object> observeOrientation = BeanProperties.value(PrintOptions.class, PrintOptions.PROPERTY_ORIENTATION)
                 .observe(realm, options);
         bindings.bindValue(orientationGroupValue, observeOrientation);
 

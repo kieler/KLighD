@@ -31,8 +31,6 @@ import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.typed.BeanProperties;
 import org.eclipse.core.databinding.observable.Realm;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
-import org.eclipse.core.databinding.observable.value.IValueChangeListener;
-import org.eclipse.core.databinding.observable.value.ValueChangeEvent;
 import org.eclipse.jface.databinding.swt.ISWTObservableValue;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -41,10 +39,8 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Widget;
 
@@ -106,7 +102,7 @@ final class CopiesBlock {
         final Spinner copiesSpinner = DialogUtil.spinner(result, 1, Integer.MAX_VALUE);
 
         final IObservableValue<Object> copiesValue = 
-                BeanProperties.value(options.getClass().asSubclass(PrintOptions.class), PrintOptions.PROPERTY_COPIES).observe(realm, options);
+                BeanProperties.value(PrintOptions.class, PrintOptions.PROPERTY_COPIES).observe(realm, options);
         ISWTObservableValue<Object> copiesObservation = WidgetProperties.selection().observe(copiesSpinner);
         bindings.bindValue(copiesObservation, copiesValue);
 
@@ -123,34 +119,27 @@ final class CopiesBlock {
         collateImageLabel.setImage(collateCheck.getSelection() ? collateOnImage : collateOffImage);
 
         final IObservableValue<Object> collateValue =
-                BeanProperties.value(options.getClass().asSubclass(PrintOptions.class), PrintOptions.PROPERTY_COLLATE).observe(realm, options);
+                BeanProperties.value(PrintOptions.class, PrintOptions.PROPERTY_COLLATE).observe(realm, options);
         ISWTObservableValue<Object> collateObservation =  WidgetProperties.selection().observe((Widget) collateCheck);
         bindings.bindValue(collateObservation, collateValue);
 
-        collateValue.addValueChangeListener(new IValueChangeListener<Object>() {
-
-            public void handleValueChange(final ValueChangeEvent<? extends Object> event) {
-
-                // set image according to collate state
-                if (((Boolean) event.getObservableValue().getValue()).booleanValue()) {
-                    collateImageLabel.setImage(collateOnImage);
-                } else {
-                    collateImageLabel.setImage(collateOffImage);
-                }
+        collateValue.addValueChangeListener(event -> {
+            // set image according to collate state
+            if (((Boolean) event.getObservableValue().getValue()).booleanValue()) {
+                collateImageLabel.setImage(collateOnImage);
+            } else {
+                collateImageLabel.setImage(collateOffImage);
             }
         });
 
-        result.addListener(SWT.Dispose, new Listener() {
+        result.addListener(SWT.Dispose, event -> {
+            collateOnImage.dispose();
+            collateOffImage.dispose();
 
-            public void handleEvent(final Event event) {
-                collateOnImage.dispose();
-                collateOffImage.dispose();
-
-                // while the SWTObservableValues are disposed while disposing the corresponding widgets
-                //  the Beans-based ones should be disposed explicitly
-                copiesValue.dispose();
-                collateValue.dispose();
-            }
+            // while the SWTObservableValues are disposed while disposing the corresponding widgets
+            //  the Beans-based ones should be disposed explicitly
+            copiesValue.dispose();
+            collateValue.dispose();
         });
 
         if (Klighd.IS_MACOSX) {
