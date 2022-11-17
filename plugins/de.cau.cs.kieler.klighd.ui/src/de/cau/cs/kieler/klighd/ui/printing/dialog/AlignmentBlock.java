@@ -25,9 +25,7 @@ import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Listener;
 
 import de.cau.cs.kieler.klighd.ui.printing.KlighdUIPrintingMessages;
 import de.cau.cs.kieler.klighd.ui.printing.PrintOptions;
@@ -82,24 +80,21 @@ final class AlignmentBlock {
         final Realm realm = bindings.getValidationRealm();
 
         final IObservableValue<Object> centerHorValue = 
-                BeanProperties.value(options.getClass().asSubclass(PrintOptions.class), PrintOptions.PROPERTY_CENTER_HORIZONTALLY)
+                BeanProperties.value(PrintOptions.class, PrintOptions.PROPERTY_CENTER_HORIZONTALLY)
                     .observe(realm, options);
         ISWTObservableValue<Object> horObservation = WidgetProperties.selection().observe(centerHorizontally);
         bindings.bindValue(horObservation, centerHorValue);
 
-        final IObservableValue<Object> centerVerValue = BeanProperties.value(options.getClass().asSubclass(PrintOptions.class), PrintOptions.PROPERTY_CENTER_VERTICALLY)
+        final IObservableValue<Object> centerVerValue = BeanProperties.value(PrintOptions.class, PrintOptions.PROPERTY_CENTER_VERTICALLY)
                 .observe(realm, options);
         ISWTObservableValue<Object> vertObservation = WidgetProperties.selection().observe(centerVertically);
         bindings.bindValue(vertObservation, centerVerValue);
 
-        result.addListener(SWT.Dispose, new Listener() {
-
-            public void handleEvent(final Event event) {
-                // while the SWTObservableValues are disposed while disposing the corresponding widgets
-                //  the Beans-based ones should be disposed explicitly
-                centerHorValue.dispose();
-                centerVerValue.dispose();
-            }
+        result.addListener(SWT.Dispose, event -> {
+            // while the SWTObservableValues are disposed while disposing the corresponding widgets
+            //  the Beans-based ones should be disposed explicitly
+            centerHorValue.dispose();
+            centerVerValue.dispose();
         });
 
         return result;

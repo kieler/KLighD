@@ -36,15 +36,12 @@ import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.jface.databinding.swt.ISWTObservableValue;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Spinner;
 
 import de.cau.cs.kieler.klighd.ui.printing.DiagramPrintOptions;
@@ -150,70 +147,50 @@ final class ScalingBlock {
         if (options instanceof DiagramPrintOptions) {
             dOptions = (DiagramPrintOptions) options;
 
-            oneToOneBtn.addSelectionListener(new SelectionAdapter() {
+            oneToOneBtn.addSelectionListener(
+                    SelectionListener.widgetSelectedAdapter(e -> scaleOneToOne(dOptions)));
 
-                @Override
-                public void widgetSelected(final SelectionEvent e) {
-                    scaleOneToOne(dOptions);
-                }
-            });
+            fitToPagesBtn.addSelectionListener(
+                    SelectionListener.widgetSelectedAdapter(e -> fitToPages(dOptions)));
 
-            fitToPagesBtn.addSelectionListener(new SelectionAdapter() {
+            adjustPagesBtn.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+                // Calculate for both horizontal and vertical directions
+                // how many pages are necessary to fit the diagram in.
 
-                @Override
-                public void widgetSelected(final SelectionEvent e) {
-                    fitToPages(dOptions);
-                }
-            });
+                final PrintExporter exporter = dOptions.getExporter();
+                final Dimension2D trimmedPrinterBounds = exporter.getTrimmedTileBounds(dOptions);
+                final Dimension2D diagramBounds = exporter.getDiagramBoundsIncludingTrim();
 
-            adjustPagesBtn.addSelectionListener(new SelectionAdapter() {
+                dOptions.setPagesWide((int) Math.ceil(diagramBounds.getWidth()
+                        * dOptions.getScaleFactor() / trimmedPrinterBounds.getWidth()));
 
-                @Override
-                public void widgetSelected(final SelectionEvent e) {
-                    // Calculate for both horizontal and vertical directions
-                    // how many pages are necessary to fit the diagram in.
-
-                    final PrintExporter exporter = dOptions.getExporter();
-                    final Dimension2D trimmedPrinterBounds = exporter.getTrimmedTileBounds(dOptions);
-                    final Dimension2D diagramBounds = exporter.getDiagramBoundsIncludingTrim();
-
-                    dOptions.setPagesWide((int) Math.ceil(diagramBounds.getWidth()
-                            * dOptions.getScaleFactor() / trimmedPrinterBounds.getWidth()));
-
-                    dOptions.setPagesTall((int) Math.ceil(diagramBounds.getHeight()
-                            * dOptions.getScaleFactor() / trimmedPrinterBounds.getHeight()));
-                }
-            });
+                dOptions.setPagesTall((int) Math.ceil(diagramBounds.getHeight()
+                        * dOptions.getScaleFactor() / trimmedPrinterBounds.getHeight()));
+            }));
 
             final Realm realm = bindings.getValidationRealm();
 
-            final IObservableValue<Object> scalePercent =
-                    BeanProperties.value(dOptions.getClass().asSubclass(DiagramPrintOptions.class),
-                            PrintOptions.PROPERTY_SCALE_PERCENT).observe(realm, dOptions);
+            final IObservableValue<Object> scalePercent = BeanProperties.value(DiagramPrintOptions.class, PrintOptions.PROPERTY_SCALE_PERCENT)
+                    .observe(realm, dOptions);
             ISWTObservableValue<Object> observerScaleSpinner = WidgetProperties.selection().observe(scaleSpinner);
             bindings.bindValue(observerScaleSpinner, scalePercent);
 
-            final IObservableValue<Object> pagesWide = 
-                    BeanProperties.value(dOptions.getClass().asSubclass(DiagramPrintOptions.class),
-                            PrintOptions.PROPERTY_PAGES_WIDE).observe(realm, dOptions); 
+            final IObservableValue<Object> pagesWide = BeanProperties.value(DiagramPrintOptions.class, PrintOptions.PROPERTY_PAGES_WIDE)
+                    .observe(realm, dOptions);
             ISWTObservableValue<Object> observerWideSpinner = WidgetProperties.selection().observe(spinnerWide);
             bindings.bindValue(observerWideSpinner, pagesWide);
 
-            final IObservableValue<Object> pagesTall = 
-                    BeanProperties.value(dOptions.getClass().asSubclass(DiagramPrintOptions.class),
-                            PrintOptions.PROPERTY_PAGES_TALL).observe(realm, dOptions);
+            final IObservableValue<Object> pagesTall = BeanProperties.value(DiagramPrintOptions.class, PrintOptions.PROPERTY_PAGES_TALL)
+                    .observe(realm, dOptions);
             ISWTObservableValue<Object> observerTallSpinner = WidgetProperties.selection().observe(spinnerTall);
             bindings.bindValue(observerTallSpinner, pagesTall);
 
-            result.addListener(SWT.Dispose, new Listener() {
-
-                public void handleEvent(final Event event) {
-                    // while the SWTObservableValues are disposed while disposing the corresponding
-                    // widgets the Beans-based ones should be disposed explicitly
-                    scalePercent.dispose();
-                    pagesWide.dispose();
-                    pagesTall.dispose();
-                }
+            result.addListener(SWT.Dispose, event -> {
+                // while the SWTObservableValues are disposed while disposing the corresponding
+                // widgets the Beans-based ones should be disposed explicitly
+                scalePercent.dispose();
+                pagesWide.dispose();
+                pagesTall.dispose();
             });
 
         } else {
