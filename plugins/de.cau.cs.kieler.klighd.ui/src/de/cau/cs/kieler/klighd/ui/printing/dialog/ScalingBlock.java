@@ -34,7 +34,7 @@ import org.eclipse.core.databinding.beans.typed.BeanProperties;
 import org.eclipse.core.databinding.observable.Realm;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.jface.databinding.swt.ISWTObservableValue;
-import org.eclipse.jface.databinding.swt.WidgetProperties;
+import org.eclipse.jface.databinding.swt.typed.WidgetProperties;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridLayout;
@@ -172,17 +172,17 @@ final class ScalingBlock {
 
             final IObservableValue<Object> scalePercent = BeanProperties.value(DiagramPrintOptions.class, PrintOptions.PROPERTY_SCALE_PERCENT)
                     .observe(realm, dOptions);
-            ISWTObservableValue<Object> observerScaleSpinner = WidgetProperties.selection().observe(scaleSpinner);
+            ISWTObservableValue<Object> observerScaleSpinner = WidgetProperties.widgetSelection().observe(scaleSpinner);
             bindings.bindValue(observerScaleSpinner, scalePercent);
 
             final IObservableValue<Object> pagesWide = BeanProperties.value(DiagramPrintOptions.class, PrintOptions.PROPERTY_PAGES_WIDE)
                     .observe(realm, dOptions);
-            ISWTObservableValue<Object> observerWideSpinner = WidgetProperties.selection().observe(spinnerWide);
+            ISWTObservableValue<Object> observerWideSpinner = WidgetProperties.widgetSelection().observe(spinnerWide);
             bindings.bindValue(observerWideSpinner, pagesWide);
 
             final IObservableValue<Object> pagesTall = BeanProperties.value(DiagramPrintOptions.class, PrintOptions.PROPERTY_PAGES_TALL)
                     .observe(realm, dOptions);
-            ISWTObservableValue<Object> observerTallSpinner = WidgetProperties.selection().observe(spinnerTall);
+            ISWTObservableValue<Object> observerTallSpinner = WidgetProperties.widgetSelection().observe(spinnerTall);
             bindings.bindValue(observerTallSpinner, pagesTall);
 
             result.addListener(SWT.Dispose, event -> {

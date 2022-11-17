@@ -22,7 +22,7 @@ import org.eclipse.core.databinding.observable.Realm;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.observable.value.SelectObservableValue;
 import org.eclipse.jface.databinding.swt.ISWTObservableValue;
-import org.eclipse.jface.databinding.swt.WidgetProperties;
+import org.eclipse.jface.databinding.swt.typed.WidgetProperties;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.printing.PrinterData;
 import org.eclipse.swt.widgets.Button;
@@ -83,9 +83,9 @@ final class OrientationBlock {
 
         final SelectObservableValue<Integer> orientationGroupValue = new SelectObservableValue<>(realm);
         
-        ISWTObservableValue<Boolean> observerPortrait = WidgetProperties.selection().observe(portraitRadio);
+        ISWTObservableValue<Boolean> observerPortrait = WidgetProperties.<Button, Boolean> widgetSelection().observe(portraitRadio);
         orientationGroupValue.addOption(PrinterData.PORTRAIT, observerPortrait);
-        ISWTObservableValue<Boolean> observeLandscape = WidgetProperties.selection().observe(landscapeRadio);
+        ISWTObservableValue<Boolean> observeLandscape = WidgetProperties.<Button, Boolean> widgetSelection().observe(landscapeRadio);
         orientationGroupValue.addOption(PrinterData.LANDSCAPE, observeLandscape);
 
         IObservableValue<Object> observeOrientation = BeanProperties.value(PrintOptions.class, PrintOptions.PROPERTY_ORIENTATION)
