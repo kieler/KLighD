@@ -35,6 +35,7 @@ Export-Package: de.cau.cs.kieler.klighd,
  de.cau.cs.kieler.klighd.labels.management,
  de.cau.cs.kieler.klighd.microlayout,
  de.cau.cs.kieler.klighd.modifiers,
+ de.cau.cs.kieler.klighd.structuredEditMsg,
  de.cau.cs.kieler.klighd.syntheses,
  de.cau.cs.kieler.klighd.util,
  de.cau.cs.kieler.klighd.viewers

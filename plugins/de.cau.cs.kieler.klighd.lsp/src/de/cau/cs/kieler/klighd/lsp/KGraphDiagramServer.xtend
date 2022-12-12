@@ -256,6 +256,10 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
                 } else if (rectpackingActionHandler.canHandleAction(action.getKind)) {
                     rectpackingActionHandler.handle(action, clientId, this)
                 } else {
+//                    ServiceLoader.load()
+//                    for( handler: IActionHandler){
+//                      handler.canHandleAction() -> handle Action
+//                    }
                     super.accept(message)
                 }
             }

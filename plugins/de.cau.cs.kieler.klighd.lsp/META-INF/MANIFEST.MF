@@ -13,6 +13,7 @@ Export-Package: de.cau.cs.kieler.klighd.lsp,
  de.cau.cs.kieler.klighd.lsp.launch,
  de.cau.cs.kieler.klighd.lsp.model,
  de.cau.cs.kieler.klighd.lsp.setup,
+ de.cau.cs.kieler.klighd.lsp.structuredProgramming.sccharts,
  de.cau.cs.kieler.klighd.lsp.utils
 Bundle-Vendor: Kiel University
 Bundle-Localization: plugin

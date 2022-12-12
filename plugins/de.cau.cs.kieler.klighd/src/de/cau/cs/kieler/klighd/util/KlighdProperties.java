@@ -30,6 +30,8 @@ import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
 import de.cau.cs.kieler.klighd.kgraph.KNode;
 import de.cau.cs.kieler.klighd.krendering.KText;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
+import de.cau.cs.kieler.klighd.structuredEditMsg.StructuredEditMsg;
+
 
 /**
  * A collection of KLighD-specific {@link de.cau.cs.kieler.klighd.properties.IProperty IProperties}
@@ -379,4 +381,11 @@ public final class KlighdProperties {
      */
     public static final IProperty<Boolean> IS_NODE_TITLE =
             new Property<Boolean>("klighd.isNodeTitle", false);
+    
+    /**
+     * Determines whether a sub-KRendering can be interpreted as a title for a node.
+     * By default no rendering is seen as a title.
+     */
+    public static final IProperty<StructuredEditMsg[]> STRUCTURED_EDITING =
+            new Property<StructuredEditMsg[]>("klighd.StructuralEditingActions", null);
 }

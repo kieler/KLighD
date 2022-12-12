@@ -37,6 +37,8 @@ import java.awt.geom.Point2D
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.sprotty.server.json.ActionTypeAdapter
 
+import de.cau.cs.kieler.klighd.lsp.structuredProgramming.sccharts.DeleteAction
+
 /**
  * Static util class to configure needed gson type adapters for KGraph serialization.
  * 
@@ -69,6 +71,9 @@ class KGraphTypeAdapterUtil {
                 
                 // Incremental topdown actions
                 addActionKind(RequestDiagramPieceAction.KIND, RequestDiagramPieceAction)
+                
+                // Structured Programming actions
+                addActionKind(DeleteAction.KIND, DeleteAction)
             ]
         )
         .registerTypeAdapter(Point2D, new Point2DTypeAdapter)
