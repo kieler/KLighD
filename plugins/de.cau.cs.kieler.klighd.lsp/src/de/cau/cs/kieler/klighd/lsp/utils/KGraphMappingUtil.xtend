@@ -54,21 +54,37 @@ class KGraphMappingUtil {
      * @param mapping The mapping between KGraph and SGraph elements
      */
     static def mapLayout(Map<KGraphElement, SModelElement> mapping) {
+        // collect all SKLabels which corresponding KLabel was deleted
+        val sLabels = new ArrayList();
+        mapping.forEach[kElement, sElement | {
+            if (kElement instanceof KLabel && (kElement as KLabel).parent === null && sElement instanceof SKLabel) {
+                sLabels.add(sElement);
+            }
+        }]
+        
         mapping.forEach[kGraphElement, sModelElement |
             // Layout data looks different for different KGraph Element Types
             if (kGraphElement instanceof KNode && sModelElement instanceof SKNode) {
+                // delete the SKLabels of the SKNode which corresponding KLabels were deleted
+                (sModelElement as SKNode).children.removeAll(sLabels)
+                
                 mapLayout(kGraphElement as KNode, sModelElement as SKNode)
             } else if (kGraphElement instanceof KEdge && sModelElement instanceof SKEdge) {
                 mapLayout(kGraphElement as KEdge, sModelElement as SKEdge)
             } else if (kGraphElement instanceof KPort && sModelElement instanceof SKPort
                 || kGraphElement instanceof KLabel && sModelElement instanceof SKLabel) {
+                if (kGraphElement instanceof KLabel && sModelElement instanceof SKLabel) {
+                    // update the text of the SKLabels
+                    // necessary if the layout algorithm changed the texts of labels
+                    (sModelElement as SKLabel).text = (kGraphElement as KLabel).text
+                }
                 mapLayout(kGraphElement as KShapeLayout, sModelElement as SShapeElement)
             } else {
                 throw new IllegalArgumentException("The KGraph and SGraph classes do not map to each other: " 
                     + kGraphElement.class + ", " + sModelElement.class)
             }
         ]
-    }
+    }    
     
     /**
      * Maps an edge from KGraph to SGraph

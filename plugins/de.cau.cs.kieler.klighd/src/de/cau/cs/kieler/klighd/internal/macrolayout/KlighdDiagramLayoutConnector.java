@@ -70,6 +70,7 @@ import de.cau.cs.kieler.klighd.kgraph.KGraphPackage;
 import de.cau.cs.kieler.klighd.kgraph.KIdentifier;
 import de.cau.cs.kieler.klighd.kgraph.KInsets;
 import de.cau.cs.kieler.klighd.kgraph.KLabel;
+import de.cau.cs.kieler.klighd.kgraph.KLabeledGraphElement;
 import de.cau.cs.kieler.klighd.kgraph.KLayoutData;
 import de.cau.cs.kieler.klighd.kgraph.KNode;
 import de.cau.cs.kieler.klighd.kgraph.KPoint;
@@ -643,6 +644,43 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
     }
     
     /**
+     * If ElkLabels were removed during the layout, the corresponding KLabels must be removed as well.
+     * If the text of an ElkLabel changed, this change is applied to the KLabel.
+     * @param elementMappings the graph element mapping that was created by this manager
+     */
+    private void deleteRemovedLabels(final Set<Entry<ElkGraphElement, Object>> elementMappings) {
+        // collect all nodes
+        List<ElkNode> nodes = Lists.newArrayList();
+        elementMappings.forEach(mapping -> {
+            if (mapping.getKey() instanceof ElkNode)
+                nodes.add((ElkNode) mapping.getKey());
+        });        
+        // get the labels from the nodes
+        List<ElkLabel> labels = Lists.newArrayList();
+        nodes.forEach(node -> labels.addAll(node.getLabels()));
+        
+        // remove labels that do not exist anymore
+        List<Entry<ElkGraphElement, Object>> removable = Lists.newArrayList();
+        for (final Entry<ElkGraphElement, Object> elementMapping : elementMappings) {
+            Object key = elementMapping.getKey();
+            if (key instanceof ElkLabel) {
+                KLabel kLabel = (KLabel) elementMapping.getValue();
+                if (!labels.contains(key)) {
+                    // the label does not exist anymore so the KLabel must be removed
+                    KLabeledGraphElement parent = kLabel.getParent();
+                    parent.getLabels().remove(kLabel);
+                    removable.add(elementMapping);
+                } else {
+                    // otherwise the label text must be updated
+                    kLabel.setText(((ElkLabel) key).getText());
+                }
+            }
+        }
+        // remove the deleted labels from the mapping
+        elementMappings.removeAll(removable);
+    }
+    
+    /**
      * Applies the computed layout back to the graph.
      *
      * @param mapping
@@ -654,6 +692,9 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
     private void applyLayout(final LayoutMapping mapping, final boolean suppressEdgeAdjustment) {
         final Set<Entry<ElkGraphElement, Object>> elementMappings =
                 mapping.getGraphMap().entrySet();
+        
+        // delete KLabels which corresponding ElkLabels were removed
+        deleteRemovedLabels(elementMappings);
         
         // We need to process labels after the edges because during edge handling
         // the insets are handled and the source data adjusted accordingly.
@@ -735,6 +776,14 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
             final KLabel label = (KLabel) mapping.getGraphMap().get(layoutLabel);
             
             shapeToViewModel(mapping, layoutLabel, label, false, true);
+            
+            // update the bounds of the ktext
+            // necessary for cases where the text of a label changed during the layout
+            KText kText = label.getData(KText.class);
+            Bounds size = new Bounds(0, label.getYpos(), label.getWidth(), label.getHeight());
+            kText.getProperties().put(KlighdProperties.CALCULATED_TEXT_BOUNDS, Bounds.of(size));
+            kText.getProperties().put(KlighdProperties.CALCULATED_TEXT_LINE_WIDTHS, label.getWidth());
+            kText.getProperties().put(KlighdProperties.CALCULATED_TEXT_LINE_HEIGHTS, label.getHeight());
             
             // if the label's text was changed during layout, remember the new text in a
             // special property
