@@ -663,7 +663,7 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
         List<Entry<ElkGraphElement, Object>> removable = Lists.newArrayList();
         for (final Entry<ElkGraphElement, Object> elementMapping : elementMappings) {
             Object key = elementMapping.getKey();
-            if (key instanceof ElkLabel) {
+            if (key instanceof ElkLabel && ((ElkLabel) key).getParent() instanceof ElkNode) {
                 KLabel kLabel = (KLabel) elementMapping.getValue();
                 if (!labels.contains(key)) {
                     // the label does not exist anymore so the KLabel must be removed

@@ -23,6 +23,7 @@ import de.cau.cs.kieler.klighd.kgraph.KLabel
 import de.cau.cs.kieler.klighd.kgraph.KNode
 import de.cau.cs.kieler.klighd.kgraph.KPort
 import de.cau.cs.kieler.klighd.kgraph.KShapeLayout
+import de.cau.cs.kieler.klighd.kgraph.util.KGraphUtil
 import de.cau.cs.kieler.klighd.lsp.model.SKEdge
 import de.cau.cs.kieler.klighd.lsp.model.SKElement
 import de.cau.cs.kieler.klighd.lsp.model.SKLabel
@@ -39,7 +40,6 @@ import org.eclipse.sprotty.Dimension
 import org.eclipse.sprotty.Point
 import org.eclipse.sprotty.SModelElement
 import org.eclipse.sprotty.SShapeElement
-import de.cau.cs.kieler.klighd.kgraph.util.KGraphUtil
 
 /**
  * A helper class containing static methods for mapping of KGraph and SGraph bounds.
