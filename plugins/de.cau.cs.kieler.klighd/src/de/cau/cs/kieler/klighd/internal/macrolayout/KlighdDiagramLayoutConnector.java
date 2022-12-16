@@ -777,14 +777,6 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
             
             shapeToViewModel(mapping, layoutLabel, label, false, true);
             
-            // update the bounds of the ktext
-            // necessary for cases where the text of a label changed during the layout
-            KText kText = label.getData(KText.class);
-            Bounds size = new Bounds(0, label.getYpos(), label.getWidth(), label.getHeight());
-            kText.getProperties().put(KlighdProperties.CALCULATED_TEXT_BOUNDS, Bounds.of(size));
-            kText.getProperties().put(KlighdProperties.CALCULATED_TEXT_LINE_WIDTHS, label.getWidth());
-            kText.getProperties().put(KlighdProperties.CALCULATED_TEXT_LINE_HEIGHTS, label.getHeight());
-            
             // if the label's text was changed during layout, remember the new text in a
             // special property
             LabelManagementResult managementResult =
