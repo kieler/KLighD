@@ -38,6 +38,15 @@ import org.eclipse.emf.ecore.EObject
 import org.eclipse.sprotty.server.json.ActionTypeAdapter
 
 import de.cau.cs.kieler.klighd.lsp.structuredProgramming.sccharts.DeleteAction
+import de.cau.cs.kieler.klighd.lsp.structuredProgramming.sccharts.RenameNodeAction;
+import de.cau.cs.kieler.klighd.lsp.structuredProgramming.sccharts.AddHirachicalNodeAction;
+import de.cau.cs.kieler.klighd.lsp.structuredProgramming.sccharts.AddSuccessorNodeAction;
+import de.cau.cs.kieler.klighd.lsp.structuredProgramming.sccharts.RenameEdgeAction;
+import de.cau.cs.kieler.klighd.lsp.structuredProgramming.sccharts.ChangeIOAction;
+import de.cau.cs.kieler.klighd.lsp.structuredProgramming.sccharts.RenameRegionAction;
+import de.cau.cs.kieler.klighd.lsp.structuredProgramming.sccharts.AddConcurrentRegionAction;
+import de.cau.cs.kieler.klighd.lsp.structuredProgramming.sccharts.ChangeDestinationAction
+import de.cau.cs.kieler.klighd.lsp.structuredProgramming.sccharts.ChangeSourceAction
 
 /**
  * Static util class to configure needed gson type adapters for KGraph serialization.
@@ -74,6 +83,18 @@ class KGraphTypeAdapterUtil {
                 
                 // Structured Programming actions
                 addActionKind(DeleteAction.KIND, DeleteAction)
+                
+                addActionKind(RenameNodeAction.KIND, RenameNodeAction)
+                addActionKind(AddSuccessorNodeAction.KIND, AddSuccessorNodeAction)
+                addActionKind(AddHirachicalNodeAction.KIND, AddHirachicalNodeAction)
+                
+                addActionKind(RenameEdgeAction.KIND, RenameEdgeAction)
+                addActionKind(ChangeDestinationAction.KIND, ChangeDestinationAction)
+                addActionKind(ChangeSourceAction.KIND, ChangeSourceAction)
+                addActionKind(ChangeIOAction.KIND, ChangeIOAction)
+                
+                addActionKind(RenameRegionAction.KIND, RenameRegionAction)
+                addActionKind(AddConcurrentRegionAction.KIND, AddConcurrentRegionAction)
             ]
         )
         .registerTypeAdapter(Point2D, new Point2DTypeAdapter)

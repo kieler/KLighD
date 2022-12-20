@@ -19,6 +19,7 @@ package de.cau.cs.kieler.klighd.lsp
 import com.google.common.html.HtmlEscapers
 import de.cau.cs.kieler.klighd.ViewContext
 import de.cau.cs.kieler.klighd.kgraph.KNode
+import de.cau.cs.kieler.klighd.kgraph.KEdge
 
 /**
  * Utility methods for graphs in a language server context.
@@ -59,6 +60,26 @@ class LSPUtil {
 
         if (kGraphElement instanceof KNode) {
             return kGraphElement as KNode
+        } else {
+            return null
+        }
+    }
+    
+        /**
+     * Get a {@code KEdge} based by id.
+     * 
+     * @param diagramState The state of the diagram
+     * @param uri The uri of the model file
+     * @param edgeId The id of the edge element
+     * @return the {@code KEdge} of the edge described by {@code id}.
+     * Returns null if the {@code ViewContext} of the resource described by {@code uri} is null.
+     * Returns null if the element behind the id is no kEdge.
+     */
+    static def getKEdge(KGraphDiagramState diagramState, String uri, String nodeId) {
+        val kGraphElement = diagramState.getIdToKGraphMap(uri).get(nodeId)
+
+        if (kGraphElement instanceof KEdge) {
+            return kGraphElement as KEdge
         } else {
             return null
         }

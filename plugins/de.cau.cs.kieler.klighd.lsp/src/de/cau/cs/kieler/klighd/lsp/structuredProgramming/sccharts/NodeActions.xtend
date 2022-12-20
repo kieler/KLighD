@@ -23,44 +23,95 @@ import org.eclipse.xtend.lib.annotations.EqualsHashCode
 import org.eclipse.xtend.lib.annotations.ToString
 
 /**
- * Sets a static constraint, meaning a position and a layer constraint for a node.
  * 
- * @author sdo
+ * 
+ * @author fjo
  */
 @Accessors
 @EqualsHashCode
 @ToString(skipNulls = true)
-class DeleteAction implements Action {
-    public static val KIND = 'graph_Delete'
+class RenameNodeAction implements Action {
+    public static val KIND = 'SCChart_graph_RenameNode'
     String kind = KIND
     
-    String[] toDelete
+    public String id
+    public String new_name
     
     new() {}
-    new(Consumer<DeleteAction> initializer) {
+    new(Consumer<RenameNodeAction> initializer) {
         initializer.accept(this)
     }
 }
 
 /**
- * Sets a static constraint, meaning a position and a layer constraint for a node.
  * 
- * @author sdo
+ * 
+ * @author fjo
+ */
+@Accessors
+@EqualsHashCode
+@ToString(skipNulls = true)
+class AddEdgeAction implements Action {
+    public static val KIND = 'SCChart_graph_AddEdge'
+    String kind = KIND
+    
+    public String id
+    public String dest
+    public String inputs
+    public String outputs
+    
+    new() {}
+    new(Consumer<AddEdgeAction> initializer) {
+        initializer.accept(this)
+    }
+}
+
+/**
+ * 
+ * 
+ * @author fjo
  */
 @Accessors
 @EqualsHashCode
 @ToString(skipNulls = true)
 class AddSuccessorNodeAction implements Action {
-    public static val KIND = 'graph_AddSNode'
+    public static val KIND = 'SCChart_graph_AddSNode'
     String kind = KIND
     
-    String node
-    String inputs
-    String outputs
-    String next_name
+    public String id
+    public String new_node_name
+    public String edge_input
+    public String edge_output
     
     new() {}
     new(Consumer<AddSuccessorNodeAction> initializer) {
         initializer.accept(this)
     }
 }
+
+/**
+ * 
+ * 
+ * @author fjo
+ */
+@Accessors
+@EqualsHashCode
+@ToString(skipNulls = true)
+class AddHirachicalNodeAction implements Action {
+    public static val KIND = 'SCChart_graph_AddHNode'
+    String kind = KIND
+    
+    public String id
+    public String next_name
+    public String region_name
+    
+    new() {}
+    new(Consumer<AddHirachicalNodeAction> initializer) {
+        initializer.accept(this)
+    }
+}
+
+
+
+
+

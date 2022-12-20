@@ -76,6 +76,7 @@ import org.eclipse.sprotty.SetModelAction
 import org.eclipse.sprotty.UpdateModelAction
 import org.eclipse.sprotty.xtext.LanguageAwareDiagramServer
 import org.eclipse.xtend.lib.annotations.Accessors
+import de.cau.cs.kieler.klighd.lsp.structuredProgramming.sccharts.ScchartStructuredProgrammingActionHandler
 
 /**
  * Diagram server extension adding functionality to special actions needed for handling KGraphs.
@@ -90,6 +91,9 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
     
     @Inject
     protected RectpackingInteractiveActionHandler rectpackingActionHandler
+    
+    @Inject
+    protected ScchartStructuredProgrammingActionHandler scchartsStructuredActionHandler
     
     @Inject 
     protected KGraphDiagramState diagramState
@@ -255,11 +259,9 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
                     constraintActionHandler.handle(action, clientId, this)
                 } else if (rectpackingActionHandler.canHandleAction(action.getKind)) {
                     rectpackingActionHandler.handle(action, clientId, this)
+                } else if( scchartsStructuredActionHandler.canHandleAction(action.getKind)){
+                    scchartsStructuredActionHandler.handle(action, clientId, this)
                 } else {
-//                    ServiceLoader.load()
-//                    for( handler: IActionHandler){
-//                      handler.canHandleAction() -> handle Action
-//                    }
                     super.accept(message)
                 }
             }
