@@ -51,9 +51,8 @@
 
   <!-- Define a few properties used throughout all build profiles. -->
   <properties>
-    <tycho-version>1.7.0</tycho-version>
-    <targetJdk>1.8</targetJdk>
-    <xtext-version>2.22.0</xtext-version>
+    <tycho-version>2.5.0</tycho-version>
+    <xtext-version>2.25.0</xtext-version>
     <elk-version>0.8.1</elk-version>
 
     <!-- chsch: copied from https://eclipse.googlesource.com/recommenders/org.eclipse.recommenders/+/3dae4575d3370da2da25a1cbce3dfcff198f0611/features/pom.xml -->
@@ -65,6 +64,13 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.build.resourceEncoding>UTF-8</project.build.resourceEncoding>
     <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
+
+	<!-- pin the source code compatibility to 1.8 for the sake of backward compatibility -->
+    <maven.compiler.source>1.8</maven.compiler.source>
+
+    <!-- don't pin the class file compatibility here, as this will overwrite the 'Bundle-RequiredExecutionEnvironment:' settings in the plug-ins' manifest files!
+         chsch: at the time of writing this all BREEs are pinned to 1.8 except for 'klighd.piccolo.test' that I switched to JavaSE-11 for convenience -->
+    <!-- maven.compiler.target>1.8</maven.compiler.target -->
 
     <!-- Enable java assertions during junit test runs. -->
     <!-- The "enableAssertions" property is only available in the maven-surefire plugin. -->
@@ -201,6 +207,11 @@
               <os>macosx</os>
               <ws>cocoa</ws>
               <arch>x86_64</arch>
+            </environment>
+            <environment>
+              <os>macosx</os>
+              <ws>cocoa</ws>
+              <arch>aarch64</arch>
             </environment>
           </environments>
         </configuration>
