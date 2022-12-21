@@ -29,10 +29,13 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TestName;
 import org.junit.runners.MethodSorters;
 
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Iterators;
 import com.google.common.collect.Sets;
 
 import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
@@ -46,6 +49,7 @@ import de.cau.cs.kieler.klighd.ZoomStyle;
 import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
 import de.cau.cs.kieler.klighd.kgraph.KNode;
 import de.cau.cs.kieler.klighd.piccolo.viewer.PiccoloViewer;
+import de.cau.cs.kieler.klighd.syntheses.DiagramLayoutOptions;
 import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties;
 import de.cau.cs.kieler.klighd.viewers.ContextViewer;
 
@@ -58,6 +62,8 @@ import de.cau.cs.kieler.klighd.viewers.ContextViewer;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class ViewChangedNotificationTest {
 
+    private static final boolean DEBUG_SYS_OUT = false;
+
     private Shell shell = null;
     private ViewContext viewContext = null;
     private AssertionError failure = null;
@@ -69,7 +75,7 @@ public class ViewChangedNotificationTest {
     public static void lookForElkLayered() {
         Assert.assertNotNull(
                 "ELK Layered is not on the classpath, but it's required for properly executing the tests.",
-                LayoutMetaDataService.getInstance().getAlgorithmDataBySuffix("org.eclipse.elk.layered")
+                LayoutMetaDataService.getInstance().getAlgorithmDataBySuffix(DiagramLayoutOptions.ELK_LAYERED)
         );
     }
 
@@ -83,7 +89,7 @@ public class ViewChangedNotificationTest {
         //  which is too high for some tests below 100, so I request the modelless style here
         // however, on linux the SWT.RESIZE flag is required to successfully run the tests 4-5b, so...
         shell = new Shell(Display.getDefault(), SWT.RESIZE);
-        shell.setSize(300, 200);
+        shell.setSize(400, 200);
         shell.setLocation(100, 100);
         shell.setLayout(new FillLayout());
 
@@ -93,7 +99,7 @@ public class ViewChangedNotificationTest {
         new ContextViewer(shell).setModel(viewContext, true);
 
         heightDelta = 200 - viewContext.getViewer().getControl().getSize().y;
-        shell.setSize(300, 200 + heightDelta);
+        shell.setSize(400, 200 + heightDelta);
 
         viewContext.update(null);
 
@@ -105,6 +111,9 @@ public class ViewChangedNotificationTest {
 
         failure = null;
     }
+
+    @Rule
+    public TestName name= new TestName();
 
     /**
      * Process queued tasks delegated to the Display's thread, which is the one the tests are
@@ -158,8 +167,14 @@ public class ViewChangedNotificationTest {
 
         public void viewChanged(final ViewChange change) {
 
-            final Iterable<KGraphElement> l = Sets.newHashSet(
-                    countNodesOnly ? change.visibleDiagramNodes() : change.visibleDiagramElements());
+            final Iterable<KGraphElement> l = Sets.<KGraphElement>newLinkedHashSet(
+                () -> countNodesOnly ? Iterators.<KGraphElement>filter(change.visibleDiagramNodes(), KGraphElement.class) : change.visibleDiagramElements()
+            );
+            
+            if (DEBUG_SYS_OUT) {
+                System.out.println(name.getMethodName() + ":\n" + String.join("\n", Iterables.transform(l, e -> e.toString())));
+            }
+            
             try {
                 MatcherAssert.assertThat("", l,
                         IsIterableWithSize.<KGraphElement>iterableWithSize(expectedElementsNumber));
@@ -264,10 +279,10 @@ public class ViewChangedNotificationTest {
     public void test05() {
         viewContext.setZoomStyle(ZoomStyle.NONE);
         expectedElementsNumber = 4;
-        if (Klighd.IS_WINDOWS)
-            shell.setSize(150, shell.getSize().y);
-        else
+        if (Klighd.IS_MACOSX)
             shell.setSize(130, shell.getSize().y);
+        else
+            shell.setSize(140, shell.getSize().y);
     }
 
     /**
@@ -278,9 +293,9 @@ public class ViewChangedNotificationTest {
         viewContext.setZoomStyle(ZoomStyle.NONE);
         countNodesOnly = false;
         expectedElementsNumber = 23;
-        if (Klighd.IS_WINDOWS)
-            shell.setSize(150, shell.getSize().y);
-        else
+        if (Klighd.IS_MACOSX)
             shell.setSize(130, shell.getSize().y);
+        else
+            shell.setSize(140, shell.getSize().y);
     }
 }
