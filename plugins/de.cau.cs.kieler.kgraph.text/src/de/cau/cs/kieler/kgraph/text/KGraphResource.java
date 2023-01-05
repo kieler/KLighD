@@ -19,23 +19,27 @@ package de.cau.cs.kieler.kgraph.text;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.reflect.Modifier;
 import java.util.Map;
+import java.util.stream.Stream;
 
 import org.eclipse.elk.graph.properties.IProperty;
-import org.eclipse.elk.graph.properties.Property;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.linking.lazy.LazyLinkingResource;
 import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
 import org.eclipse.xtext.resource.SaveOptions;
 
-import com.google.common.collect.ImmutableList;
+import com.google.common.base.Predicate;
+import com.google.common.base.Predicates;
 
-import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
+import de.cau.cs.kieler.klighd.kgraph.EMapPropertyHolder;
+import de.cau.cs.kieler.klighd.kgraph.KLayoutData;
 import de.cau.cs.kieler.klighd.kgraph.KNode;
 import de.cau.cs.kieler.klighd.kgraph.PersistentEntry;
 import de.cau.cs.kieler.klighd.kgraph.util.KGraphDataUtil;
 import de.cau.cs.kieler.klighd.kgraph.util.KGraphUtil;
+import de.cau.cs.kieler.klighd.krendering.KRendering;
 
 /**
  * A customized {@link LazyLinkingResource} handling the (de-) serialization of
@@ -50,27 +54,41 @@ import de.cau.cs.kieler.klighd.kgraph.util.KGraphUtil;
  */
 public class KGraphResource extends LazyLinkingResource {
 
-    /**
-     * Default values for {@link KGraphElement}'s, see
-     * {@link de.cau.cs.kieler.klighd.xtext.transformations.KGraphDiagramSynthesis
-     * KGraphDiagramSynthesis}
-     */
-    private static final IProperty<Boolean> DEFAULTS =
-            new Property<Boolean>("de.cau.cs.kieler.kgraphsynthesis.defaults", false); 
-    
-    /**
-     * KLighD offers the possibility to display tooltips that need to be parsed
-     * from persistent entries and added to the {@link KGraphElement}'s properties.
-     */
-    private static final IProperty<String> TOOLTIP =
-            new Property<String>("klighd.tooltip");
-    
+    private static final Predicate<EMapPropertyHolder> HANDLED_TYPES_FILTER =
+            e -> e instanceof KLayoutData || e instanceof KRendering;
+
     /**
      * Additional properties known to the kgraph text format that are no layout options. However,
      * they are made available through content assist and are parsed properly.
      */
-    public static final IProperty<?>[] ADDITIONAL_PROPERTIES = ImmutableList.of(DEFAULTS, TOOLTIP).toArray(
-            new IProperty<?>[2]);
+    public static final IProperty<?>[] ADDITIONAL_PROPERTIES = getAdditionalProperties();
+
+    private static IProperty<?>[] getAdditionalProperties() {
+        try {
+            // traditionally we didn't have a hard dependency from the textual syntax implementation
+            //  to the KLighD base package, so try to access the 'KlighdProperties' and its members via reflection
+            //  (the optional dependency on 'de.cau.cs.kieler.klighd' will bring it into the runtime class path)
+            return Stream.of(
+                Class.forName("de.cau.cs.kieler.klighd.util.KlighdProperties").getDeclaredFields()
+            ).filter(
+                f -> Modifier.isPublic(f.getModifiers()) && Modifier.isStatic(f.getModifiers())
+                        && IProperty.class.isAssignableFrom(f.getType())
+            ).map(
+                f -> {
+                    try {
+                        return f.get(null);
+                    } catch (IllegalArgumentException | IllegalAccessException e) {
+                        return null;
+                    }
+                }
+            ).filter(
+                Predicates.notNull()
+            ).toArray(IProperty<?>[]::new);
+
+        } catch (Throwable t) {
+            return new IProperty<?>[0];
+        }
+    };
 
     /**
      * {@inheritDoc}<br>
@@ -83,7 +101,7 @@ public class KGraphResource extends LazyLinkingResource {
             EObject o = this.getContents().get(0);
             if (o instanceof KNode) {
                 // parse persisted key-value pairs using KIML's layout data service
-                KGraphDataUtil.loadDataElements((KNode) o, ADDITIONAL_PROPERTIES);
+                KGraphDataUtil.loadDataElements((KNode) o, HANDLED_TYPES_FILTER, ADDITIONAL_PROPERTIES);
                 // validate layout data and references and fill in missing data
                 KGraphUtil.validate((KNode) o);
             }
@@ -119,6 +137,7 @@ public class KGraphResource extends LazyLinkingResource {
      * {@link IProperty}s into
      * {@link PersistentEntry}s.
      */
+    @SuppressWarnings("deprecation")
     public void doSave(final OutputStream outputStream, final Map<?, ?> options) throws IOException {
         
     	if (!this.getContents().isEmpty()) {
