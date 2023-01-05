@@ -156,6 +156,9 @@ public abstract class AbstractKGERenderingController
     /** whether to synchronize the rendering with the model. */
     private boolean syncRendering = false;
 
+    /** A flag for capturing whether some figure description parts are tagged as background figures. */
+    protected boolean backgroundFiguresPresent = false;
+
     /**
      * A flag indicating the availability of {@link KStyle KStyles} with valid modifier ids in
      * {@link #currentRendering}.
@@ -323,6 +326,9 @@ public abstract class AbstractKGERenderingController
         // get the current rendering
         //  this call updates the 'currentRendering' field
         getCurrentRendering();
+
+        // reset the flag before re-evaluating the current figure description
+        backgroundFiguresPresent = false;
 
         // reset that flag as potentially available styles with a modifier might be removed now
         modifiableStylesPresent = false;
@@ -1171,6 +1177,9 @@ public abstract class AbstractKGERenderingController
 
         final boolean isRenderingRef =
                 rendering.eClass() == KRenderingPackage.eINSTANCE.getKRenderingRef();
+
+        this.backgroundFiguresPresent = this.backgroundFiguresPresent
+                || rendering.getProperty(KlighdProperties.BACKGROUND_FIGURE);
 
         final List<KStyle> renderingStyles = rendering.getStyles();
 

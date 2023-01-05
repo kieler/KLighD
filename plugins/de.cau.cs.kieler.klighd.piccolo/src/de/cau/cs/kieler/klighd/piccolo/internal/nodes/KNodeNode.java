@@ -75,6 +75,15 @@ public class KNodeNode extends KNodeAbstractNode implements
      */
     private final PCamera childAreaCamera;
 
+    /** Flag indicating that this node is tagged to be drawn on top of the edge layer within the parent child area. */
+    private final boolean isTaggedAsForeground;
+
+    /** Flag indicating that this node is considered be drawn on top of the edge layer within the parent child area by its containing child area. */
+    private boolean isDrawnAsForeground = false;
+
+    /** Flag indicating whether this node's figure contains background parts to be drawn before drawing all the edges within the parent child area. */
+    private boolean hasBackgroundFigures = false;
+
     /** this flag indicates whether this node is currently observed by the {@link KlighdMainCamera}. */
     private boolean isRootLayer = false;
 
@@ -113,6 +122,8 @@ public class KNodeNode extends KNodeAbstractNode implements
      */
     public KNodeNode(final KNode node, final boolean edgesFirst) {
         super(node, edgesFirst);
+
+        this.isTaggedAsForeground = node.getProperty(KlighdProperties.FOREGROUND_NODE).booleanValue();
 
         this.visibilityHelper = KGraphElementNode.evaluateVisibilityDefinitions(node, null);
 
@@ -395,8 +406,9 @@ public class KNodeNode extends KNodeAbstractNode implements
      * @param parentINode
      *            the {@link AbstractKNodeNode} being the new parent in terms of the structural nodes
      */
-    public void setParentNode(final KNodeAbstractNode parentINode) {
+    public void setParentNode(final KNodeAbstractNode parentINode, final boolean addedAsForeground) {
         this.parent = parentINode;
+        this.isDrawnAsForeground = addedAsForeground;
     }
 
     /**
@@ -406,6 +418,27 @@ public class KNodeNode extends KNodeAbstractNode implements
     public void removeFromParent() {
         super.removeFromParent();
         this.parent = null;
+    }
+
+    /**
+     * Getter.
+     * 
+     * @return the value of getProperty({@link KlighdProperties#FOREGROUND_NODE}) for the
+     *         corresponding {@link KNode}.
+     */
+    public boolean isTaggedAsForeground() {
+        return this.isTaggedAsForeground;
+    }
+
+    /**
+     * Setter.
+     * 
+     * @param hasBackgroundFigures
+     *            value denoting whether the attached node figure contains parts being tagged as
+     *            background figure parts.
+     */
+    public void setHasBackgroundFigures(final boolean hasBackgroundFigures) {
+        this.hasBackgroundFigures = hasBackgroundFigures;
     }
 
     /**
@@ -645,8 +678,17 @@ public class KNodeNode extends KNodeAbstractNode implements
      */
     @Override
     public void fullPaint(final PPaintContext paintContext) {
-        final boolean isRootLayer = this.isRootLayer;
         final KlighdPaintContext kpc = (KlighdPaintContext) paintContext;
+
+        final boolean backgroundFiguresOnly = kpc.isBackgroundFiguresOnly();
+        if (backgroundFiguresOnly && !(this.isDrawnAsForeground && this.hasBackgroundFigures)) {
+            // if parent child area preforms the background figure drawings and this
+            //  node is not to be drawn in foreground or doesn't have background figure parts
+            // exit early!
+            return;
+        }
+
+        final boolean isRootLayer = this.isRootLayer;
         if (!isRootLayer && this.visibilityHelper != null
                 && this.visibilityHelper.isNotVisibleOn(kpc)) {
             return;
@@ -671,6 +713,14 @@ public class KNodeNode extends KNodeAbstractNode implements
             paintContext.pushTransform(transform);
             paintContext.pushTransparency(getTransparency());
 
+            final boolean pushAllFilter = !this.isDrawnAsForeground && kpc.isNonBackgroundFiguresOnly();
+            if (pushAllFilter) {
+                // in case this node is to be drawn as a regular (non-foreground) node but has figure parts tagged as background figures
+                //  and we're in non-background drawing mode override the configured non-background figure filter with the all filter,
+                //  and revert the override below, of course!
+                kpc.pushFigureFilterAll();
+            }
+
             this.hasBeenDrawn = true;
 
             final boolean applyScale = this.nodeScale != null;
@@ -678,13 +728,16 @@ public class KNodeNode extends KNodeAbstractNode implements
                 kpc.pushNodeScale(this.nodeScale.doubleValue());
             }
 
-            if (!getOccluded()) {
+            if (!getOccluded() && !backgroundFiguresOnly) {
+                // contributes the opening group tag during SVG exports if semantic data are attached,
+                //  don't do that during the background figure drawing
                 paint(paintContext);
             }
 
             final int count = getChildrenCount();
+            final List<?> children = getChildrenReference();
             for (int i = 0; i < count; i++) {
-                final PNode each = (PNode) getChildrenReference().get(i);
+                final PNode each = (PNode) children.get(i);
 
                 if (isRootLayer) {
                     if (isRootAndDrawnViaMainCamera) {
@@ -705,15 +758,29 @@ public class KNodeNode extends KNodeAbstractNode implements
                         //  Hence, it must be that of the outline diagram or any further one.
                         continue;
                     }
+
+                } else if (backgroundFiguresOnly) {
+                    if (i != 0 || each == this.childArea) {
+                        // do not draw anything except the node's figure if just background drawing is requested
+                        break;
+                    }
                 }
 
                 each.fullPaint(paintContext);
             }
 
-            paintAfterChildren(paintContext);
+            if (!backgroundFiguresOnly) {
+                // contributes the closing group tag during SVG exports if semantic data are attached,
+                //  don't do that during the background figure drawing
+                paintAfterChildren(paintContext);
+            }
 
             if (applyScale) {
                 kpc.popNodeScale();
+            }
+
+            if (pushAllFilter) {
+                kpc.popFigureFilter();
             }
 
             paintContext.popTransparency(getTransparency());

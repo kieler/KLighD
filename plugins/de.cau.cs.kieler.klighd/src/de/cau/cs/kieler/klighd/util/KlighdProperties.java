@@ -169,6 +169,28 @@ public final class KlighdProperties {
                 || (viewElement instanceof KText && isSelectable((KText) viewElement));
     }
 
+    /**
+     * Property for distinguishing a {@link KNode} to be drawn on top of the edge drawings within
+     * the parent {@link KNode}, in contrast to the default behavior of drawing edges on top of
+     * nodes. If set to <code>true</code> for a particular node the corresponding drawing node shall
+     * be drawn after all edges within the parent node are drawn and should receive precedence in
+     * the element picking.
+     */
+    public static final IProperty<Boolean> FOREGROUND_NODE = new Property<Boolean>(
+            "de.cau.cs.kieler.klighd.foregroundNode", false);
+
+    /**
+     * Property for distinguishing a {@link de.cau.cs.kieler.klighd.krendering.KRendering
+     * KRendering} being part of a {@link KNode}'s figure description (!) to be drawn underneath
+     * (before) the edge drawings within the parent {@link KNode}. This property setting shall have
+     * no effect for standard diagram descriptions, but is supposed to have an effect if
+     * {@link KlighdProperties#FOREGROUND_NODE} is set to <code>true</code> for the corresponding
+     * {@link KNode}, or {@link KlighdProperties#EDGES_FIRST} is configured on the
+     * {@link de.cau.cs.kieler.klighd.ViewContext ViewContext}. This setting is ignored for
+     * {@link de.cau.cs.kieler.klighd.krendering.KChildArea KChildAreas}.
+     */
+    public static final IProperty<Boolean> BACKGROUND_FIGURE = new Property<Boolean>(
+            "de.cau.cs.kieler.klighd.backgroundFigure", false);
 
     /**
      * Property determining the visibility of a certain
