@@ -245,7 +245,12 @@ public class KlighdImage extends KlighdNode.KlighdFigureNode<KImage> implements 
                 setImage(url.openStream()).close();
 
                 KlighdPiccoloPlugin.getDefault().getImageRegistry().put(imageKey,
-                        ImageDescriptor.createFromImageData(imageData));
+                        ImageDescriptor.createFromImageDataProvider(
+                                // lambda resembles the behavior of deprecated constructor
+                                //  org.eclipse.jface.resource.ImageDataImageDescriptor#ImageDataImageDescriptor(ImageData)
+                                i -> i == 100 ? imageData : null
+                        )
+                );
 
             } catch (final Exception e) {
                 final String msg =
