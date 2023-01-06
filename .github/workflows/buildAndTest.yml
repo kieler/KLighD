@@ -6,6 +6,9 @@ on:
       - '**'
     tags-ignore:
       - '**'
+  pull_request_target: # enables builds of PRs to branch 'master' from forked repos
+    branches:
+      - master
   workflow_dispatch: # enables manual triggering
 
 jobs:
