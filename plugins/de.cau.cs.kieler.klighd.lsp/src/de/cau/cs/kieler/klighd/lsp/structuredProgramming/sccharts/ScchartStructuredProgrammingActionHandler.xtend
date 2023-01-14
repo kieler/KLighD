@@ -8,11 +8,9 @@ import org.eclipse.sprotty.Action
 import javax.inject.Singleton
 import de.cau.cs.kieler.klighd.lsp.AbstractActionHandler
 import de.cau.cs.kieler.klighd.lsp.LSPUtil
-import java.util.regex.PatternSyntaxException
 import java.io.ByteArrayOutputStream
 import de.cau.cs.kieler.klighd.kgraph.KNode
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties
-import org.eclipse.elk.graph.ElkNode
 import java.util.Map
 import java.util.List
 import org.eclipse.lsp4j.TextEdit
@@ -20,9 +18,14 @@ import org.eclipse.lsp4j.Range
 import org.eclipse.lsp4j.Position
 import de.cau.cs.kieler.klighd.lsp.KGraphLanguageClient
 import org.eclipse.xtend.lib.annotations.Accessors
+import de.cau.cs.kieler.klighd.kgraph.KEdge
+import de.cau.cs.kieler.klighd.kgraph.KNode
+import de.cau.cs.kieler.sccharts.State
+import de.cau.cs.kieler.sccharts.Transition
 
 @Singleton
 class ScchartStructuredProgrammingActionHandler extends AbstractActionHandler {
+    
     @Accessors KGraphLanguageClient client;
 
     @Inject
@@ -33,6 +36,7 @@ class ScchartStructuredProgrammingActionHandler extends AbstractActionHandler {
     
     List<KNode> changedNodes
     
+    Position pre_range
     
     new() {
         this.supportedMessages = newHashMap(
@@ -52,9 +56,17 @@ class ScchartStructuredProgrammingActionHandler extends AbstractActionHandler {
     override handle(Action action, String clientId, KGraphDiagramServer server) {
         if(action.kind == DeleteAction.KIND){
             val uri = diagramState.getURIString(clientId)
+            val resource = languageServer.getResource(uri);
+            val outputStream = new ByteArrayOutputStream
+            resource.save(outputStream, emptyMap)
+            val codeAfter = outputStream.toString().trim()
+            println(codeAfter)
+        
+            // The range is the length of the previous file.
+            pre_range = new Position(codeAfter.split("\r\n|\r|\n").length,0)
+            
             this.delete(action as DeleteAction, clientId, server)
-            languageServer.updateLayout(uri)
-//            this.updateDocument(clientId)
+            this.updateDocument(uri)
         }else if(action.kind == RenameNodeAction.KIND){
             println("rename")
         }else if(action.kind == AddSuccessorNodeAction.KIND){
@@ -95,62 +107,78 @@ class ScchartStructuredProgrammingActionHandler extends AbstractActionHandler {
         val kNode = LSPUtil.getKNode(diagramState, uri, id)
         
         if(kNode !== null && kNode.parent !== null){
-            for(y: kNode.incomingEdges){
-                y.source.outgoingEdges.remove(y)
-                changedNodes.add(y.source);
-            }
-        
-            for(y: kNode.outgoingEdges){
-                y.target.incomingEdges.remove(y)
-                changedNodes.add(y.target);
-            }
-        
-            kNode.parent.children.remove(kNode)
-            
+            deleteNode(kNode);
         }   
     
         val kEdge = LSPUtil.getKEdge(diagramState, uri, id)
         if( kEdge !== null ) {
             kEdge.source.outgoingEdges.remove(kEdge)
             kEdge.target.incomingEdges.remove(kEdge)
-            changedNodes.add(kEdge.source);
-            changedNodes.add(kEdge.target);
+            deleteEdge(kEdge);
         } 
     }
     
-    def updateDocument(String uri){
-        val resource = languageServer.getResource(uri);
-            
-        // Get previous file content as String
-        var outputStream = new ByteArrayOutputStream
-        resource.save(outputStream, emptyMap)
-        val codeBefore = outputStream.toString
+    def deleteEdge(KEdge kNode){
         
-        for (node : changedNodes) {
-            val elkNode = node.getProperty(KlighdInternalProperties.MODEL_ELEMEMT)
-            if (elkNode instanceof ElkNode) {
-                copyChanges(elkNode, node)
-            }
-        }
-        val elkNode = changedNodes.get(0).getProperty(KlighdInternalProperties.MODEL_ELEMEMT)
-        if (elkNode instanceof ElkNode) {
-            val Map<String, List<TextEdit>> changes = newHashMap
-            
-            // Get changed file as String
-            outputStream = new ByteArrayOutputStream
-            resource.save(outputStream, emptyMap)
-            val codeAfter = outputStream.toString().trim()
-            
-            // The range is the length of the previous file.
-            val Range range = new Range(new Position(0, 0), new Position(codeBefore.split("\r\n|\r|\n").length, 0))
-            val TextEdit textEdit = new TextEdit(range, codeAfter)
-            changes.put(uri, #[textEdit]);
-            this.client.replaceContentInFile(uri, codeAfter, range)
-            return
-        }
     }
     
-    def copyChanges(ElkNode elkNode, KNode kNode){
+    def void deleteNode(KNode kNode){
+        val node = kNode.getProperty(KlighdInternalProperties.MODEL_ELEMEMT) as State
         
+        for(incommingEdge: kNode.incomingEdges){
+            
+            val source = incommingEdge.source.getProperty(KlighdInternalProperties.MODEL_ELEMEMT) as State
+            
+            val transitions = source.getOutgoingTransitions()
+            val to_del = newArrayList
+            
+            for(transition: transitions){            
+                if(transition.getTargetState() === node){
+                    to_del.add(transition)
+                }
+            }  
+            for(t: to_del){
+                source.outgoingTransitions.remove(t)
+            }
+            
+        }
+    
+        for(outgoingEdge: kNode.outgoingEdges){
+            val target = outgoingEdge.target.getProperty(KlighdInternalProperties.MODEL_ELEMEMT) as State
+            
+            val transitions = target.getIncomingTransitions()
+            val to_del = newArrayList
+            
+            for(transition: transitions){            
+                if(transition.getSourceState() === node){
+                    to_del.add(transition)
+                }   
+            }
+            for(t: to_del){
+                target.incomingTransitions.remove(t)
+            }
+        }
+        
+        node.parentRegion.states.remove(node)
+    }
+    
+    
+    def updateDocument(String uri){
+        val resource = languageServer.getResource(uri);
+        
+        
+
+        val outputStream = new ByteArrayOutputStream
+        resource.save(outputStream, emptyMap)
+        val codeAfter = outputStream.toString().trim()
+        println(codeAfter) //returns correct code for deletion !
+        
+        // The range is the length of the previous file.
+        val Range range = new Range(new Position(0, 0), pre_range)
+        if(this.client === null){
+            println("client nulll")
+        }else{
+            this.client.replaceContentInFile(uri, codeAfter, range)        
+        }
     }
 }
