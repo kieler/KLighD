@@ -41,7 +41,6 @@ import de.cau.cs.kieler.klighd.lsp.structuredProgramming.sccharts.DeleteAction
 import de.cau.cs.kieler.klighd.lsp.structuredProgramming.sccharts.RenameNodeAction;
 import de.cau.cs.kieler.klighd.lsp.structuredProgramming.sccharts.AddHirachicalNodeAction;
 import de.cau.cs.kieler.klighd.lsp.structuredProgramming.sccharts.AddSuccessorNodeAction;
-import de.cau.cs.kieler.klighd.lsp.structuredProgramming.sccharts.RenameEdgeAction;
 import de.cau.cs.kieler.klighd.lsp.structuredProgramming.sccharts.ChangeIOAction;
 import de.cau.cs.kieler.klighd.lsp.structuredProgramming.sccharts.RenameRegionAction;
 import de.cau.cs.kieler.klighd.lsp.structuredProgramming.sccharts.AddConcurrentRegionAction;
@@ -88,7 +87,6 @@ class KGraphTypeAdapterUtil {
                 addActionKind(AddSuccessorNodeAction.KIND, AddSuccessorNodeAction)
                 addActionKind(AddHirachicalNodeAction.KIND, AddHirachicalNodeAction)
                 
-                addActionKind(RenameEdgeAction.KIND, RenameEdgeAction)
                 addActionKind(ChangeDestinationAction.KIND, ChangeDestinationAction)
                 addActionKind(ChangeSourceAction.KIND, ChangeSourceAction)
                 addActionKind(ChangeIOAction.KIND, ChangeIOAction)

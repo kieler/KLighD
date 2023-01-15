@@ -5,27 +5,8 @@ import org.eclipse.sprotty.Action
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.xtend.lib.annotations.EqualsHashCode
 import org.eclipse.xtend.lib.annotations.ToString
+import de.cau.cs.kieler.klighd.structuredEditMsg.InputType
 
-/**
- * 
- * 
- * @author fjo
- */
-@Accessors
-@EqualsHashCode
-@ToString(skipNulls = true)
-class RenameEdgeAction implements Action {
-    public static val KIND = 'SCChart_graph_RenameEdge'
-    String kind = KIND
-    
-    public String id
-    public String new_name
-    
-    new() {}
-    new(Consumer<RenameEdgeAction> initializer) {
-        initializer.accept(this)
-    }
-}
 
 /**
  * 
@@ -45,6 +26,10 @@ class ChangeDestinationAction implements Action {
     new() {}
     new(Consumer<ChangeDestinationAction> initializer) {
         initializer.accept(this)
+    }
+    def static InputType[] getInputs() {
+        val input1 = new InputType("new_dest","String","New Destination");
+        return #[input1];
     }
 }
 
@@ -67,6 +52,10 @@ class ChangeSourceAction implements Action {
     new(Consumer<ChangeSourceAction> initializer) {
         initializer.accept(this)
     }
+    def static InputType[] getInputs() {
+        val input1 = new InputType("new_Source","String","New Source");
+        return #[input1];
+    }
 }
 
 /**
@@ -88,6 +77,11 @@ class ChangeIOAction implements Action {
     new() {}
     new(Consumer<ChangeIOAction> initializer) {
         initializer.accept(this)
+    }
+    def static InputType[] getInputs() {
+        val input1 = new InputType("inputs","String","New Inputs");
+        val input2 = new InputType("outputs","String","New Outputs");
+        return #[input1, input2];
     }
 }
 

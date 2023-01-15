@@ -21,6 +21,7 @@ import org.eclipse.sprotty.Action
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.xtend.lib.annotations.EqualsHashCode
 import org.eclipse.xtend.lib.annotations.ToString
+import de.cau.cs.kieler.klighd.structuredEditMsg.InputType
 
 /**
  * 
@@ -35,11 +36,16 @@ class RenameNodeAction implements Action {
     String kind = KIND
     
     public String id
-    public String new_name
+    public String newName
     
     new() {}
     new(Consumer<RenameNodeAction> initializer) {
         initializer.accept(this)
+    }
+    
+    def static InputType[] getInputs() {
+        val input1 = new InputType("newName","String","New Name");
+        return #[input1];
     }
 }
 
@@ -56,13 +62,20 @@ class AddEdgeAction implements Action {
     String kind = KIND
     
     public String id
-    public String dest
-    public String inputs
-    public String outputs
+    public String dest_string
+    public String inputs_string
+    public String outputs_string
     
     new() {}
     new(Consumer<AddEdgeAction> initializer) {
         initializer.accept(this)
+    }
+    
+    def static InputType[] getInputs() {
+        val input1 = new InputType("destination","String","Destination");
+        val input2 = new InputType("inputs", "String", "Enable Inputs");
+        val input3 = new InputType("outputs", "String", "Outputs to set")
+        return #[input1, input2, input3];
     }
 }
 
@@ -79,13 +92,20 @@ class AddSuccessorNodeAction implements Action {
     String kind = KIND
     
     public String id
-    public String new_node_name
-    public String edge_input
-    public String edge_output
+    public String newNodeName
+    public String edgeInput
+    public String edgeOutput
     
     new() {}
     new(Consumer<AddSuccessorNodeAction> initializer) {
         initializer.accept(this)
+    }
+    
+    def static InputType[] getInputs() {
+        val input1 = new InputType("newNodeName","String","Name of Node");
+        val input2 = new InputType("edgeInput", "String", "Enable Inputs");
+        val input3 = new InputType("edgeOutput", "String", "Outputs to set")
+        return #[input1, input2, input3];
     }
 }
 
@@ -108,6 +128,11 @@ class AddHirachicalNodeAction implements Action {
     new() {}
     new(Consumer<AddHirachicalNodeAction> initializer) {
         initializer.accept(this)
+    }
+    def static InputType[] getInputs() {
+        val input1 = new InputType("next_name","String","State Name");
+        val input2 = new InputType("region_name", "String", "Region Name");
+        return #[input1, input2];
     }
 }
 

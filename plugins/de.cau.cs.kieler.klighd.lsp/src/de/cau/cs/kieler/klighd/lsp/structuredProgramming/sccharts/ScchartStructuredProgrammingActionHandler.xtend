@@ -22,11 +22,17 @@ import de.cau.cs.kieler.klighd.kgraph.KEdge
 import de.cau.cs.kieler.klighd.kgraph.KNode
 import de.cau.cs.kieler.sccharts.State
 import de.cau.cs.kieler.sccharts.Transition
+import de.cau.cs.kieler.sccharts.impl.StateImpl
+import de.cau.cs.kieler.sccharts.impl.TransitionImpl
+import de.cau.cs.kieler.sccharts.impl.SCChartsFactoryImpl
+import org.eclipse.emf.common.util.EList
+import de.cau.cs.kieler.sccharts.Region
 
 @Singleton
 class ScchartStructuredProgrammingActionHandler extends AbstractActionHandler {
+    SCChartsFactoryImpl factory
     
-    @Accessors KGraphLanguageClient client;
+    @Accessors KGraphLanguageClient client
 
     @Inject
     KGraphDiagramState diagramState
@@ -39,12 +45,12 @@ class ScchartStructuredProgrammingActionHandler extends AbstractActionHandler {
     Position pre_range
     
     new() {
+        factory = new SCChartsFactoryImpl()
         this.supportedMessages = newHashMap(
            DeleteAction.KIND -> DeleteAction,
            RenameNodeAction.KIND -> RenameNodeAction,
            AddSuccessorNodeAction.KIND -> AddSuccessorNodeAction,
            AddHirachicalNodeAction.KIND -> AddHirachicalNodeAction,
-           RenameEdgeAction.KIND -> RenameEdgeAction,
            ChangeDestinationAction.KIND -> ChangeDestinationAction,
            ChangeSourceAction.KIND -> ChangeSourceAction,
            ChangeIOAction.KIND -> ChangeIOAction,
@@ -54,8 +60,8 @@ class ScchartStructuredProgrammingActionHandler extends AbstractActionHandler {
     }
     
     override handle(Action action, String clientId, KGraphDiagramServer server) {
+        val uri = diagramState.getURIString(clientId)
         if(action.kind == DeleteAction.KIND){
-            val uri = diagramState.getURIString(clientId)
             val resource = languageServer.getResource(uri);
             val outputStream = new ByteArrayOutputStream
             resource.save(outputStream, emptyMap)
@@ -68,13 +74,31 @@ class ScchartStructuredProgrammingActionHandler extends AbstractActionHandler {
             this.delete(action as DeleteAction, clientId, server)
             this.updateDocument(uri)
         }else if(action.kind == RenameNodeAction.KIND){
-            println("rename")
+            val resource = languageServer.getResource(uri);
+            val outputStream = new ByteArrayOutputStream
+            resource.save(outputStream, emptyMap)
+            val codeAfter = outputStream.toString().trim()
+            println(codeAfter)
+        
+            // The range is the length of the previous file.
+            pre_range = new Position(codeAfter.split("\r\n|\r|\n").length,0)
+            
+            rename(action, clientId, server)
+            this.updateDocument(uri)
         }else if(action.kind == AddSuccessorNodeAction.KIND){
-            println("succ")
+            val resource = languageServer.getResource(uri);
+            val outputStream = new ByteArrayOutputStream
+            resource.save(outputStream, emptyMap)
+            val codeAfter = outputStream.toString().trim()
+            println(codeAfter)
+        
+            // The range is the length of the previous file.
+            pre_range = new Position(codeAfter.split("\r\n|\r|\n").length,0)
+            
+            addSuccessorNode(action as AddSuccessorNodeAction, clientId, server)
+            this.updateDocument(uri)
         }else if(action.kind == AddHirachicalNodeAction.KIND){
             println("hirach")
-        }else if(action.kind == RenameEdgeAction.KIND){
-            println("renameEdge")
         }else if(action.kind == ChangeDestinationAction.KIND){
             println("changeDest")
         }else if(action.kind == ChangeSourceAction.KIND){
@@ -82,12 +106,36 @@ class ScchartStructuredProgrammingActionHandler extends AbstractActionHandler {
         }else if(action.kind == ChangeIOAction.KIND){
             println("changeIO")
         }else if(action.kind == RenameRegionAction.KIND){
-            println("renameRegion")
+            val resource = languageServer.getResource(uri);
+            val outputStream = new ByteArrayOutputStream
+            resource.save(outputStream, emptyMap)
+            val codeAfter = outputStream.toString().trim()
+            println(codeAfter)
+        
+            // The range is the length of the previous file.
+            pre_range = new Position(codeAfter.split("\r\n|\r|\n").length,0)
+            
+            rename(action, clientId, server)
+            this.updateDocument(uri)
         }else if(action.kind == AddConcurrentRegionAction.KIND){
             println("addConcurrentRegion")
         }else{
             throw new IllegalArgumentException("Action " + action.kind + " not supported by handler " + this.class.simpleName)
         }
+    }
+    
+    def rename(Action action, String clientId, KGraphDiagramServer server) {
+        val uri = diagramState.getURIString(clientId)
+        if(action.kind === RenameNodeAction.KIND){
+            val kNode = LSPUtil.getKNode(diagramState, uri, (action as RenameNodeAction).id)
+            val node = kNode.getProperty(KlighdInternalProperties.MODEL_ELEMEMT)
+            (node as State).name = (action as RenameNodeAction).newName
+        }else if(action.kind === RenameRegionAction.KIND){
+            val kNode = LSPUtil.getKNode(diagramState, uri, (action as RenameRegionAction).id)
+            val node = kNode.getProperty(KlighdInternalProperties.MODEL_ELEMEMT)
+            (node as Region).name = (action as RenameRegionAction).newName
+        }
+        
     }
     
     def delete(DeleteAction action, String clientId, KGraphDiagramServer server){
@@ -112,18 +160,22 @@ class ScchartStructuredProgrammingActionHandler extends AbstractActionHandler {
     
         val kEdge = LSPUtil.getKEdge(diagramState, uri, id)
         if( kEdge !== null ) {
-            kEdge.source.outgoingEdges.remove(kEdge)
-            kEdge.target.incomingEdges.remove(kEdge)
             deleteEdge(kEdge);
         } 
     }
     
-    def deleteEdge(KEdge kNode){
+    def deleteEdge(KEdge kEdge){
+        val edge = kEdge.getProperty(KlighdInternalProperties.MODEL_ELEMEMT)
+        val source = kEdge.source.getProperty(KlighdInternalProperties.MODEL_ELEMEMT) as State   
+        val target = kEdge.target.getProperty(KlighdInternalProperties.MODEL_ELEMEMT) as State
         
+        source.outgoingTransitions.remove(edge)
+        target.incomingTransitions.remove(edge)
     }
     
     def void deleteNode(KNode kNode){
         val node = kNode.getProperty(KlighdInternalProperties.MODEL_ELEMEMT) as State
+        
         
         for(incommingEdge: kNode.incomingEdges){
             
@@ -162,12 +214,33 @@ class ScchartStructuredProgrammingActionHandler extends AbstractActionHandler {
         node.parentRegion.states.remove(node)
     }
     
+    def addSuccessorNode(AddSuccessorNodeAction action, String clientId, KGraphDiagramServer server){
+        val uri = diagramState.getURIString(clientId)
+        val kNode = LSPUtil.getKNode(diagramState, uri, action.id)
+        val node = kNode.getProperty(KlighdInternalProperties.MODEL_ELEMEMT) as State
+        
+        val new_State = factory.createState()
+        new_State.name = action.newNodeName
+        
+        val new_transition = factory.createTransition()
+
+        new_transition.sourceState = node
+        new_transition.targetState = new_State
+        
+        // some way to do this
+//        new_transition.trigger = action.edgeInput
+//        new_transition.effects = action.edgeOutput
+        
+        new_State.incomingTransitions.add(new_transition)
+        node.outgoingTransitions.add(new_transition)
+        
+        node.parentRegion.states.add(new_State)
+        
+    }
     
     def updateDocument(String uri){
         val resource = languageServer.getResource(uri);
         
-        
-
         val outputStream = new ByteArrayOutputStream
         resource.save(outputStream, emptyMap)
         val codeAfter = outputStream.toString().trim()
@@ -176,7 +249,7 @@ class ScchartStructuredProgrammingActionHandler extends AbstractActionHandler {
         // The range is the length of the previous file.
         val Range range = new Range(new Position(0, 0), pre_range)
         if(this.client === null){
-            println("client nulll")
+            println("client null")
         }else{
             this.client.replaceContentInFile(uri, codeAfter, range)        
         }
