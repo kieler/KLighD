@@ -27,6 +27,9 @@ import de.cau.cs.kieler.sccharts.impl.TransitionImpl
 import de.cau.cs.kieler.sccharts.impl.SCChartsFactoryImpl
 import org.eclipse.emf.common.util.EList
 import de.cau.cs.kieler.sccharts.Region
+import de.cau.cs.kieler.sccharts.impl.ControlflowRegionImpl
+import de.cau.cs.kieler.sccharts.ControlflowRegion
+import de.cau.cs.kieler.sccharts.PreemptionType
 
 @Singleton
 class ScchartStructuredProgrammingActionHandler extends AbstractActionHandler {
@@ -55,72 +58,177 @@ class ScchartStructuredProgrammingActionHandler extends AbstractActionHandler {
            ChangeSourceAction.KIND -> ChangeSourceAction,
            ChangeIOAction.KIND -> ChangeIOAction,
            RenameRegionAction.KIND -> RenameRegionAction,
-           AddConcurrentRegionAction.KIND -> AddConcurrentRegionAction
+           AddConcurrentRegionAction.KIND -> AddConcurrentRegionAction,
+           ChangeToAbortingEdgeAction.KIND -> ChangeToAbortingEdgeAction,
+           ChangeToTerminationgEdgeAction.KIND -> ChangeToTerminationgEdgeAction,
+           ChangeToWeakEdgeAction.KIND -> ChangeToWeakEdgeAction
         )
     }
     
     override handle(Action action, String clientId, KGraphDiagramServer server) {
         val uri = diagramState.getURIString(clientId)
+        val resource = languageServer.getResource(uri);
+        val outputStream = new ByteArrayOutputStream
+        resource.save(outputStream, emptyMap)
+        val codeAfter = outputStream.toString().trim()
+        println(codeAfter)
+        
+        // The range is the length of the previous file.
+        pre_range = new Position(codeAfter.split("\r\n|\r|\n").length,0)
         if(action.kind == DeleteAction.KIND){
-            val resource = languageServer.getResource(uri);
-            val outputStream = new ByteArrayOutputStream
-            resource.save(outputStream, emptyMap)
-            val codeAfter = outputStream.toString().trim()
-            println(codeAfter)
-        
-            // The range is the length of the previous file.
-            pre_range = new Position(codeAfter.split("\r\n|\r|\n").length,0)
-            
-            this.delete(action as DeleteAction, clientId, server)
-            this.updateDocument(uri)
+            delete(action as DeleteAction, clientId, server)
+            updateDocument(uri)
         }else if(action.kind == RenameNodeAction.KIND){
-            val resource = languageServer.getResource(uri);
-            val outputStream = new ByteArrayOutputStream
-            resource.save(outputStream, emptyMap)
-            val codeAfter = outputStream.toString().trim()
-            println(codeAfter)
-        
-            // The range is the length of the previous file.
-            pre_range = new Position(codeAfter.split("\r\n|\r|\n").length,0)
-            
             rename(action, clientId, server)
-            this.updateDocument(uri)
+            updateDocument(uri)
         }else if(action.kind == AddSuccessorNodeAction.KIND){
-            val resource = languageServer.getResource(uri);
-            val outputStream = new ByteArrayOutputStream
-            resource.save(outputStream, emptyMap)
-            val codeAfter = outputStream.toString().trim()
-            println(codeAfter)
-        
-            // The range is the length of the previous file.
-            pre_range = new Position(codeAfter.split("\r\n|\r|\n").length,0)
-            
             addSuccessorNode(action as AddSuccessorNodeAction, clientId, server)
-            this.updateDocument(uri)
+            updateDocument(uri)
         }else if(action.kind == AddHirachicalNodeAction.KIND){
-            println("hirach")
+            addHirachicalNode(action as AddHirachicalNodeAction, clientId, server)
+            updateDocument(uri)
         }else if(action.kind == ChangeDestinationAction.KIND){
-            println("changeDest")
+            changeDestination(action as ChangeDestinationAction, clientId, server)
+            updateDocument(uri)
         }else if(action.kind == ChangeSourceAction.KIND){
-            println("changeSource")
+            changeSource(action as ChangeSourceAction, clientId, server)
+            updateDocument(uri)
         }else if(action.kind == ChangeIOAction.KIND){
-            println("changeIO")
+            changeIO(action as ChangeIOAction, clientId, server)
+            updateDocument(uri)
         }else if(action.kind == RenameRegionAction.KIND){
-            val resource = languageServer.getResource(uri);
-            val outputStream = new ByteArrayOutputStream
-            resource.save(outputStream, emptyMap)
-            val codeAfter = outputStream.toString().trim()
-            println(codeAfter)
-        
-            // The range is the length of the previous file.
-            pre_range = new Position(codeAfter.split("\r\n|\r|\n").length,0)
-            
             rename(action, clientId, server)
-            this.updateDocument(uri)
+            updateDocument(uri)
         }else if(action.kind == AddConcurrentRegionAction.KIND){
-            println("addConcurrentRegion")
+            addConcurrentRegion(action as AddConcurrentRegionAction, clientId, server)
+            updateDocument(uri)
+        }else if(action.kind == ChangeToAbortingEdgeAction.KIND){
+            changeToAbort(action as ChangeToAbortingEdgeAction, clientId, server)
+            updateDocument(uri)
+        }else if(action.kind == ChangeToTerminationgEdgeAction.KIND){
+            changeToTerminating(action as ChangeToTerminationgEdgeAction, clientId, server)
+            updateDocument(uri)
+        }else if(action.kind == ChangeToWeakEdgeAction.KIND){
+            changeToWeak(action as ChangeToWeakEdgeAction, clientId, server)
+            updateDocument(uri)
         }else{
             throw new IllegalArgumentException("Action " + action.kind + " not supported by handler " + this.class.simpleName)
+        }
+    }
+    
+    def changeToWeak(ChangeToWeakEdgeAction action, String clientId, KGraphDiagramServer server) {
+        val uri = diagramState.getURIString(clientId)
+        val kEdge = LSPUtil.getKEdge(diagramState, uri, action.id)
+        val edge = kEdge.getProperty(KlighdInternalProperties.MODEL_ELEMEMT) as Transition
+        
+        edge.preemption = PreemptionType.WEAK
+    }
+    
+    def changeToTerminating(ChangeToTerminationgEdgeAction action, String clientId, KGraphDiagramServer server) {
+        val uri = diagramState.getURIString(clientId)
+        val kEdge = LSPUtil.getKEdge(diagramState, uri, action.id)
+        val edge = kEdge.getProperty(KlighdInternalProperties.MODEL_ELEMEMT) as Transition
+        
+        edge.preemption = PreemptionType.TERMINATION
+    }
+    
+    def changeToAbort(ChangeToAbortingEdgeAction action, String clientId, KGraphDiagramServer server) {
+        val uri = diagramState.getURIString(clientId)
+        val kEdge = LSPUtil.getKEdge(diagramState, uri, action.id)
+        val edge = kEdge.getProperty(KlighdInternalProperties.MODEL_ELEMEMT) as Transition
+        
+        edge.preemption = PreemptionType.STRONG
+    }
+    
+    def changeIO(ChangeIOAction action, String clientId, KGraphDiagramServer server) {
+        val uri = diagramState.getURIString(clientId)
+        val kNode = LSPUtil.getKNode(diagramState, uri, action.id)
+        val edge = kNode.getProperty(KlighdInternalProperties.MODEL_ELEMEMT) as Transition
+        //TODO: change IO
+    }
+    
+    def changeDestination(ChangeDestinationAction action, String clientId, KGraphDiagramServer server) {
+        val uri = diagramState.getURIString(clientId)
+        val kEdge = LSPUtil.getKEdge(diagramState, uri, action.id)
+        val edge = kEdge.getProperty(KlighdInternalProperties.MODEL_ELEMEMT) as Transition
+        
+        //TODO: idealy the user selects a node and the id is transmitted and we could get rid of the string stuff here
+        val arr = action.id.split("\\$")
+        
+        var newTarget = ""
+        for(var x = 0; x<arr.length-2; x++){
+            newTarget += arr.get(x)+"$"
+        }
+        newTarget += "N"+action.new_dest
+        
+        //idealy instead of newSource use action.new_Source 
+        val kNode = LSPUtil.getKNode(diagramState, uri, newTarget)
+        val node =  kNode.getProperty(KlighdInternalProperties.MODEL_ELEMEMT) as State
+        
+        edge.targetState.incomingTransitions.remove(edge)
+        edge.targetState = node
+        
+        node.incomingTransitions.add(edge)
+    }
+    
+    def changeSource(ChangeSourceAction action, String clientId, KGraphDiagramServer server) {
+        val uri = diagramState.getURIString(clientId)
+        val kEdge = LSPUtil.getKEdge(diagramState, uri, action.id)
+        val edge = kEdge.getProperty(KlighdInternalProperties.MODEL_ELEMEMT) as Transition
+        
+        
+        //TODO: idealy the user selects a node and the id is transmitted and we could get rid of the string stuff here
+        val arr = action.id.split("\\$")
+        
+        var newSource = ""
+        for(var x = 0; x<arr.length-2; x++){
+            newSource += arr.get(x)+"$"
+        }
+        newSource += "N"+action.new_Source
+        
+        //idealy instead of newSource use action.new_Source 
+        val kNode = LSPUtil.getKNode(diagramState, uri, newSource)
+        val node =  kNode.getProperty(KlighdInternalProperties.MODEL_ELEMEMT) as State
+        
+        edge.sourceState.outgoingTransitions.remove(edge)
+        edge.sourceState = node
+        
+        node.outgoingTransitions.add(edge)
+    }
+    
+    def addHirachicalNode(AddHirachicalNodeAction action, String clientId, KGraphDiagramServer server) {
+        val uri = diagramState.getURIString(clientId)
+        val kNode = LSPUtil.getKNode(diagramState, uri, action.id)
+        val node = kNode.getProperty(KlighdInternalProperties.MODEL_ELEMEMT) as State
+
+        val newRegion = factory.createControlflowRegion()
+        newRegion.name = action.region_name
+        
+        val newState = factory.createState()
+        newState.name = action.next_name
+        newState.initial = true
+      
+        newRegion.states.add(newState)
+        
+        node.regions.add(newRegion)        
+    }
+    
+    def addConcurrentRegion(AddConcurrentRegionAction action, String clientId, KGraphDiagramServer server) {
+        val uri = diagramState.getURIString(clientId)
+        val kNode = LSPUtil.getKNode(diagramState, uri, action.id)
+        val node = kNode.getProperty(KlighdInternalProperties.MODEL_ELEMEMT)
+        
+        val newRegion = factory.createControlflowRegion()
+        newRegion.name = action.new_name
+        
+        val initState = factory.createState()
+        initState.name = action.initialStateName
+        initState.initial = true
+        
+        newRegion.states.add(initState)
+        
+        if(node instanceof ControlflowRegion){
+            (node as ControlflowRegion).parentState.regions.add(newRegion)
         }
     }
     

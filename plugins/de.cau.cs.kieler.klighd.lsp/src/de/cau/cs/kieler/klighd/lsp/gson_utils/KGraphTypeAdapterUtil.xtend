@@ -46,6 +46,9 @@ import de.cau.cs.kieler.klighd.lsp.structuredProgramming.sccharts.RenameRegionAc
 import de.cau.cs.kieler.klighd.lsp.structuredProgramming.sccharts.AddConcurrentRegionAction;
 import de.cau.cs.kieler.klighd.lsp.structuredProgramming.sccharts.ChangeDestinationAction
 import de.cau.cs.kieler.klighd.lsp.structuredProgramming.sccharts.ChangeSourceAction
+import de.cau.cs.kieler.klighd.lsp.structuredProgramming.sccharts.ChangeToAbortingEdgeAction
+import de.cau.cs.kieler.klighd.lsp.structuredProgramming.sccharts.ChangeToTerminationgEdgeAction
+import de.cau.cs.kieler.klighd.lsp.structuredProgramming.sccharts.ChangeToWeakEdgeAction
 
 /**
  * Static util class to configure needed gson type adapters for KGraph serialization.
@@ -90,6 +93,10 @@ class KGraphTypeAdapterUtil {
                 addActionKind(ChangeDestinationAction.KIND, ChangeDestinationAction)
                 addActionKind(ChangeSourceAction.KIND, ChangeSourceAction)
                 addActionKind(ChangeIOAction.KIND, ChangeIOAction)
+                addActionKind(ChangeToAbortingEdgeAction.KIND, ChangeToAbortingEdgeAction)
+                addActionKind(ChangeToTerminationgEdgeAction.KIND, ChangeToTerminationgEdgeAction)
+                addActionKind(ChangeToWeakEdgeAction.KIND, ChangeToWeakEdgeAction)
+                
                 
                 addActionKind(RenameRegionAction.KIND, RenameRegionAction)
                 addActionKind(AddConcurrentRegionAction.KIND, AddConcurrentRegionAction)

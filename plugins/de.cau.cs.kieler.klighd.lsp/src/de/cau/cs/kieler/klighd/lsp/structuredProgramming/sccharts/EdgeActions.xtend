@@ -85,5 +85,73 @@ class ChangeIOAction implements Action {
     }
 }
 
+/**
+ * 
+ * 
+ * @author fjo
+ */
+@Accessors
+@EqualsHashCode
+@ToString(skipNulls = true)
+class ChangeToWeakEdgeAction implements Action {
+    public static val KIND = 'SCChart_graph_changeToWeakEdge'
+    String kind = KIND
+    
+    public String id
+    
+    new() {}
+    new(Consumer<ChangeToWeakEdgeAction> initializer) {
+        initializer.accept(this)
+    }
+    def static InputType[] getInputs() {
+        return #[];
+    }
+}
+
+/**
+ * 
+ * 
+ * @author fjo
+ */
+@Accessors
+@EqualsHashCode
+@ToString(skipNulls = true)
+class ChangeToAbortingEdgeAction implements Action {
+    public static val KIND = 'SCChart_graph_changeToAbortEdge'
+    String kind = KIND
+    
+    public String id
+    
+    new() {}
+    new(Consumer<ChangeToAbortingEdgeAction> initializer) {
+        initializer.accept(this)
+    }
+    def static InputType[] getInputs() {
+        return #[];
+    }
+}
+
+/**
+ * 
+ * 
+ * @author fjo
+ */
+@Accessors
+@EqualsHashCode
+@ToString(skipNulls = true)
+class ChangeToTerminationgEdgeAction implements Action {
+    public static val KIND = 'SCChart_graph_changeToTerminatingEdge'
+    String kind = KIND
+    
+    public String id
+    
+    new() {}
+    new(Consumer<ChangeToTerminationgEdgeAction> initializer) {
+        initializer.accept(this)
+    }
+    def static InputType[] getInputs() {
+        return #[];
+    }
+}
 
 
