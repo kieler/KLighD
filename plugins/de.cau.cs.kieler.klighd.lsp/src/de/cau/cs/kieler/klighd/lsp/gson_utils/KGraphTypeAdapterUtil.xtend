@@ -49,6 +49,7 @@ import de.cau.cs.kieler.klighd.lsp.structuredProgramming.sccharts.ChangeSourceAc
 import de.cau.cs.kieler.klighd.lsp.structuredProgramming.sccharts.ChangeToAbortingEdgeAction
 import de.cau.cs.kieler.klighd.lsp.structuredProgramming.sccharts.ChangeToTerminationgEdgeAction
 import de.cau.cs.kieler.klighd.lsp.structuredProgramming.sccharts.ChangeToWeakEdgeAction
+import de.cau.cs.kieler.klighd.lsp.structuredProgramming.sccharts.AddEdgeAction
 
 /**
  * Static util class to configure needed gson type adapters for KGraph serialization.
@@ -89,6 +90,7 @@ class KGraphTypeAdapterUtil {
                 addActionKind(RenameNodeAction.KIND, RenameNodeAction)
                 addActionKind(AddSuccessorNodeAction.KIND, AddSuccessorNodeAction)
                 addActionKind(AddHirachicalNodeAction.KIND, AddHirachicalNodeAction)
+                addActionKind(AddEdgeAction.KIND, AddEdgeAction)
                 
                 addActionKind(ChangeDestinationAction.KIND, ChangeDestinationAction)
                 addActionKind(ChangeSourceAction.KIND, ChangeSourceAction)

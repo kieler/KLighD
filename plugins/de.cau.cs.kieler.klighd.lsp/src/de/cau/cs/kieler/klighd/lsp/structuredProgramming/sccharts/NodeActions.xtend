@@ -62,9 +62,9 @@ class AddEdgeAction implements Action {
     String kind = KIND
     
     public String id
-    public String dest_string
-    public String inputs_string
-    public String outputs_string
+    public String destination
+    public String inputs
+    public String outputs
     
     new() {}
     new(Consumer<AddEdgeAction> initializer) {
