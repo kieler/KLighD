@@ -38,6 +38,10 @@ import org.eclipse.lsp4j.Position
 import java.util.List
 import java.util.Map
 import org.eclipse.lsp4j.TextEdit
+import de.cau.cs.kieler.sccharts.impl.StateImpl
+import de.cau.cs.kieler.kexpressions.VariableDeclaration
+import de.cau.cs.kieler.kexpressions.impl.VariableDeclarationImpl
+import de.cau.cs.kieler.kexpressions.impl.KExpressionsFactoryImpl
 
 /**
  * @author felixj
@@ -49,6 +53,9 @@ class StructuredProgScchartLanguageServerExtension implements ILanguageServerExt
     
     @Inject
     SCChartsFactoryImpl factory
+    
+    @Inject
+    KExpressionsFactoryImpl exp_factory
     
     @Accessors KGraphLanguageClient client;
     
@@ -73,23 +80,13 @@ class StructuredProgScchartLanguageServerExtension implements ILanguageServerExt
         pre_range = new Position(codeAfter.split("\r\n|\r|\n").length,0)
     }
     
-    def addNewEdge(AddEdgeAction action, String clientId, KGraphDiagramServer server) {
+    def addNewTransition(AddTransitionAction action, String clientId, KGraphDiagramServer server) {
         val uri = diagramState.getURIString(clientId)
         val kNode = LSPUtil.getKNode(diagramState, uri, action.id)
         val node = kNode.getProperty(KlighdInternalProperties.MODEL_ELEMEMT) as State
         
-        //TODO: idealy the user selects a node and the id is transmitted and we could get rid of the string stuff here
-        val arr = action.id.split("\\$")
-        
-        var newTarget = ""
-        for(var x = 0; x<arr.length-1; x++){
-            newTarget += arr.get(x)+"$"
-        }
-        newTarget += "N"+action.destination
-        println(newTarget)
-        
         //idealy instead of newSource use action.new_Source 
-        val kDest = LSPUtil.getKNode(diagramState, uri, newTarget)
+        val kDest = LSPUtil.getKNode(diagramState, uri, action.destination)
         val dest =  kDest.getProperty(KlighdInternalProperties.MODEL_ELEMEMT) as State
         
         val new_transition = factory.createTransition()
@@ -101,7 +98,7 @@ class StructuredProgScchartLanguageServerExtension implements ILanguageServerExt
         
     }
     
-    def changeToWeak(ChangeToWeakEdgeAction action, String clientId, KGraphDiagramServer server) {
+    def changeToWeak(ChangeToWeakTransitionAction action, String clientId, KGraphDiagramServer server) {
         val uri = diagramState.getURIString(clientId)
         val kEdge = LSPUtil.getKEdge(diagramState, uri, action.id)
         val edge = kEdge.getProperty(KlighdInternalProperties.MODEL_ELEMEMT) as Transition
@@ -109,7 +106,7 @@ class StructuredProgScchartLanguageServerExtension implements ILanguageServerExt
         edge.preemption = PreemptionType.WEAK
     }
     
-    def changeToTerminating(ChangeToTerminationgEdgeAction action, String clientId, KGraphDiagramServer server) {
+    def changeToTerminating(ChangeToTerminatingTransitionAction action, String clientId, KGraphDiagramServer server) {
         val uri = diagramState.getURIString(clientId)
         val kEdge = LSPUtil.getKEdge(diagramState, uri, action.id)
         val edge = kEdge.getProperty(KlighdInternalProperties.MODEL_ELEMEMT) as Transition
@@ -117,7 +114,7 @@ class StructuredProgScchartLanguageServerExtension implements ILanguageServerExt
         edge.preemption = PreemptionType.TERMINATION
     }
     
-    def changeToAbort(ChangeToAbortingEdgeAction action, String clientId, KGraphDiagramServer server) {
+    def changeToAbort(ChangeToAbortingTransitionAction action, String clientId, KGraphDiagramServer server) {
         val uri = diagramState.getURIString(clientId)
         val kEdge = LSPUtil.getKEdge(diagramState, uri, action.id)
         val edge = kEdge.getProperty(KlighdInternalProperties.MODEL_ELEMEMT) as Transition
@@ -125,29 +122,20 @@ class StructuredProgScchartLanguageServerExtension implements ILanguageServerExt
         edge.preemption = PreemptionType.STRONG
     }
     
-    def changeIO(ChangeIOAction action, String clientId, KGraphDiagramServer server) {
+    def changeIO(ChangeTriggerEffectAction action, String clientId, KGraphDiagramServer server) {
         val uri = diagramState.getURIString(clientId)
         val kNode = LSPUtil.getKNode(diagramState, uri, action.id)
         val edge = kNode.getProperty(KlighdInternalProperties.MODEL_ELEMEMT) as Transition
         //TODO: change IO
     }
     
-    def changeDestination(ChangeDestinationAction action, String clientId, KGraphDiagramServer server) {
+    def changeDestination(ChangeTargetStateAction action, String clientId, KGraphDiagramServer server) {
         val uri = diagramState.getURIString(clientId)
         val kEdge = LSPUtil.getKEdge(diagramState, uri, action.id)
         val edge = kEdge.getProperty(KlighdInternalProperties.MODEL_ELEMEMT) as Transition
         
-        //TODO: idealy the user selects a node and the id is transmitted and we could get rid of the string stuff here
-        val arr = action.id.split("\\$")
-        
-        var newTarget = ""
-        for(var x = 0; x<arr.length-2; x++){
-            newTarget += arr.get(x)+"$"
-        }
-        newTarget += "N"+action.new_dest
-        
         //idealy instead of newSource use action.new_Source 
-        val kNode = LSPUtil.getKNode(diagramState, uri, newTarget)
+        val kNode = LSPUtil.getKNode(diagramState, uri, action.new_target)
         val node =  kNode.getProperty(KlighdInternalProperties.MODEL_ELEMEMT) as State
         
         edge.targetState.incomingTransitions.remove(edge)
@@ -156,23 +144,13 @@ class StructuredProgScchartLanguageServerExtension implements ILanguageServerExt
         node.incomingTransitions.add(edge)
     }
     
-    def changeSource(ChangeSourceAction action, String clientId, KGraphDiagramServer server) {
+    def changeSource(ChangeSourceStateAction action, String clientId, KGraphDiagramServer server) {
         val uri = diagramState.getURIString(clientId)
         val kEdge = LSPUtil.getKEdge(diagramState, uri, action.id)
         val edge = kEdge.getProperty(KlighdInternalProperties.MODEL_ELEMEMT) as Transition
         
-        
-        //TODO: idealy the user selects a node and the id is transmitted and we could get rid of the string stuff here
-        val arr = action.id.split("\\$")
-        
-        var newSource = ""
-        for(var x = 0; x<arr.length-2; x++){
-            newSource += arr.get(x)+"$"
-        }
-        newSource += "N"+action.new_Source
-        
         //idealy instead of newSource use action.new_Source 
-        val kNode = LSPUtil.getKNode(diagramState, uri, newSource)
+        val kNode = LSPUtil.getKNode(diagramState, uri, action.new_source)
         val node =  kNode.getProperty(KlighdInternalProperties.MODEL_ELEMEMT) as State
         
         edge.sourceState.outgoingTransitions.remove(edge)
@@ -181,7 +159,7 @@ class StructuredProgScchartLanguageServerExtension implements ILanguageServerExt
         node.outgoingTransitions.add(edge)
     }
     
-    def addHirachicalNode(AddHirachicalNodeAction action, String clientId, KGraphDiagramServer server) {
+    def addHirachicalNode(AddHierarchicalStateAction action, String clientId, KGraphDiagramServer server) {
         val uri = diagramState.getURIString(clientId)
         val kNode = LSPUtil.getKNode(diagramState, uri, action.id)
         val node = kNode.getProperty(KlighdInternalProperties.MODEL_ELEMEMT) as State
@@ -190,7 +168,7 @@ class StructuredProgScchartLanguageServerExtension implements ILanguageServerExt
         newRegion.name = action.region_name
         
         val newState = factory.createState()
-        newState.name = action.next_name
+        newState.name = action.state_name
         newState.initial = true
       
         newRegion.states.add(newState)
@@ -204,10 +182,10 @@ class StructuredProgScchartLanguageServerExtension implements ILanguageServerExt
         val node = kNode.getProperty(KlighdInternalProperties.MODEL_ELEMEMT)
         
         val newRegion = factory.createControlflowRegion()
-        newRegion.name = action.new_name
+        newRegion.name = action.region_name
         
         val initState = factory.createState()
-        initState.name = action.initialStateName
+        initState.name = action.state_name
         initState.initial = true
         
         newRegion.states.add(initState)
@@ -219,14 +197,14 @@ class StructuredProgScchartLanguageServerExtension implements ILanguageServerExt
     
     def rename(Action action, String clientId, KGraphDiagramServer server) {
         val uri = diagramState.getURIString(clientId)
-        if(action.kind === RenameNodeAction.KIND){
-            val kNode = LSPUtil.getKNode(diagramState, uri, (action as RenameNodeAction).id)
+        if(action.kind === RenameStateAction.KIND){
+            val kNode = LSPUtil.getKNode(diagramState, uri, (action as RenameStateAction).id)
             val node = kNode.getProperty(KlighdInternalProperties.MODEL_ELEMEMT)
-            (node as State).name = (action as RenameNodeAction).newName
+            (node as State).name = (action as RenameStateAction).state_name
         }else if(action.kind === RenameRegionAction.KIND){
             val kNode = LSPUtil.getKNode(diagramState, uri, (action as RenameRegionAction).id)
             val node = kNode.getProperty(KlighdInternalProperties.MODEL_ELEMEMT)
-            (node as Region).name = (action as RenameRegionAction).newName
+            (node as Region).name = (action as RenameRegionAction).region_name
         }
         
     }
@@ -313,20 +291,22 @@ class StructuredProgScchartLanguageServerExtension implements ILanguageServerExt
 
     }
     
-    def addSuccessorNode(AddSuccessorNodeAction action, String clientId, KGraphDiagramServer server){
+    def addSuccessorNode(AddSuccessorStateAction action, String clientId, KGraphDiagramServer server){
         val uri = diagramState.getURIString(clientId)
         val kNode = LSPUtil.getKNode(diagramState, uri, action.id)
         val node = kNode.getProperty(KlighdInternalProperties.MODEL_ELEMEMT) as State
         
         val new_State = factory.createState()
-        new_State.name = action.newNodeName
+        new_State.name = action.state_name
         
         val new_transition = factory.createTransition()
 
         new_transition.sourceState = node
         new_transition.targetState = new_State
         
+        
         // some way to do this
+        
 //        new_transition.trigger = action.edgeInput
 //        new_transition.effects = action.edgeOutput
         
@@ -335,6 +315,31 @@ class StructuredProgScchartLanguageServerExtension implements ILanguageServerExt
         
         node.parentRegion.states.add(new_State)
         
+//        var exp = exp_factory.createTextExpression()
+//        
+//        exp.text = action.edgeInput
+        
+//        new_transition.trigger = exp
+//        var root = node
+//        while(root.parentRegion != null){
+//            root = root.parentRegion.parentState
+//        }
+//        println(root.class + " "+ root.name + root.incomingLinks + " " + root.eContents)
+//        for(s : root.declarations){
+//            
+//            println((s as VariableDeclarationImpl))
+//        }
+//        
+        
+//        root.declarations.get(0).valuedObjects.add(exp)
+    }
+    
+    def toggleFinalState(ToggleFinalStateAction action, String clientId, KGraphDiagramServer server) {
+        val uri = diagramState.getURIString(clientId)
+        val kNode = LSPUtil.getKNode(diagramState, uri, action.id)
+        val node = kNode.getProperty(KlighdInternalProperties.MODEL_ELEMEMT) as State
+        
+        node.final = !node.final
     }
     
     def updateDocument(String uri){
@@ -352,6 +357,9 @@ class StructuredProgScchartLanguageServerExtension implements ILanguageServerExt
         val TextEdit textEdit = new TextEdit(range, codeAfter)
         changes.put(uri, #[textEdit]);
             
-        this.client.replaceContentInFile(uri, codeAfter, range) //doesn't do shit ? 
+        this.client.replaceContentInFile(uri, codeAfter, range) 
     }
+    
+
+    
 }

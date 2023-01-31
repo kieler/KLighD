@@ -22,6 +22,8 @@ import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.xtend.lib.annotations.EqualsHashCode
 import org.eclipse.xtend.lib.annotations.ToString
 import de.cau.cs.kieler.klighd.structuredEditMsg.InputType
+import de.cau.cs.kieler.klighd.structuredEditMsg.StructuredEditMsg
+
 
 /**
  * 
@@ -31,21 +33,62 @@ import de.cau.cs.kieler.klighd.structuredEditMsg.InputType
 @Accessors
 @EqualsHashCode
 @ToString(skipNulls = true)
-class RenameNodeAction implements Action {
-    public static val KIND = 'SCChart_graph_RenameNode'
+class EditSemanticDeclarationAction implements Action {
+    public static val LABEL = "Edit sematic declarations"
+    public static val KIND = 'SCChart_EditSemanticDeclarations'
     String kind = KIND
     
-    public String id
-    public String newName
-    
     new() {}
-    new(Consumer<RenameNodeAction> initializer) {
+    new(Consumer<EditSemanticDeclarationAction> initializer) {
         initializer.accept(this)
     }
     
     def static InputType[] getInputs() {
-        val input1 = new InputType("newName","String","New Name");
+        return #[];
+    }
+    
+    def static StructuredEditMsg getMsg() { 
+        return new StructuredEditMsg(EditSemanticDeclarationAction.LABEL, 
+            EditSemanticDeclarationAction.KIND, 
+            false, 
+            RenameStateAction.getInputs()
+        )
+    }
+}
+
+
+/**
+ * 
+ * 
+ * @author fjo
+ */
+@Accessors
+@EqualsHashCode
+@ToString(skipNulls = true)
+class RenameStateAction implements Action {
+    public static val LABEL = "Rename state"
+    public static val KIND = 'SCChart_graph_RenameState'
+    String kind = KIND
+    
+    public String id
+    public String state_name
+    
+    new() {}
+    new(Consumer<RenameStateAction> initializer) {
+        initializer.accept(this)
+    }
+    
+    def static InputType[] getInputs() {
+        val input1 = new InputType("state_name","String","New Name");
         return #[input1];
+    }
+    
+    def static StructuredEditMsg getMsg() { 
+        return new StructuredEditMsg(RenameStateAction.LABEL, 
+            RenameStateAction.KIND, 
+            false, 
+            RenameStateAction.getInputs()
+        )
     }
 }
 
@@ -57,25 +100,34 @@ class RenameNodeAction implements Action {
 @Accessors
 @EqualsHashCode
 @ToString(skipNulls = true)
-class AddEdgeAction implements Action {
-    public static val KIND = 'SCChart_graph_AddEdge'
+class AddTransitionAction implements Action {
+    public static val LABEL = "Add new transition"
+    public static val KIND = 'SCChart_graph_AddTransition'
     String kind = KIND
     
     public String id
     public String destination
-    public String inputs
-    public String outputs
+    public String trigger
+    public String effect
     
     new() {}
-    new(Consumer<AddEdgeAction> initializer) {
+    new(Consumer<AddTransitionAction> initializer) {
         initializer.accept(this)
     }
     
     def static InputType[] getInputs() {
-        val input1 = new InputType("destination","String","Destination");
-        val input2 = new InputType("inputs", "String", "Enable Inputs");
-        val input3 = new InputType("outputs", "String", "Outputs to set")
+        val input1 = new InputType("destination","Select","Destination");
+        val input2 = new InputType("trigger", "String", "Trigger");
+        val input3 = new InputType("effect", "String", "Effect")
         return #[input1, input2, input3];
+    }
+    
+    def static StructuredEditMsg getMsg() { 
+        return new StructuredEditMsg(AddTransitionAction.LABEL, 
+            AddTransitionAction.KIND, 
+            false, 
+            AddTransitionAction.getInputs()
+        )
     }
 }
 
@@ -87,25 +139,34 @@ class AddEdgeAction implements Action {
 @Accessors
 @EqualsHashCode
 @ToString(skipNulls = true)
-class AddSuccessorNodeAction implements Action {
-    public static val KIND = 'SCChart_graph_AddSNode'
+class AddSuccessorStateAction implements Action {
+    public static val LABEL = "Add successor state"
+    public static val KIND = 'SCChart_graph_AddSuccessorState'
     String kind = KIND
     
     public String id
-    public String newNodeName
-    public String edgeInput
-    public String edgeOutput
+    public String state_name
+    public String trigger
+    public String effect
     
     new() {}
-    new(Consumer<AddSuccessorNodeAction> initializer) {
+    new(Consumer<AddSuccessorStateAction> initializer) {
         initializer.accept(this)
     }
     
     def static InputType[] getInputs() {
-        val input1 = new InputType("newNodeName","String","Name of Node");
-        val input2 = new InputType("edgeInput", "String", "Enable Inputs");
-        val input3 = new InputType("edgeOutput", "String", "Outputs to set")
+        val input1 = new InputType("state_name","String","Name of state");
+        val input2 = new InputType("trigger", "String", "Trigger");
+        val input3 = new InputType("effect", "String", "Effect")
         return #[input1, input2, input3];
+    }
+    
+    def static StructuredEditMsg getMsg() { 
+        return new StructuredEditMsg(AddSuccessorStateAction.LABEL, 
+            AddSuccessorStateAction.KIND, 
+            false, 
+            AddSuccessorStateAction.getInputs()
+        )
     }
 }
 
@@ -117,24 +178,66 @@ class AddSuccessorNodeAction implements Action {
 @Accessors
 @EqualsHashCode
 @ToString(skipNulls = true)
-class AddHirachicalNodeAction implements Action {
-    public static val KIND = 'SCChart_graph_AddHNode'
+class AddHierarchicalStateAction implements Action {
+    public static val LABEL = "Add hierarchical state"
+    public static val KIND = 'SCChart_graph_AddHierarchicalState'
     String kind = KIND
     
     public String id
-    public String next_name
+    public String state_name
     public String region_name
     
     new() {}
-    new(Consumer<AddHirachicalNodeAction> initializer) {
+    new(Consumer<AddHierarchicalStateAction> initializer) {
         initializer.accept(this)
     }
     def static InputType[] getInputs() {
-        val input1 = new InputType("next_name","String","State Name");
+        val input1 = new InputType("state_name","String","State Name");
         val input2 = new InputType("region_name", "String", "Region Name");
         return #[input1, input2];
     }
+    
+    def static StructuredEditMsg getMsg() { 
+        return new StructuredEditMsg(AddHierarchicalStateAction.LABEL, 
+            AddHierarchicalStateAction.KIND, 
+            false, 
+            AddHierarchicalStateAction.getInputs()
+        )
+    }
 }
+
+
+/**
+ * 
+ * 
+ * @author fjo
+ */
+@Accessors
+@EqualsHashCode
+@ToString(skipNulls = true)
+class ToggleFinalStateAction implements Action {
+    public static val LABEL = "Toggle final state"
+    public static val KIND = 'SCChart_graph_MakeFinalState'
+    String kind = KIND
+    
+    public String id
+    
+    new() {}
+    new(Consumer<ToggleFinalStateAction> initializer) {
+        initializer.accept(this)
+    }
+    def static InputType[] getInputs() {
+        return #[];
+    }
+    def static StructuredEditMsg getMsg() { 
+        return new StructuredEditMsg(ToggleFinalStateAction.LABEL, 
+            ToggleFinalStateAction.KIND, 
+            false, 
+            ToggleFinalStateAction.getInputs()
+        )
+    }
+}
+
 
 
 

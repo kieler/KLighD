@@ -42,18 +42,19 @@ class ScchartStructuredProgrammingActionHandler extends AbstractActionHandler {
     new() {
         this.supportedMessages = newHashMap(
            DeleteAction.KIND -> DeleteAction,
-           RenameNodeAction.KIND -> RenameNodeAction,
-           AddSuccessorNodeAction.KIND -> AddSuccessorNodeAction,
-           AddHirachicalNodeAction.KIND -> AddHirachicalNodeAction,
-           ChangeDestinationAction.KIND -> ChangeDestinationAction,
-           ChangeSourceAction.KIND -> ChangeSourceAction,
-           ChangeIOAction.KIND -> ChangeIOAction,
+           RenameStateAction.KIND -> RenameStateAction,
+           AddSuccessorStateAction.KIND -> AddSuccessorStateAction,
+           AddHierarchicalStateAction.KIND -> AddHierarchicalStateAction,
+           ChangeTargetStateAction.KIND -> ChangeTargetStateAction,
+           ChangeSourceStateAction.KIND -> ChangeSourceStateAction,
+           ChangeTriggerEffectAction.KIND -> ChangeTriggerEffectAction,
            RenameRegionAction.KIND -> RenameRegionAction,
            AddConcurrentRegionAction.KIND -> AddConcurrentRegionAction,
-           ChangeToAbortingEdgeAction.KIND -> ChangeToAbortingEdgeAction,
-           ChangeToTerminationgEdgeAction.KIND -> ChangeToTerminationgEdgeAction,
-           ChangeToWeakEdgeAction.KIND -> ChangeToWeakEdgeAction,
-           AddEdgeAction.KIND -> AddEdgeAction
+           ChangeToAbortingTransitionAction.KIND -> ChangeToAbortingTransitionAction,
+           ChangeToTerminatingTransitionAction.KIND -> ChangeToTerminatingTransitionAction,
+           ChangeToWeakTransitionAction.KIND -> ChangeToWeakTransitionAction,
+           AddTransitionAction.KIND -> AddTransitionAction,
+           ToggleFinalStateAction.KIND -> ToggleFinalStateAction
         )
     }
     
@@ -66,25 +67,25 @@ class ScchartStructuredProgrammingActionHandler extends AbstractActionHandler {
         if(action.kind == DeleteAction.KIND){
             extens.delete(action as DeleteAction, clientId, server)
             extens.updateDocument(uri)
-        }else if(action.kind == RenameNodeAction.KIND){
+        }else if(action.kind == RenameStateAction.KIND){
             extens.rename(action, clientId, server)
             extens.updateDocument(uri)
-        }else if(action.kind == AddSuccessorNodeAction.KIND){
+        }else if(action.kind == AddSuccessorStateAction.KIND){
             synchronized (server.modelLock) {
-                extens.addSuccessorNode(action as AddSuccessorNodeAction, clientId, server)
+                extens.addSuccessorNode(action as AddSuccessorStateAction, clientId, server)
                 extens.updateDocument(uri)
             }
-        }else if(action.kind == AddHirachicalNodeAction.KIND){
-            extens.addHirachicalNode(action as AddHirachicalNodeAction, clientId, server)
+        }else if(action.kind == AddHierarchicalStateAction.KIND){
+            extens.addHirachicalNode(action as AddHierarchicalStateAction, clientId, server)
             extens.updateDocument(uri)
-        }else if(action.kind == ChangeDestinationAction.KIND){
-            extens.changeDestination(action as ChangeDestinationAction, clientId, server)
+        }else if(action.kind == ChangeTargetStateAction.KIND){
+            extens.changeDestination(action as ChangeTargetStateAction, clientId, server)
             extens.updateDocument(uri)
-        }else if(action.kind == ChangeSourceAction.KIND){
-            extens.changeSource(action as ChangeSourceAction, clientId, server)
+        }else if(action.kind == ChangeSourceStateAction.KIND){
+            extens.changeSource(action as ChangeSourceStateAction, clientId, server)
             extens.updateDocument(uri)
-        }else if(action.kind == ChangeIOAction.KIND){
-            extens.changeIO(action as ChangeIOAction, clientId, server)
+        }else if(action.kind == ChangeTriggerEffectAction.KIND){
+            extens.changeIO(action as ChangeTriggerEffectAction, clientId, server)
             extens.updateDocument(uri)
         }else if(action.kind == RenameRegionAction.KIND){
             extens.rename(action, clientId, server)
@@ -92,20 +93,24 @@ class ScchartStructuredProgrammingActionHandler extends AbstractActionHandler {
         }else if(action.kind == AddConcurrentRegionAction.KIND){
             extens.addConcurrentRegion(action as AddConcurrentRegionAction, clientId, server)
             extens.updateDocument(uri)
-        }else if(action.kind == ChangeToAbortingEdgeAction.KIND){
-            extens.changeToAbort(action as ChangeToAbortingEdgeAction, clientId, server)
+        }else if(action.kind == ChangeToAbortingTransitionAction.KIND){
+            extens.changeToAbort(action as ChangeToAbortingTransitionAction, clientId, server)
             extens.updateDocument(uri)
-        }else if(action.kind == ChangeToTerminationgEdgeAction.KIND){
-            extens.changeToTerminating(action as ChangeToTerminationgEdgeAction, clientId, server)
+        }else if(action.kind == ChangeToTerminatingTransitionAction.KIND){
+            extens.changeToTerminating(action as ChangeToTerminatingTransitionAction, clientId, server)
             extens.updateDocument(uri)
-        }else if(action.kind == ChangeToWeakEdgeAction.KIND){
-            extens.changeToWeak(action as ChangeToWeakEdgeAction, clientId, server)
+        }else if(action.kind == ChangeToWeakTransitionAction.KIND){
+            extens.changeToWeak(action as ChangeToWeakTransitionAction, clientId, server)
             extens.updateDocument(uri)
-        }else if(action.kind == AddEdgeAction.KIND){
-            extens.addNewEdge(action as AddEdgeAction, clientId, server)
+        }else if(action.kind == AddTransitionAction.KIND){
+            extens.addNewTransition(action as AddTransitionAction, clientId, server)
+            extens.updateDocument(uri)
+        }else if(action.kind == ToggleFinalStateAction.KIND){
+            extens.toggleFinalState(action as ToggleFinalStateAction, clientId, server)
             extens.updateDocument(uri)
         }else{
             throw new IllegalArgumentException("Action " + action.kind + " not supported by handler " + this.class.simpleName)
         }
     }
+    
 }

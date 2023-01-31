@@ -38,18 +38,19 @@ import org.eclipse.emf.ecore.EObject
 import org.eclipse.sprotty.server.json.ActionTypeAdapter
 
 import de.cau.cs.kieler.klighd.lsp.structuredProgramming.sccharts.DeleteAction
-import de.cau.cs.kieler.klighd.lsp.structuredProgramming.sccharts.RenameNodeAction;
-import de.cau.cs.kieler.klighd.lsp.structuredProgramming.sccharts.AddHirachicalNodeAction;
-import de.cau.cs.kieler.klighd.lsp.structuredProgramming.sccharts.AddSuccessorNodeAction;
-import de.cau.cs.kieler.klighd.lsp.structuredProgramming.sccharts.ChangeIOAction;
+import de.cau.cs.kieler.klighd.lsp.structuredProgramming.sccharts.RenameStateAction;
+import de.cau.cs.kieler.klighd.lsp.structuredProgramming.sccharts.AddHierarchicalStateAction;
+import de.cau.cs.kieler.klighd.lsp.structuredProgramming.sccharts.AddSuccessorStateAction;
+import de.cau.cs.kieler.klighd.lsp.structuredProgramming.sccharts.ChangeTriggerEffectAction;
 import de.cau.cs.kieler.klighd.lsp.structuredProgramming.sccharts.RenameRegionAction;
 import de.cau.cs.kieler.klighd.lsp.structuredProgramming.sccharts.AddConcurrentRegionAction;
-import de.cau.cs.kieler.klighd.lsp.structuredProgramming.sccharts.ChangeDestinationAction
-import de.cau.cs.kieler.klighd.lsp.structuredProgramming.sccharts.ChangeSourceAction
-import de.cau.cs.kieler.klighd.lsp.structuredProgramming.sccharts.ChangeToAbortingEdgeAction
-import de.cau.cs.kieler.klighd.lsp.structuredProgramming.sccharts.ChangeToTerminationgEdgeAction
-import de.cau.cs.kieler.klighd.lsp.structuredProgramming.sccharts.ChangeToWeakEdgeAction
-import de.cau.cs.kieler.klighd.lsp.structuredProgramming.sccharts.AddEdgeAction
+import de.cau.cs.kieler.klighd.lsp.structuredProgramming.sccharts.ChangeTargetStateAction
+import de.cau.cs.kieler.klighd.lsp.structuredProgramming.sccharts.ChangeSourceStateAction
+import de.cau.cs.kieler.klighd.lsp.structuredProgramming.sccharts.ChangeToAbortingTransitionAction
+import de.cau.cs.kieler.klighd.lsp.structuredProgramming.sccharts.ChangeToTerminatingTransitionAction
+import de.cau.cs.kieler.klighd.lsp.structuredProgramming.sccharts.ChangeToWeakTransitionAction
+import de.cau.cs.kieler.klighd.lsp.structuredProgramming.sccharts.AddTransitionAction
+import de.cau.cs.kieler.klighd.lsp.structuredProgramming.sccharts.ToggleFinalStateAction
 
 /**
  * Static util class to configure needed gson type adapters for KGraph serialization.
@@ -87,17 +88,18 @@ class KGraphTypeAdapterUtil {
                 // Structured Programming actions
                 addActionKind(DeleteAction.KIND, DeleteAction)
                 
-                addActionKind(RenameNodeAction.KIND, RenameNodeAction)
-                addActionKind(AddSuccessorNodeAction.KIND, AddSuccessorNodeAction)
-                addActionKind(AddHirachicalNodeAction.KIND, AddHirachicalNodeAction)
-                addActionKind(AddEdgeAction.KIND, AddEdgeAction)
+                addActionKind(RenameStateAction.KIND, RenameStateAction)
+                addActionKind(AddSuccessorStateAction.KIND, AddSuccessorStateAction)
+                addActionKind(AddHierarchicalStateAction.KIND, AddHierarchicalStateAction)
+                addActionKind(AddTransitionAction.KIND, AddTransitionAction)
+                addActionKind(ToggleFinalStateAction.KIND, ToggleFinalStateAction)
                 
-                addActionKind(ChangeDestinationAction.KIND, ChangeDestinationAction)
-                addActionKind(ChangeSourceAction.KIND, ChangeSourceAction)
-                addActionKind(ChangeIOAction.KIND, ChangeIOAction)
-                addActionKind(ChangeToAbortingEdgeAction.KIND, ChangeToAbortingEdgeAction)
-                addActionKind(ChangeToTerminationgEdgeAction.KIND, ChangeToTerminationgEdgeAction)
-                addActionKind(ChangeToWeakEdgeAction.KIND, ChangeToWeakEdgeAction)
+                addActionKind(ChangeTargetStateAction.KIND, ChangeTargetStateAction)
+                addActionKind(ChangeSourceStateAction.KIND, ChangeSourceStateAction)
+                addActionKind(ChangeTriggerEffectAction.KIND, ChangeTriggerEffectAction)
+                addActionKind(ChangeToAbortingTransitionAction.KIND, ChangeToAbortingTransitionAction)
+                addActionKind(ChangeToTerminatingTransitionAction.KIND, ChangeToTerminatingTransitionAction)
+                addActionKind(ChangeToWeakTransitionAction.KIND, ChangeToWeakTransitionAction)
                 
                 
                 addActionKind(RenameRegionAction.KIND, RenameRegionAction)

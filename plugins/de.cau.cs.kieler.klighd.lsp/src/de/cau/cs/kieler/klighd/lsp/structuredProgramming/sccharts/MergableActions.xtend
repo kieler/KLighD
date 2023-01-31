@@ -7,6 +7,7 @@ import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.xtend.lib.annotations.EqualsHashCode
 import org.eclipse.xtend.lib.annotations.ToString
 import de.cau.cs.kieler.klighd.structuredEditMsg.InputType
+import de.cau.cs.kieler.klighd.structuredEditMsg.StructuredEditMsg
 
 /**
  * 
@@ -17,6 +18,7 @@ import de.cau.cs.kieler.klighd.structuredEditMsg.InputType
 @EqualsHashCode
 @ToString(skipNulls = true)
 class DeleteAction implements Action {
+    public static val LABEL = "Delete"
     public static val KIND = 'SCChart_graph_Delete'
     String kind = KIND
     
@@ -30,5 +32,12 @@ class DeleteAction implements Action {
     
     def static InputType[] getInputs() {
         return #[];
+    }
+    def static StructuredEditMsg getMsg() { 
+        return new StructuredEditMsg(DeleteAction.LABEL, 
+            DeleteAction.KIND, 
+            true, 
+            DeleteAction.getInputs()
+        )
     }
 }
