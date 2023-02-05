@@ -17,6 +17,7 @@
 package de.cau.cs.kieler.klighd.util;
 
 import java.awt.Color;
+import java.util.List;
 
 import org.eclipse.elk.core.math.KVector;
 import org.eclipse.elk.core.math.Spacing;
@@ -26,6 +27,9 @@ import org.eclipse.elk.graph.properties.Property;
 import org.eclipse.emf.ecore.EObject;
 
 import de.cau.cs.kieler.klighd.KlighdConstants;
+import de.cau.cs.kieler.klighd.filtering.SemanticFilterRule;
+import de.cau.cs.kieler.klighd.filtering.SemanticFilterTag;
+import de.cau.cs.kieler.klighd.kgraph.KGraphData;
 import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
 import de.cau.cs.kieler.klighd.kgraph.KNode;
 import de.cau.cs.kieler.klighd.krendering.KText;
@@ -388,12 +392,38 @@ public final class KlighdProperties {
      */
     public static final IProperty<StructuredEditOptions> STRUCTURED_EDITING =
             new Property<StructuredEditOptions>("klighd.StructuralEditingOptions", null);
+
+    /**
+     * Property determining whether this node should be rendered as a proxy.
+     */
+    public static final IProperty<Boolean> PROXY_VIEW_RENDER_NODE_AS_PROXY =
+            new Property<Boolean>("de.cau.cs.kieler.klighd.proxy-view.renderNodeAsProxy", true);
             
     /**
-     * 
+     * Property determining how a proxy of this node should be rendered.
      */
-    public static final IProperty<String> NODE_TYPE =
-            new Property<String>("klighd.NodeType", null);
-            
-            
+    public static final IProperty<List<KGraphData>> PROXY_VIEW_PROXY_RENDERING =
+            new Property<List<KGraphData>>("de.cau.cs.kieler.klighd.proxy-view.proxyRendering", null);
+    
+    /**
+     * Property determining depth of going into hierarchical off-screen nodes.
+     * Only relevant for the root. <br>
+     * Choose {@code 0} for default, showing only the outermost node as a proxy. <br>
+     * Choose a value {@code x>0} to show proxies up to x layers deep inside a hierarchical node. <br>
+     * Choose a value {@code x<0} to always show proxies for all layers.
+     */
+    public static final IProperty<Integer> PROXY_VIEW_HIERARCHICAL_OFF_SCREEN_DEPTH =
+            new Property<Integer>("de.cau.cs.kieler.klighd.proxy-view.hierarchicalOffScreenDepth", 0);
+    
+    public static final List<SemanticFilterTag> SEMANTIC_FILTER_TAGS_DEFAULT = null;
+    
+    public static final IProperty<List<SemanticFilterTag>> SEMANTIC_FILTER_TAGS = 
+            new Property<List<SemanticFilterTag>>("de.cau.cs.kieler.klighd.semanticFilter.tags",
+                    SEMANTIC_FILTER_TAGS_DEFAULT, null, null);
+    
+    public static final List<SemanticFilterRule> SEMANTIC_FILTER_RULES_DEFAULT = null;
+    
+    public static final IProperty<List<SemanticFilterRule>> SEMANTIC_FILTER_RULES = 
+            new Property<List<SemanticFilterRule>>("de.cau.cs.kieler.klighd.semanticFilter.rules",
+                    SEMANTIC_FILTER_RULES_DEFAULT, null, null);
 }
