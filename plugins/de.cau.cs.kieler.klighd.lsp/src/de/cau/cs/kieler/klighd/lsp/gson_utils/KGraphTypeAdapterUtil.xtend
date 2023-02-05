@@ -51,6 +51,8 @@ import de.cau.cs.kieler.klighd.lsp.structuredProgramming.sccharts.ChangeToTermin
 import de.cau.cs.kieler.klighd.lsp.structuredProgramming.sccharts.ChangeToWeakTransitionAction
 import de.cau.cs.kieler.klighd.lsp.structuredProgramming.sccharts.AddTransitionAction
 import de.cau.cs.kieler.klighd.lsp.structuredProgramming.sccharts.ToggleFinalStateAction
+import de.cau.cs.kieler.klighd.lsp.structuredProgramming.sccharts.EditSemanticDeclarationAction
+import de.cau.cs.kieler.klighd.lsp.structuredProgramming.sccharts.MakeInitialStateAction
 
 /**
  * Static util class to configure needed gson type adapters for KGraph serialization.
@@ -93,6 +95,7 @@ class KGraphTypeAdapterUtil {
                 addActionKind(AddHierarchicalStateAction.KIND, AddHierarchicalStateAction)
                 addActionKind(AddTransitionAction.KIND, AddTransitionAction)
                 addActionKind(ToggleFinalStateAction.KIND, ToggleFinalStateAction)
+                addActionKind(MakeInitialStateAction.KIND, MakeInitialStateAction)
                 
                 addActionKind(ChangeTargetStateAction.KIND, ChangeTargetStateAction)
                 addActionKind(ChangeSourceStateAction.KIND, ChangeSourceStateAction)
@@ -104,6 +107,8 @@ class KGraphTypeAdapterUtil {
                 
                 addActionKind(RenameRegionAction.KIND, RenameRegionAction)
                 addActionKind(AddConcurrentRegionAction.KIND, AddConcurrentRegionAction)
+                
+                addActionKind(EditSemanticDeclarationAction.KIND, EditSemanticDeclarationAction)
             ]
         )
         .registerTypeAdapter(Point2D, new Point2DTypeAdapter)

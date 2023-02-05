@@ -17,6 +17,8 @@
 package de.cau.cs.kieler.klighd.structuredEditMsg;
 
 import java.util.Map;
+
+import de.cau.cs.kieler.klighd.filtering.SemanticFilterTag;
 import de.cau.cs.kieler.klighd.structuredEditMsg.StructuredEditMsg;
 import java.util.HashMap;
 import java.util.List;
@@ -26,9 +28,9 @@ import java.util.List;
  *
  */
 public class StructuredEditOptions {
-    Map<String, StructuredEditMsg[]> options;
+    Map<SemanticFilterTag, StructuredEditMsg[]> options;
 
-    public StructuredEditOptions(Map<String, StructuredEditMsg[]> map) {
+    public StructuredEditOptions(Map<SemanticFilterTag, StructuredEditMsg[]> map) {
         options = map;
     }
 }

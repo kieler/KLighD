@@ -185,7 +185,7 @@ class ChangeToAbortingTransitionAction implements Action {
 @EqualsHashCode
 @ToString(skipNulls = true)
 class ChangeToTerminatingTransitionAction implements Action {    
-    public static val LABEL = "Change to terminating Transition"
+    public static val LABEL = "Change to terminating transition"
     public static val KIND = 'SCChart_graph_changeToTerminatingTransition'
     String kind = KIND
     

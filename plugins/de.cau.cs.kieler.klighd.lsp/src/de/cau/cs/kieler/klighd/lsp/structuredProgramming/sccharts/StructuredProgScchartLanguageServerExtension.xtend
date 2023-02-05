@@ -42,6 +42,8 @@ import de.cau.cs.kieler.sccharts.impl.StateImpl
 import de.cau.cs.kieler.kexpressions.VariableDeclaration
 import de.cau.cs.kieler.kexpressions.impl.VariableDeclarationImpl
 import de.cau.cs.kieler.kexpressions.impl.KExpressionsFactoryImpl
+import org.eclipse.lsp4j.ShowDocumentParams
+import de.cau.cs.kieler.kexpressions.kext.KExtStandaloneParser
 
 /**
  * @author felixj
@@ -303,35 +305,33 @@ class StructuredProgScchartLanguageServerExtension implements ILanguageServerExt
 
         new_transition.sourceState = node
         new_transition.targetState = new_State
+                
+//        new_transition.trigger = KExtStandaloneParser.parseExpression(action.trigger)
+//        new_transition.effects.add(KExtStandaloneParser.parseEffect(action.effect));
+
+        try{
+            val trigger = KExtStandaloneParser.parseExpression(action.trigger)
+                     
+            new_transition.trigger = trigger
+            println(trigger)
+        }catch(Exception ex){
+            println(ex)
+        }
         
-        
-        // some way to do this
-        
-//        new_transition.trigger = action.edgeInput
-//        new_transition.effects = action.edgeOutput
+        try{
+            val eff = KExtStandaloneParser.parseEffect(action.effect);
+                     
+            new_transition.effects.add(eff)
+            println(eff)
+        }catch(Exception ex){
+            println(ex)
+        }
+
         
         new_State.incomingTransitions.add(new_transition)
         node.outgoingTransitions.add(new_transition)
         
         node.parentRegion.states.add(new_State)
-        
-//        var exp = exp_factory.createTextExpression()
-//        
-//        exp.text = action.edgeInput
-        
-//        new_transition.trigger = exp
-//        var root = node
-//        while(root.parentRegion != null){
-//            root = root.parentRegion.parentState
-//        }
-//        println(root.class + " "+ root.name + root.incomingLinks + " " + root.eContents)
-//        for(s : root.declarations){
-//            
-//            println((s as VariableDeclarationImpl))
-//        }
-//        
-        
-//        root.declarations.get(0).valuedObjects.add(exp)
     }
     
     def toggleFinalState(ToggleFinalStateAction action, String clientId, KGraphDiagramServer server) {
@@ -340,6 +340,23 @@ class StructuredProgScchartLanguageServerExtension implements ILanguageServerExt
         val node = kNode.getProperty(KlighdInternalProperties.MODEL_ELEMEMT) as State
         
         node.final = !node.final
+    }
+    
+    def editSemanticDeclaration(EditSemanticDeclarationAction action, String clientId, de.cau.cs.kieler.klighd.lsp.KGraphDiagramServer server, String uri ) {
+        // TODO maybe change it so it has its own implementation on client and also switch it so its not using sendMessage 
+        this.client.sendMessage(uri,"switchEditor")
+    }
+    
+    def makeInitialState(MakeInitialStateAction action, String clientId, de.cau.cs.kieler.klighd.lsp.KGraphDiagramServer server) {
+        val uri = diagramState.getURIString(clientId)
+        val kNode = LSPUtil.getKNode(diagramState, uri, action.id)
+        val new_init = kNode.getProperty(KlighdInternalProperties.MODEL_ELEMEMT) as State
+        
+        for( node : new_init.parentRegion.states){
+            if(node.initial) node.initial = false
+        }
+        
+        new_init.initial = true
     }
     
     def updateDocument(String uri){
@@ -358,8 +375,5 @@ class StructuredProgScchartLanguageServerExtension implements ILanguageServerExt
         changes.put(uri, #[textEdit]);
             
         this.client.replaceContentInFile(uri, codeAfter, range) 
-    }
-    
-
-    
+    } 
 }

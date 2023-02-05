@@ -54,7 +54,9 @@ class ScchartStructuredProgrammingActionHandler extends AbstractActionHandler {
            ChangeToTerminatingTransitionAction.KIND -> ChangeToTerminatingTransitionAction,
            ChangeToWeakTransitionAction.KIND -> ChangeToWeakTransitionAction,
            AddTransitionAction.KIND -> AddTransitionAction,
-           ToggleFinalStateAction.KIND -> ToggleFinalStateAction
+           ToggleFinalStateAction.KIND -> ToggleFinalStateAction,
+           MakeInitialStateAction.KIND -> MakeInitialStateAction,
+           EditSemanticDeclarationAction.KIND -> EditSemanticDeclarationAction
         )
     }
     
@@ -107,6 +109,12 @@ class ScchartStructuredProgrammingActionHandler extends AbstractActionHandler {
             extens.updateDocument(uri)
         }else if(action.kind == ToggleFinalStateAction.KIND){
             extens.toggleFinalState(action as ToggleFinalStateAction, clientId, server)
+            extens.updateDocument(uri)
+        }else if(action.kind == MakeInitialStateAction.KIND){
+            extens.makeInitialState(action as MakeInitialStateAction, clientId, server)
+            extens.updateDocument(uri)
+        }else if(action.kind == EditSemanticDeclarationAction.KIND){
+            extens.editSemanticDeclaration(action as EditSemanticDeclarationAction, clientId, server, uri)
             extens.updateDocument(uri)
         }else{
             throw new IllegalArgumentException("Action " + action.kind + " not supported by handler " + this.class.simpleName)

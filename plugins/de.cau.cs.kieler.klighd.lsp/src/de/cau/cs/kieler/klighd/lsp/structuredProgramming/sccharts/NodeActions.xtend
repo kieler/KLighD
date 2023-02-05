@@ -37,6 +37,7 @@ class EditSemanticDeclarationAction implements Action {
     public static val LABEL = "Edit sematic declarations"
     public static val KIND = 'SCChart_EditSemanticDeclarations'
     String kind = KIND
+    public String id
     
     new() {}
     new(Consumer<EditSemanticDeclarationAction> initializer) {
@@ -51,7 +52,7 @@ class EditSemanticDeclarationAction implements Action {
         return new StructuredEditMsg(EditSemanticDeclarationAction.LABEL, 
             EditSemanticDeclarationAction.KIND, 
             false, 
-            RenameStateAction.getInputs()
+            EditSemanticDeclarationAction.getInputs()
         )
     }
 }
@@ -215,6 +216,39 @@ class AddHierarchicalStateAction implements Action {
 @Accessors
 @EqualsHashCode
 @ToString(skipNulls = true)
+class MakeInitialStateAction implements Action {
+    public static val LABEL = "Make initial state"
+    public static val KIND = 'SCChart_graph_MakeInitialState'
+    String kind = KIND
+    
+    public String id
+    
+    new() {}
+    new(Consumer<MakeInitialStateAction> initializer) {
+        initializer.accept(this)
+    }
+    def static InputType[] getInputs() {
+        return #[];
+    }
+    def static StructuredEditMsg getMsg() { 
+        return new StructuredEditMsg(MakeInitialStateAction.LABEL, 
+            MakeInitialStateAction.KIND, 
+            false, 
+            MakeInitialStateAction.getInputs()
+        )
+    }
+}
+
+
+
+/**
+ * 
+ * 
+ * @author fjo
+ */
+@Accessors
+@EqualsHashCode
+@ToString(skipNulls = true)
 class ToggleFinalStateAction implements Action {
     public static val LABEL = "Toggle final state"
     public static val KIND = 'SCChart_graph_MakeFinalState'
@@ -237,7 +271,6 @@ class ToggleFinalStateAction implements Action {
         )
     }
 }
-
 
 
 
