@@ -56,7 +56,8 @@ class ScchartStructuredProgrammingActionHandler extends AbstractActionHandler {
            AddTransitionAction.KIND -> AddTransitionAction,
            ToggleFinalStateAction.KIND -> ToggleFinalStateAction,
            MakeInitialStateAction.KIND -> MakeInitialStateAction,
-           EditSemanticDeclarationAction.KIND -> EditSemanticDeclarationAction
+           EditSemanticDeclarationAction.KIND -> EditSemanticDeclarationAction,
+           ChangePriorityAction.KIND -> ChangePriorityAction            
         )
     }
     
@@ -115,6 +116,9 @@ class ScchartStructuredProgrammingActionHandler extends AbstractActionHandler {
             extens.updateDocument(uri)
         }else if(action.kind == EditSemanticDeclarationAction.KIND){
             extens.editSemanticDeclaration(action as EditSemanticDeclarationAction, clientId, server, uri)
+            extens.updateDocument(uri)
+        }else if(action.kind == ChangePriorityAction.KIND){
+            extens.changeEdgePriority(action as ChangePriorityAction, clientId, server)
             extens.updateDocument(uri)
         }else{
             throw new IllegalArgumentException("Action " + action.kind + " not supported by handler " + this.class.simpleName)

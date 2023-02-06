@@ -53,6 +53,7 @@ import de.cau.cs.kieler.klighd.lsp.structuredProgramming.sccharts.AddTransitionA
 import de.cau.cs.kieler.klighd.lsp.structuredProgramming.sccharts.ToggleFinalStateAction
 import de.cau.cs.kieler.klighd.lsp.structuredProgramming.sccharts.EditSemanticDeclarationAction
 import de.cau.cs.kieler.klighd.lsp.structuredProgramming.sccharts.MakeInitialStateAction
+import de.cau.cs.kieler.klighd.lsp.structuredProgramming.sccharts.ChangePriorityAction
 
 /**
  * Static util class to configure needed gson type adapters for KGraph serialization.
@@ -103,7 +104,7 @@ class KGraphTypeAdapterUtil {
                 addActionKind(ChangeToAbortingTransitionAction.KIND, ChangeToAbortingTransitionAction)
                 addActionKind(ChangeToTerminatingTransitionAction.KIND, ChangeToTerminatingTransitionAction)
                 addActionKind(ChangeToWeakTransitionAction.KIND, ChangeToWeakTransitionAction)
-                
+                addActionKind(ChangePriorityAction.KIND, ChangePriorityAction)
                 
                 addActionKind(RenameRegionAction.KIND, RenameRegionAction)
                 addActionKind(AddConcurrentRegionAction.KIND, AddConcurrentRegionAction)

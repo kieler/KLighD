@@ -20,6 +20,9 @@ import com.google.common.html.HtmlEscapers
 import de.cau.cs.kieler.klighd.ViewContext
 import de.cau.cs.kieler.klighd.kgraph.KNode
 import de.cau.cs.kieler.klighd.kgraph.KEdge
+import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties
+import de.cau.cs.kieler.sccharts.State
+import de.cau.cs.kieler.kexpressions.impl.ValuedObjectImpl
 
 /**
  * Utility methods for graphs in a language server context.
@@ -100,5 +103,15 @@ class LSPUtil {
             .replace("\n", "\\\n")
             // Replace tabs with four spaces.
             .replace("\t", "&nbsp;&nbsp;&nbsp;&nbsp;")
+    }
+    
+    static def ValuedObjectImpl getValuedObjectReference( KGraphDiagramState diagramState, String uri, String name ){
+        val root = LSPUtil.getRoot(diagramState, uri)
+        val node = root.children.get(0).getProperty(KlighdInternalProperties.MODEL_ELEMEMT) as State 
+        for(declaration: node.declarations){
+            for(obj: declaration.valuedObjects){
+                if(obj.name == name)return obj as ValuedObjectImpl
+            }
+        }
     }
 }

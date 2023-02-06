@@ -38,12 +38,11 @@ import org.eclipse.lsp4j.Position
 import java.util.List
 import java.util.Map
 import org.eclipse.lsp4j.TextEdit
-import de.cau.cs.kieler.sccharts.impl.StateImpl
-import de.cau.cs.kieler.kexpressions.VariableDeclaration
-import de.cau.cs.kieler.kexpressions.impl.VariableDeclarationImpl
-import de.cau.cs.kieler.kexpressions.impl.KExpressionsFactoryImpl
-import org.eclipse.lsp4j.ShowDocumentParams
 import de.cau.cs.kieler.kexpressions.kext.KExtStandaloneParser
+import de.cau.cs.kieler.kexpressions.keffects.impl.AssignmentImpl
+import de.cau.cs.kieler.kexpressions.impl.ValuedObjectReferenceImpl
+import de.cau.cs.kieler.kexpressions.impl.OperatorExpressionImpl
+import de.cau.cs.kieler.sccharts.extensions.SCChartsTransitionExtensions
 
 /**
  * @author felixj
@@ -53,11 +52,10 @@ import de.cau.cs.kieler.kexpressions.kext.KExtStandaloneParser
 class StructuredProgScchartLanguageServerExtension implements ILanguageServerExtension{
     Position pre_range
     
-    @Inject
-    SCChartsFactoryImpl factory
+    @Inject extension SCChartsTransitionExtensions
     
     @Inject
-    KExpressionsFactoryImpl exp_factory
+    SCChartsFactoryImpl factory
     
     @Accessors KGraphLanguageClient client;
     
@@ -87,7 +85,6 @@ class StructuredProgScchartLanguageServerExtension implements ILanguageServerExt
         val kNode = LSPUtil.getKNode(diagramState, uri, action.id)
         val node = kNode.getProperty(KlighdInternalProperties.MODEL_ELEMEMT) as State
         
-        //idealy instead of newSource use action.new_Source 
         val kDest = LSPUtil.getKNode(diagramState, uri, action.destination)
         val dest =  kDest.getProperty(KlighdInternalProperties.MODEL_ELEMEMT) as State
         
@@ -95,6 +92,9 @@ class StructuredProgScchartLanguageServerExtension implements ILanguageServerExt
 
         new_transition.sourceState = node
         new_transition.targetState = dest
+        
+        changeTrigger(new_transition, action.trigger, uri)
+        changeEffect(new_transition, action.effect, uri)
         
         dest.incomingTransitions.add(new_transition)
         
@@ -126,9 +126,11 @@ class StructuredProgScchartLanguageServerExtension implements ILanguageServerExt
     
     def changeIO(ChangeTriggerEffectAction action, String clientId, KGraphDiagramServer server) {
         val uri = diagramState.getURIString(clientId)
-        val kNode = LSPUtil.getKNode(diagramState, uri, action.id)
-        val edge = kNode.getProperty(KlighdInternalProperties.MODEL_ELEMEMT) as Transition
-        //TODO: change IO
+        val kEdge = LSPUtil.getKEdge(diagramState, uri, action.id)
+        val edge = kEdge.getProperty(KlighdInternalProperties.MODEL_ELEMEMT) as Transition
+        
+        changeTrigger(edge, action.trigger, uri)
+        changeEffect(edge, action.effect, uri)
     }
     
     def changeDestination(ChangeTargetStateAction action, String clientId, KGraphDiagramServer server) {
@@ -305,34 +307,18 @@ class StructuredProgScchartLanguageServerExtension implements ILanguageServerExt
 
         new_transition.sourceState = node
         new_transition.targetState = new_State
-                
-//        new_transition.trigger = KExtStandaloneParser.parseExpression(action.trigger)
-//        new_transition.effects.add(KExtStandaloneParser.parseEffect(action.effect));
-
-        try{
-            val trigger = KExtStandaloneParser.parseExpression(action.trigger)
-                     
-            new_transition.trigger = trigger
-            println(trigger)
-        }catch(Exception ex){
-            println(ex)
-        }
         
-        try{
-            val eff = KExtStandaloneParser.parseEffect(action.effect);
-                     
-            new_transition.effects.add(eff)
-            println(eff)
-        }catch(Exception ex){
-            println(ex)
-        }
-
+        this.changeTrigger(new_transition, action.trigger, uri)
+        this.changeEffect(new_transition, action.effect, uri)
+        
         
         new_State.incomingTransitions.add(new_transition)
         node.outgoingTransitions.add(new_transition)
         
         node.parentRegion.states.add(new_State)
     }
+    
+    
     
     def toggleFinalState(ToggleFinalStateAction action, String clientId, KGraphDiagramServer server) {
         val uri = diagramState.getURIString(clientId)
@@ -343,7 +329,8 @@ class StructuredProgScchartLanguageServerExtension implements ILanguageServerExt
     }
     
     def editSemanticDeclaration(EditSemanticDeclarationAction action, String clientId, de.cau.cs.kieler.klighd.lsp.KGraphDiagramServer server, String uri ) {
-        // TODO maybe change it so it has its own implementation on client and also switch it so its not using sendMessage 
+        // TODO maybe change it so it has its own implementation 
+        // on client and also switch it so its not using sendMessage 
         this.client.sendMessage(uri,"switchEditor")
     }
     
@@ -358,6 +345,63 @@ class StructuredProgScchartLanguageServerExtension implements ILanguageServerExt
         
         new_init.initial = true
     }
+    
+    def changeTrigger(Transition transition, String trigger, String uri){
+        if(trigger != ""){
+            val new_trigger = KExtStandaloneParser.parseExpression(trigger)
+            
+            if((new_trigger instanceof OperatorExpressionImpl)){
+                _changeTriggerSubExpressions(transition, new_trigger, uri)
+                
+            }else if(new_trigger instanceof ValuedObjectReferenceImpl){
+                (new_trigger as ValuedObjectReferenceImpl).valuedObject = 
+                    LSPUtil.getValuedObjectReference(
+                        diagramState, 
+                        uri, 
+                        (new_trigger as ValuedObjectReferenceImpl).valuedObject.name)                          
+            }else{
+                
+            }
+            
+            transition.trigger = new_trigger  
+        }
+    }
+    
+    def void _changeTriggerSubExpressions(Transition transition, OperatorExpressionImpl trigger, String uri){
+        for( exp: trigger.subExpressions){
+            if(exp instanceof OperatorExpressionImpl){
+                _changeTriggerSubExpressions(transition, exp, uri)
+            
+            }else if(exp instanceof ValuedObjectReferenceImpl){
+                exp.valuedObject = 
+                    LSPUtil.getValuedObjectReference(
+                        diagramState, 
+                        uri, 
+                        exp.valuedObject.name)                          
+            }  
+        }
+    }
+    
+    def changeEffect(Transition new_transition, String total_effect_String, String uri){  
+        if(total_effect_String != ""){
+            val effects_String = total_effect_String.split(";")
+            for(effect_string : effects_String){
+                val effect = KExtStandaloneParser.parseEffect(effect_string);           
+                (effect as AssignmentImpl).reference.valuedObject = 
+                LSPUtil.getValuedObjectReference(diagramState, uri, (effect as AssignmentImpl).reference.valuedObject.name) 
+                new_transition.effects.add(effect)   
+            }      
+        }
+    }
+    
+    def changeEdgePriority(ChangePriorityAction action, String clientId, KGraphDiagramServer server) {
+        val uri = diagramState.getURIString(clientId)
+        val kEdge = LSPUtil.getKEdge(diagramState, uri, action.id)
+        val edge = kEdge.getProperty(KlighdInternalProperties.MODEL_ELEMEMT)
+        val i = Integer.parseInt(action.priority)
+        setSpecificPriority(edge as Transition, i)
+    }
+    
     
     def updateDocument(String uri){
         val Map<String, List<TextEdit>> changes = newHashMap
@@ -375,5 +419,5 @@ class StructuredProgScchartLanguageServerExtension implements ILanguageServerExt
         changes.put(uri, #[textEdit]);
             
         this.client.replaceContentInFile(uri, codeAfter, range) 
-    } 
+    }
 }

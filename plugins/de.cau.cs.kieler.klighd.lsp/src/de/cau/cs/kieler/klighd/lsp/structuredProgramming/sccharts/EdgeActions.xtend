@@ -120,6 +120,40 @@ class ChangeTriggerEffectAction implements Action {
 @Accessors
 @EqualsHashCode
 @ToString(skipNulls = true)
+class ChangePriorityAction implements Action {
+    public static val LABEL = "Change priority"
+    public static val KIND = 'SCChart_graph_changePriorityOfEdge'
+    String kind = KIND
+    
+    public String id
+    public String priority
+    
+    new() {}
+    new(Consumer<ChangePriorityAction> initializer) {
+        initializer.accept(this)
+    }
+    def static InputType[] getInputs() {
+        val input1 = new InputType("priority","String","Change Priority");
+        return #[input1];
+    }
+    
+    def static StructuredEditMsg getMsg() { 
+        return new StructuredEditMsg(ChangePriorityAction.LABEL, 
+            ChangePriorityAction.KIND, 
+            false, 
+            ChangePriorityAction.getInputs()
+        )
+    }
+}
+
+/**
+ * 
+ * 
+ * @author fjo
+ */
+@Accessors
+@EqualsHashCode
+@ToString(skipNulls = true)
 class ChangeToWeakTransitionAction implements Action {
     public static val LABEL = "Change to weak transition"
     public static val KIND = 'SCChart_graph_changeToWeakTransition'
