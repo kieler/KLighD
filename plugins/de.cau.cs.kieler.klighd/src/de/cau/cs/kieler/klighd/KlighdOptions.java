@@ -16,9 +16,7 @@
  */
 package de.cau.cs.kieler.klighd;
 
-import java.util.Collection;
 import java.util.EnumSet;
-import java.util.List;
 
 import org.eclipse.elk.core.data.ILayoutMetaDataProvider;
 import org.eclipse.elk.core.data.LayoutOptionData;
@@ -26,8 +24,6 @@ import org.eclipse.elk.core.math.KVector;
 import org.eclipse.elk.graph.properties.IProperty;
 import org.eclipse.elk.graph.properties.Property;
 
-import de.cau.cs.kieler.klighd.filtering.SemanticFilterRule;
-import de.cau.cs.kieler.klighd.filtering.SemanticFilterTag;
 import de.cau.cs.kieler.klighd.labels.management.LabelManagementResult;
 import de.cau.cs.kieler.klighd.util.ExpansionAwareLayoutOption;
 

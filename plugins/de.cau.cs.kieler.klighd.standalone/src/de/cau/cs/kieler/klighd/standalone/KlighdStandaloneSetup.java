@@ -15,8 +15,6 @@ package de.cau.cs.kieler.klighd.standalone;
 
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.Collection;
 
