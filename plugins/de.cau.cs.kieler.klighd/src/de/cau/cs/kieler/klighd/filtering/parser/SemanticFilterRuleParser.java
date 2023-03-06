@@ -114,7 +114,11 @@ public class SemanticFilterRuleParser {
             super(token, type);
         }
     }
-    
+    /**
+     * Indicates that a parser encountered an invalid syntax.
+     * @author mka
+     *
+     */
     public class InvalidSyntaxException extends Exception {
 
         public InvalidSyntaxException(String message) {
