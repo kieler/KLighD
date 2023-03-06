@@ -47,6 +47,30 @@ import de.cau.cs.kieler.klighd.filtering.SemanticFilterTag;
 import de.cau.cs.kieler.klighd.filtering.TrueConnective;
 
 /**
+ * Provides a parser for the semantic filter language. The syntax is of the form
+ * <rule> <operator> <rule> for all binary operators. The most basic rule is a tag
+ * #<tag> that evaluates to true if an element has that tag and false otherwise. 
+ * Tags may also contain numeric values in which case they  are written as $<tag>.
+ * Constant values can be expressed as true, false or a number. Brackets may be used 
+ * to override precedences. The full list of available operators is given in the table 
+ * below.
+ * 
+ * | Operator       |  Syntax                |  Input          | Output  | Precedence |
+ * |----------------|------------------------|-----------------|---------|------------|
+ * | And            | \<expr\> && \<expr\>   | boolean         | boolean | 4          |
+ * | Or             | \<expr\> \|\| \<expr\> | boolean         | boolean | 3          |
+ * | Not            | ! \<expr\>             | boolean         | boolean | 6          |
+ * | Addition       | \<expr\> + \<expr\>    | numeric         | numeric | 9          |
+ * | Subtraction    | \<expr\> - \<expr\>    | numeric         | numeric | 9          |
+ * | Multiplication | \<expr\> * \<expr\>    | numeric         | numeric | 10         |
+ * | Division       | \<expr\> / \<expr\>    | numeric         | numeric | 10         |
+ * | GreaterEquals  | \<expr\> >= \<expr\>   | numeric         | boolean | 8          |
+ * | GreaterThan    | \<expr\> > \<expr\>    | numeric         | boolean | 8          |
+ * | LessEquals     | \<expr\> <= \<expr\>   | numeric         | boolean | 8          |
+ * | LessThan       | \<expr\> < \<expr\>    | numeric         | boolean | 8          |
+ * | Equals         | \<expr\> = \<expr\>    | numeric/boolean | boolean | 7          |
+ * | NotEqual       | \<expr\> != \<expr\>   | numeric/boolean | boolean | 7          |
+
  * @author mka
  *
  */
