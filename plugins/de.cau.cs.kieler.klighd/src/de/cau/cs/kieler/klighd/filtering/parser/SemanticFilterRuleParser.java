@@ -98,6 +98,7 @@ public class SemanticFilterRuleParser {
             super(token, type);
             this.children = new ArrayList<>();
         }
+        // a reference to the passed children list is stored and no copy is made
         public OperatorNode(String token, int type, List<Node> children) {
             super(token, type);
             this.children = children;
