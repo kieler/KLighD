@@ -33,7 +33,7 @@ import org.eclipse.core.databinding.observable.Realm;
 import org.eclipse.core.databinding.observable.value.ComputedValue;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.jface.databinding.swt.ISWTObservableValue;
-import org.eclipse.jface.databinding.swt.WidgetProperties;
+import org.eclipse.jface.databinding.swt.typed.WidgetProperties;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
@@ -91,8 +91,8 @@ final class RangeBlock {
         DialogUtil.layoutSpanHorizontal(allRadio, columns);
         
         final IObservableValue<Object> allValue =
-                BeanProperties.value(options.getClass().asSubclass(PrintOptions.class), PrintOptions.PROPERTY_ALL_PAGES).observe(realm, options);
-        ISWTObservableValue<Object> observedAllPages = WidgetProperties.selection().observe(allRadio); 
+                BeanProperties.value(PrintOptions.class, PrintOptions.PROPERTY_ALL_PAGES).observe(realm, options);
+        ISWTObservableValue<Object> observedAllPages = WidgetProperties.widgetSelection().observe(allRadio); 
         bindings.bindValue(observedAllPages, allValue);
 
         // radio button for defining a print range
@@ -118,7 +118,7 @@ final class RangeBlock {
                 return ((Boolean) allValue.getValue()).booleanValue() ? Boolean.FALSE : Boolean.TRUE;
             }
         };
-        ISWTObservableValue<Object> selection = WidgetProperties.selection().observe(rangeRadio);
+        ISWTObservableValue<Object> selection = WidgetProperties.widgetSelection().observe(rangeRadio);
         bindings.bindValue(selection, rangeValue);
 
         // range from (label & textfield)
@@ -128,7 +128,7 @@ final class RangeBlock {
         final Text textFrom = DialogUtil.text(result, textWidth);
 
         final IObservableValue<Object> rangeFrom = 
-                BeanProperties.value(options.getClass().asSubclass(PrintOptions.class), PrintOptions.PROPERTY_RANGE_FROM).observe(realm, options);
+                BeanProperties.value(PrintOptions.class, PrintOptions.PROPERTY_RANGE_FROM).observe(realm, options);
         ISWTObservableValue<String> observedModifiedTextFrom = WidgetProperties.text(SWT.Modify).observe(textFrom); 
         bindings.bindValue(observedModifiedTextFrom, rangeFrom);
         ISWTObservableValue<Boolean> observedEnabledFrom = WidgetProperties.enabled().observe(textFrom);
@@ -141,7 +141,7 @@ final class RangeBlock {
         final Text textTo = DialogUtil.text(result, textWidth);
 
         final IObservableValue<Object> rangeTo =
-                BeanProperties.value(options.getClass().asSubclass(PrintOptions.class), PrintOptions.PROPERTY_RANGE_TO).observe(realm, options);
+                BeanProperties.value(PrintOptions.class, PrintOptions.PROPERTY_RANGE_TO).observe(realm, options);
         
         ISWTObservableValue<String> observedModifyTextTo = WidgetProperties.text(SWT.Modify).observe(textTo);
         bindings.bindValue(observedModifyTextTo, rangeTo);

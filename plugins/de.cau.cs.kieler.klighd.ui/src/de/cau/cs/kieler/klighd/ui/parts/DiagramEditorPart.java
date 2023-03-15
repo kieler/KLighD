@@ -38,6 +38,7 @@ import org.eclipse.elk.core.util.WrappedException;
 import org.eclipse.elk.graph.properties.IPropertyHolder;
 import org.eclipse.elk.graph.properties.MapPropertyHolder;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
@@ -544,10 +545,25 @@ public class DiagramEditorPart extends EditorPart implements
      * @return the loaded model for convenience
      */
     protected Object loadModel() throws PartInitException {
+        final EObject model = loadModel(getEditorInput());
+        this.model = model;
+        this.resourceSet = model.eResource().getResourceSet();
+        configureResourceSet(this.resourceSet);
+        return model;
+    }
+
+    /**
+     * Load a model from the editor input. The result is put into {@link #model}.
+     *
+     * @throws PartInitException
+     *             if loading the model fails
+     *
+     * @return the loaded model for convenience
+     */
+    protected static EObject loadModel(final IEditorInput input) throws PartInitException {
         // get a URI or an input stream from the editor input
         URI uri = null;
         InputStream inputStream = null;
-        final IEditorInput input = getEditorInput();
         if (input instanceof IFileEditorInput) {
             final IFile file = ((IFileEditorInput) input).getFile();
             uri = URI.createPlatformResourceURI(file.getFullPath().toString(), false);
@@ -571,8 +587,7 @@ public class DiagramEditorPart extends EditorPart implements
 
         final Resource resource;
         try {
-            resourceSet = new ResourceSetImpl();
-            configureResourceSet(resourceSet);
+            final ResourceSet resourceSet = new ResourceSetImpl();
             if (inputStream != null) {
                 // load a stream-based resource
                 uri = URI.createFileURI("temp.xmi");
@@ -593,9 +608,7 @@ public class DiagramEditorPart extends EditorPart implements
             throw new PartInitException("The resource is empty.");
         }
         // default behavior: get the first element in the resource
-        model = resource.getContents().get(0);
-
-        return model;
+        return resource.getContents().get(0);
     }
 
     /**
