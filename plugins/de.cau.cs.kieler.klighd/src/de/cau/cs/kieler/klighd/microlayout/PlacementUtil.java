@@ -1570,6 +1570,9 @@ public final class PlacementUtil {
             if (currentRendering instanceof KContainerRendering) {
                 currentParent = (KContainerRendering) currentRendering;
                 currentBounds = bounds;
+                // Reset current position to avoid adding top/left insets multiple times.
+                currentBounds.x = 0;
+                currentBounds.y = 0;
             }
         }
 
