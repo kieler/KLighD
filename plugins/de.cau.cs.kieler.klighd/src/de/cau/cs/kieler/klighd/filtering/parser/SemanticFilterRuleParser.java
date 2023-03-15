@@ -16,10 +16,10 @@
  */
 package de.cau.cs.kieler.klighd.filtering.parser;
 
-import static java.util.Map.entry;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
@@ -224,20 +224,22 @@ public class SemanticFilterRuleParser {
     
     private static List<String> OPERATORS = new ArrayList<>(Arrays.asList(
             "*", "/", "+", "-", "=", "!=", ">=", ">", "<=", "<", "||", "&&", "!"));
-    private static Map<String, Integer> PRECEDENCES = Map.ofEntries(
-            entry("*", 10),
-            entry("/", 10),
-            entry("+", 9),
-            entry("-", 9),
-            entry("=", 7),
-            entry("!=", 7),
-            entry(">=", 8),
-            entry(">", 8),
-            entry("<=", 8),
-            entry("<", 8),
-            entry("||", 3),
-            entry("&&", 4),
-            entry("!", 6));
+    private static Map<String, Integer> PRECEDENCES = new HashMap<>() {{
+        put("*", 10);
+        put("/", 10);
+        put("+", 9);
+        put("-", 9);
+        put("=", 7);
+        put("!=", 7);
+        put(">=", 8);
+        put(">", 8);
+        put("<=", 8);
+        put("<", 8);
+        put("||", 3);
+        put("&&", 4);
+        put("!", 6);
+    }};
+    
     /**
      * Parses a semantic filter rule expression and creates the abstract syntax tree i.e., {@link SemanticFilterRule}.
      * @param ruleString expression
