@@ -224,7 +224,7 @@ public class SemanticFilterRuleParser {
     
     private static List<String> OPERATORS = new ArrayList<>(Arrays.asList(
             "*", "/", "+", "-", "=", "!=", ">=", ">", "<=", "<", "||", "&&", "!"));
-    private static Map<String, Integer> PRECEDENCES = new HashMap<>() {{
+    private static Map<String, Integer> PRECEDENCES = new HashMap<String, Integer>() {{
         put("*", 10);
         put("/", 10);
         put("+", 9);
