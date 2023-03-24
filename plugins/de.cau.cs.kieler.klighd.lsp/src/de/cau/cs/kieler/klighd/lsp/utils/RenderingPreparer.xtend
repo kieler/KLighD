@@ -280,6 +280,7 @@ final class RenderingPreparer {
                 bounds = PlacementUtil.evaluatePointPlacement(rendering, placementData, parentBounds)
             }
             KDecoratorPlacementData: {
+                PlacementUtil.basicEstimateSize(rendering, Bounds.of(0, 0))
                 // Decorator placements can only be evaluated if the path they should decorate is known.
                 // to call KLighD's DecoratorPlacementUtil#evaluateDecoratorPlacement the points of the path of the
                 // parent rendering have to be stored.
