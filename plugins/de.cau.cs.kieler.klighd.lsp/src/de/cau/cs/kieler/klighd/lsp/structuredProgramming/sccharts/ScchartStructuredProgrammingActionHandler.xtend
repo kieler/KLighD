@@ -31,98 +31,112 @@ import de.cau.cs.kieler.sccharts.impl.ControlflowRegionImpl
 import de.cau.cs.kieler.sccharts.ControlflowRegion
 import de.cau.cs.kieler.sccharts.PreemptionType
 
+/**
+ * Action handler for scchart structured changes.
+ * basically forwards all incomming actions to the corresponding methods in the language server extension
+ * @author fjo
+ */
 @Singleton
 class ScchartStructuredProgrammingActionHandler extends AbstractActionHandler {
-    
+
     @Inject
     StructuredProgScchartLanguageServerExtension extens
-    @Inject
-    KGraphDiagramState diagramState
 
     new() {
         this.supportedMessages = newHashMap(
-           DeleteAction.KIND -> DeleteAction,
-           RenameStateAction.KIND -> RenameStateAction,
-           AddSuccessorStateAction.KIND -> AddSuccessorStateAction,
-           AddHierarchicalStateAction.KIND -> AddHierarchicalStateAction,
-           ChangeTargetStateAction.KIND -> ChangeTargetStateAction,
-           ChangeSourceStateAction.KIND -> ChangeSourceStateAction,
-           ChangeTriggerEffectAction.KIND -> ChangeTriggerEffectAction,
-           RenameRegionAction.KIND -> RenameRegionAction,
-           AddConcurrentRegionAction.KIND -> AddConcurrentRegionAction,
-           ChangeToAbortingTransitionAction.KIND -> ChangeToAbortingTransitionAction,
-           ChangeToTerminatingTransitionAction.KIND -> ChangeToTerminatingTransitionAction,
-           ChangeToWeakTransitionAction.KIND -> ChangeToWeakTransitionAction,
-           AddTransitionAction.KIND -> AddTransitionAction,
-           ToggleFinalStateAction.KIND -> ToggleFinalStateAction,
-           MakeInitialStateAction.KIND -> MakeInitialStateAction,
-           EditSemanticDeclarationAction.KIND -> EditSemanticDeclarationAction,
-           ChangePriorityAction.KIND -> ChangePriorityAction            
+            DeleteAction.KIND -> DeleteAction,
+            RenameStateAction.KIND -> RenameStateAction,
+            AddSuccessorStateAction.KIND -> AddSuccessorStateAction,
+            AddHierarchicalStateAction.KIND -> AddHierarchicalStateAction,
+            ChangeTargetStateAction.KIND -> ChangeTargetStateAction,
+            ChangeSourceStateAction.KIND -> ChangeSourceStateAction,
+            ChangeTriggerEffectAction.KIND -> ChangeTriggerEffectAction,
+            RenameRegionAction.KIND -> RenameRegionAction,
+            AddConcurrentRegionAction.KIND -> AddConcurrentRegionAction,
+            ChangeToAbortingTransitionAction.KIND -> ChangeToAbortingTransitionAction,
+            ChangeToTerminatingTransitionAction.KIND -> ChangeToTerminatingTransitionAction,
+            ChangeToWeakTransitionAction.KIND -> ChangeToWeakTransitionAction,
+            AddTransitionAction.KIND -> AddTransitionAction,
+            ToggleFinalStateAction.KIND -> ToggleFinalStateAction,
+            MakeInitialStateAction.KIND -> MakeInitialStateAction,
+            EditSemanticDeclarationAction.KIND -> EditSemanticDeclarationAction,
+            ChangePriorityAction.KIND -> ChangePriorityAction
         )
     }
-    
+
     override handle(Action action, String clientId, KGraphDiagramServer server) {
-        val uri = diagramState.getURIString(clientId)
-        
-        extens.set_pre(clientId)
-        
-        
-        if(action.kind == DeleteAction.KIND){
-            extens.delete(action as DeleteAction, clientId, server)
-            extens.updateDocument(uri)
-        }else if(action.kind == RenameStateAction.KIND){
-            extens.rename(action, clientId, server)
-            extens.updateDocument(uri)
-        }else if(action.kind == AddSuccessorStateAction.KIND){
+        if (action.kind == DeleteAction.KIND) {
             synchronized (server.modelLock) {
-                extens.addSuccessorNode(action as AddSuccessorStateAction, clientId, server)
-                extens.updateDocument(uri)
+                extens.delete(action as DeleteAction, clientId, server)
             }
-        }else if(action.kind == AddHierarchicalStateAction.KIND){
-            extens.addHirachicalNode(action as AddHierarchicalStateAction, clientId, server)
-            extens.updateDocument(uri)
-        }else if(action.kind == ChangeTargetStateAction.KIND){
-            extens.changeDestination(action as ChangeTargetStateAction, clientId, server)
-            extens.updateDocument(uri)
-        }else if(action.kind == ChangeSourceStateAction.KIND){
-            extens.changeSource(action as ChangeSourceStateAction, clientId, server)
-            extens.updateDocument(uri)
-        }else if(action.kind == ChangeTriggerEffectAction.KIND){
-            extens.changeIO(action as ChangeTriggerEffectAction, clientId, server)
-            extens.updateDocument(uri)
-        }else if(action.kind == RenameRegionAction.KIND){
-            extens.rename(action, clientId, server)
-            extens.updateDocument(uri)
-        }else if(action.kind == AddConcurrentRegionAction.KIND){
-            extens.addConcurrentRegion(action as AddConcurrentRegionAction, clientId, server)
-            extens.updateDocument(uri)
-        }else if(action.kind == ChangeToAbortingTransitionAction.KIND){
-            extens.changeToAbort(action as ChangeToAbortingTransitionAction, clientId, server)
-            extens.updateDocument(uri)
-        }else if(action.kind == ChangeToTerminatingTransitionAction.KIND){
-            extens.changeToTerminating(action as ChangeToTerminatingTransitionAction, clientId, server)
-            extens.updateDocument(uri)
-        }else if(action.kind == ChangeToWeakTransitionAction.KIND){
-            extens.changeToWeak(action as ChangeToWeakTransitionAction, clientId, server)
-            extens.updateDocument(uri)
-        }else if(action.kind == AddTransitionAction.KIND){
-            extens.addNewTransition(action as AddTransitionAction, clientId, server)
-            extens.updateDocument(uri)
-        }else if(action.kind == ToggleFinalStateAction.KIND){
-            extens.toggleFinalState(action as ToggleFinalStateAction, clientId, server)
-            extens.updateDocument(uri)
-        }else if(action.kind == MakeInitialStateAction.KIND){
-            extens.makeInitialState(action as MakeInitialStateAction, clientId, server)
-            extens.updateDocument(uri)
-        }else if(action.kind == EditSemanticDeclarationAction.KIND){
-            extens.editSemanticDeclaration(action as EditSemanticDeclarationAction, clientId, server, uri)
-            extens.updateDocument(uri)
-        }else if(action.kind == ChangePriorityAction.KIND){
-            extens.changeEdgePriority(action as ChangePriorityAction, clientId, server)
-            extens.updateDocument(uri)
-        }else{
-            throw new IllegalArgumentException("Action " + action.kind + " not supported by handler " + this.class.simpleName)
+        } else if (action.kind == RenameStateAction.KIND) {
+            synchronized (server.modelLock) {
+                extens.rename(action, clientId, server)
+            }
+        } else if (action.kind == AddSuccessorStateAction.KIND) {
+            synchronized (server.modelLock) {
+                extens.addSuccessorState(action as AddSuccessorStateAction, clientId, server)
+            }
+        } else if (action.kind == AddHierarchicalStateAction.KIND) {
+            synchronized (server.modelLock) {
+                extens.addHirachicalNode(action as AddHierarchicalStateAction, clientId, server)
+            }
+        } else if (action.kind == ChangeTargetStateAction.KIND) {
+            synchronized (server.modelLock) {
+                extens.changeDestination(action as ChangeTargetStateAction, clientId, server)
+            }
+        } else if (action.kind == ChangeSourceStateAction.KIND) {
+            synchronized (server.modelLock) {
+                extens.changeSource(action as ChangeSourceStateAction, clientId, server)
+            }
+        } else if (action.kind == ChangeTriggerEffectAction.KIND) {
+            synchronized (server.modelLock) {
+                extens.changeIO(action as ChangeTriggerEffectAction, clientId, server)
+            }
+        } else if (action.kind == RenameRegionAction.KIND) {
+            synchronized (server.modelLock) {
+                extens.rename(action, clientId, server)
+            }
+        } else if (action.kind == AddConcurrentRegionAction.KIND) {
+            synchronized (server.modelLock) {
+                extens.addConcurrentRegion(action as AddConcurrentRegionAction, clientId, server)
+            }
+        } else if (action.kind == ChangeToAbortingTransitionAction.KIND) {
+            synchronized (server.modelLock) {
+                extens.changeToAbort(action as ChangeToAbortingTransitionAction, clientId, server)
+            }
+        } else if (action.kind == ChangeToTerminatingTransitionAction.KIND) {
+            synchronized (server.modelLock) {
+                extens.changeToTerminating(action as ChangeToTerminatingTransitionAction, clientId, server)
+            }
+        } else if (action.kind == ChangeToWeakTransitionAction.KIND) {
+            synchronized (server.modelLock) {
+                extens.changeToWeak(action as ChangeToWeakTransitionAction, clientId, server)
+            }
+        } else if (action.kind == AddTransitionAction.KIND) {
+            synchronized (server.modelLock) {
+                extens.addNewTransition(action as AddTransitionAction, clientId, server)
+            }
+        } else if (action.kind == ToggleFinalStateAction.KIND) {
+            synchronized (server.modelLock) {
+                extens.toggleFinalState(action as ToggleFinalStateAction, clientId, server)
+            }
+        } else if (action.kind == MakeInitialStateAction.KIND) {
+            synchronized (server.modelLock) {
+                extens.makeInitialState(action as MakeInitialStateAction, clientId, server)
+            }
+        } else if (action.kind == EditSemanticDeclarationAction.KIND) {
+            synchronized (server.modelLock) {
+                extens.editSemanticDeclaration(action as EditSemanticDeclarationAction, clientId, server)
+            }
+        } else if (action.kind == ChangePriorityAction.KIND) {
+            synchronized (server.modelLock) {
+                extens.changeEdgePriority(action as ChangePriorityAction, clientId, server)
+            }
+        } else {
+            throw new IllegalArgumentException("Action " + action.kind + " not supported by handler " +
+                this.class.simpleName)
         }
     }
-    
+
 }

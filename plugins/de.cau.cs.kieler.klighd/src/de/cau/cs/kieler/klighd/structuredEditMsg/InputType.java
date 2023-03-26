@@ -17,17 +17,22 @@
 package de.cau.cs.kieler.klighd.structuredEditMsg;
 
 /**
+ * This class holds the keyinformation how information should be retrived. The field is the name of
+ * a variable that should be filled The type differentiates how information should be aquired (can
+ * be String, SelectSource, SelectTarget) The label is the text that should be displayed to the user
+ * and explaines what should be entered.
+ * 
  * @author felixj
- *
  */
 public class InputType {
     String field;
     String type_of_Input;
     String label;
+
     public InputType(String field, String type_of_Input, String label) {
         this.field = field;
         this.type_of_Input = type_of_Input;
         this.label = label;
     }
-    
+
 }

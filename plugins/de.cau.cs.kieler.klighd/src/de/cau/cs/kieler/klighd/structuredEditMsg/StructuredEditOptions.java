@@ -24,8 +24,9 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
+ * Is used as a property and holds all information on what tags support what editing actions.
+ * 
  * @author felixj
- *
  */
 public class StructuredEditOptions {
     Map<SemanticFilterTag, StructuredEditMsg[]> options;

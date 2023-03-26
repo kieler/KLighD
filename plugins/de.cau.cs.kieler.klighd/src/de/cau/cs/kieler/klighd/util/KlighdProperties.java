@@ -388,7 +388,8 @@ public final class KlighdProperties {
             new Property<Boolean>("klighd.isNodeTitle", false);
     
     /**
-     * 
+     * Property holding the structured editing options which are supported for a certain language.
+     * By default no support is given.
      */
     public static final IProperty<StructuredEditOptions> STRUCTURED_EDITING =
             new Property<StructuredEditOptions>("klighd.StructuralEditingOptions", null);

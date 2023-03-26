@@ -11,7 +11,7 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
- *
+ * 
  * SPDX-License-Identifier: EPL-2.0
  */
 package de.cau.cs.kieler.klighd.lsp
@@ -67,8 +67,8 @@ class LSPUtil {
             return null
         }
     }
-    
-        /**
+
+    /**
      * Get a {@code KEdge} based by id.
      * 
      * @param diagramState The state of the diagram
@@ -87,7 +87,7 @@ class LSPUtil {
             return null
         }
     }
-    
+
     /**
      * Escapes the given message to be safely displayable in a client context putting this message into an HTML page
      * to avoid possibilities of XSS attacks and a clearly readable message. Uses Google Guava's {@link HtmlEscapers}
@@ -98,20 +98,36 @@ class LSPUtil {
      * @return An escaped and safe String to display in HTML.
      */
     static def String escapeHtml(String message) {
-        return HtmlEscapers.htmlEscaper.escape(message)
-            // Convert newlines to a line ending in "\" so that markdown will display the newline.
-            .replace("\n", "\\\n")
-            // Replace tabs with four spaces.
-            .replace("\t", "&nbsp;&nbsp;&nbsp;&nbsp;")
+        return HtmlEscapers.htmlEscaper.escape(message)// Convert newlines to a line ending in "\" so that markdown will display the newline.
+        .replace("\n", "\\\n")// Replace tabs with four spaces.
+        .replace("\t", "&nbsp;&nbsp;&nbsp;&nbsp;")
     }
-    
-    static def ValuedObjectImpl getValuedObjectReference( KGraphDiagramState diagramState, String uri, String name ){
+
+    /**
+     * Method to get a valued object reference to update a newly generated expression.
+     * May throw a not ValuedObjectNotFoundException
+     * @return The valued object corresponding to the given name if there is any
+     * @author fjo
+     */
+    static def ValuedObjectImpl getValuedObjectReference(KGraphDiagramState diagramState, String uri, String name) {
         val root = LSPUtil.getRoot(diagramState, uri)
-        val node = root.children.get(0).getProperty(KlighdInternalProperties.MODEL_ELEMEMT) as State 
-        for(declaration: node.declarations){
-            for(obj: declaration.valuedObjects){
-                if(obj.name == name)return obj as ValuedObjectImpl
+        val node = root.children.get(0).getProperty(KlighdInternalProperties.MODEL_ELEMEMT) as State
+        for (declaration : node.declarations) {
+            for (obj : declaration.valuedObjects) {
+                if(obj.name == name) return obj as ValuedObjectImpl
             }
         }
+        throw new ValuedObjectNotFoundException(name)
+    }
+}
+
+/**
+ * Simple exception to throw if a valued object could not be found.
+ * @author fjo
+ */
+class ValuedObjectNotFoundException extends Exception {
+
+    new(String notFound) {
+        super(notFound)
     }
 }
