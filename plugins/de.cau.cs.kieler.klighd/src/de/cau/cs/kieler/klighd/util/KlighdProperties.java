@@ -393,6 +393,13 @@ public final class KlighdProperties {
      */
     public static final IProperty<StructuredEditOptions> STRUCTURED_EDITING =
             new Property<StructuredEditOptions>("klighd.StructuralEditingOptions", null);
+    
+    /**
+     * Property determining if the contextmenu should be rendered on the client. Since the contextmenu is only suported
+     * for certain languages it makes sense to keep track only on the server to show it
+     */
+    public static final IProperty<Boolean> SHOW_STRUCTURED_EDITING_MENU = 
+            new Property<Boolean>("klighd.showContextmenu", true);
 
     /**
      * Property determining whether this node should be rendered as a proxy.
