@@ -3,7 +3,7 @@
  *
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright 2018-2022 by
+ * Copyright 2018-2023 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -31,6 +31,7 @@ import de.cau.cs.kieler.klighd.krendering.KAreaPlacementData
 import de.cau.cs.kieler.klighd.krendering.KContainerRendering
 import de.cau.cs.kieler.klighd.krendering.KDecoratorPlacementData
 import de.cau.cs.kieler.klighd.krendering.KGridPlacement
+import de.cau.cs.kieler.klighd.krendering.KImage
 import de.cau.cs.kieler.klighd.krendering.KPlacement
 import de.cau.cs.kieler.klighd.krendering.KPointPlacementData
 import de.cau.cs.kieler.klighd.krendering.KPolygon
@@ -162,6 +163,14 @@ final class RenderingPreparer {
             if (rendering.junctionPointRendering !== null) {                
                 handleAreaAndPointAndDecoratorPlacementRendering(rendering.junctionPointRendering, bounds, boundsMap,
                     decorationMap, element)
+            }
+        }
+        
+        // Calculate the bounds for the clip shape.
+        if (rendering instanceof KImage) {
+            if (rendering.clipShape !== null) {
+                handleAreaAndPointAndDecoratorPlacementRendering(rendering.clipShape, bounds, boundsMap, decorationMap,
+                    element)
             }
         }
     }
