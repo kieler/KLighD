@@ -1,6 +1,6 @@
 /*
  * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
- *
+ * 
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
  * Copyright 2018-2022 by
@@ -11,7 +11,7 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
- *
+ * 
  * SPDX-License-Identifier: EPL-2.0
  */
 package de.cau.cs.kieler.klighd.lsp
@@ -51,6 +51,7 @@ import java.util.Base64
 import java.util.Collection
 import java.util.List
 import java.util.Map
+import java.util.ServiceLoader
 import java.util.concurrent.CompletableFuture
 import org.apache.log4j.Logger
 import org.eclipse.core.runtime.Platform
@@ -87,49 +88,49 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
     
     @Inject
     protected LayeredInteractiveActionHandler constraintActionHandler
-    
+
     @Inject
     protected RectpackingInteractiveActionHandler rectpackingActionHandler
-    
-    @Inject 
+
+    @Inject
     protected KGraphDiagramState diagramState
-    
+
     @Inject
     INotificationHandler notificationHandler
-    
+
     /**
      * Indicates if the stored model is a completely new model and should therefore cause a SetModelAction instead of 
      * an eventual UpdateModelAction.
      */
     protected boolean newModel
-    
+
     /**
      * The current root element of the {@link SKGraph}. Stored here during communication with the client.
      */
     protected SModelRoot currentRoot
-    
+
     /**
      * Flag indicating if the images of the current root are updated on the client.
      */
     protected boolean imagesUpdated = false
-    
+
     @Accessors(PUBLIC_GETTER)
     protected Object modelLock = new Object
-    
+
     /**
      * Needed for KeithUpdateModelAction
      * 
      * FIXME Remove this if UpdateModelAction has a cause.
      */
     protected String lastSubmittedModelType
-    
+
     /**
      * Needed for KeithUpdateModelAction
      * 
      * FIXME Remove this if UpdateModelAction has a cause.
      */
     protected int revision = 0
-    
+
     /**
      * Needed for KeithUpdateModelAction
      * 
@@ -140,7 +141,7 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
         currentRoot.setType("NONE");
         currentRoot.setId("ROOT");
     }
-    
+
     /**
      * Prepares the client side update of the model by processing the potentially needed images on the client. Checks
      * for client-side cached images with the {@link CheckImagesAction}. If the corresponding response to the 
@@ -154,8 +155,8 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
         synchronized (modelLock) {
             currentRoot = newRoot
             if (newRoot !== null) {
-                imagesUpdated =  false
-                
+                imagesUpdated = false
+
                 // image handling
                 val imageData = diagramState.getImageData(newRoot.id)
                 if (imageData === null) {
@@ -164,9 +165,9 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
                     imagesUpdated = true
                 } else {
                     dispatch(new CheckImagesAction(imageData))
-                    // the setOrUpdateModel is then executed after the client confirms it has all images cached.
+                // the setOrUpdateModel is then executed after the client confirms it has all images cached.
                 }
-                
+
                 // Update the diagram options with the current used values on the client.
                 updateDiagramOptions(newRoot.id)
             } else {
@@ -178,7 +179,7 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
             }
         }
     }
-    
+
     /**
      * Updates the diagram options on the client with the values from the currently used view context found under the
      * given URI.
@@ -203,22 +204,23 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
             }
         }
     }
-    
+
     /**
      * Packs all data needed to display the layout options in any user interface into a single list of
      * {@link LayoutOptionUIData}.
      * 
      * @param displayedLayoutOptions The layout options that should be displayed. 
      */
-    def calculateLayoutOptionUIData(List<org.eclipse.elk.core.util.Pair<IProperty<?>, List<?>>> displayedLayoutOptions) {
+    def calculateLayoutOptionUIData(
+        List<org.eclipse.elk.core.util.Pair<IProperty<?>, List<?>>> displayedLayoutOptions) {
         val List<LayoutOptionUIData> layoutOptionUIData = new ArrayList
         for (pair : displayedLayoutOptions) {
             var Object first
             var Object second
             if (pair.second instanceof Collection) {
                 val iterator = (pair.second as Collection<?>).iterator
-                first = if (iterator.hasNext) iterator.next else null
-                second = if (iterator.hasNext) iterator.next else null
+                first = if(iterator.hasNext) iterator.next else null
+                second = if(iterator.hasNext) iterator.next else null
             }
 
             val LayoutOptionData optionData = LayoutMetaDataService.instance.getOptionData(pair.first.id)
@@ -233,10 +235,11 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
         }
         return layoutOptionUIData
     }
-    
+
     override void accept(ActionMessage message) {
         try {
             val clientId = getClientId();
+            var structuredHandler = false
             if (clientId !== null && clientId.equals(message.getClientId())) {
                 val Action action = message.getAction();
                 if (action.getKind() === PerformActionAction.KIND) {
@@ -256,7 +259,16 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
                 } else if (rectpackingActionHandler.canHandleAction(action.getKind)) {
                     rectpackingActionHandler.handle(action, clientId, this)
                 } else {
-                    super.accept(message)
+                    for (IActionHandler structuredActionHandler : ServiceLoader.load(IActionHandler,
+                        KlighdDataManager.getClassLoader())) {
+                        if(structuredActionHandler.canHandleAction(action.kind)){                           
+                            structuredActionHandler.handle(action,clientId, this)
+                            structuredHandler = true
+                        }
+                    }
+                    if(!structuredHandler){
+                        super.accept(message)                    
+                    }
                 }
             }
         } catch (Exception e) {
@@ -264,7 +276,7 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
             notificationHandler.sendErrorAndThrow(e)
         }
     }
-        
+
     /**
      * Submit a new or updated model to the client. If client layout is required, a {@link RequestBoundsAction}
      * is sent, otherwise either a {@link SetModelAction} or an {@link UpdateModelAction} is sent depending on
@@ -283,27 +295,29 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
                     listener.modelSubmitted(newRoot, this);
                 }
             } else {
-                return request(new RequestBoundsAction(newRoot)).handle([response, exception | {
-                    if (exception !== null) {
-                        LOG.error("RequestBoundsAction failed with an exception.", exception);
-                    } else {
-                        try {
-                            var SModelRoot model = handle(response);
-                            if (model !== null)
-                                doSubmitModel(model, true, cause);
-                        } catch (Exception exc) {
-                            LOG.error("Exception while processing ComputedBoundsAction.", exc);
+                return request(new RequestBoundsAction(newRoot)).handle([ response, exception |
+                    {
+                        if (exception !== null) {
+                            LOG.error("RequestBoundsAction failed with an exception.", exception);
+                        } else {
+                            try {
+                                var SModelRoot model = handle(response);
+                                if (model !== null)
+                                    doSubmitModel(model, true, cause);
+                            } catch (Exception exc) {
+                                LOG.error("Exception while processing ComputedBoundsAction.", exc);
+                            }
                         }
+                        return null;
                     }
-                    return null;
-                }])
+                ])
             }
         } else {
             doSubmitModel(newRoot, update, cause);
         }
         return CompletableFuture.completedFuture(null);
     }
-    
+
     /**
      * Needed for KeithUpdateModelAction
      * 
@@ -312,14 +326,14 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
     override CompletableFuture<Void> setModel(SModelRoot newRoot) {
         if (newRoot === null)
             throw new NullPointerException();
-        synchronized(modelLock) {
+        synchronized (modelLock) {
             newRoot.setRevision(revision + 1);
             revision++
             currentRoot = newRoot;
         }
         return submitModel(newRoot, false, null);
     }
-    
+
     /**
      * Needed for KeithUpdateModelAction
      * 
@@ -328,15 +342,14 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
     override CompletableFuture<Void> updateModel(SModelRoot newRoot) {
         if (newRoot === null)
             throw new IllegalArgumentException("updateModel() cannot be called with null");
-        synchronized(modelLock) {
+        synchronized (modelLock) {
             currentRoot = newRoot;
             newRoot.setRevision(revision + 1);
             revision++
         }
         return submitModel(newRoot, true, null);
     }
-    
-    
+
     /**
      * Needed for KeithUpdateModelAction
      * 
@@ -352,8 +365,8 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
         synchronized (modelLock) {
             if (newRoot.getRevision() == revision) {
                 var String modelType = newRoot.getType();
-                if (cause instanceof RequestModelAction
-                        && !Strings.isNullOrEmpty((cause as RequestModelAction).getRequestId())) {
+                if (cause instanceof RequestModelAction &&
+                    !Strings.isNullOrEmpty((cause as RequestModelAction).getRequestId())) {
                     var RequestModelAction request = cause as RequestModelAction;
                     var SetModelAction response = new SetModelAction(newRoot);
                     response.setResponseId(request.getRequestId());
@@ -371,7 +384,7 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
             }
         }
     }
-    
+
     /**
      * Taken from {@code DefaultDiagramServer.handle(RequestModelAction)} to use this getModel.
      * Needed for KeithUpdateModelAction
@@ -388,7 +401,7 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
             super.handle(request)
         }
     }
-    
+
     /**
      * Taken from {@code DefaultDiagramServer.handle(LayoutAction)} to use this getModel.
      * Needed for KeithUpdateModelAction
@@ -396,11 +409,11 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
      * FIXME Remove this if UpdateModelAction has a cause.
      */
     override void handle(LayoutAction action) {
-        if (needsServerLayout(model,action)) {
+        if (needsServerLayout(model, action)) {
             // Clone the current model, as it has already been sent to the client with the old revision
             val SModelCloner cloner = getSModelCloner();
             val SModelRoot newRoot = cloner.clone(model);
-            synchronized(modelLock) {
+            synchronized (modelLock) {
                 newRoot.setRevision(revision + 1);
                 revision++
                 currentRoot = newRoot;
@@ -409,7 +422,7 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
             doSubmitModel(newRoot, true, action);
         }
     }
-    
+
     /**
      * Called when a {@link PerformActionAction} is received.
      * Invokes the contained KlighD {@link IAction} on the current {@link KNode KGraph}.
@@ -420,11 +433,11 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
             if (currentRoot.getRevision() !== action.revision) {
                 return
             }
-            
+
             val sourceUri = diagramState.getURIString(clientId)
             val kGraphElement = diagramState.getIdToKGraphMap(sourceUri).get(action.KGraphElementId)
             val kRendering = KRenderingIdGenerator.findRenderingById(kGraphElement, action.KRenderingId)
-            
+
             val klighdAction = KlighdDataManager.instance.getActionById(action.actionId)
             val viewer = diagramState.viewer
             val actionContext = new ActionContext(viewer, null, kGraphElement, kRendering)
@@ -436,7 +449,7 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
             }
         }
     }
-    
+
     /**
      * Called when a {@link SetSynthesisAction} is received.
      * Configures this diagram server to use the synthesis given in the message in future runs to generate a diagram
@@ -450,7 +463,7 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
             updateDiagram()
         }
     }
-    
+
     /**
      * Called when a {@link CheckedImagesAction} is received.
      * Tells the server that the images on the client have been checked if they are cached and requests any non-cached
@@ -468,12 +481,9 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
                     try {
                         val bundle = notCached.key
                         val path = notCached.value
-                        val InputStream imageStream =
-                            if (platformIsRunning) {
+                        val InputStream imageStream = if (platformIsRunning) {
                                 // If the platform is running, the image can be found in the bundle under the resource path.
-                                Platform.getBundle(bundle)
-                                    ?.getResource(path)
-                                    ?.openStream
+                                Platform.getBundle(bundle)?.getResource(path)?.openStream
                             } else {
                                 // In the jar or plain Java application case, the bundle is ignored and the file path
                                 // is searched on the classpath directly
@@ -489,11 +499,8 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
                                 imageStream.close
                             }
                         } else {
-                            throw new FileNotFoundException("The image for bundle "
-                                + bundle
-                                + " and path "
-                                + path
-                                + " has not been found.")
+                            throw new FileNotFoundException("The image for bundle " + bundle + " and path " + path +
+                                " has not been found.")
                         }
                     } catch (Exception e) {
                         // Do not re-throw the exception here, we can still show the diagram, just without the images.
@@ -517,7 +524,7 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
         updateDiagram()
         return
     }
-    
+
     /**
      * Called when a {@link RefreshLayoutAction} is received.
      * Tells the server that the diagram layout should be refreshed.
@@ -526,16 +533,16 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
         updateLayout()
         return
     }
-    
-    protected def handle(RequestDiagramPieceAction action) {  
-        
+
+    protected def handle(RequestDiagramPieceAction action) {
+
         synchronized (diagramState) {
             if (diagramState.getDiagramPieceRequestManager(this.sourceUri) === null) {
                 // can't handle these requests if we are using recursive generation method
                 dispatch(new RejectAction())
                 return
             }
-            
+
             // TODO: handle images incrementally
             val diagramUpdater = diagramLanguageServer.diagramUpdater
             if (diagramUpdater instanceof KGraphDiagramUpdater) {
@@ -545,13 +552,13 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
                 } else {
                     dispatch(new RejectAction())
                 }
-                
+
             } else {
                 throw new IllegalStateException("The diagramUpdater was not initialized correctly")
-            }        
+            }
         }
     }
-    
+
     /**
      * Selects the SGraph elements mapped by the given selectable KGraph elements.
      * 
@@ -559,27 +566,27 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
      */
     def void selectElements(List<EObject> toBeSelected) {
         val toBeSelectedSModelElementIDs = newArrayList
-        
-        synchronized(diagramState) {
+
+        synchronized (diagramState) {
             val map = diagramState.getKGraphToSModelElementMap(diagramState.getURIString(clientId))
             toBeSelected.forEach [
                 val sModelElement = map.get(it)
                 if (sModelElement instanceof SModelElement) {
                     toBeSelectedSModelElementIDs.add(sModelElement.id)
                 }
-                
+
             ]
         }
         // Deselect all elements first, so only the new elements are selected now.
         val deselectAllAction = new SelectAllAction
         deselectAllAction.select = false
         dispatch(deselectAllAction)
-        
+
         val selectAction = new SelectAction
         selectAction.selectedElementsIDs = toBeSelectedSModelElementIDs
         dispatch(selectAction)
     }
-    
+
     /**
      * Updates the current diagram.
      */
@@ -593,7 +600,7 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
             }
         }
     }
-    
+
     /**
      * Updates the layout of the current diagram.
      */
@@ -607,7 +614,7 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
             }
         }
     }
-    
+
     /**
      * Initializes the stored options in this diagram server. Usable if a diagram server is created by something other
      * than a {@link SetModelAction}.
@@ -619,11 +626,11 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
             setOptions(options)
         }
     }
-    
+
     /** Sets or updates the {@code currentRoot} as the model. */
     protected def void setOrUpdateModel() {
         if (newModel) {
-            setModel(currentRoot)                
+            setModel(currentRoot)
         } else {
             updateModel(currentRoot)
         }

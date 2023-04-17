@@ -16,7 +16,9 @@
  */
 package de.cau.cs.kieler.klighd;
 
+import java.util.Collection;
 import java.util.EnumSet;
+import java.util.List;
 
 import org.eclipse.elk.core.data.ILayoutMetaDataProvider;
 import org.eclipse.elk.core.data.LayoutOptionData;
@@ -24,6 +26,8 @@ import org.eclipse.elk.core.math.KVector;
 import org.eclipse.elk.graph.properties.IProperty;
 import org.eclipse.elk.graph.properties.Property;
 
+import de.cau.cs.kieler.klighd.filtering.SemanticFilterRule;
+import de.cau.cs.kieler.klighd.filtering.SemanticFilterTag;
 import de.cau.cs.kieler.klighd.labels.management.LabelManagementResult;
 import de.cau.cs.kieler.klighd.util.ExpansionAwareLayoutOption;
 
@@ -67,6 +71,18 @@ public class KlighdOptions implements ILayoutMetaDataProvider {
     public static final IProperty<String> LABELS_TEXT_OVERRIDE =
             new Property<String>("de.cau.cs.kieler.klighd.labels.textOverride",
                     LABELS_TEXT_OVERRIDE_DEFAULT, null, null);
+    
+    public static final List<SemanticFilterTag> SEMANTIC_FILTER_TAGS_DEFAULT = null;
+    
+    public static final IProperty<List<SemanticFilterTag>> SEMANTIC_FILTER_TAGS = 
+            new Property<List<SemanticFilterTag>>("de.cau.cs.kieler.klighd.semanticFilter.tags",
+                    SEMANTIC_FILTER_TAGS_DEFAULT, null, null);
+    
+    public static final List<SemanticFilterRule> SEMANTIC_FILTER_RULES_DEFAULT = null;
+    
+    public static final IProperty<List<SemanticFilterRule>> SEMANTIC_FILTER_RULES = 
+            new Property<List<SemanticFilterRule>>("de.cau.cs.kieler.klighd.semanticFilter.rules",
+                    SEMANTIC_FILTER_RULES_DEFAULT, null, null);
 
     public void apply(final org.eclipse.elk.core.data.ILayoutMetaDataProvider.Registry registry) {
         registry.register(new LayoutOptionData.Builder()
@@ -112,6 +128,25 @@ public class KlighdOptions implements ILayoutMetaDataProvider {
                 .description("Output option that, if set, replaces the original label text.")
                 .defaultValue(LABELS_TEXT_OVERRIDE_DEFAULT).type(LayoutOptionData.Type.STRING)
                 .optionClass(String.class).targets(EnumSet.of(LayoutOptionData.Target.LABELS))
+                .visibility(LayoutOptionData.Visibility.HIDDEN).create());
+        
+        // TODO: check if these are sensible settings (all below options)
+        registry.register(new LayoutOptionData.Builder()
+                .id("de.cau.cs.kieler.klighd.semanticFilter.tags").group("semanticFilter")
+                .name("Semantic Filter Tags")
+                .description("TODO")
+                .defaultValue(SEMANTIC_FILTER_TAGS_DEFAULT).type(LayoutOptionData.Type.OBJECT)
+                .optionClass(Collection.class)
+                .targets(EnumSet.of(LayoutOptionData.Target.NODES)) // TODO: also other element types
+                .visibility(LayoutOptionData.Visibility.HIDDEN).create());
+        
+        registry.register(new LayoutOptionData.Builder()
+                .id("de.cau.cs.kieler.klighd.semanticFilter.rules").group("semanticFilter")
+                .name("Semantic Filter Rules")
+                .description("TODO")
+                .defaultValue(SEMANTIC_FILTER_RULES_DEFAULT).type(LayoutOptionData.Type.OBJECT)
+                .optionClass(Collection.class)
+                .targets(EnumSet.of(LayoutOptionData.Target.PARENTS)) // TODO: really only want this on top level of graph
                 .visibility(LayoutOptionData.Visibility.HIDDEN).create());
     }
 }

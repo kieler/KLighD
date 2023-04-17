@@ -17,6 +17,7 @@
 package de.cau.cs.kieler.klighd.util;
 
 import java.awt.Color;
+import java.util.List;
 
 import org.eclipse.elk.core.math.KVector;
 import org.eclipse.elk.core.math.Spacing;
@@ -26,10 +27,16 @@ import org.eclipse.elk.graph.properties.Property;
 import org.eclipse.emf.ecore.EObject;
 
 import de.cau.cs.kieler.klighd.KlighdConstants;
+import de.cau.cs.kieler.klighd.filtering.SemanticFilterRule;
+import de.cau.cs.kieler.klighd.filtering.SemanticFilterTag;
+import de.cau.cs.kieler.klighd.kgraph.KGraphData;
 import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
 import de.cau.cs.kieler.klighd.kgraph.KNode;
 import de.cau.cs.kieler.klighd.krendering.KText;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
+import de.cau.cs.kieler.klighd.structuredEditMsg.StructuredEditMsg;
+import de.cau.cs.kieler.klighd.structuredEditMsg.StructuredEditOptions;
+
 
 /**
  * A collection of KLighD-specific {@link de.cau.cs.kieler.klighd.properties.IProperty IProperties}
@@ -379,4 +386,52 @@ public final class KlighdProperties {
      */
     public static final IProperty<Boolean> IS_NODE_TITLE =
             new Property<Boolean>("klighd.isNodeTitle", false);
+    
+    /**
+     * Property holding the structured editing options which are supported for a certain language.
+     * By default no support is given.
+     */
+    public static final IProperty<StructuredEditOptions> STRUCTURED_EDITING =
+            new Property<StructuredEditOptions>("klighd.StructuralEditingOptions", null);
+    
+    /**
+     * Property determining if the contextmenu should be rendered on the client. Since the contextmenu is only suported
+     * for certain languages it makes sense to keep track only on the server to show it
+     */
+    public static final IProperty<Boolean> SHOW_STRUCTURED_EDITING_MENU = 
+            new Property<Boolean>("klighd.showContextmenu", true);
+
+    /**
+     * Property determining whether this node should be rendered as a proxy.
+     */
+    public static final IProperty<Boolean> PROXY_VIEW_RENDER_NODE_AS_PROXY =
+            new Property<Boolean>("de.cau.cs.kieler.klighd.proxy-view.renderNodeAsProxy", true);
+            
+    /**
+     * Property determining how a proxy of this node should be rendered.
+     */
+    public static final IProperty<List<KGraphData>> PROXY_VIEW_PROXY_RENDERING =
+            new Property<List<KGraphData>>("de.cau.cs.kieler.klighd.proxy-view.proxyRendering", null);
+    
+    /**
+     * Property determining depth of going into hierarchical off-screen nodes.
+     * Only relevant for the root. <br>
+     * Choose {@code 0} for default, showing only the outermost node as a proxy. <br>
+     * Choose a value {@code x>0} to show proxies up to x layers deep inside a hierarchical node. <br>
+     * Choose a value {@code x<0} to always show proxies for all layers.
+     */
+    public static final IProperty<Integer> PROXY_VIEW_HIERARCHICAL_OFF_SCREEN_DEPTH =
+            new Property<Integer>("de.cau.cs.kieler.klighd.proxy-view.hierarchicalOffScreenDepth", 0);
+    
+    public static final List<SemanticFilterTag> SEMANTIC_FILTER_TAGS_DEFAULT = null;
+    
+    public static final IProperty<List<SemanticFilterTag>> SEMANTIC_FILTER_TAGS = 
+            new Property<List<SemanticFilterTag>>("de.cau.cs.kieler.klighd.semanticFilter.tags",
+                    SEMANTIC_FILTER_TAGS_DEFAULT, null, null);
+    
+    public static final List<SemanticFilterRule> SEMANTIC_FILTER_RULES_DEFAULT = null;
+    
+    public static final IProperty<List<SemanticFilterRule>> SEMANTIC_FILTER_RULES = 
+            new Property<List<SemanticFilterRule>>("de.cau.cs.kieler.klighd.semanticFilter.rules",
+                    SEMANTIC_FILTER_RULES_DEFAULT, null, null);
 }
