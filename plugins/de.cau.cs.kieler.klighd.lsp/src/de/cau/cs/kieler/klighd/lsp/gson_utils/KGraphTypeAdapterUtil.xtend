@@ -36,24 +36,9 @@ import de.cau.cs.kieler.klighd.lsp.model.SetSynthesisAction
 import java.awt.geom.Point2D
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.sprotty.server.json.ActionTypeAdapter
-
-import de.cau.cs.kieler.klighd.lsp.structuredProgramming.sccharts.DeleteAction
-import de.cau.cs.kieler.klighd.lsp.structuredProgramming.sccharts.RenameStateAction;
-import de.cau.cs.kieler.klighd.lsp.structuredProgramming.sccharts.AddHierarchicalStateAction;
-import de.cau.cs.kieler.klighd.lsp.structuredProgramming.sccharts.AddSuccessorStateAction;
-import de.cau.cs.kieler.klighd.lsp.structuredProgramming.sccharts.ChangeTriggerEffectAction;
-import de.cau.cs.kieler.klighd.lsp.structuredProgramming.sccharts.RenameRegionAction;
-import de.cau.cs.kieler.klighd.lsp.structuredProgramming.sccharts.AddConcurrentRegionAction;
-import de.cau.cs.kieler.klighd.lsp.structuredProgramming.sccharts.ChangeTargetStateAction
-import de.cau.cs.kieler.klighd.lsp.structuredProgramming.sccharts.ChangeSourceStateAction
-import de.cau.cs.kieler.klighd.lsp.structuredProgramming.sccharts.ChangeToAbortingTransitionAction
-import de.cau.cs.kieler.klighd.lsp.structuredProgramming.sccharts.ChangeToTerminatingTransitionAction
-import de.cau.cs.kieler.klighd.lsp.structuredProgramming.sccharts.ChangeToWeakTransitionAction
-import de.cau.cs.kieler.klighd.lsp.structuredProgramming.sccharts.AddTransitionAction
-import de.cau.cs.kieler.klighd.lsp.structuredProgramming.sccharts.ToggleFinalStateAction
-import de.cau.cs.kieler.klighd.lsp.structuredProgramming.sccharts.EditSemanticDeclarationAction
-import de.cau.cs.kieler.klighd.lsp.structuredProgramming.sccharts.MakeInitialStateAction
-import de.cau.cs.kieler.klighd.lsp.structuredProgramming.sccharts.ChangePriorityAction
+import de.cau.cs.kieler.klighd.lsp.structuredProgramming.IStructuredActions
+import java.util.ServiceLoader
+import de.cau.cs.kieler.klighd.KlighdDataManager
 
 /**
  * Static util class to configure needed gson type adapters for KGraph serialization.
@@ -88,27 +73,12 @@ class KGraphTypeAdapterUtil {
                 addActionKind(RequestDiagramPieceAction.KIND, RequestDiagramPieceAction)
 
                 // Structured Programming actions
-                addActionKind(DeleteAction.KIND, DeleteAction)
-
-                addActionKind(RenameStateAction.KIND, RenameStateAction)
-                addActionKind(AddSuccessorStateAction.KIND, AddSuccessorStateAction)
-                addActionKind(AddHierarchicalStateAction.KIND, AddHierarchicalStateAction)
-                addActionKind(AddTransitionAction.KIND, AddTransitionAction)
-                addActionKind(ToggleFinalStateAction.KIND, ToggleFinalStateAction)
-                addActionKind(MakeInitialStateAction.KIND, MakeInitialStateAction)
-
-                addActionKind(ChangeTargetStateAction.KIND, ChangeTargetStateAction)
-                addActionKind(ChangeSourceStateAction.KIND, ChangeSourceStateAction)
-                addActionKind(ChangeTriggerEffectAction.KIND, ChangeTriggerEffectAction)
-                addActionKind(ChangeToAbortingTransitionAction.KIND, ChangeToAbortingTransitionAction)
-                addActionKind(ChangeToTerminatingTransitionAction.KIND, ChangeToTerminatingTransitionAction)
-                addActionKind(ChangeToWeakTransitionAction.KIND, ChangeToWeakTransitionAction)
-                addActionKind(ChangePriorityAction.KIND, ChangePriorityAction)
-
-                addActionKind(RenameRegionAction.KIND, RenameRegionAction)
-                addActionKind(AddConcurrentRegionAction.KIND, AddConcurrentRegionAction)
-
-                addActionKind(EditSemanticDeclarationAction.KIND, EditSemanticDeclarationAction)
+                 for (IStructuredActions structuredActions : ServiceLoader.load(IStructuredActions,
+                    KlighdDataManager.getClassLoader())) {
+                        for(kind : structuredActions.kindAndActions.keySet){
+                            addActionKind(kind, structuredActions.kindAndActions.get(kind))
+                        }
+                }
             ]
         ).registerTypeAdapter(Point2D, new Point2DTypeAdapter).registerTypeHierarchyAdapter(EObject,
             new EObjectSerializer).registerTypeAdapter(SynthesisOption, new SynthesisOptionSerializer)

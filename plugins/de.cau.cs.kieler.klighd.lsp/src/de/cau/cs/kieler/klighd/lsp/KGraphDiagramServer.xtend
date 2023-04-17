@@ -76,7 +76,9 @@ import org.eclipse.sprotty.SetModelAction
 import org.eclipse.sprotty.UpdateModelAction
 import org.eclipse.sprotty.xtext.LanguageAwareDiagramServer
 import org.eclipse.xtend.lib.annotations.Accessors
-import de.cau.cs.kieler.klighd.lsp.structuredProgramming.sccharts.ScchartStructuredProgrammingActionHandler
+import java.util.ServiceLoader
+import com.google.inject.Injector
+import de.cau.cs.kieler.klighd.lsp.structuredProgramming.IStructuredProgrammingActionHandler
 
 /**
  * Diagram server extension adding functionality to special actions needed for handling KGraphs.
@@ -85,15 +87,12 @@ import de.cau.cs.kieler.klighd.lsp.structuredProgramming.sccharts.ScchartStructu
  */
 class KGraphDiagramServer extends LanguageAwareDiagramServer {
     static val LOG = Logger.getLogger(KGraphDiagramServer)
-
+    
     @Inject
     protected LayeredInteractiveActionHandler constraintActionHandler
 
     @Inject
     protected RectpackingInteractiveActionHandler rectpackingActionHandler
-
-    @Inject
-    protected ScchartStructuredProgrammingActionHandler scchartsStructuredActionHandler
 
     @Inject
     protected KGraphDiagramState diagramState
@@ -242,6 +241,7 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
     override void accept(ActionMessage message) {
         try {
             val clientId = getClientId();
+            var structuredHandler = false
             if (clientId !== null && clientId.equals(message.getClientId())) {
                 val Action action = message.getAction();
                 if (action.getKind() === PerformActionAction.KIND) {
@@ -260,10 +260,17 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
                     constraintActionHandler.handle(action, clientId, this)
                 } else if (rectpackingActionHandler.canHandleAction(action.getKind)) {
                     rectpackingActionHandler.handle(action, clientId, this)
-                } else if (scchartsStructuredActionHandler.canHandleAction(action.getKind)) {
-                    scchartsStructuredActionHandler.handle(action, clientId, this)
                 } else {
-                    super.accept(message)
+                    for (IActionHandler structuredActionHandler : ServiceLoader.load(IActionHandler,
+                        KlighdDataManager.getClassLoader())) {
+                        if(structuredActionHandler.canHandleAction(action.kind)){                           
+                            structuredActionHandler.handle(action,clientId, this)
+                            structuredHandler = true
+                        }
+                    }
+                    if(!structuredHandler){
+                        super.accept(message)                    
+                    }
                 }
             }
         } catch (Exception e) {
