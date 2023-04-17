@@ -51,6 +51,7 @@ import java.util.Base64
 import java.util.Collection
 import java.util.List
 import java.util.Map
+import java.util.ServiceLoader
 import java.util.concurrent.CompletableFuture
 import org.apache.log4j.Logger
 import org.eclipse.core.runtime.Platform
@@ -76,9 +77,6 @@ import org.eclipse.sprotty.SetModelAction
 import org.eclipse.sprotty.UpdateModelAction
 import org.eclipse.sprotty.xtext.LanguageAwareDiagramServer
 import org.eclipse.xtend.lib.annotations.Accessors
-import java.util.ServiceLoader
-import com.google.inject.Injector
-import de.cau.cs.kieler.klighd.lsp.structuredProgramming.IStructuredProgrammingActionHandler
 
 /**
  * Diagram server extension adding functionality to special actions needed for handling KGraphs.
