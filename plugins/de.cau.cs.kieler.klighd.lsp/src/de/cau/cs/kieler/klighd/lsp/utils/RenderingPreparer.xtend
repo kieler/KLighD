@@ -154,8 +154,14 @@ final class RenderingPreparer {
                     KRendering: {
                         // every rendering needs an ID, generate it here
                         KRenderingIdGenerator.generateIdsRecursive(data)
-                        if (data.eContainer instanceof KGraphElement) {
-                            handleKRendering(data.eContainer as KGraphElement, data, null, null)
+                        if (data.eContainer instanceof KNode) {
+                            // Calculate the size and layout of the proxy first.
+                            val parent = data.eContainer as KNode
+                            val minSize = parent.getProperty(KlighdProperties.MINIMAL_NODE_SIZE)
+                            val bounds = PlacementUtil.basicEstimateSize(data, new Bounds(minSize.x, minSize.y))
+                            parent.width = bounds.width
+                            parent.height = bounds.height
+                            handleKRendering(parent, data, null, null)
                         }
                     }
                 }
