@@ -325,16 +325,16 @@ final class RenderingPreparer {
                 } else if (parentRendering instanceof KPolyline) {
                     // For a KPolyline as the parent rendering the points have to be extracted from the parent edge,
                     // if it is one or the point list of the polyline (preference to the parent's edge points).
-                    var List<KPoint> pointList = new ArrayList()
+                    var List<Point2D.Float> pointList = new ArrayList()
                     if (parent instanceof KEdge) {
                         val edge = parent as KEdge
                         
-                        pointList.add(edge.sourcePoint)
-                        pointList.addAll(edge.bendPoints)
-                        pointList.add(edge.targetPoint)
+                        pointList.add(new Point2D.Float(edge.sourcePoint.x, edge.sourcePoint.y))
+                        pointList.addAll(edge.bendPoints.map[ new Point2D.Float(it.x, it.y) ])
+                        pointList.add(new Point2D.Float(edge.targetPoint.x, edge.targetPoint.y))
                     } else if (!parentRendering.points.empty) {
                         pointList.addAll(parentRendering.points.map[position | 
-                            PlacementUtil.evaluateKPosition(position, parentBounds, true)])
+                            PlacementUtil.evaluateKPosition(position, parentBounds, true).toPoint2D])
                     } else {
                         throw new IllegalArgumentException("The parent element of the KPolyline is not a KEdge or " +
                             "the pointList of the KPolyline rendering is empty")

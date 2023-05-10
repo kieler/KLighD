@@ -4,17 +4,204 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>de.cau.cs.kieler.klighd</groupId>
-    <artifactId>plugins</artifactId>
+    <artifactId>parent</artifactId>
     <version>2.2.1-SNAPSHOT</version>
+    <relativePath>../../pom.xml</relativePath>
   </parent>
 
-  <groupId>de.cau.cs.kieler.klighd</groupId>
   <artifactId>de.cau.cs.kieler.klighd.lsp</artifactId>
-  <version>2.2.1-SNAPSHOT</version>
   <packaging>eclipse-plugin</packaging>
+
+
+  <dependencies>
+    <dependency>
+      <groupId>com.google.code.gson</groupId>
+      <artifactId>gson</artifactId>
+      <version>${gson-version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+      <version>${guava-version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.google.inject</groupId>
+      <artifactId>guice</artifactId>
+      <version>${guice-version}</version>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>de.cau.cs.kieler.kgraph.text</artifactId>
+      <version>${project.version}</version>
+      <type>jar</type>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>de.cau.cs.kieler.klighd</artifactId>
+      <version>${project.version}</version>
+      <type>jar</type>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>de.cau.cs.kieler.klighd.ide</artifactId>
+      <version>${project.version}</version>
+      <type>jar</type>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>de.cau.cs.kieler.klighd.kgraph</artifactId>
+      <version>${project.version}</version>
+      <type>jar</type>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>de.cau.cs.kieler.klighd.krendering</artifactId>
+      <version>${project.version}</version>
+      <type>jar</type>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>de.cau.cs.kieler.klighd.krendering.extensions</artifactId>
+      <version>${project.version}</version>
+      <type>jar</type>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>de.cau.cs.kieler.klighd.standalone</artifactId>
+      <version>${project.version}</version>
+      <type>jar</type>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.elk</groupId>
+      <artifactId>org.eclipse.elk.alg.layered</artifactId>
+      <version>${elk-version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.elk</groupId>
+      <artifactId>org.eclipse.elk.alg.rectpacking</artifactId>
+      <version>${elk-version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.elk</groupId>
+      <artifactId>org.eclipse.elk.core</artifactId>
+      <version>${elk-version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.elk</groupId>
+      <artifactId>org.eclipse.elk.graph</artifactId>
+      <version>${elk-version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.emf</groupId>
+      <artifactId>org.eclipse.emf.ecore</artifactId>
+      <version>${emf-ecore-version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.lsp4j</groupId>
+      <artifactId>org.eclipse.lsp4j</artifactId>
+      <version>${lsp4j-version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.lsp4j</groupId>
+      <artifactId>org.eclipse.lsp4j.generator</artifactId>
+      <version>${lsp4j-version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.lsp4j</groupId>
+      <artifactId>org.eclipse.lsp4j.jsonrpc</artifactId>
+      <version>${lsp4j-version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.sprotty</groupId>
+      <artifactId>org.eclipse.sprotty.xtext</artifactId>
+      <version>${sprotty-version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.sprotty</groupId>
+      <artifactId>org.eclipse.sprotty.layout</artifactId>
+      <version>${sprotty-version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.xtend</groupId>
+      <artifactId>org.eclipse.xtend.lib</artifactId>
+      <version>${xtend-version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.xtext</groupId>
+      <artifactId>org.eclipse.xtext</artifactId>
+      <version>${xtext-version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.xtext</groupId>
+      <artifactId>org.eclipse.xtext.ide</artifactId>
+      <version>${xtext-version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.xtext</groupId>
+      <artifactId>org.eclipse.xtext.util</artifactId>
+      <version>${xtext-version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.xtext</groupId>
+      <artifactId>org.eclipse.xtext.xbase.lib</artifactId>
+      <version>${xtext-version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>de.cau.cs.kieler.swt.mock</groupId>
+      <artifactId>org.eclipse.swt</artifactId>
+      <version>${swt-mock-version}</version>
+    </dependency>
+    <dependency>
+      <groupId>de.cau.cs.kieler.swt.mock</groupId>
+      <artifactId>org.eclipse.ui</artifactId>
+      <version>${swt-mock-version}</version>
+    </dependency>
+    <dependency>
+      <groupId>de.cau.cs.kieler.swt.mock</groupId>
+      <artifactId>org.eclipse.jface</artifactId>
+      <version>${swt-mock-version}</version>
+    </dependency>
+  </dependencies>
+
+  <dependencyManagement>
+    <dependencies>
+    <!-- Exclude SWT dependencies to be replaced by our mock. -->
+      <dependency>
+        <groupId>${project.groupId}</groupId>
+        <artifactId>de.cau.cs.kieler.klighd</artifactId>
+        <version>${project.version}</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.eclipse.platform</groupId>
+            <artifactId>org.eclipse.swt</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.platform</groupId>
+            <artifactId>org.eclipse.ui</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.platform</groupId>
+            <artifactId>org.eclipse.jface</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+      <!-- Some P2 dependency pulls a newer version, force it to keep the one we want. -->
+      <dependency>
+        <groupId>org.eclipse.emf</groupId>
+        <artifactId>org.eclipse.emf.ecore</artifactId>
+        <version>${emf-ecore-version}</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
   
   <build>
     <sourceDirectory>src</sourceDirectory>
+    <resources>
+      <resource>
+        <directory>src/resources</directory>
+      </resource>
+    </resources>
     <plugins>
       <!-- Compile Xtend code -->
       <plugin>

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>de.cau.cs.kieler.klighd</groupId>
+    <artifactId>parent</artifactId>
+    <version>2.2.1-SNAPSHOT</version>
+    <relativePath>../../pom.xml</relativePath>
+  </parent>
+
+  <!-- Use this version and replace the content of pom.xml for debugging the LS from Eclipse with the SWT mock instead
+  of real SWT artifacts. Also remove the Plug-in dependencies from the classpath.
+  To revert to the Eclipse version, replace the content of pom.xml with pom.eclipse.xml again and build it,
+  which should re-add Plug-in dependencies to the classpath.
+  
+  This is not necessary for the Maven build process, as dependency exclusion handles the resolved dependencies
+  correctly. The project launched from Eclipse will otherwise take the P2 dependencies, as it is an
+  "eclipse-plugin" with P2 dependencies. The Maven dependencies will be ignored by an Execution within Eclipse. 
+  
+  This file should be the same as the pom.eclipse.xml and the pom.xml, without the <packaging> tag and with
+  SWT mock deps. -->
+
+  <groupId>de.cau.cs.kieler.klighd</groupId>
+  <artifactId>de.cau.cs.kieler.klighd</artifactId>
+  <version>2.2.1-SNAPSHOT</version>
+
+  <dependencies>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>de.cau.cs.kieler.klighd.kgraph</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>de.cau.cs.kieler.klighd.krendering</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.platform</groupId>
+      <artifactId>org.eclipse.core.runtime</artifactId>
+      <version>${core-runtime-version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.elk</groupId>
+      <artifactId>org.eclipse.elk.core.service</artifactId>
+      <version>${elk-version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.eclipse.platform</groupId>
+          <artifactId>org.eclipse.ui.workbench</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.eclipse.platform</groupId>
+          <artifactId>org.eclipse.jface</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.emf</groupId>
+      <artifactId>org.eclipse.emf.ecore</artifactId>
+      <version>${emf-ecore-version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.emf</groupId>
+      <artifactId>org.eclipse.emf.edit</artifactId>
+      <version>${emf-edit-version}</version>
+    </dependency>
+    <dependency>
+      <groupId>de.cau.cs.kieler.swt.mock</groupId>
+      <artifactId>org.eclipse.jface</artifactId>
+      <version>${swt-mock-version}</version>
+    </dependency>
+    <dependency>
+      <groupId>de.cau.cs.kieler.swt.mock</groupId>
+      <artifactId>org.eclipse.swt</artifactId>
+      <version>${swt-mock-version}</version>
+    </dependency>
+    <dependency>
+      <groupId>de.cau.cs.kieler.swt.mock</groupId>
+      <artifactId>org.eclipse.ui</artifactId>
+      <version>${swt-mock-version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.google.inject</groupId>
+      <artifactId>guice</artifactId>
+      <version>${guice-version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+      <version>${guava-version}</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <sourceDirectory>src</sourceDirectory>
+  </build>
+</project>
