@@ -13,6 +13,10 @@
   <version>2.2.1-SNAPSHOT</version>
   <packaging>eclipse-plugin</packaging>
 
+  <name>KlighD incremental update extension</name>
+  <description>KlighD incremental update extension</description>
+  <url>https://github.com/kieler/KLighD</url>
+
   <dependencies>
     <dependency>
       <groupId>${project.groupId}</groupId>

@@ -14,6 +14,10 @@
   <version>2.2.1-SNAPSHOT</version>
   <packaging>eclipse-plugin</packaging>
 
+  <name>KIELER Textual KGraph Language</name>
+  <description>KIELER Textual KGraph Language</description>
+  <url>https://github.com/kieler/KLighD</url>
+
   <dependencies>
     <dependency>
       <groupId>org.eclipse.xtext</groupId>

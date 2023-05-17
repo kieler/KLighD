@@ -94,6 +94,39 @@
     <tycho.surefire.extra.vmargs></tycho.surefire.extra.vmargs>
   </properties>
 
+  <!-- Further required information for publishing on OSSRH -->
+  <name>KLighD</name>
+  <description>KIELER Lightweight Diagams</description>
+  <url>https://github.com/kieler/KLighD</url>
+
+  <licenses>
+    <license>
+      <name>EPL-2.0</name>
+      <url>https://www.eclipse.org/legal/epl-2.0/</url>
+    </license>
+  </licenses>
+
+  <developers>
+    <developer>
+      <name>Christian Schneider</name>
+      <email>christian.schneider@typefox.io</email>
+      <organization>TypeFox</organization>
+      <organizationUrl>https://www.typefox.io/</organizationUrl>
+    </developer>
+    <developer>
+      <name>Niklas Rentz</name>
+      <email>nre@informatik.uni-kiel.de</email>
+      <organization>Kiel University</organization>
+      <organizationUrl>https://www.rtsys.informatik.uni-kiel.de/</organizationUrl>
+    </developer>
+  </developers>
+
+  <scm>
+    <connection>scm:git:git://github.com:kieler/KLighD.git</connection>
+    <developerConnection>scm:git:ssh://github.com:kieler/KLighD.git</developerConnection>
+    <url>https://github.com/kieler/KLighD</url>
+  </scm>
+
   <profiles>
     <profile>
       <id>os-macosx</id>
@@ -105,6 +138,49 @@
       <properties>
         <tycho.surefire.extra.vmargs>-XstartOnFirstThread</tycho.surefire.extra.vmargs>
       </properties>
+    </profile>
+
+    <profile>
+      <id>release</id>
+      <build>
+        <plugins>
+          <!-- Configure the nexus server to deploy to. -->
+          <plugin>
+            <groupId>org.sonatype.plugins</groupId>
+            <artifactId>nexus-staging-maven-plugin</artifactId>
+            <version>1.6.13</version>
+            <extensions>true</extensions>
+            <configuration>
+              <serverId>ossrh</serverId>
+              <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
+              <autoReleaseAfterClose>false</autoReleaseAfterClose> <!-- this allows to manually inspect the staging repository: https://central.sonatype.org/publish/release/
+              trigger a release later with `mvn nexus-staging:release` or set to true if no inspection is wanted.-->
+            </configuration>
+          </plugin>
+
+          <!-- Sign all artifacts with GPG. -->
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-gpg-plugin</artifactId>
+            <version>3.1.0</version>
+            <executions>
+              <execution>
+                <id>sign-artifacts</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>sign</goal>
+                </goals>
+                <!-- TODO: This is the ID of a KIELER test GPG key. Remove this or replace it with the real KIELER key ID. -->
+                <configuration>
+                  <keyname>0x22B04AC3</keyname>
+                  <!-- TODO: is this needed? Does not seem to. -->
+                  <!-- <passphraseServerId>0x22B04AC3</passphraseServerId> -->
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
     </profile>
   </profiles>
 
@@ -176,6 +252,17 @@
       <url>file://klighd</url>
     </repository>
   </distributionManagement>
+  <!-- TODO: replace above with this for deploying to OSSRH -->
+  <!-- <distributionManagement>
+    <snapshotRepository>
+      <id>ossrh</id>
+      <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+    </snapshotRepository>
+    <repository>
+      <id>ossrh</id>
+      <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+    </repository>
+  </distributionManagement> -->
 
   <!-- Modify the build process to add Tycho and configure some utility plug-ins. -->
   <build>
@@ -315,6 +402,63 @@
                 <source>xtend-gen</source>
               </sources>
             </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- Build Javadoc jars -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>3.5.0</version>
+        <configuration>
+          <tags>
+          <!-- Let JavaDoc know about tags from Xtext -->
+            <tag>
+              <name>generated</name>
+              <placement>a</placement>
+              <head>EMF generated code</head>
+            </tag>
+            <tag>
+              <name>model</name>
+              <placement>a</placement>
+              <head>EMF model element</head>
+            </tag>
+            <tag>
+              <name>ordered</name>
+              <placement>a</placement>
+              <head>EMF ordered element</head>
+            </tag>
+            <!-- And some official tags that the maven-javdoc-plugin does somehow not recognize yet: -->
+            <tag>
+              <name>implSpec</name>
+              <placement>a</placement>
+              <head>Implementation Specification:</head>
+            </tag>
+            <!-- Tags used for Xtend's extension methods. -->
+            <tag>
+              <name>containsExtensions</name>
+              <placement>a</placement>
+              <head>This class contains Xtend extension methods.</head>
+            </tag>
+            <tag>
+              <name>extensionCategory</name>
+              <placement>a</placement>
+              <head>Extension Category:</head>
+            </tag>
+            <tag>
+              <name>example</name>
+              <placement>a</placement>
+              <head>Code Example:</head>
+            </tag>
+          </tags>
+        </configuration>
+        <executions>
+          <execution>
+            <id>attach-javadocs</id>
+            <goals>
+              <goal>jar</goal>
+            </goals>
           </execution>
         </executions>
       </plugin>

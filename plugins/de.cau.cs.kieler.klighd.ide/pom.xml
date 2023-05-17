@@ -14,6 +14,10 @@
   <version>2.2.1-SNAPSHOT</version>
   <packaging>eclipse-plugin</packaging>
 
+  <name>KIELER Lightweight Diagrams Ide Components</name>
+  <description>KIELER Lightweight Diagrams Ide Components</description>
+  <url>https://github.com/kieler/KLighD</url>
+
   <dependencies>
     <dependency>
       <groupId>${project.groupId}</groupId>

@@ -14,6 +14,10 @@
   <version>2.2.1-SNAPSHOT</version>
   <packaging>eclipse-plugin</packaging>
 
+  <name>KIELER KGraph Text Ide</name>
+  <description>KIELER KGraph Text Ide</description>
+  <url>https://github.com/kieler/KLighD</url>
+
   <dependencies>
     <!-- Avoid pulling a newer emf.ecore through dependencies of ELK, causing upper bound issues with emf.common deps.-->
     <dependency>

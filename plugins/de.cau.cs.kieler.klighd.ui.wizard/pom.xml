@@ -14,6 +14,10 @@
   <version>2.2.1-SNAPSHOT</version>
   <packaging>eclipse-plugin</packaging>
 
+  <name>KIELER Plug-In Wizard for KLighD-Based Projects</name>
+  <description>KIELER Plug-In Wizard for KLighD-Based Projects</description>
+  <url>https://github.com/kieler/KLighD</url>
+
   <build>
     <sourceDirectory>src</sourceDirectory>
     <plugins>
