@@ -117,18 +117,18 @@ public final class DiagramLayoutOptions {
 
     /**
      * Dedicated to Class-Diagram-like diagrams.<br>
-     * Requires the bundle <code>de.cau.cs.kieler.kiml.ogdf</code>.
+     * @deprecated
      */
     public static final String OGDF_PLANARIZATION = "de.cau.cs.kieler.kiml.ogdf.planarization";
     /**
      * Creates circular layouts.<br>
-     * Requires the bundle <code>de.cau.cs.kieler.kiml.ogdf</code>.
+     * @deprecated
      */
     public static final String OGDF_CIRCULAR = "de.cau.cs.kieler.kiml.ogdf.circular";
 
 
     /**
-     * @see CoreOptions#ADDITIONAL_PORT_SPACE;
+     * @see CoreOptions#SPACING_PORTS_SURROUNDING
      */
     public static final IProperty<ElkMargin> ADDITIONAL_PORT_SPACE =
             CoreOptions.SPACING_PORTS_SURROUNDING;
@@ -144,7 +144,7 @@ public final class DiagramLayoutOptions {
     public static final IProperty<EdgeRouting> EDGE_ROUTING = CoreOptions.EDGE_ROUTING;
 
     /**
-     * @see CoreOptions#LABEL_SPACING
+     * @see CoreOptions#SPACING_LABEL_LABEL
      */
     public static final IProperty<Double> LABEL_SPACING = CoreOptions.SPACING_LABEL_LABEL;
 
@@ -155,12 +155,12 @@ public final class DiagramLayoutOptions {
             CoreOptions.HIERARCHY_HANDLING;
 
     /**
-     * @see CoreOptions#OFFSET
+     * @see CoreOptions#PORT_BORDER_OFFSET
      */
     public static final IProperty<Double> OFFSET = CoreOptions.PORT_BORDER_OFFSET;
 
     /**
-     * @see CoreOptions#PORT_ALIGNMENT
+     * @see CoreOptions#PORT_ALIGNMENT_DEFAULT
      */
     public static final IProperty<PortAlignment> PORT_ALIGNMENT = CoreOptions.PORT_ALIGNMENT_DEFAULT;
 
@@ -202,13 +202,13 @@ public final class DiagramLayoutOptions {
     public static final IProperty<Integer> PORT_INDEX = CoreOptions.PORT_INDEX;
 
     /**
-     * @see CoreOptions#PORT_LABEL_PLACEMENT
+     * @see CoreOptions#PORT_LABELS_PLACEMENT
      */
     public static final IProperty<EnumSet<PortLabelPlacement>> PORT_LABEL_PLACEMENT =
             CoreOptions.PORT_LABELS_PLACEMENT;
 
     /**
-     * @see CoreOptions#PORT_SPACING
+     * @see CoreOptions#SPACING_PORT_PORT
      */
     public static final IProperty<Double> PORT_SPACING = CoreOptions.SPACING_PORT_PORT;
 
@@ -218,13 +218,13 @@ public final class DiagramLayoutOptions {
     public static final IProperty<PortSide> PORT_SIDE = CoreOptions.PORT_SIDE;
 
     /**
-     * @see CoreOptions#SIZE_CONSTRAINT
+     * @see CoreOptions#NODE_SIZE_CONSTRAINTS
      */
     public static final IProperty<EnumSet<SizeConstraint>> SIZE_CONSTRAINT =
             CoreOptions.NODE_SIZE_CONSTRAINTS;
 
     /**
-     * @see CoreOptions#SIZE_OPTIONS
+     * @see CoreOptions#NODE_SIZE_OPTIONS
      */
     public static final IProperty<EnumSet<SizeOptions>> SIZE_OPTIONS = CoreOptions.NODE_SIZE_OPTIONS;
 

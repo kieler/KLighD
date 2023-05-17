@@ -30,7 +30,7 @@ import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties;
 /**
  * Configuration object for {@link LightDiagramServices} methods
  * {@link LightDiagramServices#layoutDiagram(LightDiagramLayoutConfig)} and
- * {@link LightDiagramServices#updateDiagram(LightDiagramLayoutConfig). These configuration holders
+ * {@link LightDiagramServices#updateDiagram(LightDiagramLayoutConfig)}. These configuration holders
  * should be disposed of after use. For this reason there are no public getters available.
  * 
  * Example:
@@ -82,12 +82,12 @@ public class LightDiagramLayoutConfig {
 
     /**
      * The {@link KGraphElement} to focus on, if {@link ZoomStyle#ZOOM_TO_FOCUS} or
-     * {@link ZoomStyle#ZOOM_TO_STAY_SELECTED} is active.
+     * {@link ZoomStyle#ZOOM_TO_STAY} is active.
      */
     private KGraphElement focusElement;
     
     /**
-     * The previous position of an element before the layout, if {@link ZoomStyle#ZOOM_TO_STAY_SELECTED} is active.
+     * The previous position of an element before the layout, if {@link ZoomStyle#ZOOM_TO_STAY} is active.
      */
     private KVector previousPosition;
 
@@ -209,7 +209,7 @@ public class LightDiagramLayoutConfig {
      * 
      * @param theFocusNode
      *            the {@link KNode} to focus on if {@link ZoomStyle#ZOOM_TO_FOCUS} or
-     *            {@link ZoomStyle#ZOOM_TO_STAY_SELECTED} is set.
+     *            {@link ZoomStyle#ZOOM_TO_STAY} is set.
      * @return the configuration
      */
     public LightDiagramLayoutConfig focusNode(final KNode theFocusNode) {
@@ -222,7 +222,7 @@ public class LightDiagramLayoutConfig {
      * 
      * @param theFocusElement
      *            the {@link KGraphElement} to focus on if {@link ZoomStyle#ZOOM_TO_FOCUS} or
-     *            {@link ZoomStyle#ZOOM_TO_STAY_SELECTED} is set.
+     *            {@link ZoomStyle#ZOOM_TO_STAY} is set.
      * @return the configuration
      */
     public LightDiagramLayoutConfig focusElement(final KGraphElement theFocusElement) {
@@ -234,7 +234,7 @@ public class LightDiagramLayoutConfig {
      * Sets the previous position of an element before the layout run.
      * 
      * @param thePreviousPosition
-     *            the previous position of an element if {@link ZoomStyle#ZOOM_TO_STAY_SELECTED} is set.
+     *            the previous position of an element if {@link ZoomStyle#ZOOM_TO_STAY} is set.
      * @return the configuration
      */
     public LightDiagramLayoutConfig previousPosition(final KVector thePreviousPosition) {
@@ -333,7 +333,7 @@ public class LightDiagramLayoutConfig {
     }
 
     /**
-     * The node to focus on if {@link ZoomStyle#ZOOM_TO_FOCUS} or {@link ZoomStyle#ZOOM_TO_STAY_SELECTED} is
+     * The node to focus on if {@link ZoomStyle#ZOOM_TO_FOCUS} or {@link ZoomStyle#ZOOM_TO_STAY} is
      * configured.
      * 
      * @return the focusNode
@@ -347,7 +347,7 @@ public class LightDiagramLayoutConfig {
     }
 
     /**
-     * The element to focus on if {@link ZoomStyle#ZOOM_TO_FOCUS} or {@link ZoomStyle#ZOOM_TO_STAY_SELECTED} is
+     * The element to focus on if {@link ZoomStyle#ZOOM_TO_FOCUS} or {@link ZoomStyle#ZOOM_TO_STAY} is
      * configured.
      * 
      * @return the focusElement
@@ -357,7 +357,7 @@ public class LightDiagramLayoutConfig {
     }
     
     /**
-     * The previous position of an element if {@link ZoomStyle#ZOOM_TO_STAY_SELECTED} is configured.
+     * The previous position of an element if {@link ZoomStyle#ZOOM_TO_STAY} is configured.
      * @return
      */
     KVector previousPosition() {

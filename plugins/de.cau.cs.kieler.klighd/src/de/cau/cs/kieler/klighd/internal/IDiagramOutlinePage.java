@@ -19,7 +19,7 @@ package de.cau.cs.kieler.klighd.internal;
 import org.eclipse.ui.part.IPage;
 
 /**
- * An extension of {@link IContentOutlinePage} allowing to delay the visibility of the outline
+ * An extension of {@code org.eclipse.ui.views.contentoutline.IContentOutlinePage} allowing to delay the visibility of the outline
  * diagram until the diagram structures are initialized properly.<br>
  * This interface does not extend IContentOutlinePage as that one requires a dependency to the
  * bundle <code>org.eclipse.ui.views</code>. Since IContentOutlinePage is {@link IPage} +
@@ -33,9 +33,6 @@ import org.eclipse.ui.part.IPage;
  * to implement {@link IDiagramOutlinePage.Provider}.
  * 
  * @author chsch
- * 
- * @kieler.design proposed by chsch
- * @kieler.rating proposed yellow by chsch
  */
 public interface IDiagramOutlinePage extends IPage {
     

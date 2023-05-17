@@ -23,7 +23,7 @@ package de.cau.cs.kieler.klighd.krendering;
  * <!-- end-user-doc -->
  *
  * <!-- begin-model-doc -->
- * Creates a grid with <numColumns> inside the area defined by <topLeft> and <bottomRight>.
+ * Creates a grid with 'numColumns' inside the area defined by 'topLeft' and 'bottomRight'.
  * the grids number of rows depends on the numer of child elements to be placed. Each child is set to the first free column inside the grid. If no column is left, the next childElement is placed in the first column of a new row.
  * <!-- end-model-doc -->
  *

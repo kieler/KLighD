@@ -49,8 +49,6 @@ import de.cau.cs.kieler.klighd.krendering.KRendering;
  * ITransientValueService of the out-dated parse tree constructor.
  * 
  * @author chsch
- * @kieler.design proposed 2012-11-01 chsch
- * @kieler.rating proposed yellow 2012-11-01 chsch
  */
 public class KGraphResource extends LazyLinkingResource {
 
@@ -100,7 +98,7 @@ public class KGraphResource extends LazyLinkingResource {
         if (!this.getContents().isEmpty()) {
             EObject o = this.getContents().get(0);
             if (o instanceof KNode) {
-                // parse persisted key-value pairs using KIML's layout data service
+                // parse persisted key-value pairs using ELK layout data service
                 KGraphDataUtil.loadDataElements((KNode) o, HANDLED_TYPES_FILTER, ADDITIONAL_PROPERTIES);
                 // validate layout data and references and fill in missing data
                 KGraphUtil.validate((KNode) o);
@@ -124,7 +122,7 @@ public class KGraphResource extends LazyLinkingResource {
         KNode node = (KNode) EcoreUtil2.getRootContainer(refreshed);
         
         if (node != null) {
-            // parse persisted key-value pairs using KIML's layout data service
+            // parse persisted key-value pairs using ELK's layout data service
             KGraphDataUtil.loadDataElements(node, true, ADDITIONAL_PROPERTIES);
             // validate layout data and references and fill in missing data
             KGraphUtil.validate(node);

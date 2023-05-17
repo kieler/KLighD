@@ -28,7 +28,7 @@ import de.cau.cs.kieler.klighd.util.ModelingUtil;
  * This custom {@link IStyleModifier} is employed to correct the rotation of port figures that are
  * moved by the layouter, e.g. from the north to the west side of a node. Thus it is supposed to be
  * only associated to {@link de.cau.cs.kieler.klighd.krendering.KRendering KRenderings} describing the
- * figures of {@link KPorts}<br>
+ * figures of {@link KPort KPorts}<br>
  * <br>
  * It updates the {@link KRotation#getRotation() rotation} value of the {@link KRotation} style this
  * class is associated with (by entering {@link #ID} in the styles
@@ -38,9 +38,6 @@ import de.cau.cs.kieler.klighd.util.ModelingUtil;
  * This class is also registered in the plugin.xml.
  * 
  * @author chsch
- * 
- * @kieler.design proposed by chsch
- * @kieler.rating proposed yellow by chsch 
  */
 public class PortRotationModifier implements IStyleModifier {
 

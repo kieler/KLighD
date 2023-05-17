@@ -53,7 +53,7 @@ import de.cau.cs.kieler.klighd.ui.printing.PrintOptions;
  * {@code create*BlockArea(Composite)} methods.<br>
  * <br>
  * The implementation is inspired by
- * {@link org.eclipse.gmf.runtime.diagram.ui.printing.render.dialogs.JPSPrintDialog JPSPrintDialog}
+ * {@code org.eclipse.gmf.runtime.diagram.ui.printing.render.dialogs.JPSPrintDialog JPSPrintDialog}
  * of the GMF project.
  *
  * @author Christian Damus (cdamus)

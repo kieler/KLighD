@@ -50,9 +50,6 @@ import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
  * @author msp
  * @author chsch
  * @author cds
- * 
- * @kieler.design proposed by chsch
- * @kieler.rating proposed yellow by chsch 
  */
 public final class AnchorUtil {
 
@@ -87,7 +84,7 @@ public final class AnchorUtil {
      *            rectangle will be assumed.
      * @param scale
      *            the connected node's
-     *            {@link de.cau.cs.kieler.kiml.options.LayoutOptions#SCALE_FACTOR SCALE_FACTOR} for
+     *            {@link org.eclipse.elk.core.options.CoreOptions#SCALE_FACTOR SCALE_FACTOR} for
      *            adjusting corner sizes of {@link KRoundedRectangle KRoundedRectangles} and
      *            port positions
      * @return the point on the figure's border that is nearest to the given point, relative to the

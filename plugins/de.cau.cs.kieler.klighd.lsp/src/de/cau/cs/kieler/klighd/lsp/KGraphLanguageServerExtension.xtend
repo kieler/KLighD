@@ -543,8 +543,8 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
     
     /**
      * Provides read access to fully resolved resource, even if it is not an XTextResource.
-     * Similar to {@link LanguageServerImpl.access#doRead(String, Function)} just without full read access to the
-     * document.
+     * Similar to the {@code doRead(String, Function)} function in the private {@code LanguageServerImpl.access} field,
+     * just without full read access to the document.
      * 
      * @param path The path to the file that should be read.
      * @param work What should be done with the Resource.

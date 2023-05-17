@@ -47,13 +47,13 @@ import de.cau.cs.kieler.klighd.ui.printing.PrintOptions;
  * A PrintPreview to be displayed as a dialog tray, e.g. used by {@link KlighdPrintDialog}.<br>
  * <br>
  * The implementation is inspired by
- * {@link org.eclipse.gmf.runtime.diagram.ui.printing.internal.printpreview.PrintPreviewHelper
- * PrintPreviewHelper} of the GMF project, esp.
+ * {@code org.eclipse.gmf.runtime.diagram.ui.printing.internal.printpreview.PrintPreviewHelper}
+ * of the GMF project, esp.
  * <code>PrintPreviewHelper.updateCompositeForNumberOfColumns(int, int)</code>.<br>
  * <br>
  * Note: There's no method 'dispose()' or similar, since all required dispose routines are coupled
  * to the disposal of the employed SWT widgets. Their disposal is invoked by
- * {@link  org.eclipse.jface.dialogs.TrayDialog#closeTray() TrayDialog#closeTray()}, which is
+ * {@link org.eclipse.jface.dialogs.TrayDialog#closeTray() TrayDialog#closeTray()}, which is
  * inherited by our {@link KlighdPrintDialog}.
  *
  * @author csp

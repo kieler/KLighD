@@ -29,9 +29,6 @@ import de.cau.cs.kieler.klighd.util.ExpansionAwareLayoutOption;
  * 
  * @author mri
  * @author chsch
- * 
- * @kieler.design proposed by chsch
- * @kieler.rating proposed yellow by chsch
  */
 public class KlighdPlugin extends Plugin {
 

@@ -107,7 +107,7 @@ abstract class AbstractLsCreator implements ILsCreator {
      * @param ls the LangaugeServerImpl that is started. Usually the KGraphLSExtension, which is a DiagramLanguageServer
      * @param in InputStream for communication
      * @param out OutputStream for communication
-     * @param threadPool ExecutorService
+     * @param executorService ExecutorService
      * @param wrapper 
      * @param socket whether the LS is created for the socket or stdio case
      */

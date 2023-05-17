@@ -28,7 +28,7 @@ import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
  * methods.<br>
  * Those methods are not to be used by our PNode figures but by adapters of other 2D drawing
  * frameworks. It is currently used in
- * {@link de.cau.cs.kieler.klighd.piccolo.draw2d.GraphicsAdapter}, which is required for employing
+ * {@code de.cau.cs.kieler.klighd.piccolo.draw2d.GraphicsAdapter}, which is required for employing
  * custom Draw2d-based figures in KLighD-based diagrams. Those figures which save and restore the
  * canvas state before/after they draw their children.<br>
  * <br>

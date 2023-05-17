@@ -58,7 +58,7 @@ import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
  * </p>
  * 
  * 
- * <h3>Notes for Subclasses</h3>
+ * <strong>Notes for Subclasses</strong>
  * 
  * <p>
  * Subclasses only need to override {@link #doResizeLabel(ElkLabel, double)}. If behavior related
@@ -70,17 +70,17 @@ import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
  * </p>
  * 
  * 
- * <h3>Technical Remarks</h3>
+ * <strong>Technical Remarks</strong>
  * 
  * <p>
  * The label passed to this manager is the one from the layout ElkGraph fed to the layout algorithm,
  * not the one used in KLighD's view model. This means that we need to remember the label's new text
  * somewhere. We actually remember it by modifying the text of the layout graph's label. When
  * applying the layout results,
- * {@link de.cau.cs.kieler.klighd.internal.macrolayout.KlighdLayoutManager KlighdLayoutManager}
+ * {@link de.cau.cs.kieler.klighd.internal.macrolayout.KlighdDiagramLayoutConnector KlighdDiagramLayoutConnector}
  * checks if the layout graph's label has a {@link LabelManagementResult} attached to it that
  * indicates that a label manager was active. If so, it applies the label's new text to a property
- * set on the label ({@link KlighdLabelProperties#LABEL_TEXT_OVERRIDE}) which is then used as the
+ * set on the label ({@link KlighdOptions#LABELS_TEXT_OVERRIDE}) which is then used as the
  * label's text when displaying the label. Setting a proper {@link LabelManagementResult} on a given
  * label is something subclasses do not need to worry about. The necessary logic is completely
  * encapsulated in this base class.
@@ -145,7 +145,7 @@ public abstract class AbstractKlighdLabelManager implements ILabelManager {
     
     /**
      * Sets the mode this label manager should operate in. Note that if the mode is set to
-     * {@link Mode#FIXED_TARGET_WIDTH}, a fixed target width needs to be configured by calling
+     * {@link Mode#TARGET_WIDTH}, a fixed target width needs to be configured by calling
      * {@link #setFixedTargetWidth(double)}.This method call can be chained with other configuration
      * method calls.
      * 
@@ -170,7 +170,7 @@ public abstract class AbstractKlighdLabelManager implements ILabelManager {
     
     /**
      * Set the fixed non-negative target width to be used. The fixed target width is only meaningful
-     * if the label manager's state is {@link Mode#FIXED_TARGET_WIDTH} or {@link Mode#ALWAYS_ON}. In
+     * if the label manager's state is {@link Mode#TARGET_WIDTH} or {@link Mode#ALWAYS_ON}. In
      * the latter case, the fixed target width is used as the target width which label managers may
      * or may not pay attention to. To stop that from happening, call this method with a negative
      * value.

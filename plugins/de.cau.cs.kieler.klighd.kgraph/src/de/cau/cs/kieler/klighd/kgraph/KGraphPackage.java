@@ -1453,7 +1453,7 @@ public interface KGraphPackage extends EPackage {
 	 * <!-- end-user-doc -->
      * @return the meta object for class '<em>IProperty To Object Map</em>'.
      * @see java.util.Map.Entry
-     * @model keyDataType="de.cau.cs.kieler.klighd.kgraph.IProperty<?>" keyRequired="true" keyTransient="true"
+     * @model keyDataType="de.cau.cs.kieler.klighd.kgraph.IProperty&lt;?&gt;" keyRequired="true" keyTransient="true"
      *        valueDataType="org.eclipse.emf.ecore.EJavaObject" valueTransient="true"
      * @generated
      */

@@ -386,7 +386,7 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart,
      *
      * @return KLighD configuration or <code>null</code>.
      * 
-     * @see {@link KlighdSynthesisProperties} for more details
+     * @see KlighdSynthesisProperties
      */
     protected KlighdSynthesisProperties configureKlighdProperties() {
         return null;

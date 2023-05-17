@@ -30,9 +30,6 @@ import de.cau.cs.kieler.klighd.krendering.KStyle;
  * 
  * @author chsch
  * @author akoc
- * 
- * @kieler.design proposed by chsch
- * @kieler.rating proposed yellow by chsch
  */
 public interface IStyleModifier {
     

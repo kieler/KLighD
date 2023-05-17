@@ -47,9 +47,6 @@ import de.cau.cs.kieler.klighd.KlighdPlugin;
  * type is compatible to the other type.
  * 
  * @author chsch
- * 
- * @kieler.design proposed by chsch
- * @kieler.rating proposed yellow by chsch
  */
 public final class KCustomRenderingWrapperFactory {
     

@@ -58,8 +58,6 @@ import de.cau.cs.kieler.klighd.util.KlighdSemanticDiagramData;
  * Collection of KGraph/KRendering view model configuration methods.
  *
  * @author chsch
- *
- * @kieler.design proposed by chsch
  */
 public final class DiagramSyntheses {
 
@@ -81,7 +79,7 @@ public final class DiagramSyntheses {
      *            the element to set the layout option on
      * @param option
      *            the particular layout option, e.g. one of
-     *            {@link de.cau.cs.kieler.kiml.options.LayoutOptions LayoutOptions}
+     *            {@link org.eclipse.elk.core.options.CoreOptions CoreOptions}
      * @param value
      *            the option value
      * @return <code>element</code> allowing to perform multiple operations on it in one statement
@@ -103,7 +101,7 @@ public final class DiagramSyntheses {
      *            the element to set the layout option on
      * @param optionId
      *            the particular layout option's id, e.g. one of
-     *            {@link de.cau.cs.kieler.kiml.options.LayoutOptions LayoutOptions}
+     *            {@link org.eclipse.elk.core.options.CoreOptions CoreOptions}
      * @param value
      *            the option value. It is possible to pass string representations of EnumSets as
      *            well as any non-string property.
@@ -137,7 +135,7 @@ public final class DiagramSyntheses {
      *            the element to set the layout option on
      * @param optionValueMap
      *            a {@link Map} containing valid pairs of layout options, e.g. some of
-     *            {@link de.cau.cs.kieler.kiml.options.LayoutOptions LayoutOptions}, and
+     *            {@link org.eclipse.elk.core.options.CoreOptions CoreOptions}, and
      *            corresponding option values.
      * @return <code>element</code> allowing to perform multiple operations on it in one statement
      */
@@ -195,8 +193,8 @@ public final class DiagramSyntheses {
             return specifyLayoutOption(option, values);
         }
         throw new IllegalArgumentException("Could not resolve the layout option '" + layoutOptionId 
-                + "' using KIML's layout option service. "
-                + "Make sure the layout option exists and is properly registered with KIML.");
+                + "' using ELK's layout option service. "
+                + "Make sure the layout option exists and is properly registered with ELK.");
     }
     
     /**
@@ -210,7 +208,7 @@ public final class DiagramSyntheses {
      *            the node to set the layout option on
      * @param option
      *            the particular layout option, e.g. one of
-     *            {@link de.cau.cs.kieler.kiml.options.LayoutOptions LayoutOptions}
+     *            {@link org.eclipse.elk.core.options.CoreOptions CoreOptions}
      * @param collapsedValue
      *            the value in case <code>node</code> is collapsed
      * @param expandedValue
@@ -236,7 +234,7 @@ public final class DiagramSyntheses {
      *            the port to set the layout option on
      * @param option
      *            the particular layout option, e.g. one of
-     *            {@link de.cau.cs.kieler.kiml.options.LayoutOptions LayoutOptions}
+     *            {@link org.eclipse.elk.core.options.CoreOptions CoreOptions}
      * @param collapsedValue
      *            the value in case <code>port</code>'s container node is collapsed
      * @param expandedValue

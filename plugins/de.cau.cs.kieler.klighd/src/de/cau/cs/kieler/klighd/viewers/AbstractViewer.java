@@ -53,9 +53,6 @@ import de.cau.cs.kieler.klighd.krendering.KText;
  *
  * @author mri
  * @author chsch
- *
- * @kieler.design proposed by chsch
- * @kieler.rating proposed yellow by chsch
  */
 public abstract class AbstractViewer implements IViewer {
 

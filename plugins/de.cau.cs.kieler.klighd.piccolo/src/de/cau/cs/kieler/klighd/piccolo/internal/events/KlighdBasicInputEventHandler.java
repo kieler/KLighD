@@ -33,7 +33,7 @@ import edu.umd.cs.piccolo.event.PInputEvent;
  * is a {@link PDragSequenceEventHandler}.<br>
  * <br>
  * <b>Note:</b> <em>Right mouse button events are not forwarded to
- * {@link PDragSequenceEventHandlers}.</em>
+ * {@link PDragSequenceEventHandler PDragSequenceEventHandlers}.</em>
  *
  * @author chsch
  */

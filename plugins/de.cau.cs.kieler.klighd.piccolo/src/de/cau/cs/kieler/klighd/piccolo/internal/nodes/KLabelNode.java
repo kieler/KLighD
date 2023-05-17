@@ -33,7 +33,7 @@ public class KLabelNode extends KGraphElementNode<KLabel> {
     /** the property name for changes of the label's text. */
     public static final String PROPERTY_TEXT = "labelText";
 
-    /** the label rendering controller deployed to manage the rendering of {@link #label}. */
+    /** the label rendering controller deployed to manage the rendering of the label. */
     private KLabelRenderingController renderingController;
 
     /** the text. */

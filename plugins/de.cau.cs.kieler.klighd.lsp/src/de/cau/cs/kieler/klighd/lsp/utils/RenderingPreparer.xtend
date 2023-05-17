@@ -70,7 +70,7 @@ final class RenderingPreparer {
      * See {@link #setBounds} and {@link #setDecoration}.
      * In case of a {@link KRenderingRef} the bounds and decoration are persisted for every referenced rendering as a map
      * inside the properties of the reference.
-     * For example: <id of the rendering in the library: bounds in this instance>
+     * For example: &lt;id of the rendering in the library: bounds in this instance&gt;
      * Furthermore, for every rendering a unique ID is generated.
      * Finally, modifiable styles defined by the synthesis are processed for the rendering.
      * 

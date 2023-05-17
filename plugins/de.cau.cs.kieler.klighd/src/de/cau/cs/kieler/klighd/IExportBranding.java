@@ -23,7 +23,7 @@ import java.awt.geom.Rectangle2D;
  * Interface of diagram printout/export customizers allowing to add frames, author information, and
  * confidentiality remarks to diagram printouts and exports.<br>
  * <b>Note:</b> Implementations should not directly implement this interface but subclass
- * {@link de.cau.cs.kieler.klighd.piccolo.export.AbstractExportBranding} situated in the plug-in
+ * {@code de.cau.cs.kieler.klighd.piccolo.export.AbstractExportBranding} situated in the plug-in
  * {@code de.cau.cs.kieler.klighd.piccolo}.
  *
  * @author csp
@@ -111,7 +111,7 @@ public interface IExportBranding {
      * Setter being called by the runtime after initialization.
      *
      * @param viewContext
-     *            the {@link ViewContext} providing access to the diagram' view & source model
+     *            the {@link ViewContext} providing access to the diagram' view and source model
      */
     void setViewContext(ViewContext viewContext);
 

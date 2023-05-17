@@ -28,9 +28,6 @@ import de.cau.cs.kieler.klighd.kgraph.KNode;
  * currently selected element, if that child is a {@link KNode}.
  * 
  * @author chsch
- * 
- * @kieler.design proposed by chsch
- * @kieler.rating proposed yellow by chsch
  */
 public class ClipTowardsSelectionAction implements IAction {
 

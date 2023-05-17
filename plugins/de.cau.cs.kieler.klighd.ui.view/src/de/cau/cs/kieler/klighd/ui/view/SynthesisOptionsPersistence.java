@@ -26,8 +26,6 @@ import de.cau.cs.kieler.klighd.SynthesisOption;
  * Utility class for type-safe parsing and serializing of {@link SynthesisOption}s.
  * 
  * @author als
- * @kieler.design 2015-11-18 proposed
- * @kieler.rating 2015-11-18 proposed yellow
  */
 final class SynthesisOptionsPersistence {
 

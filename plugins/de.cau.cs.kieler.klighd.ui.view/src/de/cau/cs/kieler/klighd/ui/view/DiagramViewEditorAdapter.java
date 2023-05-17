@@ -29,9 +29,6 @@ import org.eclipse.ui.progress.UIJob;
  * Listens to the workspace and manages the editor for the associated {@link DiagramView}.
  * 
  * @author als
- * @kieler.design 2015-09-29 proposed
- * @kieler.rating 2015-09-29 proposed yellow
- * 
  */
 class DiagramViewEditorAdapter implements IPartListener2 {
 

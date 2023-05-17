@@ -42,10 +42,7 @@ import org.eclipse.emf.ecore.impl.EObjectImpl
 /**
  * Serializer that serializes any sub class of {@link EMapPropertyHolder} via reflection while ignoring fields of the
  * class EMapPropertyHolder itself and its super classes. It serializes only specific properties from
- * {@link EMapPropertyHolder#getProperties}, if they are the properties {@link KlighdProperties.CALCULATED_BOUNDS},
- * {@link KlighdProperties.CALCULATED_BOUNDS_MAP}, {@link KlighdProperties.CALCULATED_ROTATION}, or
- * {@link KlighdProperties.CALCULATED_ROTATION_MAP}.
- * These fields are needed for rendering on any client.
+ * {@link EMapPropertyHolder#getProperties}, see {@link KGraphMappingUtil#keepProperty}.
  * 
  * @author nre
  */

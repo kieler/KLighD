@@ -29,12 +29,9 @@ import de.cau.cs.kieler.klighd.krendering.KRenderingFactory;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
 
 /**
- * This class contains definitions of initial & default values.
+ * This class contains definitions of initial and default values.
  * 
  * @author chsch
- * 
- * @kieler.design proposed by chsch
- * @kieler.rating proposed yellow by chsch
  */
 public final class KlighdConstants {
 
@@ -98,7 +95,7 @@ public final class KlighdConstants {
 
     /**
      * Default display dot density, basically copied from
-     * {@link org.eclipse.swt.internal.DPIUtil#DPI_ZOOM_100()}.
+     * {@code org.eclipse.swt.internal.DPIUtil#DPI_ZOOM_100()}.
      * For more details checkout https://en.wikipedia.org/wiki/Dots_per_inch
      */
     @SuppressWarnings("restriction")

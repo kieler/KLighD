@@ -46,7 +46,7 @@ import org.eclipse.elk.graph.properties.IProperty
  * 
  * @author chsch
  * @author ssm
- * @autnor nre
+ * @author nre
  * 
  * @containsExtensions
  */

@@ -24,9 +24,6 @@ import de.cau.cs.kieler.klighd.IAction.ActionResult;
  *
  * @author uru
  * @author chsch
- *
- * @kieler.design proposed by chsch
- * @kieler.rating proposed yellow by chsch
  */
 public enum ZoomStyle {
 

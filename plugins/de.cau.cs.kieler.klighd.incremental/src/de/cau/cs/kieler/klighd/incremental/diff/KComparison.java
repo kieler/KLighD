@@ -29,7 +29,7 @@ import de.cau.cs.kieler.klighd.kgraph.KNode;
 import de.cau.cs.kieler.klighd.kgraph.KPort;
 
 /**
- * Recursively compares two {@link KNodes} via their corresponding {@link UIDAdapter}s.
+ * Recursively compares two {@link KNode KNodes} via their corresponding {@link UIDAdapter}s.
  * 
  * @author csp
  */

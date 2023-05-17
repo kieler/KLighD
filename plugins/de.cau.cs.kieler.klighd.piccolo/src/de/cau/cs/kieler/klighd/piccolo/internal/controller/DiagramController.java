@@ -115,8 +115,6 @@ import edu.umd.cs.piccolo.util.PBounds;
  *
  * @author mri
  * @author chsch
- * @kieler.design proposed by chsch
- * @kieler.rating proposed yellow by chsch
  */
 public class DiagramController {
 

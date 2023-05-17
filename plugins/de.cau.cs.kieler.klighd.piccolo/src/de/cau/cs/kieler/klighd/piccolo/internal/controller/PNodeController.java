@@ -562,7 +562,7 @@ public abstract class PNodeController<T extends IKlighdFigureNode> {
      *
      * @param color
      *            the {@link KColor} to be converted
-     * @return null if<code>color = null<code>, the related {@link RGB} otherwise
+     * @return null if <code>color = null</code>, the related {@link RGB} otherwise
      */
     public RGB toRGB(final KColor color) {
         final int maxValue = 255;
@@ -584,7 +584,7 @@ public abstract class PNodeController<T extends IKlighdFigureNode> {
      *
      * @param coloring
      *            the {@link KColoring} to be converted
-     * @return null if<code>color = null<code>, the related {@link RGB} otherwise
+     * @return null if <code>color = null</code>, the related {@link RGB} otherwise
      */
     public RGBGradient toRGBGradient(final KColoring<?> coloring) {
         if (coloring == null || coloring.getColor() == null || coloring.getTargetColor() == null) {

@@ -55,7 +55,7 @@ public class KlighdProjectCreator extends WorkspaceModifyOperation implements IP
     /**
      * Specialization in order to be able to configure the JRE container.
      * Implementation is quite ugly and shall be replaced once
-     * <a href=https://bugs.eclipse.org/bugs/show_bug.cgi?id=467391>
+     * <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=467391">
      * https://bugs.eclipse.org/bugs/show_bug.cgi?id=467391</a> is resolved.
      *  
      * @author chsch
