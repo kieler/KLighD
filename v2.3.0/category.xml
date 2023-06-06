@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+
+   <description name="KIELER Lightweight Diagrams" url="https://kieler.github.io/KLighD/">
+      Update site for KIELER Lightweight Diagrams.
+   </description>
+
+   <category-def name="kieler-klighd" label="KIELER Lightweight Diagrams">
+      <description>
+         KIELER (Kiel Integrated Environment for Layout Eclipse RichClient) components for generation and displayal of transient, lightweight diagrams.
+      </description>
+   </category-def>
+
+   <feature url="features/de.cau.cs.kieler.klighd.feature_2.3.0.v20230606.jar" id="de.cau.cs.kieler.klighd.feature" version="2.3.0.v20230606">
+      <category name="kieler-klighd"/>
+   </feature>
+   <feature url="features/de.cau.cs.kieler.klighd.feature.source_2.3.0.v20230606.jar" id="de.cau.cs.kieler.klighd.feature.source" version="2.3.0.v20230606">
+      <category name="kieler-klighd"/>
+   </feature>
+
+   <!-- <feature url="features/de.cau.cs.kieler.klighd.batik.feature_2.2.1.qualifier.jar" id="de.cau.cs.kieler.klighd.batik.feature" version="2.2.1.qualifier">
+      <category name="kieler-klighd"/>
+   </feature>
+   <feature url="features/de.cau.cs.kieler.klighd.batik.feature.source_2.2.1.qualifier.jar" id="de.cau.cs.kieler.klighd.batik.feature.source" version="2.2.1.qualifier">
+      <category name="kieler-klighd"/>
+   </feature> -->
+
+   <feature url="features/de.cau.cs.kieler.klighd.freehep.feature_2.3.0.v20230606.jar" id="de.cau.cs.kieler.klighd.freehep.feature" version="2.3.0.v20230606">
+      <category name="kieler-klighd"/>
+   </feature>
+   <feature url="features/de.cau.cs.kieler.klighd.freehep.feature.source_2.3.0.v20230606.jar" id="de.cau.cs.kieler.klighd.freehep.feature.source" version="2.3.0.v20230606">
+      <category name="kieler-klighd"/>
+   </feature>
+
+   <feature url="features/de.cau.cs.kieler.klighd.draw2d.feature_2.3.0.v20230606.jar" id="de.cau.cs.kieler.klighd.draw2d.feature" version="2.3.0.v20230606">
+      <category name="kieler-klighd"/>
+   </feature>
+   <feature url="features/de.cau.cs.kieler.klighd.draw2d.feature.source_2.3.0.v20230606.jar" id="de.cau.cs.kieler.klighd.draw2d.feature.source" version="2.3.0.v20230606">
+      <category name="kieler-klighd"/>
+   </feature>
+   <feature url="features/de.cau.cs.kieler.klighd.ide.feature_2.3.0.v20230606.jar" id="de.cau.cs.kieler.klighd.ide.feature" version="2.3.0.v20230606">
+      <category name="kieler-klighd"/>
+   </feature>
+   <feature url="features/de.cau.cs.kieler.klighd.ide.feature.source_2.3.0.v20230606.jar" id="de.cau.cs.kieler.klighd.ide.feature.source" version="2.3.0.v20230606">
+      <category name="kieler-klighd"/>
+   </feature>
+
+   <feature url="features/de.cau.cs.kieler.klighd.view.feature_2.3.0.v20230606.jar" id="de.cau.cs.kieler.klighd.view.feature" version="2.3.0.v20230606">
+      <category name="kieler-klighd"/>
+   </feature>
+   <feature url="features/de.cau.cs.kieler.klighd.view.feature.source_2.3.0.v20230606.jar" id="de.cau.cs.kieler.klighd.view.feature.source" version="2.3.0.v20230606">
+      <category name="kieler-klighd"/>
+   </feature>
+
+   <feature url="features/de.cau.cs.kieler.klighd.sdk.feature_2.3.0.v20230606.jar" id="de.cau.cs.kieler.klighd.sdk.feature" version="2.3.0.v20230606">
+      <category name="kieler-klighd"/>
+   </feature>
+   <feature url="features/de.cau.cs.kieler.klighd.sdk.feature.source_2.3.0.v20230606.jar" id="de.cau.cs.kieler.klighd.sdk.feature.source" version="2.3.0.v20230606">
+      <category name="kieler-klighd"/>
+   </feature>
+
+   <bundle id="de.cau.cs.kieler.klighd.standalone" version="2.3.0.v20230606"/>
+   <bundle id="de.cau.cs.kieler.klighd.lsp" version="2.3.0.v20230606"/>
+   <bundle id="de.cau.cs.kieler.klighd.lsp.source" version="2.3.0.v20230606"/>
+
+   <repository-reference location="https://download.eclipse.org/releases/2022-09/" enabled="true" />
+   <repository-reference location="https://download.eclipse.org/modeling/mdt/uml2/updates/5.4/" enabled="true" />
+   <repository-reference location="https://download.eclipse.org/elk/updates/releases/0.8.1/" enabled="true" />
+   <repository-reference location="https://download.eclipse.org/modeling/tmf/xtext/updates/releases/2.28.0/" enabled="true" />
+   <repository-reference location="https://xtext.github.io/download/updates/releases/2.1.1/" enabled="true" />
+   <repository-reference location="https://download.eclipse.org/tools/orbit/downloads/drops/R20220830213456/repository/" enabled="true" />
+   <repository-reference location="https://rtsys.informatik.uni-kiel.de/~kieler/updatesite/sprotty/0.9.0/" enabled="true" />
+</site>
