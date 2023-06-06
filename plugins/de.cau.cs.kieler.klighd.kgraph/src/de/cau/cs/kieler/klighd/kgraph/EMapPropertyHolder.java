@@ -48,7 +48,7 @@ import org.eclipse.emf.ecore.EObject;
 public interface EMapPropertyHolder extends EObject, IPropertyHolder {
 	/**
      * Returns the value of the '<em><b>Properties</b></em>' map.
-     * The key is of type {@link org.eclipse.elk.graph.properties.IProperty<?>},
+     * The key is of type {@link org.eclipse.elk.graph.properties.IProperty org.eclipse.elk.graph.properties.IProperty&lt;?&gt;},
      * and the value is of type {@link java.lang.Object},
      * <!-- begin-user-doc -->
 	 * <p>

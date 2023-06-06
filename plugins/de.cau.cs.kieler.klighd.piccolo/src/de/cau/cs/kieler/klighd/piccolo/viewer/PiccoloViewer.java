@@ -376,7 +376,7 @@ public class PiccoloViewer extends AbstractViewer implements ILayoutRecorder,
      * Convenience method simplifying the notification call.
      *
      * @see #notifyViewChangeListeners(ViewChangeType, KGraphElement, java.awt.geom.Rectangle2D,
-     *      float)
+     *      double)
      *
      * @param type
      *            the corresponding {@link ViewChangeType}

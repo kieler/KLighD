@@ -38,7 +38,7 @@ public interface ILayoutRecorder {
      * Starts to record layout changes in the model instead of instantly applying them to the
      * visualization.<br>
      * <br>
-     * Executing {@link #stopRecording(ZoomStyle, KNode, int)} applies all recorded layout changes.
+     * Executing {@link #stopRecording(ZoomStyle, KGraphElement, int)} applies all recorded layout changes.
      */
     void startRecording();
     

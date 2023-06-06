@@ -33,7 +33,7 @@ import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
 /**
  * <p>
  * Utility class for anchor point calculation of edges. This class provides two public methods. The
- * first, {@link #nearestBorderPoint(KVector, double, double, KRendering, float)}, takes a reference
+ * first, {@link #nearestBorderPoint(KVector, double, double, KRendering, double)}, takes a reference
  * point and returns the point on the figure's border that is nearest to that reference point. This
  * method is usually used to ensure that edges touch the border of nodes or ports they connect to.
  * The second, {@link #collideTowardsCenter(KVector, double, double, KRendering)}, calculates the

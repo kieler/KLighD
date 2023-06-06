@@ -45,7 +45,7 @@ import de.cau.cs.kieler.klighd.krendering.KText;
 /**
  * The abstract base class for KLighD diagram synthesis implementations.<br>
  * <br>
- * Implementations of this class have to implement {@link #transform(S)} that performs the mapping
+ * Implementations of this class have to implement {@code #transform(S)} that performs the mapping
  * of the semantic/business objects into instances of the KGraph/KRendering view model format.<br>
  * <br>
  * Some hints for the use with Xtend (www.xtend-lang.org):<br>

@@ -455,7 +455,7 @@ public interface KColoring<T extends KColoring<T>> extends KStyle {
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
      * Convenience setter for configuring the color gradient angle of <code>this</code> KColoring instance.<br>
-     * Simply redirects to {@link #setGradientAngle(int)} and returns <code>this</code> KColoring instance instead of <code>void</code>.
+     * Simply redirects to {@link #setGradientAngle(float)} and returns <code>this</code> KColoring instance instead of <code>void</code>.
      * @param angle the desired gradient angle in degrees.
      * <!-- end-model-doc -->
      * @model annotation="http://www.eclipse.org/emf/2002/GenModel body='@SuppressWarnings(\"unchecked\")\nfinal T it = (T) this;\nthis.setGradientAngle(angle);\nreturn it;'"

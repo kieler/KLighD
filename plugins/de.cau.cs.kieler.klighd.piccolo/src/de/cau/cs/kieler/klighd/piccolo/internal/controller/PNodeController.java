@@ -43,8 +43,8 @@ import de.cau.cs.kieler.klighd.piccolo.internal.util.Styles;
 import edu.umd.cs.piccolo.PNode;
 
 /**
- * The abstract base class for Piccolo node controllers.<br />
- * <br />
+ * The abstract base class for Piccolo node controllers.<br>
+ * <br>
  * A node controller is a facade on a specific Piccolo node, providing a generic interface to set
  * the bounds and other parameters of the node.
  *

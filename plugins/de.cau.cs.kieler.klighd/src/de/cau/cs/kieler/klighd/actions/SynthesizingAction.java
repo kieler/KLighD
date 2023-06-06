@@ -39,7 +39,7 @@ import de.cau.cs.kieler.klighd.krendering.ViewSynthesisShared;
  *    override execute(ActionContext context) {
  *        val clickedRendering = context.KRendering as KContainerRendering
  *        
- *        clickedRendering.addEllipse => [background = 'green'.color]
+ *        clickedRendering.addEllipse =&gt; [background = 'green'.color]
  *        
  *        return ActionResult.createResult(true)
  *    }

@@ -106,7 +106,7 @@ class KGraphDiagramUpdater extends DiagramUpdater {
     }
 
     /**
-     * Updates the layout for the diagramServer, see {@see #updateLayout(KGraphDiagramServer)}.
+     * Updates the layout for the diagramServer, see {@link #updateLayout(KGraphDiagramServer)}.
      * Does this later as a completable future.
      * 
      * @param diagramServer The diagram server that should update its layout.

@@ -843,7 +843,7 @@ public final class DiagramSyntheses {
     /**
      * Wraps the given rendering in a rendering displayed on selection and adds that to the given KGraph
      * element. The selection rendering is returned to be modified further and is the one obtained by
-     * calling {@link #wrapWithStandardNodeSelectionRendering(ren)}.
+     * calling {@link #wrapWithStandardNodeSelectionRendering(KRendering)}.
      *
      * @param kge the KGraph element the rendering should be added to.
      * @param ren the rendering to be wrapped. May be {@code null}, in which case no rendering is added

@@ -196,7 +196,7 @@ public final class KlighdProperties {
      * Property determining the upper visibility bound of a certain
      * {@link de.cau.cs.kieler.klighd.kgraph.KGraphElement KGraphElement} or
      * {@link de.cau.cs.kieler.klighd.krendering.KRendering KRendering} wrt. the diagram scale/zoom.
-     * If the diagram is shown in equal or higher scale (>=) than the determined value the
+     * If the diagram is shown in equal or higher scale (&gt;=) than the determined value the
      * corresponding diagram or figure element is not visible anymore.
      */
     public static final IProperty<Number> VISIBILITY_SCALE_UPPER_BOUND = new Property<Number>(

@@ -47,7 +47,7 @@ import de.cau.cs.kieler.klighd.util.KlighdPredicates;
  * following fallbacks are used:
  * <dl>
  * <dt>KNode</dt>
- * <dd>Concatenated labels.<br/>
+ * <dd>Concatenated labels.<br>
  * If no labels are present, the index in the parent's list of children.</dd>
  * <dt>KEdge</dt>
  * <dd>The source port's and target node's and port's ids, if applicable.</dd>
