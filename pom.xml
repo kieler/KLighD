@@ -63,7 +63,7 @@
     <jface-version>3.27.0</jface-version>
     <lsp4j-version>0.15.0</lsp4j-version>
     <sprotty-version>0.9.0</sprotty-version>
-    <swt-mock-version>0.1.0-SNAPSHOT</swt-mock-version> <!-- FIXME: remove -SNAPSHOT once it is released. -->
+    <swt-mock-version>0.1.0</swt-mock-version>
     <swt-version>3.121.0</swt-version>
     <tycho-version>2.7.3</tycho-version>
     <ui-workbench-version>3.126.0</ui-workbench-version>
@@ -170,11 +170,9 @@
                 <goals>
                   <goal>sign</goal>
                 </goals>
-                <!-- TODO: This is the ID of a KIELER test GPG key. Remove this or replace it with the real KIELER key ID. -->
+                <!-- This is the ID of the KIELER GPG key. -->
                 <configuration>
-                  <keyname>0x22B04AC3</keyname>
-                  <!-- TODO: is this needed? Does not seem to. -->
-                  <!-- <passphraseServerId>0x22B04AC3</passphraseServerId> -->
+                  <keyname>0x22228C2E</keyname>
                 </configuration>
               </execution>
             </executions>
@@ -183,19 +181,6 @@
       </build>
     </profile>
   </profiles>
-
-  <repositories>
-    <!-- <repository> TODO: remove this when edu.umd.cs.piccolo has found its way to Maven central.
-      <id>klighd</id>
-      <url>http://kieler.github.io/KLighD/repo</url>
-    </repository> -->
-    <!-- TODO: remove this again when artifacts have found a place on the internet. Temporary Maven repository hosting our artifacts. -->
-    <!-- <repository>
-      <id>rtsys</id>
-      <url>https://rtsys.informatik.uni-kiel.de/~kieler/files/repo/</url>
-    </repository> -->
-    <!-- TODO: add the repositories/management for releasing to maven central.-->
-  </repositories>
 
   <dependencyManagement>
     <dependencies>
@@ -252,7 +237,7 @@
       <url>file://klighd</url>
     </repository>
   </distributionManagement>
-  <!-- TODO: replace above with this for deploying to OSSRH -->
+  <!-- replace above with this for locally deploying the artifacts to OSSRH -->
   <!-- <distributionManagement>
     <snapshotRepository>
       <id>ossrh</id>
