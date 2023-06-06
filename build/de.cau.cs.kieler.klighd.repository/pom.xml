@@ -32,10 +32,16 @@
             which has been built meanwhile, doesn't work properly yet,
             see https://bugs.eclipse.org/bugs/show_bug.cgi?id=453708#c34
             so we have to stick to this plug-in -->
+      <!-- Update: With https://github.com/eclipse-tycho/tycho/pull/145 (Tycho v2.4.0) the aforementioned issue is fixed.
+            However, just dropping the <associateSites>...</associateSites> argument and keeping the web content
+            generation doesn't work here, as this mojo _always_ clears the existing repository references,
+            or crashes if 'content.jar' doesn't exist. Hence, just binding it to an early build phase doesn't work.
+            Therefore I submitted PR https://github.com/jbosstools/jbosstools-maven-plugins/pull/88
+            to fix that, let's see how the committers assess it. -->
       <plugin>
         <groupId>org.jboss.tools.tycho-plugins</groupId>
         <artifactId>repository-utils</artifactId>
-        <version>1.0.0</version>
+        <version>2.7.5</version>
         <executions>
           <execution>
             <id>generate-facade</id>
@@ -46,17 +52,17 @@
             <configuration>
               <associateSites>
                 <!-- Eclipse -->
-                <associateSite>https://download.eclipse.org/releases/2020-06/</associateSite>
+                <associateSite>https://download.eclipse.org/releases/2022-09/</associateSite>
                 <!-- UML2 Tools (Meta Model Implemenetation, ...) -->
                 <associateSite>https://download.eclipse.org/modeling/mdt/uml2/updates/5.4/</associateSite>
                 <!-- Eclipse Layout Kernel -->
                 <!-- associateSite>http://build.eclipse.org/modeling/elk/updates/nightly/</associateSite -->
                 <associateSite>https://download.eclipse.org/elk/updates/releases/0.8.1/</associateSite>>
                 <!-- Xtext -->
-                <associateSite>https://download.eclipse.org/modeling/tmf/xtext/updates/releases/2.22.0/</associateSite>>
+                <associateSite>https://download.eclipse.org/modeling/tmf/xtext/updates/releases/2.28.0/</associateSite>>
                 <associateSite>https://xtext.github.io/download/updates/releases/2.1.1/</associateSite>>
                 <!-- Eclipse Orbit for Google Guave, Apache Batik, ... -->
-                <associateSite>https://download.eclipse.org/tools/orbit/downloads/drops/R20200529191137/repository/</associateSite>
+                <associateSite>https://download.eclipse.org/tools/orbit/downloads/drops/R20220830213456/repository/</associateSite>
                 <!-- Sprotty ... -->
                 <associateSite>https://rtsys.informatik.uni-kiel.de/~kieler/updatesite/sprotty/0.9.0/</associateSite>
               </associateSites>

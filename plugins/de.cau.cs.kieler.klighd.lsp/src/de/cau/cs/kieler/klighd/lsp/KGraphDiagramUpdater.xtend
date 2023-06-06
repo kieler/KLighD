@@ -188,8 +188,7 @@ class KGraphDiagramUpdater extends DiagramUpdater {
      * @param model The new model that should be shown for the server.
      * @param uri The identifying URI to access the diagram state maps.
      */
-    synchronized def void prepareModel(KGraphDiagramServer server, Object model, String uri) {
-
+    def void prepareModel(KGraphDiagramServer server, Object model, String uri) {
         val properties = new KlighdSynthesisProperties()
         var SprottyViewer viewer = null
         var String synthesisId
@@ -285,7 +284,7 @@ class KGraphDiagramUpdater extends DiagramUpdater {
      * @param cancelIndicator The {@link CancelIndicator} used to tell the diagram translation to stop.
      * @return The generated SGraph
      */
-    synchronized def SGraph createModel(ViewContext viewContext, String uri, CancelIndicator cancelIndicator) {
+    def SGraph createModel(ViewContext viewContext, String uri, CancelIndicator cancelIndicator) {
         // Generate the SGraph model from the KGraph model and store every later relevant part in the
         // diagram state.
         
@@ -303,9 +302,10 @@ class KGraphDiagramUpdater extends DiagramUpdater {
         var diagramGenerator = incrementalDiagramGenerator
             ? incrementalDiagramGeneratorProvider.get
             : diagramGeneratorProvider.get
-        
-        val sGraph = diagramGenerator.toSGraph(viewContext.viewModel, uri, cancelIndicator)
-        
+        var SGraph sGraph = null;
+        synchronized (diagramState) {
+            sGraph = diagramGenerator.toSGraph(viewContext.viewModel, uri, cancelIndicator)
+        }
         if (incrementalDiagramGenerator) {
             val requestManager = new KGraphDiagramPieceRequestManager(diagramGenerator as KGraphIncrementalDiagramGenerator)
             synchronized (diagramState) {

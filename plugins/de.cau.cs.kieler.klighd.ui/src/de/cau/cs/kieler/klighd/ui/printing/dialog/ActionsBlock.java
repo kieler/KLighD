@@ -28,8 +28,7 @@
 package de.cau.cs.kieler.klighd.ui.printing.dialog;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -80,29 +79,22 @@ final class ActionsBlock {
 
         printPreview.setText(KlighdUIPrintingMessages.PrintDialog_Button_PrintPreview + arrows);
         printPreview.setEnabled(previewEnabled);
-        printPreview.addSelectionListener(new SelectionAdapter() {
+        printPreview.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+            final PrintPreviewTray tray = printDialog.getTray();
 
-            /**
-             * {@inheritDoc}
-             */
-            @Override
-            public void widgetSelected(final SelectionEvent e) {
-                final PrintPreviewTray tray = printDialog.getTray();
+            if (tray != null) {
+                printDialog.closeTray();
+                printPreview.setText(
+                        KlighdUIPrintingMessages.PrintDialog_Button_PrintPreview + OPEN_ARROWS);
+                DiagramPrintOptions.setInitiallyShowPreview(false);
 
-                if (tray != null) {
-                    printDialog.closeTray();
-                    printPreview.setText(
-                            KlighdUIPrintingMessages.PrintDialog_Button_PrintPreview + OPEN_ARROWS);
-                    DiagramPrintOptions.setInitiallyShowPreview(false);
-
-                } else {
-                    printDialog.openPreview();
-                    printPreview.setText(
-                            KlighdUIPrintingMessages.PrintDialog_Button_PrintPreview + CLOSE_ARROWS);
-                    DiagramPrintOptions.setInitiallyShowPreview(true);
-                }
+            } else {
+                printDialog.openPreview();
+                printPreview.setText(
+                        KlighdUIPrintingMessages.PrintDialog_Button_PrintPreview + CLOSE_ARROWS);
+                DiagramPrintOptions.setInitiallyShowPreview(true);
             }
-        });
+        }));
 
         return printPreview;
     }

@@ -32,18 +32,15 @@ import org.eclipse.core.databinding.beans.typed.BeanProperties;
 import org.eclipse.core.databinding.observable.Realm;
 import org.eclipse.core.databinding.observable.value.ComputedValue;
 import org.eclipse.jface.databinding.swt.ISWTObservableValue;
-import org.eclipse.jface.databinding.swt.WidgetProperties;
+import org.eclipse.jface.databinding.swt.typed.WidgetProperties;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.printing.PrintDialog;
 import org.eclipse.swt.printing.PrinterData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Listener;
 
 import de.cau.cs.kieler.klighd.ui.printing.KlighdUIPrintingMessages;
 import de.cau.cs.kieler.klighd.ui.printing.PrintOptions;
@@ -105,7 +102,7 @@ final class PrinterBlock {
             protected String calculate() {
                 final PrinterData data = 
                         (PrinterData) BeanProperties
-                        .value( options.getClass().asSubclass(PrintOptions.class), PrintOptions.PROPERTY_PRINTER_DATA)
+                        .value( PrintOptions.class, PrintOptions.PROPERTY_PRINTER_DATA)
                         .observe(realm, options)
                         .getValue();
                 if (data.printToFile) {
@@ -123,31 +120,22 @@ final class PrinterBlock {
                 DialogUtil.button(result, KlighdUIPrintingMessages.PrintDialog_PrinterSettings);
         propertiesButton.setEnabled(true);
 
-        propertiesButton.addSelectionListener(new SelectionAdapter() {
+        propertiesButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+            // Open the system's native print dialog to gather printer specific settings.
+            // If no valid setting are returned (e.g. the user cancels the dialog),
+            // nothing is changed.
+            final PrintDialog systemPrintDialog = printDialog.getNativePrintDialog();
+            systemPrintDialog.setPrinterData(options.getPrinterData());
 
-            @Override
-            public void widgetSelected(final SelectionEvent e) {
-                // Open the system's native print dialog to gather printer specific settings.
-                // If no valid setting are returned (e.g. the user cancels the dialog),
-                //  nothing is changed.
-                final PrintDialog systemPrintDialog = printDialog.getNativePrintDialog();
-                systemPrintDialog.setPrinterData(options.getPrinterData());
-
-                final PrinterData data = systemPrintDialog.open();
-                if (data != null) {
-                    options.setPrinterData(data);
-                }
+            final PrinterData data = systemPrintDialog.open();
+            if (data != null) {
+                options.setPrinterData(data);
             }
-        });
+        }));
 
-        result.addListener(SWT.Dispose, new Listener() {
-
-            public void handleEvent(final Event event) {
-                // while the SWTObservableValues are disposed while disposing the corresponding widgets
-                //  the ComputedValue should be disposed explicitly
-                computedValue.dispose();
-            }
-        });
+        // while the SWTObservableValues are disposed while disposing the corresponding widgets
+        // the ComputedValue should be disposed explicitly
+        result.addListener(SWT.Dispose, event -> computedValue.dispose());
 
         return result;
     }
