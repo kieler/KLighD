@@ -26,9 +26,6 @@ import de.cau.cs.kieler.klighd.KlighdPreferences;
  *
  * @author cds
  * @author chsch
- *
- * @kieler.design proposed by chsch
- * @kieler.rating proposed yellow by chsch
  */
 public class PreferenceInitializer extends AbstractPreferenceInitializer {
 

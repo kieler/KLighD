@@ -51,7 +51,7 @@ public class FadeNodeInActivity extends PInterpolatingActivity implements IStart
      *            bounds (and the scale factor didn't change); that is required if <code>node</code>
      *            is set invisible while re-adding to the diagram (see
      *            {@link de.cau.cs.kieler.klighd.piccolo.internal.controller.DiagramController#addNode(
-     *            de.cau.cs.kieler.klighd.piccolo.internal.nodes.INode,
+     *            de.cau.cs.kieler.klighd.piccolo.internal.nodes.KNodeAbstractNode,
      *            de.cau.cs.kieler.klighd.kgraph.KNode, boolean) DiagramController#addNode(...)}),
      *            e.g. after expanding the corresponding parent
      *            {@link de.cau.cs.kieler.klighd.piccolo.internal.nodes.KChildAreaNode

@@ -61,7 +61,7 @@ import de.cau.cs.kieler.klighd.krendering.KTopPosition;
  * </p>
  * 
  * 
- * <h3>Layout Mode</h3>
+ * <strong>Layout Mode</strong>
  * 
  * <p>
  * This setting decides whether the resulting label renderings should only work with horizontal or
@@ -76,7 +76,7 @@ import de.cau.cs.kieler.klighd.krendering.KTopPosition;
  * </p>
  * 
  * 
- * <h3>Decorator Rendering Providers</h3>
+ * <strong>Decorator Rendering Providers</strong>
  * 
  * <p>
  * Inline labels will usually require some sort of special rendering since simply displaying its
@@ -92,7 +92,7 @@ import de.cau.cs.kieler.klighd.krendering.KTopPosition;
  * </p>
  * 
  * 
- * <h3>Text Rendering Provider</h3>
+ * <strong>Text Rendering Provider</strong>
  * 
  * <p>
  * The label text must be rendered using a {@link KText}, which is provided by a text rendering

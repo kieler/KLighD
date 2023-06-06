@@ -4,8 +4,9 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>de.cau.cs.kieler.klighd</groupId>
-    <artifactId>plugins</artifactId>
+    <artifactId>parent</artifactId>
     <version>2.2.1-SNAPSHOT</version>
+    <relativePath>../../pom.xml</relativePath>
   </parent>
 
   <groupId>de.cau.cs.kieler.klighd</groupId>
@@ -13,25 +14,44 @@
   <version>2.2.1-SNAPSHOT</version>
   <packaging>eclipse-plugin</packaging>
 
+  <name>KIELER Lightweight Diagrams Ide Components</name>
+  <description>KIELER Lightweight Diagrams Ide Components</description>
+  <url>https://github.com/kieler/KLighD</url>
+
+  <dependencies>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>de.cau.cs.kieler.klighd</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>de.cau.cs.kieler.klighd.kgraph</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.xtext</groupId>
+      <artifactId>org.eclipse.xtext.xbase</artifactId>
+      <version>${xtext-version}</version>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>de.cau.cs.kieler.klighd.krendering</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.elk</groupId>
+      <artifactId>org.eclipse.elk.alg.layered</artifactId>
+      <version>${elk-version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.elk</groupId>
+      <artifactId>org.eclipse.elk.core</artifactId>
+      <version>${elk-version}</version>
+    </dependency>
+  </dependencies>
+
   <build>
     <sourceDirectory>src</sourceDirectory>
-    <plugins>
-      <plugin>
-        <groupId>org.eclipse.tycho</groupId>
-        <artifactId>target-platform-configuration</artifactId>
-        <configuration>
-          <dependency-resolution>
-            <!-- Ignore the optional dependency to kiml.ui while computing the classpath!
-                 That dependency has been introduced because of registration of the
-                 customized handler for "de.cau.cs.kieler.kiml.ui.command.layout".
-                 Actually the dependency is not required at runtime but IMO
-                 it is justified because of reference of the command id.
-                 Note that this can't be kept in case further optional dependencies
-                 are added that need to be resolved for compiling all classes. -->
-            <optionalDependencies>ignore</optionalDependencies>
-          </dependency-resolution>
-        </configuration>
-      </plugin>
-    </plugins>
   </build>
 </project>

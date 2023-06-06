@@ -19,6 +19,8 @@ package de.cau.cs.kieler.klighd.lsp.launch
 import com.google.common.base.Throwables
 import com.google.gson.GsonBuilder
 import com.google.inject.Injector
+import com.google.inject.name.Names
+import de.cau.cs.kieler.kgraph.text.services.KGraphGrammarAccess
 import de.cau.cs.kieler.klighd.IKlighdStatusManager
 import de.cau.cs.kieler.klighd.Klighd
 import de.cau.cs.kieler.klighd.KlighdDataManager
@@ -29,11 +31,6 @@ import de.cau.cs.kieler.klighd.lsp.LSPUtil
 import de.cau.cs.kieler.klighd.lsp.SprottyViewer
 import de.cau.cs.kieler.klighd.lsp.gson_utils.KGraphTypeAdapterUtil
 import de.cau.cs.kieler.klighd.standalone.KlighdStandaloneSetup
-import java.awt.Font
-import java.awt.FontFormatException
-import java.awt.GraphicsEnvironment
-import java.io.File
-import java.io.IOException
 import java.io.InputStream
 import java.io.OutputStream
 import java.util.Collection
@@ -48,6 +45,8 @@ import org.eclipse.lsp4j.jsonrpc.Launcher.Builder
 import org.eclipse.lsp4j.jsonrpc.MessageConsumer
 import org.eclipse.lsp4j.services.LanguageClient
 import org.eclipse.sprotty.xtext.launch.DiagramServerLauncher.LanguageClientAppender
+import org.eclipse.xtext.Constants
+import org.eclipse.xtext.IGrammarAccess
 import org.eclipse.xtext.ide.server.ILanguageServerExtension
 import org.eclipse.xtext.ide.server.IMultiRootWorkspaceConfigFactory
 import org.eclipse.xtext.ide.server.LanguageServerImpl
@@ -90,6 +89,9 @@ abstract class AbstractLsCreator implements ILsCreator {
     
                 // the WorkspaceConfigFactory is overridden to disable the creation of a folder with Xtext nature.
                 bind(IMultiRootWorkspaceConfigFactory).to(BasicProjectWorkspaceConfigFactory)
+                
+                bind(IGrammarAccess).to(KGraphGrammarAccess)
+                bind(String).annotatedWith(Names.named(Constants.LANGUAGE_NAME)).toInstance("de.cau.cs.kieler.kgraph.text.KGraph");  
             ],
             // Diagram related bindings
             new KGraphDiagramModule(),
@@ -105,7 +107,7 @@ abstract class AbstractLsCreator implements ILsCreator {
      * @param ls the LangaugeServerImpl that is started. Usually the KGraphLSExtension, which is a DiagramLanguageServer
      * @param in InputStream for communication
      * @param out OutputStream for communication
-     * @param threadPool ExecutorService
+     * @param executorService ExecutorService
      * @param wrapper 
      * @param socket whether the LS is created for the socket or stdio case
      */

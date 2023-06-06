@@ -518,7 +518,7 @@ public final class NodeUtil {
 
     /**
      * Reveals the closest common ancestor {@link IKNodeNode} of {@code node0} and {@code node1},
-     * assuming each of {@code node0} and {@code1} is contained in the diagram's figure tree
+     * assuming each of {@code node0} and {@code node1} is contained in the diagram's figure tree
      * if it is unequal to {@code null}.
      *
      * @param node0

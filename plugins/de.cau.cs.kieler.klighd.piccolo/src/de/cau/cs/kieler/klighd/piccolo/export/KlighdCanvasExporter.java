@@ -29,7 +29,7 @@ import de.cau.cs.kieler.klighd.piccolo.internal.KlighdCanvas;
  * a {@link KlighdCanvas}.<br>
  * <br>
  * Thus, it treats the given {@link Control} as a {@link KlighdCanvas} and redirects to
- * {@link #export(KlighdExportInfo))}, which must be implemented by concrete subclasses.
+ * {@link #export(KlighdCanvas, de.cau.cs.kieler.klighd.IDiagramExporter.ExportData)}, which must be implemented by concrete subclasses.
  *
  * @author chsch
  */
@@ -58,7 +58,7 @@ public abstract class KlighdCanvasExporter extends AbstractDiagramExporter imple
     }
 
     /**
-     * Exports the diagram depicted by the given <code>control</code>.
+     * Exports the diagram depicted by the given <code>canvas</code>.
      *
      * @param canvas
      *            the canvas to export
@@ -68,7 +68,7 @@ public abstract class KlighdCanvasExporter extends AbstractDiagramExporter imple
      * @return {@link org.eclipse.core.runtime.Status#OK_STATUS Status#OK_STATUS} if the diagram
      *         export went successfully, an {@link IStatus} providing information on the failure
      *         otherwise.
-     * @see IDiagramExporter#export(de.cau.cs.kieler.klighd.IDiagramExporter.ExportData, Control)
+     * @see IDiagramExporter#export(Control, de.cau.cs.kieler.klighd.IDiagramExporter.ExportData)
      */
     public abstract IStatus export(KlighdCanvas canvas, ExportData data);
 }

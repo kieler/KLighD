@@ -308,7 +308,7 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="KGridPlacement" eSuperTypes="#//KPlacement">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-      <details key="documentation" value="Creates a grid with &lt;numColumns> inside the area defined by &lt;topLeft> and &lt;bottomRight>.&#xD;&#xA;the grids number of rows depends on the numer of child elements to be placed. Each child is set to the first free column inside the grid. If no column is left, the next childElement is placed in the first column of a new row."/>
+      <details key="documentation" value="Creates a grid with 'numColumns' inside the area defined by 'topLeft' and 'bottomRight'.&#xD;&#xA;the grids number of rows depends on the numer of child elements to be placed. Each child is set to the first free column inside the grid. If no column is left, the next childElement is placed in the first column of a new row."/>
     </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="numColumns" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt">
@@ -353,13 +353,13 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="flexibleWidth" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBooleanObject"
         defaultValueLiteral="true">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="documentation" value="This flag marks the child rendering to cover exactly the required width obtained by means of the minimal size estimation, except for width increases by the macro layout, i.e. by KIML, e.g. in a single column grid.&#xA;If false, more space may be assigned to the related child rendering, if necessary.&lt;br>&#xA;&lt;br>&#xA;This flag is the replacement of the concrete 'maxCellWidth' value and not examined by KLighD, yet."/>
+        <details key="documentation" value="This flag marks the child rendering to cover exactly the required width obtained by means of the minimal size estimation, except for width increases by the macro layout, i.e. by ELK, e.g. in a single column grid.&#xA;If false, more space may be assigned to the related child rendering, if necessary.&lt;br>&#xA;&lt;br>&#xA;This flag is the replacement of the concrete 'maxCellWidth' value and not examined by KLighD, yet."/>
       </eAnnotations>
     </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="flexibleHeight" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBooleanObject"
         defaultValueLiteral="true">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="documentation" value="This flag marks the child rendering to cover exactly the required height obtained by means of the minimal size estimation, except for height increases by the macro layout, i.e. by KIML, e.g. in a single row grid.&#xA;If false, more space may be assigned to the related child rendering, if necessary.&lt;br>&#xA;&lt;br>&#xA;This flag is the replacement of the concrete 'maxCellHeight' value and not examined by KLighD, yet."/>
+        <details key="documentation" value="This flag marks the child rendering to cover exactly the required height obtained by means of the minimal size estimation, except for height increases by the macro layout, i.e. by ELK, e.g. in a single row grid.&#xA;If false, more space may be assigned to the related child rendering, if necessary.&lt;br>&#xA;&lt;br>&#xA;This flag is the replacement of the concrete 'maxCellHeight' value and not examined by KLighD, yet."/>
       </eAnnotations>
     </eStructuralFeatures>
   </eClassifiers>
@@ -688,7 +688,7 @@
     <eOperations name="setColor">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="body" value="@SuppressWarnings(&quot;unchecked&quot;)&#xA;final T it = (T) this;&#xA;return de.cau.cs.kieler.klighd.krendering.KRenderingUtil.setColor(it, red, green, blue, alpha);"/>
-        <details key="documentation" value="Convenience setter for configuring the color &amp; alpha or gradient source color &amp; source alpha of &lt;code>this&lt;/code> KColoring instance.&lt;br>&#xA;Redirects to {@link de.cau.cs.kieler.klighd.krendering.KRenderingUtil#setColor(KColoring, int, int, int, int) KRenderingUtil.setColor(KColoring, int, int, int, int)}."/>
+        <details key="documentation" value="Convenience setter for configuring the color and alpha or gradient source color and source alpha of &lt;code>this&lt;/code> KColoring instance.&lt;br>&#xA;Redirects to {@link de.cau.cs.kieler.klighd.krendering.KRenderingUtil#setColor(KColoring, int, int, int, int) KRenderingUtil.setColor(KColoring, int, int, int, int)}."/>
       </eAnnotations>
       <eGenericType eTypeParameter="#//KColoring/T"/>
       <eParameters name="red" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt">
@@ -715,7 +715,7 @@
     <eOperations name="setColor">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="body" value="@SuppressWarnings(&quot;unchecked&quot;)&#xA;final T it = (T) this;&#xA;return de.cau.cs.kieler.klighd.krendering.KRenderingUtil.setColor(it, color, alpha);"/>
-        <details key="documentation" value="Convenience setter for configuring the color &amp; alpha or gradient source color &amp; source alpha of &lt;code>this&lt;/code> KColoring instance.&lt;br>&#xA;Redirects to {@link de.cau.cs.kieler.klighd.krendering.KRenderingUtil#setColor(KColoring, Colors, int) KRenderingUtil.setColor(KColoring, Colors, int)}."/>
+        <details key="documentation" value="Convenience setter for configuring the color and alpha or gradient source color and source alpha of &lt;code>this&lt;/code> KColoring instance.&lt;br>&#xA;Redirects to {@link de.cau.cs.kieler.klighd.krendering.KRenderingUtil#setColor(KColoring, Colors, int) KRenderingUtil.setColor(KColoring, Colors, int)}."/>
       </eAnnotations>
       <eGenericType eTypeParameter="#//KColoring/T"/>
       <eParameters name="color" eType="#//Colors">
@@ -744,7 +744,7 @@
     <eOperations name="setColor2">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="body" value="@SuppressWarnings(&quot;unchecked&quot;)&#xA;final T it = (T) this;&#xA;this.setColor(color);&#xA;this.setAlpha(alpha);&#xA;return it;"/>
-        <details key="documentation" value="Convenience setter for configuring the color &amp; alpha or gradient source color &amp; alpha of &lt;code>this&lt;/code> KColoring instance.&lt;br>&#xA;Simply redirects to {@link #setColor(KColor)} and {@link #setAlpha(int)}, and returns &lt;code>this&lt;/code> KColoring instance instead of &lt;code>void&lt;/code>."/>
+        <details key="documentation" value="Convenience setter for configuring the color and alpha or gradient source color and alpha of &lt;code>this&lt;/code> KColoring instance.&lt;br>&#xA;Simply redirects to {@link #setColor(KColor)} and {@link #setAlpha(int)}, and returns &lt;code>this&lt;/code> KColoring instance instead of &lt;code>void&lt;/code>."/>
       </eAnnotations>
       <eGenericType eTypeParameter="#//KColoring/T"/>
       <eParameters name="color" eType="#//KColor">
@@ -773,7 +773,7 @@
     <eOperations name="setColorCopyOf">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="body" value="@SuppressWarnings(&quot;unchecked&quot;)&#xA;final T it = (T) this;&#xA;return de.cau.cs.kieler.klighd.krendering.KRenderingUtil.setColorCopyOf(it, kColor, alpha);"/>
-        <details key="documentation" value="Convenience setter for configuring the color or gradient source color &amp; alpha of &lt;code>this&lt;/code> KColoring instance.&lt;br>&#xA;Redirects to {@link de.cau.cs.kieler.klighd.krendering.KRenderingUtil#setColorCopyOf(KColoring, KColor, int) KRenderingUtil.setColorCopyOf(KColoring, KColor, int)}."/>
+        <details key="documentation" value="Convenience setter for configuring the color or gradient source color and alpha of &lt;code>this&lt;/code> KColoring instance.&lt;br>&#xA;Redirects to {@link de.cau.cs.kieler.klighd.krendering.KRenderingUtil#setColorCopyOf(KColoring, KColor, int) KRenderingUtil.setColorCopyOf(KColoring, KColor, int)}."/>
       </eAnnotations>
       <eGenericType eTypeParameter="#//KColoring/T"/>
       <eParameters name="kColor" eType="#//KColor">
@@ -805,7 +805,7 @@
     <eOperations name="setColorAndAlphaCopiedFrom">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="body" value="return this.setColorCopyOf(coloring.getColor(), coloring.getAlpha());"/>
-        <details key="documentation" value="Convenience setter for configuring the color &amp; alpha or gradient source color &amp; alpha of &lt;code>this&lt;/code> KColoring instance.&lt;br>&#xA;Simply redirects to {@link #setColorCopyOf(KColor, int)} and returns &lt;code>this&lt;/code> KColoring instance."/>
+        <details key="documentation" value="Convenience setter for configuring the color and alpha or gradient source color and alpha of &lt;code>this&lt;/code> KColoring instance.&lt;br>&#xA;Simply redirects to {@link #setColorCopyOf(KColor, int)} and returns &lt;code>this&lt;/code> KColoring instance."/>
       </eAnnotations>
       <eGenericType eTypeParameter="#//KColoring/T"/>
       <eParameters name="coloring">
@@ -854,7 +854,7 @@
     <eOperations name="setTargetColor">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="body" value="@SuppressWarnings(&quot;unchecked&quot;)&#xA;final T it = (T) this;&#xA;return de.cau.cs.kieler.klighd.krendering.KRenderingUtil.setTargetColor(it, red, green, blue, alpha);"/>
-        <details key="documentation" value="Convenience setter for configuring the gradient target color &amp; target alpha of &lt;code>this&lt;/code> KColoring instance.&lt;br>&#xA;Redirects to {@link de.cau.cs.kieler.klighd.krendering.KRenderingUtil#setTargetColor(KColoring, int, int, int, int) KRenderingUtil.setTargetColor(KColoring, int, int, int, int)}."/>
+        <details key="documentation" value="Convenience setter for configuring the gradient target color and target alpha of &lt;code>this&lt;/code> KColoring instance.&lt;br>&#xA;Redirects to {@link de.cau.cs.kieler.klighd.krendering.KRenderingUtil#setTargetColor(KColoring, int, int, int, int) KRenderingUtil.setTargetColor(KColoring, int, int, int, int)}."/>
       </eAnnotations>
       <eGenericType eTypeParameter="#//KColoring/T"/>
       <eParameters name="red" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt">
@@ -881,7 +881,7 @@
     <eOperations name="setTargetColor">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="body" value="@SuppressWarnings(&quot;unchecked&quot;)&#xA;final T it = (T) this;&#xA;return de.cau.cs.kieler.klighd.krendering.KRenderingUtil.setTargetColor(it, color, alpha);"/>
-        <details key="documentation" value="Convenience setter for configuring the gradient target color &amp; target alpha of &lt;code>this&lt;/code> KColoring instance.&lt;br>&#xA;Redirects to {@link de.cau.cs.kieler.klighd.krendering.KRenderingUtil#setTargetColor(KColoring, Colors, int) KRenderingUtil.setTargetColor(KColoring, Colors, int)}."/>
+        <details key="documentation" value="Convenience setter for configuring the gradient target color and target alpha of &lt;code>this&lt;/code> KColoring instance.&lt;br>&#xA;Redirects to {@link de.cau.cs.kieler.klighd.krendering.KRenderingUtil#setTargetColor(KColoring, Colors, int) KRenderingUtil.setTargetColor(KColoring, Colors, int)}."/>
       </eAnnotations>
       <eGenericType eTypeParameter="#//KColoring/T"/>
       <eParameters name="color" eType="#//Colors">
@@ -910,7 +910,7 @@
     <eOperations name="setTargetColor2">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="body" value="@SuppressWarnings(&quot;unchecked&quot;)&#xA;final T it = (T) this;&#xA;this.setTargetColor(targetColor);&#xA;this.setTargetAlpha(targetAlpha);&#xA;return it;"/>
-        <details key="documentation" value="Convenience setter for configuring the gradient target color &amp; target alpha of &lt;code>this&lt;/code> KColoring instance.&lt;br>&#xA;Simply redirects to {@link #setTargetColor(KColor)} and {@link #setTargetAlpha(int)}, and returns &lt;code>this&lt;/code> KColoring instance instead of &lt;code>void&lt;/code>."/>
+        <details key="documentation" value="Convenience setter for configuring the gradient target color and target alpha of &lt;code>this&lt;/code> KColoring instance.&lt;br>&#xA;Simply redirects to {@link #setTargetColor(KColor)} and {@link #setTargetAlpha(int)}, and returns &lt;code>this&lt;/code> KColoring instance instead of &lt;code>void&lt;/code>."/>
       </eAnnotations>
       <eGenericType eTypeParameter="#//KColoring/T"/>
       <eParameters name="targetColor" eType="#//KColor">
@@ -939,7 +939,7 @@
     <eOperations name="setTargetColorCopyOf">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="body" value="@SuppressWarnings(&quot;unchecked&quot;)&#xA;final T it = (T) this;&#xA;return de.cau.cs.kieler.klighd.krendering.KRenderingUtil.setTargetColorCopyOf(it, targetColor, targetAlpha);"/>
-        <details key="documentation" value="Convenience setter for configuring the gradient target color &amp; target alpha of &lt;code>this&lt;/code> KColoring instance.&lt;br>&#xA;Redirects to {@link de.cau.cs.kieler.klighd.krendering.KRenderingUtil#setTargetColorCopyOf(KColoring, KColor, int) KRenderingUtil.setTargetColorCopyOf(KColoring, KColor, int)}."/>
+        <details key="documentation" value="Convenience setter for configuring the gradient target color and target alpha of &lt;code>this&lt;/code> KColoring instance.&lt;br>&#xA;Redirects to {@link de.cau.cs.kieler.klighd.krendering.KRenderingUtil#setTargetColorCopyOf(KColoring, KColor, int) KRenderingUtil.setTargetColorCopyOf(KColoring, KColor, int)}."/>
       </eAnnotations>
       <eGenericType eTypeParameter="#//KColoring/T"/>
       <eParameters name="targetColor" eType="#//KColor">
@@ -971,7 +971,7 @@
     <eOperations name="setTargetColorAndAlphaCopiedFrom">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="body" value="return this.setTargetColorCopyOf(coloring.getTargetColor(), coloring.getTargetAlpha());"/>
-        <details key="documentation" value="Convenience setter for configuring the gradient target color &amp; alpha of &lt;code>this&lt;/code> KColoring instance.&lt;br>&#xA;Simply redirects to {@link #setTargetColorCopyOf(KColor, int)} and returns &lt;code>this&lt;/code> KColoring instance."/>
+        <details key="documentation" value="Convenience setter for configuring the gradient target color and alpha of &lt;code>this&lt;/code> KColoring instance.&lt;br>&#xA;Simply redirects to {@link #setTargetColorCopyOf(KColor, int)} and returns &lt;code>this&lt;/code> KColoring instance."/>
       </eAnnotations>
       <eGenericType eTypeParameter="#//KColoring/T"/>
       <eParameters name="coloring">
@@ -1037,7 +1037,7 @@
     <eOperations name="setColors">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="body" value="return this.setColor2(color, alpha).setTargetColor2(targetColor, targetAlpha);"/>
-        <details key="documentation" value="Convenience setter for configuring the gradient source and target colors &amp; alphas of &lt;code>this&lt;/code> KColoring instance.&lt;br>&#xA;Simply redirects to {@link #setColor2(KColor, int)} and {@link #setTargetColor2(KColor, int)}, and returns &lt;code>this&lt;/code> KColoring instance."/>
+        <details key="documentation" value="Convenience setter for configuring the gradient source and target colors and alphas of &lt;code>this&lt;/code> KColoring instance.&lt;br>&#xA;Simply redirects to {@link #setColor2(KColor, int)} and {@link #setTargetColor2(KColor, int)}, and returns &lt;code>this&lt;/code> KColoring instance."/>
       </eAnnotations>
       <eGenericType eTypeParameter="#//KColoring/T"/>
       <eParameters name="color" eType="#//KColor">
@@ -1064,7 +1064,7 @@
     <eOperations name="setColors">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="body" value="return this.setColor2(color, alpha).setTargetColor2(targetColor, targetAlpha).setGradientAngle2(angle);"/>
-        <details key="documentation" value="Convenience setter for configuring the gradient source and target colors &amp; alphas as well as the color gradient angle of &lt;code>this&lt;/code> KColoring instance.&lt;br>&#xA;Simply redirects to {@link #setColor2(KColor, int)}, {@link #setTargetColor2(KColor, int)}, and {@link #setGradientAngle2(float)}, and returns &lt;code>this&lt;/code> KColoring instance."/>
+        <details key="documentation" value="Convenience setter for configuring the gradient source and target colors and alphas as well as the color gradient angle of &lt;code>this&lt;/code> KColoring instance.&lt;br>&#xA;Simply redirects to {@link #setColor2(KColor, int)}, {@link #setTargetColor2(KColor, int)}, and {@link #setGradientAngle2(float)}, and returns &lt;code>this&lt;/code> KColoring instance."/>
       </eAnnotations>
       <eGenericType eTypeParameter="#//KColoring/T"/>
       <eParameters name="color" eType="#//KColor">
@@ -1135,7 +1135,7 @@
     <eOperations name="setColors">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="body" value="return this.setColor(color, alpha).setTargetColor(targetColor, targetAlpha);"/>
-        <details key="documentation" value="Convenience setter for configuring the gradient source and target colors &amp; alphas of &lt;code>this&lt;/code> KColoring instance.&lt;br>&#xA;Simply redirects to {@link #setColor(Colors, int)} and {@link #setTargetColor(Colors, int)}, and returns &lt;code>this&lt;/code> KColoring instance."/>
+        <details key="documentation" value="Convenience setter for configuring the gradient source and target colors and alphas of &lt;code>this&lt;/code> KColoring instance.&lt;br>&#xA;Simply redirects to {@link #setColor(Colors, int)} and {@link #setTargetColor(Colors, int)}, and returns &lt;code>this&lt;/code> KColoring instance."/>
       </eAnnotations>
       <eGenericType eTypeParameter="#//KColoring/T"/>
       <eParameters name="color" eType="#//Colors">
@@ -1162,7 +1162,7 @@
     <eOperations name="setColors">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="body" value="return this.setColor(color, alpha).setTargetColor(targetColor, targetAlpha).setGradientAngle2(angle);"/>
-        <details key="documentation" value="Convenience setter for configuring the gradient source and target colors &amp; alphas as well as the color gradient angle of &lt;code>this&lt;/code> KColoring instance.&lt;br>&#xA;Simply redirects to {@link #setColor(Colors, int)}, {@link #setTargetColor(Colors, int)}, and {@link #setGradientAngle2(float)}, and returns &lt;code>this&lt;/code> KColoring instance."/>
+        <details key="documentation" value="Convenience setter for configuring the gradient source and target colors and alphas as well as the color gradient angle of &lt;code>this&lt;/code> KColoring instance.&lt;br>&#xA;Simply redirects to {@link #setColor(Colors, int)}, {@link #setTargetColor(Colors, int)}, and {@link #setGradientAngle2(float)}, and returns &lt;code>this&lt;/code> KColoring instance."/>
       </eAnnotations>
       <eGenericType eTypeParameter="#//KColoring/T"/>
       <eParameters name="color" eType="#//Colors">
@@ -1233,7 +1233,7 @@
     <eOperations name="setColorsCopiesOf">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="body" value="return this.setColorCopyOf(color, alpha).setTargetColorCopyOf(targetColor, targetAlpha);"/>
-        <details key="documentation" value="Convenience setter for configuring the gradient source and target colors &amp; alphas of &lt;code>this&lt;/code> KColoring instance.&lt;br>&#xA;Simply redirects to {@link #setColorCopyOf(KColor, int)} and {@link #setTargetColorCopyOf(KColor, int)}, and returns &lt;code>this&lt;/code> KColoring instance."/>
+        <details key="documentation" value="Convenience setter for configuring the gradient source and target colors and alphas of &lt;code>this&lt;/code> KColoring instance.&lt;br>&#xA;Simply redirects to {@link #setColorCopyOf(KColor, int)} and {@link #setTargetColorCopyOf(KColor, int)}, and returns &lt;code>this&lt;/code> KColoring instance."/>
       </eAnnotations>
       <eGenericType eTypeParameter="#//KColoring/T"/>
       <eParameters name="color" eType="#//KColor">
@@ -1260,7 +1260,7 @@
     <eOperations name="setColorsCopiesOf">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="body" value="return this.setColorCopyOf(color, alpha).setTargetColorCopyOf(targetColor, targetAlpha).setGradientAngle2(angle);"/>
-        <details key="documentation" value="Convenience setter for configuring the gradient source and target colors &amp; alphas as well as the color gradient angle of &lt;code>this&lt;/code> KColoring instance.&lt;br>&#xA;Simply redirects to {@link #setColorCopyOf(KColor, int)}, {@link #setTargetColorCopyOf(KColor, int)}, and {@link #setGradientAngle2(float)}, and returns &lt;code>this&lt;/code> KColoring instance."/>
+        <details key="documentation" value="Convenience setter for configuring the gradient source and target colors and alphas as well as the color gradient angle of &lt;code>this&lt;/code> KColoring instance.&lt;br>&#xA;Simply redirects to {@link #setColorCopyOf(KColor, int)}, {@link #setTargetColorCopyOf(KColor, int)}, and {@link #setGradientAngle2(float)}, and returns &lt;code>this&lt;/code> KColoring instance."/>
       </eAnnotations>
       <eGenericType eTypeParameter="#//KColoring/T"/>
       <eParameters name="color" eType="#//KColor">
@@ -1307,7 +1307,7 @@
     <eOperations name="setColorsAlphasGradientAngleCopiedFrom">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="body" value="return this.setColorsCopiesOf(coloring.getColor(), coloring.getAlpha(), coloring.getTargetColor(), coloring.getTargetAlpha()).setGradientAngle2(coloring.getGradientAngle());"/>
-        <details key="documentation" value="Convenience setter for configuring the gradient source and target colors &amp; alphas of &lt;code>this&lt;/code> KColoring instance.&lt;br>&#xA;Simply redirects to {@link #setColorsCopiesOf(KColor, int, KColor, int)} and {@link #setGradientAngle2(float)}, and returns &lt;code>this&lt;/code> KColoring instance."/>
+        <details key="documentation" value="Convenience setter for configuring the gradient source and target colors and alphas of &lt;code>this&lt;/code> KColoring instance.&lt;br>&#xA;Simply redirects to {@link #setColorsCopiesOf(KColor, int, KColor, int)} and {@link #setGradientAngle2(float)}, and returns &lt;code>this&lt;/code> KColoring instance."/>
       </eAnnotations>
       <eGenericType eTypeParameter="#//KColoring/T"/>
       <eParameters name="coloring">
@@ -1458,12 +1458,12 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="KAction">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-      <details key="documentation" value="performs action &lt;id> on &lt;trigger> event"/>
+      <details key="documentation" value="performs action 'id' on 'trigger' event"/>
     </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="actionId" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="documentation" value="id of the action implemenation to be executed when &lt;trigger> occurs; in KLighD such action implementation must be registered via an extension point"/>
+        <details key="documentation" value="id of the action implementation to be executed when 'trigger' occurs; in KLighD such action implementation must be registered via an extension point"/>
       </eAnnotations>
     </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="trigger" lowerBound="1"
@@ -1708,7 +1708,7 @@
     </eAnnotations>
     <eLiterals name="OPEN" literal="OPEN">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="documentation" value="plain arc without any closing line connection from end to beginning&#xA;{@link Arc2D#OPEN}, {@link Arc2D#CHORD}, and&#xA;     *            {@link Arc2D#PIE}"/>
+        <details key="documentation" value="plain arc without any closing line connection from end to beginning&#xA;{@link java.awt.geom.Arc2D#OPEN}, {@link java.awt.geom.Arc2D#CHORD}, and&#xA;     *            {@link java.awt.geom.Arc2D#PIE}"/>
       </eAnnotations>
     </eLiterals>
     <eLiterals name="CHORD" value="1" literal="CHORD">

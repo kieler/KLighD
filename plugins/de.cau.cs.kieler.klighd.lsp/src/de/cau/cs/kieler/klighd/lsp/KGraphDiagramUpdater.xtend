@@ -106,7 +106,7 @@ class KGraphDiagramUpdater extends DiagramUpdater {
     }
 
     /**
-     * Updates the layout for the diagramServer, see {@see #updateLayout(KGraphDiagramServer)}.
+     * Updates the layout for the diagramServer, see {@link #updateLayout(KGraphDiagramServer)}.
      * Does this later as a completable future.
      * 
      * @param diagramServer The diagram server that should update its layout.
@@ -325,9 +325,9 @@ class KGraphDiagramUpdater extends DiagramUpdater {
 
     /**
      * Stores the current synthesisOptions configured in the current {@link ViewContext}.
-     * Similar to storing the options in Eclipse UI.
-     * 
-     * @see de.cau.cs.kieler.klighd.ui.view.DiagramView#storeCurrentSynthesisOptions
+     * Similar to storing the options in Eclipse UI.<br>
+     * <br>
+     * See {@code de.cau.cs.kieler.klighd.ui.view.DiagramView#storeCurrentSynthesisOptions}
      */
     def storeCurrentSynthesisOptions() {
         synchronized (diagramState) {
@@ -406,7 +406,7 @@ class KGraphDiagramUpdater extends DiagramUpdater {
     }
 
     /**
-     * Makes the protected updateDiagram(List<URI>) method accessible from the outside.
+     * Makes the protected updateDiagram(List&lt;URI&gt;) method accessible from the outside.
      */
     def updateDiagrams2(List<URI> uris) {
         updateDiagrams(uris)

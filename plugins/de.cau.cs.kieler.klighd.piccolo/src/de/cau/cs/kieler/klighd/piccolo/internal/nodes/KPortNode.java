@@ -32,7 +32,7 @@ public class KPortNode extends KGraphElementNode<KPort> implements
 
     private static final long serialVersionUID = 6016725932024647084L;
 
-    /** the port rendering controller deployed to manage the rendering of {@link #port}. */
+    /** the port rendering controller deployed to manage the rendering of the port. */
     private KPortRenderingController renderingController;
 
     /**

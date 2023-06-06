@@ -82,7 +82,7 @@ class SprottyProperties {
     /**
      * Sets the unique rendering ID on the given rendering.
      * 
-     * @param The rendering to set the new ID on.
+     * @param rendering The rendering to set the new ID on.
      * @param id The new ID.
      * @return The previous ID set on this element, or null.
      */

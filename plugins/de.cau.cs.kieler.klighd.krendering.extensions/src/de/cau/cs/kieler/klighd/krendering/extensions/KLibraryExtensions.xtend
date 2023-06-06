@@ -100,7 +100,7 @@ class KLibraryExtensions {
      * 
      * @example
      * edge.source.library.addToLibrary("ren_junction", 
-     *  createKRoundedRectangle => [ rr |
+     *  createKRoundedRectangle =&gt; [ rr |
      *   rr.background = color
      *   rr.foreground = color
      *   rr.cornerWidth = 2
@@ -128,7 +128,7 @@ class KLibraryExtensions {
      * 
      * @example
      * edge.source.addToLibrary("ren_junction", 
-     *  createKRoundedRectangle => [ rr |
+     *  createKRoundedRectangle =&gt; [ rr |
      *   rr.background = color
      *   rr.foreground = color
      *   rr.cornerWidth = 2

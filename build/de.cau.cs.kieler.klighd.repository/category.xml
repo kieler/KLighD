@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
 
-   <description name="KIELER Lightweight Diagrams" url="http://services.typefox.io/open-source/jenkins/job/KLighD/job/master/lastSuccessfulBuild/artifact/updatesite/">
+   <description name="KIELER Lightweight Diagrams" url="https://rtsys.informatik.uni-kiel.de/~kieler/updatesite/nightly/klighd/">
       Update site for KIELER Lightweight Diagrams nightly builds.
    </description>
 
@@ -18,12 +18,12 @@
       <category name="kieler-klighd"/>
    </feature>
 
-   <feature url="features/de.cau.cs.kieler.klighd.batik.feature_2.2.1.qualifier.jar" id="de.cau.cs.kieler.klighd.batik.feature" version="2.2.1.qualifier">
+   <!-- <feature url="features/de.cau.cs.kieler.klighd.batik.feature_2.2.1.qualifier.jar" id="de.cau.cs.kieler.klighd.batik.feature" version="2.2.1.qualifier">
       <category name="kieler-klighd"/>
    </feature>
    <feature url="features/de.cau.cs.kieler.klighd.batik.feature.source_2.2.1.qualifier.jar" id="de.cau.cs.kieler.klighd.batik.feature.source" version="2.2.1.qualifier">
       <category name="kieler-klighd"/>
-   </feature>
+   </feature> -->
 
    <feature url="features/de.cau.cs.kieler.klighd.freehep.feature_2.2.1.qualifier.jar" id="de.cau.cs.kieler.klighd.freehep.feature" version="2.2.1.qualifier">
       <category name="kieler-klighd"/>

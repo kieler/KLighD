@@ -64,10 +64,10 @@ import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.xtext.util.CancelIndicator
 
 /**
- * A diagram generator that can create Sprotty {@link SGraph} from any {@link EObject} that has a registered view
+ * A diagram generator that can create Sprotty {@link SGraph} from any {@link Object} that has a registered view
  * synthesis to {@link KNode} for KLighD. 
- * For translation first call the {@link translateModel} function to translate the EObject to a KNode and then call
- * {@link generate(KNode, String, CancelIndicator)} with that KNode to translate it to an SGraph.
+ * For translation first call the {@link #translateModel(Object, ViewContext)} function to translate the Object to a KNode and then call
+ * {@link #toSGraph(KNode, String, CancelIndicator)} with that KNode to translate it to an SGraph.
  * During translation a map for mapping between the source and target element types is generated.
  * Based on the yang-lsp implementation by TypeFox.
  * 
@@ -110,8 +110,8 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
     protected List<Pair<KEdge, List<SModelElement>>> edgesToGenerate
 
     /**
-     * Creates a {@link ViewContext} containing the KGraph model for any {@link Object} model with a registered 
-     * transformation in KLighD. 
+     * Creates a {@link ViewContext} containing the KGraph model for the {@link ViewContext} of any {@link Object} model
+     * with a registered transformation in KLighD. 
      */
     static def ViewContext translateModel(Object model, ViewContext oldVC) {
         return LightDiagramServices.translateModel2(model, oldVC)

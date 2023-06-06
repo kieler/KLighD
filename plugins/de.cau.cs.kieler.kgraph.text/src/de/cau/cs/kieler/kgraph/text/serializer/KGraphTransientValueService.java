@@ -33,8 +33,6 @@ import de.cau.cs.kieler.klighd.krendering.KRenderingPackage;
  * quick fixes.
  * 
  * @author chsch
- * @kieler.design proposed 2012-11-01 chsch
- * @kieler.rating proposed yellow 2012-11-01 chsch
  */
 public class KGraphTransientValueService extends DefaultTransientValueService {
 

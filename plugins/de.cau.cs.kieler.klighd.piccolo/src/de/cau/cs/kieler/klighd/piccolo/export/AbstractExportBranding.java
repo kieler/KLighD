@@ -234,7 +234,7 @@ public abstract class AbstractExportBranding implements IExportBranding {
      * @param config
      *            an {@link DiagramExportConfig} record containing all required data
      *
-     * @see #drawDiagramBackground(Object, Rectangle2D)
+     * @see #drawDiagramBackground(Object, DiagramExportConfig)
      */
     public void drawDiagramBackground(final KlighdSWTGraphics graphics,
             final DiagramExportConfig config) {
@@ -260,7 +260,7 @@ public abstract class AbstractExportBranding implements IExportBranding {
      * @param config
      *            an {@link DiagramExportConfig} record containing all required data
      *
-     * @see #drawDiagramTileBackground(Object, Rectangle2D)
+     * @see #drawDiagramTileBackground(Object, DiagramExportConfig)
      */
     public void drawDiagramTileBackground(final KlighdSWTGraphics graphics,
             final DiagramExportConfig config) {
@@ -289,7 +289,7 @@ public abstract class AbstractExportBranding implements IExportBranding {
      * @param config
      *            an {@link DiagramExportConfig} record containing all required data
      *
-     * @see #drawDiagramOverlay(Object, Rectangle2D)
+     * @see #drawDiagramOverlay(Object, DiagramExportConfig)
      */
     public void drawDiagramOverlay(final KlighdSWTGraphics graphics,
             final DiagramExportConfig config) {
@@ -315,7 +315,7 @@ public abstract class AbstractExportBranding implements IExportBranding {
      * @param config
      *            an {@link DiagramExportConfig} record containing all required data
      *
-     * @see #drawDiagramBackground(Object, Rectangle2D)
+     * @see #drawDiagramBackground(Object, DiagramExportConfig)
      */
     public void drawDiagramTileOverlay(final KlighdSWTGraphics graphics,
             final DiagramExportConfig config) {

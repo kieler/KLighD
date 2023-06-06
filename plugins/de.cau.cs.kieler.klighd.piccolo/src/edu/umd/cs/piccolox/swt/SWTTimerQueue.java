@@ -34,7 +34,7 @@ import org.eclipse.swt.widgets.Display;
  * The SWTTimerQueue is a queue of timers. It has been implemented as a linked
  * list of SWTTimer objects.
  * 
- * Two critical bug fixes were done by chsch (l.163f) & uru (l. 138ff).
+ * Two critical bug fixes were done by chsch (l.163f) and uru (l. 138ff).
  * 
  * @author Lance Good, Ulf Rueegg, Christian Schneider
  */

@@ -695,7 +695,7 @@ public final class KlighdDataManager {
      * only applies to properties that would otherwise be included i.e. properties starting with "de.cau.cs.kieler.klighd", 
      * "klighd" or "org.eclipse.elk" or explicitly whitelisted properties. The  blacklist is applied before the 
      * whitelist is compared.
-     * @param blacklistedProperty The list of properties to be blacklisted.
+     * @param blacklistedProperties The list of properties to be blacklisted.
      * @return KlighdDataManager
      */
     public KlighdDataManager registerBlacklistedProperties(Iterable<IProperty<?>> blacklistedProperties) {
@@ -1151,7 +1151,7 @@ public final class KlighdDataManager {
      * @param format
      *            the format an {@link IExportBranding} is requested for
      * @param viewContext
-     *            the {@link ViewContext} providing access to the diagram' view & source model
+     *            the {@link ViewContext} providing access to the diagram's view and source model
      *
      * @return the {@link Iterable} of {@link IExportBranding IExportHooks}
      */

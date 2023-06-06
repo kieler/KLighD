@@ -34,9 +34,6 @@ import de.cau.cs.kieler.klighd.kgraph.KShapeLayout;
  *
  * @author mri
  * @author chsch
- * 
- * @kieler.design proposed by chsch
- * @kieler.rating proposed yellow by chsch 
  */
 public class SimpleUpdateStrategy implements IUpdateStrategy {
 

@@ -28,7 +28,7 @@ import de.cau.cs.kieler.klighd.kgraph.KNode
 class LSPUtil {
 
     /**
-     * Returns the root node of the resource's model behind a given {@cods uri}.
+     * Returns the root node of the resource's model behind a given {@code uri}.
      * 
      * @param diagramState The state of the diagram
      * @param uri The uri that points at the desired resource.

@@ -180,7 +180,7 @@ public final class DiagramSideBar {
      * @param viewContext
      *            the {@link ViewContext} to get the configured option entries from
      * @return an instance of {@link DiagramSideBar} allowing to access the employed
-     *         {@link ILayoutConfig}
+     *         {@link LayoutConfigurator}
      */
     public static DiagramSideBar createSideBar(final Composite parent,
             final Composite diagramContainer, final ViewContext viewContext) {

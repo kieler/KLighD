@@ -26,9 +26,6 @@ import org.eclipse.elk.core.LayoutConfigurator;
  * describes an orthogonal aspect and is used for internal purposes only.
  *
  * @author chsch
- *
- * @kieler.design proposed by chsch
- * @kieler.rating proposed yellow by chsch
  */
 public interface ILayoutConfigProvider {
 

@@ -45,7 +45,7 @@ import de.cau.cs.kieler.klighd.krendering.KText;
 /**
  * The abstract base class for KLighD diagram synthesis implementations.<br>
  * <br>
- * Implementations of this class have to implement {@link #transform(S)} that performs the mapping
+ * Implementations of this class have to implement {@code #transform(S)} that performs the mapping
  * of the semantic/business objects into instances of the KGraph/KRendering view model format.<br>
  * <br>
  * Some hints for the use with Xtend (www.xtend-lang.org):<br>
@@ -69,7 +69,7 @@ import de.cau.cs.kieler.klighd.krendering.KText;
  * time calling {@link com.google.inject.Provider#get() get()} on this provider a new instance will
  * be obtained as long as the provided class is <b>not</b> declared as singleton (via
  * {@link javax.inject.Singleton &#64;Singleton}). The
- * {@link de.cau.cs.kieler.klighd.krendering.extensions.ViewSynthesisShared ViewSynthesisShared}
+ * {@link de.cau.cs.kieler.klighd.krendering.ViewSynthesisShared ViewSynthesisShared}
  * annotation helps if the described feature of employing helper classes is required.
  *
  * @param <S>
@@ -77,9 +77,6 @@ import de.cau.cs.kieler.klighd.krendering.KText;
  *
  * @author chsch
  * @author uru
- *
- * @kieler.design proposed by chsch
- * @kieler.rating proposed yellow by chsch
  */
 public abstract class AbstractDiagramSynthesis<S> implements ISynthesis {
 
@@ -295,7 +292,7 @@ public abstract class AbstractDiagramSynthesis<S> implements ISynthesis {
      *
      * A {@link SynthesisOption} option might be used to either display or hide comments in the
      * resulting diagram. The {@link SynthesisOption} class provides several convenience methods to
-     * create an option, e.g. {@link SynthesisOption#createRangeOption(...)} to create a 'slider'.
+     * create an option, e.g. {@link SynthesisOption#createRangeOption(String, String, Number, Number, Number, Number)} to create a 'slider'.
      *
      * The synthesis options will be displayed in the side bar of the corresponding view or editor
      * part according to the order within the returned list.
@@ -443,7 +440,7 @@ public abstract class AbstractDiagramSynthesis<S> implements ISynthesis {
     /**
      * Convenience method for setting the initially applied diagram clip node.<br>
      * Refers to {@link #getUsedContext()} for determining the {@link ViewContext} to perform this
-     * definition and delegates to {@link #initiallyClipTo(ViewContext, KNode)}.
+     * definition and delegates to {@link #setInitialClipTo(ViewContext, KNode)}.
      *
      * @param node
      *            the initial diagram clip node
@@ -487,7 +484,7 @@ public abstract class AbstractDiagramSynthesis<S> implements ISynthesis {
      *            the element to set the layout option on
      * @param option
      *            the particular layout option, e.g. one of
-     *            {@link de.cau.cs.kieler.kiml.options.LayoutOptions LayoutOptions}
+     *            {@link org.eclipse.elk.core.options.CoreOptions CoreOptions}
      * @param value
      *            the option value
      * @return <code>node</code> allowing to perform multiple operations on it in one statement
@@ -512,7 +509,7 @@ public abstract class AbstractDiagramSynthesis<S> implements ISynthesis {
      *            the element to set the layout option on
      * @param optionValueMap
      *            a {@link Map} containing valid pairs of layout options, e.g. some of
-     *            {@link de.cau.cs.kieler.kiml.options.LayoutOptions LayoutOptions}, and
+     *            {@link org.eclipse.elk.core.options.CoreOptions CoreOptions}, and
      *            corresponding option values.
      * @return <code>element</code> allowing to perform multiple operations on it in one statement
      */
@@ -533,7 +530,7 @@ public abstract class AbstractDiagramSynthesis<S> implements ISynthesis {
      *            the node to set the layout option on
      * @param option
      *            the particular layout option, e.g. one of
-     *            {@link de.cau.cs.kieler.kiml.options.LayoutOptions LayoutOptions}
+     *            {@link org.eclipse.elk.core.options.CoreOptions CoreOptions}
      * @param collapsedValue
      *            the value in case <code>node</code> is collapsed
      * @param expandedValue
@@ -559,7 +556,7 @@ public abstract class AbstractDiagramSynthesis<S> implements ISynthesis {
      *            the port to set the layout option on
      * @param option
      *            the particular layout option, e.g. one of
-     *            {@link de.cau.cs.kieler.kiml.options.LayoutOptions LayoutOptions}
+     *            {@link org.eclipse.elk.core.options.CoreOptions CoreOptions}
      * @param collapsedValue
      *            the value in case <code>port</code>'s container node is collapsed
      * @param expandedValue
@@ -579,7 +576,7 @@ public abstract class AbstractDiagramSynthesis<S> implements ISynthesis {
      * <br>
      * In common case this method need not to be called by application code but only if delegate
      * diagram syntheses are employed by means of a {@link com.google.inject.Provider Provider}, see
-     * {@link ReinitializingDiagramSynthesisProxy#ViewSynthesisScope ViewSynthesisScope} for
+     * {@link ReinitializingDiagramSynthesisProxy} and its private subclass {@code ViewSynthesisScope} for
      * details.<br>
      * <br>
      * Make sure to reset the reference by calling <code>use(null)</code> after calling

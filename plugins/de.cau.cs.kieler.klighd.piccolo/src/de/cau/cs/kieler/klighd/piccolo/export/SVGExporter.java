@@ -36,8 +36,7 @@ import edu.umd.cs.piccolo.util.PBounds;
 
 /**
  * Generic SVG {@link KlighdCanvasExporter}. It is able to export SVGs by means of all SVG
- * generators registered via the {@link de.cau.cs.kieler.klighd.piccolo.svg.SVGGeneratorManager
- * SVGGeneratorManager#EXTP_ID_SVGGENERATORS} extension point.
+ * generators registered via the {@code de.cau.cs.kieler.klighd.extensions} extension point.
  *
  * In order to work, the 'subFormat' ID of a registered exporter has to match the specified ID in
  * the 'svgGenerators' extension point.

@@ -97,7 +97,7 @@ public class DiagramPrintOptions extends PrintOptions {
      * Convenience getter.
      *
      * @return {@code true} the print should automatically be scaled to fit on one page,
-     *         {@code false] otherwise. 
+     *         {@code false} otherwise. 
      */
     public static boolean getAutoScaleToFit() {
         return PREF_STORE.getBoolean(PREFERENCE_AUTO_SCALE_TO_FIT);
@@ -109,7 +109,7 @@ public class DiagramPrintOptions extends PrintOptions {
      *
      * @param autoScale
      *            {@code true} the print should automatically be scaled to fit on one page,
-     *            {@code false] otherwise.
+     *            {@code false} otherwise.
 
      */
     public static void setAutoScaleToFit(final boolean autoScale) {
@@ -123,7 +123,7 @@ public class DiagramPrintOptions extends PrintOptions {
      * Convenience getter.
      *
      * @return {@code true} the print should automatically be scaled to 100%,
-     *         {@code false] otherwise. 
+     *         {@code false} otherwise. 
      */
     public static boolean getAutoScaleTo100() {
         return PREF_STORE.getBoolean(PREFERENCE_AUTO_SCALE_TO_100);
@@ -135,7 +135,7 @@ public class DiagramPrintOptions extends PrintOptions {
      *
      * @param autoScale
      *            {@code true} the print should automatically be scaled to 100%,
-     *            {@code false] otherwise.
+     *            {@code false} otherwise.
 
      */
     public static void setAutoScaleTo100(final boolean autoScale) {

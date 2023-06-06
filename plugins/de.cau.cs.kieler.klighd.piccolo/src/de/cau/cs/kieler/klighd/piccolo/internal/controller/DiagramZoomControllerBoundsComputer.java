@@ -59,7 +59,7 @@ public class DiagramZoomControllerBoundsComputer {
 
     /**
      * Converts the <code>element</code>'s layout data into {@link PBounds}, respects an attached
-     * {@link LayoutOptions#SCALE_FACTOR}.
+     * {@link CoreOptions#SCALE_FACTOR}.
      *
      * @param element
      *            the element
@@ -73,7 +73,7 @@ public class DiagramZoomControllerBoundsComputer {
 
     /**
      * Converts <code>node</code>'s layout data into {@link PBounds} s.t. <code>node</code>'s ports
-     * and labels are included, respects an attached {@link LayoutOptions#SCALE_FACTOR}.
+     * and labels are included, respects an attached {@link CoreOptions#SCALE_FACTOR}.
      *
      * @param node
      *            the node
@@ -127,7 +127,7 @@ public class DiagramZoomControllerBoundsComputer {
 
     /**
      * Converts <code>node</code>'s layout data into {@link PBounds} s.t. <code>node</code>'s ports
-     * and labels are included, respects an attached {@link LayoutOptions#SCALE_FACTOR}.
+     * and labels are included, respects an attached {@link CoreOptions#SCALE_FACTOR}.
      *
      * @param node
      *            the node

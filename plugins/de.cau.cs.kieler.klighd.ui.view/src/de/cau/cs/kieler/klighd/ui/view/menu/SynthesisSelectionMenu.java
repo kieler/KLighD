@@ -31,16 +31,9 @@ import de.cau.cs.kieler.klighd.internal.ISynthesis;
 import de.cau.cs.kieler.klighd.ui.view.DiagramView;
 
 /**
- * This sub-menu handles different available synthesis for models including general syntheses
- * implementing {@link ISelectableGeneralSynthesis}.
- * <p>
- * {@link ISelectableGeneralSynthesis} are defined in extension point evaluated by
- * {@link de.cau.cs.kieler.klighd.ui.view.controller.ViewUpdateControllerFactory
- * ViewUpdateControllerFactory}
+ * This sub-menu handles different available synthesis for models.
  * 
  * @author als
- * @kieler.design 2015-06-22 proposed
- * @kieler.rating 2015-06-22 proposed yellow
  */
 @SuppressWarnings("restriction")
 public class SynthesisSelectionMenu extends MenuManager {

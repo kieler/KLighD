@@ -26,7 +26,7 @@
     <module>plugins/de.cau.cs.kieler.klighd.standalone</module>
     <module>test/de.cau.cs.kieler.klighd.test</module>
     <module>test/de.cau.cs.kieler.klighd.piccolo.test</module>
-    <module>plugins/de.cau.cs.kieler.klighd.piccolo.batik</module>
+    <!-- <module>plugins/de.cau.cs.kieler.klighd.piccolo.batik</module> -->
     <module>plugins/de.cau.cs.kieler.klighd.piccolo.draw2d</module>
     <module>plugins/de.cau.cs.kieler.klighd.piccolo.freehep</module>
     <module>plugins/de.cau.cs.kieler.klighd.ui</module>
@@ -39,7 +39,7 @@
     <module>plugins/de.cau.cs.kieler.kgraph.text.ui</module>
 
     <module>features/de.cau.cs.kieler.klighd.feature</module>
-    <module>features/de.cau.cs.kieler.klighd.batik.feature</module>
+    <!-- <module>features/de.cau.cs.kieler.klighd.batik.feature</module> -->
     <module>features/de.cau.cs.kieler.klighd.draw2d.feature</module>
     <module>features/de.cau.cs.kieler.klighd.freehep.feature</module>
     <module>features/de.cau.cs.kieler.klighd.ide.feature</module>
@@ -51,9 +51,24 @@
 
   <!-- Define a few properties used throughout all build profiles. -->
   <properties>
-    <tycho-version>2.7.3</tycho-version>
-    <xtext-version>2.28.0</xtext-version>
+    <core-resources-version>3.18.0</core-resources-version>
+    <core-runtime-version>3.26.0</core-runtime-version>
     <elk-version>0.8.1</elk-version>
+    <emf-common-version>2.26.0</emf-common-version>
+    <emf-ecore-version>2.28.0</emf-ecore-version>
+    <emf-edit-version>2.17.0</emf-edit-version>
+    <gson-version>2.9.0</gson-version>
+    <guava-version>31.1-jre</guava-version>
+    <guice-version>5.1.0</guice-version>
+    <jface-version>3.27.0</jface-version>
+    <lsp4j-version>0.15.0</lsp4j-version>
+    <sprotty-version>0.9.0</sprotty-version>
+    <swt-mock-version>0.1.0</swt-mock-version>
+    <swt-version>3.121.0</swt-version>
+    <tycho-version>2.7.3</tycho-version>
+    <ui-workbench-version>3.126.0</ui-workbench-version>
+    <xtend-version>2.28.0</xtend-version>
+    <xtext-version>2.28.0</xtext-version>
 
     <!-- chsch: copied from https://eclipse.googlesource.com/recommenders/org.eclipse.recommenders/+/3dae4575d3370da2da25a1cbce3dfcff198f0611/features/pom.xml -->
     <!-- Non-breakable space, as normal spaces are trimmed. -->
@@ -79,6 +94,39 @@
     <tycho.surefire.extra.vmargs></tycho.surefire.extra.vmargs>
   </properties>
 
+  <!-- Further required information for publishing on OSSRH -->
+  <name>KLighD</name>
+  <description>KIELER Lightweight Diagams</description>
+  <url>https://github.com/kieler/KLighD</url>
+
+  <licenses>
+    <license>
+      <name>EPL-2.0</name>
+      <url>https://www.eclipse.org/legal/epl-2.0/</url>
+    </license>
+  </licenses>
+
+  <developers>
+    <developer>
+      <name>Christian Schneider</name>
+      <email>christian.schneider@typefox.io</email>
+      <organization>TypeFox</organization>
+      <organizationUrl>https://www.typefox.io/</organizationUrl>
+    </developer>
+    <developer>
+      <name>Niklas Rentz</name>
+      <email>nre@informatik.uni-kiel.de</email>
+      <organization>Kiel University</organization>
+      <organizationUrl>https://www.rtsys.informatik.uni-kiel.de/</organizationUrl>
+    </developer>
+  </developers>
+
+  <scm>
+    <connection>scm:git:git://github.com:kieler/KLighD.git</connection>
+    <developerConnection>scm:git:ssh://github.com:kieler/KLighD.git</developerConnection>
+    <url>https://github.com/kieler/KLighD</url>
+  </scm>
+
   <profiles>
     <profile>
       <id>os-macosx</id>
@@ -91,29 +139,53 @@
         <tycho.surefire.extra.vmargs>-XstartOnFirstThread</tycho.surefire.extra.vmargs>
       </properties>
     </profile>
+
+    <profile>
+      <id>release</id>
+      <build>
+        <plugins>
+          <!-- Configure the nexus server to deploy to. -->
+          <plugin>
+            <groupId>org.sonatype.plugins</groupId>
+            <artifactId>nexus-staging-maven-plugin</artifactId>
+            <version>1.6.13</version>
+            <extensions>true</extensions>
+            <configuration>
+              <serverId>ossrh</serverId>
+              <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
+              <autoReleaseAfterClose>false</autoReleaseAfterClose> <!-- this allows to manually inspect the staging repository: https://central.sonatype.org/publish/release/
+              trigger a release later with `mvn nexus-staging:release` or set to true if no inspection is wanted.-->
+            </configuration>
+          </plugin>
+
+          <!-- Sign all artifacts with GPG. -->
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-gpg-plugin</artifactId>
+            <version>3.1.0</version>
+            <executions>
+              <execution>
+                <id>sign-artifacts</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>sign</goal>
+                </goals>
+                <!-- This is the ID of the KIELER GPG key. -->
+                <configuration>
+                  <keyname>0x22228C2E</keyname>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
   </profiles>
 
-  <repositories>
-    <repository>
-      <id>klighd</id>
-      <url>http://kieler.github.io/KLighD/repo</url>
-    </repository>
-  </repositories>
-
-  <dependencies>
-    <!-- the dependency to piccolo is required by roughly half of the bundles so I put it in here
-        it's, however, only pulled if listed as a (transitive) manifest dependency. -->
-    <dependency>
-      <groupId>de.cau.cs.kieler.klighd</groupId>
-      <artifactId>edu.umd.cs.piccolo</artifactId>
-      <version>1.3.4.v20200330</version>
-    </dependency>
-  </dependencies>
-
-  <!-- This dependency management are only here to resolve the broken Maven dependencies of Eclipse artifacts. Should be removed
-  once this ticket is resolved: https://bugs.eclipse.org/bugs/show_bug.cgi?id=567244 -->
   <dependencyManagement>
     <dependencies>
+  <!-- This dependency management are only here to resolve the broken Maven dependencies of Eclipse artifacts. Should be removed
+  once this ticket is resolved: https://bugs.eclipse.org/bugs/show_bug.cgi?id=567244 -->
       <dependency>
         <groupId>org.eclipse.platform</groupId>
         <artifactId>org.eclipse.ui.workbench</artifactId>
@@ -136,6 +208,22 @@
         <!-- transitively pulls 'org.eclipse.jface', too,
                defining e.g. 'org.eclipse.jface.preference.IPreferenceStore' -->
       </dependency>
+      <!-- Manages versions of transitively pulled dependencies of ELK which cause problems with the local dependencies. -->
+      <dependency>
+        <groupId>org.eclipse.emf</groupId>
+        <artifactId>org.eclipse.emf.ecore</artifactId>
+        <version>${emf-ecore-version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.eclipse.platform</groupId>
+        <artifactId>org.eclipse.e4.ui.workbench.renderers.swt</artifactId>
+        <version>0.15.600</version>
+      </dependency>
+      <dependency>
+        <groupId>org.eclipse.emf</groupId>
+        <artifactId>org.eclipse.emf.ecore.change</artifactId>
+        <version>2.14.0</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
 
@@ -149,9 +237,21 @@
       <url>file://klighd</url>
     </repository>
   </distributionManagement>
+  <!-- replace above with this for locally deploying the artifacts to OSSRH -->
+  <!-- <distributionManagement>
+    <snapshotRepository>
+      <id>ossrh</id>
+      <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+    </snapshotRepository>
+    <repository>
+      <id>ossrh</id>
+      <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+    </repository>
+  </distributionManagement> -->
 
   <!-- Modify the build process to add Tycho and configure some utility plug-ins. -->
   <build>
+    <sourceDirectory>src</sourceDirectory>
     <plugins>
       <!-- we need tycho plugin to build eclipse plugins -->
       <plugin>
@@ -217,6 +317,16 @@
         </configuration>
       </plugin>
 
+      <!-- skip generating poms for P2 dependencies managed by tycho. Avoids this issue: https://www.eclipse.org/forums/index.php?t=msg&th=1111563&goto=1854788&  --> 
+      <plugin>
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>tycho-packaging-plugin</artifactId>
+        <version>${tycho-version}</version>
+        <configuration>
+          <skipPomGeneration>true</skipPomGeneration>
+        </configuration>
+      </plugin>
+
       <!-- maven xtend plugin to tell maven to (and how to) compile xtend code -->
       <plugin>
         <groupId>org.eclipse.xtend</groupId>
@@ -277,6 +387,63 @@
                 <source>xtend-gen</source>
               </sources>
             </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- Build Javadoc jars -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>3.5.0</version>
+        <configuration>
+          <tags>
+          <!-- Let JavaDoc know about tags from Xtext -->
+            <tag>
+              <name>generated</name>
+              <placement>a</placement>
+              <head>EMF generated code</head>
+            </tag>
+            <tag>
+              <name>model</name>
+              <placement>a</placement>
+              <head>EMF model element</head>
+            </tag>
+            <tag>
+              <name>ordered</name>
+              <placement>a</placement>
+              <head>EMF ordered element</head>
+            </tag>
+            <!-- And some official tags that the maven-javdoc-plugin does somehow not recognize yet: -->
+            <tag>
+              <name>implSpec</name>
+              <placement>a</placement>
+              <head>Implementation Specification:</head>
+            </tag>
+            <!-- Tags used for Xtend's extension methods. -->
+            <tag>
+              <name>containsExtensions</name>
+              <placement>a</placement>
+              <head>This class contains Xtend extension methods.</head>
+            </tag>
+            <tag>
+              <name>extensionCategory</name>
+              <placement>a</placement>
+              <head>Extension Category:</head>
+            </tag>
+            <tag>
+              <name>example</name>
+              <placement>a</placement>
+              <head>Code Example:</head>
+            </tag>
+          </tags>
+        </configuration>
+        <executions>
+          <execution>
+            <id>attach-javadocs</id>
+            <goals>
+              <goal>jar</goal>
+            </goals>
           </execution>
         </executions>
       </plugin>

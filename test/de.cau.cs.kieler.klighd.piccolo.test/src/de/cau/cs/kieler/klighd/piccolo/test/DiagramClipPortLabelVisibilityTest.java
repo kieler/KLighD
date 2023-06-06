@@ -74,7 +74,7 @@ import de.cau.cs.kieler.klighd.viewers.ContextViewer;
  * <br>
  * This test is configured to be executed by the {@link Parameterized} test
  * {@link org.junit.runners.Suite Suite}. {@link #getParameters()} is called first prepares a list
- * of diagram nodes to clip the diagram to. Subsequently, {@link #prepareStatic()} is called that
+ * of diagram nodes to clip the diagram to. Subsequently, {@link #prepare()} is called that
  * initializes a diagram view consisting of a simple {@link Shell}, attaches {@link IViewer
  * IViewers}, and creates diagram of circuit diagram {@link #testModel} (which already is a KGraph).<br>
  * <br>
@@ -200,7 +200,7 @@ public class DiagramClipPortLabelVisibilityTest {
 
     /**
      * Prepares the test: creates a fresh {@link Shell} and attaches KLighD's diagramming
-     * infrastructure initialized with the model provided by {@link #loadTestModel()}.
+     * infrastructure initialized with the model provided by {@link KlighdTestPlugin#loadTestModel()}.
      */
     @BeforeClass
     public static void prepare() {

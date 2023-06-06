@@ -28,7 +28,7 @@ import de.cau.cs.kieler.klighd.KlighdConstants;
  * A collection of convenience methods for creating {@link KlighdPath} instances.<br>
  * They are outsourced in order to reduce the size of the {@link KlighdPath} class.<br>
  * <br>
- * Some of these methods are inspired by those of {@link edu.umd.cs.piccolox.swt.PSWTPath PSWTPath}.
+ * Some of these methods are inspired by those of {@code edu.umd.cs.piccolox.swt.PSWTPath}.
  * 
  * @author chsch
  */

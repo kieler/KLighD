@@ -44,31 +44,23 @@ import edu.umd.cs.piccolo.util.PBounds;
 
 /**
  * A special {@link edu.umd.cs.piccolo.PNode PNode} for integrating images in KLighD diagrams. The
- * implementation is inspired by that of {@link edu.umd.cs.piccolox.swt.PSWTImage}, some major
+ * implementation is inspired by that of {@code edu.umd.cs.piccolox.swt.PSWTImage}, some major
  * differences wrt. design requirements led to this new implementation. These differences involve
  * the non-dependency to any specific canvas implementation as well as to
  * {@link org.eclipse.swt.widgets.Display Display} being a specific
  * {@link org.eclipse.swt.graphics.Device Device}.<br>
  * <br>
- * In contrast to {@link edu.umd.cs.piccolox.swt.PSWTImage} the bounds of nodes of this type are not
+ * In contrast to {@code edu.umd.cs.piccolox.swt.PSWTImage} the bounds of nodes of this type are not
  * set while setting the image object to be displayed. Doing so results in flickering, at least
  * while drawing diagrams without animation. Instead the bounds are set top down by KlighD, see
- * {@link de.cau.cs.kieler.klighd.piccolo.internal.controller.KGERenderingControllerHelper#createImage(
- * de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController,
- * de.cau.cs.kieler.klighd.krendering.KImage, java.util.List, edu.umd.cs.piccolo.PNode,
- * de.cau.cs.kieler.klighd.microlayout.Bounds)
- * KGERenderingControllerHelper#createImage(...)}.<br>
+ * {@code KGERenderingControllerHelper#createImage(...)}.<br>
  * <br>
  * If the amount of instances of {@link Image} created while drawing diagrams, e.g. such with lots
  * of copies of the same icon will lead to performance/memory issues, one might introduce a further
- * caching mechanism beyond that in
- * {@link de.cau.cs.kieler.klighd.piccolo.internal.controller.KGERenderingControllerHelper#IMAGE_BUFFER
- * KGERenderingControllerHelper#IMAGE_BUFFER}. This could be done like for colors and fonts.
+ * caching mechanism. This could be done like for colors and fonts.
  * However, keeping every image in a lookup for the whole JVM life cycle sounds problematic...
  * 
  * @author chsch
- * @kieler.design proposed by chsch
- * @kieler.rating proposed yellow by chsch
  */
 public class KlighdImage extends KlighdNode.KlighdFigureNode<KImage> implements IResourceEmployer {
 
@@ -131,7 +123,7 @@ public class KlighdImage extends KlighdNode.KlighdFigureNode<KImage> implements 
     /**
      * Constructor.
      * 
-     * @param uri
+     * @param url
      *            the {@link URL} denoting the location of the image, must be valid (perform checks
      *            before calling this constructor!)
      * @param kImage
@@ -208,7 +200,7 @@ public class KlighdImage extends KlighdNode.KlighdFigureNode<KImage> implements 
      * Sets the image to be displayed by this node by delegating to
      * {@link ImageData#ImageData(InputStream)} and {@link #setImage(ImageData)}.<br>
      * <br>
-     * <b><font color="red">Make sure to close the {@link InputStream} afterwards!</font></b>
+     * <p style="color:red;font-weight:bold;">Make sure to close the {@link InputStream} afterwards!</p>
      * 
      * @param input
      *            stream providing the image data
@@ -222,7 +214,7 @@ public class KlighdImage extends KlighdNode.KlighdFigureNode<KImage> implements 
     /**
      * Sets the image to be displayed by this node.
      * 
-     * @param uri
+     * @param url
      *            the {@link URL} denoting the location of the image, must be valid (perform checks
      *            before calling this setter!)
      */

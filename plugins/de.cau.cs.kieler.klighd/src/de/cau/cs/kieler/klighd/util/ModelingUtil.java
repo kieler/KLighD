@@ -31,9 +31,6 @@ import com.google.common.collect.Iterators;
  * A collection of some modeling related convenience functions.
  *
  * @author chsch
- *
- * @kieler.design proposed by chsch
- * @kieler.rating proposed yellow by chsch
  */
 public final class ModelingUtil {
 

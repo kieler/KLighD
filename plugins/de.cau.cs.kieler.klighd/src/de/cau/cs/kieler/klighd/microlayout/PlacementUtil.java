@@ -97,9 +97,6 @@ import de.cau.cs.kieler.klighd.util.ModelingUtil;
  * @author chsch
  * @author sgu
  * @author akoc
- * 
- * @kieler.design proposed by chsch
- * @kieler.rating proposed yellow by chsch 
  */
 public final class PlacementUtil {
 
@@ -792,8 +789,8 @@ public final class PlacementUtil {
      * @param kLabel
      *            the label whose font information to retrieve.
      * @param setFontLayoutOptions
-     *            if <code>true</code> the layout options {@link LayoutOptions#FONT_NAME} and
-     *            {@link LayoutOptions#FONT_SIZE} are set/updated on <code>kLabel</code>'s layout
+     *            if <code>true</code> the layout options {@link CoreOptions#FONT_NAME} and
+     *            {@link CoreOptions#FONT_SIZE} are set/updated on <code>kLabel</code>'s layout
      *            data as expected by Graphviz (dot) for properly sizing <i>edge</i> labels
      * @return font information for the given label.
      */
@@ -832,8 +829,8 @@ public final class PlacementUtil {
      * @param kText
      *            the rendering whose font information to retrieve.
      * @param graphElement
-     *            if unequal to <code>null</code> the layout options {@link LayoutOptions#FONT_NAME}
-     *            and {@link LayoutOptions#FONT_SIZE} will be set/updated to the determined font
+     *            if unequal to <code>null</code> the layout options {@link CoreOptions#FONT_NAME}
+     *            and {@link CoreOptions#FONT_SIZE} will be set/updated to the determined font
      *            name & size values
      * @return font information for the given rendering.
      */

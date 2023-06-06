@@ -652,7 +652,7 @@ public class PrintOptions {
 
     /**
      * Gets the printer name.
-     * </br>
+     * <br>
      * Note:
      * The printer name cannot be set separately because that would invalidate the printer data.
      * To set a new printer, use {@link #setPrinterData(PrinterData)} with valid PrinterData.
@@ -830,7 +830,7 @@ public class PrintOptions {
      *
      * @param listener
      *            the listener to add
-     * @see {@link PropertyChangeSupport#addPropertyChangeListener(PropertyChangeListener)}
+     * @see PropertyChangeSupport#addPropertyChangeListener(PropertyChangeListener)
      */
     public void addPropertyChangeListener(final PropertyChangeListener listener) {
         propertyChangeSupport.addPropertyChangeListener(listener);
@@ -843,7 +843,7 @@ public class PrintOptions {
      *            the property to listen on
      * @param listener
      *            the listener to add
-     * @see {@link PropertyChangeSupport#addPropertyChangeListener(String, PropertyChangeListener)}
+     * @see PropertyChangeSupport#addPropertyChangeListener(String, PropertyChangeListener)
      */
     public void addPropertyChangeListener(final String propertyName,
             final PropertyChangeListener listener) {
@@ -854,7 +854,7 @@ public class PrintOptions {
      * Gets all registered property change listeners.
      *
      * @return the registered property change listeners
-     * @see {@link PropertyChangeSupport#getPropertyChangeListeners()}
+     * @see PropertyChangeSupport#getPropertyChangeListeners()
      */
     public PropertyChangeListener[] getPropertyChangeListeners() {
         return propertyChangeSupport.getPropertyChangeListeners();
@@ -866,7 +866,7 @@ public class PrintOptions {
      * @param propertyName
      *            the property being listened to
      * @return the registered property change listeners
-     * @see {@link PropertyChangeSupport#getPropertyChangeListeners(String)}
+     * @see PropertyChangeSupport#getPropertyChangeListeners(String)
      */
     public PropertyChangeListener[] getPropertyChangeListeners(final String propertyName) {
         return propertyChangeSupport.getPropertyChangeListeners(propertyName);
@@ -878,7 +878,7 @@ public class PrintOptions {
      * @param propertyName
      *            the property being listened on
      * @return true, if there are listeners registered
-     * @see {@link PropertyChangeSupport#hasListeners(String)}
+     * @see PropertyChangeSupport#hasListeners(String)
      */
     public boolean hasListeners(final String propertyName) {
         return propertyChangeSupport.hasListeners(propertyName);
@@ -889,7 +889,7 @@ public class PrintOptions {
      *
      * @param listener
      *            the listener to remove
-     * @see {@link PropertyChangeSupport#removePropertyChangeListener(PropertyChangeListener)}
+     * @see PropertyChangeSupport#removePropertyChangeListener(PropertyChangeListener)
      */
     public void removePropertyChangeListener(final PropertyChangeListener listener) {
         propertyChangeSupport.removePropertyChangeListener(listener);
@@ -902,7 +902,7 @@ public class PrintOptions {
      *            the property being listened to
      * @param listener
      *            the listener to remove
-     * @see {@link PropertyChangeSupport#removePropertyChangeListener(String, PropertyChangeListener)}
+     * @see PropertyChangeSupport#removePropertyChangeListener(String, PropertyChangeListener)
      */
     public void removePropertyChangeListener(final String propertyName,
             final PropertyChangeListener listener) {
@@ -918,7 +918,7 @@ public class PrintOptions {
      *            the old value of the property
      * @param newValue
      *            the new value of the property
-     * @see {@link PropertyChangeSupport#firePropertyChange(String, Object, Object)}
+     * @see PropertyChangeSupport#firePropertyChange(String, Object, Object)
      */
     protected void firePropertyChange(final String propertyName, final Object oldValue,
             final Object newValue) {

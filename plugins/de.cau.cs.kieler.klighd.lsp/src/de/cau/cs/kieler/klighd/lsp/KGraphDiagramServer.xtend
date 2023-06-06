@@ -144,7 +144,7 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
     /**
      * Prepares the client side update of the model by processing the potentially needed images on the client. Checks
      * for client-side cached images with the {@link CheckImagesAction}. If the corresponding response to the 
-     * {@link CheckImagesAction} requires images to be sent, a {@link SendImagesAction} is sent first. After receiving
+     * {@link CheckImagesAction} requires images to be sent, a {@link StoreImagesAction} is sent first. After receiving
      * the result back, updates the model with default Sprotty behavior via the {@link #updateModel} function.
      * Also handles updating the diagram options on the client.
      * 

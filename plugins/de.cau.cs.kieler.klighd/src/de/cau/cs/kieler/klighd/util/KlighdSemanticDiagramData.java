@@ -39,9 +39,6 @@ import de.cau.cs.kieler.klighd.ViewContext;
  *
  * @author uru
  * @author chsch
- *
- * @kieler.design proposed by chsch
- * @kieler.rating proposed yellow by chsch
  */
 public class KlighdSemanticDiagramData implements Iterable<Map.Entry<String, String>> {
 

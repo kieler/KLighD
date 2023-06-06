@@ -129,7 +129,7 @@ public class DiagramClipTest {
 
     /**
      * Prepares the test: creates a fresh {@link Shell} and attaches KLighD's diagramming
-     * infrastructure initialized with the model provided by {@link #loadTestModel()}.
+     * infrastructure initialized with the model provided by {@link KlighdTestPlugin#loadTestModel()}.
      */
     public void prepare() {
         shell = new Shell(Display.getDefault());

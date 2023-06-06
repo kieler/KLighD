@@ -350,7 +350,7 @@ public abstract class KlighdNode extends PNode implements IKlighdNode {
      * Decides whether a {@link KlighdNode} must not be drawn according to given scale-based
      * visibility definitions. (see
      * {@link de.cau.cs.kieler.klighd.syntheses.DiagramSyntheses#setUpperVisibilityScaleBound(KRendering,
-     * float) DiagramSyntheses#setUpperVisibilityScaleBound(KRendering, float)} and friends)
+     * Number) DiagramSyntheses#setUpperVisibilityScaleBound(KRendering, Number)} and friends)
      *
      * @param kpc
      *            the {@link KlighdPaintContext} providing the required information
@@ -384,7 +384,7 @@ public abstract class KlighdNode extends PNode implements IKlighdNode {
      * Decides whether a {@link KlighdNode} must not be picked according to given scale-based
      * visibility definitions. (see
      * {@link de.cau.cs.kieler.klighd.syntheses.DiagramSyntheses#setUpperVisibilityScaleBound(KRendering,
-     * float) DiagramSyntheses#setUpperVisibilityScaleBound(KRendering, float)} and friends)
+     * Number) DiagramSyntheses#setUpperVisibilityScaleBound(KRendering, Number)} and friends)
      *
      * @param kpp
      *            the {@link KlighdPickPath} providing the required information
@@ -400,7 +400,7 @@ public abstract class KlighdNode extends PNode implements IKlighdNode {
      * Decides whether a {@link KlighdNode} must not be drawn according to given scale-based
      * visibility definitions. (see
      * {@link de.cau.cs.kieler.klighd.syntheses.DiagramSyntheses#setUpperVisibilityScaleBound(KRendering,
-     * float) DiagramSyntheses#setUpperVisibilityScaleBound(KRendering, float)} and friends)
+     * Number) DiagramSyntheses#setUpperVisibilityScaleBound(KRendering, Number)} and friends)
      *
      * @param diagramScale
      *            the diagram scale factor to be applied

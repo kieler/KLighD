@@ -44,9 +44,6 @@ import de.cau.cs.kieler.klighd.krendering.KRenderingFactory;
  *
  * @author chsch
  * @author akoc
- *
- * @kieler.design proposed by chsch
- * @kieler.rating proposed yellow by chsch
  */
 public final class GridPlacementUtil {
 
@@ -437,7 +434,7 @@ public final class GridPlacementUtil {
      * <code>childPlacement instanceof KGridPlacement</code> and updates the placement data of
      * internal KRenderings if necessary.<br>
      * <br>
-     * {@link de.cau.cs.kieler.klighd.properties.IProperty IProperties} for delivering those data.
+     * {@link IProperty IProperties} for delivering those data.
      *
      * @param container
      *            the {@link KContainerRendering} to be evaluated

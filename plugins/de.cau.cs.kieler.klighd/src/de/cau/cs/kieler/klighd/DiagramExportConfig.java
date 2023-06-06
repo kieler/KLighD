@@ -81,7 +81,7 @@ public class DiagramExportConfig {
      * Determines whether the diagram zoom level determined by the diagram main camera's view
      * transform shall be used while evaluating the visibility of the particular diagram elements
      * and diagram element figure parts, if <code>false</code> a diagram zoom level of
-     * <code>1.0<code> is assumed.
+     * <code>1.0</code> is assumed.
      */
     public boolean applyCameraZoomLevel = false;
 
@@ -340,7 +340,7 @@ public class DiagramExportConfig {
      * means of {@link de.cau.cs.kieler.klighd.util.KlighdSemanticDiagramData
      * KlighdSemanticDiagramData} to the export, if supported by the exporter.
      *
-     * @param setTextLength
+     * @param setTextLengths
      *            if the expected text length values shall be added to the diagram while exporting
      *            an SVG based image, <code>false</code> otherwise.
      *
@@ -379,7 +379,7 @@ public class DiagramExportConfig {
 
     /**
      * Combined setter of information concerning the page/tile numbering.<br>
-     * {@link #firstRow} & {@link #firstColumn} are set if {@code rowNo} & {@code columnNo} are
+     * {@link #firstRow} and {@link #firstColumn} are set if {@code rowNo} and {@code columnNo} are
      * equal to zero, {@link #lastRow} and {@link #lastColumn} are set {@code row == rows - 1} and
      * {@code column == columns - 1}, respectively.
      *
@@ -405,7 +405,7 @@ public class DiagramExportConfig {
 
     /**
      * Combined setter of information concerning the page/tile numbering..<br>
-     * {@link #firstRow} & {@link #firstColumn} are set if {@code rowNo} & {@code columnNo} are
+     * {@link #firstRow} and {@link #firstColumn} are set if {@code rowNo} and {@code columnNo} are
      * equal to zero.
      *
      * @param pageNo

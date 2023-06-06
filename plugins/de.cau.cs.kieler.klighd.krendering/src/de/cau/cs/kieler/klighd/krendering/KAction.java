@@ -24,7 +24,7 @@ import org.eclipse.emf.ecore.EObject;
  * <!-- end-user-doc -->
  *
  * <!-- begin-model-doc -->
- * performs action <id> on <trigger> event
+ * performs action 'id' on 'trigger' event
  * <!-- end-model-doc -->
  *
  * <p>
@@ -48,7 +48,7 @@ public interface KAction extends EObject {
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
-     * id of the action implemenation to be executed when <trigger> occurs; in KLighD such action implementation must be registered via an extension point
+     * id of the action implementation to be executed when 'trigger' occurs; in KLighD such action implementation must be registered via an extension point
      * <!-- end-model-doc -->
      * @return the value of the '<em>Action Id</em>' attribute.
      * @see #setActionId(String)
