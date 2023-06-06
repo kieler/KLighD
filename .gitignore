@@ -3,6 +3,7 @@ xtend-gen/
 target/
 localM2/
 klighd-snapshots/
+klighd/
 .svn/
 .DS_Store
 *.class
