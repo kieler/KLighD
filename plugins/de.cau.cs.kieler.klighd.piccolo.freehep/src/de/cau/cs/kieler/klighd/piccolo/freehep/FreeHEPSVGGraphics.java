@@ -46,7 +46,7 @@ public class FreeHEPSVGGraphics extends KlighdAbstractSVGGraphics {
 
     /**
      * @param bounds
-     *            the bounds will be set as viewport values for the resulting root <svg ..> tag.
+     *            the bounds will be set as viewport values for the resulting root &lt;svg ..&gt; tag.
      * @param textAsShapes
      *            whether text should be rendered as shapes
      * @param embedFonts

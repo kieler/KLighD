@@ -94,7 +94,7 @@ import com.google.common.collect.Lists;
  * </p>
  * 
  * <p><i>Note furthermore, that the values of the provided model paths may end with <samp>/**</samp> or
- * <samp>/*&#042/...</samp> in order to instruct the model gathering to descent into sub folders.</i></p>
+ * <samp>/*&#042;/...</samp> in order to instruct the model gathering to descent into sub folders.</i></p>
  * 
  * <p>The test classes may have a constructor with zero or one argument(s) of type {@link Object} or
  * {@link EObject} in order to inject the model into the test. The same holds for the test methods
@@ -104,7 +104,7 @@ import com.google.common.collect.Lists;
  * 
  * <p>If the test incorporates <i>before</i> or <i>after</i> methods annotated with
  * {@link org.junit.Before @Before} or {@link org.junit.After @After}, the constructor based "model
- * injection" is required. (Evaluation and invocation of before & after methods could be customized as
+ * injection" is required. (Evaluation and invocation of before and after methods could be customized as
  * well; the corresponding methods in {@link Suite}, however, are marked deprecated, and I considered
  * overriding them not a good idea.) 
  * 
@@ -122,7 +122,7 @@ import com.google.common.collect.Lists;
  * public class Test {
  * 
  *     <samp>@Models</samp>
- *     public static Iterable<?> getModels() {
+ *     public static Iterable&lt;?&gt; getModels() {
  *         List&lt;Object&gt; models = Lists.newLinkedList();
  *         return models;
  *     }
@@ -232,9 +232,6 @@ import com.google.common.collect.Lists;
  * </pre>
  * 
  * @author chsch
- * @kieler.design proposed by chsch
- * @kieler.rating proposed yellow by chsch
- * 
  */
 public class ModelCollectionTestRunner extends Suite {
 
@@ -340,8 +337,7 @@ public class ModelCollectionTestRunner extends Suite {
     public ModelCollectionTestRunner(final Class<?> clazz) throws Throwable {
         super(clazz, Collections.emptyList());
 
-        // make sure kiml.service is loaded
-        //KimlServicePlugin.getDefault();
+        // make sure elk.core.service is loaded
         ElkServicePlugin.getInstance();
 
         // try to obtain the test models by means of a method annotated with 'Models'

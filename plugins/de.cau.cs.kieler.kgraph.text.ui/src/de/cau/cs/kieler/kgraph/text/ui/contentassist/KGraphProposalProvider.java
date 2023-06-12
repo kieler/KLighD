@@ -225,7 +225,7 @@ public class KGraphProposalProvider extends AbstractKGraphProposalProvider {
 
 
     // ---------------------------------------------------------
-    //  Layout option proposals provided by KIML
+    //  Layout option proposals provided by ELK
     // ---------------------------------------------------------
 
     // CHECKSTYLEOFF MethodName

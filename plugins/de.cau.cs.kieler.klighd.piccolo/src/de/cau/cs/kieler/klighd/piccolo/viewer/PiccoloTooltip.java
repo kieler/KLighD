@@ -47,7 +47,7 @@ import edu.umd.cs.piccolo.util.PStack;
  * {@link de.cau.cs.kieler.klighd.piccolo.KlighdNode.KlighdFigureNode KlighdFigureNode}'s
  * displayed {@link KRendering},
  * a {@link de.cau.cs.kieler.klighd.piccolo.IKlighdNode.IKGraphElementNode IKGraphElementNode} or,
- * if this is not available, from the corresponding {@link KGraphElement}'s {@link KLayoutData}.
+ * if this is not available, from the corresponding {@link KGraphElement}'s {@link de.cau.cs.kieler.klighd.kgraph.KLayoutData}.
  *
  * TODO: Evaluate the realization of the tooltip by means of an SWT Widget, too, although that won't
  * be available for the web-based approach.

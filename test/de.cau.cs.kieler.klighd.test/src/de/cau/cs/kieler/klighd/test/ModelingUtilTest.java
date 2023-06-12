@@ -384,7 +384,7 @@ public class ModelingUtilTest {
          * Creates a matcher for {@link Iterator}s that matches when a single pass over the examined
          * {@link Iterator} yields an item count that is equal to the specified <code>size</code>
          * argument.
-         * <p/>
+         * <br>
          * For example:
          *
          * <pre>

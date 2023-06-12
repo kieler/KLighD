@@ -19,7 +19,6 @@ package de.cau.cs.kieler.klighd.util;
 /**
  * A simple standard implementation of {@link RunnableWithResult}.
  * 
- * @kieler.design 2014-04-17 reviewed by cds, chsch, tit, uru
  * @param <T> the type of the result
  * @author chsch
  */

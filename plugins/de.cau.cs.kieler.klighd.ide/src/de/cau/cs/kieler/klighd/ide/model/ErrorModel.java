@@ -27,9 +27,6 @@ import de.cau.cs.kieler.klighd.ide.KlighdIdePlugin;
  * Represents errors and exceptions. Displayed as error message with a huge error sign.
  * 
  * @author als
- * @kieler.design 2014-07-30 proposed
- * @kieler.rating 2014-07-30 proposed yellow
- * 
  */
 public class ErrorModel extends MessageModel {
 

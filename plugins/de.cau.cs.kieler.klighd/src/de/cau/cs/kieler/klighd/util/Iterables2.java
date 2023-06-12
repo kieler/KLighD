@@ -33,9 +33,6 @@ import com.google.common.collect.Lists;
  * {@link com.google.common.collect.Iterables Iterables}.
  *
  * @author chsch
- *
- * @kieler.design proposed by chsch
- * @kieler.rating proposed yellow by chsch
  */
 public final class Iterables2 {
 
@@ -82,8 +79,7 @@ public final class Iterables2 {
 
     /**
      * Returns an {@link Iterable} containing only {@code value}.<br>
-     * This is a counterpart to {@link link
-     * com.google.common.collect.Iterators#singletonIterator(Object)
+     * This is a counterpart to {@link com.google.common.collect.Iterators#singletonIterator(Object)
      * Iterators#singletonIterator(Object)}.<br>
      * In case {@code value} is {@code null} an empty {@link Iterable} is returned.
      *
@@ -271,7 +267,7 @@ public final class Iterables2 {
 
     /**
      * Performs a <i>fold</i> operation on the elements of the provided {@link Iterable} by applying
-     * the provided {@link Function Function<Pair<R, T>, R>} onto each element.
+     * the provided {@link Function Function&lt;Pair&lt;R, E&gt;, R&gt;} onto each element.
      *
      * @param <E>
      *            type of {@code iterable}'s elements

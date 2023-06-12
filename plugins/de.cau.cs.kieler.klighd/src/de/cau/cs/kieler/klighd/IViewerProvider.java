@@ -25,9 +25,6 @@ import de.cau.cs.kieler.klighd.viewers.ContextViewer;
  * 
  * @author mri
  * @author chsch
- * 
- * @kieler.design proposed by chsch
- * @kieler.rating proposed yellow by chsch
  */
 public interface IViewerProvider {
 

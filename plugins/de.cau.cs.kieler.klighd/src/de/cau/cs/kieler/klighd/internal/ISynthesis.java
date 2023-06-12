@@ -43,9 +43,6 @@ import de.cau.cs.kieler.klighd.krendering.KText;
  * order to benefit from the convenience features of that class!
  * 
  * @author chsch
- * 
- * @kieler.design proposed by chsch
- * @kieler.rating proposed yellow by chsch
  */
 public interface ISynthesis {
 
@@ -101,7 +98,7 @@ public interface ISynthesis {
     List<Pair<IProperty<?>, List<?>>> getDisplayedLayoutOptions();
 
     /**
-     * Contributes the list of {@link de.cau.cs.kieler.klighd.IActionIAction IActions} provided in
+     * Contributes the list of {@link de.cau.cs.kieler.klighd.IAction IActions} provided in
      * the UI allowing to quickly perform pre-defined actions on the diagram elements. In order to
      * avoid compile time dependencies on concrete {@link de.cau.cs.kieler.klighd.IAction IAction}
      * implementations they are referenced by the id used in their registration.

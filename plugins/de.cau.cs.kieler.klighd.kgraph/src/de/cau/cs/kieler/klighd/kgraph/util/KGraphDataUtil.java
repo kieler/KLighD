@@ -22,7 +22,6 @@ import java.util.Map;
 
 import org.eclipse.elk.core.data.LayoutMetaDataService;
 import org.eclipse.elk.core.data.LayoutOptionData;
-import org.eclipse.elk.core.util.ElkUtil;
 import org.eclipse.elk.core.util.internal.LayoutOptionProxy;
 import org.eclipse.elk.graph.properties.IProperty;
 import org.eclipse.elk.graph.properties.IPropertyHolder;
@@ -137,7 +136,7 @@ public final class KGraphDataUtil {
     /**
      * A tree iterator that skips properties of {@link EMapPropertyHolder}s. For an explanation of
      * why this is necessary, see the implementation of
-     * {@link ElkUtil#loadDataElements(KNode, Predicate, boolean, IProperty...)}.
+     * {@link KGraphDataUtil#loadDataElements(KNode, Predicate, boolean, IProperty...)}.
      * 
      * @author cds
      */

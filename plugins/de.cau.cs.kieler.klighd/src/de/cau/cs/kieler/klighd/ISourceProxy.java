@@ -32,7 +32,7 @@ import com.google.common.base.Function;
  * the function.<br>
  * <br>
  * <b>Caution:</b> By contract {@link Function}'s result must not be an part/element of the actual
- * model itself!</b>
+ * model itself!
  * 
  * @author chsch
  */

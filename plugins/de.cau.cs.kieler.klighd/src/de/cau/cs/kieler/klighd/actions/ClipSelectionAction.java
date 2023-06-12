@@ -27,9 +27,6 @@ import de.cau.cs.kieler.klighd.kgraph.KNode;
  * Does nothing otherwise.
  * 
  * @author chsch
- * 
- * @kieler.design proposed by chsch
- * @kieler.rating proposed yellow by chsch
  */
 public class ClipSelectionAction implements IAction {
 

@@ -283,7 +283,7 @@ public abstract class AbstractKGERenderingController
     /**
      * Fires a run of the {@link de.cau.cs.kieler.klighd.IStyleModifier IStyleModifiers} referenced
      * by the {@link KStyle KStyles} attached to this {@link KGraphElement}'s rendering and updates
-     * the diagram figure, both if and only if {@link KStyles} with valid modifiers are present in
+     * the diagram figure, both if and only if {@link KStyle KStyles} with valid modifiers are present in
      * this {@link KGraphElement}'s rendering.
      */
     public void modifyStyles() {

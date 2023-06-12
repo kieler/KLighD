@@ -115,8 +115,6 @@ import edu.umd.cs.piccolo.util.PBounds;
  *
  * @author mri
  * @author chsch
- * @kieler.design proposed by chsch
- * @kieler.rating proposed yellow by chsch
  */
 public class DiagramController {
 
@@ -298,7 +296,7 @@ public class DiagramController {
      * Starts to record layout changes in the model instead of instantly applying them to the
      * visualization.<br>
      * <br>
-     * Executing {@link #stopRecording(ZoomStyle, KNode, int)} applies all recorded layout changes.
+     * Executing {@link #stopRecording(ZoomStyle, KGraphElement, int)} applies all recorded layout changes.
      *
      * @see de.cau.cs.kieler.klighd.internal.ILayoutRecorder#startRecording()
      *      ILayoutRecorder#startRecording()
@@ -316,8 +314,8 @@ public class DiagramController {
      * @param animationTime
      *            duration of the animated layout
      *
-     * @see de.cau.cs.kieler.klighd.internal.ILayoutRecorder#stopRecording(ZoomStyle, KNode, int)
-     *      ILayoutRecorder#stopRecording(ZoomStyle, KNode, int)
+     * @see de.cau.cs.kieler.klighd.internal.ILayoutRecorder#stopRecording(ZoomStyle, KGraphElement, int)
+     *      ILayoutRecorder#stopRecording(ZoomStyle, KGraphElement, int)
      */
     public void stopRecording(final ZoomStyle zoomStyle, final KGraphElement focusElement, final int animationTime) {
         stopRecording(zoomStyle, focusElement, null, animationTime);
@@ -335,8 +333,8 @@ public class DiagramController {
      * @param animationTime
      *            duration of the animated layout
      *
-     * @see de.cau.cs.kieler.klighd.internal.ILayoutRecorder#stopRecording(ZoomStyle, KNode, int)
-     *      ILayoutRecorder#stopRecording(ZoomStyle, KNode, int)
+     * @see de.cau.cs.kieler.klighd.internal.ILayoutRecorder#stopRecording(ZoomStyle, KGraphElement, int)
+     *      ILayoutRecorder#stopRecording(ZoomStyle, KGraphElement, int)
      */
     public void stopRecording(final ZoomStyle zoomStyle, final KGraphElement focusElement,
             final KVector previousPosition, final int animationTime) {

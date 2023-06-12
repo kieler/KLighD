@@ -34,7 +34,7 @@ import de.cau.cs.kieler.klighd.kgraph.KNode;
  * This action puts elements into the focus when clicked. Focussed elements usually have their
  * labels fully displayed, while unfocussed elements are usually subject to the current label
  * management strategy. Focussed / unfocussed elements can be distinguished by checking their
- * {@link KlighdLabelProperties#ELEMENT_IN_FOCUS}.
+ * {@link KlighdOptions#LABELS_ELEMENT_IN_FOCUS}.
  * 
  * <p>This class does not set the focussed state on the clicked element only, but also determines
  * which other elements should change their focus state along with it. A simple example would be

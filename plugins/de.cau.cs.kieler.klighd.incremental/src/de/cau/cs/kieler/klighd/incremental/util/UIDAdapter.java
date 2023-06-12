@@ -47,14 +47,14 @@ import de.cau.cs.kieler.klighd.util.KlighdPredicates;
  * following fallbacks are used:
  * <dl>
  * <dt>KNode</dt>
- * <dd>Concatenated labels.<br/>
+ * <dd>Concatenated labels.<br>
  * If no labels are present, the index in the parent's list of children.</dd>
  * <dt>KEdge</dt>
  * <dd>The source port's and target node's and port's ids, if applicable.</dd>
  * <dt>KLabel</dt>
- * <dd>The index in the parent's list of labels.</d>
+ * <dd>The index in the parent's list of labels.</dd>
  * <dt>KPort</dt>
- * <dd>The index in the parent's list of ports.</d>
+ * <dd>The index in the parent's list of ports.</dd>
  * </dl>
  * Any ID clashes are then resolved by consecutive numbering.
  * 

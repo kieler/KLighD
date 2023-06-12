@@ -54,10 +54,10 @@ public class KNodeNode extends KNodeAbstractNode implements
 
     private static final Predicate<Object> IS_MAIN_CAM = Predicates.instanceOf(KlighdMainCamera.class);
 
-    /** the parent {@link AbstractKNodeNode}. */
+    /** the parent {@link KNodeAbstractNode}. */
     private KNodeAbstractNode parent;
 
-    /** the node rendering controller deployed to manage the rendering of {@link #node}. */
+    /** the node rendering controller deployed to manage the rendering of the node. */
     private KNodeRenderingController renderingController;
 
     /** a dedicated layer accommodating all attached {@link KPortNode KPortNodes}.*/
@@ -393,7 +393,7 @@ public class KNodeNode extends KNodeAbstractNode implements
      * Setter.
      *
      * @param parentINode
-     *            the {@link AbstractKNodeNode} being the new parent in terms of the structural nodes
+     *            the {@link KNodeAbstractNode} being the new parent in terms of the structural nodes
      */
     public void setParentNode(final KNodeAbstractNode parentINode) {
         this.parent = parentINode;
@@ -447,10 +447,10 @@ public class KNodeNode extends KNodeAbstractNode implements
     }
 
     /** tracks scale setting.
-     * Setter for notifying {@link #containingINode}'s scale factor, called from
-     * {@link KNodeNode#setScale(double)}, used to adjust the
+     * Setter for notifying the node's scale factor, called from
+     * {@link setScale(double)}, used to adjust the
      * {@link KlighdPaintContext#getCameraZoomScale() camera zoom scale} before/after drawing the
-     * contained {@link KNodeNode KNodeNodes}.
+     * {@link KNodeNode}.
      *  */
     private Double nodeScale = null;
 

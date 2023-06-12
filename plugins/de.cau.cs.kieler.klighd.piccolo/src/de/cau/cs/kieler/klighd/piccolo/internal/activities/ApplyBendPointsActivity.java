@@ -24,7 +24,7 @@ import de.cau.cs.kieler.klighd.util.MathUtil;
 import edu.umd.cs.piccolo.activities.PInterpolatingActivity;
 
 /**
- * The Piccolo activity for applying bend points to a {@KEdgeNode}.
+ * The Piccolo activity for applying bend points to a {@link KEdgeNode}.
  *
  * @author mri, chsch
  */

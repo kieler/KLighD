@@ -48,7 +48,7 @@ public final class LabelManagementUtil {
     
     /**
      * Returns the KText that controls the rendering for the given label. The rendering is found by
-     * inspecting the {@link KlighdOptions#K_RENDERING} property.
+     * inspecting the {@link KRenderingOptions#K_RENDERING} property.
      * 
      * @param label
      *            the label whose KText to retrieve.
@@ -65,7 +65,7 @@ public final class LabelManagementUtil {
     
     /**
      * Determines the font data associated with the given label. This method requires the label to
-     * have the {@link KlighdOptions#K_RENDERING} property set to the rendering which will be used
+     * have the {@link KRenderingOptions#K_RENDERING} property set to the rendering which will be used
      * to actually render the label later.
      * 
      * @param label

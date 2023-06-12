@@ -35,8 +35,6 @@ import de.cau.cs.kieler.klighd.krendering.SimpleUpdateStrategy;
  * To be continued ... :-
  *
  * @author chsch
- *
- * @kieler.design proposed by chsch
  */
 public class KlighdSynthesisProperties extends MapPropertyHolder {
 
@@ -208,7 +206,7 @@ public class KlighdSynthesisProperties extends MapPropertyHolder {
      *
      * @see IPropertyHolder#setProperty(IProperty, Object)
      *
-     * @return <code>this<code> {@link KlighdSynthesisProperties} object.
+     * @return <code>this</code> {@link KlighdSynthesisProperties} object.
      */
     public <T> KlighdSynthesisProperties setProperty2(final IProperty<? super T> property,
             final T value) {
@@ -225,7 +223,7 @@ public class KlighdSynthesisProperties extends MapPropertyHolder {
      *            the {@code id} of the desired
      *            {@link de.cau.cs.kieler.klighd.syntheses.AbstractDiagramSynthesis diagram
      *            synthesis}
-     * @return <code>this<code> {@link KlighdSynthesisProperties} object.
+     * @return <code>this</code> {@link KlighdSynthesisProperties} object.
      */
     public KlighdSynthesisProperties useDiagramSynthesis(final String id) {
         this.setProperty(REQUESTED_DIAGRAM_SYNTHESIS, id);
@@ -239,7 +237,7 @@ public class KlighdSynthesisProperties extends MapPropertyHolder {
      * @param id
      *            the {@code id} of the desired {@link de.cau.cs.kieler.klighd.IUpdateStrategy
      *            IUpdateStrategy}
-     * @return <code>this<code> {@link KlighdSynthesisProperties} object.
+     * @return <code>this</code> {@link KlighdSynthesisProperties} object.
      */
     public KlighdSynthesisProperties useUpdateStrategy(final String id) {
         this.setProperty(REQUESTED_UPDATE_STRATEGY, id);
@@ -249,7 +247,7 @@ public class KlighdSynthesisProperties extends MapPropertyHolder {
     /**
      * Configures a 'use simple update strategy' setting.
      *
-     * @return <code>this<code> {@link KlighdSynthesisProperties} object.
+     * @return <code>this</code> {@link KlighdSynthesisProperties} object.
      */
     public KlighdSynthesisProperties useSimpleUpdateStrategy() {
         this.setProperty(REQUESTED_UPDATE_STRATEGY, SimpleUpdateStrategy.ID);
@@ -263,7 +261,7 @@ public class KlighdSynthesisProperties extends MapPropertyHolder {
      * @param id
      *            the {@code id} of the desired {@link de.cau.cs.kieler.klighd.IViewerProvider
      *            IViewerProvider}
-     * @return <code>this<code> {@link KlighdSynthesisProperties} object.
+     * @return <code>this</code> {@link KlighdSynthesisProperties} object.
      */
     public KlighdSynthesisProperties useViewer(final String id) {
         this.setProperty(REQUESTED_VIEWER_PROVIDER, id);
@@ -273,7 +271,7 @@ public class KlighdSynthesisProperties extends MapPropertyHolder {
     /**
      * Configures the diagram side bar in the diagram viewer to be initially opened.
      *
-     * @return <code>this<code> {@link KlighdSynthesisProperties} object.
+     * @return <code>this</code> {@link KlighdSynthesisProperties} object.
      */
     public KlighdSynthesisProperties expandSideBar() {
         this.setProperty(REQUESTED_SIDE_BAR_HANDLING, SideBarHandling.EXPAND);
@@ -283,7 +281,7 @@ public class KlighdSynthesisProperties extends MapPropertyHolder {
     /**
      * Configures the diagram side bar in the diagram viewer to be initially collapsed.
      *
-     * @return <code>this<code> {@link KlighdSynthesisProperties} object.
+     * @return <code>this</code> {@link KlighdSynthesisProperties} object.
      */
     public KlighdSynthesisProperties collapseSideBar() {
         this.setProperty(REQUESTED_SIDE_BAR_HANDLING, SideBarHandling.COLLAPSE);
@@ -295,7 +293,7 @@ public class KlighdSynthesisProperties extends MapPropertyHolder {
      * and from diagram canvas if no side bar is available or side bar is collapsed).
      * By default the zoom config buttons are shown.
      *
-     * @return <code>this<code> {@link KlighdSynthesisProperties} object.
+     * @return <code>this</code> {@link KlighdSynthesisProperties} object.
      */
     public KlighdSynthesisProperties hideDiagramZoomConfigButtons() {
         this.setProperty(REQUESTED_ZOOM_CONFIG_BUTTONS_HANDLING, ZoomConfigButtonsHandling.HIDE);
@@ -305,7 +303,7 @@ public class KlighdSynthesisProperties extends MapPropertyHolder {
     /**
      * Configures the diagram viewer's support for selecting multiple diagram elements.
      *
-     * @return <code>this<code> {@link KlighdSynthesisProperties} object.
+     * @return <code>this</code> {@link KlighdSynthesisProperties} object.
      */
     public KlighdSynthesisProperties suppressMultiSelection() {
         this.setProperty(MULTI_SELECTION, false);
@@ -314,13 +312,13 @@ public class KlighdSynthesisProperties extends MapPropertyHolder {
 
     /**
      * Configures the diagram viewer to include ports when selecting connected edges. <i>Connected
-     * edges<i> refer to edges connected to the same port on different levels of nested nodes.
+     * edges</i> refer to edges connected to the same port on different levels of nested nodes.
      * Usually such edges can be seen as a single logical connection that has been split, e.g., for
      * technical reasons. If set each connected {@link de.cau.cs.kieler.klighd.kgraph.KEdge KEdge}
      * "segment" and each {@link de.cau.cs.kieler.klighd.kgraph.KPort KPort} situated in between the
      * edges will be taken into selection, otherwise only the edges are taken.
      * 
-     * @return <code>this<code> {@link KlighdSynthesisProperties} object.
+     * @return <code>this</code> {@link KlighdSynthesisProperties} object.
      */
     public KlighdSynthesisProperties includePortsInConnectedEdgesSelections() {
         this.setProperty(INCLUDE_PORTS_IN_CONNECTED_EDGES_SELECTIONS, true);
@@ -331,7 +329,7 @@ public class KlighdSynthesisProperties extends MapPropertyHolder {
      * Configures the diagram viewer's support for automatically computing the minimal size of
      * diagram nodes (especially non-compound ones) and .
      *
-     * @return <code>this<code> {@link KlighdSynthesisProperties} object.
+     * @return <code>this</code> {@link KlighdSynthesisProperties} object.
      */
     public KlighdSynthesisProperties suppressNodeAndLabelSizeEstimation() {
         this.setProperty(SUPPRESS_SIZE_ESTIMATION, true);
@@ -341,7 +339,7 @@ public class KlighdSynthesisProperties extends MapPropertyHolder {
     /**
      * Configures whether the edge adjustment should be calculated or not.
      * 
-     * @return <code>this<code> {@link KlighdSynthesisProperties} object.
+     * @return <code>this</code> {@link KlighdSynthesisProperties} object.
      */
     public KlighdSynthesisProperties suppressEdgeAdjustment() {
         this.setProperty(SUPPRESS_EDGE_ADJUSTMENT, false);
@@ -355,7 +353,7 @@ public class KlighdSynthesisProperties extends MapPropertyHolder {
      *            the singleton {@link SynthesisOption} object
      * @param value
      *            the value to be configured for <code>option</code>
-     * @return <code>this<code> {@link KlighdSynthesisProperties} object.
+     * @return <code>this</code> {@link KlighdSynthesisProperties} object.
      */
     public KlighdSynthesisProperties configureSynthesisOptionValue(
             final SynthesisOption option, final Object value) {
@@ -374,7 +372,7 @@ public class KlighdSynthesisProperties extends MapPropertyHolder {
      * @param options
      *            a {@link Map} of singleton {@link SynthesisOption} objects and their desired
      *            values
-     * @return <code>this<code> {@link KlighdSynthesisProperties} object.
+     * @return <code>this</code> {@link KlighdSynthesisProperties} object.
      */
     public KlighdSynthesisProperties configureSynthesisOptionValues(
             final Map<SynthesisOption, Object> options) {

@@ -40,8 +40,6 @@ import de.cau.cs.kieler.klighd.KlighdTreeSelection;
  * This class contains utility methods for highlighting selection in Xtext editors.
  * 
  * @author als
- * @kieler.design 2015-01-01 proposed
- * @kieler.rating 2015-01-01 proposed yellow
  */
 public final class XtextSelectionHighlighter {
     /**

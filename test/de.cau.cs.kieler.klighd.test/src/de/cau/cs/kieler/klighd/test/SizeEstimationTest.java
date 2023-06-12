@@ -54,13 +54,13 @@ import de.cau.cs.kieler.klighd.test.runners.ModelCollectionTestRunner.StopOnFail
 
 /**
  * Tests the node size estimation calculations in {@link PlacementUtil}. It does so by requiring the
- * properties {@link de.cau.cs.kieler.klighd.KlighdConstants#KLIGHD_TESTING_HEIGHT
- * KLIGHD_TESTING_HEIGHT} and {@link de.cau.cs.kieler.klighd.KlighdConstants#KLIGHD_TESTING_WIDTH
+ * properties {@link de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties#KLIGHD_TESTING_HEIGHT
+ * KLIGHD_TESTING_HEIGHT} and {@link de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties#KLIGHD_TESTING_WIDTH
  * KLIGHD_TESTING_WIDTH} given for each {@link KText} occurring in a {@link KNode KNode's}
  * rendering, and by requiring
- * {@link de.cau.cs.kieler.klighd.KlighdConstants#KLIGHD_TESTING_EXPECTED_HEIGHT
+ * {@link de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties#KLIGHD_TESTING_EXPECTED_HEIGHT
  * KLIGHD_TESTING_EXPECTED_HEIGHT} and
- * {@link de.cau.cs.kieler.klighd.KlighdConstants#KLIGHD_TESTING_EXPECTED_WIDTH
+ * {@link de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties#KLIGHD_TESTING_EXPECTED_WIDTH
  * KLIGHD_TESTING_EXPECTED_WIDTH} attached to the {@link KShapeLayout} of the {@link KNode}.
  * 
  * While the first implemented test ({@link #sizeDataPresentTest(KNode)}) acts as a precondition

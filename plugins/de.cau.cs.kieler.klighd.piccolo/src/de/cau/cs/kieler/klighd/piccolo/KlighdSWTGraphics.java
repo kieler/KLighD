@@ -34,9 +34,9 @@ import de.cau.cs.kieler.klighd.util.KlighdSemanticDiagramData;
 
 /**
  * This interface defines methods to be used by custom {@link edu.umd.cs.piccolo.PNode PNode}
- * implementations to draw there shapes. Its aim is to abstract the concrete implementation of
- * {@link java.awt.Graphics2D Graphics2D} like {@link edu.umd.cs.piccolox.swt.SWTGraphics2D
- * SWTGraphics2D} contributed by the <code>edu.umd.cs.piccolox.swt</code> package. Instead a
+ * implementations to draw their shapes. Its aim is to abstract the concrete implementation of
+ * {@link java.awt.Graphics2D Graphics2D} like {@code SWTGraphics2D} contributed by the
+ * <code>edu.umd.cs.piccolox.swt</code> package. Instead a
  * <i>Graphics</i> layer realizing e.g. an SVG output shall be supported interchangeably.<br>
  * <br>
  * For drawing basic figures (i.e. no text fields and images) {@link #draw(Path)} and
@@ -394,7 +394,7 @@ public interface KlighdSWTGraphics {
     void setNextTextLength(final double textLength);
 
     /**
-     * Draws the provided string while respecting the recently set font & text style settings.<br>
+     * Draws the provided string while respecting the recently set font and text style settings.<br>
      * Its position can be determined by means of {@link #setTransform(AffineTransform)}.
      * 
      * @param string

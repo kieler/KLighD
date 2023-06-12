@@ -203,7 +203,7 @@ public interface KColoring<T extends KColoring<T>> extends KStyle {
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
-     * Convenience setter for configuring the color & alpha or gradient source color & source alpha of <code>this</code> KColoring instance.<br>
+     * Convenience setter for configuring the color and alpha or gradient source color and source alpha of <code>this</code> KColoring instance.<br>
      * Redirects to {@link de.cau.cs.kieler.klighd.krendering.KRenderingUtil#setColor(KColoring, int, int, int, int) KRenderingUtil.setColor(KColoring, int, int, int, int)}.
      * @param red the red component of the desired color in range of 0 to 255
      * @param green the green component of the desired color in range of 0 to 255
@@ -219,7 +219,7 @@ public interface KColoring<T extends KColoring<T>> extends KStyle {
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
-     * Convenience setter for configuring the color & alpha or gradient source color & source alpha of <code>this</code> KColoring instance.<br>
+     * Convenience setter for configuring the color and alpha or gradient source color and source alpha of <code>this</code> KColoring instance.<br>
      * Redirects to {@link de.cau.cs.kieler.klighd.krendering.KRenderingUtil#setColor(KColoring, Colors, int) KRenderingUtil.setColor(KColoring, Colors, int)}.
      * @param color a color constant from the {@link Colors} enumeration
      * @param alpha the alpha component of the desired color in range of 0 to 255
@@ -247,7 +247,7 @@ public interface KColoring<T extends KColoring<T>> extends KStyle {
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
-     * Convenience setter for configuring the color & alpha or gradient source color & alpha of <code>this</code> KColoring instance.<br>
+     * Convenience setter for configuring the color and alpha or gradient source color and alpha of <code>this</code> KColoring instance.<br>
      * Simply redirects to {@link #setColor(KColor)} and {@link #setAlpha(int)}, and returns <code>this</code> KColoring instance instead of <code>void</code>.
      * @param color an instance of {@link KColor}
      * @param alpha the alpha component of the desired color in range of 0 to 255
@@ -274,7 +274,7 @@ public interface KColoring<T extends KColoring<T>> extends KStyle {
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
-     * Convenience setter for configuring the color or gradient source color & alpha of <code>this</code> KColoring instance.<br>
+     * Convenience setter for configuring the color or gradient source color and alpha of <code>this</code> KColoring instance.<br>
      * Redirects to {@link de.cau.cs.kieler.klighd.krendering.KRenderingUtil#setColorCopyOf(KColoring, KColor, int) KRenderingUtil.setColorCopyOf(KColoring, KColor, int)}.
      * @param kColor an instance of {@link KColor}
      * @param alpha the alpha component of the desired color in range of 0 to 255
@@ -301,7 +301,7 @@ public interface KColoring<T extends KColoring<T>> extends KStyle {
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
-     * Convenience setter for configuring the color & alpha or gradient source color & alpha of <code>this</code> KColoring instance.<br>
+     * Convenience setter for configuring the color and alpha or gradient source color and alpha of <code>this</code> KColoring instance.<br>
      * Simply redirects to {@link #setColorCopyOf(KColor, int)} and returns <code>this</code> KColoring instance.
      * @param coloring an instance of {@link KColoring}
      * <!-- end-model-doc -->
@@ -343,7 +343,7 @@ public interface KColoring<T extends KColoring<T>> extends KStyle {
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
-     * Convenience setter for configuring the gradient target color & target alpha of <code>this</code> KColoring instance.<br>
+     * Convenience setter for configuring the gradient target color and target alpha of <code>this</code> KColoring instance.<br>
      * Redirects to {@link de.cau.cs.kieler.klighd.krendering.KRenderingUtil#setTargetColor(KColoring, int, int, int, int) KRenderingUtil.setTargetColor(KColoring, int, int, int, int)}.
      * @param red the red component of the desired color in range of 0 to 255
      * @param green the green component of the desired color in range of 0 to 255
@@ -359,7 +359,7 @@ public interface KColoring<T extends KColoring<T>> extends KStyle {
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
-     * Convenience setter for configuring the gradient target color & target alpha of <code>this</code> KColoring instance.<br>
+     * Convenience setter for configuring the gradient target color and target alpha of <code>this</code> KColoring instance.<br>
      * Redirects to {@link de.cau.cs.kieler.klighd.krendering.KRenderingUtil#setTargetColor(KColoring, Colors, int) KRenderingUtil.setTargetColor(KColoring, Colors, int)}.
      * @param color a color constant from the {@link Colors} enumeration
      * @param alpha the alpha component of the desired color in range of 0 to 255
@@ -387,7 +387,7 @@ public interface KColoring<T extends KColoring<T>> extends KStyle {
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
-     * Convenience setter for configuring the gradient target color & target alpha of <code>this</code> KColoring instance.<br>
+     * Convenience setter for configuring the gradient target color and target alpha of <code>this</code> KColoring instance.<br>
      * Simply redirects to {@link #setTargetColor(KColor)} and {@link #setTargetAlpha(int)}, and returns <code>this</code> KColoring instance instead of <code>void</code>.
      * @param targetColor an instance of {@link KColor}
      * @param targetAlpha the alpha component of the desired color in range of 0 to 255
@@ -414,7 +414,7 @@ public interface KColoring<T extends KColoring<T>> extends KStyle {
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
-     * Convenience setter for configuring the gradient target color & target alpha of <code>this</code> KColoring instance.<br>
+     * Convenience setter for configuring the gradient target color and target alpha of <code>this</code> KColoring instance.<br>
      * Redirects to {@link de.cau.cs.kieler.klighd.krendering.KRenderingUtil#setTargetColorCopyOf(KColoring, KColor, int) KRenderingUtil.setTargetColorCopyOf(KColoring, KColor, int)}.
      * @param targetColor an instance of {@link KColor}
      * @param targetAlpha the alpha component of the desired color in range of 0 to 255
@@ -441,7 +441,7 @@ public interface KColoring<T extends KColoring<T>> extends KStyle {
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
-     * Convenience setter for configuring the gradient target color & alpha of <code>this</code> KColoring instance.<br>
+     * Convenience setter for configuring the gradient target color and alpha of <code>this</code> KColoring instance.<br>
      * Simply redirects to {@link #setTargetColorCopyOf(KColor, int)} and returns <code>this</code> KColoring instance.
      * @param coloring an instance of {@link KColoring}
      * <!-- end-model-doc -->
@@ -455,7 +455,7 @@ public interface KColoring<T extends KColoring<T>> extends KStyle {
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
      * Convenience setter for configuring the color gradient angle of <code>this</code> KColoring instance.<br>
-     * Simply redirects to {@link #setGradientAngle(int)} and returns <code>this</code> KColoring instance instead of <code>void</code>.
+     * Simply redirects to {@link #setGradientAngle(float)} and returns <code>this</code> KColoring instance instead of <code>void</code>.
      * @param angle the desired gradient angle in degrees.
      * <!-- end-model-doc -->
      * @model annotation="http://www.eclipse.org/emf/2002/GenModel body='@SuppressWarnings(\"unchecked\")\nfinal T it = (T) this;\nthis.setGradientAngle(angle);\nreturn it;'"
@@ -496,7 +496,7 @@ public interface KColoring<T extends KColoring<T>> extends KStyle {
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
-     * Convenience setter for configuring the gradient source and target colors & alphas of <code>this</code> KColoring instance.<br>
+     * Convenience setter for configuring the gradient source and target colors and alphas of <code>this</code> KColoring instance.<br>
      * Simply redirects to {@link #setColor2(KColor, int)} and {@link #setTargetColor2(KColor, int)}, and returns <code>this</code> KColoring instance.
      * @param color an instance of {@link KColor}
      * @param alpha the alpha component of the desired color in range of 0 to 255
@@ -512,7 +512,7 @@ public interface KColoring<T extends KColoring<T>> extends KStyle {
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
-     * Convenience setter for configuring the gradient source and target colors & alphas as well as the color gradient angle of <code>this</code> KColoring instance.<br>
+     * Convenience setter for configuring the gradient source and target colors and alphas as well as the color gradient angle of <code>this</code> KColoring instance.<br>
      * Simply redirects to {@link #setColor2(KColor, int)}, {@link #setTargetColor2(KColor, int)}, and {@link #setGradientAngle2(float)}, and returns <code>this</code> KColoring instance.
      * @param color an instance of {@link KColor}
      * @param alpha the alpha component of the desired color in range of 0 to 255
@@ -560,7 +560,7 @@ public interface KColoring<T extends KColoring<T>> extends KStyle {
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
-     * Convenience setter for configuring the gradient source and target colors & alphas of <code>this</code> KColoring instance.<br>
+     * Convenience setter for configuring the gradient source and target colors and alphas of <code>this</code> KColoring instance.<br>
      * Simply redirects to {@link #setColor(Colors, int)} and {@link #setTargetColor(Colors, int)}, and returns <code>this</code> KColoring instance.
      * @param color a color constant from the {@link Colors} enumeration
      * @param alpha the alpha component of the desired color in range of 0 to 255
@@ -577,7 +577,7 @@ public interface KColoring<T extends KColoring<T>> extends KStyle {
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
-     * Convenience setter for configuring the gradient source and target colors & alphas as well as the color gradient angle of <code>this</code> KColoring instance.<br>
+     * Convenience setter for configuring the gradient source and target colors and alphas as well as the color gradient angle of <code>this</code> KColoring instance.<br>
      * Simply redirects to {@link #setColor(Colors, int)}, {@link #setTargetColor(Colors, int)}, and {@link #setGradientAngle2(float)}, and returns <code>this</code> KColoring instance.
      * @param color a color constant from the {@link Colors} enumeration
      * @param alpha the alpha component of the desired color in range of 0 to 255
@@ -624,7 +624,7 @@ public interface KColoring<T extends KColoring<T>> extends KStyle {
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
-     * Convenience setter for configuring the gradient source and target colors & alphas of <code>this</code> KColoring instance.<br>
+     * Convenience setter for configuring the gradient source and target colors and alphas of <code>this</code> KColoring instance.<br>
      * Simply redirects to {@link #setColorCopyOf(KColor, int)} and {@link #setTargetColorCopyOf(KColor, int)}, and returns <code>this</code> KColoring instance.
      * @param color an instance of {@link KColor}
      * @param alpha the alpha component of the desired color in range of 0 to 255
@@ -640,7 +640,7 @@ public interface KColoring<T extends KColoring<T>> extends KStyle {
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
-     * Convenience setter for configuring the gradient source and target colors & alphas as well as the color gradient angle of <code>this</code> KColoring instance.<br>
+     * Convenience setter for configuring the gradient source and target colors and alphas as well as the color gradient angle of <code>this</code> KColoring instance.<br>
      * Simply redirects to {@link #setColorCopyOf(KColor, int)}, {@link #setTargetColorCopyOf(KColor, int)}, and {@link #setGradientAngle2(float)}, and returns <code>this</code> KColoring instance.
      * @param color an instance of {@link KColor}
      * @param alpha the alpha component of the desired color in range of 0 to 255
@@ -670,7 +670,7 @@ public interface KColoring<T extends KColoring<T>> extends KStyle {
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
-     * Convenience setter for configuring the gradient source and target colors & alphas of <code>this</code> KColoring instance.<br>
+     * Convenience setter for configuring the gradient source and target colors and alphas of <code>this</code> KColoring instance.<br>
      * Simply redirects to {@link #setColorsCopiesOf(KColor, int, KColor, int)} and {@link #setGradientAngle2(float)}, and returns <code>this</code> KColoring instance.
      * @param coloring an instance of {@link KColoring}
      * <!-- end-model-doc -->

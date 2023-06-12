@@ -29,7 +29,7 @@ import de.cau.cs.kieler.klighd.kgraph.KPort;
 
 /**
  * The default {@link SelectionIterator} for usage in
- * {@link KGraphUtilUtil#getConnectedElements(KEdge, boolean) KGraphUtil.getConnectedElements(...)}.
+ * {@link KGraphUtil#getConnectedElements(KEdge, boolean) KGraphUtil.getConnectedElements(...)}.
  * The iterator follows all edges transitively connected to the initial edge. Optionally the
  * iterator can also include the corresponding ports in the selection.
  */

@@ -43,8 +43,6 @@ import de.cau.cs.kieler.klighd.krendering.KStyle;
  * To be continued :-)
  *
  * @author chsch
- *
- * @kieler.design proposed by chsch
  */
 public final class KlighdPredicates {
 
@@ -204,7 +202,7 @@ public final class KlighdPredicates {
      * tagged as the <i>collapsed state</i> rendering definition.
      *
      * @return a static predicate testing the provided {@link KRendering} for a <i>collapsed
-     *         state<i> tag.
+     *         state</i> tag.
      */
     public static Predicate<KRendering> isCollapsedRendering() {
         return IS_COLLAPSED_RENDERING;
@@ -225,7 +223,7 @@ public final class KlighdPredicates {
      * tagged as the <i>expanded state</i> rendering definition.
      *
      * @return a static predicate testing the provided {@link KRendering} for a <i>expanded
-     *         state<i> tag.
+     *         state</i> tag.
      */
     public static Predicate<KRendering> isExpandedRendering() {
         return IS_EXPANDED_RENDERING;
@@ -244,7 +242,7 @@ public final class KlighdPredicates {
      * This predicate returns <code>false</code> if no markers are available.
      *
      * @return a static predicate testing the provided {@link KRendering} for a <i>collapsed</i> or
-     *         <i>expanded state<i> tag.
+     *         <i>expanded state</i> tag.
      */
     public static Predicate<KRendering> isCollapsedOrExpandedRendering() {
         return IS_COLLAPSED_OR_EXPANDED_RENDERING;
@@ -280,7 +278,7 @@ public final class KlighdPredicates {
     /**
      * Creates new compound {@link Predicates#instanceOf(Class)} predicates testing for several
      * <code>classes</code>. {@link Predicate#apply(Object) apply(Object)} of this predicate returns
-     * <true> if the input is instance of one of the provided classes or interfaces.
+     * <code>true</code> if the input is instance of one of the provided classes or interfaces.
      *
      * @param classes
      *            the classes/interface to be 'instanceof' checked
@@ -293,7 +291,7 @@ public final class KlighdPredicates {
     /**
      * Creates new compound {@link Predicates#instanceOf(Class)} predicates testing for several
      * <code>classes</code>. {@link Predicate#apply(Object) apply(Object)} of this predicate returns
-     * <true> if the input is instance of one of the provided classes or interfaces.
+     * <code>true</code> if the input is instance of one of the provided classes or interfaces.
      *
      * @param classes
      *            the classes/interface to be 'instanceof' checked
@@ -321,7 +319,7 @@ public final class KlighdPredicates {
     /**
      * Creates new compound {@link Predicate Predicates} testing {@link EClass#isInstance(Object)}
      * for several <code>classes</code>. {@link Predicate#apply(Object) apply(Object)} of this
-     * predicate returns <true> if the input is instance of one of the provided classes or
+     * predicate returns <code>true</code> if the input is instance of one of the provided classes or
      * interfaces.
      *
      * @param classes
@@ -335,7 +333,7 @@ public final class KlighdPredicates {
     /**
      * Creates new compound {@link Predicate Predicates} testing {@link EClass#isInstance(Object)}
      * for several <code>classes</code>. {@link Predicate#apply(Object) apply(Object)} of this
-     * predicate returns <true> if the input is instance of one of the provided classes or
+     * predicate returns <code>true</code> if the input is instance of one of the provided classes or
      * interfaces.
      *
      * @param classes

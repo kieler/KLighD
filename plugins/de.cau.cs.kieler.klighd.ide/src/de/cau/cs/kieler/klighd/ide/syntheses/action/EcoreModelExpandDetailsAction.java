@@ -27,8 +27,6 @@ import de.cau.cs.kieler.klighd.util.ModelingUtil;
  * Expands all details areas of the ecore representation of the model.
  * 
  * @author als
- * @kieler.design 2015-01-01 proposed
- * @kieler.rating 2015-01-01 proposed yellow
  */
 public class EcoreModelExpandDetailsAction implements IAction {
     /** The action id. */

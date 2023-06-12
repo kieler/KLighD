@@ -33,9 +33,6 @@ import javax.inject.Inject
  * Diagram synthesis for a {@link MessageModel}.
  * 
  * @author als
- * @kieler.design 2014-07-30 proposed
- * @kieler.rating 2014-07-30 proposed yellow
- * 
  */
 class ErrorModelSynthesis extends AbstractDiagramSynthesis<ErrorModel> {
 

@@ -60,7 +60,7 @@ import edu.umd.cs.piccolo.util.PStack;
 import edu.umd.cs.piccolox.swt.SWTTimer;
 
 /**
- * A specialized version of {@link PCanvas} based on {@link edu.umd.cs.piccolox.swt.PSWTCanvas} with
+ * A specialized version of {@link PCanvas} based on {@code edu.umd.cs.piccolox.swt.PSWTCanvas} with
  * lots of KLighD-specific customizations.
  *
  * @author chsch
@@ -156,7 +156,7 @@ public class KlighdCanvas extends Composite implements PComponent {
     }
 
     /**
-     * Specialized {@link PRoot} inspired by {@link edu.umd.cs.piccolox.swt.PSWTRoot}
+     * Specialized {@link PRoot} inspired by {@code edu.umd.cs.piccolox.swt.PSWTRoot}
      *  and contributing the customized {@link KlighdInputManager}.
      *
      * @author chsch
@@ -240,8 +240,8 @@ public class KlighdCanvas extends Composite implements PComponent {
      * {@link de.cau.cs.kieler.klighd.piccolo.internal.nodes.KNodeTopNode KNodeTopNode} takes that
      * part; see
      * {@link de.cau.cs.kieler.klighd.piccolo.internal.controller.DiagramController#DiagramController(
-     * de.cau.cs.kieler.klighd.kgraph.KNode, KlighdMainCamera, boolean, boolean)
-     * DiagramController.DiagramController(KNode, KlighdMainCamera, boolean, boolean)}.
+     * de.cau.cs.kieler.klighd.kgraph.KNode, KlighdMainCamera, boolean, boolean, boolean, Spacing)
+     * DiagramController.DiagramController(KNode, KlighdMainCamera, boolean, boolean, boolean, Spacing)}.
      * 
      * @return KlighdMainCamera viewing the freshly created scene
      */

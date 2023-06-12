@@ -32,14 +32,11 @@ import de.cau.cs.kieler.klighd.viewers.ContextViewer;
  * The common interface for viewers displaying diagrams of provided models.<br>
  * <br>
  * This interface is supposed to be used in client's code for revealing elements in diagrams,
- * expanding & collapsing elements, clipping the diagram, or asking for the source elements
+ * expanding and collapsing elements, clipping the diagram, or asking for the source elements
  * of representatives in diagrams by referring to {@link #getViewContext()}.
  *
  * @author mri
  * @author chsch
- *
- * @kieler.design proposed by chsch
- * @kieler.rating proposed yellow by chsch
  */
 public interface IViewer {
 
@@ -80,7 +77,7 @@ public interface IViewer {
     void setModel(Object model, boolean sync);
 
     /**
-     * Returns the {@link ViewContext} that is associated to <code>this</this> viewer.
+     * Returns the {@link ViewContext} that is associated to <code>this</code> viewer.
      *
      * @return the associated {@link ViewContext} or <code>null</code> if no input model is set
      */
@@ -400,8 +397,7 @@ public interface IViewer {
     boolean isExpanded(KNode diagramElement);
 
     /**
-     * Collapses the representation of the given element. Note that there must exist related element
-     * <-> diagram element tracking information in the {@link TransformationContexts}.
+     * Collapses the representation of the given element.
      *
      * @param semanticElement
      *            the semantic element to be expanded
@@ -417,8 +413,7 @@ public interface IViewer {
 
     /**
      * Expands the representation of the given element, i.e. populates it with children and changes
-     * its rendering if necessary. Note that there must exist related element <-> diagram element
-     * tracking information in the {@link TransformationContexts}.
+     * its rendering if necessary.
      *
      * @param semanticElement
      *            the semantic element to be expanded
@@ -433,9 +428,7 @@ public interface IViewer {
     void expand(KNode diagramElement);
 
     /**
-     * Expands the representation of the given element if collapsed and vice versa. Note that there
-     * must exist related element <-> diagram element tracking information in the
-     * {@link TransformationContexts}.
+     * Expands the representation of the given element if collapsed and vice versa.
      *
      * @param semanticElement
      *            the semantic element to be expanded

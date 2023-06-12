@@ -40,9 +40,6 @@ import org.eclipse.xtext.util.concurrent.IUnitOfWork;
  * This class contains utility methods for access to editor content.
  * 
  * @author als
- * @kieler.design 2015-09-30 proposed
- * @kieler.rating 2015-09-30 proposed yellow
- *
  */
 public final class EditorUtil {
 
@@ -96,8 +93,6 @@ public final class EditorUtil {
 
     /**
      * Checks the given resource for error markers.
-     * 
-     * @see XtextBasedEditorActivationChangeTrigger#checkAndIndicateErrors(final XtextResource resource)
      * 
      * @param resource
      *            the resource

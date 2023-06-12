@@ -29,9 +29,6 @@ import de.cau.cs.kieler.klighd.ui.view.controller.AbstractViewUpdateController;
  * model is saved.
  * 
  * @author als
- * @kieler.design 2015-06-29 proposed
- * @kieler.rating 2015-06-29 proposed yellow
- *
  */
 public class EcoreXtextSaveUpdateController extends AbstractViewUpdateController
         implements EditorSaveAdapter.EditorSafeListener {

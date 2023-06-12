@@ -33,9 +33,6 @@ import org.eclipse.elk.graph.properties.Property;
  * collapsed/expanded state of the {@link de.cau.cs.kieler.klighd.kgraph.KNode KNode}.
  * 
  * @author chsch
- * 
- * @kieler.design proposed by chsch
- * @kieler.rating proposed yellow by chsch 
  */
 public final class ExpansionAwareLayoutOption {
     
@@ -44,7 +41,7 @@ public final class ExpansionAwareLayoutOption {
     
     /**
      * The layout option singleton (similar to those in
-     * {@link de.cau.cs.kieler.kiml.options.LayoutOptions LayoutOptions}.<br>
+     * {@link org.eclipse.elk.core.options.CoreOptions CoreOptions}.<br>
      * Its id is also registered in the plugin.xml. 
      */
     public static final IProperty<ExpansionAwareLayoutOptionData> OPTION =
@@ -63,7 +60,7 @@ public final class ExpansionAwareLayoutOption {
      *            an {@link IPropertyHolder} to define the property on
      * @param property
      *            the particular layout option, e.g. one of
-     *            {@link de.cau.cs.kieler.kiml.options.LayoutOptions LayoutOptions}
+     *            {@link org.eclipse.elk.core.options.CoreOptions CoreOptions}
      * @param collapsedValue
      *            the value in case <code>node</code> is collapsed
      * @param expandedValue
@@ -115,7 +112,7 @@ public final class ExpansionAwareLayoutOption {
          *            the property value type
          * @param property
          *            the particular layout option, e.g. one of
-         *            {@link de.cau.cs.kieler.kiml.options.LayoutOptions LayoutOptions}
+         *            {@link org.eclipse.elk.core.options.CoreOptions CoreOptions}
          * @param collapsedValue
          *            the value in case <code>node</code> is collapsed
          * @param expandedValue

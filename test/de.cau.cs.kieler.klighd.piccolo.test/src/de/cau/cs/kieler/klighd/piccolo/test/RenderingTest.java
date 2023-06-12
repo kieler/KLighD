@@ -101,9 +101,6 @@ public class RenderingTest {
 
     /**
      * Some initialization to insert input KGraph into some Klighd structures.
-     *
-     * @param n
-     *            KNode representing the input KGraph
      */
     @Before
     public void initialize() {
