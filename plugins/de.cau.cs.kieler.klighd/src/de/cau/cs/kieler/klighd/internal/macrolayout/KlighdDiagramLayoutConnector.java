@@ -1192,7 +1192,9 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
                         -sourceNode.getInsets().getTop());
             }
         } else {
-            sourcePoint.add(sourceNode.getXpos(), sourceNode.getYpos());
+            // TODO: this probably only works for edges crossing at most one hierarchy level
+            sourcePoint.add(sourceNode.getXpos() * sourceNode.getProperty(CoreOptions.TOPDOWN_SCALE_FACTOR), 
+                    sourceNode.getYpos() * sourceNode.getProperty(CoreOptions.TOPDOWN_SCALE_FACTOR));
         }
         
         KPoint sourceKPoint = edge.getSourcePoint();
@@ -1204,7 +1206,9 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
 
         // determine the target point
         final KVector targetPoint = toElementBorder(targetNode, targetPort, sourceNode, sourcePort);
-        targetPoint.add(targetNode.getXpos(), targetNode.getYpos());
+        // TODO: this probably only works for edges crossing at most one hierarchy level
+        targetPoint.add(targetNode.getXpos() * targetNode.getParent().getProperty(CoreOptions.TOPDOWN_SCALE_FACTOR), 
+                targetNode.getYpos() * targetNode.getParent().getProperty(CoreOptions.TOPDOWN_SCALE_FACTOR));
         if (targetInSource) {
             KGraphUtil.toAbsolute(targetPoint, targetNode.getParent());
             KGraphUtil.toRelative(targetPoint, sourceNode);
