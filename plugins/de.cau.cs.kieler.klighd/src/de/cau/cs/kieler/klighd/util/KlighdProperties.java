@@ -375,4 +375,13 @@ public final class KlighdProperties {
      */
     public static final IProperty<Boolean> IS_NODE_TITLE =
             new Property<Boolean>("klighd.isNodeTitle", false);
+    
+    /**
+     * Automatically computes the padding required to fit the content of a node within the bounds of a 
+     * rounded rectangle. The x and y corner radii are specified as x and y of a KVector. If this property
+     * is set, the ElkPadding set on the graph will be overridden internally. This property should only be 
+     * used if no padding is manually set on the graph element.
+     */
+    public static final IProperty<KVector> ROUNDED_RECTANGLE_AUTOPADDING = 
+            new Property<KVector>("klighd.roundedRectangle.autopadding", null);
 }
