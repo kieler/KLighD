@@ -384,13 +384,15 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
         if (node.getProperty(KlighdProperties.ROUNDED_RECTANGLE_AUTOPADDING) != null) {
             KVector radii = node.getProperty(KlighdProperties.ROUNDED_RECTANGLE_AUTOPADDING);
             double padding = 0;
+            // threshold to check for almost zero-ness
+            double EPSILON = 0.00001;
             // x and y cannot be zero, if one of the two is zero use the larger value
-            if (radii.x < 0.00001 && radii.y >= 0.00001) {
-                radii.x = 0.00001;
-            } else if (radii.x >= 0.00001 && radii.y < 0.00001) {
-                radii.y = 0.00001;
+            if (radii.x < EPSILON && radii.y >= EPSILON) {
+                radii.x = EPSILON;
+            } else if (radii.x >= EPSILON && radii.y < EPSILON) {
+                radii.y = EPSILON;
             }
-            if (!(radii.x < 0.00001 && radii.y < 0.00001)) {
+            if (!(radii.x < EPSILON && radii.y < EPSILON)) {
                 // computes a padding x such that the corners of the inner rectangle fit exactly within the rounded rectangle
                 double numerator = radii.x * radii.y * (-Math.sqrt(2) * Math.sqrt(radii.x * radii.y) + radii.x + radii.y);
                 double denominator = radii.x * radii.x + radii.y * radii.y;
