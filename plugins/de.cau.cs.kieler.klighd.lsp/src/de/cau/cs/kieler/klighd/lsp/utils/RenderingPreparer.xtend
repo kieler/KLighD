@@ -178,7 +178,7 @@ final class RenderingPreparer {
     /**
      * Calculate the size and position of all child renderings recursively. The boundsMap and decorationMap again indicate
      * if is should be stored in them (not null) or in the rendering's properties themselves.
-     * Inspired by {@link de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController}.
+     * Inspired by {@code de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController}.
      * 
      * @param renderings The child renderings to calculate the sizes and decorations for.
      * @param placement The defined placement of the child renderings.
