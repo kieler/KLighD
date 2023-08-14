@@ -389,11 +389,18 @@ public final class KGraphUtil {
         KNode node = parent;
         while (node != null) {
             KInsets insets = node.getInsets();
-            point.add(node.getXpos() + insets.getLeft(), node.getYpos() + insets.getTop());
+            double topdownScale = 1.0;
+            if (node.getParent() != null) {
+                topdownScale = node.getParent().getProperty(CoreOptions.TOPDOWN_SCALE_FACTOR);
+            }
+            point.add(node.getXpos() * topdownScale + insets.getLeft(), node.getYpos() * topdownScale + insets.getTop());
             node = node.getParent();
         }
         return point;
     }
+
+    // TODO: need to change the bottom-up toAbsolute and toRelative methods to work top-down other wise the scale
+    //       factors are applied incorrectly
 
     /**
      * Converts the given absolute point to a relative location. The insets of the parent node
@@ -407,7 +414,11 @@ public final class KGraphUtil {
         KNode node = parent;
         while (node != null) {
             KInsets insets = node.getInsets();
-            point.add(-node.getXpos() - insets.getLeft(), -node.getYpos() - insets.getTop());
+            double topdownScale = 1.0;
+            if (node.getParent() != null) {
+                topdownScale = node.getParent().getProperty(CoreOptions.TOPDOWN_SCALE_FACTOR);
+            }
+            point.add(-node.getXpos() / topdownScale - insets.getLeft(), -node.getYpos() / topdownScale - insets.getTop());
             node = node.getParent();
         }
         return point;

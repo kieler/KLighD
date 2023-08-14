@@ -16,6 +16,7 @@
  */
 package de.cau.cs.kieler.klighd.internal.macrolayout;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
@@ -1186,6 +1187,34 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
             return p.add(portPos);
         }
     }
+    
+    private void collectCommonAncestors(KNode sourceNode, KNode targetNode, List<KNode> sourceAncestors, List<KNode> targetAncestors) {
+        // traverse the ancestor tree from both sides until a common ancestor is found, first element in both lists
+        // is the common ancestor, last element are the respective parent nodes
+        KNode current = sourceNode;
+        List<KNode> sourceToRoot = new ArrayList<>();
+        while (current.getParent() != null) {
+            current = current.getParent();
+            sourceToRoot.add(current);
+        }
+        
+        // now do the same starting from the target node, but check whether current node is already in the other list
+        current = targetNode;
+        List<KNode> targetToCommon = new ArrayList<>();
+        while (current.getParent() != null && !sourceToRoot.contains(current)) {
+            current = current.getParent();
+            targetToCommon.add(current);
+        }
+        KNode commonAncestor = current;
+        
+        // construct the final lists
+        for (int i = sourceToRoot.indexOf(commonAncestor); i >= 0; i--) {
+            sourceAncestors.add(sourceToRoot.get(i));
+        }
+        for (int i = targetToCommon.size() - 1; i > 0; i--) {
+            targetAncestors.add(targetToCommon.get(i));
+        }
+    }
 
     /**
      * Handle the given edge that was excluded from layout. Set its source and
@@ -1204,6 +1233,15 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
         final KPort targetPort = edge.getTargetPort();
         final boolean targetInSource = KGraphUtil.isDescendant(targetNode, sourceNode);
 
+        // TODO: build topology lists to common ancestor if not ancestor
+        //       combine scale factors to correctly position source and target points
+        //       relative to child region of parent of source node
+        //TODO: CONTINUE HERE call collectCommonAncestors
+        
+        List<KNode> sourceAncestors = new ArrayList<>();
+        List<KNode> targetAncestors = new ArrayList<>();
+        collectCommonAncestors(sourceNode, targetNode, sourceAncestors, targetAncestors);
+        
         // determine the source point
         final KVector sourcePoint = toElementBorder(sourceNode, sourcePort, targetNode, targetPort);
         if (targetInSource) {
@@ -1226,9 +1264,18 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
 
         // determine the target point
         final KVector targetPoint = toElementBorder(targetNode, targetPort, sourceNode, sourcePort);
+        
+        // multiply up to common ancestor and divide down to source
+        double scaleToApply = 1.0;
+        for (KNode node : targetAncestors) {
+            scaleToApply *= node.getProperty(CoreOptions.TOPDOWN_SCALE_FACTOR);
+        }
+        for (KNode node : Iterables.skip(sourceAncestors, 1)) {
+            scaleToApply *= 1 / node.getProperty(CoreOptions.TOPDOWN_SCALE_FACTOR);
+        }
         // TODO: this probably only works for edges crossing at most one hierarchy level
-        targetPoint.add(targetNode.getXpos() * targetNode.getParent().getProperty(CoreOptions.TOPDOWN_SCALE_FACTOR), 
-                targetNode.getYpos() * targetNode.getParent().getProperty(CoreOptions.TOPDOWN_SCALE_FACTOR));
+        targetPoint.add(targetNode.getXpos() * scaleToApply, 
+                targetNode.getYpos() * scaleToApply);
         if (targetInSource) {
             KGraphUtil.toAbsolute(targetPoint, targetNode.getParent());
             KGraphUtil.toRelative(targetPoint, sourceNode);
