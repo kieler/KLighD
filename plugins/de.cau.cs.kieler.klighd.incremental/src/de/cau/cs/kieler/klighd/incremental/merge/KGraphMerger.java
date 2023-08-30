@@ -36,7 +36,6 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.MapDifference.ValueDifference;
 import com.google.common.collect.Sets;
 
-import de.cau.cs.kieler.klighd.KlighdDataManager;
 import de.cau.cs.kieler.klighd.incremental.diff.KComparison;
 import de.cau.cs.kieler.klighd.kgraph.KEdge;
 import de.cau.cs.kieler.klighd.kgraph.KGraphData;
@@ -88,9 +87,65 @@ public class KGraphMerger {
         handleRemovedNodes();
         handleAddedNodes();
         handleMatchedNodes();
+        
+        // handle edges after everything else is done, because they are contained in their source, therefore we can't be 
+        // sure the target exists until we have gone through the entire model
+        handleRemovedEdges();
+        handleAddedEdges();
+        handleMatchedEdges();
+        
         updatePositions();
     }
+    
+    /**
+     * Removes edges from the base model.
+     */
+    private void handleRemovedEdges() {
+        for (KEdge edge : comparison.getRemovedEdges()) {
+            edge.setSource(null);
+            edge.setTarget(null);
+            edge.setSourcePort(null);
+            edge.setTargetPort(null);
+        }
+    }
 
+    /**
+     * Adds edges from the new model to the base model.
+     */
+    private void handleAddedEdges() {
+        Set<KNode> nodesWithNewEdges = new HashSet<>();
+        Stream<KEdge> newEdges = comparison.getAddedEdges().stream();
+        newEdges.forEach(
+            (KEdge edge) -> nodesWithNewEdges.add(edge.getSource())
+        );
+        nodesWithNewEdges.forEach(
+            (KNode node) -> addEdges(node)
+        );
+    }
+    
+    /**
+     * Adds all edges of a node that has some new edge.
+     */
+    private void addEdges(KNode newEdgeContainer) {
+        KNode baseNode = comparison.lookupBaseNode(newEdgeContainer);
+        handleEdges(baseNode, newEdgeContainer);
+    }
+    
+    /**
+     * Handles edges that are present in both the base model and the new model.
+     */
+    private void handleMatchedEdges() {
+        Set<KNode> nodesWithMatchedEdges = new HashSet<>();
+        for (ValueDifference<KEdge> diff : comparison.getMatchedEdges()) {
+            nodesWithMatchedEdges.add(diff.leftValue().getSource());
+            nodesWithMatchedEdges.add(diff.rightValue().getSource());
+        }
+        nodesWithMatchedEdges.forEach(
+            (KNode node) -> addEdges(node)
+        );
+        
+    }
+    
     /**
      * Remove nodes from the base model that are not longer present in the new model.
      */
@@ -142,10 +197,6 @@ public class KGraphMerger {
         )).forEachOrdered(
             (KNode node) -> addNode(node)
         );
-        // Add edges after adding the nodes to ensure that all targets are available.
-        for (KNode node : comparison.getAddedNodes()) {
-            handleEdges(comparison.lookupBaseNode(node), node);
-        }
     }
 
     /**
@@ -231,7 +282,7 @@ public class KGraphMerger {
         copyInsets(newNode.getInsets(), baseNode.getInsets());
         handleLabels(baseNode, newNode);
         handlePorts(baseNode, newNode);
-        handleEdges(baseNode, newNode);
+        // edges are handled after all possible sources and targets have been handled
         updatedElements.put(baseNode, newNode);
     }
 

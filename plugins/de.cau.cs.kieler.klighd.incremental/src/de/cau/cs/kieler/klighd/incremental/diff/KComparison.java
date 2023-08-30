@@ -38,6 +38,7 @@ public class KComparison {
     private UIDAdapter baseAdapter;
     private UIDAdapter newAdapter;
     private MapDifference<String, KNode> nodeDifference;
+    private MapDifference<String, KEdge> edgeDifference;
 
     /**
      * Create new comparison.
@@ -51,6 +52,7 @@ public class KComparison {
         this.baseAdapter = baseAdapter;
         this.newAdapter = newAdapter;
         nodeDifference = Maps.difference(baseAdapter.getNodeMap(), newAdapter.getNodeMap());
+        edgeDifference = Maps.difference(baseAdapter.getEdgeMap(), newAdapter.getEdgeMap());
     }
 
     /**
@@ -184,6 +186,33 @@ public class KComparison {
      */
     public Collection<ValueDifference<KNode>> getMatchedNodes() {
         return nodeDifference.entriesDiffering().values();
+    }
+    
+    /**
+     * Get newly added edges.
+     * 
+     * @return the newly added edges.
+     */
+    public Collection<KEdge> getAddedEdges() {
+        return edgeDifference.entriesOnlyOnRight().values();
+    }
+
+    /**
+     * Get removed edges.
+     * 
+     * @return removed edges.
+     */
+    public Collection<KEdge> getRemovedEdges() {
+        return edgeDifference.entriesOnlyOnLeft().values();
+    }
+
+    /**
+     * Get matched edges, that are present in both models.
+     * 
+     * @return pairs of matched edges.
+     */
+    public Collection<ValueDifference<KEdge>> getMatchedEdges() {
+        return edgeDifference.entriesDiffering().values();
     }
 
 }
