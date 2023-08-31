@@ -22,6 +22,7 @@ import java.util.ListIterator;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import org.eclipse.elk.core.math.ElkPadding;
 import org.eclipse.elk.core.math.KVector;
 import org.eclipse.elk.core.options.CoreOptions;
 import org.eclipse.elk.core.service.IDiagramLayoutConnector;
@@ -98,8 +99,8 @@ import de.cau.cs.kieler.klighd.util.RenderingContextData;
  * <p>If the {@link KNode} instances have attached {@code KRendering} data the manager uses them to
  * compute the node insets as well as the minimal node size.</p>
  * 
- * <p><b>Note:</b> During the {@link #applyLayout(LayoutMapping)} phase layout data that have been
- * scaled according to a corresponding {@link LayoutOptions#SCALE_FACTOR} are normalized to scaling
+ * <p><b>Note:</b> During the {@link #applyLayout(LayoutMapping, boolean)} phase layout data that have been
+ * scaled according to a corresponding {@link CoreOptions#SCALE_FACTOR} are normalized to scaling
  * <code>1.0f</code>, since the scaling is implemented on figure level by means of affine
  * transforms. In addition, the scale adjustment need not be reverted before the subsequent layout
  * run.</p>
@@ -130,8 +131,8 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
     private static final IProperty<List<KEdge>> EXCLUDED_EDGES =
             new Property<>("krendering.layout.excludedEdges");
     /**
-     * A property that is used to tell KIML about the workbench part this layout manager is
-     * responsible for. Note that this property is not referred to by KIML immediately, it rather
+     * A property that is used to tell ELK about the workbench part this layout manager is
+     * responsible for. Note that this property is not referred to by ELK immediately, it rather
      * filters given property definitions by their value types and looks for one of
      * {@link IWorkbenchPart}.
      */
@@ -207,7 +208,7 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
      * @param viewModel
      *            the graph to build the layout graph from
      * @param performSizeEstimation
-     *            whether the size of nodes & labels should be automatically estimated.
+     *            whether the size of nodes and labels should be automatically estimated.
      * @param workbenchPart
      *            the workbenchPart in which the layout takes place, if any
      * @return the layout graph mapping
@@ -330,7 +331,7 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
             // if the minimal node size is given in terms of the dedicated property, use its values
             minSize = Bounds.of(node.getProperty(KlighdProperties.MINIMAL_NODE_SIZE));
         } else if (!isCompoundNode || node.getProperty(INITIAL_NODE_SIZE)) {
-            // otherwise, if the node is a non-compound one or the size is not yet modified by KIML
+            // otherwise, if the node is a non-compound one or the size is not yet modified by ELK
             //  take the component-wise maximum of the standard bounds and 'nodelayout's values
             minSize = Bounds.max(minSize, Bounds.of(node.getWidth(), node.getHeight()));
         }
@@ -360,7 +361,7 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
             PlacementUtil.calculateInsets(displayedRendering, insets, size);
 
             // integrate the minimal estimated node size
-            // in case of a compound node, the minimal node size to be preserved by KIML must be
+            // in case of a compound node, the minimal node size to be preserved by ELK must be
             // handed over by means of the MIN_WIDTH/MIN_HEIGHT properties
             // in case of non-compound nodes with SizeConstraint::MINIMUM_SIZE set, the property
             // definitions are also relevant
@@ -377,9 +378,32 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
 
         // KLighD is somewhat mean and doesn't care about existing insets
         node.setInsets(insets);
+        // This line should not be needed as it just sets the default paddings if none existed yet, and every use of
+        // this property needs to "get" it first, theoretically resulting in always setting the default values.
+        // But this still seems to be necessary to fix child area placement. See also f613c1758bdc05c4461e4a2cc47dee0cb8556416 
         node.getProperty(CoreOptions.PADDING);
         // The Insets are used in {@link KlighdLayoutConfigurationStore} to retrieve the padding
         // of the node
+        
+        if (node.getProperty(KlighdProperties.ROUNDED_RECTANGLE_AUTOPADDING) != null) {
+            KVector radii = node.getProperty(KlighdProperties.ROUNDED_RECTANGLE_AUTOPADDING);
+            double padding = 0;
+            // threshold to check for almost zero-ness
+            double EPSILON = 0.00001;
+            // x and y cannot be zero, if one of the two is zero use the larger value
+            if (radii.x < EPSILON && radii.y >= EPSILON) {
+                radii.x = EPSILON;
+            } else if (radii.x >= EPSILON && radii.y < EPSILON) {
+                radii.y = EPSILON;
+            }
+            if (!(radii.x < EPSILON && radii.y < EPSILON)) {
+                // computes a padding x such that the corners of the inner rectangle fit exactly within the rounded rectangle
+                double numerator = radii.x * radii.y * (-Math.sqrt(2) * Math.sqrt(radii.x * radii.y) + radii.x + radii.y);
+                double denominator = radii.x * radii.x + radii.y * radii.y;
+                padding = numerator / denominator;
+            }
+            node.setProperty(CoreOptions.PADDING, new ElkPadding(padding));
+        }
 
         layoutParent.getChildren().add(layoutNode);
         mapping.getGraphMap().put(layoutNode, node);
@@ -551,8 +575,8 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
      * @param estimateSize
      *            if <code>true</code> the minimal size of the {@link KLabel} will be estimated
      * @param setFontLayoutOptions
-     *            if <code>true</code> the layout options {@link LayoutOptions#FONT_NAME} and
-     *            {@link LayoutOptions#FONT_SIZE} are set/updated on <code>kLabel</code>'s layout
+     *            if <code>true</code> the layout options {@link CoreOptions#FONT_NAME} and
+     *            {@link CoreOptions#FONT_SIZE} are set/updated on <code>kLabel</code>'s layout
      *            data as expected by Graphviz (dot) for properly sizing <i>edge</i> labels
      */
     private void createLabel(final LayoutMapping mapping, final KLabel label,
@@ -685,7 +709,7 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
                     shapeToViewModel(mapping, layoutNode, node, true, true);
                     node.setProperty(INITIAL_NODE_SIZE, false);
 
-                    // transfer the scale factor value since KIML might have reset it
+                    // transfer the scale factor value since ELK might have reset it
                     //  to 1f in case scaling was not supported in the particular configuration
                     // and the figure scaling will be set according this property setting
                     node.setProperty(CoreOptions.SCALE_FACTOR,

@@ -31,9 +31,6 @@ import de.cau.cs.kieler.klighd.kgraph.KNode;
  * {@link de.cau.cs.kieler.klighd.IViewer IViewers}.
  * 
  * @author chsch
- * 
- * @kieler.design proposed by chsch
- * @kieler.rating proposed yellow by chsch
  */
 public interface ILayoutRecorder {
 
@@ -41,7 +38,7 @@ public interface ILayoutRecorder {
      * Starts to record layout changes in the model instead of instantly applying them to the
      * visualization.<br>
      * <br>
-     * Executing {@link #stopRecording(ZoomStyle, KNode, int)} applies all recorded layout changes.
+     * Executing {@link #stopRecording(ZoomStyle, KGraphElement, int)} applies all recorded layout changes.
      */
     void startRecording();
     
@@ -60,7 +57,7 @@ public interface ILayoutRecorder {
      *            the style used to zoom, e.g. zoom to fit or zoom to focus
      * @param focusElement
      *            the {@link KGraphElement} to focus in case <code>zoomStyle</code> is
-     *            {@link ZoomStyle#ZOOM_TO_FOCUS} or {@link ZoomStyle#ZOOM_TO_STAY_SELECTED}, is ignored otherwise
+     *            {@link ZoomStyle#ZOOM_TO_FOCUS} or {@link ZoomStyle#ZOOM_TO_STAY}, is ignored otherwise
      * @param animationTime
      *            duration of the animated layout
      */
@@ -73,10 +70,10 @@ public interface ILayoutRecorder {
      *            the style used to zoom, e.g. zoom to fit or zoom to focus
      * @param focusElement
      *            the {@link KGraphElement} to focus in case <code>zoomStyle</code> is
-     *            {@link ZoomStyle#ZOOM_TO_FOCUS} or {@link ZoomStyle#ZOOM_TO_STAY_SELECTED}, is ignored otherwise
+     *            {@link ZoomStyle#ZOOM_TO_FOCUS} or {@link ZoomStyle#ZOOM_TO_STAY}, is ignored otherwise
      * @param previousPosition
      *            the position the selected element had in the previous layout run.
-     *            Is ignored if the <code>zoomStyle</code> is ont {@link ZoomStyle#ZOOM_TO_STAY_SELECTED}.
+     *            Is ignored if the <code>zoomStyle</code> is ont {@link ZoomStyle#ZOOM_TO_STAY}.
      * @param animationTime
      *            duration of the animated layout
      */

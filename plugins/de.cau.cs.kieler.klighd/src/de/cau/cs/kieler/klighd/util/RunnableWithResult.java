@@ -18,10 +18,8 @@ package de.cau.cs.kieler.klighd.util;
 
 /**
  * Extension of {@link Runnable} that may be ask for a result, inspired by
- * {@link org.eclipse.emf.transaction.RunnableWithResult}.
+ * {@code org.eclipse.emf.transaction.RunnableWithResult}.
  * 
- * @kieler.design 2014-04-17 reviewed by cds, chsch, tit, uru
- * @kieler.rating 2012-11-02 proposed yellow cds
  * @param <T> the type of the result
  * @author chsch
  */

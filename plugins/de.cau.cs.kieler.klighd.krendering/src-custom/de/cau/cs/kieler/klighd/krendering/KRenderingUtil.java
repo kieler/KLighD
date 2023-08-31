@@ -173,13 +173,13 @@ public final class KRenderingUtil {
     /* ------------------------- */
     
     /**
-     * Singleton {@link KPosition} instance containing {@link KLeftPosition KLeft-} &
+     * Singleton {@link KPosition} instance containing {@link KLeftPosition KLeft-} and
      * {@link KTopPosition} components.
      */
     public static final KPosition LEFT_TOP_POS = createLeftTopKPosition();
     
     /**
-     * Singleton {@link KPosition} instance containing {@link KRightPosition KRight-} &
+     * Singleton {@link KPosition} instance containing {@link KRightPosition KRight-} and
      * {@link KBottomPosition} components.
      */
     public static final KPosition RIGHT_BOTTOM_POS = createRightBottomKPosition();
@@ -814,7 +814,7 @@ public final class KRenderingUtil {
     }
     
     /**
-     * Creates default @{link KRendering} corresponding to the type of {@link #element} for elements without attached rendering
+     * Creates default @{link KRendering} corresponding to the type of {@code element} for elements without attached rendering
      * data.
      *
      * @return The default {@link KRendering} model.

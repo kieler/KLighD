@@ -28,10 +28,9 @@ import org.eclipse.emf.ecore.util.EContentsEList;
  * This adapter refines the {@code EContentAdapter} so that it is able to follow
  * non-containment references.
  * 
- * <p>The implementation has been copied from {@link http://wiki.eclipse.org/EMF/Recipes}.</p>
+ * <p>The implementation has been copied from <a href="http://wiki.eclipse.org/EMF/Recipes">http://wiki.eclipse.org/EMF/Recipes</a>.
  * 
  * @author EMF, mri
- * @kieler.ignore The first rule of copied code is: you don't review copied code.
  */
 public class CrossDocumentContentAdapter extends EContentAdapter {
 

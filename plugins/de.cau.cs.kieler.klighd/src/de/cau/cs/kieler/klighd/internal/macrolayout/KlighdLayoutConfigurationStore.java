@@ -64,9 +64,6 @@ import de.cau.cs.kieler.klighd.util.RunnableWithResult;
  *
  * @author mri
  * @author msp
- *
- * @kieler.design proposed by chsch
- * @kieler.rating proposed yellow by chsch
  */
 public class KlighdLayoutConfigurationStore implements ILayoutConfigurationStore {
 

@@ -73,12 +73,12 @@ import de.cau.cs.kieler.klighd.util.KlighdSemanticDiagramData;
 /**
  * Common superclass for SVG generators using a {@link Graphics2D} to produce svg images.
  * 
- * Subclasses are registered via the {@link SVGGeneratorManager#EXTP_ID_SVGGENERATORS} extension
- * point. All implementing classes have to provide a two-argument constructor for {@code bounds} (
+ * Subclasses are statically registered in the {@link SVGGeneratorManager} class.
+ * All implementing classes have to provide a two-argument constructor for {@code bounds} (
  * {@link Rectangle2D}) and the {@code textAsShapes} ({@link Boolean}) flag.
  * 
  * Instances of one of the generators can be retrieved using the
- * {@link SVGGeneratorManager#createGraphics(String, Rectangle2D, boolean)} method.
+ * {@link SVGGeneratorManager#createGraphics(String, Rectangle2D, boolean, boolean)} method.
  * 
  * @author uru
  * @author chsch

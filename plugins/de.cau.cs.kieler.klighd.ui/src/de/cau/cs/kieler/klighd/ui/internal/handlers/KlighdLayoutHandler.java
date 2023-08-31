@@ -29,9 +29,6 @@ import de.cau.cs.kieler.klighd.LightDiagramLayoutConfig;
  * Handler for execution of automatic layout in KLighD triggered by menu, toolbar, or keyboard
  * command.
  * 
- * @kieler.design proposed by chsch
- * @kieler.rating proposed yellow 2014-01-25
- * 
  * @author chsch
  */
 public class KlighdLayoutHandler extends AbstractHandler {

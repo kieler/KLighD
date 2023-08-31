@@ -152,7 +152,7 @@ class RectpackingInteractiveLanguageServerExtension implements ILanguageServerEx
      * Sets the aspect ratio.
      * 
      * @param constraint The aspect ratio constraint.
-     * @param The client id of the corresponding diagram view.
+     * @param clientId The client id of the corresponding diagram view.
      */
     def setAspectRatio(SetAspectRatio constraint, String clientId) {
         val uri = diagramState.getURIString(clientId)

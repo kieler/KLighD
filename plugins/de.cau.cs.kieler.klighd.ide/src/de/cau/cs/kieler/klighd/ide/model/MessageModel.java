@@ -20,9 +20,6 @@ package de.cau.cs.kieler.klighd.ide.model;
  * A simple message model. Provides a title, message and icon.
  * 
  * @author als
- * @kieler.design 2014-07-30 proposed
- * @kieler.rating 2014-07-30 proposed yellow
- * 
  */
 // CHECKSTYLEOFF VisibilityModifier
 public class MessageModel {

@@ -49,9 +49,6 @@ import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
  * children of the intended type if they are already present or added later on.
  * 
  * @author chsch
- * 
- * @kieler.design proposed by chsch
- * @kieler.rating proposed yellow by chsch
  */
 public class LimitedKGraphContentAdapter extends EContentAdapter {
     

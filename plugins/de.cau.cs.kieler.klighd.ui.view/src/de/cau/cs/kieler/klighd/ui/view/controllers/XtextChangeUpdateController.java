@@ -27,9 +27,6 @@ import de.cau.cs.kieler.klighd.ui.view.controller.AbstractViewUpdateController;
  * Simple controller for XText editors which performs a diagram update when the model is changed.
  * 
  * @author als
- * @kieler.design 2015-09-30 proposed
- * @kieler.rating 2015-09-30 proposed yellow
- *
  */
 public class XtextChangeUpdateController extends AbstractViewUpdateController
         implements XtextEditorModelChangeAdapter.XtextChangeListener {

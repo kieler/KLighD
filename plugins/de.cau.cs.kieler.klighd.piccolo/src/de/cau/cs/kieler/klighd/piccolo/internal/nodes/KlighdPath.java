@@ -58,7 +58,7 @@ import edu.umd.cs.piccolo.util.PBounds;
 /**
  * The KLighD-specific {@link edu.umd.cs.piccolo.PNode PNode} implementation for displaying
  * primitive figures.<br>
- * It is inspired by the Piccolo2D {@link edu.umd.cs.piccolox.swt.PSWTPath PSWTPath} and is
+ * It is inspired by the Piccolo2D {@code edu.umd.cs.piccolox.swt.PSWTPath} and is
  * tailored/extended to those features required by KLighD.<br>
  * <br>
  * {@link KlighdPath} instances require a {@link KlighdSWTGraphics} while drawing (i.e. in

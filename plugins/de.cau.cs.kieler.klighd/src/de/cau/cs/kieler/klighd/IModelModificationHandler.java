@@ -26,17 +26,15 @@ import com.google.common.base.Function;
 
 /**
  * An interface that is used by KSBasE and KLighD to retrieve selections and perform
- * transformations. The {@link KSBasECombination} uses the {@link ModifyModelHandlerProvider} to
+ * transformations. The {@code KSBasECombination} uses the {@code ModifyModelHandlerProvider} to
  * find the best fitting handler for the current context (via the
- * {@link ModifyModelHandlerProvider#getFittingKSBasEHandler(IWorkbenchPart)} method).
+ * {@code ModifyModelHandlerProvider#getFittingKSBasEHandler(IWorkbenchPart)} method).
+ * Note: Implementation of KSBasE has been discontinued.
  * 
  * All handlers have to be registered via the de.cau.cs.kieler.ksbase.ui.handlers extension point.
  * 
  * @author uru
  * @author ckru
- * 
- * @kieler.design proposed by chsch
- * @kieler.rating proposed yellow by chsch
  */
 public interface IModelModificationHandler {
 
@@ -109,7 +107,7 @@ public interface IModelModificationHandler {
      * Gets the element on which to execute the layout thats executed after the method has been
      * executed.
      * 
-     * @return the root element for which layout should be applied if the {@link #isPerformLayout()}
+     * @return the root element for which layout should be applied if the {@link #isLayoutRequired()}
      *         method returns true.
      */
     EObject getLayoutRoot();

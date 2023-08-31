@@ -51,7 +51,7 @@ public class KEdgeNode extends KGraphElementNode<KEdge> implements
     /** the property name for changes of the edge's bend points. */
     public static final String PROPERTY_JUNCTION_POINTS = "junctionPoints";
 
-    /** the edge rendering controller deployed to manage the rendering of {@link #edge}. */
+    /** the edge rendering controller deployed to manage the rendering of the edge. */
     private KEdgeRenderingController renderingController;
 
     /** the {@link KNodeAbstractNode} this edgeNode is attached to, is just convenience. */

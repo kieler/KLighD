@@ -55,7 +55,7 @@ import de.cau.cs.kieler.klighd.viewers.ContextViewer;
 
 /**
  * Tests KLighD's view change notification mechanism, especially
- * {@link ViewChange#visibleDiagramNodes()} & {@link ViewChange#visibleDiagramsElements()}.
+ * {@link ViewChange#visibleDiagramNodes()} and {@link ViewChange#visibleDiagramElements()}.
  *
  * @author chsch
  */
@@ -81,7 +81,7 @@ public class ViewChangedNotificationTest {
 
     /**
      * Prepares the test: creates a fresh {@link Shell} and attaches KLighD's diagramming
-     * infrastructure initialized with the model provided by {@link #loadTestModel()}.
+     * infrastructure initialized with the model provided by {@link KlighdTestPlugin#loadTestModel()}.
      */
     @Before
     public void prepare() {

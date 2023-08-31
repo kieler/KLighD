@@ -25,9 +25,6 @@ import de.cau.cs.kieler.klighd.kgraph.KNode;
  * Does nothing if the diagram root is the current clip.
  * 
  * @author chsch
- * 
- * @kieler.design proposed by chsch
- * @kieler.rating proposed yellow by chsch
  */
 public class ClipResetAction implements IAction {
 

@@ -29,15 +29,12 @@ import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Control;
 
 /**
- * Basic interface of diagram exporters creating images in <code>png</code> or </code>svg</code>
+ * Basic interface of diagram exporters creating images in <code>png</code> or <code>svg</code>
  * format, for instance.
  *
  * @author uru
  * @author chsch
  * @author csp
- *
- * @kieler.design proposed by chsch
- * @kieler.rating proposed yellow by chsch
  *
  * @see IDiagramExporter#export(Control, ExportData)
  */
@@ -142,7 +139,7 @@ public interface IDiagramExporter {
          * @return Flag to indicate whether the diagram zoom level determined by the diagram main
          *         camera's view transform shall be used while evaluating the visibility of the
          *         particular diagram elements and diagram element figure parts, if
-         *         <code>false</code> a diagram zoom level of <code>1.0<code> is assumed.
+         *         <code>false</code> a diagram zoom level of <code>1.0</code> is assumed.
          */
         public boolean applyCameraZoomLevel() {
             return applyCameraZoomLevel;
@@ -431,7 +428,7 @@ public interface IDiagramExporter {
          * Configures the export to use the diagram zoom level determined by the diagram main
          * camera's view transform while evaluating the visibility of the particular diagram
          * elements and diagram element figure parts, if <code>false</code> a diagram zoom level of
-         * <code>1.0<code> is assumed. This is entirely independent of the {@link #scale(int)},
+         * <code>1.0</code> is assumed. This is entirely independent of the {@link #scale(int)},
          * which is just about the scale of the exported image (file). The latter can be increased
          * to improve the image quality of raster images.
          * 

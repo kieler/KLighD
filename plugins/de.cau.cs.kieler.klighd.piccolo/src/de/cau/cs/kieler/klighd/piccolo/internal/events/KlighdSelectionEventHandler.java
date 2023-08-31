@@ -352,7 +352,7 @@ public class KlighdSelectionEventHandler extends KlighdBasicInputEventHandler {
     /**
      * Provides an iterator for all {@link KGraphElement KGraphElements} connected to the selected
      * edge. Can be overridden to use own customized
-     * {@link de.cau.cs.kieler.kiml.util.selection.SelectionIterator SelectionIterators}.
+     * {@link org.eclipse.elk.core.util.selection.SelectionIterator SelectionIterators}.
      * 
      * @param edge
      *            the selected edge

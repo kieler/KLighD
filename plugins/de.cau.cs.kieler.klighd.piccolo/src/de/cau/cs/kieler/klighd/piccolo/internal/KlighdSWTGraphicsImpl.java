@@ -78,7 +78,7 @@ import edu.umd.cs.piccolox.swt.SWTShapeManager;
 /**
  * Standard implementation of {@link de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics
  * KlighdSWTGraphics}. It's aim is to get independent from Piccolo2Ds
- * {@link edu.umd.cs.piccolox.swt.SWTGraphics2D SWTGraphics2D}.
+ * {@code edu.umd.cs.piccolox.swt.SWTGraphics2D SWTGraphics2D}.
  *
  * @author chsch
  */

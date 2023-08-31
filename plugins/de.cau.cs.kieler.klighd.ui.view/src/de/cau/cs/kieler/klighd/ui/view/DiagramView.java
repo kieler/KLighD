@@ -96,9 +96,6 @@ import de.cau.cs.kieler.klighd.viewers.ContextViewer;
  * The retrieval of the model and the update of the diagram is handled by a {@link AbstractViewUpdateController}.
  * 
  * @author als
- * @kieler.design 2015-06-22 proposed
- * @kieler.rating 2015-06-22 proposed yellow
- *
  */
 @SuppressWarnings("restriction")
 public final class DiagramView extends DiagramViewPart implements ISelectionChangedListener {

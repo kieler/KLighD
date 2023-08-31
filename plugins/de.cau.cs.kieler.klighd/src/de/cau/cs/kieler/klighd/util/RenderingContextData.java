@@ -32,9 +32,6 @@ import de.cau.cs.kieler.klighd.kgraph.impl.KGraphDataImpl;
  *
  * @author mri
  * @author chsch (moved it here from klighd.piccolo to be referenced in layout and compare stuff)
- *
- * @kieler.design proposed by chsch
- * @kieler.rating proposed yellow by chsch
  */
 public class RenderingContextData extends KGraphDataImpl {
 
@@ -145,7 +142,7 @@ public class RenderingContextData extends KGraphDataImpl {
      * attached to {@code element}. As opposed to the default value of
      * {@link KlighdInternalProperties#ACTIVE} this predicate returns <code>true</code> in that
      * case. This is required in the
-     * {@link de.cau.cs.kieler.klighd.internal.macrolayout.KlighdLayoutManager KlighdLayoutManager}
+     * {@link de.cau.cs.kieler.klighd.internal.macrolayout.KlighdDiagramLayoutConnector KlighdDiagramLayoutConnector}
      * for applying layout to view models that are not shown by any viewer and whose
      * {@link KGraphElement KGraphElements} are not tagged to be 'active'. This may happen in batch
      * tests, for example.
@@ -167,7 +164,7 @@ public class RenderingContextData extends KGraphDataImpl {
      * attached to {@code node}. As opposed to the default value of
      * {@link KlighdInternalProperties#POPULATED} this predicate returns <code>true</code> in that
      * case. This is required in the
-     * {@link de.cau.cs.kieler.klighd.internal.macrolayout.KlighdLayoutManager KlighdLayoutManager}
+     * {@link de.cau.cs.kieler.klighd.internal.macrolayout.KlighdDiagramLayoutConnector KlighdDiagramLayoutConnector}
      * for applying layout to view models that are not shown by any viewer and whose compound nodes
      * are not tagged to be 'populated'. This may happen in batch tests, for example.
      */

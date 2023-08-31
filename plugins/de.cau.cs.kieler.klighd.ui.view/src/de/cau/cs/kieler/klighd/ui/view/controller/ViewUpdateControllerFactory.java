@@ -45,9 +45,6 @@ import de.cau.cs.kieler.klighd.ui.view.KlighdViewPlugin;
  * This class is a singleton.
  * 
  * @author als
- * @kieler.design 2015-06-22 proposed
- * @kieler.rating 2015-06-22 proposed yellow
- *
  */
 public final class ViewUpdateControllerFactory {
 

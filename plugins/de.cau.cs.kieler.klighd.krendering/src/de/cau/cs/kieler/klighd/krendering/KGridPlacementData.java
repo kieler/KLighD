@@ -99,7 +99,7 @@ public interface KGridPlacementData extends KAreaPlacementData {
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
-     * This flag marks the child rendering to cover exactly the required width obtained by means of the minimal size estimation, except for width increases by the macro layout, i.e. by KIML, e.g. in a single column grid.
+     * This flag marks the child rendering to cover exactly the required width obtained by means of the minimal size estimation, except for width increases by the macro layout, i.e. by ELK, e.g. in a single column grid.
      * If false, more space may be assigned to the related child rendering, if necessary.<br>
      * <br>
      * This flag is the replacement of the concrete 'maxCellWidth' value and not examined by KLighD, yet.
@@ -128,7 +128,7 @@ public interface KGridPlacementData extends KAreaPlacementData {
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
-     * This flag marks the child rendering to cover exactly the required height obtained by means of the minimal size estimation, except for height increases by the macro layout, i.e. by KIML, e.g. in a single row grid.
+     * This flag marks the child rendering to cover exactly the required height obtained by means of the minimal size estimation, except for height increases by the macro layout, i.e. by ELK, e.g. in a single row grid.
      * If false, more space may be assigned to the related child rendering, if necessary.<br>
      * <br>
      * This flag is the replacement of the concrete 'maxCellHeight' value and not examined by KLighD, yet.

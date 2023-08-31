@@ -31,9 +31,6 @@ import de.cau.cs.kieler.klighd.kgraph.KInsets;
  * them.
  *
  * @author chsch
- *
- * @kieler.design proposed by chsch
- * @kieler.rating proposed yellow by chsch
  */
 public class Bounds {
 

@@ -3,7 +3,7 @@
  *
  * https://github.com/Kieler/KLighD
  *
- * Copyright 2020 by TypeFox GmbH (typefox.io) and others.
+ * Copyright 2020-2022 by TypeFox GmbH (typefox.io) and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -34,13 +34,10 @@ import com.google.common.base.Predicates;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
 
-import de.cau.cs.kieler.klighd.IOffscreenRenderer;
 import de.cau.cs.kieler.klighd.KlighdDataManager;
 import de.cau.cs.kieler.klighd.KlighdOptions;
 import de.cau.cs.kieler.klighd.kgraph.KGraphPackage;
 import de.cau.cs.kieler.klighd.krendering.KRenderingPackage;
-import de.cau.cs.kieler.klighd.piccolo.export.BitmapOffscreenRenderer;
-import de.cau.cs.kieler.klighd.piccolo.export.SVGOffscreenRenderer;
 import de.cau.cs.kieler.klighd.util.ExpansionAwareLayoutOption;
 
 public class KlighdStandaloneSetup {
@@ -72,12 +69,10 @@ public class KlighdStandaloneSetup {
         LayoutMetaDataService.getInstance().registerLayoutMetaDataProviders(
                 Collections2.filter(providers, Predicates.notNull()).toArray(new ILayoutMetaDataProvider[0])
         );
-
-        KlighdDataManager.getInstance()
-                .registerOffscreenRenderer(BitmapOffscreenRenderer.ID, new BitmapOffscreenRenderer(),
-                        IOffscreenRenderer.BMP, IOffscreenRenderer.JPEG, IOffscreenRenderer.PNG)
-                .registerOffscreenRenderer(SVGOffscreenRenderer.ID, new SVGOffscreenRenderer(),
-                        IOffscreenRenderer.SVG);
+        
+        // Make sure that all extensions are loaded via forcing to execute the static code in KlighdDataManager.
+        @SuppressWarnings("unused")
+        KlighdDataManager _kdm = KlighdDataManager.getInstance();
     }
 
     protected ILayoutMetaDataProvider getForceMetaDataProvider() {
@@ -125,7 +120,7 @@ public class KlighdStandaloneSetup {
      * {@link GraphicsEnvironment} to be used as the default font in external/standalone applications.
      */
     protected void registerFonts() {
-        String[] filePaths = {"/resources/fonts/overpass-regular.otf", "/resources/fonts/overpass-mono-regular.otf"};
+        String[] filePaths = {"/fonts/overpass-regular.otf", "/fonts/overpass-mono-regular.otf"};
         final GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
         for (int i = 0; i < filePaths.length; ++i) {
             try (InputStream fontStream = this.getClass().getResourceAsStream(filePaths[i])) {

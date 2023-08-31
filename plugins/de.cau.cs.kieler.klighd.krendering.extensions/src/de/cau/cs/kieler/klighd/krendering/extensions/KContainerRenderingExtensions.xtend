@@ -35,7 +35,7 @@ import de.cau.cs.kieler.klighd.krendering.LineJoin
 import java.util.List
 
 /**
- * This class contains lots of convenient helper functions for composing & configuring
+ * This class contains lots of convenient helper functions for composing and configuring
  * KRendering-based view models. In order to be consistent with the further extension classes
  * the extension methods are non-static ones requiring this class to be instantiated. Since this
  * class doesn't declare any fields (i.e. required memory) except the reference of further extensions
@@ -60,7 +60,7 @@ class KContainerRenderingExtensions {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     /**
-     * @returns the child! 
+     * @return the child! 
      */
     def <T extends KRendering> T addChild(KContainerRendering parent, T child) {
         return child => [

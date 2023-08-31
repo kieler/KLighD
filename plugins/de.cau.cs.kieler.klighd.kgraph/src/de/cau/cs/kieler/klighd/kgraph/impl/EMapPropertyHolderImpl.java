@@ -129,7 +129,7 @@ public abstract class EMapPropertyHolderImpl extends EObjectImpl implements EMap
      * @generated NOT
      */
     public void makePersistent() {
-        // chsch: deactivated the delivering of notifications as that feature is not used in KIML
+        // chsch: deactivated the delivering of notifications as that feature is not used in ELK
         //  so far and disturbs while working with KLighD
         boolean deliver = this.eDeliver();
         this.eSetDeliver(false);

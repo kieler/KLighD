@@ -24,9 +24,6 @@ import org.eclipse.ui.IWorkbenchPartConstants;
  * An adapter to listen for the save event of an editor.
  * 
  * @author als
- * @kieler.design 2015-09-29 proposed
- * @kieler.rating 2015-09-29 proposed yellow
- *
  */
 public class EditorSaveAdapter implements IPropertyListener {
 

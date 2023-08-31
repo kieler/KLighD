@@ -25,9 +25,7 @@ import java.util.concurrent.BlockingQueue
 import java.util.concurrent.Executors
 import java.util.concurrent.LinkedBlockingQueue
 import java.util.function.Consumer
-import org.apache.log4j.Logger
 import org.eclipse.elk.core.util.Maybe
-import org.eclipse.lsp4j.services.LanguageServer
 import org.eclipse.xtext.ide.server.LanguageServerImpl
 
 /**
@@ -49,8 +47,6 @@ import org.eclipse.xtext.ide.server.LanguageServerImpl
 abstract class AbstractLanguageServer implements Runnable {
     
     static val defaultHost = "localhost"
-    
-    static val LOG = Logger.getLogger(LanguageServer)
     
     extension ILanguageRegistration languageRegistration
     
@@ -139,15 +135,15 @@ abstract class AbstractLanguageServer implements Runnable {
                 println(e.stackTrace)
                 return
             }
-            LOG.info("Connection to: " + host + ":" + port)
+            println("Connection to: " + host + ":" + port)
             // Register all languages
-            LOG.info("Starting language server socket")
+            println("Starting language server socket")
             bindAndRegisterLanguages()
             
             val serverSocket = AsynchronousServerSocketChannel.open.bind(new InetSocketAddress(host, port))
             val threadPool = Executors.newCachedThreadPool()
             
-            LOG.info("Language Server Socket ready!")
+            println("Language Server Socket ready!")
             
             while (true) {
                 val socketChannel = serverSocket.accept.get            
@@ -155,9 +151,9 @@ abstract class AbstractLanguageServer implements Runnable {
                 val out = Channels.newOutputStream(socketChannel)
                 val injector = Guice.createInjector(createLSModules(true))
                 val ls = injector.getInstance(LanguageServerImpl)
-                LOG.info("Starting language server for client " + socketChannel.remoteAddress)
+                println("Starting language server for client " + socketChannel.remoteAddress)
                 buildAndStartLS(injector, ls, in, out, threadPool, [new ReflectiveMessageValidatorExcludingSKGraph(it)], true)
-                LOG.info("Finished language server for client " + socketChannel.remoteAddress)
+                println("Finished language server for client " + socketChannel.remoteAddress)
             }
         } else {
             LanguageServerLauncher.launch(languageRegistration, creator)

@@ -135,7 +135,7 @@ public final class KGraphUtil {
 
     /**
      * Ensures that each element contained in the given graph is attributed correctly for
-     * usage in KIML. {@link KGraphElement}
+     * usage in ELK. {@link KGraphElement}
      * 
      * @param graph the parent node of a graph 
      */
@@ -310,7 +310,7 @@ public final class KGraphUtil {
     /**
      * A tree iterator that skips persistent entries of {@link EMapPropertyHolder}s. For an
      * explanation of why this is necessary, see the implementation of
-     * {@link KGraphDataUtil#loadDataElements()}.
+     * {@link KGraphDataUtil#loadDataElements(KNode, com.google.common.base.Predicate, org.eclipse.elk.graph.properties.IProperty...)}.
      */
     public static class PersistentEntriesSkippingTreeIterator
             extends AbstractTreeIterator<EObject> {
@@ -621,13 +621,13 @@ public final class KGraphUtil {
 
     /**
      * Determines the edges that are (transitively) connected to the given edges across hierarchy
-     * boundaries via common ports. See {@link #getConnectedEdges(ElkEdge)} for details.
+     * boundaries via common ports. See {@link #getConnectedEdges(KEdge)} for details.
      *
-     * @see #getConnectedEdges(ElkEdge)
+     * @see #getConnectedEdges(KEdge)
      * @param edges
      *            an {@link Iterable} of edges that shall be checked
      * @return an {@link Iterator} visiting the given edges and all (transitively) connected ones.
-     * @deprecated Use {@link #getConnectedElements(ElkEdge, SelectionIterator, SelectionIterator)}
+     * @deprecated Use {@link #getConnectedElements(KEdge, SelectionIterator, SelectionIterator)}
      *             in combination with {@link DefaultSelectionIterator}
      */
     public static Iterator<KEdge> getConnectedEdges(final Iterable<KEdge> edges) {
@@ -642,7 +642,7 @@ public final class KGraphUtil {
     /**
      * Determines the edges that are (transitively) connected to the given edge across
      * hierarchy boundaries via common ports. Rational: Multiple edges that are
-     * pairwise connected by means of an {@link ElkPort} (target port of edge a == source port of
+     * pairwise connected by means of a {@link KPort} (target port of edge a == source port of
      * edge b or vice versa) may form one logical connection. This kind of splitting might be
      * already present in the view model, or is performed by the layout algorithm for decomposing
      * a nested layout input graph into flat sub graphs.
@@ -651,7 +651,7 @@ public final class KGraphUtil {
      *            the edge check for connected edges
      * @return an {@link Iterator} visiting the given edge and all connected edges in a(n
      *         almost) breadth first search fashion
-     * @deprecated Use {@link #getConnectedElements(ElkEdge, SelectionIterator, SelectionIterator)}
+     * @deprecated Use {@link #getConnectedElements(KEdge, SelectionIterator, SelectionIterator)}
      *             in combination with {@link DefaultSelectionIterator}
      */
     public static Iterator<KEdge> getConnectedEdges(final KEdge edge) {
@@ -661,8 +661,8 @@ public final class KGraphUtil {
     
     /**
      * Determines the {@link ElkGraphElement ElkGraphElements} that are (transitively) connected to
-     * {@code kedge} across hierarchy boundaries via common ports. Rational: Multiple {@link ElkEdge
-     * ElkEdges} that are pairwise connected by means of an {@link ElkPort} (target port of
+     * {@code edge} across hierarchy boundaries via common ports. Rational: Multiple {@link KEdge
+     * KEdges} that are pairwise connected by means of a {@link KPort} (target port of
      * edge a == source port of edge b or vice versa) may form one logical connection. This kind of
      * splitting might be already present in the view model, or is performed by the layout
      * algorithm for decomposing a nested layout input graph into flat sub graphs.
@@ -674,7 +674,7 @@ public final class KGraphUtil {
      *            flag to determine, whether ports should be added to the selection or not
      * @return an {@link Iterator} visiting the given {@code edge} and all connected edges in a(n
      *         almost) breadth first search fashion
-     * @deprecated Use {@link #getConnectedElements(ElkEdge, SelectionIterator, SelectionIterator)}
+     * @deprecated Use {@link #getConnectedElements(KEdge, SelectionIterator, SelectionIterator)}
      *             in combination with {@link DefaultSelectionIterator}
      */
     public static Iterator<KGraphElement> getConnectedElements(final KEdge edge,
@@ -687,22 +687,22 @@ public final class KGraphUtil {
     }
     
     /**
-     * Determines the {@link ElkEdge ElkEdges} that are (transitively) connected to {@code edge}
-     * across hierarchy boundaries via common ports. Rational: Multiple {@link ElkEdge ElkEdges}
-     * that are pairwise connected by means of na {@link ElkPort} (target port of edge a == source
+     * Determines the {@link KEdge KEdges} that are (transitively) connected to {@code kedge}
+     * across hierarchy boundaries via common ports. Rational: Multiple {@link KEdge KEdges}
+     * that are pairwise connected by means of a {@link KPort} (target port of edge a == source
      * port of edge b or vice versa) may form one logical connection. This kind of splitting might
      * be already present in the view model, or is performed by the layout algorithm for
      * decomposing a nested layout input graph into flat sub graphs.
      *
      * @param kedge
-     *            the {@link ElkEdge} check for connected elements
+     *            the {@link KEdge} check for connected elements
      * @param sourceIterator
      *            the {@link SelectionIterator} to be used for iterating towards the tail of the
      *            selected edge
      * @param targetIterator
      *            the {@link SelectionIterator} to be used for iterating towards the head of the
      *            selected edge
-     * @return an {@link Iterator} visiting the given {@code edge} and all connected elements
+     * @return an {@link Iterator} visiting the given {@code kedge} and all connected elements
      *         determined by the {@link SelectionIterator SelectionIterators}
      */
     public static Iterator<KGraphElement> getConnectedElements(final KEdge kedge,
