@@ -378,6 +378,10 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
 
         // KLighD is somewhat mean and doesn't care about existing insets
         node.setInsets(insets);
+        // This line should not be needed as it just sets the default paddings if none existed yet, and every use of
+        // this property needs to "get" it first, theoretically resulting in always setting the default values.
+        // But this still seems to be necessary to fix child area placement. See also f613c1758bdc05c4461e4a2cc47dee0cb8556416 
+        node.getProperty(CoreOptions.PADDING);
         // The Insets are used in {@link KlighdLayoutConfigurationStore} to retrieve the padding
         // of the node
         
