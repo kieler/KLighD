@@ -17,6 +17,8 @@
 package de.cau.cs.kieler.klighd.util;
 
 import java.awt.Color;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.elk.core.math.KVector;
 import org.eclipse.elk.core.math.Spacing;
@@ -26,6 +28,9 @@ import org.eclipse.elk.graph.properties.Property;
 import org.eclipse.emf.ecore.EObject;
 
 import de.cau.cs.kieler.klighd.KlighdConstants;
+import de.cau.cs.kieler.klighd.filtering.SemanticFilterRule;
+import de.cau.cs.kieler.klighd.filtering.SemanticFilterTag;
+import de.cau.cs.kieler.klighd.kgraph.KGraphData;
 import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
 import de.cau.cs.kieler.klighd.kgraph.KNode;
 import de.cau.cs.kieler.klighd.krendering.KText;
@@ -376,6 +381,44 @@ public final class KlighdProperties {
     public static final IProperty<Boolean> IS_NODE_TITLE =
             new Property<Boolean>("klighd.isNodeTitle", false);
     
+    /**
+     * Property determining whether this node should be rendered as a proxy.
+     */
+    public static final IProperty<Boolean> PROXY_VIEW_RENDER_NODE_AS_PROXY =
+            new Property<Boolean>("de.cau.cs.kieler.klighd.proxyView.renderNodeAsProxy", true);
+    
+    /**
+     * Property determining how a proxy of this node should be rendered.
+     */
+    public static final IProperty<List<KGraphData>> PROXY_VIEW_PROXY_RENDERING =
+            new Property<List<KGraphData>>("de.cau.cs.kieler.klighd.proxyView.proxyRendering", null);
+    
+    /**
+     * Property determining depth of going into hierarchical off-screen nodes.
+     * Only relevant for the root. <br>
+     * Choose {@code 0} for default, showing only the outermost node as a proxy. <br>
+     * Choose a value {@code x>0} to show proxies up to x layers deep inside a hierarchical node. <br>
+     * Choose a value {@code x<0} to always show proxies for all layers.
+     */
+    public static final IProperty<Integer> PROXY_VIEW_HIERARCHICAL_OFF_SCREEN_DEPTH =
+            new Property<Integer>("de.cau.cs.kieler.klighd.proxyView.hierarchicalOffScreenDepth", 0);
+    
+    /**
+     * Property determining an element's semantic filter tags.
+     */
+    public static final IProperty<List<SemanticFilterTag>> SEMANTIC_FILTER_TAGS = 
+            new Property<List<SemanticFilterTag>>("de.cau.cs.kieler.klighd.semanticFilter.tags",
+                    // ArrayList is cloneable, no problem here
+                    new ArrayList<>());
+
+    /**
+     * Property determining an element's semantic filter rules.
+     * Only relevant for the root.
+     */
+    public static final IProperty<List<SemanticFilterRule>> SEMANTIC_FILTER_RULES = 
+            new Property<List<SemanticFilterRule>>("de.cau.cs.kieler.klighd.semanticFilter.rules",
+                    new ArrayList<>());
+
     /**
      * Automatically computes the padding required to fit the content of a node within the bounds of a 
      * rounded rectangle. The x and y corner radii are specified as x and y of a KVector. If this property
