@@ -48,13 +48,13 @@ import de.cau.cs.kieler.klighd.filtering.TrueConnective;
 
 /**
  * Provides a parser for the semantic filter language. The syntax is of the form
- * <rule> <operator> <rule> for all binary operators. The most basic rule is a tag
- * #<tag> that evaluates to true if an element has that tag and false otherwise. 
- * Tags may also contain numeric values in which case they  are written as $<tag>.
+ * &lt;rule&gt; &lt;operator&gt; &lt;rule&gt; for all binary operators. The most basic rule is a tag
+ * #&lt;tag&gt; that evaluates to true if an element has that tag and false otherwise. 
+ * Tags may also contain numeric values in which case they  are written as $&lt;tag&gt;.
  * Constant values can be expressed as true, false or a number. Brackets may be used 
  * to override precedences. The full list of available operators is given in the table 
  * below.
- * 
+ * <pre>{@code
  * | Operator       |  Syntax                |  Input          | Output  | Precedence |
  * |----------------|------------------------|-----------------|---------|------------|
  * | And            | \<expr\> && \<expr\>   | boolean         | boolean | 4          |
@@ -70,7 +70,7 @@ import de.cau.cs.kieler.klighd.filtering.TrueConnective;
  * | LessThan       | \<expr\> < \<expr\>    | numeric         | boolean | 8          |
  * | Equals         | \<expr\> = \<expr\>    | numeric/boolean | boolean | 7          |
  * | NotEqual       | \<expr\> != \<expr\>   | numeric/boolean | boolean | 7          |
-
+ * }</pre>
  * @author mka
  *
  */

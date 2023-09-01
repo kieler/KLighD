@@ -3,7 +3,7 @@
  *
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright 2022 by
+ * Copyright 2022 - 2023 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -19,7 +19,7 @@ package de.cau.cs.kieler.klighd.filtering;
 /**
  * A LessThan Connective takes two numeric rules R1 and R2 and evaluates to true
  * iff
- * R1 < R2
+ * {@code R1 < R2}
  * @author tik, mka
  *
  */

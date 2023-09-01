@@ -3,7 +3,7 @@
  *
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright 2022 by
+ * Copyright 2022 - 2023 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -30,11 +30,9 @@ public class NumericMultiplicationConnective extends BinaryConnective implements
     protected static final String NAME = "NUMERICMULTIPLICATION";
     
     /**
-     * Constructor for named rule with default value.
+     * Constructor for numeric multiplication connective.
      * @param leftOperand left operand
      * @param rightOperand right operand
-     * @param defaultValue the default value
-     * @param ruleName rule name
      */
     public NumericMultiplicationConnective(NumericResult leftOperand, NumericResult rightOperand) {
         super();

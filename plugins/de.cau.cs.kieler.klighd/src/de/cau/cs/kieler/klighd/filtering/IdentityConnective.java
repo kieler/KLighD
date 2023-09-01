@@ -3,7 +3,7 @@
  *
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright 2022 by
+ * Copyright 2022 - 2023 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -28,8 +28,7 @@ public class IdentityConnective extends UnaryConnective {
     
     /**
      * Constructor for unnamed rule.
-     * @param leftOperand left operand
-     * @param rightOperand right operand
+     * @param operand operand
      */
     public IdentityConnective(SemanticFilterRule operand) {
         this(operand, null, null);
@@ -37,8 +36,7 @@ public class IdentityConnective extends UnaryConnective {
     
     /**
      * Constructor for unnamed rule with default value.
-     * @param leftOperand left operand
-     * @param rightOperand right operand
+     * @param operand operand
      * @param defaultValue the default value
      */
     public IdentityConnective(SemanticFilterRule operand, Boolean defaultValue) {
@@ -47,8 +45,7 @@ public class IdentityConnective extends UnaryConnective {
     
     /**
      * Constructor for named rule.
-     * @param leftOperand left operand
-     * @param rightOperand right operand
+     * @param operand operand
      * @param ruleName rule name
      */
     public IdentityConnective(SemanticFilterRule operand, String ruleName) {
@@ -57,8 +54,7 @@ public class IdentityConnective extends UnaryConnective {
     
     /**
      * Constructor for named rule with default value.
-     * @param leftOperand left operand
-     * @param rightOperand right operand
+     * @param operand operand
      * @param defaultValue the default value
      * @param ruleName rule name
      */

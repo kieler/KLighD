@@ -3,7 +3,7 @@
  *
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright 2022 by
+ * Copyright 2022 - 2023 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -30,11 +30,9 @@ public class NumericSubtractionConnective extends BinaryConnective implements Nu
     protected static final String NAME = "NUMERICSUBSTRACTION";
     
     /**
-     * Constructor for named rule with default value.
+     * Constructor for numeric subtraction connective.
      * @param leftOperand left operand
      * @param rightOperand right operand
-     * @param defaultValue the default value
-     * @param ruleName rule name
      */
     public NumericSubtractionConnective(NumericResult leftOperand, NumericResult rightOperand) {
         super();
