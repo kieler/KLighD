@@ -466,7 +466,7 @@ final class RenderingPreparer {
     static val StyleModificationContext singletonModContext = new StyleModificationContext();
     
     /**
-     * @see de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController#processModifiableStyles
+     * See {@code de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController#processModifiableStyles}
      */
     private static def void processModifiableStyles(KRendering rendering, KGraphElement parent) {
         val styles = if (rendering instanceof KRenderingRef)
