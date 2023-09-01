@@ -51,6 +51,34 @@ public class IncrementalUpdateTest {
         return new ViewContext((IDiagramWorkbenchPart) null, null);
     }
     
+    /*
+     * method for programatically creating the following KGraph in kgt notion:
+     * 
+     * kgraph nodeRoot
+     * 
+     * knode nodeA {
+     *   kport portA1
+     *   kport portA2
+     *   
+     *   klabel labelA1 "labelA1"
+     *   klabel labelA2 "labelA2"
+     * 
+     *   kedge (->nodeB) // edgeAB
+     *   kedge (->nodeC) // edgeAC
+     *   
+     *   kedge (:portA1->nodeB:portB1) // edgeA1B1
+     *   kedge (:portA1->nodeB:portB1) // edgeA1B1_2
+     * }
+     * knode nodeB {
+     *   kport portB1
+     * 
+     *   kedge (->nodeC) // edgeBC
+     * }
+     * knode nodeC {
+     *   kedge (->nodeB) // edgeCB
+     * }
+     * 
+     */
     private KNode createTestGraph() {
         final KNode nodeRoot = KGraphUtil.createInitializedNode();
         addIdentifier(nodeRoot, "nodeRoot");
@@ -556,6 +584,91 @@ public class IncrementalUpdateTest {
         int baseEdgeTargetPosition = viewContext.getViewModel().getChildren().get(targetNodePosition).getPorts()
                 .get(targetNodePortPosition).getEdges().indexOf(baseNewEdge);
         Assert.assertSame(newEdgeTargetPosition, baseEdgeTargetPosition);
+    }
+    
+    /**
+     * Tests adding an edge to an added port of an added node. Checks if the elements are added and if the edge is
+     * connected to the new port at the correct positions in various reference lists.
+     */
+    @Test
+    public void testAddEdgeNewNodeToNewTargetPort() {
+        final KNode baseGraph = createTestGraph();
+        final KNode newGraph = createTestGraph();
+
+        // Create a new source node on index 0.
+        final KNode newSourceNode = KGraphUtil.createInitializedNode();
+        final EObject newSourceNodeSource = new EObjectImpl() { };
+        newSourceNode.setProperty(KlighdInternalProperties.MODEL_ELEMEMT, newSourceNodeSource);
+        final int newSourceNodePosition = 0;
+        
+        newGraph.getChildren().add(newSourceNodePosition, newSourceNode);
+        
+        // Create the new target port on another node with index 1.
+        final KPort newTargetPort = KGraphUtil.createInitializedPort();
+        final EObject newTargetPortSource = new EObjectImpl() { };
+        newTargetPort.setProperty(KlighdInternalProperties.MODEL_ELEMEMT, newTargetPortSource);
+        final int targetNodePosition = 1;
+        final int newTargetPortPosition = 0;
+        
+        final KNode targetNode = newGraph.getChildren().get(targetNodePosition);
+        targetNode.getPorts().add(newTargetPortPosition, newTargetPort);
+        
+        // Create a new edge from the new source node to the new target port.
+        final KEdge newEdge = KGraphUtil.createInitializedEdge();
+        final EObject newEdgeSource = new EObjectImpl() { };
+        newEdge.setProperty(KlighdInternalProperties.MODEL_ELEMEMT, newEdgeSource);
+        
+        newEdge.setSource(newSourceNode);
+        newEdge.setTargetPort(newTargetPort);
+        newEdge.setTarget(targetNode);
+        final int newEdgeSourcePosition = 0;
+        final int newEdgeTargetPortPosition = 0;
+        final int newEdgeTargetPosition = 0;
+        newSourceNode.getOutgoingEdges().move(newEdgeSourcePosition, newEdge);
+        newTargetPort.getEdges().move(newEdgeTargetPortPosition, newEdge);
+        targetNode.getIncomingEdges().move(newEdgeTargetPosition, newEdge);
+        
+        final ViewContext viewContext = createViewContext();
+        // Initialize the view context with the base graph.
+        INCREMENTAL_UPDATE_STRATEGY.update(viewContext.getViewModel(), baseGraph, viewContext);
+        // Update with the new graph.
+        INCREMENTAL_UPDATE_STRATEGY.update(viewContext.getViewModel(), newGraph, viewContext);
+        
+        // Assert the new node is in the updated base model.
+        EObject baseNewNode = viewContext.getTargetElements(newSourceNodeSource).stream().findFirst().orElse(null);
+        Assert.assertNotNull(baseNewNode);
+        Assert.assertTrue(baseNewNode instanceof KNode);
+        
+        // Assert the new port is in the updated base model.
+        EObject baseNewPort = viewContext.getTargetElements(newTargetPortSource).stream().findFirst().orElse(null);
+        Assert.assertNotNull(baseNewPort);
+        Assert.assertTrue(baseNewPort instanceof KPort);
+        
+        // Assert the new edge is in the updated base model.
+        EObject baseNewEdge = viewContext.getTargetElements(newEdgeSource).stream().findFirst().orElse(null);
+        Assert.assertNotNull(baseNewEdge);
+        Assert.assertTrue(baseNewEdge instanceof KEdge);
+        
+        
+        // Assert that the new node is in the same positions in the updated base graph as it is in the new graph.
+        int baseNodePosition = viewContext.getViewModel().getChildren().indexOf(baseNewNode);
+        Assert.assertSame(newSourceNodePosition, baseNodePosition);
+        
+        // Assert that the new port is in the same positions in the updated base graph as it is in the new graph.
+        int basePortPosition = viewContext.getViewModel().getChildren().get(targetNodePosition).getPorts()
+                .indexOf(baseNewPort);
+        Assert.assertSame(newTargetPortPosition, basePortPosition);
+        
+        // Assert that the new edge is in the same positions in the updated base graph as it is in the new graph.
+        int baseEdgeSourcePosition = viewContext.getViewModel().getChildren().get(newSourceNodePosition)
+                .getOutgoingEdges().indexOf(baseNewEdge);
+        Assert.assertSame(newEdgeSourcePosition, baseEdgeSourcePosition);
+        int baseEdgeTargetPosition = viewContext.getViewModel().getChildren().get(targetNodePosition).getIncomingEdges()
+                .indexOf(baseNewEdge);
+        Assert.assertSame(newEdgeTargetPosition, baseEdgeTargetPosition);
+        int baseEdgeTargetPortPosition = viewContext.getViewModel().getChildren().get(targetNodePosition).getPorts()
+                .get(newTargetPortPosition).getEdges().indexOf(baseNewEdge);
+        Assert.assertSame(newEdgeTargetPortPosition, baseEdgeTargetPortPosition);
     }
     
     /**

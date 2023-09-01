@@ -137,7 +137,6 @@ public class KGraphMerger {
     private void handleMatchedEdges() {
         Set<KNode> nodesWithMatchedEdges = new HashSet<>();
         for (ValueDifference<KEdge> diff : comparison.getMatchedEdges()) {
-            nodesWithMatchedEdges.add(diff.leftValue().getSource());
             nodesWithMatchedEdges.add(diff.rightValue().getSource());
         }
         nodesWithMatchedEdges.forEach(
@@ -232,6 +231,10 @@ public class KGraphMerger {
                 int oldPosition = node.getParent().getChildren().indexOf(node);
                 KNode copiedNode = EcoreUtil.copy(node);
                 baseParent.getChildren().add(oldPosition, copiedNode);
+                // FIXME: if the added node also has a new edge, the target of that will not be set up yet and cause a 
+                // dangling reference here, possibly breaking further equality checks depending on correct IDs.
+                // One occurring issue: target port of new edge will have a wrong ID with the dangle string and can
+                // therefore not be found in the base model, causing the port to not be connected.
                 comparison.getBaseAdapter().generateIDs(copiedNode);
             }
         }
