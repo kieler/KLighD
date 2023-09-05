@@ -45,6 +45,7 @@ import de.cau.cs.kieler.klighd.microlayout.DecoratorPlacementUtil
 import de.cau.cs.kieler.klighd.microlayout.DecoratorPlacementUtil.Decoration
 import de.cau.cs.kieler.klighd.microlayout.GridPlacementUtil
 import de.cau.cs.kieler.klighd.microlayout.PlacementUtil
+import de.cau.cs.kieler.klighd.util.KlighdProperties
 import java.awt.geom.Point2D
 import java.util.ArrayList
 import java.util.HashMap
@@ -128,6 +129,42 @@ final class RenderingPreparer {
             }
             for (port : element.ports) {
                 prepareRendering(port)
+            }
+        }
+        
+        // Also calculate the sizes of all proxy-renderings
+        val proxyRendering = element.getProperty(KlighdProperties.PROXY_VIEW_PROXY_RENDERING)
+        if (element.getProperty(KlighdProperties.PROXY_VIEW_RENDER_NODE_AS_PROXY) && proxyRendering !== null) {
+            for (data : proxyRendering) {
+                switch(data) {
+                    KRenderingRef: {
+                        // all references to KRenderings need to place a map with the ids of the renderings and their 
+                        // sizes and their decoration in this case in the properties of the reference.
+                        var boundsMap = new HashMap<String, Bounds>
+                        var decorationMap = new HashMap<String, Decoration>
+                        handleKRendering(element, data.rendering, boundsMap, decorationMap)
+                        // add new Property to contain the boundsMap
+                        data.properties.put(CALCULATED_BOUNDS_MAP, boundsMap)
+                        // and the decorationMap
+                        data.properties.put(CALCULATED_DECORATION_MAP, decorationMap)
+                        // remember the id of the rendering in the reference
+                        data.renderingId = data.rendering.renderingId
+                        
+                    }
+                    KRendering: {
+                        // every rendering needs an ID, generate it here
+                        KRenderingIdGenerator.generateIdsRecursive(data)
+                        if (data.eContainer instanceof KNode) {
+                            // Calculate the size and layout of the proxy first.
+                            val parent = data.eContainer as KNode
+                            val minSize = parent.getProperty(KlighdProperties.MINIMAL_NODE_SIZE)
+                            val bounds = PlacementUtil.basicEstimateSize(data, new Bounds(minSize.x, minSize.y))
+                            parent.width = bounds.width
+                            parent.height = bounds.height
+                            handleKRendering(parent, data, null, null)
+                        }
+                    }
+                }
             }
         }
     }
@@ -466,7 +503,7 @@ final class RenderingPreparer {
     static val StyleModificationContext singletonModContext = new StyleModificationContext();
     
     /**
-     * @see de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController#processModifiableStyles
+     * See {@code de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController#processModifiableStyles}
      */
     private static def void processModifiableStyles(KRendering rendering, KGraphElement parent) {
         val styles = if (rendering instanceof KRenderingRef)
