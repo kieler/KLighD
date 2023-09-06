@@ -3,7 +3,7 @@
  *
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright 2020 by
+ * Copyright 2020-2023 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -648,6 +648,8 @@ public class IncrementalUpdateTest {
         EObject baseNewEdge = viewContext.getTargetElements(newEdgeSource).stream().findFirst().orElse(null);
         Assert.assertNotNull(baseNewEdge);
         Assert.assertTrue(baseNewEdge instanceof KEdge);
+        // Assert the new edge also connects to the new port correctly.
+        Assert.assertSame(baseNewPort, ((KEdge) baseNewEdge).getTargetPort());
         
         
         // Assert that the new node is in the same positions in the updated base graph as it is in the new graph.

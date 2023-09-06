@@ -320,9 +320,11 @@ public class UIDAdapter extends EContentAdapter {
      * 
      * @param node
      *            the node to add.
+     * @param position the position in its parent reference list where this element will be placed.
+     *          Used for creating a consistent and unique ID if the element has no identifier.
      * @return the new or existing id, or {@code null} if the id is already taken.
      */
-    private String addId(final KNode node) {
+    private String addId(final KNode node, int position) {
         String id = getId(node);
         if (id != null) {
             return id;
@@ -334,7 +336,7 @@ public class UIDAdapter extends EContentAdapter {
             parentId = "";
             localId = "root";
         } else {
-            parentId = addId(parent);
+            parentId = addId(parent, -1); // parent should already be generated.
             KIdentifier identifier = node.getData(KIdentifier.class);
             if (identifier != null) {
                 localId = identifier.getId();
@@ -343,7 +345,7 @@ public class UIDAdapter extends EContentAdapter {
                     localId += label.getText();
                 }
             } else {
-                localId = "N" + parent.getChildren().indexOf(node);
+                localId = "N" + position;
             }
         }
         id = parentId + ID_SEPARATOR + localId;
@@ -383,19 +385,19 @@ public class UIDAdapter extends EContentAdapter {
                 localId = "E";
                 KPort sourcePort = edge.getSourcePort();
                 if (sourcePort != null) {
-                    localId += addId(sourcePort);
+                    localId += addId(sourcePort, -1); // port should already be generated.
                 }
                 localId += "->";
                 
                 KNode targetNode = edge.getTargetPort() == null ? edge.getTarget() : edge.getTargetPort().getNode();
                 if (targetNode != null) {
-                    localId += addId(targetNode);
+                    localId += addId(targetNode, -1); // node should already be generated.
                 }
                 localId += ":";
                 
                 KPort targetPort = edge.getTargetPort();
                 if (targetPort != null) {
-                    localId += addId(targetPort);
+                    localId += addId(targetPort, -1); // port should already be generated.
                 }
             }
             id = parentId + ID_SEPARATOR + localId;
@@ -411,9 +413,11 @@ public class UIDAdapter extends EContentAdapter {
      * 
      * @param label
      *            the label to add.
+     * @param position the position in its parent reference list where this element will be placed.
+     *          Used for creating a consistent and unique ID if the element has no identifier.
      * @return the new or existing id, or {@code null} if the id is already taken.
      */
-    private String addId(final KLabel label) {
+    private String addId(final KLabel label, int position) {
         String id = getId(label);
         if (id != null) {
             return id;
@@ -436,7 +440,7 @@ public class UIDAdapter extends EContentAdapter {
             if (identifier != null) {
                 localId = identifier.getId();
             } else {
-                localId = "L" + parent.getLabels().indexOf(label);
+                localId = "L" + position;
             }
             id = parentId + ID_SEPARATOR + localId;
         }
@@ -451,9 +455,11 @@ public class UIDAdapter extends EContentAdapter {
      * 
      * @param port
      *          the port to add.
+     * @param position the position in its parent reference list where this element will be placed.
+     *          Used for creating a consistent and unique ID if the element has no identifier.
      * @return the new or existing id, or {@code null} if the id is already taken.
      */
-    private String addId(final KPort port) {
+    private String addId(final KPort port, int position) {
         String id = getId(port);
         if (id != null) {
             return id;
@@ -463,13 +469,13 @@ public class UIDAdapter extends EContentAdapter {
             // This is a dangling element and should not be included in the graph. Give it a unique ID anyway.
             id = DANGLING_ELEMENT + port.hashCode();
         } else {
-            String parentId = addId(parent);
+            String parentId = addId(parent, -1); // parent should already be generated.
             String localId = "";
             KIdentifier identifier = port.getData(KIdentifier.class);
             if (identifier != null) {
                 localId = identifier.getId();
             } else {
-                localId = "P" + parent.getPorts().indexOf(port);
+                localId = "P" + position;
             }
             id = parentId + ID_SEPARATOR + localId;
         }
@@ -543,21 +549,34 @@ public class UIDAdapter extends EContentAdapter {
      * Generate IDs recursively for this {@link KNode} and all its child {@link KGraphElement}s.
      * 
      * @param node the node to start generating IDs from.
+     * @param skipEdges if the ID generation of the edges should be skipped.
+     * @param position the position in its parent reference list where this element will be placed.
+     *          Used for creating a consistent and unique ID if the element has no identifier.
      */
-    public void generateIDs(final KNode node) {
-        addId(node);
+    public void generateIDs(final KNode node, boolean skipEdges, int position) {
+        internalGenerateIDs(node, true, position);
+        // Make sure that the edges are always generated last after all connected elements are ready.
+        if (!skipEdges) {
+            internalGenerateIDs(node, false, position);
+        }
+    }
+    
+    private void internalGenerateIDs(final KNode node, boolean skipEdges, int position) {
+        addId(node, position);
         
-        for (KNode childNode : node.getChildren()) {
-            generateIDs(childNode);
+        for (int i = 0; i < node.getChildren().size(); ++i) {
+            internalGenerateIDs(node.getChildren().get(i), skipEdges, i);
         }
-        for (KPort port : node.getPorts()) {
-            generateIDs(port);
+        for (int i = 0; i < node.getPorts().size(); ++i) {
+            generateIDs(node.getPorts().get(i), i);
         }
-        for (KLabel label : node.getLabels()) {
-            generateIDs(label);
+        for (int i = 0; i < node.getLabels().size(); ++i) {
+            generateIDs(node.getLabels().get(i), i);
         }
-        for (KEdge edge : node.getOutgoingEdges()) {
-            generateIDs(edge);
+        if (!skipEdges) {
+            for (KEdge edge : node.getOutgoingEdges()) {
+                generateIDs(edge);
+            }
         }
     }
     
@@ -565,12 +584,14 @@ public class UIDAdapter extends EContentAdapter {
      * Generate IDs recursively for this {@link KPort} and all its child {@link KGraphElement}s.
      * 
      * @param port the port to start generating IDs from.
+     * @param position the position in its parent reference list where this element will be placed.
+     *          Used for creating a consistent and unique ID if the element has no identifier.
      */
-    public void generateIDs(final KPort port) {
-        addId(port);
-        
-        for (KLabel label : port.getLabels()) {
-            generateIDs(label);
+    public void generateIDs(final KPort port, int position) {
+        addId(port, position);
+
+        for (int i = 0; i < port.getLabels().size(); ++i) {
+            generateIDs(port.getLabels().get(i), i);
         }
     }
     
@@ -578,9 +599,11 @@ public class UIDAdapter extends EContentAdapter {
      * Generate IDs recursively for this {@link KLabel} and all its child {@link KGraphElement}s.
      * 
      * @param label the label to start generating IDs from.
+     * @param position the position in its parent reference list where this element will be placed.
+     *          Used for creating a consistent and unique ID if the element has no identifier.
      */
-    public void generateIDs(final KLabel label) {
-        addId(label);
+    public void generateIDs(final KLabel label, int position) {
+        addId(label, position);
     }
     
     /**
@@ -590,9 +613,9 @@ public class UIDAdapter extends EContentAdapter {
      */
     public void generateIDs(final KEdge edge) {
         addId(edge);
-        
-        for (KLabel label : edge.getLabels()) {
-            generateIDs(label);
+
+        for (int i = 0; i < edge.getLabels().size(); ++i) {
+            generateIDs(edge.getLabels().get(i), i);
         }
     }
 
