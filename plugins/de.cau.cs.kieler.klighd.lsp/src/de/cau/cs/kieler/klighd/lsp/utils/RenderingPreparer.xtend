@@ -51,6 +51,7 @@ import java.util.ArrayList
 import java.util.HashMap
 import java.util.List
 import java.util.Map
+import org.eclipse.sprotty.SModelElement
 
 import static com.google.common.collect.Iterables.filter
 
@@ -76,17 +77,20 @@ final class RenderingPreparer {
      * Finally, modifiable styles defined by the synthesis are processed for the rendering.
      * 
      * @param element The parent element containing the graph to calculate all rendering bounds for.
+     * @param kGraphToSGraph A map for identifying the SGraph element for each KGraph element in this graph.
      */
-    static def void prepareRendering(KGraphElement element) {
+    static def void prepareRendering(KGraphElement element, Map<KGraphElement, SModelElement> kGraphToSGraph) {
         // calculate the sizes of all renderings:
-        for (data : element.data) {
+        for (var int i = 0; i < element.data.size; i++) {
+            val data = element.data.get(i)
             switch(data) {
                 KRenderingLibrary: {
                     // The library needs to generate ids for all later KRenderingRefs to refer to, but no own bounds,
                     // since these are generic renderings.
-                    for (rendering : data.renderings) {
+                    for (var int j = 0; j < data.renderings.size; j++) {
+                        val rendering = data.renderings.get(j)
                         if (rendering instanceof KRendering) {
-                            KRenderingIdGenerator.generateIdsRecursive(rendering)
+                            KRenderingIdGenerator.generateIdsRecursive(rendering, "$$lib$$", j)
                         }
                     }
                 }
@@ -101,12 +105,11 @@ final class RenderingPreparer {
                     // and the decorationMap
                     data.properties.put(CALCULATED_DECORATION_MAP, decorationMap)
                     // remember the id of the rendering in the reference
-                    data.renderingId = data.rendering.renderingId
-                    
+                    data.renderingId = kGraphToSGraph.get(element)?.id + data.rendering.renderingId
                 }
                 KRendering: {
                     // every rendering needs an ID, generate it here
-                    KRenderingIdGenerator.generateIdsRecursive(data)
+                    KRenderingIdGenerator.generateIdsRecursive(data, kGraphToSGraph.get(element)?.id + "$$", i)
                     handleKRendering(element, data, null, null)
                 }
             }
@@ -117,25 +120,26 @@ final class RenderingPreparer {
         
         if (element instanceof KLabeledGraphElement) {
             for (label : element.labels) {
-                prepareRendering(label)
+                prepareRendering(label, kGraphToSGraph)
             }
         }
         if (element instanceof KNode) {
             for (node : element.children) {
-                prepareRendering(node)
+                prepareRendering(node, kGraphToSGraph)
             }
             for (edge : element.outgoingEdges) {
-                prepareRendering(edge)
+                prepareRendering(edge, kGraphToSGraph)
             }
             for (port : element.ports) {
-                prepareRendering(port)
+                prepareRendering(port, kGraphToSGraph)
             }
         }
         
         // Also calculate the sizes of all proxy-renderings
         val proxyRendering = element.getProperty(KlighdProperties.PROXY_VIEW_PROXY_RENDERING)
         if (element.getProperty(KlighdProperties.PROXY_VIEW_RENDER_NODE_AS_PROXY) && proxyRendering !== null) {
-            for (data : proxyRendering) {
+        for (var int i = 0; i < proxyRendering.size; i++) {
+            val data = proxyRendering.get(i)
                 switch(data) {
                     KRenderingRef: {
                         // all references to KRenderings need to place a map with the ids of the renderings and their 
@@ -148,12 +152,12 @@ final class RenderingPreparer {
                         // and the decorationMap
                         data.properties.put(CALCULATED_DECORATION_MAP, decorationMap)
                         // remember the id of the rendering in the reference
-                        data.renderingId = data.rendering.renderingId
+                    data.renderingId = kGraphToSGraph.get(element)?.id + data.rendering.renderingId
                         
                     }
                     KRendering: {
                         // every rendering needs an ID, generate it here
-                        KRenderingIdGenerator.generateIdsRecursive(data)
+                        KRenderingIdGenerator.generateIdsRecursive(data, kGraphToSGraph.get(element)?.id + "$$", i)
                         if (data.eContainer instanceof KNode) {
                             // Calculate the size and layout of the proxy first.
                             val parent = data.eContainer as KNode
@@ -331,7 +335,6 @@ final class RenderingPreparer {
                 // to call KLighD's DecoratorPlacementUtil#evaluateDecoratorPlacement the points of the path of the
                 // parent rendering have to be stored.
                 var Point2D[] path = #[]
-//                var path = new KlighdPath(rendering) // TODO: Can I also only use the points of the rendering?
                 val parentRendering = rendering.eContainer
                 
                 // Get inset from parent region
