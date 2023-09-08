@@ -546,6 +546,41 @@ public final class DiagramSyntheses {
     }
 
     /**
+     * Configures the provided {@link KNode} to be drawn as foreground node on top of the edges
+     * within the common parent node. This avoids overlaps of node drawings by edge paths, which can
+     * be relevant for special diagram types with predefined layout.
+     * 
+     * @see {@link KlighdProperties#FOREGROUND_NODE}
+     *
+     * @param node
+     *            the {@link KNode} to be configured
+     * @return <code>node</code> for convenience
+     */
+    public static KNode drawAsForegroundNode(final KNode node) {
+        node.setProperty(KlighdProperties.FOREGROUND_NODE, true);
+        return node;
+    }
+
+    /**
+     * Configures the provided {@link KRendering} to be drawn as background figure that avoids
+     * overlaps of edge drawings by node figures parts, provided the node is drawn as foreground
+     * node, i.e. on top of the edge drawings within containing parent node.
+     * 
+     * @see {@link KlighdProperties#BACKGROUND_FIGURE}
+     *
+     * @param <T>
+     *            the concrete type of <code>krendering</code>
+     * @param krendering
+     *            the {@link KRendering} to be configured, has no effect for
+     *            {@link de.cau.cs.kieler.klighd.krendering.KChildArea KChildAreas}
+     * @return <code>krendering</code> for convenience
+     */
+    public static <T extends KRendering> T drawAsBackgroundFigure(final T krendering) {
+        krendering.setProperty(KlighdProperties.BACKGROUND_FIGURE, true);
+        return krendering;
+    }
+
+    /**
      * Configures the provided {@link KRendering} to be excluded from the outline diagram view.
      *
      * @param <T>

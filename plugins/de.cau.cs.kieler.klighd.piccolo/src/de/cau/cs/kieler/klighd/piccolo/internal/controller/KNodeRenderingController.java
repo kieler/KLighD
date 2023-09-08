@@ -72,6 +72,8 @@ public class KNodeRenderingController extends AbstractKGERenderingController<KNo
                     handleAreaAndPointPlacementRendering(createDefaultRendering(), repNode);
         }
 
+        repNode.setHasBackgroundFigures(this.backgroundFiguresPresent);
+
         // make sure the child area is attached to something
         if (childAreaNode.getParent() == null) {
             // if the childArea is not part of the above created PNode rendering tree

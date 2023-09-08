@@ -1566,7 +1566,7 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
         StringBuffer result = new StringBuffer();
 
         double[] coords = new double[6];
-        result.append("d=\"");
+        result.append(" d=\"");
         while (!path.isDone()) {
             int segType = path.currentSegment(coords);
 
@@ -1628,7 +1628,7 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
     protected String getPath(PathIterator path) {
         StringBuffer result = new StringBuffer();
 
-        result.append("<path ");
+        result.append("<path");
         result.append(attributes(true));
         result.append(getPathContent(path));
         result.append("/>");

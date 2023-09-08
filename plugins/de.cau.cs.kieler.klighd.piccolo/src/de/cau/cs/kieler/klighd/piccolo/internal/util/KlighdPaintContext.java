@@ -18,13 +18,13 @@ package de.cau.cs.kieler.klighd.piccolo.internal.util;
 
 import java.awt.Graphics2D;
 import java.awt.Shape;
-import java.util.Stack;
 
 import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMagnificationLensCamera;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
 import edu.umd.cs.piccolo.PCamera;
 import edu.umd.cs.piccolo.util.PPaintContext;
+import edu.umd.cs.piccolo.util.PStack;
 
 /**
  * This is a specialization of {@link PPaintContext} suppressing the super class' clipping
@@ -35,6 +35,14 @@ import edu.umd.cs.piccolo.util.PPaintContext;
  * @author chsch
  */
 public class KlighdPaintContext extends PPaintContext {
+
+    /**
+     * Enum defining the figure filter values required for drawing foreground nodes with background
+     * figure parts.
+     */
+    public static enum FigureFilter {
+        ALL, BG_ONLY, nBG_ONLY
+    }
 
     /**
      * Factory method creating a {@link KlighdPaintContext} configured for on screen (main) diagram
@@ -143,6 +151,8 @@ public class KlighdPaintContext extends PPaintContext {
     }
 
     private double cameraZoomScale = 1d;
+    private FigureFilter figureFilter = FigureFilter.ALL;
+
     private final boolean mainDiagram;
     private final boolean outline;
     private final boolean export;
@@ -151,7 +161,8 @@ public class KlighdPaintContext extends PPaintContext {
     private final boolean addSemanticData;
     private final boolean setTextLengths;
 
-    private final Stack<Double> cameraScales = new Stack<Double>();
+    private final PStack cameraScales = new PStack();
+    private final PStack figureFilters = new PStack();
 
     /**
      * Provides the current diagram zoom factor as determined by the active {@link KlighdMainCamera}'s
@@ -271,7 +282,7 @@ public class KlighdPaintContext extends PPaintContext {
 
     /**
      * {@inheritDoc}<br>
-     * This specialization suppresses the original clipping behavior as we don't need it or event
+     * This specialization suppresses the original clipping behavior as we don't need it or even
      * don't want to have it. Thus, this method <b>does nothing</b>.
      */
     @Override
@@ -281,7 +292,7 @@ public class KlighdPaintContext extends PPaintContext {
 
     /**
      * {@inheritDoc}<br>
-     * This specialization suppresses the original clipping behavior as we don't need it or event
+     * This specialization suppresses the original clipping behavior as we don't need it or even
      * don't want to have it. Thus, this method <b>does nothing</b>.
      */
     @Override
@@ -327,6 +338,54 @@ public class KlighdPaintContext extends PPaintContext {
      * {@link de.cau.cs.kieler.klighd.piccolo.internal.nodes.KChildAreaNode KChildAreaNode} only!
      */
     public void popNodeScale() {
-        cameraZoomScale = cameraScales.pop();
+        cameraZoomScale = (double) cameraScales.pop();
+    }
+
+    /**
+     * @return <code>true</code> if this paint context expects only background figure parts of node
+     *         figures to be drawn, and <code>false</code> otherwise.
+     */
+    public boolean isBackgroundFiguresOnly() {
+        return this.figureFilter == FigureFilter.BG_ONLY;
+    }
+
+    /**
+     * @return <code>true</code> if this paint context expects everything to be drawn except
+     *         background figure parts of node figures, and <code>false</code> otherwise.
+     */
+    public boolean isNonBackgroundFiguresOnly() {
+        return this.figureFilter == FigureFilter.nBG_ONLY;
+    }
+
+    /**
+     * Saves the current figure filter and overrides it with {@link FigureFilter#ALL}.
+     */
+    public void pushFigureFilterAll() {
+        this.figureFilters.push(this.figureFilter);
+        this.figureFilter = FigureFilter.ALL;
+    }
+
+    /**
+     * Saves the current figure filter and overrides it with {@link FigureFilter#BG_ONLY}.
+     */
+    public void pushFigureFilterBackgroundOnly() {
+        this.figureFilters.push(this.figureFilter);
+        this.figureFilter = FigureFilter.BG_ONLY;
+    }
+
+    /**
+     * Saves the current figure filter and overrides it with {@link FigureFilter#nBG_ONLY}.
+     */
+    public void pushFigureFilterNonBackgroundOnly() {
+        this.figureFilters.push(this.figureFilter);
+        this.figureFilter = FigureFilter.nBG_ONLY;
+    }
+
+    /**
+     * Discards the current filter and restores the previous one. Must be called in sync with one of
+     * the <code>pushFigureFilter...</code> methods.
+     */
+    public void popFigureFilter() {
+        this.figureFilter = (FigureFilter) this.figureFilters.pop();
     }
 }

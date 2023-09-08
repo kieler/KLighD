@@ -87,7 +87,7 @@ public class AdapterTest {
         );
 
         final KNodeAbstractNode node = controller.getNode();
-        final PLayer nodeLayer = node.getChildAreaNode().getNodeLayer();
+        final PLayer nodeLayer = node.getChildAreaNode().getDefaultNodeLayer();
         final PNode pnext = nodeLayer.getChild(0);
         final PLayer portlayer = ((KNodeNode) pnext).getPortLayer();
         final PNode pport = portlayer.getChild(3);
@@ -380,9 +380,7 @@ public class AdapterTest {
         if (!piccoloTree.getViewModelElement().toString().equals(kgraph.toString())) {
             return false;
         }
-        final PLayer nodeLayer = piccoloTree.getChildAreaNode().getNodeLayer() != null
-                ? piccoloTree.getChildAreaNode().getNodeLayer() : new PLayer();
-                    // chsch: added some hotfix here
+        final PLayer nodeLayer = piccoloTree.getChildAreaNode().getDefaultNodeLayer();
 
         PLayer edgeLayer = null;
         if (piccoloTree.getParentKNodeNode() != null) {
@@ -439,7 +437,7 @@ public class AdapterTest {
                 }
             }
             // check recursively for children
-            if (kgraph.getChildren() != null && nodeLayer.getChildrenCount() == 0) {
+            if (kgraph.getChildren() != null && (nodeLayer == null || nodeLayer.getChildrenCount() == 0)) {
                 return false;
             }
             if (!checkStructure(kgraph.getChildren().get(i), (KNodeAbstractNode) nodeLayer.getChild(i))) {

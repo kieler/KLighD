@@ -16,9 +16,15 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.internal.nodes;
 
+import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.notify.impl.AdapterImpl;
+import org.eclipse.emf.common.util.BasicEMap;
+
+import de.cau.cs.kieler.klighd.kgraph.KGraphPackage;
 import de.cau.cs.kieler.klighd.krendering.KChildArea;
 import de.cau.cs.kieler.klighd.piccolo.IKlighdNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.KlighdPaintContext;
+import de.cau.cs.kieler.klighd.util.KlighdProperties;
 import edu.umd.cs.piccolo.PLayer;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.util.PBounds;
@@ -41,13 +47,16 @@ public class KChildAreaNode extends KlighdDisposingLayer implements IKlighdNode.
 
     private final KNodeAbstractNode parentNodeNode;
 
-    private final boolean edgesFirst;
+    private boolean edgesFirst;
 
     /** the node layer. */
-    private PLayer nodeLayer;
+    private PLayer belowEdgesNodeLayer;
 
     /** the edge layer. */
     private PLayer edgeLayer;
+
+    /** 2nd node layer containing nodes being drawn on top of edges. */
+    private PLayer aboveEdgesNodeLayer;
 
     /** the {@link KChildArea} represented by this {@link KChildAreaNode}, may be <code>null</code>. */
     private KChildArea childArea;
@@ -69,6 +78,37 @@ public class KChildAreaNode extends KlighdDisposingLayer implements IKlighdNode.
         this.setPickable(false);
         this.parentNodeNode = parentNodeNode;
         this.edgesFirst = edgesFirst;
+
+        if (!edgesFirst && parentNodeNode instanceof KNodeTopNode) {
+            // special handling for the KNodeTopNode since the root KNode and the KNodeTopNode are
+            //  kept for the entire diagram life time and the update strategy transfers settings on
+            //  the root node after this constructor call;
+            // hence, 'edgesFirst' will always be false except KlighdProperties.EDGES_FIRST is set
+            //  on the viewContext;
+            // thus, if no activation is done on the view context we need to listen for changes on
+            // the properties of the root node being performed by the update strategy, so...
+
+            parentNodeNode.getViewModelElement().eAdapters().add(new AdapterImpl() {
+
+                @Override
+                public void notifyChanged(Notification msg) {
+                    if (msg.getFeature() == KGraphPackage.eINSTANCE.getEMapPropertyHolder_Properties()) {
+                        final Object newValue = msg.getNewValue();
+                        if (msg.getEventType() == Notification.REMOVE_MANY && newValue == null) {
+                            KChildAreaNode.this.edgesFirst =
+                                    KlighdProperties.EDGES_FIRST.getDefault().booleanValue();
+
+                        } else if (msg.getEventType() == Notification.ADD
+                                && newValue instanceof BasicEMap.Entry<?, ?>
+                                && KlighdProperties.EDGES_FIRST
+                                        .equals(((BasicEMap.Entry<?, ?>) newValue).getKey())) {
+                            KChildAreaNode.this.edgesFirst =
+                                    (Boolean) ((BasicEMap.Entry<?, ?>) newValue).getValue();
+                        }
+                    }
+                }
+            });
+        }
     }
 
     /**
@@ -103,8 +143,8 @@ public class KChildAreaNode extends KlighdDisposingLayer implements IKlighdNode.
      *
      * @return a dedicated layer accommodating all attached {@link KNodeNode KNodeNodes}.
      */
-    public PLayer getNodeLayer() {
-        return this.nodeLayer;
+    public PLayer getDefaultNodeLayer() {
+        return this.belowEdgesNodeLayer;
     }
 
     /**
@@ -124,12 +164,22 @@ public class KChildAreaNode extends KlighdDisposingLayer implements IKlighdNode.
      *            the node representation
      */
     public void addNode(final KNodeNode node) {
-        if (nodeLayer == null) {
-            nodeLayer = new KlighdDisposingLayer();
-            addChild(edgesFirst ? getChildrenCount() : 0, nodeLayer);
+        if (edgesFirst || node.isTaggedAsForeground()) {
+            if (aboveEdgesNodeLayer == null) {
+                aboveEdgesNodeLayer = new KlighdDisposingLayer();
+                addChild(getChildrenCount(), aboveEdgesNodeLayer);
+            }
+            aboveEdgesNodeLayer.addChild(node);
+            node.setParentNode(parentNodeNode, true);
+
+        } else {
+            if (belowEdgesNodeLayer == null) {
+                belowEdgesNodeLayer = new KlighdDisposingLayer();
+                addChild(0, belowEdgesNodeLayer);
+            }
+            belowEdgesNodeLayer.addChild(node);
+            node.setParentNode(parentNodeNode, false);
         }
-        nodeLayer.addChild(node);
-        node.setParentNode(parentNodeNode);
     }
 
     /**
@@ -141,7 +191,7 @@ public class KChildAreaNode extends KlighdDisposingLayer implements IKlighdNode.
     public void addEdge(final KEdgeNode edge) {
         if (edgeLayer == null) {
             edgeLayer = new KlighdDisposingLayer();
-            addChild(edgesFirst ? 0 : getChildrenCount(), edgeLayer);
+            addChild(belowEdgesNodeLayer == null ? 0 : 1, edgeLayer);
         }
         edgeLayer.addChild(edge);
     }
@@ -264,6 +314,26 @@ public class KChildAreaNode extends KlighdDisposingLayer implements IKlighdNode.
         super.validateFullBounds();
         super.validateFullPaint();
 
-        super.fullPaint(paintContext);
+        if (this.aboveEdgesNodeLayer == null || this.aboveEdgesNodeLayer.getChildrenCount() == 0) {
+            // no nodes to be drawn above edges, so draw as usual
+            super.fullPaint(paintContext);
+
+        } else if (getVisible() && fullIntersects(paintContext.getLocalClip())) {
+            final KlighdPaintContext kpc = (KlighdPaintContext) paintContext;
+
+            // assigning selected nodes explicitly to the 'aboveEdgesNodeLayer' or 'belowEdgesNodeLayer'
+            //  is not supported as of now, and therefore a mixture of nodes to be drawn underneath the edge layer
+            //  and nodes to be drawn on top of the edge layer should not occur at the time of writing this.
+
+            kpc.pushFigureFilterBackgroundOnly();
+            paintContext.pushTransform(getTransformReference(false));
+            this.aboveEdgesNodeLayer.fullPaint(paintContext);
+            paintContext.popTransform(getTransformReference(false));
+            kpc.popFigureFilter();
+
+            kpc.pushFigureFilterNonBackgroundOnly();
+            super.fullPaint(paintContext);
+            kpc.popFigureFilter();
+        }
     }
 }

@@ -554,6 +554,8 @@ public abstract class KlighdNode extends PNode implements IKlighdNode {
 
         private T rendering;
 
+        private boolean isBackgroundFigure;
+
         /**
          * Configures the {@link KRendering} element being represented by this {@link KlighdFigureNode}.
          *
@@ -566,6 +568,8 @@ public abstract class KlighdNode extends PNode implements IKlighdNode {
             if (rendering == null) {
                 return;
             }
+
+            this.isBackgroundFigure = rendering.getProperty(KlighdProperties.BACKGROUND_FIGURE);
 
             setVisibilityOn(
                     rendering.getProperty(KlighdProperties.OUTLINE_INVISIBLE).booleanValue(),
@@ -676,6 +680,16 @@ public abstract class KlighdNode extends PNode implements IKlighdNode {
             } else {
                 return super.pickAfterChildren(pickPath);
             }
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public boolean isNotVisibleOn(KlighdPaintContext kpc) {
+            return kpc.isBackgroundFiguresOnly() && !this.isBackgroundFigure
+                    || kpc.isNonBackgroundFiguresOnly() && this.isBackgroundFigure
+                    || super.isNotVisibleOn(kpc);
         }
 
         /**
