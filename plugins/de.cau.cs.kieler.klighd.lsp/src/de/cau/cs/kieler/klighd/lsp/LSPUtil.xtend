@@ -92,7 +92,7 @@ class LSPUtil {
      * Parses a jsonElement for color preferences from the client. unreadable colors are defaulted to black and white.
      */
     static def ColorPreferences parseColorPreferences(JsonElement jsonColors) {
-        if (!jsonColors.isJsonObject) return null
+        if (jsonColors === null || !jsonColors.isJsonObject) return null
         val foreground = jsonColors.asJsonObject.get("foreground")
         val background = jsonColors.asJsonObject.get("background")
         val highlight = jsonColors.asJsonObject.get("highlight")
