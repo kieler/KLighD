@@ -101,7 +101,21 @@ class LSPUtil {
         val highlightColor = parseColor(highlight)
         
         return new ColorPreferences(foregroundColor, backgroundColor, highlightColor)
-        
+    }
+    
+    /**
+     * Parses a single color string in the form #RRGGBB into a KColor, or null if the string is unparsable.
+     */
+    static def KColor parseColor(String stringColor) {
+        var KColor color = null
+        try {
+            val awtColor = Color.decode(stringColor)
+            color = KRenderingFactory.eINSTANCE.createKColor
+            color.red = awtColor.red
+            color.green = awtColor.green
+            color.blue = awtColor.blue
+        } catch (NumberFormatException e) {}
+        return color
     }
     
     /**
@@ -109,15 +123,6 @@ class LSPUtil {
      */
     static def KColor parseColor(JsonElement jsonColor) {
         if (!jsonColor.isJsonPrimitive) return null
-        var KColor color = null
-        try {
-            val awtColor = Color.decode(jsonColor.asString)
-            color = KRenderingFactory.eINSTANCE.createKColor
-            color.red = awtColor.red
-            color.green = awtColor.green
-            color.blue = awtColor.blue
-        } catch (NumberFormatException e) {}
-        
-        return color
+        return parseColor(jsonColor.asString)
     }
 }
