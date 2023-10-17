@@ -259,7 +259,9 @@ class KGraphDiagramUpdater extends DiagramUpdater {
         }
         
         synchronized (diagramState) {
-            viewContext.setProperty(KlighdProperties.COLOR_PREFERENCES, diagramState.colorPreferences)
+            if (diagramState.colorPreferences !== null) {
+                viewContext.setProperty(KlighdProperties.COLOR_PREFERENCES, diagramState.colorPreferences)
+            }
         }
         
         val vc = viewContext
