@@ -17,8 +17,13 @@
 package de.cau.cs.kieler.klighd.lsp
 
 import com.google.common.html.HtmlEscapers
+import com.google.gson.JsonElement
 import de.cau.cs.kieler.klighd.ViewContext
 import de.cau.cs.kieler.klighd.kgraph.KNode
+import de.cau.cs.kieler.klighd.krendering.KColor
+import de.cau.cs.kieler.klighd.krendering.KRenderingFactory
+import de.cau.cs.kieler.klighd.util.ColorPreferences
+import java.awt.Color
 
 /**
  * Utility methods for graphs in a language server context.
@@ -79,5 +84,40 @@ class LSPUtil {
             .replace("\n", "\\\n")
             // Replace tabs with four spaces.
             .replace("\t", "&nbsp;&nbsp;&nbsp;&nbsp;")
+    }
+    
+    
+    
+    /**
+     * Parses a jsonElement for color preferences from the client. unreadable colors are defaulted to black and white.
+     */
+    static def ColorPreferences parseColorPreferences(JsonElement jsonColors) {
+        if (!jsonColors.isJsonObject) return null
+        val foreground = jsonColors.asJsonObject.get("foreground")
+        val background = jsonColors.asJsonObject.get("background")
+        val highlight = jsonColors.asJsonObject.get("highlight")
+        val foregroundColor = parseColor(foreground)
+        val backgroundColor = parseColor(background)
+        val highlightColor = parseColor(highlight)
+        
+        return new ColorPreferences(foregroundColor, backgroundColor, highlightColor)
+        
+    }
+    
+    /**
+     * Parses a single color string in the form #RRGGBB into a KColor, or null if the string is unparsable.
+     */
+    static def KColor parseColor(JsonElement jsonColor) {
+        if (!jsonColor.isJsonPrimitive) return null
+        var KColor color = null
+        try {
+            val awtColor = Color.decode(jsonColor.asString)
+            color = KRenderingFactory.eINSTANCE.createKColor
+            color.red = awtColor.red
+            color.green = awtColor.green
+            color.blue = awtColor.blue
+        } catch (NumberFormatException e) {}
+        
+        return color
     }
 }

@@ -30,6 +30,7 @@ import de.cau.cs.kieler.klighd.lsp.launch.AbstractLanguageServer
 import de.cau.cs.kieler.klighd.lsp.model.RequestDiagramPieceAction
 import de.cau.cs.kieler.klighd.lsp.model.SKGraph
 import de.cau.cs.kieler.klighd.lsp.utils.KGraphMappingUtil
+import de.cau.cs.kieler.klighd.util.KlighdProperties
 import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties
 import java.util.HashSet
 import java.util.List
@@ -255,6 +256,10 @@ class KGraphDiagramUpdater extends DiagramUpdater {
             for (Map.Entry<SynthesisOption, Object> entry : recentSynthesisOptions.entrySet) {
                 viewContext.configureOption(entry.key, entry.value)
             }
+        }
+        
+        synchronized (diagramState) {
+            viewContext.setProperty(KlighdProperties.COLOR_PREFERENCES, diagramState.colorPreferences)
         }
         
         val vc = viewContext
