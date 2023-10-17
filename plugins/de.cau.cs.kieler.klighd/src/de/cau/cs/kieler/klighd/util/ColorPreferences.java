@@ -33,7 +33,7 @@ public class ColorPreferences {
     private KColor foreground;
     
     /**
-     * The backgrond color to be used as the background, fill color, etc., or as a reference.
+     * The background color to be used as the background, fill color, etc., or as a reference.
      */
     private KColor background;
     
@@ -94,5 +94,26 @@ public class ColorPreferences {
         } else {
             this.highlight = highlight;
         }
+    }
+    
+    /**
+     * @return the foreground color
+     */
+    public KColor getForeground() {
+        return foreground;
+    }
+
+    /**
+     * @return the background color
+     */
+    public KColor getBackground() {
+        return background;
+    }
+
+    /**
+     * @return the highlight color
+     */
+    public KColor getHighlight() {
+        return highlight;
     }
 }
