@@ -383,9 +383,10 @@ public final class KlighdProperties {
     
     /**
      * Property determining the custom color theme to be used by syntheses.
+     * Null means no preferences could be detected and the diagram background will most likely be white.
      */
     public static final IProperty<ColorPreferences> COLOR_PREFERENCES =
-            new Property<ColorPreferences>("klighd.colorPreferences", new ColorPreferences());
+            new Property<ColorPreferences>("klighd.colorPreferences", null);
     
     /**
      * Property determining whether this node should be rendered as a proxy.

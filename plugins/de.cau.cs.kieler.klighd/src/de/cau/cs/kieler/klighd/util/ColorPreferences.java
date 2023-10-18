@@ -46,20 +46,7 @@ public class ColorPreferences {
      * Default constructor for color preferences, setting foreground and highlight to black, background to white.
      */
     public ColorPreferences() {
-        foreground = KRenderingFactory.eINSTANCE.createKColor();
-        foreground.setRed(0);
-        foreground.setGreen(0);
-        foreground.setBlue(0);
-        
-        background = KRenderingFactory.eINSTANCE.createKColor();
-        background.setRed(255);
-        background.setGreen(255);
-        background.setBlue(255);
-
-        highlight = KRenderingFactory.eINSTANCE.createKColor();
-        highlight.setRed(0);
-        highlight.setGreen(0);
-        highlight.setBlue(0);
+        this(null, null, null);
     }
 
     /**
