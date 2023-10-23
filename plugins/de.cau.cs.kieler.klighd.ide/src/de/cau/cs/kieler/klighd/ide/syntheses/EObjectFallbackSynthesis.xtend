@@ -20,10 +20,11 @@ import com.google.common.collect.HashBasedTable
 import com.google.common.collect.Table
 import de.cau.cs.kieler.klighd.KlighdConstants
 import de.cau.cs.kieler.klighd.SynthesisOption
+import de.cau.cs.kieler.klighd.ide.syntheses.action.EcoreModelExpandDetailsAction
 import de.cau.cs.kieler.klighd.kgraph.KNode
 import de.cau.cs.kieler.klighd.kgraph.KPort
 import de.cau.cs.kieler.klighd.kgraph.util.KGraphUtil
-import de.cau.cs.kieler.klighd.krendering.Colors
+import de.cau.cs.kieler.klighd.krendering.KColor
 import de.cau.cs.kieler.klighd.krendering.LineStyle
 import de.cau.cs.kieler.klighd.krendering.extensions.KColorExtensions
 import de.cau.cs.kieler.klighd.krendering.extensions.KContainerRenderingExtensions
@@ -35,8 +36,8 @@ import de.cau.cs.kieler.klighd.krendering.extensions.KPortExtensions
 import de.cau.cs.kieler.klighd.krendering.extensions.KRenderingExtensions
 import de.cau.cs.kieler.klighd.microlayout.PlacementUtil
 import de.cau.cs.kieler.klighd.syntheses.AbstractDiagramSynthesis
-import de.cau.cs.kieler.klighd.ide.syntheses.action.EcoreModelExpandDetailsAction
 import de.cau.cs.kieler.klighd.util.KlighdProperties
+import java.awt.Color
 import java.util.List
 import java.util.Map
 import javax.inject.Inject
@@ -55,6 +56,7 @@ import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.emf.ecore.util.EContentsEList
 
 import static extension de.cau.cs.kieler.klighd.syntheses.DiagramSyntheses.*
+import static extension org.eclipse.emf.ecore.util.EcoreUtil.copy
 
 /**
  * Diagram synthesis of a {@link EObject}.
@@ -116,10 +118,19 @@ class EObjectFallbackSynthesis extends AbstractDiagramSynthesis<EObject> {
     val Map<EObject, KNode> nodeCache = newHashMap
     val Table<EStructuralFeature, KNode, KPort> portCache = HashBasedTable.create
     
+    // Colors
+    var KColor foregroundColor
+    var KColor backgroundColor
+    var KColor foregroundNodeColor
+    var KColor backgroundNodeColor
+    
     override KNode transform(EObject model) {
         // Init cache
         nodeCache.clear
         portCache.clear
+        
+        // establish color theme
+        configureColors()
         
         val rootNode = createNode();
         
@@ -149,8 +160,12 @@ class EObjectFallbackSynthesis extends AbstractDiagramSynthesis<EObject> {
                     }
                     it.target = nodeCache.get(eObject);
                     it.addPolyline => [
-                        addHeadArrowDecorator
-                        addJunctionPointDecorator
+                        it.foreground = foregroundNodeColor.copy;
+                        it.addHeadArrowDecorator
+                        it.addJunctionPointDecorator => [
+                            it.foreground = foregroundNodeColor.copy
+                            it.background = foregroundNodeColor.copy
+                        ]
                     ]
                 ]
             }
@@ -169,9 +184,13 @@ class EObjectFallbackSynthesis extends AbstractDiagramSynthesis<EObject> {
                         }
                         it.target = nodeCache.get(targetEObject);
                         it.addPolyline => [
-                            addHeadArrowDecorator
-                            addJunctionPointDecorator
-                            lineStyle = LineStyle.DASH
+                            it.foreground = foregroundNodeColor.copy;
+                            it.addHeadArrowDecorator
+                            it.addJunctionPointDecorator => [
+                                it.foreground = foregroundNodeColor.copy
+                                it.background = foregroundNodeColor.copy
+                            ]
+                            it.lineStyle = LineStyle.DASH
                         ];
                     ]
                 }
@@ -197,14 +216,15 @@ class EObjectFallbackSynthesis extends AbstractDiagramSynthesis<EObject> {
         // Expanded Rectangle
         node.createFigure() => [
             it.setProperty(KlighdProperties::EXPANDED_RENDERING, true);
+            it.addDoubleClickAction(KlighdConstants::ACTION_COLLAPSE_EXPAND);
             it.setGridPlacement(1);
 
             // add name of object as text
             it.addText(object.eClass.name).associateWith(object) => [
                 it.fontSize = 11;
-                it.setFontBold(true);
+                it.foreground = foregroundColor.copy;
                 it.setGridPlacementData().from(LEFT, 9, 0, TOP, 8f, 0).to(RIGHT, 8, 0, BOTTOM, 4, 0);
-                it.suppressSelectability;
+                it.selectionFontBold = false;
             ];
 
             // collapse button
@@ -214,14 +234,16 @@ class EObjectFallbackSynthesis extends AbstractDiagramSynthesis<EObject> {
                 it.addSingleClickAction(KlighdConstants::ACTION_COLLAPSE_EXPAND);
                 it.addDoubleClickAction(KlighdConstants::ACTION_COLLAPSE_EXPAND);
                 it.setGridPlacementData().from(LEFT, 8, 0, TOP, 0, 0).to(RIGHT, 8, 0, BOTTOM, 0, 0);
+                it.selectionFontBold = false;
+                it.suppressSelectability;
             ];
 
             if (hasAttributes || hasSuperTypes) {
                 // Add Details
                 it.addRectangle => [
                     it.setGridPlacementData.from(LEFT, 8, 0, TOP, 0, 0).to(RIGHT, 8, 0, BOTTOM, 8, 0);
-                    it.setBackground = "white".color;
-                    it.foreground = "gray".color
+                    it.background = backgroundColor.copy;
+                    it.foreground = foregroundNodeColor.copy;
                     it.lineWidth = 1;
                     it.setGridPlacement(1);
 
@@ -230,16 +252,19 @@ class EObjectFallbackSynthesis extends AbstractDiagramSynthesis<EObject> {
                     // add all super types as string representation
                     if (hasSuperTypes) {
                         it.addText("SuperTypes") => [
-                            it.foreground = "gray".color;
+                            it.foreground = foregroundNodeColor.copy;
                             it.fontSize = 8;
                             it.setGridPlacementData().from(LEFT, 5, 0, TOP, 2, 0).to(RIGHT, 5, 0, BOTTOM, 2, 0);
+                            it.selectionFontBold = false;
                             it.suppressSelectability;
                         ];
                         eclass.EAllSuperTypes.filterNull.forEach [
                             // add a text with name and value of the attribute
                             container.addText(it.name) => [
                                 it.fontSize = 9;
+                                it.foreground = foregroundColor.copy;
                                 it.setGridPlacementData().from(LEFT, 5, 0, TOP, 2, 0).to(RIGHT, 5, 0, BOTTOM, 2, 0);
+                                it.selectionFontBold = false;
                                 it.suppressSelectability;
                             ];
                         ]
@@ -247,19 +272,22 @@ class EObjectFallbackSynthesis extends AbstractDiagramSynthesis<EObject> {
                     // add all attributes as string representation
                     if (hasAttributes) {
                         if (hasSuperTypes) {
-                            it.addHorizontalSeperatorLine(1, 1).foreground = "gray".color;
+                            it.addHorizontalSeperatorLine(1, 1).foreground = foregroundNodeColor.copy;
                         }
                         it.addText("Attributes") => [
-                            it.foreground = "gray".color;
+                            it.foreground = foregroundNodeColor.copy;
                             it.fontSize = 8;
                             it.setGridPlacementData().from(LEFT, 5, 0, TOP, 2, 0).to(RIGHT, 5, 0, BOTTOM, 2, 0);
+                            it.selectionFontBold = false;
                             it.suppressSelectability;
                         ];
                         eclass.EAllAttributes.filterNull.forEach [
                             // add a text with name and value of the attribute
                             container.addText(it.name + ": " + String::valueOf(object.eGet(it))) => [
                                 it.fontSize = 9;
+                                it.foreground = foregroundColor.copy;
                                 it.setGridPlacementData().from(LEFT, 5, 0, TOP, 2, 0).to(RIGHT, 5, 0, BOTTOM, 2, 0);
+                                it.selectionFontBold = false;
                                 it.suppressSelectability;
                             ];
                         ]
@@ -269,27 +297,30 @@ class EObjectFallbackSynthesis extends AbstractDiagramSynthesis<EObject> {
         ];
 
         // Collapse Rectangle
-        node.createFigure() =>
-            [
+        node.createFigure() => [
                 it.setProperty(KlighdProperties::COLLAPSED_RENDERING, true);
+                it.addDoubleClickAction(KlighdConstants::ACTION_COLLAPSE_EXPAND);
                 it.setGridPlacement(1);
+                
                 // add name of object as text
-                it.addText(object.eClass.name).associateWith(object) =>
-                    [
+                it.addText(object.eClass.name).associateWith(object) => [
                         it.fontSize = 11;
-                        it.setFontBold(true);
+                        it.foreground = foregroundColor.copy;
                         it.setGridPlacementData().from(LEFT, 8, 0, TOP, 8, 0).to(RIGHT, 8, 0, BOTTOM,
                             if(hasAttributes || hasSuperTypes) 4 else 8, 0);
-                        it.suppressSelectability;
+                        it.selectionFontBold = false;
                     ];
+                    
                 if (hasAttributes || hasSuperTypes) {
                     // Add details button
                     it.addText("[Details]") => [
-                        it.foreground = "blue".color
-                        it.fontSize = 9
+                        it.foreground = "blue".color;
+                        it.fontSize = 9;
                         it.addSingleClickAction(KlighdConstants::ACTION_COLLAPSE_EXPAND);
                         it.addDoubleClickAction(KlighdConstants::ACTION_COLLAPSE_EXPAND);
                         it.setGridPlacementData().from(LEFT, 8, 0, TOP, 0, 0).to(RIGHT, 8, 0, BOTTOM, 8, 0);
+                        it.selectionFontBold = false;
+                        it.suppressSelectability;
                     ];
                 }
             ];
@@ -306,14 +337,16 @@ class EObjectFallbackSynthesis extends AbstractDiagramSynthesis<EObject> {
     private def transformToPort(EStructuralFeature containerFeature, KNode node) {
         val port = KGraphUtil::createInitializedPort
         node.ports += port;
-        port.setPortSize(portEdgeLength, portEdgeLength);
+        port.setPortSize(0, 0);
         port.addLayoutParam(CoreOptions::PORT_SIDE, PortSide::EAST);
         port.setPortPos(node.width-1, node.nextEPortYPosition);
         port.createLabel => [
-            text = containerFeature.name
+            it.text = containerFeature.name
             val size = PlacementUtil.estimateSize(it)
             it.width = size.width
             it.height = size.height
+            it.configureOutsidePortLabel(containerFeature.name)
+            it.getKRendering.foreground = foregroundColor.copy
         ]
         
         // Add to cache
@@ -328,12 +361,41 @@ class EObjectFallbackSynthesis extends AbstractDiagramSynthesis<EObject> {
     private def createFigure(KNode node) {
         val figure = node.addRoundedRectangle(8, 8, 1);
         figure.lineWidth = 1;
-        figure.foreground = Colors.GRAY;
-        figure.background = Colors.GRAY_95;
+        figure.foreground = foregroundNodeColor.copy;
+        figure.background = backgroundNodeColor.copy;
 
         // minimal node size is necessary if no text will be added
         node.setMinimalNodeSize(2 * figure.cornerWidth, 2 * figure.cornerHeight);
         
         return figure;
+    }
+    
+    /**
+     * Configure the colors used in the diagram
+     */
+    def configureColors() {
+        // default colors
+        foregroundColor = "black".color
+        backgroundColor = "white".color
+        foregroundNodeColor = "#bebebe".color
+        backgroundNodeColor = "#f2f2f2".color
+
+        val colorPrefereces = usedContext.getProperty(KlighdProperties.COLOR_PREFERENCES);
+        if (colorPrefereces !== null) {
+            foregroundColor = colorPrefereces.foreground;
+            backgroundColor = colorPrefereces.background;
+            
+            val fgHSB = Color.RGBtoHSB(foregroundColor.getRed(), foregroundColor.getGreen(), foregroundColor.getBlue(), null);
+            val bgHSB = Color.RGBtoHSB(backgroundColor.getRed(), backgroundColor.getGreen(), backgroundColor.getBlue(), null);
+            val adjustment = bgHSB.get(2) < 0.6f ? -0.1f : 0.04f; // reduce brightness if color is dark dark
+            
+            fgHSB.set(2, Math.max(0, Math.min(1, fgHSB.get(2) + adjustment)));
+            val newFg = Color.getHSBColor(fgHSB.get(0), fgHSB.get(1), fgHSB.get(2));
+            foregroundNodeColor.setColor(newFg.red, newFg.green, newFg.blue);
+            
+            bgHSB.set(2, Math.max(0, Math.min(1, bgHSB.get(2) - adjustment)));
+            val newBg = Color.getHSBColor(bgHSB.get(0), bgHSB.get(1), bgHSB.get(2));
+            backgroundNodeColor.setColor(newBg.red, newBg.green, newBg.blue);
+        }
     }
 }
