@@ -142,6 +142,11 @@ public class ViewContext extends MapPropertyHolder {
         this.businessModel = inputModel;
         if (otherContext != null) {
             this.synthesisOptionConfig.putAll(otherContext.synthesisOptionConfig);
+            // Color preferences are kind of synthesis option and should be copied
+            if (otherContext.hasProperty(KlighdProperties.COLOR_PREFERENCES)) {
+                this.setProperty(KlighdProperties.COLOR_PREFERENCES,
+                        otherContext.getProperty(KlighdProperties.COLOR_PREFERENCES));
+            }
         }
     }
 
