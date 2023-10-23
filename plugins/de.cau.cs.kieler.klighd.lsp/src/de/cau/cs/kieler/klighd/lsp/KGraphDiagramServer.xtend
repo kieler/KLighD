@@ -31,6 +31,7 @@ import de.cau.cs.kieler.klighd.lsp.interactive.rectpacking.RectpackingInteractiv
 import de.cau.cs.kieler.klighd.lsp.launch.AbstractLanguageServer
 import de.cau.cs.kieler.klighd.lsp.model.CheckImagesAction
 import de.cau.cs.kieler.klighd.lsp.model.CheckedImagesAction
+import de.cau.cs.kieler.klighd.lsp.model.ClientColorPreferencesAction
 import de.cau.cs.kieler.klighd.lsp.model.DisplayedActionUIData
 import de.cau.cs.kieler.klighd.lsp.model.LayoutOptionUIData
 import de.cau.cs.kieler.klighd.lsp.model.PerformActionAction
@@ -44,6 +45,7 @@ import de.cau.cs.kieler.klighd.lsp.model.StoreImagesAction
 import de.cau.cs.kieler.klighd.lsp.model.UpdateDiagramOptionsAction
 import de.cau.cs.kieler.klighd.lsp.model.ValuedSynthesisOption
 import de.cau.cs.kieler.klighd.lsp.utils.KRenderingIdGenerator
+import de.cau.cs.kieler.klighd.util.ColorPreferences
 import java.io.FileNotFoundException
 import java.io.InputStream
 import java.util.ArrayList
@@ -245,6 +247,8 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
                     handle(action as SetSynthesisAction)
                 } else if (action.getKind === CheckedImagesAction.KIND) {
                     handle(action as CheckedImagesAction)
+                } else if (action.getKind === ClientColorPreferencesAction.KIND) {
+                    handle(action as ClientColorPreferencesAction)
                 } else if (action.getKind === RefreshDiagramAction.KIND) {
                     handle(action as RefreshDiagramAction)
                 } else if (action.getKind === RefreshLayoutAction.KIND) {
@@ -383,6 +387,16 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
             if (!request.requestId.nullOrEmpty)
                 LOG.warn("Model requests are not supported by the Xtext diagram server.")
             copyOptions(request)
+            synchronized (diagramState) {
+                // In the request model action there may be some further information for the client color preferences to
+                // be applied here.
+                val foregroundColor = LSPUtil.parseColor(request.options.get("clientColorPreferenceForeground"))
+                val backgroundColor = LSPUtil.parseColor(request.options.get("clientColorPreferenceBackground"))
+                val highlightColor = LSPUtil.parseColor(request.options.get("clientColorPreferenceHighlight"))
+                if (foregroundColor !== null && backgroundColor !== null && highlightColor !== null) {
+                    diagramState.colorPreferences = new ColorPreferences(foregroundColor, backgroundColor, highlightColor)
+                }
+            }
             diagramLanguageServer.diagramUpdater.updateDiagram(this)
         } else {
             super.handle(request)
@@ -507,6 +521,22 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
             }
             setOrUpdateModel
         }
+    }
+    
+    /**
+     * Called when a {@link ClientColorPreferencesAction} is received.
+     * Tells the server that the client has new color preferences available that should be considered.
+     */
+    protected def handle(ClientColorPreferencesAction action) {
+        val foregroundColor = LSPUtil.parseColor(action.clientColorPreferences.foreground)
+        val backgroundColor = LSPUtil.parseColor(action.clientColorPreferences.background)
+        val highlightColor = LSPUtil.parseColor(action.clientColorPreferences.highlight)
+        
+        val colorPreferences = new ColorPreferences(foregroundColor, backgroundColor, highlightColor)
+        synchronized (diagramState) {
+            diagramState.colorPreferences = colorPreferences
+        }
+        updateDiagram()
     }
 
     /**

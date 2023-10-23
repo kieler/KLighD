@@ -28,6 +28,7 @@ import de.cau.cs.kieler.klighd.lsp.interactive.rectpacking.RectpackingDeletePosi
 import de.cau.cs.kieler.klighd.lsp.interactive.rectpacking.RectpackingSetPositionConstraintAction
 import de.cau.cs.kieler.klighd.lsp.interactive.rectpacking.SetAspectRatioAction
 import de.cau.cs.kieler.klighd.lsp.model.CheckedImagesAction
+import de.cau.cs.kieler.klighd.lsp.model.ClientColorPreferencesAction
 import de.cau.cs.kieler.klighd.lsp.model.PerformActionAction
 import de.cau.cs.kieler.klighd.lsp.model.RefreshDiagramAction
 import de.cau.cs.kieler.klighd.lsp.model.RefreshLayoutAction
@@ -53,6 +54,7 @@ class KGraphTypeAdapterUtil {
                 addActionKind(SetSynthesisAction.KIND, SetSynthesisAction)
                 addActionKind(RefreshDiagramAction.KIND, RefreshDiagramAction)
                 addActionKind(RefreshLayoutAction.KIND, RefreshLayoutAction)
+                addActionKind(ClientColorPreferencesAction.KIND, ClientColorPreferencesAction)
                 
                 // Interactive layered actions
                 addActionKind(SetStaticConstraintAction.KIND, SetStaticConstraintAction)

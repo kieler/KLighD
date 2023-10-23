@@ -161,6 +161,36 @@ class CheckedImagesAction implements ResponseAction {
 }
 
 /**
+ * Sent from the client to the server to notify it about new color preferences.
+ * 
+ * @author nre
+ */
+@Accessors
+@EqualsHashCode
+@ToString(skipNulls = true)
+class ClientColorPreferencesAction implements Action {
+    public static val KIND = 'changeClientColorPreferences'
+    String kind = KIND
+    
+    ClientColorPreferences clientColorPreferences
+
+    new() {}
+    new(Consumer<ClientColorPreferencesAction> initializer) {
+        initializer.accept(this)
+    }
+}
+
+/**
+ * The client color preferences for individual styling for syntheses for the ClientColorPreferencesAction
+ */
+@Accessors
+class ClientColorPreferences {
+    String foreground
+    String background
+    String highlight
+}
+
+/**
  * Sent from the client to the server to request a new diagram with the given synthesis.
  * 
  * @author nre
