@@ -27,7 +27,7 @@ import de.cau.cs.kieler.klighd.krendering.extensions.KRenderingExtensions
 import de.cau.cs.kieler.klighd.syntheses.AbstractDiagramSynthesis
 import de.cau.cs.kieler.klighd.ide.model.ErrorModel
 import de.cau.cs.kieler.klighd.ide.syntheses.action.AbstractErrorModelShowExceptionAction
-import javax.inject.Inject
+import jakarta.inject.Inject
 
 /**
  * Diagram synthesis for a {@link MessageModel}.

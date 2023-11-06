@@ -18,7 +18,7 @@ package de.cau.cs.kieler.kgraph.text;
 
 import java.util.regex.Pattern;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.eclipse.xtext.conversion.IValueConverter;
 import org.eclipse.xtext.conversion.ValueConverter;
