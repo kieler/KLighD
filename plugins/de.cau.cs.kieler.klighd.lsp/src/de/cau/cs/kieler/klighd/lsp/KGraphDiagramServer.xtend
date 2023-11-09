@@ -61,8 +61,13 @@ import org.eclipse.elk.graph.properties.IProperty
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.sprotty.Action
 import org.eclipse.sprotty.ActionMessage
+import org.eclipse.sprotty.ComputedBoundsApplicator
+import org.eclipse.sprotty.IDiagramExpansionListener
+import org.eclipse.sprotty.IDiagramOpenListener
+import org.eclipse.sprotty.IDiagramSelectionListener
 import org.eclipse.sprotty.ILayoutEngine
 import org.eclipse.sprotty.IModelUpdateListener
+import org.eclipse.sprotty.IPopupModelFactory
 import org.eclipse.sprotty.LayoutAction
 import org.eclipse.sprotty.RejectAction
 import org.eclipse.sprotty.RequestBoundsAction
@@ -637,5 +642,49 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
      */
     override SModelRoot getModel() {
         return currentRoot;
+    }
+    
+    // Repeat injection of multiple methods of the DefaultDiagramServer as the javax.inject->jakarta.inject transition
+    // broke something here.
+    // TODO: remove when not necessary anymore
+    
+    @Inject
+    override setModelUpdateListener(IModelUpdateListener listener) {
+        super.modelUpdateListener = listener;
+    }
+    
+    @Inject
+    override setLayoutEngine(ILayoutEngine engine) {
+        super.layoutEngine = engine;
+    }
+    
+    @Inject
+    override setComputedBoundsApplicator(ComputedBoundsApplicator computedBoundsApplicator) {
+        super.computedBoundsApplicator = computedBoundsApplicator;
+    }
+    
+    @Inject
+    override setPopupModelFactory(IPopupModelFactory factory) {
+        super.popupModelFactory = factory;
+    }
+    
+    @Inject
+    override setSelectionListener(IDiagramSelectionListener listener) {
+        super.selectionListener = listener;
+    }
+    
+    @Inject
+    override setExpansionListener(IDiagramExpansionListener diagramExpansionListener) {
+        super.expansionListener = diagramExpansionListener;
+    }
+    
+    @Inject
+    override setOpenListener(IDiagramOpenListener diagramOpenListener) {
+        super.openListener = diagramOpenListener;
+    }
+    
+    @Inject 
+    override setSModelCloner(SModelCloner smodelCloner) {
+        super.SModelCloner = smodelCloner;
     }
 }

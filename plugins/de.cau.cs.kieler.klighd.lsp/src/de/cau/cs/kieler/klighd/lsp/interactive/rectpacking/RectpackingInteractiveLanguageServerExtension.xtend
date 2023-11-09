@@ -28,7 +28,7 @@ import java.io.ByteArrayOutputStream
 import java.util.Arrays
 import java.util.List
 import java.util.Map
-import javax.inject.Singleton
+import jakarta.inject.Singleton
 import org.eclipse.elk.alg.rectpacking.options.RectPackingOptions
 import org.eclipse.elk.core.options.CoreOptions
 import org.eclipse.elk.graph.ElkNode
