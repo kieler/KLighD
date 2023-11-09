@@ -11,7 +11,7 @@ Require-Bundle: de.cau.cs.kieler.klighd;visibility:=reexport,
  org.eclipse.elk.alg.layered,
  org.eclipse.elk.core
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-Vendor: Kiel University
 Export-Package: de.cau.cs.kieler.klighd.ide,
  de.cau.cs.kieler.klighd.ide.model,
