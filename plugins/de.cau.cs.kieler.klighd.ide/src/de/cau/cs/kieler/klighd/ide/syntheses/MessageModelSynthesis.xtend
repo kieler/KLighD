@@ -22,7 +22,7 @@ import de.cau.cs.kieler.klighd.krendering.extensions.KContainerRenderingExtensio
 import de.cau.cs.kieler.klighd.krendering.extensions.KNodeExtensions
 import de.cau.cs.kieler.klighd.krendering.extensions.KRenderingExtensions
 import de.cau.cs.kieler.klighd.syntheses.AbstractDiagramSynthesis
-import javax.inject.Inject
+import jakarta.inject.Inject
 
 import static extension de.cau.cs.kieler.klighd.syntheses.DiagramSyntheses.*
 

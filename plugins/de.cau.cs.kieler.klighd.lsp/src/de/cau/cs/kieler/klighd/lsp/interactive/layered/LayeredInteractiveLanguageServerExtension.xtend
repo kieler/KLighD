@@ -29,7 +29,7 @@ import java.io.ByteArrayOutputStream
 import java.util.HashMap
 import java.util.List
 import java.util.Map
-import javax.inject.Singleton
+import jakarta.inject.Singleton
 import org.eclipse.elk.alg.layered.options.LayeredOptions
 import org.eclipse.elk.graph.ElkNode
 import org.eclipse.elk.graph.properties.IProperty

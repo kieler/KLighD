@@ -4,7 +4,7 @@ Bundle-Name: KlighD incremental update extension
 Bundle-SymbolicName: de.cau.cs.kieler.klighd.incremental;singleton:=true
 Bundle-Version: 2.3.1.qualifier
 Bundle-Vendor: Kiel University
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Require-Bundle: de.cau.cs.kieler.klighd,
  de.cau.cs.kieler.klighd.kgraph,
  com.google.guava

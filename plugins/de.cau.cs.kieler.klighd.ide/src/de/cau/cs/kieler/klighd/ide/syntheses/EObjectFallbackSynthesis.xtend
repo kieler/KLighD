@@ -39,7 +39,7 @@ import de.cau.cs.kieler.klighd.ide.syntheses.action.EcoreModelExpandDetailsActio
 import de.cau.cs.kieler.klighd.util.KlighdProperties
 import java.util.List
 import java.util.Map
-import javax.inject.Inject
+import jakarta.inject.Inject
 import org.eclipse.elk.alg.layered.options.EdgeStraighteningStrategy
 import org.eclipse.elk.alg.layered.options.FixedAlignment
 import org.eclipse.elk.alg.layered.options.LayeredOptions

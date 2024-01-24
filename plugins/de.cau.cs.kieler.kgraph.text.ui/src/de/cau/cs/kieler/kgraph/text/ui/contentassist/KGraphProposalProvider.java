@@ -20,7 +20,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.eclipse.elk.core.data.LayoutAlgorithmData;
 import org.eclipse.elk.core.data.LayoutMetaDataService;

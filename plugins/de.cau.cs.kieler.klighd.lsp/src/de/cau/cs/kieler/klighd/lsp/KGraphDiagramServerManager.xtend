@@ -18,8 +18,8 @@ package de.cau.cs.kieler.klighd.lsp
 
 import java.util.ArrayList
 import java.util.List
-import javax.inject.Inject
-import javax.inject.Provider
+import jakarta.inject.Inject
+import jakarta.inject.Provider
 import org.eclipse.sprotty.xtext.IDiagramServerFactory
 import org.eclipse.sprotty.xtext.ls.DiagramServerManager
 
