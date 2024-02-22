@@ -89,7 +89,7 @@ class KlighdProjectContributor implements IProjectFactoryContributor {
         '''
             package «projectInfo.transformationPackage»
             
-            import jakarta.inject.Inject
+            import com.google.inject.Inject
             
             import de.cau.cs.kieler.klighd.kgraph.KNode
             import de.cau.cs.kieler.klighd.krendering.KRenderingFactory

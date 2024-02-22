@@ -18,8 +18,6 @@ package de.cau.cs.kieler.kgraph.text;
 
 import java.util.regex.Pattern;
 
-import jakarta.inject.Inject;
-
 import org.eclipse.xtext.conversion.IValueConverter;
 import org.eclipse.xtext.conversion.ValueConverter;
 import org.eclipse.xtext.conversion.ValueConverterException;
@@ -31,6 +29,8 @@ import org.eclipse.xtext.conversion.impl.INTValueConverter;
 import org.eclipse.xtext.conversion.impl.STRINGValueConverter;
 import org.eclipse.xtext.nodemodel.INode;
 import org.eclipse.xtext.util.Strings;
+
+import com.google.inject.Inject;
 
 
 /**

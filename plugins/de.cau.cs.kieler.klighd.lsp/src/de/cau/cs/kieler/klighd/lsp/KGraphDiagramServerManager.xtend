@@ -16,10 +16,10 @@
  */
 package de.cau.cs.kieler.klighd.lsp
 
+import com.google.inject.Inject
+import com.google.inject.Provider
 import java.util.ArrayList
 import java.util.List
-import jakarta.inject.Inject
-import jakarta.inject.Provider
 import org.eclipse.sprotty.xtext.IDiagramServerFactory
 import org.eclipse.sprotty.xtext.ls.DiagramServerManager
 

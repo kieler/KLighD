@@ -16,13 +16,13 @@
  */
 package de.cau.cs.kieler.klighd.ide.syntheses
 
+import com.google.inject.Inject
 import de.cau.cs.kieler.klighd.ide.model.MessageModel
 import de.cau.cs.kieler.klighd.kgraph.KNode
 import de.cau.cs.kieler.klighd.krendering.extensions.KContainerRenderingExtensions
 import de.cau.cs.kieler.klighd.krendering.extensions.KNodeExtensions
 import de.cau.cs.kieler.klighd.krendering.extensions.KRenderingExtensions
 import de.cau.cs.kieler.klighd.syntheses.AbstractDiagramSynthesis
-import jakarta.inject.Inject
 
 import static extension de.cau.cs.kieler.klighd.syntheses.DiagramSyntheses.*
 

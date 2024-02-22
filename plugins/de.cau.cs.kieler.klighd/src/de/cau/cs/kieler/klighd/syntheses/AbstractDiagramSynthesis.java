@@ -58,7 +58,7 @@ import de.cau.cs.kieler.klighd.krendering.KText;
  * e.g. for accessing the transformation context, this can be realized by means of Guice, too. The
  * helper transformation implementation must declare an injected field of type
  * AbstractDiagramSynthesis&lt;?&gt;, the actual {@link AbstractDiagramSynthesis} implementation
- * must be annotated with {@link javax.inject.Singleton &#64;Singleton} on class level. This way the
+ * must be annotated with {@link com.google.inject.Singleton &#64;Singleton} on class level. This way the
  * helper classes are provided with the current instance of the main transformation. <br>
  * <br>
  * Furthermore, diagram syntheses may leverage other ones, e.g. for realizing composed views. This
@@ -68,7 +68,7 @@ import de.cau.cs.kieler.klighd.krendering.KText;
  * {@link com.google.inject.Provider Provider&lt;yourTransformationClass&gt;} can be declared. Each
  * time calling {@link com.google.inject.Provider#get() get()} on this provider a new instance will
  * be obtained as long as the provided class is <b>not</b> declared as singleton (via
- * {@link javax.inject.Singleton &#64;Singleton}). The
+ * {@link com.google.inject.Singleton &#64;Singleton}). The
  * {@link de.cau.cs.kieler.klighd.krendering.ViewSynthesisShared ViewSynthesisShared}
  * annotation helps if the described feature of employing helper classes is required.
  *

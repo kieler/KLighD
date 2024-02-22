@@ -17,6 +17,7 @@
 package de.cau.cs.kieler.klighd.lsp.interactive.layered
 
 import com.google.inject.Inject
+import com.google.inject.Singleton
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties
 import de.cau.cs.kieler.klighd.kgraph.KNode
 import de.cau.cs.kieler.klighd.lsp.KGraphDiagramState
@@ -29,7 +30,6 @@ import java.io.ByteArrayOutputStream
 import java.util.HashMap
 import java.util.List
 import java.util.Map
-import jakarta.inject.Singleton
 import org.eclipse.elk.alg.layered.options.LayeredOptions
 import org.eclipse.elk.graph.ElkNode
 import org.eclipse.elk.graph.properties.IProperty
