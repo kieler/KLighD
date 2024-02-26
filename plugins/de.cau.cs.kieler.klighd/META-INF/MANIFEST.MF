@@ -4,7 +4,7 @@ Bundle-Name: KIELER Lightweight Diagrams (KLighD)
 Bundle-SymbolicName: de.cau.cs.kieler.klighd;singleton:=true
 Bundle-Version: 2.3.1.qualifier
 Bundle-Vendor: Kiel University
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Require-Bundle: de.cau.cs.kieler.klighd.kgraph,
  de.cau.cs.kieler.klighd.krendering;visibility:=reexport,
  org.eclipse.core.runtime;bundle-version="3.6.0";visibility:=reexport,
@@ -16,7 +16,7 @@ Require-Bundle: de.cau.cs.kieler.klighd.kgraph,
  org.eclipse.ui.workbench;bundle-version="3.103.0";visibility:=reexport,
  com.google.guava;bundle-version="10.0.0";visibility:=reexport,
  com.google.inject;bundle-version="3.0.0",
- javax.inject;bundle-version="1.0.0";visibility:=reexport
+ jakarta.inject.jakarta.inject-api;bundle-version="2.0.1";visibility:=reexport
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: de.cau.cs.kieler.klighd.KlighdPlugin
 Export-Package: de.cau.cs.kieler.klighd,
