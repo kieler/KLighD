@@ -17,6 +17,7 @@
 package de.cau.cs.kieler.klighd.lsp.interactive.rectpacking
 
 import com.google.inject.Inject
+import com.google.inject.Singleton
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties
 import de.cau.cs.kieler.klighd.kgraph.KNode
 import de.cau.cs.kieler.klighd.lsp.KGraphDiagramState
@@ -28,7 +29,6 @@ import java.io.ByteArrayOutputStream
 import java.util.Arrays
 import java.util.List
 import java.util.Map
-import javax.inject.Singleton
 import org.eclipse.elk.alg.rectpacking.options.RectPackingOptions
 import org.eclipse.elk.core.options.CoreOptions
 import org.eclipse.elk.graph.ElkNode
@@ -165,7 +165,7 @@ class RectpackingInteractiveLanguageServerExtension implements ILanguageServerEx
         resource.save(outputStream, emptyMap)
         val codeBefore = outputStream.toString
         
-        val elkNode = kNode.getProperty(KlighdInternalProperties.MODEL_ELEMEMT)
+        val elkNode = kNode.getProperty(KlighdInternalProperties.MODEL_ELEMENT)
         if (elkNode instanceof ElkNode) {
             val Map<String, List<TextEdit>> changes = newHashMap
             elkNode.setProperty(RectPackingOptions.ASPECT_RATIO, constraint.aspectRatio)
@@ -199,12 +199,12 @@ class RectpackingInteractiveLanguageServerExtension implements ILanguageServerEx
         val codeBefore = outputStream.toString
         
         for (node : changedNodes) {
-            val elkNode = node.getProperty(KlighdInternalProperties.MODEL_ELEMEMT)
+            val elkNode = node.getProperty(KlighdInternalProperties.MODEL_ELEMENT)
             if (elkNode instanceof ElkNode) {
                 InteractiveUtil.copyAllConstraints(elkNode, node)
             }
         }
-        val elkNode = changedNodes.get(0).getProperty(KlighdInternalProperties.MODEL_ELEMEMT)
+        val elkNode = changedNodes.get(0).getProperty(KlighdInternalProperties.MODEL_ELEMENT)
         if (elkNode instanceof ElkNode) {
             val Map<String, List<TextEdit>> changes = newHashMap
             

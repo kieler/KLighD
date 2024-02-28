@@ -34,6 +34,12 @@
                 <id>de.cau.cs.kieler.klighd.piccolo.freehep</id>
                 <versionRange>0.0.0</versionRange>
               </requirement>
+              <requirement>
+                <!-- Include javax.annotation which is needed by JUnit4 but not included by newer JDKs anymore. -->
+     						<type>eclipse-plugin</type>
+     						<id>javax.annotation</id>
+     						<versionRange>0.0.0</versionRange>
+     					</requirement>
             </extraRequirements>
           </dependency-resolution>
         </configuration>

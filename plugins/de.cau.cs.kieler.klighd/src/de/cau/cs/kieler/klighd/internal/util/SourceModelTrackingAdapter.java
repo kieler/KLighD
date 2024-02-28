@@ -53,7 +53,7 @@ public class SourceModelTrackingAdapter extends EContentAdapter {
     private static final Predicate<Object> CANDIDATES = KlighdPredicates.instanceOf(
             KGraphElement.class, KRendering.class, IPropertyToObjectMapImpl.class);
     
-    private static final IProperty<Object> MODEL_ELEMENT = KlighdInternalProperties.MODEL_ELEMEMT;
+    private static final IProperty<Object> MODEL_ELEMENT = KlighdInternalProperties.MODEL_ELEMENT;
 
     private Object mapsMonitor = this;
     private Multimap<Object, EObject> sourceTargetsMap = ArrayListMultimap.create();

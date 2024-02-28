@@ -20,6 +20,11 @@
 
   <dependencies>
     <dependency>
+      <groupId>com.google.inject</groupId>
+      <artifactId>guice</artifactId>
+      <version>${guice-version}</version>
+    </dependency>
+    <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>de.cau.cs.kieler.klighd</artifactId>
       <version>${project.version}</version>

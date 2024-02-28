@@ -19,7 +19,7 @@ Require-Bundle: org.apache.log4j,
  org.eclipse.xtext.xbase.lib,
  org.eclipse.xtext.ui,
  org.eclipse.xtext.ui.shared
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: Kiel University
 Automatic-Module-Name: de.cau.cs.kieler.klighd.ui.wizard
