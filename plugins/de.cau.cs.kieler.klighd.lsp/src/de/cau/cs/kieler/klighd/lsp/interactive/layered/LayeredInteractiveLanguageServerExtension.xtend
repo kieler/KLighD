@@ -239,7 +239,7 @@ class LayeredInteractiveLanguageServerExtension implements ILanguageServerExtens
         for (entry : changedNodes.keySet) {
             // set Property of corresponding elkNode 
             val kNode = entry.KNode
-            val elkNode = kNode.getProperty(KlighdInternalProperties.MODEL_ELEMEMT)
+            val elkNode = kNode.getProperty(KlighdInternalProperties.MODEL_ELEMENT)
             
             if (elkNode instanceof ElkNode) {
                 val value = changedNodes.get(entry)
@@ -251,7 +251,7 @@ class LayeredInteractiveLanguageServerExtension implements ILanguageServerExtens
             }
         }
 
-        val elkNode = changedNodes.keySet().head.KNode.getProperty(KlighdInternalProperties.MODEL_ELEMEMT)
+        val elkNode = changedNodes.keySet().head.KNode.getProperty(KlighdInternalProperties.MODEL_ELEMENT)
         if (elkNode instanceof ElkNode && changed) {
             val Map<String, List<TextEdit>> changes = newHashMap
             
