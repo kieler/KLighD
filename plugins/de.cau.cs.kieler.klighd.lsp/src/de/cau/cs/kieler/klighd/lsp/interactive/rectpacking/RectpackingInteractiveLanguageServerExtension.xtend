@@ -165,7 +165,7 @@ class RectpackingInteractiveLanguageServerExtension implements ILanguageServerEx
         resource.save(outputStream, emptyMap)
         val codeBefore = outputStream.toString
         
-        val elkNode = kNode.getProperty(KlighdInternalProperties.MODEL_ELEMEMT)
+        val elkNode = kNode.getProperty(KlighdInternalProperties.MODEL_ELEMENT)
         if (elkNode instanceof ElkNode) {
             val Map<String, List<TextEdit>> changes = newHashMap
             elkNode.setProperty(RectPackingOptions.ASPECT_RATIO, constraint.aspectRatio)
@@ -199,12 +199,12 @@ class RectpackingInteractiveLanguageServerExtension implements ILanguageServerEx
         val codeBefore = outputStream.toString
         
         for (node : changedNodes) {
-            val elkNode = node.getProperty(KlighdInternalProperties.MODEL_ELEMEMT)
+            val elkNode = node.getProperty(KlighdInternalProperties.MODEL_ELEMENT)
             if (elkNode instanceof ElkNode) {
                 InteractiveUtil.copyAllConstraints(elkNode, node)
             }
         }
-        val elkNode = changedNodes.get(0).getProperty(KlighdInternalProperties.MODEL_ELEMEMT)
+        val elkNode = changedNodes.get(0).getProperty(KlighdInternalProperties.MODEL_ELEMENT)
         if (elkNode instanceof ElkNode) {
             val Map<String, List<TextEdit>> changes = newHashMap
             

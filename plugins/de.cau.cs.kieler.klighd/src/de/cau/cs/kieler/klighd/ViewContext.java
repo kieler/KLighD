@@ -654,10 +654,10 @@ public class ViewContext extends MapPropertyHolder {
      */
     public void associateSourceTargetPair(final Object source, final EObject target) {
         if (KGraphPackage.eINSTANCE.getKGraphData().isInstance(target)) {
-            ((KGraphData) target).setProperty(KlighdInternalProperties.MODEL_ELEMEMT, source);
+            ((KGraphData) target).setProperty(KlighdInternalProperties.MODEL_ELEMENT, source);
 
         } else if (KGraphPackage.eINSTANCE.getKGraphElement().isInstance(target)) {
-            ((KGraphElement) target).setProperty(KlighdInternalProperties.MODEL_ELEMEMT, source);
+            ((KGraphElement) target).setProperty(KlighdInternalProperties.MODEL_ELEMENT, source);
         }
     }
 

@@ -283,7 +283,7 @@ public class KlighdLayoutConfigurationStore implements ILayoutConfigurationStore
                 final String msg = "Concurrent modification in KGraphPropertyLayoutConfig:"
                         + Klighd.LINE_SEPARATOR + "  element == " + graphElement
                         + Klighd.LINE_SEPARATOR + "  sourceElement == "
-                        + graphElement.getProperty(KlighdInternalProperties.MODEL_ELEMEMT);
+                        + graphElement.getProperty(KlighdInternalProperties.MODEL_ELEMENT);
 
                 Klighd.log(new Status(IStatus.ERROR, Klighd.PLUGIN_ID, msg));
             }

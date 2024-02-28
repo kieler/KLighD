@@ -47,7 +47,14 @@ public final class KlighdInternalProperties {
      * KGraphData}, for {@link de.cau.cs.kieler.klighd.kgraph.KGraphElement KGraphElements} it is to
      * be attached to their layout data.
      */
-    public static final IProperty<Object> MODEL_ELEMEMT = new Property<Object>("klighd.modelElement");
+    public static final IProperty<Object> MODEL_ELEMENT = new Property<Object>("klighd.modelElement");
+    
+    /**
+     * Deprecated property with a typo, see {@link #MODEL_ELEMENT} as the replacement.
+     * 
+     * @deprecated
+     */
+    public static final IProperty<Object> MODEL_ELEMEMT = MODEL_ELEMENT;
 
     /**
      * Property indicating that the node has been populated. A node is populated, if and only if the
