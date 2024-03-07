@@ -16,6 +16,7 @@
  */
 package de.cau.cs.kieler.klighd.ide.syntheses
 
+import com.google.inject.Inject
 import de.cau.cs.kieler.klighd.ide.model.MessageModel
 import de.cau.cs.kieler.klighd.ide.syntheses.MessageModelSynthesis
 import de.cau.cs.kieler.klighd.kgraph.KNode
@@ -27,15 +28,11 @@ import de.cau.cs.kieler.klighd.krendering.extensions.KRenderingExtensions
 import de.cau.cs.kieler.klighd.syntheses.AbstractDiagramSynthesis
 import de.cau.cs.kieler.klighd.ide.model.ErrorModel
 import de.cau.cs.kieler.klighd.ide.syntheses.action.AbstractErrorModelShowExceptionAction
-import javax.inject.Inject
 
 /**
  * Diagram synthesis for a {@link MessageModel}.
  * 
  * @author als
- * @kieler.design 2014-07-30 proposed
- * @kieler.rating 2014-07-30 proposed yellow
- * 
  */
 class ErrorModelSynthesis extends AbstractDiagramSynthesis<ErrorModel> {
 

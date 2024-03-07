@@ -218,7 +218,7 @@ public class PiccoloViewerUI extends PiccoloViewer {
 
 
     /**
-     * SWT event {@link Listener} implementation that is dedicated to the creation & propagation of
+     * SWT event {@link Listener} implementation that is dedicated to the creation and propagation of
      * {@link KlighdTextSelection KlighdTextSelections} after corresponding mouse and key events
      * notified to the employed label text widget.<br>
      * <br>
@@ -339,7 +339,7 @@ public class PiccoloViewerUI extends PiccoloViewer {
     }
 
     /**
-     * Asynchronously executes {@link #updateSelection(ISelection)} in order to let the calling
+     * Asynchronously executes the super method {@code #updateSelection(IKlighdSelection)} in order to let the calling
      * method terminate quickly and do not block any display modifications.
      *
      * @param selection

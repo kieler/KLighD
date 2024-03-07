@@ -33,13 +33,19 @@ import org.eclipse.swt.events.ControlListener;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IActionBars;
+import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IViewSite;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.part.ResourceTransfer;
 import org.eclipse.ui.part.ViewPart;
 
 import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.IViewer;
+import de.cau.cs.kieler.klighd.Klighd;
 import de.cau.cs.kieler.klighd.LightDiagramLayoutConfig;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.internal.ILayoutConfigProvider;
@@ -48,6 +54,7 @@ import de.cau.cs.kieler.klighd.ui.KlighdUIPlugin;
 import de.cau.cs.kieler.klighd.ui.internal.options.DiagramSideBar;
 import de.cau.cs.kieler.klighd.ui.printing.PrintAction;
 import de.cau.cs.kieler.klighd.ui.viewers.UiContextViewer;
+import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties;
 import de.cau.cs.kieler.klighd.viewers.ContextViewer;
 
 /**
@@ -314,9 +321,20 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart,
         toolBar.add(new Action("Refresh diagram",
                 KlighdUIPlugin.getImageDescriptorFromKlighdBase("icons/full/elcl16/refresh.gif")) {
 
+            final DiagramViewPart part = DiagramViewPart.this;
+
             @Override
             public void run() {
+                if (part.getViewContext() == null) {
+                    final Object model = part.loadModel();
+                    if (model != null)
+                        part.initialize(model, DEFAULT_NAME, configureKlighdProperties());
+
+                    return;
+                }
+
                 new LightDiagramLayoutConfig(DiagramViewPart.this.getViewContext())
+                    .model(part.loadModel())
                     .animate(false)
                     .performUpdate();
             }
@@ -344,6 +362,34 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart,
         };
         resetLayoutOptionsAction.setId(ACTION_ID_RESET_LAYOUT_OPTIONS);
         menu.add(resetLayoutOptionsAction);
+    }
+
+    protected Object loadModel() {
+        try {
+            final IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+            final IWorkbenchPage page = window.getActivePage() != null ? window.getActivePage() : window.getPages()[0];
+            final IEditorInput input = page == null
+                    ? null : page.getActiveEditor() != null
+                        ? page.getActiveEditor().getEditorInput() : page.getEditorReferences().length == 0
+                            ? null : page.getEditorReferences()[0].getEditorInput();
+            return input == null ? null : DiagramEditorPart.loadModel(input);
+
+        } catch (PartInitException e) {
+            Klighd.handle(e, KlighdUIPlugin.PLUGIN_ID);
+            return null;
+        }
+    }
+
+    /**
+     * Returns a configuration for the KLighD view. Override this method to use a custom
+     * configuration.
+     *
+     * @return KLighD configuration or <code>null</code>.
+     * 
+     * @see KlighdSynthesisProperties
+     */
+    protected KlighdSynthesisProperties configureKlighdProperties() {
+        return null;
     }
 
     /**

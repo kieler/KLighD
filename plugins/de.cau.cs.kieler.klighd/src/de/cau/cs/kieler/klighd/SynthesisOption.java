@@ -31,9 +31,6 @@ import org.eclipse.elk.core.util.Pair;
  * synthesis option instance.
  * 
  * @author chsch
- * 
- * @kieler.design proposed by chsch
- * @kieler.rating proposed yellow by chsch
  */
 public final class SynthesisOption {
     
@@ -325,8 +322,8 @@ public final class SynthesisOption {
      * Hint: Declare {@link SynthesisOption TransformationOptions} by means of static fields if
      * the transformation is a re-initialized one (determined in the registration).<br>
      * <br>
-     * <b>Note:</b> Use <<OPTION_NAME>>.<code>optionFloatValue</code> while testing the option value
-     * if at least one of the parameters is a floating point value, and <<OPTION_NAME>>.
+     * <b>Note:</b> Use &lt;&lt;OPTION_NAME&gt;&gt;.<code>optionFloatValue</code> while testing the option value
+     * if at least one of the parameters is a floating point value, and &lt;&lt;OPTION_NAME&gt;&gt;.
      * <code>optionIntValue</code> otherwise (in Xtend).
      * 
      * @param <T>
@@ -353,8 +350,8 @@ public final class SynthesisOption {
      * Hint: Declare {@link SynthesisOption TransformationOptions} by means of static fields if
      * the transformation is a re-initialized one (determined in the registration).<br>
      * <br>
-     * <b>Note:</b> Use <<OPTION_NAME>>.<code>optionFloatValue</code> while testing the option value
-     * if at least one of the parameters is a floating point value, and <<OPTION_NAME>>.
+     * <b>Note:</b> Use &lt;&lt;OPTION_NAME&gt;&gt;.<code>optionFloatValue</code> while testing the option value
+     * if at least one of the parameters is a floating point value, and &lt;&lt;OPTION_NAME&gt;&gt;.
      * <code>optionIntValue</code> otherwise (in Xtend).
      * 
      * @param <T> concrete type of the range's end value
@@ -386,8 +383,8 @@ public final class SynthesisOption {
      * Hint: Declare {@link SynthesisOption TransformationOptions} by means of static fields if
      * the transformation is a re-initialized one (determined in the registration).<br>
      * <br>
-     * <b>Note:</b> Use <<OPTION_NAME>>.<code>optionFloatValue</code> while testing the option value
-     * if at least one of the parameters is a floating point value, and <<OPTION_NAME>>.
+     * <b>Note:</b> Use &lt;&lt;OPTION_NAME&gt;&gt;.<code>optionFloatValue</code> while testing the option value
+     * if at least one of the parameters is a floating point value, and &lt;&lt;OPTION_NAME&gt;&gt;.
      * <code>optionIntValue</code> otherwise (in Xtend).
      * 
      * @param <T> concrete type of the range's end value
@@ -420,8 +417,8 @@ public final class SynthesisOption {
      * Hint: Declare {@link SynthesisOption TransformationOptions} by means of static fields if
      * the transformation is a re-initialized one (determined in the registration).<br>
      * <br>
-     * <b>Note:</b> Use <<OPTION_NAME>>.<code>optionFloatValue</code> while testing the option value
-     * if at least one of the parameters is a floating point value, and <<OPTION_NAME>>.
+     * <b>Note:</b> Use &lt;&lt;OPTION_NAME&gt;&gt;.<code>optionFloatValue</code> while testing the option value
+     * if at least one of the parameters is a floating point value, and &lt;&lt;OPTION_NAME&gt;&gt;.
      * <code>optionIntValue</code> otherwise (in Xtend).
      * 
      * 
@@ -452,8 +449,8 @@ public final class SynthesisOption {
      * Hint: Declare {@link SynthesisOption TransformationOptions} by means of static fields if
      * the transformation is a re-initialized one (determined in the registration).<br>
      * <br>
-     * <b>Note:</b> Use <<OPTION_NAME>>.<code>optionFloatValue</code> while testing the option value
-     * if at least one of the parameters is a floating point value, and <<OPTION_NAME>>.
+     * <b>Note:</b> Use &lt;&lt;OPTION_NAME&gt;&gt;.<code>optionFloatValue</code> while testing the option value
+     * if at least one of the parameters is a floating point value, and &lt;&lt;OPTION_NAME&gt;&gt;.
      * <code>optionIntValue</code> otherwise (in Xtend).
      * 
      * 
@@ -488,8 +485,8 @@ public final class SynthesisOption {
      * Hint: Declare {@link SynthesisOption TransformationOptions} by means of static fields if
      * the transformation is a re-initialized one (determined in the registration).<br>
      * <br>
-     * <b>Note:</b> Use <<OPTION_NAME>>.<code>optionFloatValue</code> while testing the option value
-     * if at least one of the parameters is a floating point value, and <<OPTION_NAME>>.
+     * <b>Note:</b> Use &lt;&lt;OPTION_NAME&gt;&gt;.<code>optionFloatValue</code> while testing the option value
+     * if at least one of the parameters is a floating point value, and &lt;&lt;OPTION_NAME&gt;&gt;.
      * <code>optionIntValue</code> otherwise (in Xtend).
      * 
      * 

@@ -79,7 +79,7 @@ public class Draw2DConnectionNode extends KCustomConnectionFigureNode {
             public void setPoints(final PointList pts) {
                 @SuppressWarnings("unchecked")
                 final
-                List<IFigure> children = this.getChildren();
+                List<IFigure> children = (List<IFigure>) this.getChildren();
                 for (final Connection child : Iterables.filter(children, Connection.class)) {
                     child.setPoints(pts);
                 }

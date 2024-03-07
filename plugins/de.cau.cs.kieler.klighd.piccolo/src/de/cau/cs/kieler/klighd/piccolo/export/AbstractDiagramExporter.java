@@ -42,7 +42,7 @@ import edu.umd.cs.piccolo.util.PBounds;
 /**
  * Abstract diagram exporter providing the common methods
  * {@link #getExportedBounds(KlighdMainCamera, boolean)} and
- * {@link #drawDiagram(KlighdMainCamera, boolean, KlighdSWTGraphics, PBounds)} to be re-used in
+ * {@link #drawDiagram(DiagramExportConfig, KlighdSWTGraphicsEx, KlighdMainCamera, AffineTransform, AffineTransform, Rectangle)} to be re-used in
  * concrete implementation of {@link de.cau.cs.kieler.klighd.IDiagramExporter IDiagramExporter} and
  * {@link de.cau.cs.kieler.klighd.IOffscreenRenderer IOffscreenRenderer}, in order to achieve
  * consistent behavior amongst all those implementations.
@@ -205,8 +205,8 @@ public abstract class AbstractDiagramExporter {
     /**
      * Provides a {@link Rectangle} describing the basic clip of diagram tiles based on the actual
      * bounds of the employed {@link org.eclipse.swt.graphics.Drawable Drawable} (
-     * {@link org.eclipse.swt.graphics.Image Image} or {@link org.eclipse.swt.graphics.Printer
-     * Printer} and the cumulated required tile {@link Trim} being scaled to the size of the
+     * e.g. {@link org.eclipse.swt.graphics.Image Image}
+     * and the cumulated required tile {@link Trim} being scaled to the size of the
      * employed drawable.
      *
      * @param drawablesBounds

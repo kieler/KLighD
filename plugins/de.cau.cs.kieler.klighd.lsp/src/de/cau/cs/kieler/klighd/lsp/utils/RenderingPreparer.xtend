@@ -3,7 +3,7 @@
  *
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright 2018-2022 by
+ * Copyright 2018-2023 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -31,6 +31,7 @@ import de.cau.cs.kieler.klighd.krendering.KAreaPlacementData
 import de.cau.cs.kieler.klighd.krendering.KContainerRendering
 import de.cau.cs.kieler.klighd.krendering.KDecoratorPlacementData
 import de.cau.cs.kieler.klighd.krendering.KGridPlacement
+import de.cau.cs.kieler.klighd.krendering.KImage
 import de.cau.cs.kieler.klighd.krendering.KPlacement
 import de.cau.cs.kieler.klighd.krendering.KPointPlacementData
 import de.cau.cs.kieler.klighd.krendering.KPolygon
@@ -44,11 +45,13 @@ import de.cau.cs.kieler.klighd.microlayout.DecoratorPlacementUtil
 import de.cau.cs.kieler.klighd.microlayout.DecoratorPlacementUtil.Decoration
 import de.cau.cs.kieler.klighd.microlayout.GridPlacementUtil
 import de.cau.cs.kieler.klighd.microlayout.PlacementUtil
+import de.cau.cs.kieler.klighd.util.KlighdProperties
 import java.awt.geom.Point2D
 import java.util.ArrayList
 import java.util.HashMap
 import java.util.List
 import java.util.Map
+import org.eclipse.sprotty.SModelElement
 
 import static com.google.common.collect.Iterables.filter
 
@@ -69,22 +72,25 @@ final class RenderingPreparer {
      * See {@link #setBounds} and {@link #setDecoration}.
      * In case of a {@link KRenderingRef} the bounds and decoration are persisted for every referenced rendering as a map
      * inside the properties of the reference.
-     * For example: <id of the rendering in the library: bounds in this instance>
+     * For example: &lt;id of the rendering in the library: bounds in this instance&gt;
      * Furthermore, for every rendering a unique ID is generated.
      * Finally, modifiable styles defined by the synthesis are processed for the rendering.
      * 
      * @param element The parent element containing the graph to calculate all rendering bounds for.
+     * @param kGraphToSGraph A map for identifying the SGraph element for each KGraph element in this graph.
      */
-    static def void prepareRendering(KGraphElement element) {
+    static def void prepareRendering(KGraphElement element, Map<KGraphElement, SModelElement> kGraphToSGraph) {
         // calculate the sizes of all renderings:
-        for (data : element.data) {
+        for (var int i = 0; i < element.data.size; i++) {
+            val data = element.data.get(i)
             switch(data) {
                 KRenderingLibrary: {
                     // The library needs to generate ids for all later KRenderingRefs to refer to, but no own bounds,
                     // since these are generic renderings.
-                    for (rendering : data.renderings) {
+                    for (var int j = 0; j < data.renderings.size; j++) {
+                        val rendering = data.renderings.get(j)
                         if (rendering instanceof KRendering) {
-                            KRenderingIdGenerator.generateIdsRecursive(rendering)
+                            KRenderingIdGenerator.generateIdsRecursive(rendering, "$$lib$$", j)
                         }
                     }
                 }
@@ -99,12 +105,11 @@ final class RenderingPreparer {
                     // and the decorationMap
                     data.properties.put(CALCULATED_DECORATION_MAP, decorationMap)
                     // remember the id of the rendering in the reference
-                    data.renderingId = data.rendering.renderingId
-                    
+                    data.renderingId = kGraphToSGraph.get(element)?.id + data.rendering.renderingId
                 }
                 KRendering: {
                     // every rendering needs an ID, generate it here
-                    KRenderingIdGenerator.generateIdsRecursive(data)
+                    KRenderingIdGenerator.generateIdsRecursive(data, kGraphToSGraph.get(element)?.id + "$$", i)
                     handleKRendering(element, data, null, null)
                 }
             }
@@ -115,18 +120,55 @@ final class RenderingPreparer {
         
         if (element instanceof KLabeledGraphElement) {
             for (label : element.labels) {
-                prepareRendering(label)
+                prepareRendering(label, kGraphToSGraph)
             }
         }
         if (element instanceof KNode) {
             for (node : element.children) {
-                prepareRendering(node)
+                prepareRendering(node, kGraphToSGraph)
             }
             for (edge : element.outgoingEdges) {
-                prepareRendering(edge)
+                prepareRendering(edge, kGraphToSGraph)
             }
             for (port : element.ports) {
-                prepareRendering(port)
+                prepareRendering(port, kGraphToSGraph)
+            }
+        }
+        
+        // Also calculate the sizes of all proxy-renderings
+        val proxyRendering = element.getProperty(KlighdProperties.PROXY_VIEW_PROXY_RENDERING)
+        if (element.getProperty(KlighdProperties.PROXY_VIEW_RENDER_NODE_AS_PROXY) && proxyRendering !== null) {
+        for (var int i = 0; i < proxyRendering.size; i++) {
+            val data = proxyRendering.get(i)
+                switch(data) {
+                    KRenderingRef: {
+                        // all references to KRenderings need to place a map with the ids of the renderings and their 
+                        // sizes and their decoration in this case in the properties of the reference.
+                        var boundsMap = new HashMap<String, Bounds>
+                        var decorationMap = new HashMap<String, Decoration>
+                        handleKRendering(element, data.rendering, boundsMap, decorationMap)
+                        // add new Property to contain the boundsMap
+                        data.properties.put(CALCULATED_BOUNDS_MAP, boundsMap)
+                        // and the decorationMap
+                        data.properties.put(CALCULATED_DECORATION_MAP, decorationMap)
+                        // remember the id of the rendering in the reference
+                    data.renderingId = kGraphToSGraph.get(element)?.id + data.rendering.renderingId
+                        
+                    }
+                    KRendering: {
+                        // every rendering needs an ID, generate it here
+                        KRenderingIdGenerator.generateIdsRecursive(data, kGraphToSGraph.get(element)?.id + "$$", i)
+                        if (data.eContainer instanceof KNode) {
+                            // Calculate the size and layout of the proxy first.
+                            val parent = data.eContainer as KNode
+                            val minSize = parent.getProperty(KlighdProperties.MINIMAL_NODE_SIZE)
+                            val bounds = PlacementUtil.basicEstimateSize(data, new Bounds(minSize.x, minSize.y))
+                            parent.width = bounds.width
+                            parent.height = bounds.height
+                            handleKRendering(parent, data, null, null)
+                        }
+                    }
+                }
             }
         }
     }
@@ -164,12 +206,20 @@ final class RenderingPreparer {
                     decorationMap, element)
             }
         }
+        
+        // Calculate the bounds for the clip shape.
+        if (rendering instanceof KImage) {
+            if (rendering.clipShape !== null) {
+                handleAreaAndPointAndDecoratorPlacementRendering(rendering.clipShape, bounds, boundsMap, decorationMap,
+                    element)
+            }
+        }
     }
     
     /**
      * Calculate the size and position of all child renderings recursively. The boundsMap and decorationMap again indicate
      * if is should be stored in them (not null) or in the rendering's properties themselves.
-     * Inspired by {@link de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController}.
+     * Inspired by {@code de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController}.
      * 
      * @param renderings The child renderings to calculate the sizes and decorations for.
      * @param placement The defined placement of the child renderings.
@@ -280,11 +330,11 @@ final class RenderingPreparer {
                 bounds = PlacementUtil.evaluatePointPlacement(rendering, placementData, parentBounds)
             }
             KDecoratorPlacementData: {
+                PlacementUtil.basicEstimateSize(rendering, Bounds.of(0, 0))
                 // Decorator placements can only be evaluated if the path they should decorate is known.
                 // to call KLighD's DecoratorPlacementUtil#evaluateDecoratorPlacement the points of the path of the
                 // parent rendering have to be stored.
                 var Point2D[] path = #[]
-//                var path = new KlighdPath(rendering) // TODO: Can I also only use the points of the rendering?
                 val parentRendering = rendering.eContainer
                 
                 // Get inset from parent region
@@ -315,16 +365,16 @@ final class RenderingPreparer {
                 } else if (parentRendering instanceof KPolyline) {
                     // For a KPolyline as the parent rendering the points have to be extracted from the parent edge,
                     // if it is one or the point list of the polyline (preference to the parent's edge points).
-                    var List<KPoint> pointList = new ArrayList()
+                    var List<Point2D.Float> pointList = new ArrayList()
                     if (parent instanceof KEdge) {
                         val edge = parent as KEdge
                         
-                        pointList.add(edge.sourcePoint)
-                        pointList.addAll(edge.bendPoints)
-                        pointList.add(edge.targetPoint)
+                        pointList.add(new Point2D.Float(edge.sourcePoint.x, edge.sourcePoint.y))
+                        pointList.addAll(edge.bendPoints.map[ new Point2D.Float(it.x, it.y) ])
+                        pointList.add(new Point2D.Float(edge.targetPoint.x, edge.targetPoint.y))
                     } else if (!parentRendering.points.empty) {
                         pointList.addAll(parentRendering.points.map[position | 
-                            PlacementUtil.evaluateKPosition(position, parentBounds, true)])
+                            PlacementUtil.evaluateKPosition(position, parentBounds, true).toPoint2D])
                     } else {
                         throw new IllegalArgumentException("The parent element of the KPolyline is not a KEdge or " +
                             "the pointList of the KPolyline rendering is empty")
@@ -456,7 +506,7 @@ final class RenderingPreparer {
     static val StyleModificationContext singletonModContext = new StyleModificationContext();
     
     /**
-     * @see de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController#processModifiableStyles
+     * See {@code de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController#processModifiableStyles}
      */
     private static def void processModifiableStyles(KRendering rendering, KGraphElement parent) {
         val styles = if (rendering instanceof KRenderingRef)

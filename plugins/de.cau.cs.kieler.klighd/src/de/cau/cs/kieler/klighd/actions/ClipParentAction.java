@@ -25,9 +25,6 @@ import de.cau.cs.kieler.klighd.kgraph.KNode;
  * that parent exists.
  * 
  * @author chsch
- * 
- * @kieler.design proposed by chsch
- * @kieler.rating proposed yellow by chsch
  */
 public class ClipParentAction implements IAction {
 

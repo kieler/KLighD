@@ -119,10 +119,10 @@ public class PiccoloOutlinePage implements IDiagramOutlinePage {
     private Timer outlineRectTimer;
 
     /**
-     * Configuration hook for customizing the viewport outline (rounded) rectangle's corner width &
+     * Configuration hook for customizing the viewport outline (rounded) rectangle's corner width and
      * height.
      * 
-     * @return the desired value taken as corner width & corner height
+     * @return the desired value taken as corner width and corner height
      */
     protected int getViewportOutlineRectCornerWidth() {
         return VIEWPORT_OUTLINE_CORNER_WIDTH;
@@ -131,7 +131,7 @@ public class PiccoloOutlinePage implements IDiagramOutlinePage {
     /**
      * Configuration hook for customizing the viewport outline rectangle's line width.
      *
-     * @return the desired line width as <code>float<code>
+     * @return the desired line width as <code>float</code>
      */
     protected float getViewportOutlineRectLineWidth() {
         return VIEWPORT_OUTLINE_LINEWIDTH;

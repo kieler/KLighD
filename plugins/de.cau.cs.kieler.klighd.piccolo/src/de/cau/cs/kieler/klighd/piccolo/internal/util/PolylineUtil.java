@@ -389,8 +389,7 @@ public final class PolylineUtil {
      * Determination of beginning, end, and control points of a polyline bend point to be rendered
      * with rounded bends. This method does not care on flaws resulting from bend points having a
      * distance smaller than twice the given bend radius. That situation will be (partly) handled by
-     * {@link #getShortDistanceApproximationPoints(double, double, double, double, double, double,
-     * double, double)}.
+     * {@link #getShortDistanceApproximationPoints(Point2D, Point2D, Point2D, Point2D)}.
      * 
      * The beginning and end points are moved from the original bend point towards the respective
      * neighbors by the amount of 'bendRadius' along the line, the control points by the amount of
@@ -499,8 +498,7 @@ public final class PolylineUtil {
      *            the y coordinate of the original bend point
      * @param cPoints
      *            the points and control points of the bend points to be approximated, as provided
-     *            by {@link #getRoundedBendControlPoints(double, double, double, double, double,
-     *            double, double)}
+     *            by {@link #getRoundedBendControlPoints(Point2D, Point2D, Point2D, double)}
      */
     public static void visualizeRoundedBendControlPoints(final KlighdPath path,
             final double px, final double py, final double[] cPoints) {
@@ -635,8 +633,7 @@ public final class PolylineUtil {
      *            the path to put the points on
      * @param cPoints
      *            the points and control points of the bend points to be approximated, as provided
-     *            by {@link #getShortDistanceRoundedBendControlPoints(double, double, double, double,
-     *            double, double, double, double)}
+     *            by {@link #getShortDistanceApproximationPoints(Point2D, Point2D, Point2D, Point2D)}
      */
     public static void visualizeShortDistanceApproximationPoints(final KlighdPath path,
             final double[] cPoints) {

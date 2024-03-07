@@ -67,12 +67,12 @@ public class KGraphRuntimeModule extends AbstractKGraphRuntimeModule {
     /**
      * Registers a customized {@link ITransientValueService}. Although the serialization is
      * configured in the
-     * {@link de.cau.cs.kieler.kgraph.text.serializer.CustomKGraphSemanticSequencer
+     * {@link de.cau.cs.kieler.kgraph.text.serializer.KGraphSemanticSequencer
      * KGraphSemanticSequencer} the transient value service is obviously involved while serializing
      * portions of models after apply semantic modification (quick fixes). This feature is used in
      * combination with my test case trainer, see
      * {@link de.cau.cs.kieler.kgraph.text.validation.KGraphJavaValidator KGraphJavaValidator}
-     * & quick fix provider.
+     * and quick fix provider.
      * 
      * @author chsch
      * 

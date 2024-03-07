@@ -28,16 +28,10 @@ import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
 
 /**
  * Modifies the size of labels by truncating them once the truncation condition is met. The
- * truncation condition can bei either reaching the end of the first line of text, reaching the end
+ * truncation condition can be either reaching the end of the first line of text, reaching the end
  * of a given number of words, or reaching the target width (default). The label manager can be
  * configured as to whether it should append an ellipsis to the truncated text to indicate
  * truncation (by default it does).
- * 
- * <p>
- * It does not make sense to put this label manager into {@link TruncationMode#ALWAYS_ON} if it is set to
- * truncate after reaching the target width. If a label does not exceed a target width, there's no
- * sense in truncating anything.
- * </p>
  * 
  * @author ybl
  * @author cds

@@ -108,11 +108,11 @@ public class ViewContextSourceModelTrackingTest {
     public void test00() {
         final Object elementB = new Object();
         final KNode nodeB = KGraphUtil.createInitializedNode();        
-        nodeB.setProperty(KlighdInternalProperties.MODEL_ELEMEMT, elementB);
+        nodeB.setProperty(KlighdInternalProperties.MODEL_ELEMENT, elementB);
         
         final Object elementA = new Object();
         final KNode nodeA = KGraphUtil.createInitializedNode();
-        nodeA.setProperty(KlighdInternalProperties.MODEL_ELEMEMT, elementA);
+        nodeA.setProperty(KlighdInternalProperties.MODEL_ELEMENT, elementA);
         nodeA.getChildren().add(nodeB);
 
         final KNode root = KGraphUtil.createInitializedNode();
@@ -160,7 +160,7 @@ public class ViewContextSourceModelTrackingTest {
 
         final EObject sourceModel = new EObjectImpl() { };
         final KNode newModel = KGraphUtil.createInitializedNode();
-        newModel.setProperty(KlighdInternalProperties.MODEL_ELEMEMT, sourceModel);
+        newModel.setProperty(KlighdInternalProperties.MODEL_ELEMENT, sourceModel);
         
         UPDATE_STRATEGY.update(viewModel, newModel, viewContext);
         
@@ -484,8 +484,8 @@ public class ViewContextSourceModelTrackingTest {
         final EObject rootSource = new EObjectImpl() { };
         final EObject childSource = new EObjectImpl() { };
 
-        rootNode.setProperty(KlighdInternalProperties.MODEL_ELEMEMT, rootSource);
-        childNode.setProperty(KlighdInternalProperties.MODEL_ELEMEMT, childSource);
+        rootNode.setProperty(KlighdInternalProperties.MODEL_ELEMENT, rootSource);
+        childNode.setProperty(KlighdInternalProperties.MODEL_ELEMENT, childSource);
 
         final ViewContext viewContext = createViewContext();
         INCREMENTAL_UPDATE_STRATEGY.update(viewContext.getViewModel(), rootNode, viewContext);
@@ -498,8 +498,8 @@ public class ViewContextSourceModelTrackingTest {
         final KNode newRoot = createSimpleNetwork();
         final KNode newChildNode = newRoot.getChildren().get(1);
 
-        newRoot.setProperty(KlighdInternalProperties.MODEL_ELEMEMT, rootSource);
-        newChildNode.setProperty(KlighdInternalProperties.MODEL_ELEMEMT, childSource);
+        newRoot.setProperty(KlighdInternalProperties.MODEL_ELEMENT, rootSource);
+        newChildNode.setProperty(KlighdInternalProperties.MODEL_ELEMENT, childSource);
 
         final ViewContext newViewContext = createViewContext();
         INCREMENTAL_UPDATE_STRATEGY.update(newViewContext.getViewModel(), newRoot, newViewContext);

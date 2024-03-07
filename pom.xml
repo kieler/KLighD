@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>de.cau.cs.kieler.klighd</groupId>
   <artifactId>parent</artifactId>
-  <version>2.2.1-SNAPSHOT</version>
+  <version>2.3.1-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <modules>
@@ -26,7 +26,7 @@
     <module>plugins/de.cau.cs.kieler.klighd.standalone</module>
     <module>test/de.cau.cs.kieler.klighd.test</module>
     <module>test/de.cau.cs.kieler.klighd.piccolo.test</module>
-    <module>plugins/de.cau.cs.kieler.klighd.piccolo.batik</module>
+    <!-- <module>plugins/de.cau.cs.kieler.klighd.piccolo.batik</module> -->
     <module>plugins/de.cau.cs.kieler.klighd.piccolo.draw2d</module>
     <module>plugins/de.cau.cs.kieler.klighd.piccolo.freehep</module>
     <module>plugins/de.cau.cs.kieler.klighd.ui</module>
@@ -39,7 +39,7 @@
     <module>plugins/de.cau.cs.kieler.kgraph.text.ui</module>
 
     <module>features/de.cau.cs.kieler.klighd.feature</module>
-    <module>features/de.cau.cs.kieler.klighd.batik.feature</module>
+    <!-- <module>features/de.cau.cs.kieler.klighd.batik.feature</module> -->
     <module>features/de.cau.cs.kieler.klighd.draw2d.feature</module>
     <module>features/de.cau.cs.kieler.klighd.freehep.feature</module>
     <module>features/de.cau.cs.kieler.klighd.ide.feature</module>
@@ -51,10 +51,26 @@
 
   <!-- Define a few properties used throughout all build profiles. -->
   <properties>
-    <tycho-version>1.7.0</tycho-version>
-    <targetJdk>1.8</targetJdk>
-    <xtext-version>2.22.0</xtext-version>
-    <elk-version>0.8.1</elk-version>
+    <elk-version>0.9.0</elk-version>
+    <gson-version>2.10.1</gson-version>
+    <guava-version>32.1.3-jre</guava-version>
+    <guice-version>7.0.0</guice-version>
+    <jface-version>3.32.0</jface-version>
+    <lsp4j-version>0.21.1</lsp4j-version>
+    <sprotty-version>0.9.0</sprotty-version>
+    <swt-mock-version>0.1.0</swt-mock-version>
+    <swt-version>3.124.200</swt-version>
+    <tycho-version>2.7.3</tycho-version>
+    <xtend-version>2.33.0</xtend-version>
+    <xtext-version>2.33.0</xtext-version>
+
+    <!-- Some Eclipse Plugin versions, aligned with the target platform's versions-->
+    <core-resources-version>3.20.0</core-resources-version>
+    <core-runtime-version>3.30.0</core-runtime-version>
+    <emf-common-version>2.29.0</emf-common-version>
+    <emf-ecore-version>2.35.0</emf-ecore-version>
+    <emf-edit-version>2.20.0</emf-edit-version>
+    <ui-workbench-version>3.131.0</ui-workbench-version>
 
     <!-- chsch: copied from https://eclipse.googlesource.com/recommenders/org.eclipse.recommenders/+/3dae4575d3370da2da25a1cbce3dfcff198f0611/features/pom.xml -->
     <!-- Non-breakable space, as normal spaces are trimmed. -->
@@ -66,12 +82,50 @@
     <project.build.resourceEncoding>UTF-8</project.build.resourceEncoding>
     <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
 
+	<!-- pin the source code compatibility to 11 for the sake of backward compatibility -->
+    <maven.compiler.source>11</maven.compiler.source>
+
+    <maven.compiler.target>11</maven.compiler.target>
+
     <!-- Enable java assertions during junit test runs. -->
     <!-- The "enableAssertions" property is only available in the maven-surefire plugin. -->
     <tycho.surefire.vmargs>-ea</tycho.surefire.vmargs>
     <!-- chsch: this property is overridden for osx in a profile below. -->
     <tycho.surefire.extra.vmargs></tycho.surefire.extra.vmargs>
   </properties>
+
+  <!-- Further required information for publishing on OSSRH -->
+  <name>KLighD</name>
+  <description>KIELER Lightweight Diagams</description>
+  <url>https://github.com/kieler/KLighD</url>
+
+  <licenses>
+    <license>
+      <name>EPL-2.0</name>
+      <url>https://www.eclipse.org/legal/epl-2.0/</url>
+    </license>
+  </licenses>
+
+  <developers>
+    <developer>
+      <name>Christian Schneider</name>
+      <email>christian.schneider@typefox.io</email>
+      <organization>TypeFox</organization>
+      <organizationUrl>https://www.typefox.io/</organizationUrl>
+    </developer>
+    <developer>
+      <name>Niklas Rentz</name>
+      <email>nre@informatik.uni-kiel.de</email>
+      <organization>Kiel University</organization>
+      <organizationUrl>https://www.rtsys.informatik.uni-kiel.de/</organizationUrl>
+    </developer>
+  </developers>
+
+  <scm>
+    <connection>scm:git:git://github.com:kieler/KLighD.git</connection>
+    <developerConnection>scm:git:ssh://github.com:kieler/KLighD.git</developerConnection>
+    <url>https://github.com/kieler/KLighD</url>
+  </scm>
 
   <profiles>
     <profile>
@@ -85,33 +139,57 @@
         <tycho.surefire.extra.vmargs>-XstartOnFirstThread</tycho.surefire.extra.vmargs>
       </properties>
     </profile>
+
+    <profile>
+      <id>release</id>
+      <build>
+        <plugins>
+          <!-- Configure the nexus server to deploy to. -->
+          <plugin>
+            <groupId>org.sonatype.plugins</groupId>
+            <artifactId>nexus-staging-maven-plugin</artifactId>
+            <version>1.6.13</version>
+            <extensions>true</extensions>
+            <configuration>
+              <serverId>ossrh</serverId>
+              <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
+              <autoReleaseAfterClose>false</autoReleaseAfterClose> <!-- this allows to manually inspect the staging repository: https://central.sonatype.org/publish/release/
+              trigger a release later with `mvn nexus-staging:release` or set to true if no inspection is wanted.-->
+            </configuration>
+          </plugin>
+
+          <!-- Sign all artifacts with GPG. -->
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-gpg-plugin</artifactId>
+            <version>3.1.0</version>
+            <executions>
+              <execution>
+                <id>sign-artifacts</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>sign</goal>
+                </goals>
+                <!-- This is the ID of the KIELER GPG key. -->
+                <configuration>
+                  <keyname>0x22228C2E</keyname>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
   </profiles>
 
-  <repositories>
-    <repository>
-      <id>klighd</id>
-      <url>http://kieler.github.io/KLighD/repo</url>
-    </repository>
-  </repositories>
-
-  <dependencies>
-    <!-- the dependency to piccolo is required by roughly half of the bundles so I put it in here
-        it's, however, only pulled if listed as a (transitive) manifest dependency. -->
-    <dependency>
-      <groupId>de.cau.cs.kieler.klighd</groupId>
-      <artifactId>edu.umd.cs.piccolo</artifactId>
-      <version>1.3.4.v20200330</version>
-    </dependency>
-  </dependencies>
-
-  <!-- This dependency management are only here to resolve the broken Maven dependencies of Eclipse artifacts. Should be removed
-  once this ticket is resolved: https://bugs.eclipse.org/bugs/show_bug.cgi?id=567244 -->
   <dependencyManagement>
     <dependencies>
+  <!-- This dependency management are only here to resolve the broken Maven dependencies of Eclipse artifacts. Should be removed
+  once this ticket is resolved: https://bugs.eclipse.org/bugs/show_bug.cgi?id=567244 -->
       <dependency>
         <groupId>org.eclipse.platform</groupId>
         <artifactId>org.eclipse.ui.workbench</artifactId>
-        <version>3.110.0</version>
+        <version>${ui-workbench-version}</version>
         <exclusions>
           <exclusion>
             <groupId>org.eclipse.platform</groupId>
@@ -130,6 +208,28 @@
         <!-- transitively pulls 'org.eclipse.jface', too,
                defining e.g. 'org.eclipse.jface.preference.IPreferenceStore' -->
       </dependency>
+      <!-- Manages versions of transitively pulled dependencies of ELK which cause problems with the local dependencies. -->
+      <dependency>
+        <groupId>org.eclipse.emf</groupId>
+        <artifactId>org.eclipse.emf.ecore</artifactId>
+        <version>${emf-ecore-version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.eclipse.platform</groupId>
+        <artifactId>org.eclipse.e4.ui.workbench.renderers.swt</artifactId>
+        <version>0.16.100</version>
+      </dependency>
+      <dependency>
+        <groupId>org.eclipse.emf</groupId>
+        <artifactId>org.eclipse.emf.ecore.change</artifactId>
+        <version>2.15.0</version>
+      </dependency>
+      <!-- And another dependency that Eclipse gets wrong and we update to a working version number-->
+      <dependency>
+        <groupId>xml-apis</groupId>
+        <artifactId>xml-apis-ext</artifactId>
+        <version>1.3.04</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
 
@@ -143,9 +243,21 @@
       <url>file://klighd</url>
     </repository>
   </distributionManagement>
+  <!-- replace above with this for locally deploying the artifacts to OSSRH -->
+  <!-- <distributionManagement>
+    <snapshotRepository>
+      <id>ossrh</id>
+      <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+    </snapshotRepository>
+    <repository>
+      <id>ossrh</id>
+      <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+    </repository>
+  </distributionManagement> -->
 
   <!-- Modify the build process to add Tycho and configure some utility plug-ins. -->
   <build>
+    <sourceDirectory>src</sourceDirectory>
     <plugins>
       <!-- we need tycho plugin to build eclipse plugins -->
       <plugin>
@@ -182,7 +294,7 @@
             <artifact>
               <groupId>de.cau.cs.kieler.klighd</groupId>
               <artifactId>de.cau.cs.kieler.klighd.targetplatform</artifactId>
-              <version>2.2.1-SNAPSHOT</version>
+              <version>2.3.1-SNAPSHOT</version>
             </artifact>
           </target>
 
@@ -202,7 +314,22 @@
               <ws>cocoa</ws>
               <arch>x86_64</arch>
             </environment>
+            <environment>
+              <os>macosx</os>
+              <ws>cocoa</ws>
+              <arch>aarch64</arch>
+            </environment>
           </environments>
+        </configuration>
+      </plugin>
+
+      <!-- skip generating poms for P2 dependencies managed by tycho. Avoids this issue: https://www.eclipse.org/forums/index.php?t=msg&th=1111563&goto=1854788&  --> 
+      <plugin>
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>tycho-packaging-plugin</artifactId>
+        <version>${tycho-version}</version>
+        <configuration>
+          <skipPomGeneration>true</skipPomGeneration>
         </configuration>
       </plugin>
 
@@ -210,7 +337,7 @@
       <plugin>
         <groupId>org.eclipse.xtend</groupId>
         <artifactId>xtend-maven-plugin</artifactId>
-        <version>${xtext-version}</version>
+        <version>${xtend-version}</version>
         <executions>
           <execution>
             <goals>
@@ -252,7 +379,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
-        <version>1.3</version>
+        <version>3.5.0</version>
         <executions>
           <execution>
             <id>add-source</id>
@@ -266,6 +393,64 @@
                 <source>xtend-gen</source>
               </sources>
             </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- Build Javadoc jars -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>3.5.0</version>
+        <configuration>
+          <source>8</source>
+          <tags>
+          <!-- Let JavaDoc know about tags from Xtext -->
+            <tag>
+              <name>generated</name>
+              <placement>a</placement>
+              <head>EMF generated code</head>
+            </tag>
+            <tag>
+              <name>model</name>
+              <placement>a</placement>
+              <head>EMF model element</head>
+            </tag>
+            <tag>
+              <name>ordered</name>
+              <placement>a</placement>
+              <head>EMF ordered element</head>
+            </tag>
+            <!-- And some official tags that the maven-javdoc-plugin does somehow not recognize yet: -->
+            <tag>
+              <name>implSpec</name>
+              <placement>a</placement>
+              <head>Implementation Specification:</head>
+            </tag>
+            <!-- Tags used for Xtend's extension methods. -->
+            <tag>
+              <name>containsExtensions</name>
+              <placement>a</placement>
+              <head>This class contains Xtend extension methods.</head>
+            </tag>
+            <tag>
+              <name>extensionCategory</name>
+              <placement>a</placement>
+              <head>Extension Category:</head>
+            </tag>
+            <tag>
+              <name>example</name>
+              <placement>a</placement>
+              <head>Code Example:</head>
+            </tag>
+          </tags>
+        </configuration>
+        <executions>
+          <execution>
+            <id>attach-javadocs</id>
+            <goals>
+              <goal>jar</goal>
+            </goals>
           </execution>
         </executions>
       </plugin>
@@ -357,6 +542,77 @@
             </dependency>
           </dependencies>
         </plugin -->
+
+        <!-- Configure Eclipse m2e to ignore certain plugin goals when integrating Maven build
+          settings into Eclipse. -->
+        <plugin>
+          <groupId>org.eclipse.m2e</groupId>
+          <artifactId>lifecycle-mapping</artifactId>
+          <version>1.0.0</version>
+          <configuration>
+            <lifecycleMappingMetadata>
+              <pluginExecutions>
+                <pluginExecution>
+                  <pluginExecutionFilter>
+                    <groupId>org.eclipse.tycho</groupId>
+                    <artifactId>tycho-compiler-plugin</artifactId>
+                    <versionRange>${tycho-version}</versionRange>
+                    <goals>
+                      <goal>compile</goal>
+                      <goal>testCompile</goal>
+                      <goal>validate-classpath</goal>
+                    </goals>
+                  </pluginExecutionFilter>
+                  <action>
+                    <ignore/>
+                  </action>
+                </pluginExecution>
+                <pluginExecution>
+                  <pluginExecutionFilter>
+                    <groupId>org.eclipse.tycho</groupId>
+                    <artifactId>tycho-packaging-plugin</artifactId>
+                    <versionRange>${tycho-version}</versionRange>
+                    <goals>
+                      <goal>build-qualifier</goal>
+                      <goal>build-qualifier-aggregator</goal>
+                      <goal>validate-id</goal>
+                      <goal>validate-version</goal>
+                    </goals>
+                  </pluginExecutionFilter>
+                  <action>
+                    <ignore/>
+                  </action>
+                </pluginExecution>
+                <pluginExecution>
+                  <pluginExecutionFilter>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-clean-plugin</artifactId>
+                    <versionRange>[3.0.0,)</versionRange>
+                    <goals>
+                      <goal>clean</goal>
+                    </goals>
+                  </pluginExecutionFilter>
+                  <action>
+                    <ignore/>
+                  </action>
+                </pluginExecution>
+                <pluginExecution>
+                  <pluginExecutionFilter>
+                    <groupId>org.eclipse.tycho</groupId>
+                    <artifactId>target-platform-configuration</artifactId>
+                    <versionRange>[2.7.3,)</versionRange>
+                    <goals>
+                      <goal>target-platform</goal>
+                    </goals>
+                  </pluginExecutionFilter>
+                  <action>
+                    <ignore></ignore>
+                  </action>
+                </pluginExecution>
+              </pluginExecutions>
+            </lifecycleMappingMetadata>
+          </configuration>
+        </plugin>
       </plugins>
     </pluginManagement>
   </build>

@@ -4,34 +4,21 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>de.cau.cs.kieler.klighd</groupId>
-    <artifactId>plugins</artifactId>
-    <version>2.2.1-SNAPSHOT</version>
+    <artifactId>parent</artifactId>
+    <version>2.3.1-SNAPSHOT</version>
+    <relativePath>../../pom.xml</relativePath>
   </parent>
 
   <groupId>de.cau.cs.kieler.klighd</groupId>
   <artifactId>de.cau.cs.kieler.klighd.ui</artifactId>
-  <version>2.2.1-SNAPSHOT</version>
+  <version>2.3.1-SNAPSHOT</version>
   <packaging>eclipse-plugin</packaging>
+
+  <name>KIELER Lightweight Diagrams UI Components</name>
+  <description>KIELER Lightweight Diagrams UI Components</description>
+  <url>https://github.com/kieler/KLighD</url>
 
   <build>
     <sourceDirectory>src</sourceDirectory>
-    <plugins>
-      <plugin>
-        <groupId>org.eclipse.tycho</groupId>
-        <artifactId>target-platform-configuration</artifactId>
-        <configuration>
-          <dependency-resolution>
-            <!-- Ignore the optional dependency to kiml.ui while computing the classpath!
-                 That dependency has been introduced because of registration of the
-                 customized handler for "de.cau.cs.kieler.kiml.ui.command.layout".
-                 Actually the dependency is not required at runtime but IMO
-                 it is justified because of reference of the command id.
-                 Note that this can't be kept in case further optional dependencies
-                 are added that need to be resolved for compiling all classes. -->
-            <optionalDependencies>ignore</optionalDependencies>
-          </dependency-resolution>
-        </configuration>
-      </plugin>
-    </plugins>
   </build>
 </project>

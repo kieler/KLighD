@@ -53,7 +53,7 @@ import de.cau.cs.kieler.klighd.ui.printing.PrintOptions;
  * {@code create*BlockArea(Composite)} methods.<br>
  * <br>
  * The implementation is inspired by
- * {@link org.eclipse.gmf.runtime.diagram.ui.printing.render.dialogs.JPSPrintDialog JPSPrintDialog}
+ * {@code org.eclipse.gmf.runtime.diagram.ui.printing.render.dialogs.JPSPrintDialog JPSPrintDialog}
  * of the GMF project.
  *
  * @author Christian Damus (cdamus)
@@ -204,11 +204,7 @@ public class KlighdPrintDialog extends TrayDialog {
             // this asyncExec is employed in order to let the main dialog get build up properly;
             // for some reason its layout gets heavily corrupted if the preview is opened directly
             //  some good soul might investigate this some day...
-            parent.getDisplay().asyncExec(new Runnable() {
-                public void run() {
-                    openPreview();
-                }
-            });
+            parent.getDisplay().asyncExec(this::openPreview);
         }
 
         return result;

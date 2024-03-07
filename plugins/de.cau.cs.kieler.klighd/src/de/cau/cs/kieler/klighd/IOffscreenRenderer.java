@@ -31,9 +31,6 @@ import org.eclipse.swt.graphics.RGB;
  * showing them on the screen.
  *
  * @author chsch
- *
- * @kieler.design proposed by chsch
- * @kieler.rating proposed yellow by chsch
  */
 public interface IOffscreenRenderer {
 

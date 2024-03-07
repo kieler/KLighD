@@ -2,14 +2,16 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: KIELER KGraph Text Ide
 Bundle-SymbolicName: de.cau.cs.kieler.kgraph.text.ide
-Bundle-Version: 2.2.1.qualifier
+Bundle-Version: 2.3.1.qualifier
 Bundle-Vendor: Kiel University
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Require-Bundle: de.cau.cs.kieler.kgraph.text,
  org.eclipse.xtext.ide,
- org.eclipse.xtext.xbase.ide
+ com.google.guava,
+ org.eclipse.xtext.xbase.lib,
+ org.eclipse.xtend.lib,
+ org.eclipse.xtend.lib.macro
 Export-Package: de.cau.cs.kieler.kgraph.text.ide,
  de.cau.cs.kieler.kgraph.text.ide.contentassist.antlr,
  de.cau.cs.kieler.kgraph.text.ide.contentassist.antlr.internal
 Automatic-Module-Name: de.cau.cs.kieler.kgraph.text.ide
-

@@ -47,16 +47,13 @@ import de.cau.cs.kieler.klighd.util.KlighdPredicates;
  * of {@link Map Maps}.
  * 
  * @author chsch
- * 
- * @kieler.design proposed by chsch
- * @kieler.rating proposed yellow by chsch 
  */
 public class SourceModelTrackingAdapter extends EContentAdapter {
 
     private static final Predicate<Object> CANDIDATES = KlighdPredicates.instanceOf(
             KGraphElement.class, KRendering.class, IPropertyToObjectMapImpl.class);
     
-    private static final IProperty<Object> MODEL_ELEMENT = KlighdInternalProperties.MODEL_ELEMEMT;
+    private static final IProperty<Object> MODEL_ELEMENT = KlighdInternalProperties.MODEL_ELEMENT;
 
     private Object mapsMonitor = this;
     private Multimap<Object, EObject> sourceTargetsMap = ArrayListMultimap.create();
@@ -67,7 +64,7 @@ public class SourceModelTrackingAdapter extends EContentAdapter {
      * Returns the element in the input model that is represented by the given <code>viewElement</code>
      * in the diagram.<br>
      * <b>Note:</b> This method does not check whether <code>viewElement</code> is currently contained
-     * in the view model (accessible via {@link #getViewModel()}).
+     * in the view model (accessible via {@link de.cau.cs.kieler.klighd.ViewContext#getViewModel()}).
      * 
      * @param viewElement
      *            the diagram element whose source element in the input (source, semantic, or
@@ -89,7 +86,7 @@ public class SourceModelTrackingAdapter extends EContentAdapter {
      * Returns the elements in the view model that represent the given <code>element</code> in the
      * diagram.<br>
      * <b>Note:</b> This method does not check whether <code>element</code> is currently contained
-     * in the input model being represented (accessible via {@link #getInputModel()}).
+     * in the input model being represented (accessible via {@link de.cau.cs.kieler.klighd.ViewContext#getInputModel()}).
      * 
      * @param element
      *            the object in the input (source, semantic, or business) model

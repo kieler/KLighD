@@ -62,6 +62,7 @@ import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties;
  * <p>
  * If the controller has an internal state influencing its behavior, the controller should override
  * the following methods:
+ * <ul>
  * <li>{@link #saveState(IMemento)}</li>
  * <li>{@link #loadState(IMemento)}</li>
  * <li>{@link #reset()}</li>
@@ -69,9 +70,6 @@ import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties;
  * </ul>
  * 
  * @author als
- * @kieler.design 2016-06-28 KI-124 uru, nbw, cds
- * @kieler.rating 2015-06-29 proposed yellow
- *
  */
 public abstract class AbstractViewUpdateController implements ISelectionChangedListener {
 

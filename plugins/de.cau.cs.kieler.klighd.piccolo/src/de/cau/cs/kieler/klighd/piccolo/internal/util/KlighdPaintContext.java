@@ -70,7 +70,7 @@ public class KlighdPaintContext extends PPaintContext {
      *            if <code>true</code> the diagram zoom level determined by the
      *            {@link KlighdMainCamera}'s view transform will be used while evaluating the
      *            visibility of the particular diagram elements and diagram element figure parts, if
-     *            <code>false</code> a diagram zoom level of <code>1.0<code> is assumed.
+     *            <code>false</code> a diagram zoom level of <code>1.0</code> is assumed.
      * @param addSemanticData
      *            flag determining whether semantic data shall be added to the diagram while
      *            exporting an SVG based image, should be <code>false</code> in other cases (no effect)
@@ -95,7 +95,7 @@ public class KlighdPaintContext extends PPaintContext {
      *            if <code>true</code> the diagram zoom level determined by the
      *            {@link KlighdMainCamera}'s view transform will be used while evaluating the
      *            visibility of the particular diagram elements and diagram element figure parts, if
-     *            <code>false</code> a diagram zoom level of <code>1.0<code> is assumed.
+     *            <code>false</code> a diagram zoom level of <code>1.0</code> is assumed.
      * @return the desired {@link KlighdPaintContext}
      */
     public static KlighdPaintContext createPrintoutPaintContext(final KlighdSWTGraphics graphics,
@@ -119,7 +119,7 @@ public class KlighdPaintContext extends PPaintContext {
      *            if <code>true</code> the diagram zoom level determined by the
      *            {@link KlighdMainCamera}'s view transform will be used while evaluating the
      *            visibility of the particular diagram elements and diagram element figure parts, if
-     *            <code>false</code> a diagram zoom level of <code>1.0<code> is assumed.
+     *            <code>false</code> a diagram zoom level of <code>1.0</code> is assumed.
      * @param addSemanticData
      *            flag determining whether semantic data shall be added to the diagram while
      *            exporting an SVG based image, should be <code>false</code> in other cases (no
@@ -200,7 +200,7 @@ public class KlighdPaintContext extends PPaintContext {
      * @return <code>true</code> if the diagram zoom level determined by the
      *         {@link KlighdMainCamera}'s view transform shall be used while evaluating the
      *         visibility of the particular diagram elements and diagram element figure parts,
-     *         <code>false</code> if a diagram zoom level of <code>1.0<code> shall be assumed
+     *         <code>false</code> if a diagram zoom level of <code>1.0</code> shall be assumed
      */
     public boolean isApplyCameraZoomLevel() {
         return applyCameraZoomLevel;

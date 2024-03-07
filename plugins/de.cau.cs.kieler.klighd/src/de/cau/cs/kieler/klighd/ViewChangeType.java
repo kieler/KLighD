@@ -22,9 +22,6 @@ import java.util.EnumSet;
  * Defines the possible view change types being performed by KLighD {@link IViewer IViewers}.
  *
  * @author chsch
- *
- * @kieler.design proposed by chsch
- * @kieler.rating proposed yellow by chsch
  */
 public enum ViewChangeType {
 

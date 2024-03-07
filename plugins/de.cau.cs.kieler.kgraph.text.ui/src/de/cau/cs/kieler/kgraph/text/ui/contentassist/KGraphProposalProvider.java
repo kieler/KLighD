@@ -20,8 +20,6 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 
-import javax.inject.Inject;
-
 import org.eclipse.elk.core.data.LayoutAlgorithmData;
 import org.eclipse.elk.core.data.LayoutMetaDataService;
 import org.eclipse.elk.core.data.LayoutOptionData;
@@ -45,6 +43,8 @@ import org.eclipse.xtext.ui.editor.contentassist.ConfigurableCompletionProposal;
 import org.eclipse.xtext.ui.editor.contentassist.ContentAssistContext;
 import org.eclipse.xtext.ui.editor.contentassist.ICompletionProposalAcceptor;
 import org.eclipse.xtext.util.Strings;
+
+import com.google.inject.Inject;
 
 import de.cau.cs.kieler.kgraph.text.KGraphResource;
 import de.cau.cs.kieler.kgraph.text.services.KGraphGrammarAccess;
@@ -225,7 +225,7 @@ public class KGraphProposalProvider extends AbstractKGraphProposalProvider {
 
 
     // ---------------------------------------------------------
-    //  Layout option proposals provided by KIML
+    //  Layout option proposals provided by ELK
     // ---------------------------------------------------------
 
     // CHECKSTYLEOFF MethodName

@@ -29,11 +29,14 @@ import de.cau.cs.kieler.klighd.kgraph.util.KGraphUtil
 import de.cau.cs.kieler.klighd.krendering.KRenderingFactory
 import de.cau.cs.kieler.klighd.microlayout.PlacementUtil
 import de.cau.cs.kieler.klighd.piccolo.export.SVGOffscreenRenderer
+import de.cau.cs.kieler.klighd.util.KlighdProperties
 import de.cau.cs.kieler.klighd.util.KlighdSemanticDiagramData
 import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties
 import java.io.ByteArrayOutputStream
 import java.util.EnumSet
 import java.util.regex.Pattern
+import org.eclipse.elk.core.math.ElkPadding
+import org.eclipse.elk.core.options.CoreOptions
 import org.eclipse.elk.core.options.PortConstraints
 import org.eclipse.elk.core.options.PortLabelPlacement
 import org.eclipse.elk.core.options.PortSide
@@ -53,10 +56,10 @@ import static extension org.junit.Assert.assertEquals
 /** 
  * @author chsch
  */
- @FixMethodOrder(JVM)
+ @FixMethodOrder(NAME_ASCENDING)
 class FreeHEPSVGOffscreenRenderingTest {
 	
-	extension KRenderingFactory = KRenderingFactory.eINSTANCE
+	static extension KRenderingFactory = KRenderingFactory.eINSTANCE
 	
 	@BeforeClass
 	def static void initDisplay() {
@@ -537,16 +540,17 @@ class FreeHEPSVGOffscreenRenderingTest {
 	
 	
 
-	def equalsSVGof(CharSequence expectation, (KNode) => void viewModelBuilder) {
-		expectation.equalsSVGof(viewModelBuilder, false)
+	def static equalsSVGof(CharSequence expectation, (KNode) => void viewModelBuilder) {
+		expectation.equalsSVGof(viewModelBuilder, false, false)
 	}
 	
-	def equalsSVGwithTextLengthsOf(CharSequence expectation, (KNode) => void viewModelBuilder) {
-		expectation.equalsSVGof(viewModelBuilder, true)
+	def static equalsSVGwithTextLengthsOf(CharSequence expectation, (KNode) => void viewModelBuilder) {
+		expectation.equalsSVGof(viewModelBuilder, false, true)
 	}
 	
-	def equalsSVGof(CharSequence expectation, (KNode) => void viewModelBuilder, boolean withTextLength) {
+	def static equalsSVGof(CharSequence expectation, (KNode) => void viewModelBuilder, boolean widthEdgesFirst, boolean withTextLength) {
 		val root = KGraphUtil.createInitializedNode()
+		root.setProperty(CoreOptions.PADDING, new ElkPadding(10))
 		viewModelBuilder.apply(root)
 		
 		val output = new ByteArrayOutputStream()
@@ -555,6 +559,7 @@ class FreeHEPSVGOffscreenRenderingTest {
 				.setProperty(SVGOffscreenRenderer.GENERATOR, SVGOffscreenRenderer.GENERATOR_SVG_FREEHEP_EXTENDED)
 				.setProperty(IOffscreenRenderer.TRANSPARENT_BACKGROUND, Boolean.TRUE)
 				.setProperty(IOffscreenRenderer.SET_TEXT_LENGTHS, Boolean.valueOf(withTextLength))
+				.setProperty(KlighdProperties.EDGES_FIRST, widthEdgesFirst)
 		)
 		
 		if (status.exception !== null)
@@ -562,58 +567,97 @@ class FreeHEPSVGOffscreenRenderingTest {
 		
 		OK_STATUS.assertEquals(status)
 		
-		expectation.toString.assertEquals(
-			output.toString.trimMetaInfos.maskFontSizeAndTextYPos
+		expectation.toString.sortProperties().assertEquals(
+			output.toString.trimMetaInfos.sortProperties().maskFontSizeAndTextYPos
 		)
 	}
 	
 	static val END_OF_HEADER_MARKER = '</desc>'
+	static val END_OF_SVG_MARKER_LENGTH = '</svg>'.length
 	
-	def trimMetaInfos(String svg) {
+	def static trimMetaInfos(String svg) {
 		val trimmed = svg.trim
 		
 		switch endOfHeader : trimmed.indexOf(END_OF_HEADER_MARKER) + END_OF_HEADER_MARKER.length {
-			case trimmed.length > endOfHeader + 6: trimmed.substring(endOfHeader, trimmed.length - 6).trim + Klighd.LINE_SEPARATOR
-			case trimmed.length > endOfHeader:     trimmed.substring(endOfHeader).trim + Klighd.LINE_SEPARATOR
-			default:                               trimmed
+			case trimmed.length > endOfHeader + END_OF_SVG_MARKER_LENGTH: trimmed.substring(endOfHeader, trimmed.length - END_OF_SVG_MARKER_LENGTH).trim + Klighd.LINE_SEPARATOR
+			case trimmed.length > endOfHeader:                            trimmed.substring(endOfHeader).trim + Klighd.LINE_SEPARATOR
+			default:                                                      trimmed
 		}
 	}
 	
 	static val P_FONT_SIZE = Pattern.compile('(font-size=")[^"]*(")')
 	static val P_DY = Pattern.compile('(dy=")[^"]*(")')
-	static val P_TEXT_Y = Pattern.compile('(<text[^y]*y=")[^"]*(")')
+	static val P_TEXT_Y = Pattern.compile('(\\sy=")[^"]*(")')
 	
-	def maskFontSizeAndTextYPos(String input) {
+	def static maskFontSizeAndTextYPos(String input) {
 		val fontSizeMasked = P_FONT_SIZE.matcher(input).replaceAll('$1<FONT_SIZE>$2')
 		val textYMasked = P_TEXT_Y.matcher(fontSizeMasked).replaceAll('$1<Y>$2')
 		P_DY.matcher(textYMasked).replaceAll('$1<Y>$2')
 	}
 	
-	def addKNodeWithSizeOf(KNode parent, float width, float height) {
+	def static addKNodeWithSizeOf(KNode parent, float width, float height) {
 		val node = createInitializedNode
 		node.setSize(width, height)
 		parent.children += node
 		node
 	}
 	
-	def addKPortWithSizeOf(KNode parent, float width, float height) {
+	def static addKPortWithSizeOf(KNode parent, float width, float height) {
 		val port = createInitializedPort
 		port.setSize(width, height)
 		parent.ports += port
 		port
 	}
 	
-	def addKRectangleWithStrokeOnlyColoring(KGraphElement kge) {
+	def static addKRectangleWithStrokeOnlyColoring(KGraphElement kge) {
 		kge.data += createKRectangle
 		kge
 	}
 	
-	def addKTextWithAssumedSizeOf(KLabel label, float width, float height) {
+	def static addKTextWithAssumedSizeOf(KLabel label, float width, float height) {
 		createKText => [
 			label.data += it 
 			setProperty(KlighdInternalProperties.KLIGHD_TESTING_WIDTH, width)
 			setProperty(KlighdInternalProperties.KLIGHD_TESTING_HEIGHT, height)
 			makePersistent // required as the PlacementUtil.getTestingTextSize(...) method inspects the list of persisted entries only
 		]
+	}
+	
+	static val Pattern tagOrNonTag = Pattern.compile('<((?:[^<>]|<[^<>]*>)*)>|([^<]+)'); // a tag (group1) is enclosed in '<>' and may contain nested pairs of '<>' indicating the escapes of <FONT_SIZE> and <Y>; non-tag content is captured as group2
+	static val Pattern item = Pattern.compile('[^\\s=]+(\\=\\"[^\\"]*\\")?');
+	
+	def static sortProperties(String input) {
+		input.lines().iterator().map[ line |
+			val matcher = tagOrNonTag.matcher(line);
+			val result = matcher.iterator.map[
+				if (matcher.group(1).isNullOrEmpty)
+					matcher.group(2)
+				else
+					item.matcher(matcher.group(1)).iterator().toList().sortInplace[
+						a, b | if (a.contains('=') && b.contains('=')) a.compareTo(b) else 0
+					].join('<', ' ', '>', [ it ])
+			].join();
+			
+			// do some 'self testing' for each line to make sure we didn't swallow any characters,
+			//  a diff of 1 is ok, as '..dfjskl"/>...' is converted to '..dfjskl" />...' by the above joining strategy
+			if (Math.abs(result.length() - line.length) > 1)
+				assertEquals('''Lengths differ («line.length» vs. «result.length»):''', line, result);
+			
+			return result;
+			
+		].join(Klighd.LINE_SEPARATOR);
+	}
+	
+	def static java.util.Iterator<String> iterator(java.util.regex.Matcher matcher) {
+		new java.util.Iterator<String>() {
+			override hasNext() {
+				return matcher.find();
+			}
+			
+			override next() {
+				return matcher.group();
+			}
+			
+		}
 	}
 }

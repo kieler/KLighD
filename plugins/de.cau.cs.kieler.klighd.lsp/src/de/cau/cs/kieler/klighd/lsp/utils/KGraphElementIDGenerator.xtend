@@ -3,7 +3,7 @@
  *
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright 2018,2019 by
+ * Copyright 2018-2023 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -34,8 +34,7 @@ import static extension de.cau.cs.kieler.klighd.lsp.utils.SprottyProperties.*
 
 /**
  * Class for generating unique IDs for any {@link KGraphElement}. Use a single instance of this and call getId() for all
- * the elements you need IDs for. IDs will be unique, assuming that hashCode() on KGraphElements returns unique hashes
- * per instance.
+ * the elements you need IDs for. IDs will be unique, based on the position in their parent graph element.
  * 
  * @author nre
  */
@@ -109,9 +108,7 @@ class KGraphElementIdGenerator {
         // the root node is just called $root
         val parent = element.eContainer as KGraphElement
         var String parentId = null
-        if (parent !== null) {
-            parentId = getId(parent)
-        } else {
+        if (parent === null) {
             id = ID_SEPARATOR + 'root'
             if (idToElementMap.get(id) !== null) {
                 // The graph already contains a root node, this is a connected node dangling without a parent and will
@@ -122,6 +119,7 @@ class KGraphElementIdGenerator {
             idToElementMap.put(id, element)
             return id
         }
+        parentId = getId(parent)
         
         // use a prefix depending on the class of the element + the {@link KIdentifier} as id if an identifier is
         // defined, otherwise make up a new id based on the position in the model hierarchy with a Separator not
@@ -130,19 +128,24 @@ class KGraphElementIdGenerator {
         
         val identifier = element.data.filter(KIdentifier)
         var char elementSeparator
+        var int index
         
         switch (element) {
             KNode: {
                 elementSeparator = NODE_SEPARATOR
+                index = element.parent.children.indexOf(element)
             }
             KEdge: {
                 elementSeparator = EDGE_SEPARATOR
+                index = element.source.outgoingEdges.indexOf(element)
             }
             KLabel: {
                 elementSeparator = LABEL_SEPARATOR
+                index = element.parent.labels.indexOf(element)
             }
             KPort: {
                 elementSeparator = PORT_SEPARATOR
+                index = element.node.ports.indexOf(element)
             }
             default: {
                 throw new IllegalArgumentException("Can not generate an id for element of type " + element.class)
@@ -150,7 +153,7 @@ class KGraphElementIdGenerator {
         }
         
         if (identifier.empty) {
-            elementId = "" + ID_SEPARATOR + elementSeparator + element.hashCode
+            elementId = "" + ID_SEPARATOR + elementSeparator + index
         } else {
             elementId = elementSeparator + identifier.head.id
         }
@@ -169,8 +172,8 @@ class KGraphElementIdGenerator {
 }
 
 /**
- * Class for generating unique IDs for any {@link KRendering}. IDs will be unique, assuming that hashCode() on
- * KRenderings returns unique hashes per instance.
+ * Class for generating unique IDs for any {@link KRendering}. IDs will be unique, based on the position in their
+ * parent graph element / rendering.
  * 
  * @author nre
  */
@@ -196,21 +199,11 @@ class KRenderingIdGenerator {
      * and puts it in the {@link SprottyProperties#RENDERING_ID} property. This ID can be used for uniquely identifying
      * renderings between systems.
      * 
-     * @param rendering The rendering
-     */
-    static def void generateIdsRecursive(KRendering rendering) {
-        if (rendering !== null) {
-            generateIdsRecursive(rendering, null)
-        }
-    }
-    
-    /**
-     * Recursive method implementing the behavior described in {@link #generateIdsRecursive(KStyleHolder)}.
-     * 
      * @param rendering The rendering that should currently get an ID.
-     * @paran parentRendering The parent rendering of the current rendering, for convenience.
+     * @param parentId The ID of the parent to be added as the ID's prefix.
+     * @param renderingIndex The index of this rendering in relation to the parent.
      */
-    private static def void generateIdsRecursive(KRendering rendering, KContainerRendering parentRendering) {
+    static def void generateIdsRecursive(KRendering rendering, String parentId, int renderingIndex) {
         if (rendering === null) {
             return
         }
@@ -220,15 +213,10 @@ class KRenderingIdGenerator {
             return
         }
         
-        if (parentRendering === null) {
-            rendering.renderingId = "" + RENDERING_SEPERATOR + rendering.hashCode
-        } else {
-            val parentId = parentRendering.renderingId
-            // Generate a new ID based on the parent rendering's ID.
-            rendering.renderingId = parentId
-                + ID_SEPARATOR + RENDERING_SEPERATOR 
-                + rendering.hashCode
-        }
+        // Generate a new ID based on the parent rendering's ID.
+        rendering.renderingId = parentId
+            + ID_SEPARATOR + RENDERING_SEPERATOR
+            + renderingIndex
         if (rendering instanceof KPolyline) {
             // Special case for KPolyline: It has a junctionPointRendering that also needs an ID.
             // Use a new separator and think of this as a new rendering hierarchy with possible children.
@@ -240,22 +228,22 @@ class KRenderingIdGenerator {
         }
         if (rendering instanceof KContainerRendering) {
             // Each KContainerRendering has child renderings that also need new IDs.
-            for (childRendering : rendering.children) {
-                generateIdsRecursive(childRendering, rendering)
+            for (var int i = 0; i < rendering.children.size; i++) {
+                generateIdsRecursive(rendering.children.get(i), rendering.renderingId, i)
             }
         }
     }
     
     /**
      * Finds the {@link KRendering} in the data of the given {@code element} matching the {@code id} if the IDs have
-     * been previously generated by {@link KRenderingIDGenerator#generateIdsRecursive}.
+     * been previously generated by {@link KRenderingIdGenerator#generateIdsRecursive}.
      * 
      * @param element The element to search the rendering in.
      * @param id The ID to look for.
      * @return The {@link KRendering} with the given ID.
      */
     static def findRenderingById(KGraphElement element, String id) {
-        val ids = id.split("\\" + ID_SEPARATOR)
+        val ids = id.split("\\" + ID_SEPARATOR + "\\" + ID_SEPARATOR + "\\" + ID_SEPARATOR).get(1).split("\\" + ID_SEPARATOR)
         // Every rendering ID is built hierarchically, separated by the RENDERING_SEPERATOR symbol.
         
         val renderings = element.data.filter(KRendering) + element.data.filter(KRenderingRef)

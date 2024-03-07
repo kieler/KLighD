@@ -45,8 +45,6 @@ import edu.umd.cs.piccolo.util.PBounds;
  * 
  * @author msp
  * @author chsch
- * @kieler.design proposed by chsch
- * @kieler.rating proposed yellow by chsch
  */
 public class Draw2DNode extends KCustomFigureNode {
 

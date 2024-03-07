@@ -17,6 +17,7 @@
 package de.cau.cs.kieler.klighd.lsp.interactive.rectpacking
 
 import com.google.inject.Inject
+import com.google.inject.Singleton
 import de.cau.cs.kieler.klighd.kgraph.KNode
 import de.cau.cs.kieler.klighd.kgraph.util.KGraphUtil
 import de.cau.cs.kieler.klighd.lsp.KGraphDiagramState
@@ -27,7 +28,6 @@ import de.cau.cs.kieler.klighd.lsp.interactive.ConstraintProperty
 import de.cau.cs.kieler.klighd.lsp.interactive.InteractiveUtil
 import java.util.Arrays
 import java.util.List
-import javax.inject.Singleton
 import org.eclipse.elk.alg.rectpacking.options.RectPackingOptions
 import org.eclipse.elk.core.options.CoreOptions
 import org.eclipse.xtend.lib.annotations.Accessors
@@ -150,7 +150,7 @@ class RectpackingInteractiveLanguageServerExtension implements ILanguageServerEx
      * Sets the aspect ratio.
      * 
      * @param constraint The aspect ratio constraint.
-     * @param The client id of the corresponding diagram view.
+     * @param clientId The client id of the corresponding diagram view.
      */
     def setAspectRatio(SetAspectRatio constraint, String clientId) {
         val uri = diagramState.getURIString(clientId)
@@ -172,6 +172,5 @@ class RectpackingInteractiveLanguageServerExtension implements ILanguageServerEx
         kNode.setProperty(constraint.property, constraint.value)
         InteractiveUtil.serializeConstraints(#[constraint], model, uri, this.languageServer, this.client)
         return
-
     }
 }

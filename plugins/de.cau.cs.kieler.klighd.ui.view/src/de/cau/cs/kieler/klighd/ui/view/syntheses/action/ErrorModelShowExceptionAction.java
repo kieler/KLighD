@@ -27,9 +27,6 @@ import de.cau.cs.kieler.klighd.ide.syntheses.action.AbstractErrorModelShowExcept
  * Action to open an ErrorDialog to show additional exception information of {@link ErrorModel}.
  * 
  * @author als
- * @kieler.design 2014-07-30 proposed
- * @kieler.rating 2014-07-30 proposed yellow
- * 
  */
 public class ErrorModelShowExceptionAction extends AbstractErrorModelShowExceptionAction {
 

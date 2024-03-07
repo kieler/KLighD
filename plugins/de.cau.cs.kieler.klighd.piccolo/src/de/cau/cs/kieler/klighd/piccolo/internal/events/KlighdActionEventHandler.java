@@ -353,7 +353,7 @@ public class KlighdActionEventHandler implements PInputEventListener {
 
     /**
      * A dedicated exception indicating an illegal result of a method.<br>
-     * It is currently thrown if implementations of {@link IAction#execute(ActionContext)} returns
+     * It is currently thrown if implementations of {@link IAction#execute(IAction.ActionContext)} returns
      * <code>null</code>.
      *
      * @author chsch

@@ -52,7 +52,7 @@ public abstract class SelectionIterator extends AbstractTreeIterator<KGraphEleme
     }
 
     /**
-     * Attach a set of {@link ElkPortt ports} to the iterator to be used as a set of visited ports.
+     * Attach a set of {@link KPort ports} to the iterator to be used as a set of visited ports.
      * Can be used to share a set of nodes across multiple iterators (target and source iterator).
      * 
      * @param visitedSet

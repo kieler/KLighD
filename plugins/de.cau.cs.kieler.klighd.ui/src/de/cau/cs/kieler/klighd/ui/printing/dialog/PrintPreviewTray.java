@@ -26,9 +26,8 @@ import org.eclipse.core.databinding.observable.Observables;
 import org.eclipse.core.databinding.observable.Realm;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.observable.value.IValueChangeListener;
-import org.eclipse.core.databinding.observable.value.ValueChangeEvent;
 import org.eclipse.jface.databinding.swt.ISWTObservableValue;
-import org.eclipse.jface.databinding.swt.WidgetProperties;
+import org.eclipse.jface.databinding.swt.typed.WidgetProperties;
 import org.eclipse.jface.dialogs.DialogTray;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
@@ -37,9 +36,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Listener;
 
 import de.cau.cs.kieler.klighd.DiagramExportConfig;
 import de.cau.cs.kieler.klighd.ui.printing.DiagramPrintOptions;
@@ -50,13 +47,13 @@ import de.cau.cs.kieler.klighd.ui.printing.PrintOptions;
  * A PrintPreview to be displayed as a dialog tray, e.g. used by {@link KlighdPrintDialog}.<br>
  * <br>
  * The implementation is inspired by
- * {@link org.eclipse.gmf.runtime.diagram.ui.printing.internal.printpreview.PrintPreviewHelper
- * PrintPreviewHelper} of the GMF project, esp.
+ * {@code org.eclipse.gmf.runtime.diagram.ui.printing.internal.printpreview.PrintPreviewHelper}
+ * of the GMF project, esp.
  * <code>PrintPreviewHelper.updateCompositeForNumberOfColumns(int, int)</code>.<br>
  * <br>
  * Note: There's no method 'dispose()' or similar, since all required dispose routines are coupled
  * to the disposal of the employed SWT widgets. Their disposal is invoked by
- * {@link  org.eclipse.jface.dialogs.TrayDialog#closeTray() TrayDialog#closeTray()}, which is
+ * {@link org.eclipse.jface.dialogs.TrayDialog#closeTray() TrayDialog#closeTray()}, which is
  * inherited by our {@link KlighdPrintDialog}.
  *
  * @author csp
@@ -104,65 +101,57 @@ public class PrintPreviewTray extends DialogTray {
 
         updateComposite();
 
-        final IValueChangeListener<Object> listener = new IValueChangeListener<Object>() {
-
-            public void handleValueChange(final ValueChangeEvent<? extends Object> event) {
-                updateComposite();
-            }
-        };
+        final IValueChangeListener<Object> listener = event -> updateComposite();
 
         ISWTObservableValue<Point> observedSize = WidgetProperties.size().observe(body);
         final IObservableValue<Point> delayedResize = Observables.observeDelayedValue(OBSERVABLE_DELAY, observedSize);
         delayedResize.addValueChangeListener(listener);
 
         IObservableValue<Object> observedData = 
-                BeanProperties.value(options.getClass().asSubclass(DiagramPrintOptions.class), PrintOptions.PROPERTY_PRINTER_DATA)
+                BeanProperties.value(DiagramPrintOptions.class, PrintOptions.PROPERTY_PRINTER_DATA)
                 .observe(realm, options);
         final IObservableValue<Object> delayedPrinterData = Observables.observeDelayedValue(OBSERVABLE_DELAY, observedData);
         delayedPrinterData.addValueChangeListener(listener);
 
-        IObservableValue<Object> observedScale = BeanProperties.value(options.getClass().asSubclass(DiagramPrintOptions.class), PrintOptions.PROPERTY_SCALE_FACTOR)
+        IObservableValue<Object> observedScale = BeanProperties.value(DiagramPrintOptions.class, PrintOptions.PROPERTY_SCALE_FACTOR)
                 .observe(realm, options);
         final IObservableValue<Object> delayedScale = Observables.observeDelayedValue(OBSERVABLE_DELAY,observedScale);
         delayedScale.addValueChangeListener(listener);
 
-        IObservableValue<Object> observedPagesWide = BeanProperties.value(options.getClass().asSubclass(DiagramPrintOptions.class), PrintOptions.PROPERTY_PAGES_WIDE)
+        IObservableValue<Object> observedPagesWide = BeanProperties.value(DiagramPrintOptions.class, PrintOptions.PROPERTY_PAGES_WIDE)
                 .observe(realm, options);
         final IObservableValue<Object> delayedPagesWide = Observables.observeDelayedValue(OBSERVABLE_DELAY,observedPagesWide);
         delayedPagesWide.addValueChangeListener(listener);
 
-        IObservableValue<Object> observedScaleTall = BeanProperties.value(options.getClass().asSubclass(DiagramPrintOptions.class), PrintOptions.PROPERTY_PAGES_TALL)
+        IObservableValue<Object> observedScaleTall = BeanProperties.value(DiagramPrintOptions.class, PrintOptions.PROPERTY_PAGES_TALL)
                 .observe(realm, options);
         final IObservableValue<Object> delayedPagesTall = Observables.observeDelayedValue(OBSERVABLE_DELAY, observedScaleTall);
         delayedPagesTall.addValueChangeListener(listener);
 
-        IObservableValue<Object> observedHorCenter = BeanProperties.value(options.getClass().asSubclass(DiagramPrintOptions.class), PrintOptions.PROPERTY_CENTER_HORIZONTALLY)
+        IObservableValue<Object> observedHorCenter = BeanProperties.value(DiagramPrintOptions.class, PrintOptions.PROPERTY_CENTER_HORIZONTALLY)
                 .observe(realm, options);
         final IObservableValue<Object> delayedHorCentered = Observables.observeDelayedValue(OBSERVABLE_DELAY, observedHorCenter);
         delayedHorCentered.addValueChangeListener(listener);
 
-        IObservableValue<Object> observedVertCenter = BeanProperties.value(options.getClass().asSubclass(DiagramPrintOptions.class), PrintOptions.PROPERTY_CENTER_VERTICALLY)
+        IObservableValue<Object> observedVertCenter = BeanProperties.value(DiagramPrintOptions.class, PrintOptions.PROPERTY_CENTER_VERTICALLY)
                 .observe(realm, options);
         final IObservableValue<Object> delayedVerCentered = Observables.observeDelayedValue(OBSERVABLE_DELAY, observedVertCenter);
         delayedVerCentered.addValueChangeListener(listener);
         
-        IObservableValue<Object> observedOrientation = BeanProperties.value(options.getClass().asSubclass(DiagramPrintOptions.class), PrintOptions.PROPERTY_ORIENTATION)
+        IObservableValue<Object> observedOrientation = BeanProperties.value(DiagramPrintOptions.class, PrintOptions.PROPERTY_ORIENTATION)
                 .observe(realm, options);
         final IObservableValue<Object> delayedOrientation = Observables.observeDelayedValue(OBSERVABLE_DELAY, observedOrientation);
         delayedOrientation.addValueChangeListener(listener);
 
-        body.addListener(SWT.Dispose, new Listener() {
-
-            public void handleEvent(final Event event) {
-                delayedResize.dispose();
-                delayedPrinterData.dispose();
-                delayedScale.dispose();
-                delayedPagesWide.dispose();
-                delayedPagesTall.dispose();
-                delayedHorCentered.dispose();
-                delayedVerCentered.dispose();
-                delayedOrientation.dispose();
-            }
+        body.addListener(SWT.Dispose, event -> {
+            delayedResize.dispose();
+            delayedPrinterData.dispose();
+            delayedScale.dispose();
+            delayedPagesWide.dispose();
+            delayedPagesTall.dispose();
+            delayedHorCentered.dispose();
+            delayedVerCentered.dispose();
+            delayedOrientation.dispose();
         });
 
         return body;
@@ -253,12 +242,7 @@ public class PrintPreviewTray extends DialogTray {
 
                     final Label l = new Label(composite, SWT.NULL);
                     l.setImage(pageImg);
-                    l.addListener(SWT.Dispose, new Listener() {
-
-                        public void handleEvent(final Event event) {
-                            pageImg.dispose();
-                        }
-                    });
+                    l.addListener(SWT.Dispose, event -> pageImg.dispose());
                 }
             }
         }

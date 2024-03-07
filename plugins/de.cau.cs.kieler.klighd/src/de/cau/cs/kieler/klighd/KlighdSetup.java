@@ -33,7 +33,7 @@ public class KlighdSetup implements IKlighdStartupHook {
     @Override
     public void execute() {
         KlighdDataManager.getInstance()
-            .registerBlacklistedProperty(KlighdInternalProperties.MODEL_ELEMEMT)
+            .registerBlacklistedProperty(KlighdInternalProperties.MODEL_ELEMENT)
             .registerBlacklistedProperty(LabelManagementOptions.LABEL_MANAGER)
             .registerBlacklistedProperty(GridPlacementUtil.ESTIMATED_GRID_DATA)
             .registerBlacklistedProperty(GridPlacementUtil.CHILD_AREA_POSITION);

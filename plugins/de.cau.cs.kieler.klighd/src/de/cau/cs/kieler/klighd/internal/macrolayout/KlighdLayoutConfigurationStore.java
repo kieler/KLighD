@@ -64,9 +64,6 @@ import de.cau.cs.kieler.klighd.util.RunnableWithResult;
  *
  * @author mri
  * @author msp
- *
- * @kieler.design proposed by chsch
- * @kieler.rating proposed yellow by chsch
  */
 public class KlighdLayoutConfigurationStore implements ILayoutConfigurationStore {
 
@@ -286,7 +283,7 @@ public class KlighdLayoutConfigurationStore implements ILayoutConfigurationStore
                 final String msg = "Concurrent modification in KGraphPropertyLayoutConfig:"
                         + Klighd.LINE_SEPARATOR + "  element == " + graphElement
                         + Klighd.LINE_SEPARATOR + "  sourceElement == "
-                        + graphElement.getProperty(KlighdInternalProperties.MODEL_ELEMEMT);
+                        + graphElement.getProperty(KlighdInternalProperties.MODEL_ELEMENT);
 
                 Klighd.log(new Status(IStatus.ERROR, Klighd.PLUGIN_ID, msg));
             }

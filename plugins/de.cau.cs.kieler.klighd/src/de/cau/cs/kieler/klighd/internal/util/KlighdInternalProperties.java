@@ -29,13 +29,9 @@ import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
 import de.cau.cs.kieler.klighd.kgraph.PersistentEntry;
 
 /**
- * A collection of internal KLighD-specific {@link de.cau.cs.kieler.klighd.properties.IProperty
- * IProperties}.
+ * A collection of internal KLighD-specific {@link IProperty IProperties}.
  * 
  * @author chsch
- * 
- * @kieler.design proposed by chsch
- * @kieler.rating proposed yellow by chsch 
  */
 public final class KlighdInternalProperties {
 
@@ -51,7 +47,14 @@ public final class KlighdInternalProperties {
      * KGraphData}, for {@link de.cau.cs.kieler.klighd.kgraph.KGraphElement KGraphElements} it is to
      * be attached to their layout data.
      */
-    public static final IProperty<Object> MODEL_ELEMEMT = new Property<Object>("klighd.modelElement");
+    public static final IProperty<Object> MODEL_ELEMENT = new Property<Object>("klighd.modelElement");
+    
+    /**
+     * Deprecated property with a typo, see {@link #MODEL_ELEMENT} as the replacement.
+     * 
+     * @deprecated
+     */
+    public static final IProperty<Object> MODEL_ELEMEMT = MODEL_ELEMENT;
 
     /**
      * Property indicating that the node has been populated. A node is populated, if and only if the
@@ -101,34 +104,34 @@ public final class KlighdInternalProperties {
     
     /**
      * The {@link KGraphElement} to be focus during upcoming diagram layout if {@link #NEXT_ZOOM_STYLE} is
-     * {@link ZoomStyle#ZOOM_TO_FOCUS} or {@link ZoomStyle#ZOOM_TO_STAY_SELECTED}.
+     * {@link ZoomStyle#ZOOM_TO_FOCUS} or {@link ZoomStyle#ZOOM_TO_STAY}.
      */
     public static final IProperty<KGraphElement> NEXT_FOCUS_ELEMENT = new Property<KGraphElement>(
             "klighd.zoom.nextFocusElement");
     
     /**
      * The position the selected element had in the previous layout that is included in the new layout 
-     * if the {@link ZoomStyle} is {@link ZoomStyle#ZOOM_TO_STAY_SELECTED}.
+     * if the {@link ZoomStyle} is {@link ZoomStyle#ZOOM_TO_STAY}.
      */
     public static final IProperty<KVector> PREVIOUS_POSITION = new Property<KVector>(
             "klighd.zoom.previousPosition");
     
     /**
-     * Property to be attached to the {@link de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout
+     * Property to be attached to the {@link de.cau.cs.kieler.klighd.kgraph.KShapeLayout
      * KShapeLayout} of a view model's nodes for properly performing regression tests.
      */
     public static final IProperty<Float> KLIGHD_TESTING_EXPECTED_HEIGHT = new Property<Float>(
             "klighd.testing.expected.height");
 
     /**
-     * Property to be attached to the {@link de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout
+     * Property to be attached to the {@link de.cau.cs.kieler.klighd.kgraph.KShapeLayout
      * KShapeLayout} of a view model's nodes for properly performing regression tests.
      */
     public static final IProperty<Float> KLIGHD_TESTING_EXPECTED_WIDTH = new Property<Float>(
             "klighd.testing.expected.width");
 
     /**
-     * Property to be attached to the {@link de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout
+     * Property to be attached to the {@link de.cau.cs.kieler.klighd.kgraph.KShapeLayout
      * KShapeLayout} of a view model's nodes in order to ignore those nodes.<br>
      * <br>
      * The id is also hard-coded in KGraphJavaValidator!

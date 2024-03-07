@@ -68,8 +68,8 @@ import de.cau.cs.kieler.klighd.krendering.KText;
 
 /**
  * A viewer for instances of type {@code ViewContext}. It is instantiated by
- * {@link de.cau.cs.kieler.klighd.views.DiagramViewPart DiagramViewPart} and
- * {@link de.cau.cs.kieler.klighd.views.DiagramEditorPart DiagramEditorPart}.<br>
+ * {@code de.cau.cs.kieler.klighd.ui.parts.DiagramViewPart} and
+ * {@code de.cau.cs.kieler.klighd.ui.parts.DiagramEditorPart}.<br>
  * <br>
  * This class acts as a wrapper for the viewer supplied by the current view context. The method
  * {@code getControl} returns the control of that viewer, all other methods are delegated to the
@@ -88,9 +88,6 @@ import de.cau.cs.kieler.klighd.krendering.KText;
  * @author mri
  * @author chsch
  * @author msp
- *
- * @kieler.design proposed by chsch
- * @kieler.rating proposed yellow by chsch
  */
 public class ContextViewer implements IViewer, ILayoutRecorder, ISelectionProvider,
         IDiagramOutlinePage.Provider {

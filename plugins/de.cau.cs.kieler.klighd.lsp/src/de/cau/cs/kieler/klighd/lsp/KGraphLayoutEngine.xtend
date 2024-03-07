@@ -3,7 +3,7 @@
  * 
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright 2018,2019 by
+ * Copyright 2018-2023 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -80,7 +80,7 @@ class KGraphLayoutEngine extends ElkLayoutEngine {
 
         synchronized (kGraphContext.viewModel) {
             lightDiagramLayoutConfig.performLayout
-            RenderingPreparer.prepareRendering(kGraphContext.viewModel)
+            RenderingPreparer.prepareRendering(kGraphContext.viewModel, diagramState.getKGraphToSModelElementMap(uri))
         }
     }
 

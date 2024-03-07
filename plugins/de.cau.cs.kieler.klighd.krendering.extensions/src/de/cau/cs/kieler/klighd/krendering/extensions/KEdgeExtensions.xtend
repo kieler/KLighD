@@ -16,6 +16,7 @@
  */
 package de.cau.cs.kieler.klighd.krendering.extensions
 
+import com.google.inject.Inject
 import com.google.inject.Injector
 import com.google.inject.Scope
 import de.cau.cs.kieler.klighd.kgraph.KEdge
@@ -26,7 +27,6 @@ import de.cau.cs.kieler.klighd.krendering.KRoundedBendsPolyline
 import de.cau.cs.kieler.klighd.krendering.KSpline
 import de.cau.cs.kieler.klighd.krendering.ViewSynthesisShared
 import java.util.List
-import javax.inject.Inject
 import org.eclipse.elk.graph.properties.IProperty
 
 /**
@@ -46,7 +46,7 @@ import org.eclipse.elk.graph.properties.IProperty
  * 
  * @author chsch
  * @author ssm
- * @autnor nre
+ * @author nre
  * 
  * @containsExtensions
  */

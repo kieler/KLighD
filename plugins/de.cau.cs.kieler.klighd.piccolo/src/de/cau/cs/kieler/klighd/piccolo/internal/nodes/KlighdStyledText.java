@@ -41,7 +41,7 @@ import edu.umd.cs.piccolo.util.PPaintContext;
 /**
  * The KLighD-specific {@link edu.umd.cs.piccolo.PNode PNode} implementation for displaying text
  * strings supporting {@link org.eclipse.swt.graphics.TextStyle TextStyles}.<br>
- * It is inspired by the Piccolo2D {@link edu.umd.cs.piccolox.swt.PSWTText PSWTText} and is
+ * It is inspired by the Piccolo2D {@code edu.umd.cs.piccolox.swt.PSWTText} and is
  * tailored/extended to those features required by KLighD.<br>
  * <br>
  * <b>Note:</b> All <code>invalidate...</code> and <code>repaint</code> calls are deactivated in
@@ -167,7 +167,7 @@ public class KlighdStyledText extends KlighdNode.KlighdFigureNode<KText> {
     /**
      * Provides the currently set pen color.<br>
      * It's currently used in order configure the text widget enabling the cursor-based text
-     * selection, see {@link de.cau.cs.kieler.klighd.ui.internal.viewers.KlighdLabelWidgetHandler}.
+     * selection, see {@code de.cau.cs.kieler.klighd.ui.viewers.KlighdLabelWidgetEventHandler}.
      *
      * @return the current pen color {@link RGB}.
      */
@@ -178,7 +178,7 @@ public class KlighdStyledText extends KlighdNode.KlighdFigureNode<KText> {
     /**
      * Provides the currently set pen color's alpha value.<br>
      * It's currently used in order configure the text widget enabling the cursor-based text
-     * selection, see {@link de.cau.cs.kieler.klighd.ui.internal.viewers.KlighdLabelWidgetHandler}.
+     * selection, see {@code de.cau.cs.kieler.klighd.ui.viewers.KlighdLabelWidgetEventHandler}.
      *
      * @return the current pen color's alpha value
      */
@@ -190,7 +190,7 @@ public class KlighdStyledText extends KlighdNode.KlighdFigureNode<KText> {
      * Provides the currently set background color or <code>null</code>, if no background coloring
      * or a background gradient is set.<br>
      * It's currently used in order configure the text widget enabling the cursor-based text
-     * selection, see {@link de.cau.cs.kieler.klighd.ui.internal.viewers.KlighdLabelWidgetHandler}.
+     * selection, see {@code de.cau.cs.kieler.klighd.ui.viewers.KlighdLabelWidgetEventHandler}.
      *
      * @return the current background color {@link RGB}.
      */
@@ -201,7 +201,7 @@ public class KlighdStyledText extends KlighdNode.KlighdFigureNode<KText> {
     /**
      * Provides the currently set background color's alpha value.<br>
      * It's currently used in order configure the text widget enabling the cursor-based text
-     * selection, see {@link de.cau.cs.kieler.klighd.ui.internal.viewers.KlighdLabelWidgetHandler}.
+     * selection, see {@code de.cau.cs.kieler.klighd.ui.viewers.KlighdLabelWidgetEventHandler}.
      *
      * @return the current background color's alpha value
      */
@@ -213,7 +213,7 @@ public class KlighdStyledText extends KlighdNode.KlighdFigureNode<KText> {
      * Provides the currently set background gradient configuration or <code>null</code>, if no
      * background coloring or a single background color is set.<br>
      * It's currently used in order configure the text widget enabling the cursor-based text
-     * selection, see {@link de.cau.cs.kieler.klighd.ui.internal.viewers.KlighdLabelWidgetHandler}.
+     * selection, see {@code de.cau.cs.kieler.klighd.ui.viewers.KlighdLabelWidgetEventHandler}.
      *
      * @return the current background color's alpha value
      */
@@ -299,8 +299,7 @@ public class KlighdStyledText extends KlighdNode.KlighdFigureNode<KText> {
      * Provides the currently set {@link FontData}.<br>
      * It's currently used in order configure the text widget enabling the cursor-based text
      * selection, see
-     * {@link de.cau.cs.kieler.klighd.piccolo.viewer.PiccoloViewer.KlighdTextInputHandler
-     * PiccoloViewer.KlighdTextInputHandler}.
+     * {@code de.cau.cs.kieler.klighd.ui.viewers.PiccoloViewerUI PiccoloViewerUI}.
      *
      * @return the current {@link FontData}
      */
@@ -312,7 +311,7 @@ public class KlighdStyledText extends KlighdNode.KlighdFigureNode<KText> {
      * Configures the text node width a {@link FontData}.
      *
      * @param theFont
-     *            the desired {@link FontData}, must not be <code>null<code>
+     *            the desired {@link FontData}, must not be <code>null</code>
      */
     public void setFont(final FontData theFont) {
         if (fontData != null && fontData.equals(theFont)) {
@@ -332,7 +331,7 @@ public class KlighdStyledText extends KlighdNode.KlighdFigureNode<KText> {
      * @param theUnderlining
      *            the related constant from {@link KlighdConstants} and {@link org.eclipse.swt.SWT SWT}
      * @param color
-     *            the used color, maybe <code>null<code> (penColor is used in that case)
+     *            the used color, maybe <code>null</code> (penColor is used in that case)
      */
     public void setUnderline(final int theUnderlining, final RGB color) {
         if (underlining == theUnderlining) {
@@ -351,7 +350,7 @@ public class KlighdStyledText extends KlighdNode.KlighdFigureNode<KText> {
      * @param theStrikeout
      *            whether to strike out
      * @param color
-     *            the used color, maybe <code>null<code> (penColor is used in that case)
+     *            the used color, maybe <code>null</code> (penColor is used in that case)
      */
     public void setStrikeout(final boolean theStrikeout, final RGB color) {
         if (strikeout == theStrikeout && strikeoutColor == color) {

@@ -63,7 +63,7 @@ import de.cau.cs.kieler.klighd.ui.internal.Messages;
 /**
  * The 'save-as-image' dialog for Piccolo2D.
  *
- * The available image formats are retrieved from the {@link ExporterManager#EXTP_ID_EXPORTERS}
+ * The available image formats are retrieved from the exporter type KLighD's
  * extension point. An additional description of each format is added in parentheses (...), the
  * parentheses are stripped when the file extension is added.
  *

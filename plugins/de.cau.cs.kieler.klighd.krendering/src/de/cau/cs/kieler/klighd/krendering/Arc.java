@@ -42,8 +42,8 @@ public enum Arc implements Enumerator {
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
      * plain arc without any closing line connection from end to beginning
-     * {@link Arc2D#OPEN}, {@link Arc2D#CHORD}, and
-     *      *            {@link Arc2D#PIE}
+     * {@link java.awt.geom.Arc2D#OPEN}, {@link java.awt.geom.Arc2D#CHORD}, and
+     *      *            {@link java.awt.geom.Arc2D#PIE}
      * <!-- end-model-doc -->
      * @see #OPEN_VALUE
      * @generated
@@ -83,8 +83,8 @@ public enum Arc implements Enumerator {
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
      * plain arc without any closing line connection from end to beginning
-     * {@link Arc2D#OPEN}, {@link Arc2D#CHORD}, and
-     *      *            {@link Arc2D#PIE}
+     * {@link java.awt.geom.Arc2D#OPEN}, {@link java.awt.geom.Arc2D#CHORD}, and
+     *      *            {@link java.awt.geom.Arc2D#PIE}
      * <!-- end-model-doc -->
      * @see #OPEN
      * @model

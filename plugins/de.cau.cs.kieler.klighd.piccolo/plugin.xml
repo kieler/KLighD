@@ -27,16 +27,9 @@
             subFormat="png"
             supportsTiling="true">
       </exporter>
-      <offscreenRenderer
-            class="de.cau.cs.kieler.klighd.piccolo.export.BitmapOffscreenRenderer"
-            id="de.cau.cs.kieler.klighd.piccolo.export.BitmapOffscreenRenderer"
-            supportedFormats="bmp, jpeg, png">
-      </offscreenRenderer>
-      <offscreenRenderer
-            class="de.cau.cs.kieler.klighd.piccolo.export.SVGOffscreenRenderer"
-            id="de.cau.cs.kieler.klighd.piccolo.export.SVGOffscreenRenderer"
-            supportedFormats="svg">
-      </offscreenRenderer>
+      <startupHook
+            class="de.cau.cs.kieler.klighd.piccolo.export.PiccoloSetup">
+      </startupHook>
       <!-- exportBranding
             class="de.cau.cs.kieler.klighd.piccolo.export.AuthorConfidentialExportBranding"
             id="de.cau.cs.kieler.klighd.piccolo.export.AuthorConfidentialExportBranding"

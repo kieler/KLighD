@@ -77,7 +77,7 @@ class LazyTraceProvider extends XtextTraceProvider {
     /**
      * Generates a trace for the {@code kElement}'s source EObject on the {@code sElement}. 
      * The kElement must be synthesized by a KLighD synthesis before and must have its source EObject stored in the 
-     * {@link KlighdInternalProperties#MODEL_ELEMEMT} property.
+     * {@link KlighdInternalProperties#MODEL_ELEMENT} property.
      * 
      * @param sElement The SModelElement that needs a trace to its model element.
      * @param kElement The KGraphElement that was generated from some model element.
@@ -86,7 +86,7 @@ class LazyTraceProvider extends XtextTraceProvider {
         // The real model element that can be traced is the EObject that got synthesized in the
         // {@link KGraphDiagramGenerator#translateModel} function. That model element has to be stored in the properties
         // during the synthesis. Otherwise the tracing will not work.
-        val modelElement = kElement.properties.get(KlighdInternalProperties.MODEL_ELEMEMT)
+        val modelElement = kElement.properties.get(KlighdInternalProperties.MODEL_ELEMENT)
         if (modelElement instanceof EObject) {
             if (modelElement.eResource instanceof XtextResource) {
                 trace(sElement, modelElement)

@@ -61,7 +61,7 @@ public class KGraphOutlineTreeProvider extends DefaultOutlineTreeProvider {
      * Create children for edge layouts.
      * 
      * @param parentNode the parent outline node
-     * @param edgeLayout an edge layout
+     * @param edge an edge layout
      */
     protected void _createChildren(final IOutlineNode parentNode, final KEdge edge) {
         for (EObject childElement : edge.eContents()) {

@@ -28,9 +28,6 @@ import com.google.common.collect.Lists;
  * Some convenience methods supporting the proper handling of KText renderings.
  * 
  * @author chsch
- * 
- * @kieler.design proposed by chsch
- * @kieler.rating proposed yellow by chsch 
  */
 public final class KTextUtil {
 

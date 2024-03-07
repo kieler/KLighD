@@ -174,7 +174,7 @@ class KRenderingExtensions {
     /**
      * Adds a rectangle to the node.
      * @example
-     * node.addRectangle => [
+     * node.addRectangle =&gt; [
      *   it.background = "green".color
      * ]
      * 
@@ -1505,7 +1505,7 @@ class KRenderingExtensions {
      * Adds a grid placement to the rendering element with the specified spacing. 
      *  
      * @example
-     * rectangle.setGridPlacementData => [ cell |
+     * rectangle.setGridPlacementData =&gt; [ cell |
      *  cell.from(LEFT, padding, 0, TOP, padding - 2, 0).to(RIGHT, padding, 0, BOTTOM, 0, 0)
      *  cell.minCellHeight = propBarHeight
      *  cell.flexibleHeight = false

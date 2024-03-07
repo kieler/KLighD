@@ -40,9 +40,6 @@ import de.cau.cs.kieler.klighd.viewers.ContextViewer;
  * created only.
  *
  * @author chsch
- *
- * @kieler.design proposed by chsch
- * @kieler.rating proposed yellow by chsch
  */
 public interface IAction {
 
@@ -51,10 +48,10 @@ public interface IAction {
      *
      * @param context
      *            an {@link ActionContext} instance providing various useful data.
-     * @return an {@link ActionResult} providing {@link ILayoutConfig layout config(s)} to be
+     * @return an {@link ActionResult} providing {@link LayoutConfigurator layout config(s)} to be
      *         incorporated while updating the layout after the action has been performed, as well
      *         as configurations of 'animateLayout', 'zoomToFit', etc.<br>
-     *         Use {@link ActionResult#createResult(boolean, ILayoutConfig...)} for creation.
+     *         Use {@link ActionResult#createResult(boolean, LayoutConfigurator...)} for creation.
      */
     ActionResult execute(ActionContext context);
 
@@ -204,7 +201,7 @@ public interface IAction {
 
     /**
      * Return type being expected by implementations of {@link IAction#execute(ActionContext)}.
-     * Besides {@link ILayoutConfig ILayoutConfigs}
+     * Besides {@link LayoutConfigurator LayoutConfigurators}
      *
      * @author chsch
      */

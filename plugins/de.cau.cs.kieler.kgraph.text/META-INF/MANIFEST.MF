@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: KIELER Textual ELK KGraph Language
 Bundle-Vendor: Kiel University
-Bundle-Version: 2.2.1.qualifier
+Bundle-Version: 2.3.1.qualifier
 Bundle-SymbolicName: de.cau.cs.kieler.kgraph.text; singleton:=true
 Bundle-ActivationPolicy: lazy
 Require-Bundle: org.eclipse.xtext;visibility:=reexport,
@@ -14,16 +14,16 @@ Require-Bundle: org.eclipse.xtext;visibility:=reexport,
  org.eclipse.xtext.util,
  org.antlr.runtime,
  org.eclipse.xtext.xbase.lib,
- org.eclipse.xtext.xbase,
  org.eclipse.emf.ecore,
  org.eclipse.emf.common,
  org.eclipse.core.resources,
  org.eclipse.elk.core;visibility:=reexport,
- de.cau.cs.kieler.klighd.kgraph,
- de.cau.cs.kieler.klighd.krendering;visibility:=reexport
+ de.cau.cs.kieler.klighd.kgraph;visibility:=reexport,
+ de.cau.cs.kieler.klighd.krendering;visibility:=reexport,
+ de.cau.cs.kieler.klighd;resolution:=optional
 Import-Package: org.apache.log4j
 DynamicImport-Package: de.cau.cs.kieler.klighd.test
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Export-Package: de.cau.cs.kieler.kgraph.text,
  de.cau.cs.kieler.kgraph.text.formatting,
  de.cau.cs.kieler.kgraph.text.generator,

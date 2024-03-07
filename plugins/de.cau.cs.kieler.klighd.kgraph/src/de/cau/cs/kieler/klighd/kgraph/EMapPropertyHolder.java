@@ -48,7 +48,7 @@ import org.eclipse.emf.ecore.EObject;
 public interface EMapPropertyHolder extends EObject, IPropertyHolder {
 	/**
      * Returns the value of the '<em><b>Properties</b></em>' map.
-     * The key is of type {@link org.eclipse.elk.graph.properties.IProperty<?>},
+     * The key is of type {@link org.eclipse.elk.graph.properties.IProperty org.eclipse.elk.graph.properties.IProperty&lt;?&gt;},
      * and the value is of type {@link java.lang.Object},
      * <!-- begin-user-doc -->
 	 * <p>
@@ -58,7 +58,7 @@ public interface EMapPropertyHolder extends EObject, IPropertyHolder {
 	 * <!-- end-user-doc -->
      * @return the value of the '<em>Properties</em>' map.
      * @see de.cau.cs.kieler.klighd.kgraph.KGraphPackage#getEMapPropertyHolder_Properties()
-     * @model mapType="de.cau.cs.kieler.klighd.kgraph.IPropertyToObjectMap<de.cau.cs.kieler.klighd.kgraph.IProperty<?>, org.eclipse.emf.ecore.EJavaObject>" transient="true"
+     * @model mapType="de.cau.cs.kieler.klighd.kgraph.IPropertyToObjectMap&lt;de.cau.cs.kieler.klighd.kgraph.IProperty&lt;?&gt;, org.eclipse.emf.ecore.EJavaObject&gt;" transient="true"
      * @generated
      */
 	EMap<IProperty<?>, Object> getProperties();

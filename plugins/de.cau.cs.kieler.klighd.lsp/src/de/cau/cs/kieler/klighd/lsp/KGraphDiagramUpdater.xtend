@@ -106,7 +106,7 @@ class KGraphDiagramUpdater extends DiagramUpdater {
     }
 
     /**
-     * Updates the layout for the diagramServer, see {@see #updateLayout(KGraphDiagramServer)}.
+     * Updates the layout for the diagramServer, see {@link #updateLayout(KGraphDiagramServer)}.
      * Does this later as a completable future.
      * 
      * @param diagramServer The diagram server that should update its layout.
@@ -188,8 +188,7 @@ class KGraphDiagramUpdater extends DiagramUpdater {
      * @param model The new model that should be shown for the server.
      * @param uri The identifying URI to access the diagram state maps.
      */
-    synchronized def void prepareModel(KGraphDiagramServer server, Object model, String uri) {
-
+    def void prepareModel(KGraphDiagramServer server, Object model, String uri) {
         val properties = new KlighdSynthesisProperties()
         var SprottyViewer viewer = null
         var String synthesisId
@@ -285,7 +284,7 @@ class KGraphDiagramUpdater extends DiagramUpdater {
      * @param cancelIndicator The {@link CancelIndicator} used to tell the diagram translation to stop.
      * @return The generated SGraph
      */
-    synchronized def SGraph createModel(ViewContext viewContext, String uri, CancelIndicator cancelIndicator) {
+    def SGraph createModel(ViewContext viewContext, String uri, CancelIndicator cancelIndicator) {
         // Generate the SGraph model from the KGraph model and store every later relevant part in the
         // diagram state.
         
@@ -303,9 +302,10 @@ class KGraphDiagramUpdater extends DiagramUpdater {
         var diagramGenerator = incrementalDiagramGenerator
             ? incrementalDiagramGeneratorProvider.get
             : diagramGeneratorProvider.get
-        
-        val sGraph = diagramGenerator.toSGraph(viewContext.viewModel, uri, cancelIndicator)
-        
+        var SGraph sGraph = null;
+        synchronized (diagramState) {
+            sGraph = diagramGenerator.toSGraph(viewContext.viewModel, uri, cancelIndicator)
+        }
         if (incrementalDiagramGenerator) {
             val requestManager = new KGraphDiagramPieceRequestManager(diagramGenerator as KGraphIncrementalDiagramGenerator)
             synchronized (diagramState) {
@@ -325,9 +325,9 @@ class KGraphDiagramUpdater extends DiagramUpdater {
 
     /**
      * Stores the current synthesisOptions configured in the current {@link ViewContext}.
-     * Similar to storing the options in Eclipse UI.
-     * 
-     * @see de.cau.cs.kieler.klighd.ui.view.DiagramView#storeCurrentSynthesisOptions
+     * Similar to storing the options in Eclipse UI.<br>
+     * <br>
+     * See {@code de.cau.cs.kieler.klighd.ui.view.DiagramView#storeCurrentSynthesisOptions}
      */
     def storeCurrentSynthesisOptions() {
         synchronized (diagramState) {
@@ -406,7 +406,7 @@ class KGraphDiagramUpdater extends DiagramUpdater {
     }
 
     /**
-     * Makes the protected updateDiagram(List<URI>) method accessible from the outside.
+     * Makes the protected updateDiagram(List&lt;URI&gt;) method accessible from the outside.
      */
     def updateDiagrams2(List<URI> uris) {
         updateDiagrams(uris)
