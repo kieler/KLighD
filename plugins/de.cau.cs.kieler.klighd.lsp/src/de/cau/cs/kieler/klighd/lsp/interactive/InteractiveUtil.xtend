@@ -179,9 +179,9 @@ class InteractiveUtil {
     ) {
         var serializer = false
         
-        var sourceModel = model.getProperty(KlighdInternalProperties.MODEL_ELEMEMT)
-        if (!model.hasProperty(KlighdInternalProperties.MODEL_ELEMEMT)) {
-            sourceModel = model.children.get(0).getProperty(KlighdInternalProperties.MODEL_ELEMEMT)
+        var sourceModel = model.getProperty(KlighdInternalProperties.MODEL_ELEMENT)
+        if (!model.hasProperty(KlighdInternalProperties.MODEL_ELEMENT)) {
+            sourceModel = model.children.get(0).getProperty(KlighdInternalProperties.MODEL_ELEMENT)
         }
         for (IConstraintSerializer cs : ServiceLoader.load(IConstraintSerializer,
                 KlighdDataManager.getClassLoader())) {

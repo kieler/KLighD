@@ -45,10 +45,6 @@ class ElkGraphConstraintSerializer implements IConstraintSerializer {
         KGraphLanguageServerExtension ls,
         KGraphLanguageClient client
     ) {
-        changedNodes.forEach[c|
-            val ElkNode elkNode = c.KNode.getProperty(KlighdInternalProperties.MODEL_ELEMEMT) as ElkNode
-            elkNode.setProperty(c.property, c.value)
-        ]
         // Serialize model into given uri.
         val resource = ls.getResource(uri)
             
@@ -56,6 +52,10 @@ class ElkGraphConstraintSerializer implements IConstraintSerializer {
         var outputStream = new ByteArrayOutputStream
         resource.save(outputStream, emptyMap)
         val codeBefore = outputStream.toString
+        changedNodes.forEach[c|
+            val ElkNode elkNode = c.KNode.getProperty(KlighdInternalProperties.MODEL_ELEMENT) as ElkNode
+            elkNode.setProperty(c.property, c.value)
+        ]
         val Map<String, List<TextEdit>> changes = newHashMap 
         // Get changed file as String
         outputStream = new ByteArrayOutputStream
