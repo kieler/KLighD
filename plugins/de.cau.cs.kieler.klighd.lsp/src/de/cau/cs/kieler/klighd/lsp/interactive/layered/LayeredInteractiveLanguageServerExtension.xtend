@@ -217,6 +217,15 @@ class LayeredInteractiveLanguageServerExtension implements ILanguageServerExtens
             val changedNodes = absoluteConstraintReevaluation.changedNodes
             changedNodes.addAll(relativeConstraintReevaluation.changedNodes)
             changedNodes.add(new ConstraintProperty(targetNode, property, nameStringOfReferenceNode))
+            if (layerSwap) {
+                // Already apply changes to be able to correctly identify if a chain is split because of the new
+                // relative constraint.
+                changedNodes.forEach[constraint|
+                    val KNode kNode = constraint.KNode
+                    kNode.setProperty(constraint.property, constraint.value)
+                ]
+                absoluteConstraintReevaluation.reevaluateAfterEmptyingALayer(targetNode, referenceLayer, parentOfNode.children)
+            }
             refreshModelInEditor(changedNodes, KGraphUtil.getRootNodeOf(targetNode), uri)
         }
     }
@@ -458,8 +467,12 @@ class LayeredInteractiveLanguageServerExtension implements ILanguageServerExtens
                     absoluteConstraintReevalution.reevaluatePositionConstraintsAfterPositionChangeInLayer(layerNodes, kNode, newValueId)
                     absoluteConstraintReevalution.reevaluatePositionConstraintInChain(kNode, newValueConstraint, chain)
                 }
-                case LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT:
+                case LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT: {
                     absoluteConstraintReevalution.reevaluateLayerConstraintsInChain(layerId, chain)
+                    if (absoluteConstraintReevalution.reevaluateAfterEmptyingALayer(kNode, newValueConstraint, parentOfNode.children)) {
+                        newValueConstraint--
+                    }
+                }
             }
             
             changedNodes.addAll(absoluteConstraintReevalution.changedNodes)

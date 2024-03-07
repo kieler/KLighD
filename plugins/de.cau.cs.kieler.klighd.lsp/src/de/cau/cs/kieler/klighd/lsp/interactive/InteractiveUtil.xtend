@@ -18,6 +18,7 @@ package de.cau.cs.kieler.klighd.lsp.interactive
 
 import de.cau.cs.kieler.klighd.KlighdDataManager
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties
+import de.cau.cs.kieler.klighd.kgraph.KIdentifier
 import de.cau.cs.kieler.klighd.kgraph.KNode
 import de.cau.cs.kieler.klighd.lsp.KGraphLanguageClient
 import de.cau.cs.kieler.klighd.lsp.KGraphLanguageServerExtension
@@ -115,8 +116,8 @@ class InteractiveUtil {
         
         // from node to the start
         for (var i = pos - 1; i >= 0; i--) {
-            if (layerNodes.get(i).getProperty(LayeredOptions.CROSSING_MINIMIZATION_IN_LAYER_PRED_OF) !== null
-                || layerNodes.get(i + 1).getProperty(LayeredOptions.CROSSING_MINIMIZATION_IN_LAYER_SUCC_OF) !== null) {
+            if (layerNodes.get(i).getProperty(LayeredOptions.CROSSING_MINIMIZATION_IN_LAYER_PRED_OF) == getIdOfNode(layerNodes.get(i + 1))
+                || layerNodes.get(i + 1).getProperty(LayeredOptions.CROSSING_MINIMIZATION_IN_LAYER_SUCC_OF) == getIdOfNode(layerNodes.get(i))) {
                     chainNodes.add(0, layerNodes.get(i))
             } else {
                 i = -1
@@ -125,8 +126,8 @@ class InteractiveUtil {
         
         // count from node to the end
         for (var i = pos + 1; i < layerNodes.size; i++) {
-            if (layerNodes.get(i).getProperty(LayeredOptions.CROSSING_MINIMIZATION_IN_LAYER_SUCC_OF) !== null
-                || layerNodes.get(i - 1).getProperty(LayeredOptions.CROSSING_MINIMIZATION_IN_LAYER_PRED_OF) !== null) {
+            if (layerNodes.get(i).getProperty(LayeredOptions.CROSSING_MINIMIZATION_IN_LAYER_SUCC_OF) == getIdOfNode(layerNodes.get(i - 1))
+                || layerNodes.get(i - 1).getProperty(LayeredOptions.CROSSING_MINIMIZATION_IN_LAYER_PRED_OF) == getIdOfNode(layerNodes.get(i))) {
                     chainNodes.add(layerNodes.get(i))
             } else {
                 i = layerNodes.size
@@ -193,6 +194,21 @@ class InteractiveUtil {
             languageServer.updateLayout(uri)
         }
         return
+    }
+    
+    /**
+     * Returns id of a node.
+     * 
+     * @param node The node.
+     * @returns The id string of the node.
+     */
+    static def String getIdOfNode(KNode node) {
+        var nameStringOfReferenceNode = node.toString
+        val id = node.getData(KIdentifier)
+        if (id !== null) {
+            nameStringOfReferenceNode = id.id
+        }
+        return nameStringOfReferenceNode        
     }
     
 }

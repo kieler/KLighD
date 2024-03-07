@@ -116,6 +116,7 @@ class LayeredConstraintReevaluation {
         val layerConstraintTarget = ConstraintsUtils.getLayerConstraint(target)
         val layerId = target.getProperty(LayeredOptions.LAYERING_LAYER_ID)
         var originalLayerIndex = 0
+        // Calculate previous desired layer of target.
         if (layerConstraintTarget === null || layerConstraintTarget <= layerId) {
             originalLayerIndex = layerId
         } else {
@@ -123,7 +124,7 @@ class LayeredConstraintReevaluation {
         }
         val originalLayer = InteractiveUtil.getNodesOfLayer(originalLayerIndex, nodes)
 
-        if (originalLayer.length == 1) {
+        if (originalLayer.length == InteractiveUtil.getChain(target, originalLayer).size()) {
             // If a layer is emptied and disappears from the drawing 
             // then all layer constraint with a value higher or equal than
             // the disappeared layer need to be decremented.
