@@ -17,6 +17,7 @@
 package de.cau.cs.kieler.klighd.lsp.interactive.mrtree
 
 import com.google.inject.Inject
+import com.google.inject.Singleton
 import de.cau.cs.kieler.klighd.kgraph.KNode
 import de.cau.cs.kieler.klighd.kgraph.util.KGraphUtil
 import de.cau.cs.kieler.klighd.lsp.KGraphDiagramState
@@ -26,7 +27,6 @@ import de.cau.cs.kieler.klighd.lsp.LSPUtil
 import de.cau.cs.kieler.klighd.lsp.interactive.ConstraintProperty
 import de.cau.cs.kieler.klighd.lsp.interactive.InteractiveUtil
 import java.util.List
-import javax.inject.Singleton
 import org.eclipse.elk.alg.mrtree.options.MrTreeOptions
 import org.eclipse.elk.graph.properties.IProperty
 import org.eclipse.xtend.lib.annotations.Accessors
