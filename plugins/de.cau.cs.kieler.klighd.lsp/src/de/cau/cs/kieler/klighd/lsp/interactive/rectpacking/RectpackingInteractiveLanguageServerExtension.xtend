@@ -163,7 +163,7 @@ class RectpackingInteractiveLanguageServerExtension implements ILanguageServerEx
     /**
      * Applies property changes to the file given by the uri by sending by notifying the client to execute the changes.
      * 
-     * @param changedNodes The KNodes that changed.
+     * @param constraint The constraint to serialize
      * @param model The main KNode
      * @param uri uri of resource
      */

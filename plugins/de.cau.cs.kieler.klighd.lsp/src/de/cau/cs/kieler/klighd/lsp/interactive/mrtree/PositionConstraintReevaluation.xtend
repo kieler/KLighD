@@ -40,7 +40,7 @@ class PositionConstraintReevaluation {
     
     /**
      * Adjusts position constraints in a layer after one node has been introduced to it.
-     * @param nodesOfLayer the nodes of the layer
+     * @param parent the nodes of the layer
      * @param target the moved node
      * @param newPosition the new position of the node
      */

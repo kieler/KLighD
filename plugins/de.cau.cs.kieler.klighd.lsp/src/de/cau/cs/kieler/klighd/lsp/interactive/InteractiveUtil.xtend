@@ -200,7 +200,7 @@ class InteractiveUtil {
      * Returns id of a node.
      * 
      * @param node The node.
-     * @returns The id string of the node.
+     * @return The id string of the node.
      */
     static def String getIdOfNode(KNode node) {
         var nameStringOfReferenceNode = node.toString

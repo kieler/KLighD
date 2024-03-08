@@ -56,7 +56,7 @@ class MrTreeInteractiveLanguageServerExtension implements ILanguageServerExtensi
      * Set order constraint of node specified by node id.
      * This changes all order values of all constraints of a previous layout run.
      * 
-     * @param constraint constraint to be set
+     * @param pc constraint to be set
      * @param clientId identifier of diagram
      */
     def setPositionConstraint(MrTreeSetPositionConstraint pc, String clientId) {
