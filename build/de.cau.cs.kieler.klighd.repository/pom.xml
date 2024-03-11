@@ -64,7 +64,7 @@
                 <!-- Eclipse Orbit for Google Guave, Apache Batik, ... -->
                 <associateSite>https://download.eclipse.org/tools/orbit/simrel/orbit-aggregation/release/4.30.0</associateSite>
                 <!-- Sprotty ... -->
-                <associateSite>https://rtsys.informatik.uni-kiel.de/~kieler/updatesite/sprotty/0.9.0/</associateSite>
+                <associateSite>https://rtsys.informatik.uni-kiel.de/~kieler/updatesite/sprotty/1.1.1/</associateSite>
               </associateSites>
               <siteTemplateFolder>siteTemplate</siteTemplateFolder>
               <symbols>
