@@ -17,22 +17,10 @@
 package de.cau.cs.kieler.klighd.lsp.gson_utils
 
 import com.google.gson.GsonBuilder
+import com.google.inject.Injector
+import de.cau.cs.kieler.klighd.KlighdDataManager
 import de.cau.cs.kieler.klighd.SynthesisOption
-import de.cau.cs.kieler.klighd.lsp.interactive.layered.DeleteInLayerPredecessorOfConstraintAction
-import de.cau.cs.kieler.klighd.lsp.interactive.layered.DeleteInLayerSuccessorOfConstraintAction
-import de.cau.cs.kieler.klighd.lsp.interactive.layered.DeleteLayerConstraintAction
-import de.cau.cs.kieler.klighd.lsp.interactive.layered.DeletePositionConstraintAction
-import de.cau.cs.kieler.klighd.lsp.interactive.layered.DeleteRelativeConstraintsAction
-import de.cau.cs.kieler.klighd.lsp.interactive.layered.DeleteStaticConstraintAction
-import de.cau.cs.kieler.klighd.lsp.interactive.layered.SetInLayerPredecessorOfConstraintAction
-import de.cau.cs.kieler.klighd.lsp.interactive.layered.SetInLayerSuccessorOfConstraintAction
-import de.cau.cs.kieler.klighd.lsp.interactive.layered.SetLayerConstraintAction
-import de.cau.cs.kieler.klighd.lsp.interactive.layered.SetPositionConstraintAction
-import de.cau.cs.kieler.klighd.lsp.interactive.layered.SetStaticConstraintAction
-import de.cau.cs.kieler.klighd.lsp.interactive.mrtree.MrTreeSetPositionConstraintAction
-import de.cau.cs.kieler.klighd.lsp.interactive.rectpacking.RectpackingDeletePositionConstraintAction
-import de.cau.cs.kieler.klighd.lsp.interactive.rectpacking.RectpackingSetPositionConstraintAction
-import de.cau.cs.kieler.klighd.lsp.interactive.rectpacking.SetAspectRatioAction
+import de.cau.cs.kieler.klighd.lsp.IActionHandler
 import de.cau.cs.kieler.klighd.lsp.model.CheckedImagesAction
 import de.cau.cs.kieler.klighd.lsp.model.PerformActionAction
 import de.cau.cs.kieler.klighd.lsp.model.RefreshDiagramAction
@@ -40,16 +28,17 @@ import de.cau.cs.kieler.klighd.lsp.model.RefreshLayoutAction
 import de.cau.cs.kieler.klighd.lsp.model.RequestDiagramPieceAction
 import de.cau.cs.kieler.klighd.lsp.model.SetSynthesisAction
 import java.awt.geom.Point2D
+import java.util.ServiceLoader
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.sprotty.server.json.ActionTypeAdapter
 
 /**
  * Static util class to configure needed gson type adapters for KGraph serialization.
  * 
- * @author nre
+ * @author nre, sdo
  */
 class KGraphTypeAdapterUtil {
-    def static GsonBuilder configureGson(GsonBuilder gsonBuilder) {
+    def static GsonBuilder configureGson(GsonBuilder gsonBuilder, Injector injector) {
         gsonBuilder
         .registerTypeAdapterFactory(
             new ActionTypeAdapter.Factory => [
@@ -60,31 +49,17 @@ class KGraphTypeAdapterUtil {
                 addActionKind(RefreshDiagramAction.KIND, RefreshDiagramAction)
                 addActionKind(RefreshLayoutAction.KIND, RefreshLayoutAction)
                 
-                // Interactive layered actions
-                addActionKind(SetStaticConstraintAction.KIND, SetStaticConstraintAction)
-                addActionKind(SetPositionConstraintAction.KIND, SetPositionConstraintAction)
-                addActionKind(SetLayerConstraintAction.KIND, SetLayerConstraintAction)
-                addActionKind(DeleteStaticConstraintAction.KIND, DeleteStaticConstraintAction)
-                addActionKind(DeletePositionConstraintAction.KIND, DeletePositionConstraintAction)
-                addActionKind(DeleteLayerConstraintAction.KIND, DeleteLayerConstraintAction)
-                //relative constraints                
-                addActionKind(SetInLayerPredecessorOfConstraintAction.KIND, SetInLayerPredecessorOfConstraintAction)
-                addActionKind(SetInLayerSuccessorOfConstraintAction.KIND, SetInLayerSuccessorOfConstraintAction)
-                addActionKind(DeleteRelativeConstraintsAction.KIND, DeleteRelativeConstraintsAction)
-                addActionKind(DeleteInLayerPredecessorOfConstraintAction.KIND, DeleteInLayerPredecessorOfConstraintAction)
-                addActionKind(DeleteInLayerSuccessorOfConstraintAction.KIND, DeleteInLayerSuccessorOfConstraintAction)
-                
-                
-                // Interactive rectpacking actions
-                addActionKind(RectpackingSetPositionConstraintAction.KIND, RectpackingSetPositionConstraintAction)
-                addActionKind(RectpackingDeletePositionConstraintAction.KIND, RectpackingDeletePositionConstraintAction)
-                addActionKind(SetAspectRatioAction.KIND, SetAspectRatioAction)
+                // Load all registered action handlers and add their actions.
+                ServiceLoader.load(IActionHandler, KlighdDataManager.getClassLoader()).forEach[handler |
+                    val handlerInstance = injector.getInstance(handler.class)
+                    handlerInstance.supportedMessages.keySet.forEach[kind |
+                        addActionKind(kind, handlerInstance.supportedMessages.get(kind))
+                    ]                    
+                ]
                 
                 // Incremental topdown actions
                 addActionKind(RequestDiagramPieceAction.KIND, RequestDiagramPieceAction)
                 
-                // Interactive mrtree actions
-                addActionKind(MrTreeSetPositionConstraintAction.KIND, MrTreeSetPositionConstraintAction)
                 
             ]
         )

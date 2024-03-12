@@ -124,7 +124,7 @@ abstract class AbstractLsCreator implements ILsCreator {
         
         // TypeAdapter is needed to be able to send recursive data in json
         val Consumer<GsonBuilder> configureGson = [ gsonBuilder |
-            KGraphTypeAdapterUtil.configureGson(gsonBuilder)
+            KGraphTypeAdapterUtil.configureGson(gsonBuilder, injector)
         ]
         // Get all LSExtensions to use them as local services
         val localServices = <Object>newArrayList

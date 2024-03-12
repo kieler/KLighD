@@ -1,0 +1,3 @@
+de.cau.cs.kieler.klighd.lsp.interactive.layered.LayeredInteractiveActionHandler
+de.cau.cs.kieler.klighd.lsp.interactive.rectpacking.RectpackingInteractiveActionHandler
+de.cau.cs.kieler.klighd.lsp.interactive.mrtree.MrTreeActionHandler
