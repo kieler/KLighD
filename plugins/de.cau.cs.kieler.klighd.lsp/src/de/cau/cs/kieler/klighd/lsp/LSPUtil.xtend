@@ -75,8 +75,8 @@ class LSPUtil {
      * Returns null if the {@code ViewContext} of the resource described by {@code uri} is null.
      * Returns null if the element behind the id is no kEdge.
      */
-    static def getKEdge(KGraphDiagramState diagramState, String uri, String nodeId) {
-        val kGraphElement = diagramState.getIdToKGraphMap(uri).get(nodeId)
+    static def getKEdge(KGraphDiagramState diagramState, String uri, String edgeId) {
+        val kGraphElement = diagramState.getIdToKGraphMap(uri).get(edgeId)
 
         if (kGraphElement instanceof KEdge) {
             return kGraphElement as KEdge
