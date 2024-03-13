@@ -3,7 +3,7 @@
  *
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright 2018-2022 by
+ * Copyright 2018-2024 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -384,11 +384,9 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
      * FIXME Remove this if UpdateModelAction has a cause.
      */
     override protected handle(RequestModelAction request) {
-        if (model.type == 'NONE' && diagramLanguageServer !== null) {
-            if (!request.requestId.nullOrEmpty)
-                LOG.warn("Model requests are not supported by the Xtext diagram server.")
+        if (diagramLanguageServer !== null) {
             copyOptions(request)
-            diagramLanguageServer.diagramUpdater.updateDiagram(this)
+            diagramLanguageServer.diagramUpdater.updateDiagram(this, request)
         } else {
             super.handle(request)
         }

@@ -60,8 +60,6 @@
    </feature>
 
    <bundle id="de.cau.cs.kieler.klighd.standalone" version="2.3.1.qualifier"/>
-   <bundle id="de.cau.cs.kieler.klighd.lsp" version="2.3.1.qualifier"/>
-   <bundle id="de.cau.cs.kieler.klighd.lsp.source" version="2.3.1.qualifier"/>
 
    <repository-reference location="https://download.eclipse.org/releases/2023-12/" enabled="true" />
    <repository-reference location="https://download.eclipse.org/modeling/mdt/uml2/updates/5.4/" enabled="true" />
@@ -69,5 +67,4 @@
    <repository-reference location="https://download.eclipse.org/modeling/tmf/xtext/updates/releases/2.33.0/" enabled="true" />
    <repository-reference location="https://xtext.github.io/download/updates/releases/2.1.1/" enabled="true" />
    <repository-reference location="https://download.eclipse.org/tools/orbit/simrel/orbit-aggregation/release/4.30.0" enabled="true" />
-   <repository-reference location="https://rtsys.informatik.uni-kiel.de/~kieler/updatesite/sprotty/0.9.0/" enabled="true" />
 </site>
