@@ -14,11 +14,11 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  */
-package de.cau.cs.kieler.klighd.lsp
+package de.cau.cs.kieler.klighd.lsp.interactive
 
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties
-import de.cau.cs.kieler.klighd.lsp.interactive.ConstraintProperty
-import de.cau.cs.kieler.klighd.lsp.interactive.IConstraintSerializer
+import de.cau.cs.kieler.klighd.lsp.KGraphLanguageClient
+import de.cau.cs.kieler.klighd.lsp.KGraphLanguageServerExtension
 import java.io.ByteArrayOutputStream
 import java.util.List
 import java.util.Map
