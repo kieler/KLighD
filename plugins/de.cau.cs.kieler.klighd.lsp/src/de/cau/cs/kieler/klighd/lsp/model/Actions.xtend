@@ -240,36 +240,6 @@ class RefreshLayoutAction implements Action {
 }
 
 /**
- * Updates the model and sends the cause to the client.
- * Extends to UpdateModelAction.
- * FIXME Remove this if the UpdateModelAction includes a cause.
- * 
- * @author sdo
- */
-@Accessors
-@EqualsHashCode
-@ToString(skipNulls = true)
-public class KeithUpdateModelAction extends UpdateModelAction {
-    public static val KIND = 'updateModel'
-    String kind = KIND
-    
-    
-    SModelRoot newRoot
-    Boolean animate
-    Action cause
-    
-    new() {}
-    new(Consumer<KeithUpdateModelAction> initializer) {
-        initializer.accept(this)
-    }
-    
-    new(SModelRoot newRoot, Action cause) {
-        this.newRoot = newRoot
-        this.cause = cause
-    }
-}
-
-/**
  * Sent from client to request a certain piece of the diagram.
  * 
  * @author mka
