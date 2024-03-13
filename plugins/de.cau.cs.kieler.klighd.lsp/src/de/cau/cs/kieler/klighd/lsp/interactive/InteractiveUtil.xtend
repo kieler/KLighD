@@ -22,12 +22,17 @@ import de.cau.cs.kieler.klighd.kgraph.KIdentifier
 import de.cau.cs.kieler.klighd.kgraph.KNode
 import de.cau.cs.kieler.klighd.lsp.KGraphLanguageClient
 import de.cau.cs.kieler.klighd.lsp.KGraphLanguageServerExtension
+import java.io.ByteArrayOutputStream
 import java.util.ArrayList
 import java.util.List
 import java.util.ServiceLoader
 import org.eclipse.elk.alg.layered.options.LayeredOptions
 import org.eclipse.elk.graph.ElkNode
 import org.eclipse.elk.graph.properties.IProperty
+import org.eclipse.emf.ecore.resource.Resource
+import org.eclipse.lsp4j.Position
+import org.eclipse.lsp4j.Range
+import org.eclipse.lsp4j.TextEdit
 
 /**
  * Provides utility methods for interactive layout.
@@ -186,14 +191,46 @@ class InteractiveUtil {
         for (IConstraintSerializer cs : ServiceLoader.load(IConstraintSerializer,
                 KlighdDataManager.getClassLoader())) {
             if (cs.canHandle(sourceModel)) {
-                cs.serializeConstraints(changedNodes, model, uri, languageServer, client)
+                val resource = languageServer.getResource(uri)
+                val textEdit = cs.serializeConstraints(changedNodes, model, resource)
+                // Send changes to the client.
+                client.replaceContentInFile(uri, textEdit.newText, textEdit.range)
+                // If a serializer is registered, we do not need to update the layout since the diagram will update 
+                // since the model changes.
                 serializer = true
             }
         }
+        // If there is no serializer that changes the textual model (which will cause a refresh model action),
+        // we have to update the layout (not refresh the layout) to update based on the changed via model.
         if (!serializer) {
             languageServer.updateLayout(uri)
         }
         return
+    }
+    
+    /**
+     * Creates a string of a model resource by saving the resource and returning the output string.
+     * 
+     * @param resource Resource to get the string for.
+     */
+    static def String serializeResource(Resource resource) {
+        var outputStream = new ByteArrayOutputStream
+        resource.save(outputStream, emptyMap)
+        return outputStream.toString
+    }
+    
+    /**
+     * Creates a TextEdit based on the before and after text.
+     * 
+     * @param codeBefore The whole text before
+     * @param codeAfter The new text
+     * @return A TextEdit that assumes that the whole code before will ne replaced.
+     */
+    static def TextEdit calculateTextEdit(String codeBefore, String codeAfter) {
+        val lines = codeBefore.split("\r\n|\r|\n")
+        val lastLineLength = lines.get(lines.size - 1).length
+        val Range range = new Range(new Position(0, 0), new Position(lines.length, lastLineLength))
+        return new TextEdit(range, codeAfter)
     }
     
     /**

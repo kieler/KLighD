@@ -16,9 +16,9 @@
  */
 package de.cau.cs.kieler.klighd.lsp.interactive
 
-import de.cau.cs.kieler.klighd.lsp.KGraphLanguageClient
-import de.cau.cs.kieler.klighd.lsp.KGraphLanguageServerExtension
 import java.util.List
+import org.eclipse.emf.ecore.resource.Resource
+import org.eclipse.lsp4j.TextEdit
 
 /**
  * Service interface for implementations that serialize a set constraint in the model.
@@ -40,10 +40,8 @@ interface IConstraintSerializer {
     /**
      * @param changedNodes The added constraints.
      * @param graph The model, e.g. SCChart or ElkGraph.
-     * @param uri The uri of the main source file.
-     * @param ls The language server.
-     * @param client The language client.
+     * @param resource The resource to change
+     * @return The TextEdit to send to the client consisting of the new text and a range.
      */
-    def void serializeConstraints(List<ConstraintProperty<Object>> changedNodes, Object graph, String uri,
-        KGraphLanguageServerExtension ls, KGraphLanguageClient client);
+    def TextEdit serializeConstraints(List<ConstraintProperty<Object>> changedNodes, Object graph, Resource resource);
 }
