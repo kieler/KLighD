@@ -267,7 +267,7 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
                     val handlerInstance = handlers.get(action.kind)
                     if (handlerInstance !== null) {
                         // Even though we have an instance, it is not yet populated with all injected things.
-                        val handler = injector.getInstance(handlers.get(action.kind).class)
+                        val handler = injector.getInstance(handlerInstance.class)
                         handler.handle(action, clientId, this)
                     } else {
                         // If no handler is registered for this message. Let the default super class handle it.
