@@ -225,7 +225,7 @@ class DeleteInLayerPredecessorOfConstraintAction implements Action {
 /**
  * Deletes the iLSuccOf constraint on the node that is identified by the given id.
  * 
- * @author jet
+ * @author jep
  */
 @Accessors
 @EqualsHashCode
