@@ -33,12 +33,6 @@ import org.eclipse.elk.core.options.Direction
  *
  */
 class MrTreeInteractiveUtil {
-     /**
-     * Sets the required options for the non interactive layout run.
-     */
-    static def void setRequiredInteractiveOptions(KNode root) {
-        // TODO: Implement if needed
-    }
     
     static def List<KNode> getSiblings(KNode n, KNode parent) {
         val lowestParent = getLowestParent(n, parent);
