@@ -21,10 +21,8 @@ import org.eclipse.sprotty.Action
 
 /**
  * Abstract class to handle Sprotty actions.
- * 
- * @author sdo
  */
-abstract class AbstractActionHandler implements IActionHandler {
+abstract class AbstractActionHandler implements ISprottyActionHandler {
     
     Map<String, Class<? extends Action>> supportedMessages
         

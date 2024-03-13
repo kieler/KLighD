@@ -94,7 +94,7 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
     
     @Inject protected Injector injector
     
-    Map<String, IActionHandler> handlers = new HashMap
+    Map<String, ISprottyActionHandler> handlers = new HashMap
     
     @Inject 
     protected KGraphDiagramState diagramState
@@ -145,7 +145,7 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
         currentRoot.setType("NONE");
         currentRoot.setId("ROOT");
         // Create map of registered action kinds and handlers.
-        ServiceLoader.load(IActionHandler, KlighdDataManager.getClassLoader()).forEach[handler | 
+        ServiceLoader.load(ISprottyActionHandler, KlighdDataManager.getClassLoader()).forEach[handler | 
             val Set<String> kindsSupported = handler.supportedMessages.keySet
             for (kind : kindsSupported) {
                 handlers.put(kind, handler);

@@ -20,7 +20,7 @@ import com.google.gson.GsonBuilder
 import com.google.inject.Injector
 import de.cau.cs.kieler.klighd.KlighdDataManager
 import de.cau.cs.kieler.klighd.SynthesisOption
-import de.cau.cs.kieler.klighd.lsp.IActionHandler
+import de.cau.cs.kieler.klighd.lsp.ISprottyActionHandler
 import de.cau.cs.kieler.klighd.lsp.model.CheckedImagesAction
 import de.cau.cs.kieler.klighd.lsp.model.PerformActionAction
 import de.cau.cs.kieler.klighd.lsp.model.RefreshDiagramAction
@@ -50,7 +50,7 @@ class KGraphTypeAdapterUtil {
                 addActionKind(RefreshLayoutAction.KIND, RefreshLayoutAction)
                 
                 // Load all registered action handlers and add their actions.
-                ServiceLoader.load(IActionHandler, KlighdDataManager.getClassLoader()).forEach[handler |
+                ServiceLoader.load(ISprottyActionHandler, KlighdDataManager.getClassLoader()).forEach[handler |
                     val handlerInstance = injector.getInstance(handler.class)
                     handlerInstance.supportedMessages.keySet.forEach[kind |
                         addActionKind(kind, handlerInstance.supportedMessages.get(kind))

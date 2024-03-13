@@ -20,11 +20,9 @@ import org.eclipse.sprotty.Action
 import java.util.Map
 
 /**
- * Service Interface for ActionHandler.
- * 
- * @author sdo
+ * Service interface for Sprotty action handlers.
  */
-interface IActionHandler {
+interface ISprottyActionHandler {
     
     
     def Map<String, Class<? extends Action>> getSupportedMessages();
