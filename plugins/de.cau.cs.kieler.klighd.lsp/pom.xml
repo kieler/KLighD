@@ -10,7 +10,6 @@
   </parent>
 
   <artifactId>de.cau.cs.kieler.klighd.lsp</artifactId>
-  <packaging>eclipse-plugin</packaging>
 
   <name>KIELER Lightweight Diagrams as Language Server</name>
   <description>KIELER Lightweight Diagrams as Language Server</description>

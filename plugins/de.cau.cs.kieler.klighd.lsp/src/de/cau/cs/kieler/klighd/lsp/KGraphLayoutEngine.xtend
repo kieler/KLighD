@@ -3,7 +3,7 @@
  * 
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright 2018-2023 by
+ * Copyright 2018-2024 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -18,6 +18,7 @@ package de.cau.cs.kieler.klighd.lsp
 
 import com.google.inject.Inject
 import de.cau.cs.kieler.klighd.LightDiagramLayoutConfig
+import de.cau.cs.kieler.klighd.lsp.launch.AbstractLanguageServer
 import de.cau.cs.kieler.klighd.lsp.utils.KGraphMappingUtil
 import de.cau.cs.kieler.klighd.lsp.utils.RenderingPreparer
 import java.io.ByteArrayOutputStream
@@ -48,16 +49,18 @@ class KGraphLayoutEngine extends ElkLayoutEngine {
 	public static val LOG = Logger.getLogger(KGraphLayoutEngine)
 	
 	override layout(SModelRoot root, Action cause) {
-	    synchronized (diagramState) {
-    	    if (root instanceof SGraph) {
-    	        // The layout is executed on the KGraph, not the SGraph. So get the KGraph belonging to this SGraph from
-    	        // the KGraphContext.
-                onlyLayoutOnKGraph(root.id)
-
-                // map layouted KGraph to SGraph
-                KGraphMappingUtil.mapLayout(diagramState.getKGraphToSModelElementMap(root.id))
+	    AbstractLanguageServer.addToMainThreadQueue([
+    	    synchronized (diagramState) {
+        	    if (root instanceof SGraph) {
+        	        // The layout is executed on the KGraph, not the SGraph. So get the KGraph belonging to this SGraph from
+        	        // the KGraphContext.
+                    onlyLayoutOnKGraph(root.id)
+    
+                    // map layouted KGraph to SGraph
+                    KGraphMappingUtil.mapLayout(diagramState.getKGraphToSModelElementMap(root.id))
+                }
             }
-        }
+        ])
     }
 
     /**
