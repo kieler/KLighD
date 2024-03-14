@@ -80,6 +80,11 @@
     </dependency>
     <dependency>
       <groupId>org.eclipse.elk</groupId>
+      <artifactId>org.eclipse.elk.alg.mrtree</artifactId>
+      <version>${elk-version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.elk</groupId>
       <artifactId>org.eclipse.elk.alg.rectpacking</artifactId>
       <version>${elk-version}</version>
     </dependency>

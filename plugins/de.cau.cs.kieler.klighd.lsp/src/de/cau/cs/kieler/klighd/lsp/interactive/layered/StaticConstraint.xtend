@@ -21,7 +21,7 @@ import org.eclipse.xtend.lib.annotations.Data
 /**
  * Data class for a combined position and layer constraint.
  * 
- * @author jet, cos, sdo
+ * @author jep, cos, sdo
  */
 @Data
 class StaticConstraint {
@@ -44,11 +44,11 @@ class StaticConstraint {
     /**
      * Value for the layer constraint
      */
-    int layerCons
+    int layerConstraint
     
     /**
      * Value for the position constraint
      */
-    int posCons
+    int positionConstraint
     
 }

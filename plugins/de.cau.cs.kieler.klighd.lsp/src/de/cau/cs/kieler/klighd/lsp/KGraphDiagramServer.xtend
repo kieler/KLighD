@@ -19,14 +19,13 @@ package de.cau.cs.kieler.klighd.lsp
 import com.google.common.base.Throwables
 import com.google.common.io.ByteStreams
 import com.google.inject.Inject
+import com.google.inject.Injector
 import de.cau.cs.kieler.klighd.IAction
 import de.cau.cs.kieler.klighd.IAction.ActionContext
 import de.cau.cs.kieler.klighd.Klighd
 import de.cau.cs.kieler.klighd.KlighdDataManager
 import de.cau.cs.kieler.klighd.ViewContext
 import de.cau.cs.kieler.klighd.kgraph.KNode
-import de.cau.cs.kieler.klighd.lsp.interactive.layered.LayeredInteractiveActionHandler
-import de.cau.cs.kieler.klighd.lsp.interactive.rectpacking.RectpackingInteractiveActionHandler
 import de.cau.cs.kieler.klighd.lsp.model.CheckImagesAction
 import de.cau.cs.kieler.klighd.lsp.model.CheckedImagesAction
 import de.cau.cs.kieler.klighd.lsp.model.DisplayedActionUIData
@@ -47,8 +46,13 @@ import java.io.InputStream
 import java.util.ArrayList
 import java.util.Base64
 import java.util.Collection
+import java.util.HashMap
 import java.util.List
 import java.util.Map
+import java.util.ServiceLoader
+import java.util.Set
+import java.util.concurrent.CompletableFuture
+import org.apache.log4j.Logger
 import org.eclipse.core.runtime.Platform
 import org.eclipse.elk.core.data.LayoutMetaDataService
 import org.eclipse.elk.core.data.LayoutOptionData
@@ -74,11 +78,9 @@ import org.eclipse.xtend.lib.annotations.Accessors
  */
 class KGraphDiagramServer extends LanguageAwareDiagramServer {
     
-    @Inject
-    protected LayeredInteractiveActionHandler constraintActionHandler
+    @Inject protected Injector injector
     
-    @Inject
-    protected RectpackingInteractiveActionHandler rectpackingActionHandler
+    Map<String, ISprottyActionHandler> handlers = new HashMap
     
     @Inject 
     protected KGraphDiagramState diagramState
@@ -104,6 +106,22 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
     
     @Accessors(PUBLIC_GETTER)
     protected Object modelLock = new Object
+    
+    /**
+     * Needed for KeithUpdateModelAction
+     * 
+     * FIXME Remove this if UpdateModelAction has a cause.
+     */
+    new() {
+        super()
+        // Create map of registered action kinds and handlers.
+        ServiceLoader.load(ISprottyActionHandler, KlighdDataManager.getClassLoader()).forEach[handler | 
+            val Set<String> kindsSupported = handler.supportedMessages.keySet
+            for (kind : kindsSupported) {
+                handlers.put(kind, handler);
+            }
+        ]
+    }
     
     /**
      * Prepares the client side update of the model by processing the potentially needed images on the client. Checks
@@ -215,12 +233,16 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
                     handle(action as RefreshLayoutAction)
                 } else if (action.getKind === RequestDiagramPieceAction.KIND) {
                     handle(action as RequestDiagramPieceAction)
-                } else if (constraintActionHandler.canHandleAction(action.getKind)) {
-                    constraintActionHandler.handle(action, clientId, this)
-                } else if (rectpackingActionHandler.canHandleAction(action.getKind)) {
-                    rectpackingActionHandler.handle(action, clientId, this)
                 } else {
-                    super.accept(message)
+                    val handlerInstance = handlers.get(action.kind)
+                    if (handlerInstance !== null) {
+                        // Even though we have an instance, it is not yet populated with all injected things.
+                        val handler = injector.getInstance(handlerInstance.class)
+                        handler.handle(action, clientId, this)
+                    } else {
+                        // If no handler is registered for this message. Let the default super class handle it.
+                        super.accept(message)  
+                    }
                 }
             }
         } catch (Exception e) {

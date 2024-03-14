@@ -17,13 +17,16 @@
 package de.cau.cs.kieler.klighd.lsp
 
 import org.eclipse.sprotty.Action
+import java.util.Map
 
 /**
- * Service Interface for ActionHandler.
- * 
- * @author sdo
+ * Service interface for Sprotty action handlers.
  */
-interface IActionHandler {
+interface ISprottyActionHandler {
+    
+    
+    def Map<String, Class<? extends Action>> getSupportedMessages();
+    
     /**
      * Checks and returns true if this ActionHandler can handle this action.
      * @param kind String identifier of action

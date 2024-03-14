@@ -1,9 +1,9 @@
 /*
  * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
- * 
+ *
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright 2019 by
+ * Copyright 2022 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -14,18 +14,17 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  */
-package de.cau.cs.kieler.klighd.lsp.interactive.layered
+package de.cau.cs.kieler.klighd.lsp.interactive.mrtree
 
 import org.eclipse.xtend.lib.annotations.Data
 
 /**
- * Data class for a layer constraint.
+ * Data class to set a new aspect ratio which is sent from client to server for the mrtree algorithm.
  * 
- * @author jep, cos, sdo
+ * @author sdo
  */
 @Data
-class LayerConstraint {
+class SetAspectRatio {
     String id
-    int layer
-    int layerConstraint
+    Double aspectRatio
 }

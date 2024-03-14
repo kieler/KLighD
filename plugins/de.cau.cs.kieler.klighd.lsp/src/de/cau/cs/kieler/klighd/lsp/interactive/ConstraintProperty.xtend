@@ -26,7 +26,8 @@ import de.cau.cs.kieler.klighd.kgraph.KNode
  * @author sdo
  */
 @Data
-class ConstraintProperty {
+class ConstraintProperty<T> {
     KNode kNode
-    IProperty<Integer> property
+    IProperty<T> property
+    T value
 }

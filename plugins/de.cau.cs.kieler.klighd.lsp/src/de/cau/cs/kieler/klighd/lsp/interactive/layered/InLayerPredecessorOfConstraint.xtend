@@ -1,9 +1,9 @@
 /*
  * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
- * 
+ *
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright 2019 by
+ * Copyright 2022 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -19,13 +19,12 @@ package de.cau.cs.kieler.klighd.lsp.interactive.layered
 import org.eclipse.xtend.lib.annotations.Data
 
 /**
- * Data class for a layer constraint.
+ * Data class for a 'in layer predecessor of'-constraint.
  * 
- * @author jep, cos, sdo
+ * @author jep
  */
 @Data
-class LayerConstraint {
+class InLayerPredecessorOfConstraint {
     String id
-    int layer
-    int layerConstraint
+    String referencedNode
 }
