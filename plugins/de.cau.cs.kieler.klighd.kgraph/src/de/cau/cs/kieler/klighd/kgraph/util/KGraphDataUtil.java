@@ -299,9 +299,13 @@ public final class KGraphDataUtil {
 
             // if we have a valid layout option, parse its value.
             if (layoutOptionData != null) {
-                Object layoutOptionValue = layoutOptionData.parseValue(value);
-                if (layoutOptionValue != null) {
-                    propertyHolder.setProperty(layoutOptionData, layoutOptionValue);
+                try {
+                    Object layoutOptionValue = layoutOptionData.parseValue(value);
+                    if (layoutOptionValue != null) {
+                        propertyHolder.setProperty(layoutOptionData, layoutOptionValue);
+                    }
+                } catch (IllegalStateException e) {
+                    // Some options cannot be parsed, skip these.
                 }
             } else {
                 
