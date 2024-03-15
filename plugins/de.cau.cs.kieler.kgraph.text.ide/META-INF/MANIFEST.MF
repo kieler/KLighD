@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: KIELER KGraph Text Ide
 Bundle-SymbolicName: de.cau.cs.kieler.kgraph.text.ide
-Bundle-Version: 2.3.1.qualifier
+Bundle-Version: 3.0.0.v20240315
 Bundle-Vendor: Kiel University
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Require-Bundle: de.cau.cs.kieler.kgraph.text,

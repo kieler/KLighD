@@ -5,7 +5,7 @@
   <parent>
     <groupId>de.cau.cs.kieler.klighd</groupId>
     <artifactId>parent</artifactId>
-    <version>2.3.1-SNAPSHOT</version>
+    <version>3.0.0.v20240315</version>
     <relativePath>../../pom.xml</relativePath>
   </parent>
 

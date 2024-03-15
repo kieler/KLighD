@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: KIELER Lightweight Diagrams Standalone Setup
 Bundle-SymbolicName: de.cau.cs.kieler.klighd.standalone
-Bundle-Version: 2.3.1.qualifier
+Bundle-Version: 3.0.0.v20240315
 Bundle-Vendor: KIELER Lightweight Diagrams (KLighD)
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Require-Bundle: org.eclipse.emf.ecore.xmi,
