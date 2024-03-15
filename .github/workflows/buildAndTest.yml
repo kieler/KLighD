@@ -50,10 +50,19 @@ jobs:
         retention-days: 14
         if-no-files-found: error
     - name: Archive MVN Repository
+      if: ${{ !contains(github.ref, 'releases-') }}
       uses: actions/upload-artifact@v2
       with:
         name: KLighD MVN Repository
         path: klighd-snapshots/**/*
+        retention-days: 14
+        if-no-files-found: error
+    - name: Archive MVN Release Repository
+      if: ${{ contains(github.ref, 'releases-') }}
+      uses: actions/upload-artifact@v2
+      with:
+        name: KLighD MVN Repository
+        path: klighd/**/*
         retention-days: 14
         if-no-files-found: error
     - name: Publish Test Report
