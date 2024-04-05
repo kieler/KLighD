@@ -142,7 +142,10 @@ final class RenderingPreparer {
                 }
             }
             for (edge : element.outgoingEdges) {
-                prepareRendering(edge, kGraphToSGraph)
+                // not expanded => edge must not have the target node inside the non-expanded
+                if (isExpanded || !KGraphUtil.isDescendant(edge.target, element)) {
+                    prepareRendering(edge, kGraphToSGraph)
+                }
             }
             for (port : element.ports) {
                 prepareRendering(port, kGraphToSGraph)
@@ -382,10 +385,11 @@ final class RenderingPreparer {
                     var List<Point2D.Float> pointList = new ArrayList()
                     if (parent instanceof KEdge) {
                         val edge = parent as KEdge
-                        
-                        pointList.add(new Point2D.Float(edge.sourcePoint.x, edge.sourcePoint.y))
-                        pointList.addAll(edge.bendPoints.map[ new Point2D.Float(it.x, it.y) ])
-                        pointList.add(new Point2D.Float(edge.targetPoint.x, edge.targetPoint.y))
+                        if (edge.sourcePoint !== null && edge.targetPoint !== null) {
+                            pointList.add(new Point2D.Float(edge.sourcePoint.x, edge.sourcePoint.y))
+                            pointList.addAll(edge.bendPoints.map[ new Point2D.Float(it.x, it.y) ])
+                            pointList.add(new Point2D.Float(edge.targetPoint.x, edge.targetPoint.y))
+                        }
                     } else if (!parentRendering.points.empty) {
                         pointList.addAll(parentRendering.points.map[position | 
                             PlacementUtil.evaluateKPosition(position, parentBounds, true).toPoint2D])
