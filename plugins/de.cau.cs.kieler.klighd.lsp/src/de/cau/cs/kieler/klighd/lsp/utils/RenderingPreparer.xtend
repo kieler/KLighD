@@ -3,7 +3,7 @@
  *
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright 2018-2023 by
+ * Copyright 2018-2024 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -46,6 +46,7 @@ import de.cau.cs.kieler.klighd.microlayout.DecoratorPlacementUtil.Decoration
 import de.cau.cs.kieler.klighd.microlayout.GridPlacementUtil
 import de.cau.cs.kieler.klighd.microlayout.PlacementUtil
 import de.cau.cs.kieler.klighd.util.KlighdProperties
+import de.cau.cs.kieler.klighd.util.RenderingContextData
 import java.awt.geom.Point2D
 import java.util.ArrayList
 import java.util.HashMap
@@ -124,11 +125,27 @@ final class RenderingPreparer {
             }
         }
         if (element instanceof KNode) {
-            for (node : element.children) {
-                prepareRendering(node, kGraphToSGraph)
+            // Do not recurse generating IDs if the element is not expanded, as there won't be any SGraph generated for
+            // it.
+            var boolean isExpanded
+            val renderingContextData = RenderingContextData.get(element)
+            if (renderingContextData.hasProperty(SprottyProperties.EXPANDED)) {
+                isExpanded = renderingContextData.getProperty(SprottyProperties.EXPANDED)
+            } else {
+                // If the expanded property does not exist yet, use the initial expansion.
+                isExpanded = element.getProperty(KlighdProperties.EXPAND)
+            }
+            
+            if (isExpanded) {
+                for (node : element.children) {
+                    prepareRendering(node, kGraphToSGraph)
+                }
             }
             for (edge : element.outgoingEdges) {
-                prepareRendering(edge, kGraphToSGraph)
+                // not expanded => edge must not have the target node inside the non-expanded
+                if (isExpanded || !KGraphUtil.isDescendant(edge.target, element)) {
+                    prepareRendering(edge, kGraphToSGraph)
+                }
             }
             for (port : element.ports) {
                 prepareRendering(port, kGraphToSGraph)
@@ -368,10 +385,11 @@ final class RenderingPreparer {
                     var List<Point2D.Float> pointList = new ArrayList()
                     if (parent instanceof KEdge) {
                         val edge = parent as KEdge
-                        
-                        pointList.add(new Point2D.Float(edge.sourcePoint.x, edge.sourcePoint.y))
-                        pointList.addAll(edge.bendPoints.map[ new Point2D.Float(it.x, it.y) ])
-                        pointList.add(new Point2D.Float(edge.targetPoint.x, edge.targetPoint.y))
+                        if (edge.sourcePoint !== null && edge.targetPoint !== null) {
+                            pointList.add(new Point2D.Float(edge.sourcePoint.x, edge.sourcePoint.y))
+                            pointList.addAll(edge.bendPoints.map[ new Point2D.Float(it.x, it.y) ])
+                            pointList.add(new Point2D.Float(edge.targetPoint.x, edge.targetPoint.y))
+                        }
                     } else if (!parentRendering.points.empty) {
                         pointList.addAll(parentRendering.points.map[position | 
                             PlacementUtil.evaluateKPosition(position, parentBounds, true).toPoint2D])
