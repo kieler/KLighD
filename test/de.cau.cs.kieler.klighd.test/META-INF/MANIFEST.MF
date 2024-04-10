@@ -12,7 +12,7 @@ Require-Bundle: org.junit;bundle-version="4.8.0",
  de.cau.cs.kieler.klighd,
  de.cau.cs.kieler.klighd.incremental;resolution:=optional,
  de.cau.cs.kieler.klighd.piccolo;resolution:=optional,
- de.cau.cs.kieler.klighd.standalone;resolution:=optional;visibility:=reexport,
+ de.cau.cs.kieler.klighd.setup;resolution:=optional;visibility:=reexport,
  de.cau.cs.kieler.kgraph.text
 Export-Package: de.cau.cs.kieler.klighd.test,
  de.cau.cs.kieler.klighd.test.runners

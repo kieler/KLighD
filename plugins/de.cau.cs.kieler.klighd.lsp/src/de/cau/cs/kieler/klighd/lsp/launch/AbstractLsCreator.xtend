@@ -30,7 +30,7 @@ import de.cau.cs.kieler.klighd.lsp.KGraphLanguageClient
 import de.cau.cs.kieler.klighd.lsp.LSPUtil
 import de.cau.cs.kieler.klighd.lsp.SprottyViewer
 import de.cau.cs.kieler.klighd.lsp.gson_utils.KGraphTypeAdapterUtil
-import de.cau.cs.kieler.klighd.standalone.KlighdStandaloneSetup
+import de.cau.cs.kieler.klighd.setup.KlighdStandaloneSetup
 import java.io.InputStream
 import java.io.OutputStream
 import java.util.Collection

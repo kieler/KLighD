@@ -3,7 +3,7 @@
  *
  * https://github.com/Kieler/KLighD
  *
- * Copyright 2020-2022 by TypeFox GmbH (typefox.io) and others.
+ * Copyright 2020-2024 by TypeFox GmbH (typefox.io) and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -11,7 +11,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  */
-package de.cau.cs.kieler.klighd.standalone;
+package de.cau.cs.kieler.klighd.setup;
 
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
