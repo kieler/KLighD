@@ -64,7 +64,7 @@
 
    <repository-reference location="https://download.eclipse.org/releases/2023-12/" enabled="true" />
    <repository-reference location="https://download.eclipse.org/modeling/mdt/uml2/updates/5.4/" enabled="true" />
-   <repository-reference location="https://download.eclipse.org/elk/updates/releases/0.9.0/" enabled="true" />
+   <repository-reference location="https://download.eclipse.org/elk/updates/releases/0.9.1/" enabled="true" />
    <repository-reference location="https://download.eclipse.org/modeling/tmf/xtext/updates/releases/2.33.0/" enabled="true" />
    <repository-reference location="https://xtext.github.io/download/updates/releases/2.1.1/" enabled="true" />
    <repository-reference location="https://download.eclipse.org/tools/orbit/simrel/orbit-aggregation/release/4.30.0" enabled="true" />
