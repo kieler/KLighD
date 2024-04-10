@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: KLighD Model Modification Extensions for EMF Domains
 Bundle-SymbolicName: de.cau.cs.kieler.klighd.ui.emf;singleton:=true
-Bundle-Version: 2.3.1.qualifier
+Bundle-Version: 3.0.1.v20240410
 Fragment-Host: de.cau.cs.kieler.klighd.ui
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Require-Bundle: org.eclipse.emf.transaction,

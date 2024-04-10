@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>de.cau.cs.kieler.klighd</groupId>
   <artifactId>parent</artifactId>
-  <version>2.3.1-SNAPSHOT</version>
+  <version>3.0.1.v20240410</version>
   <packaging>pom</packaging>
 
   <modules>
@@ -146,7 +146,7 @@
       <build>
         <plugins>
           <!-- Configure the nexus server to deploy to. -->
-          <plugin>
+          <!-- <plugin>
             <groupId>org.sonatype.plugins</groupId>
             <artifactId>nexus-staging-maven-plugin</artifactId>
             <version>1.6.13</version>
@@ -154,10 +154,11 @@
             <configuration>
               <serverId>ossrh</serverId>
               <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
-              <autoReleaseAfterClose>false</autoReleaseAfterClose> <!-- this allows to manually inspect the staging repository: https://central.sonatype.org/publish/release/
+              <autoReleaseAfterClose>false</autoReleaseAfterClose>  -->
+              <!-- this allows to manually inspect the staging repository: https://central.sonatype.org/publish/release/
               trigger a release later with `mvn nexus-staging:release` or set to true if no inspection is wanted.-->
-            </configuration>
-          </plugin>
+            <!-- </configuration>
+          </plugin> -->
 
           <!-- Sign all artifacts with GPG. -->
           <plugin>
@@ -295,7 +296,7 @@
             <artifact>
               <groupId>de.cau.cs.kieler.klighd</groupId>
               <artifactId>de.cau.cs.kieler.klighd.targetplatform</artifactId>
-              <version>2.3.1-SNAPSHOT</version>
+              <version>3.0.1.v20240410</version>
             </artifact>
           </target>
 
