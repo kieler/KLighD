@@ -204,11 +204,6 @@
   
   <build>
     <sourceDirectory>src</sourceDirectory>
-    <resources>
-      <resource>
-        <directory>src/resources</directory>
-      </resource>
-    </resources>
     <plugins>
       <!-- Compile Xtend code -->
       <plugin>

@@ -259,6 +259,15 @@
 
   <!-- Modify the build process to add Tycho and configure some utility plug-ins. -->
   <build>
+    <resources>
+      <resource>
+        <directory>.</directory>
+         <includes>
+           <include>META-INF/services/**</include>
+         </includes>
+      </resource>
+    </resources>
+
     <sourceDirectory>src</sourceDirectory>
     <plugins>
       <!-- we need tycho plugin to build eclipse plugins -->
