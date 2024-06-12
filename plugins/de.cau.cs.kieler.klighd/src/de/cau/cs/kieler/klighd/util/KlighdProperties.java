@@ -35,6 +35,7 @@ import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
 import de.cau.cs.kieler.klighd.kgraph.KNode;
 import de.cau.cs.kieler.klighd.krendering.KText;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
+import de.cau.cs.kieler.klighd.structurebasedediting.StructureBasedEditingOptions;
 
 /**
  * A collection of KLighD-specific {@link IProperty IProperties}
@@ -380,6 +381,20 @@ public final class KlighdProperties {
      */
     public static final IProperty<Boolean> IS_NODE_TITLE =
             new Property<Boolean>("klighd.isNodeTitle", false);
+    
+    /**
+     * Property holding the structured editing options which are supported for a certain language.
+     * By default no support is given.
+     */
+    public static final IProperty<StructureBasedEditingOptions> STRUCTURED_EDITING =
+            new Property<StructureBasedEditingOptions>("klighd.StructuralEditingOptions", null);
+
+    /**
+     * Property determining if the contextmenu should be rendered on the client. Since the contextmenu is only suported
+     * for certain languages it makes sense to keep track only on the server to show it
+     */
+    public static final IProperty<Boolean> SHOW_STRUCTURED_EDITING_MENU = 
+            new Property<Boolean>("klighd.showContextmenu", true);
     
     /**
      * Property determining whether this node should be rendered as a proxy.
