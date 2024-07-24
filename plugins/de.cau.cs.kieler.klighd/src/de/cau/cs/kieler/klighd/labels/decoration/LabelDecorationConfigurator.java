@@ -271,7 +271,9 @@ public final class LabelDecorationConfigurator {
         KContainerRendering container = createAndAddContainerRendering(label);
         
         ElkPadding padding = createAndAddDecoratorRenderings(label, container);
-        createAndAddTextRendering(label, container, padding);
+        if (label.getText().length() > 0) {
+            createAndAddTextRendering(label, container, padding);
+        }
     }
     
 
