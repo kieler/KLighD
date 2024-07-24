@@ -24,6 +24,8 @@ import de.cau.cs.kieler.klighd.lsp.utils.RenderingPreparer
 import java.io.ByteArrayOutputStream
 import java.util.ArrayList
 import org.apache.log4j.Logger
+import org.eclipse.elk.core.math.ElkPadding
+import org.eclipse.elk.core.options.CoreOptions
 import org.eclipse.elk.graph.ElkNode
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
@@ -70,6 +72,8 @@ class KGraphLayoutEngine extends ElkLayoutEngine {
      */
     def onlyLayoutOnKGraph(String uri) {
         val kGraphContext = diagramState.getKGraphContext(uri)
+        // Remove any padding from the root node to avoid blank padding around the edge of the entire graph.
+        kGraphContext.viewModel.setProperty(CoreOptions.PADDING, new ElkPadding(0))
 
         // layout of KGraph
         val lightDiagramLayoutConfig = new LightDiagramLayoutConfig(kGraphContext)
