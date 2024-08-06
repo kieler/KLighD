@@ -58,7 +58,7 @@
     <guice-version>7.0.0</guice-version>
     <jface-version>3.32.0</jface-version>
     <lsp4j-version>0.22.0</lsp4j-version>
-    <sprotty-version>1.1.1</sprotty-version>
+    <sprotty-version>1.1.2</sprotty-version>
     <swt-mock-version>0.1.0</swt-mock-version>
     <swt-version>3.124.200</swt-version>
     <tycho-version>2.7.3</tycho-version>
