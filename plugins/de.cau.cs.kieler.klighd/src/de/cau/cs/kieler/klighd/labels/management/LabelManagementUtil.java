@@ -23,7 +23,6 @@ import org.eclipse.swt.graphics.FontData;
 
 import com.google.common.collect.Iterators;
 
-import de.cau.cs.kieler.klighd.KlighdOptions;
 import de.cau.cs.kieler.klighd.krendering.KRendering;
 import de.cau.cs.kieler.klighd.krendering.KRenderingOptions;
 import de.cau.cs.kieler.klighd.krendering.KRenderingUtil;

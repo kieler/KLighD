@@ -24,8 +24,6 @@ import org.eclipse.sprotty.Action
 import org.eclipse.sprotty.RequestAction
 import org.eclipse.sprotty.ResponseAction
 import org.eclipse.sprotty.SModelElement
-import org.eclipse.sprotty.SModelRoot
-import org.eclipse.sprotty.UpdateModelAction
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.xtend.lib.annotations.EqualsHashCode
 import org.eclipse.xtend.lib.annotations.ToString
