@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Deque;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
@@ -35,9 +36,6 @@ import org.eclipse.elk.core.options.PortConstraints;
 import org.eclipse.elk.core.options.PortSide;
 import org.eclipse.elk.core.util.Pair;
 import org.eclipse.elk.graph.properties.IProperty;
-
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 
 import de.cau.cs.kieler.kgraph.text.grandom.GeneratorOptions.RandVal;
 import de.cau.cs.kieler.klighd.kgraph.KEdge;
@@ -132,7 +130,7 @@ public class RandomGraphGenerator {
     private void connectAtomicNodesOnDifferentLevels(final List<List<KNode>> atomicNodes) {
         int numCrossHier;
         if (get(EXACT_RELATIVE_HIER) != null) {
-            Set<KEdge> newHashSet = Sets.newHashSet();
+            Set<KEdge> newHashSet = new HashSet<>();
             for (List<KNode> level : atomicNodes) {
                 for (KNode node : level) {
                     newHashSet.addAll(node.getIncomingEdges());
@@ -1208,7 +1206,7 @@ public class RandomGraphGenerator {
         float reusePortsChance = get(USE_EXISTING_PORTS_CHANCE).floatVal(random);
         if (reusePortsChance > 0.0f && random.nextFloat() < reusePortsChance) {
             // Collect candidate ports for reuse
-            List<KPort> reuseCandidates = Lists.newLinkedList();
+            List<KPort> reuseCandidates = new ArrayList<>();
 
             for (KPort port : node.getPorts()) {
                 // Two flags indicating whether the port already has edges pointing in the right

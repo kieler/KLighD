@@ -17,12 +17,11 @@
 package de.cau.cs.kieler.klighd.kgraph.util;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Iterator;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
-import com.google.common.collect.Sets;
-
 import de.cau.cs.kieler.klighd.kgraph.KEdge;
 import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
 import de.cau.cs.kieler.klighd.kgraph.KPort;
@@ -67,7 +66,7 @@ public class DefaultSelectionIterator extends SelectionIterator {
     protected Iterator<? extends KGraphElement> getChildren(final Object object) {
         // Ensure that the visited set is properly initialized
         if (visited == null) {
-            visited = Sets.newHashSet();
+            visited = new HashSet<>();
         }
         
         if (object instanceof KEdge) {

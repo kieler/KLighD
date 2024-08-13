@@ -17,6 +17,7 @@
 package de.cau.cs.kieler.klighd.kgraph.util;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -43,8 +44,6 @@ import com.google.common.base.Function;
 import com.google.common.base.Strings;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
-
 import de.cau.cs.kieler.klighd.kgraph.EMapPropertyHolder;
 import de.cau.cs.kieler.klighd.kgraph.KEdge;
 import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
@@ -710,7 +709,7 @@ public final class KGraphUtil {
      // get a singleton iterator offering 'kedge'
         final Iterator<KGraphElement> kedgeIt = Iterators.singletonIterator((KGraphElement) kedge);
         // Keep a set of visited elements for the tree iterators
-        final Set<KPort> visited = Sets.newHashSet();
+        final Set<KPort> visited = new HashSet<>();
 
         // Grab source iterator if edge has a source
         final SelectionIterator sourceSideIt =

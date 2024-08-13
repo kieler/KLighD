@@ -16,14 +16,13 @@
  */
 package de.cau.cs.kieler.klighd.util;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.elk.graph.properties.IProperty;
 import org.eclipse.elk.graph.properties.IPropertyHolder;
 import org.eclipse.elk.graph.properties.MapPropertyHolder;
 import org.eclipse.elk.graph.properties.Property;
-
-import com.google.common.collect.Maps;
 
 import de.cau.cs.kieler.klighd.SynthesisOption;
 import de.cau.cs.kieler.klighd.krendering.SimpleUpdateStrategy;
@@ -359,7 +358,7 @@ public class KlighdSynthesisProperties extends MapPropertyHolder {
             final SynthesisOption option, final Object value) {
         Map<SynthesisOption, Object> optionConfig = this.getProperty(SYNTHESIS_OPTION_CONFIG);
         if (optionConfig == null) {
-            optionConfig = Maps.newHashMap();
+            optionConfig = new HashMap<>();
             this.setProperty(SYNTHESIS_OPTION_CONFIG, optionConfig);
         }
         optionConfig.put(option, value);
@@ -378,7 +377,7 @@ public class KlighdSynthesisProperties extends MapPropertyHolder {
             final Map<SynthesisOption, Object> options) {
         Map<SynthesisOption, Object> optionConfig = this.getProperty(SYNTHESIS_OPTION_CONFIG);
         if (optionConfig == null) {
-            optionConfig = Maps.newHashMap();
+            optionConfig = new HashMap<>();
             this.setProperty(SYNTHESIS_OPTION_CONFIG, optionConfig);
         }
         optionConfig.putAll(options);

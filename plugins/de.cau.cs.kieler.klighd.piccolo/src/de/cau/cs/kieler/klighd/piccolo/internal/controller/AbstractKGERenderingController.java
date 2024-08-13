@@ -24,6 +24,7 @@ import static com.google.common.collect.Iterables.transform;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
@@ -796,7 +797,7 @@ public abstract class AbstractKGERenderingController
      */
     protected List<KStyle> determinePropagationStyles(final List<KStyle> renderingStyles,
             final List<KStyle> propagatedStyles, final boolean isRenderingRef) {
-        final List<KStyle> result = Lists.newLinkedList();
+        final List<KStyle> result = new ArrayList<>();
 
         for (final KStyle style : isRenderingRef ? propagatedStyles : concat(
                 propagatedStyles, renderingStyles)) {
@@ -1255,7 +1256,7 @@ public abstract class AbstractKGERenderingController
         @SuppressWarnings("unchecked")
         List<Object> listeners = (List<Object>) nodeAsPNode.getAttribute(PROPERTY_LISTENER_KEY);
         if (listeners == null) {
-            listeners = Lists.newLinkedList();
+            listeners = new ArrayList<>();
             nodeAsPNode.addAttribute(PROPERTY_LISTENER_KEY, listeners);
         }
         listeners.add(new Pair<String, PropertyChangeListener>(property, listener));

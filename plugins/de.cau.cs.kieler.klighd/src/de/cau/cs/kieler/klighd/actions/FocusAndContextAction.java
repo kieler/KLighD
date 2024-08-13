@@ -16,11 +16,10 @@
  */
 package de.cau.cs.kieler.klighd.actions;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.elk.core.options.CoreOptions;
-
-import com.google.common.collect.Lists;
 
 import de.cau.cs.kieler.klighd.IAction;
 import de.cau.cs.kieler.klighd.KlighdOptions;
@@ -128,7 +127,7 @@ public class FocusAndContextAction implements IAction {
         if (element instanceof KNode) {
             KNode node = (KNode) element;
             
-            List<KGraphElement> result = Lists.newArrayList();
+            List<KGraphElement> result = new ArrayList<>();
             
             // Include all ports
             result.addAll(node.getPorts());

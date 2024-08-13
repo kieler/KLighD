@@ -16,8 +16,10 @@
  */
 package de.cau.cs.kieler.klighd;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -36,9 +38,6 @@ import org.eclipse.ui.IWorkbenchPart;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-
 import de.cau.cs.kieler.klighd.internal.ILayoutRecorder;
 import de.cau.cs.kieler.klighd.internal.ISynthesis;
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
@@ -746,10 +745,10 @@ public class ViewContext extends MapPropertyHolder {
     // ---------------------------------------------------------------------------------- //
     //  Synthesis option handling
 
-    private List<SynthesisOption> synthesisOptions = Lists.newLinkedList();
+    private List<SynthesisOption> synthesisOptions = new ArrayList<>();
 
     /** Memory of the configured transformation options to be evaluated by the transformation. */
-    private Map<SynthesisOption, Object> synthesisOptionConfig = Maps.newHashMap();
+    private Map<SynthesisOption, Object> synthesisOptionConfig = new HashMap<>();
 
 
     /**
@@ -874,7 +873,7 @@ public class ViewContext extends MapPropertyHolder {
     // ---------------------------------------------------------------------------------- //
     //  Child ViewContext handling
 
-    private final List<ViewContext> childViewContexts = Lists.newLinkedList();
+    private final List<ViewContext> childViewContexts = new ArrayList<>();
 
     /**
      * Returns the list of registered child {@link ViewContext}.<br>
@@ -889,7 +888,7 @@ public class ViewContext extends MapPropertyHolder {
      */
     public List<ViewContext> getChildViewContexts(final boolean recursive) {
         if (recursive) {
-            List<ViewContext> recursiveVCs = Lists.newLinkedList();
+            List<ViewContext> recursiveVCs = new ArrayList<>();
             for (ViewContext vc : childViewContexts) {
                 recursiveVCs.add(vc);
                 recursiveVCs.addAll(vc.getChildViewContexts(true));

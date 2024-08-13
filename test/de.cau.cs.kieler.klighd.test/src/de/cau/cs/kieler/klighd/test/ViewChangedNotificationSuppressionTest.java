@@ -18,6 +18,7 @@ package de.cau.cs.kieler.klighd.test;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -41,8 +42,6 @@ import com.google.common.base.Function;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 
 import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.IViewChangeListener;
@@ -146,13 +145,13 @@ public class ViewChangedNotificationSuppressionTest {
     }
 
 
-    private Map<ViewChangeType, ArrayList<ViewChangeType>> suppressNotificationConfig01 =
-            Maps.newHashMap();
-    private ArrayList<ViewChangeType> expectedNotifications01 = null;
+    private Map<ViewChangeType, List<ViewChangeType>> suppressNotificationConfig01 =
+            new HashMap<>();
+    private List<ViewChangeType> expectedNotifications01 = null;
 
     private Map<ViewChangeType, Map<ViewChangeType, Integer>> suppressNotificationConfig02 =
-            Maps.newHashMap();
-    private ArrayList<ViewChangeType> expectedNotifications02 = null;
+            new HashMap<>();
+    private List<ViewChangeType> expectedNotifications02 = null;
 
     private Iterable<ViewChangeType> observedNotifications01 = null;
     private Iterable<ViewChangeType> observedNotifications02 = null;
@@ -164,7 +163,7 @@ public class ViewChangedNotificationSuppressionTest {
         private final List<ViewChangeType> changes;
 
         /* Constructor */ {
-            this.changes = Collections.synchronizedList(Lists.<ViewChangeType>newArrayList());
+            this.changes = Collections.synchronizedList(new ArrayList<>());
             ViewChangedNotificationSuppressionTest.this.observedNotifications01 =
                     Iterables.unmodifiableIterable(changes);
         }
@@ -172,7 +171,7 @@ public class ViewChangedNotificationSuppressionTest {
         public void viewChanged(final ViewChange change) {
             changes.add(change.getType());
 
-            final ArrayList<ViewChangeType> suppressed =
+            final List<ViewChangeType> suppressed =
                     suppressNotificationConfig01.get(change.getType());
             if (suppressed != null) {
                 change.suppressSubsequentNotifications(suppressed.toArray(new ViewChangeType[0]));
@@ -190,7 +189,7 @@ public class ViewChangedNotificationSuppressionTest {
         private final List<ViewChangeType> changes;
 
         /* Constructor */ {
-            this.changes = Collections.synchronizedList(Lists.<ViewChangeType>newArrayList());
+            this.changes = Collections.synchronizedList(new ArrayList<>());
             ViewChangedNotificationSuppressionTest.this.observedNotifications02 =
                     Iterables.unmodifiableIterable(changes);
         }
@@ -255,7 +254,7 @@ public class ViewChangedNotificationSuppressionTest {
     public void test00() {
         employFirstListener();
 
-        expectedNotifications01 = Lists.newArrayList(ViewChangeType.COLLAPSE,
+        expectedNotifications01 = List.of(ViewChangeType.COLLAPSE,
                 ViewChangeType.VIEW_PORT, ViewChangeType.EXPAND, ViewChangeType.VIEW_PORT);
         expectedNotifications02 = expectedNotifications01;
 
@@ -279,9 +278,9 @@ public class ViewChangedNotificationSuppressionTest {
         employFirstListener();
 
         suppressNotificationConfig01.put(
-                ViewChangeType.COLLAPSE, Lists.newArrayList(ViewChangeType.VIEW_PORT));
+                ViewChangeType.COLLAPSE, List.of(ViewChangeType.VIEW_PORT));
 
-        expectedNotifications01 = Lists.newArrayList(
+        expectedNotifications01 = List.of(
                 ViewChangeType.COLLAPSE, ViewChangeType.EXPAND, ViewChangeType.VIEW_PORT);
 
         final Object modelElement = MODEL_QUERY.apply(viewContext);
@@ -303,8 +302,8 @@ public class ViewChangedNotificationSuppressionTest {
         employFirstListener();
 
         suppressNotificationConfig01.put(
-                ViewChangeType.EXPAND, Lists.newArrayList(ViewChangeType.VIEW_PORT));
-        expectedNotifications01 = Lists.newArrayList(
+                ViewChangeType.EXPAND, List.of(ViewChangeType.VIEW_PORT));
+        expectedNotifications01 = List.of(
                 ViewChangeType.COLLAPSE, ViewChangeType.VIEW_PORT, ViewChangeType.EXPAND);
 
         final Object modelElement = MODEL_QUERY.apply(viewContext);
@@ -327,10 +326,10 @@ public class ViewChangedNotificationSuppressionTest {
         employFirstListener();
 
         suppressNotificationConfig01.put(
-                ViewChangeType.COLLAPSE, Lists.newArrayList(ViewChangeType.VIEW_PORT));
+                ViewChangeType.COLLAPSE, List.of(ViewChangeType.VIEW_PORT));
         suppressNotificationConfig01.put(
-                ViewChangeType.EXPAND, Lists.newArrayList(ViewChangeType.VIEW_PORT));
-        expectedNotifications01 = Lists.newArrayList(
+                ViewChangeType.EXPAND, List.of(ViewChangeType.VIEW_PORT));
+        expectedNotifications01 = List.of(
                 ViewChangeType.COLLAPSE, ViewChangeType.EXPAND);
 
         final Object modelElement = MODEL_QUERY.apply(viewContext);
@@ -384,7 +383,7 @@ public class ViewChangedNotificationSuppressionTest {
     public void test02a() {
         employFirstListener();
 
-        expectedNotifications01 = Lists.newArrayList(ViewChangeType.VIEW_PORT,
+        expectedNotifications01 = List.of(ViewChangeType.VIEW_PORT,
                 ViewChangeType.COLLAPSE, ViewChangeType.VIEW_PORT,
                 ViewChangeType.CLIP, ViewChangeType.VIEW_PORT,
                 ViewChangeType.EXPAND, ViewChangeType.VIEW_PORT,
@@ -398,11 +397,11 @@ public class ViewChangedNotificationSuppressionTest {
         employFirstListener();
 
         suppressNotificationConfig01.put(
-                ViewChangeType.COLLAPSE, Lists.newArrayList(ViewChangeType.VIEW_PORT));
+                ViewChangeType.COLLAPSE, List.of(ViewChangeType.VIEW_PORT));
         suppressNotificationConfig01.put(
-                ViewChangeType.EXPAND, Lists.newArrayList(ViewChangeType.VIEW_PORT));
+                ViewChangeType.EXPAND, List.of(ViewChangeType.VIEW_PORT));
 
-        expectedNotifications01 = Lists.newArrayList(ViewChangeType.VIEW_PORT,
+        expectedNotifications01 = List.of(ViewChangeType.VIEW_PORT,
                 ViewChangeType.COLLAPSE, ViewChangeType.CLIP, ViewChangeType.VIEW_PORT,
                 ViewChangeType.EXPAND, ViewChangeType.CLIP, ViewChangeType.VIEW_PORT);
 
@@ -414,13 +413,13 @@ public class ViewChangedNotificationSuppressionTest {
         employFirstListener();
 
         suppressNotificationConfig01.put(
-                ViewChangeType.CLIP, Lists.newArrayList(ViewChangeType.VIEW_PORT));
+                ViewChangeType.CLIP, List.of(ViewChangeType.VIEW_PORT));
         suppressNotificationConfig01.put(
-                ViewChangeType.COLLAPSE, Lists.newArrayList(ViewChangeType.VIEW_PORT));
+                ViewChangeType.COLLAPSE, List.of(ViewChangeType.VIEW_PORT));
         suppressNotificationConfig01.put(
-                ViewChangeType.EXPAND, Lists.newArrayList(ViewChangeType.VIEW_PORT));
+                ViewChangeType.EXPAND, List.of(ViewChangeType.VIEW_PORT));
 
-        expectedNotifications01 = Lists.newArrayList(ViewChangeType.VIEW_PORT,
+        expectedNotifications01 = List.of(ViewChangeType.VIEW_PORT,
                 ViewChangeType.COLLAPSE, ViewChangeType.CLIP,
                 ViewChangeType.EXPAND, ViewChangeType.CLIP);
 
@@ -432,13 +431,13 @@ public class ViewChangedNotificationSuppressionTest {
         employFirstListener();
 
         suppressNotificationConfig01.put(ViewChangeType.CLIP,
-                Lists.newArrayList(ViewChangeType.VIEW_PORT, ViewChangeType.EXPAND));
+                List.of(ViewChangeType.VIEW_PORT, ViewChangeType.EXPAND));
         suppressNotificationConfig01.put(
-                ViewChangeType.COLLAPSE, Lists.newArrayList(ViewChangeType.VIEW_PORT));
+                ViewChangeType.COLLAPSE, List.of(ViewChangeType.VIEW_PORT));
         suppressNotificationConfig01.put(
-                ViewChangeType.EXPAND, Lists.newArrayList(ViewChangeType.VIEW_PORT));
+                ViewChangeType.EXPAND, List.of(ViewChangeType.VIEW_PORT));
 
-        expectedNotifications01 = Lists.newArrayList(ViewChangeType.VIEW_PORT,
+        expectedNotifications01 = List.of(ViewChangeType.VIEW_PORT,
                 ViewChangeType.COLLAPSE, ViewChangeType.CLIP, ViewChangeType.CLIP);
 
         test02base();
@@ -455,11 +454,11 @@ public class ViewChangedNotificationSuppressionTest {
         }
 
         suppressNotificationConfig01.put(
-                ViewChangeType.COLLAPSE, Lists.newArrayList(ViewChangeType.VIEW_PORT));
+                ViewChangeType.COLLAPSE, List.of(ViewChangeType.VIEW_PORT));
         suppressNotificationConfig01.put(
-                ViewChangeType.EXPAND, Lists.newArrayList(ViewChangeType.VIEW_PORT));
+                ViewChangeType.EXPAND, List.of(ViewChangeType.VIEW_PORT));
 
-        expectedNotifications01 = Lists.newArrayList(ViewChangeType.VIEW_PORT,
+        expectedNotifications01 = List.of(ViewChangeType.VIEW_PORT,
                 ViewChangeType.COLLAPSE,
                 ViewChangeType.CLIP, ViewChangeType.VIEW_PORT,
                 ViewChangeType.EXPAND,
@@ -473,7 +472,7 @@ public class ViewChangedNotificationSuppressionTest {
         suppressNotificationConfig02.put(
                 ViewChangeType.COLLAPSE, ImmutableMap.of(ViewChangeType.VIEW_PORT, LONG_WAIT_DELAY));
 
-        expectedNotifications02 = Lists.newArrayList(ViewChangeType.VIEW_PORT,
+        expectedNotifications02 = List.of(ViewChangeType.VIEW_PORT,
                 ViewChangeType.COLLAPSE,
                 ViewChangeType.CLIP, ViewChangeType.VIEW_PORT,
                 ViewChangeType.EXPAND, ViewChangeType.VIEW_PORT,
@@ -493,7 +492,7 @@ public class ViewChangedNotificationSuppressionTest {
         suppressNotificationConfig02.put(
                 ViewChangeType.COLLAPSE, ImmutableMap.of(ViewChangeType.VIEW_PORT, 2 * LONG_WAIT_DELAY));
 
-        expectedNotifications02 = Lists.newArrayList(ViewChangeType.VIEW_PORT,
+        expectedNotifications02 = List.of(ViewChangeType.VIEW_PORT,
                 ViewChangeType.COLLAPSE,
                 ViewChangeType.CLIP,
                 ViewChangeType.EXPAND, ViewChangeType.VIEW_PORT,
@@ -513,7 +512,7 @@ public class ViewChangedNotificationSuppressionTest {
         suppressNotificationConfig02.put(
                 ViewChangeType.COLLAPSE, ImmutableMap.of(ViewChangeType.VIEW_PORT, 4 * LONG_WAIT_DELAY));
 
-        expectedNotifications02 = Lists.newArrayList(ViewChangeType.VIEW_PORT,
+        expectedNotifications02 = List.of(ViewChangeType.VIEW_PORT,
                 ViewChangeType.COLLAPSE,
                 ViewChangeType.CLIP,
                 ViewChangeType.EXPAND,
@@ -533,7 +532,7 @@ public class ViewChangedNotificationSuppressionTest {
         suppressNotificationConfig02.put(
                 ViewChangeType.CLIP, ImmutableMap.of(ViewChangeType.VIEW_PORT, LONG_WAIT_DELAY));
 
-        expectedNotifications02 = Lists.newArrayList(ViewChangeType.VIEW_PORT,
+        expectedNotifications02 = List.of(ViewChangeType.VIEW_PORT,
                 ViewChangeType.COLLAPSE, ViewChangeType.VIEW_PORT,
                 ViewChangeType.CLIP,
                 ViewChangeType.EXPAND, ViewChangeType.VIEW_PORT,
@@ -553,7 +552,7 @@ public class ViewChangedNotificationSuppressionTest {
         suppressNotificationConfig02.put(
                 ViewChangeType.CLIP, ImmutableMap.of(ViewChangeType.VIEW_PORT, 2 * LONG_WAIT_DELAY));
 
-        expectedNotifications02 = Lists.newArrayList(ViewChangeType.VIEW_PORT,
+        expectedNotifications02 = List.of(ViewChangeType.VIEW_PORT,
                 ViewChangeType.COLLAPSE, ViewChangeType.VIEW_PORT,
                 ViewChangeType.CLIP,
                 ViewChangeType.EXPAND,
@@ -574,7 +573,7 @@ public class ViewChangedNotificationSuppressionTest {
                 ViewChangeType.CLIP, ImmutableMap.of(
                         ViewChangeType.VIEW_PORT, 2 * LONG_WAIT_DELAY, ViewChangeType.EXPAND, 0));
 
-        expectedNotifications02 = Lists.newArrayList(ViewChangeType.VIEW_PORT,
+        expectedNotifications02 = List.of(ViewChangeType.VIEW_PORT,
                 ViewChangeType.COLLAPSE, ViewChangeType.VIEW_PORT,
                 ViewChangeType.CLIP,
 
@@ -598,7 +597,7 @@ public class ViewChangedNotificationSuppressionTest {
                                                // COLLAPSE to EXPAND takes more than 2sec ...
                         ViewChangeType.CLIP, 0));
 
-        expectedNotifications02 = Lists.newArrayList(ViewChangeType.VIEW_PORT,
+        expectedNotifications02 = List.of(ViewChangeType.VIEW_PORT,
                 ViewChangeType.COLLAPSE,
 
                 ViewChangeType.EXPAND,  // ... hence the notification must occur
@@ -621,7 +620,7 @@ public class ViewChangedNotificationSuppressionTest {
                         ViewChangeType.EXPAND, 3 * LONG_WAIT_DELAY,
                         ViewChangeType.CLIP, 0));
 
-        expectedNotifications02 = Lists.newArrayList(ViewChangeType.VIEW_PORT,
+        expectedNotifications02 = List.of(ViewChangeType.VIEW_PORT,
                 ViewChangeType.COLLAPSE,
 
                 // because of the 3 seconds the EXPAND notification is blocked here

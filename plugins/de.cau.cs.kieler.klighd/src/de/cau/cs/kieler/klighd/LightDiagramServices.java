@@ -40,8 +40,6 @@ import org.eclipse.elk.graph.properties.MapPropertyHolder;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
-
 import de.cau.cs.kieler.klighd.KlighdDataManager.OffscreenRendererDescriptor;
 import de.cau.cs.kieler.klighd.internal.ILayoutConfigProvider;
 import de.cau.cs.kieler.klighd.internal.ILayoutRecorder;
@@ -58,7 +56,7 @@ import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties;
 public final class LightDiagramServices {
 
     private static final List<IProperty<?>> GLOBALOPTIONS =
-            Lists.newArrayList(CoreOptions.ANIMATE, CoreOptions.ANIM_TIME_FACTOR,
+            List.of(CoreOptions.ANIMATE, CoreOptions.ANIM_TIME_FACTOR,
                     CoreOptions.MIN_ANIM_TIME, CoreOptions.MAX_ANIM_TIME);
 
     /**

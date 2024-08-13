@@ -21,16 +21,15 @@ import static de.cau.cs.kieler.klighd.krendering.KRenderingUtil.asGridPlacementD
 import static de.cau.cs.kieler.klighd.krendering.KRenderingUtil.getPlacementData;
 import static de.cau.cs.kieler.klighd.microlayout.PlacementUtil.basicEstimateSize;
 
+import java.util.ArrayDeque;
 import java.util.Arrays;
-import java.util.LinkedList;
+import java.util.Deque;
 import java.util.List;
 
 import org.eclipse.elk.core.math.ElkMath;
 import org.eclipse.elk.core.util.Pair;
 import org.eclipse.elk.graph.properties.IProperty;
 import org.eclipse.elk.graph.properties.Property;
-
-import com.google.common.collect.Lists;
 
 import de.cau.cs.kieler.klighd.krendering.KContainerRendering;
 import de.cau.cs.kieler.klighd.krendering.KGridPlacement;
@@ -478,7 +477,7 @@ public final class GridPlacementUtil {
             final int row = k / numColumns;
             final int col = k - row * numColumns;
 
-            final LinkedList<KRendering> path = Lists.newLinkedList();
+            final Deque<KRendering> path = new ArrayDeque<>();
             if (PlacementUtil.findChildArea(currentChild, path)) {
                 // if a childArea is contained in the current child (or the child itself is a childarea)
                 // remember the position of the area to be able to calculate

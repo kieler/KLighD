@@ -19,6 +19,9 @@ package de.cau.cs.kieler.klighd.piccolo.internal.controller;
 import java.awt.geom.Point2D;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -45,9 +48,6 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
-
 import de.cau.cs.kieler.klighd.Klighd;
 import de.cau.cs.kieler.klighd.KlighdOptions;
 import de.cau.cs.kieler.klighd.ViewContext;
@@ -156,7 +156,7 @@ public class DiagramController {
     private boolean record = false;
 
     /** the layout changes to graph elements while recording. */
-    private final Map<IKGraphElementNode, Object> recordedChanges = Maps.newLinkedHashMap();
+    private final Map<IKGraphElementNode, Object> recordedChanges = new LinkedHashMap<>();
 
     /** indicates whether scheduled diagram element updates must be executed via this display. */
     private final Display display;
@@ -835,9 +835,9 @@ public class DiagramController {
         recordedChanges.put(node, change);
     }
 
-    private final Set<AbstractKGERenderingController<?, ?>> dirtyDiagramElements = Sets.newHashSet();
+    private final Set<AbstractKGERenderingController<?, ?>> dirtyDiagramElements = new HashSet<>();
     private final Map<AbstractKGERenderingController<?, ?>, ElementMovement> dirtyDiagramElementStyles =
-            Maps.newHashMap();
+            new HashMap<>();
 
     void scheduleRenderingUpdate(final AbstractKGERenderingController<?, ?> controller) {
         renderingUpdater.cancel();

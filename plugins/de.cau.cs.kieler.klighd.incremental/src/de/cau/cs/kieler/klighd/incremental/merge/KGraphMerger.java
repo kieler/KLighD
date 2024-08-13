@@ -19,7 +19,6 @@ package de.cau.cs.kieler.klighd.incremental.merge;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -32,7 +31,6 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.EMap;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 
-import com.google.common.collect.Lists;
 import com.google.common.collect.MapDifference.ValueDifference;
 import com.google.common.collect.Sets;
 
@@ -362,9 +360,9 @@ public class KGraphMerger {
             final KLabeledGraphElement newElement) {
         Set<KLabel> oldLabels = null;
         if (baseElement != null) {
-            oldLabels = new HashSet<KLabel>(baseElement.getLabels());
+            oldLabels = new HashSet<>(baseElement.getLabels());
         }
-        for (KLabel newLabel : Lists.newLinkedList(newElement.getLabels())) {
+        for (KLabel newLabel : new ArrayList<>(newElement.getLabels())) {
             KLabel baseLabel = comparison.lookupBaseLabel(newLabel);
             if (baseLabel == null) {
                 baseLabel = EcoreUtil.copy(newLabel);
@@ -425,9 +423,9 @@ public class KGraphMerger {
     private void handlePorts(final KNode baseNode, final KNode newNode) {
         Set<KPort> oldPorts = null;
         if (baseNode != null) {
-            oldPorts = new HashSet<KPort>(baseNode.getPorts());
+            oldPorts = new HashSet<>(baseNode.getPorts());
         }
-        for (KPort newPort : Lists.newLinkedList(newNode.getPorts())) {
+        for (KPort newPort : new ArrayList<>(newNode.getPorts())) {
             KPort basePort = comparison.lookupBasePort(newPort);
             if (basePort == null) {
                 basePort = EcoreUtil.copy(newPort);
@@ -487,7 +485,7 @@ public class KGraphMerger {
         baseData.addAll(newData);
         baseElement.copyProperties(newElement);
         EMap<IProperty<?>, Object> baseProperties = baseElement.getProperties();
-        LinkedList<IProperty<?>> removedProperties = Lists.newLinkedList(
+        List<IProperty<?>> removedProperties = new ArrayList<>(
                 Sets.difference(baseProperties.keySet(), newElement.getProperties().keySet()));        
         
         for (IProperty<?> property : removedProperties) {

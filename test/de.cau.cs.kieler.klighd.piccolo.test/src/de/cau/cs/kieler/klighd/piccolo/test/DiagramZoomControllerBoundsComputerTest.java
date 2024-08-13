@@ -22,6 +22,7 @@ import static de.cau.cs.kieler.klighd.piccolo.test.DiagramZoomControllerBoundsCo
 
 import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
+import java.util.List;
 
 import org.eclipse.elk.core.math.KVector;
 import org.eclipse.elk.core.util.Maybe;
@@ -109,7 +110,7 @@ public class DiagramZoomControllerBoundsComputerTest {
         final KNode compoundOp = circuitGraph.getChildren().get(0).getChildren().get(0);                 // x=94.0,  y=22.0   width=111.0, height=122.0, label at y=127.0, height=10.0
         final KNode andOp = circuitGraph.getChildren().get(0).getChildren().get(0).getChildren().get(0); // x=46.0,  y=76.67, width=40.0,  height=30.0
 
-        final Iterable<Object[]> clips = Lists.newArrayList(
+        final Iterable<Object[]> clips = List.of(
          //            node           instruction  bb fit content                                 bb fit entirely  
                 // the andOp has no children and and no node labels,
                 //  so clipping with ports + labels yields the ports' bounding box for 'fit content', and an enlarged bb for 'fit entirely' 

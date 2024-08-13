@@ -25,7 +25,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 
 import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
 
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdPath;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdPaths;
@@ -221,7 +220,7 @@ public final class PolylineUtil {
     public static Point2D[] createSplineApproximationPath(final Path2D path) {
         
         final float[] coords = new float[2];
-        final ArrayList<Point2D> approxPoints2 = Lists.newArrayList();
+        final ArrayList<Point2D> approxPoints2 = new ArrayList<>();
         final PathIterator pi = path.getPathIterator(null, MAX_APPROX_DISTANCE);
 
         while (!pi.isDone()) {

@@ -17,6 +17,7 @@
 package de.cau.cs.kieler.klighd.ui.internal.handlers;
 
 import java.io.File;
+import java.util.ArrayDeque;
 import java.util.Arrays;
 import java.util.Queue;
 
@@ -36,8 +37,6 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.dialogs.ContainerSelectionDialog;
 import org.eclipse.ui.handlers.HandlerUtil;
-
-import com.google.common.collect.Lists;
 
 import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.IViewer;
@@ -214,8 +213,8 @@ public class SaveKGraphHandler extends AbstractHandler {
             final ViewContext viewContext) {
 
         // collect all subgraph s
-        final Queue<KNode> flatNodes = Lists.newLinkedList();
-        final Queue<KNode> expandedNodes = Lists.newLinkedList();
+        final Queue<KNode> flatNodes = new ArrayDeque<>();
+        final Queue<KNode> expandedNodes = new ArrayDeque<>();
         String path = destination + File.separator;
 
         flatNodes.add(subgraph);
@@ -261,7 +260,7 @@ public class SaveKGraphHandler extends AbstractHandler {
                 viewContext.getViewer().collapse(node);
             }
         }
-        final Queue<KNode> increaseHierarchy = Lists.newLinkedList();
+        final Queue<KNode> increaseHierarchy = new ArrayDeque<>();
         increaseHierarchy.add(subgraph);
         new LightDiagramLayoutConfig(viewContext).animate(false).performLayout();
         int i = 0;

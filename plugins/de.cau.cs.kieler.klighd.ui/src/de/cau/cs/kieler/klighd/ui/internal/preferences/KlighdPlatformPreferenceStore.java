@@ -13,6 +13,7 @@
  */
 package de.cau.cs.kieler.klighd.ui.internal.preferences;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
@@ -21,8 +22,6 @@ import org.eclipse.core.runtime.preferences.IEclipsePreferences.PreferenceChange
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.ui.preferences.ScopedPreferenceStore;
-
-import com.google.common.collect.Maps;
 
 import de.cau.cs.kieler.klighd.IKlighdPreferenceStore;
 import de.cau.cs.kieler.klighd.Klighd;
@@ -250,7 +249,7 @@ public class KlighdPlatformPreferenceStore implements IKlighdPreferenceStore {
         delegate.setDefault(name, defaultObject);
     }
 
-    private final Map<IPreferenceChangeListener, IPropertyChangeListener> listeners = Maps.newHashMap();
+    private final Map<IPreferenceChangeListener, IPropertyChangeListener> listeners = new HashMap<>();
 
     /**
      * {@inheritDoc}

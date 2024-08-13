@@ -17,6 +17,8 @@
 package de.cau.cs.kieler.klighd.ui.internal.handlers;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -38,9 +40,6 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil.Copier;
 
 import com.google.common.collect.Iterators;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
-
 import de.cau.cs.kieler.klighd.Klighd;
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
 import de.cau.cs.kieler.klighd.kgraph.KEdge;
@@ -147,7 +146,7 @@ public final class ExportKGraphHelper {
 
             try {
                 // We need to sanitize the graph a bit
-                Set<KNode> populatedNodes = Sets.newHashSet();
+                Set<KNode> populatedNodes = new HashSet<>();
                 // Remove transient KlighD state
                 // Care: do not iterate over the elements of the 'copy' as the subgraph
                 // was already removed from its original containment
@@ -287,7 +286,7 @@ public final class ExportKGraphHelper {
             // remove any edges that do not have a target anymore
             recursivelyRemoveInvalidEdges((KNode) copier.get(graph));
 
-            Map<String, Object> saveOpts = Maps.newHashMap();
+            Map<String, Object> saveOpts = new HashMap<>();
             // we have to drop several elements if only a subgraph
             // is exported ... just let the emf deal with it.
             // FIXME use constants
@@ -331,9 +330,9 @@ public final class ExportKGraphHelper {
 
     private static boolean isLayoutProperty(final IProperty<?> prop) {
         Set<IProperty<?>> goodProperties =
-                Sets.newHashSet(KlighdProperties.EXPAND, KlighdProperties.MINIMAL_NODE_SIZE);
+                Set.of(KlighdProperties.EXPAND, KlighdProperties.MINIMAL_NODE_SIZE);
         Set<IProperty<?>> badProperties =
-                Sets.newHashSet(CoreOptions.LABEL_MANAGER, LabelManagementOptions.LABEL_MANAGER);
+                Set.of(CoreOptions.LABEL_MANAGER, LabelManagementOptions.LABEL_MANAGER);
         return (prop.getId().startsWith("org.eclipse.elk") && !badProperties.contains(prop))
                 || goodProperties.contains(prop);
     }

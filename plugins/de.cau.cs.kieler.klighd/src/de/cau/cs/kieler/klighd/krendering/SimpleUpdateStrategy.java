@@ -16,6 +16,7 @@
  */
 package de.cau.cs.kieler.klighd.krendering;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.google.common.collect.Iterables;
@@ -63,8 +64,8 @@ public class SimpleUpdateStrategy implements IUpdateStrategy {
      */
     public void update(final KNode baseModel, final KNode newModel, final ViewContext viewContext) {
 
-        final List<KNode> newChildren = Lists.newArrayList(newModel.getChildren());
-        final List<KGraphData> newData = Lists.newArrayList(newModel.getData());
+        final List<KNode> newChildren = new ArrayList<>(newModel.getChildren());
+        final List<KGraphData> newData = new ArrayList<>(newModel.getData());
         newModel.getChildren().clear();
         newModel.getData().clear();
         
