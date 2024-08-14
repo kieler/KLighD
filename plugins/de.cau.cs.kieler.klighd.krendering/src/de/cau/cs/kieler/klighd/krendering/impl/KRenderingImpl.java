@@ -16,12 +16,17 @@
  */
 package de.cau.cs.kieler.klighd.krendering.impl;
 
-import de.cau.cs.kieler.klighd.kgraph.EMapPropertyHolder;
-import de.cau.cs.kieler.klighd.kgraph.KGraphData;
-import de.cau.cs.kieler.klighd.kgraph.KGraphPackage;
-import de.cau.cs.kieler.klighd.kgraph.PersistentEntry;
+import java.util.Collection;
 
-import de.cau.cs.kieler.klighd.kgraph.impl.IPropertyToObjectMapImpl;
+import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.notify.NotificationChain;
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.InternalEObject;
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.emf.ecore.util.InternalEList;
 
 import de.cau.cs.kieler.klighd.kgraph.impl.KGraphDataImpl;
 import de.cau.cs.kieler.klighd.krendering.KAction;
@@ -29,31 +34,8 @@ import de.cau.cs.kieler.klighd.krendering.KContainerRendering;
 import de.cau.cs.kieler.klighd.krendering.KPlacementData;
 import de.cau.cs.kieler.klighd.krendering.KRendering;
 import de.cau.cs.kieler.klighd.krendering.KRenderingPackage;
-
 import de.cau.cs.kieler.klighd.krendering.KStyle;
 import de.cau.cs.kieler.klighd.krendering.KStyleHolder;
-import java.util.Collection;
-import java.util.Map;
-
-import org.eclipse.elk.graph.properties.IProperty;
-import org.eclipse.elk.graph.properties.IPropertyHolder;
-
-import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.notify.NotificationChain;
-
-import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.common.util.EMap;
-
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.emf.ecore.InternalEObject;
-
-import org.eclipse.emf.ecore.impl.ENotificationImpl;
-
-import org.eclipse.emf.ecore.util.EObjectContainmentEList;
-import org.eclipse.emf.ecore.util.EcoreEMap;
-import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.emf.ecore.util.InternalEList;
 
 /**
  * <!-- begin-user-doc -->

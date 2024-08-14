@@ -50,7 +50,6 @@ import java.util.List
 import org.apache.log4j.Logger
 import org.eclipse.elk.alg.layered.options.LayeredOptions
 import org.eclipse.elk.core.options.CoreOptions
-import org.eclipse.emf.ecore.EObject
 import org.eclipse.sprotty.Dimension
 import org.eclipse.sprotty.SEdge
 import org.eclipse.sprotty.SGraph

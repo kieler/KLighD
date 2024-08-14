@@ -16,10 +16,18 @@
  */
 package de.cau.cs.kieler.klighd.krendering.impl;
 
+import org.eclipse.emf.ecore.EAttribute;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EDataType;
+import org.eclipse.emf.ecore.EEnum;
+import org.eclipse.emf.ecore.EGenericType;
+import org.eclipse.emf.ecore.EOperation;
+import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.ETypeParameter;
+import org.eclipse.emf.ecore.impl.EPackageImpl;
+
 import de.cau.cs.kieler.klighd.kgraph.KGraphPackage;
-
-import de.cau.cs.kieler.klighd.kgraph.impl.KGraphPackageImpl;
-
 import de.cau.cs.kieler.klighd.krendering.Arc;
 import de.cau.cs.kieler.klighd.krendering.Colors;
 import de.cau.cs.kieler.klighd.krendering.HorizontalAlignment;
@@ -85,18 +93,6 @@ import de.cau.cs.kieler.klighd.krendering.ModifierState;
 import de.cau.cs.kieler.klighd.krendering.Trigger;
 import de.cau.cs.kieler.klighd.krendering.Underline;
 import de.cau.cs.kieler.klighd.krendering.VerticalAlignment;
-
-import org.eclipse.emf.ecore.EAttribute;
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EDataType;
-import org.eclipse.emf.ecore.EEnum;
-import org.eclipse.emf.ecore.EGenericType;
-import org.eclipse.emf.ecore.EOperation;
-import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.emf.ecore.EReference;
-import org.eclipse.emf.ecore.ETypeParameter;
-
-import org.eclipse.emf.ecore.impl.EPackageImpl;
 
 /**
  * <!-- begin-user-doc -->

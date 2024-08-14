@@ -51,8 +51,6 @@ import java.util.List
 import java.util.Map
 import java.util.ServiceLoader
 import java.util.Set
-import java.util.concurrent.CompletableFuture
-import org.apache.log4j.Logger
 import org.eclipse.core.runtime.Platform
 import org.eclipse.elk.core.data.LayoutMetaDataService
 import org.eclipse.elk.core.data.LayoutOptionData
