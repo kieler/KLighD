@@ -3,7 +3,7 @@
  *
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright 2018-2022 by
+ * Copyright 2018-2024 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -39,6 +39,7 @@ abstract interface SKElement {
     def List<KGraphData> getData()
     def void setData(List<KGraphData> data)
     def HashMap<String, Object> getProperties()
+    def void setProperties(HashMap<String, Object> theProperties)
 }
 
 /**
