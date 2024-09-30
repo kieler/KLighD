@@ -30,6 +30,7 @@ import de.cau.cs.kieler.klighd.lsp.launch.AbstractLanguageServer
 import de.cau.cs.kieler.klighd.lsp.model.RequestDiagramPieceAction
 import de.cau.cs.kieler.klighd.lsp.model.SKGraph
 import de.cau.cs.kieler.klighd.lsp.utils.KGraphMappingUtil
+import de.cau.cs.kieler.klighd.lsp.utils.RenderingPreparer
 import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties
 import java.util.HashSet
 import java.util.List
@@ -316,6 +317,7 @@ class KGraphDiagramUpdater extends DiagramUpdater {
         var SGraph sGraph = null;
         synchronized (diagramState) {
             sGraph = diagramGenerator.toSGraph(viewContext.viewModel, uri, cancelIndicator)
+            RenderingPreparer.prepareRenderingIDs(viewContext.viewModel, diagramGenerator.getKGraphToSModelElementMap)
         }
         if (incrementalDiagramGenerator) {
             val requestManager = new KGraphDiagramPieceRequestManager(diagramGenerator as KGraphIncrementalDiagramGenerator)
