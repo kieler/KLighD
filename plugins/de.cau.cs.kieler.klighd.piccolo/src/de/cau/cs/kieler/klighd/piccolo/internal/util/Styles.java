@@ -16,12 +16,12 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.internal.util;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
 
 import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.krendering.KBackground;
@@ -235,7 +235,7 @@ public final class Styles {
             return defaultNonTextSelectionStyles;
         }
 
-        defaultNonTextSelectionStyles = Lists.newArrayList();
+        defaultNonTextSelectionStyles = new ArrayList<>();
         
         final KColor c = KlighdConstants.DEFAULT_SELECTION_HIGHLIGHTING_BACKGROUND_COLOR;
         final KBackground bg = KRenderingFactory.eINSTANCE.createKBackground().setColor(
@@ -258,7 +258,7 @@ public final class Styles {
             return defaultTextSelectionStyles;
         }
 
-        defaultTextSelectionStyles = Lists.newArrayList();
+        defaultTextSelectionStyles = new ArrayList<>();
         
         final KColor c = KlighdConstants.DEFAULT_SELECTION_HIGHLIGHTING_BACKGROUND_COLOR;
         final KBackground bg = KRenderingFactory.eINSTANCE.createKBackground().setColor(

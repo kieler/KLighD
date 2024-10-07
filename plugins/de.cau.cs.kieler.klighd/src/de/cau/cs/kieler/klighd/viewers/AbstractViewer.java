@@ -19,6 +19,7 @@ package de.cau.cs.kieler.klighd.viewers;
 import java.awt.geom.Rectangle2D;
 import java.util.Arrays;
 import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
@@ -28,7 +29,6 @@ import org.eclipse.emf.ecore.EObject;
 import com.google.common.base.Predicates;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Iterables;
-import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
 import com.google.common.collect.SetMultimap;
@@ -133,7 +133,7 @@ public abstract class AbstractViewer implements IViewer {
             //  implemented by HashMultiMap.
             // It is guaranteed in the API and clients rely on that!
             viewChangeListeners = HashMultimap.create();
-            notificationSuppressions = Maps.newHashMap();
+            notificationSuppressions = new HashMap<>();
         }
 
         for (final ViewChangeType t : eventTypes) {

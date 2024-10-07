@@ -18,8 +18,6 @@ package de.cau.cs.kieler.klighd.krendering;
 
 import java.util.HashMap;
 
-import com.google.common.collect.Maps;
-
 /**
  * An color library containing a huge collection named colors.<br>
  * The list of literals have been extracted from
@@ -1755,7 +1753,7 @@ public enum Colors {
         return super.toString() + "(" + redComponent + "," + greenComponent + "," + blueComponent + ")";
     }
 
-    private static HashMap<String, Colors> fastColorLookup = Maps.newHashMap();
+    private static HashMap<String, Colors> fastColorLookup = new HashMap<>();
 
     /**
      * Provides the color with the name <code>name</code>. Besides it builds up a {@link HashMap} of

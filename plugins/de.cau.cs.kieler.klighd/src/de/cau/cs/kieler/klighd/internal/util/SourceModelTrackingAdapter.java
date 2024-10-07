@@ -18,6 +18,7 @@ package de.cau.cs.kieler.klighd.internal.util;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -32,7 +33,6 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
-import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 
 import de.cau.cs.kieler.klighd.kgraph.EMapPropertyHolder;
@@ -57,7 +57,7 @@ public class SourceModelTrackingAdapter extends EContentAdapter {
 
     private Object mapsMonitor = this;
     private Multimap<Object, EObject> sourceTargetsMap = ArrayListMultimap.create();
-    private Map<EObject, Object> targetSourceMap = Maps.newHashMap();
+    private Map<EObject, Object> targetSourceMap = new HashMap<>();
 
 
     /**

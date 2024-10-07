@@ -456,7 +456,7 @@ class KlighdProjectContributor implements IProjectFactoryContributor {
                 };
             }
         
-            private static final Map<XtextEditor, ISelectionListener> selectionListeners = Maps.newHashMap();
+            private static final Map<XtextEditor, ISelectionListener> selectionListeners = new HashMap<>();
         
         
             /**

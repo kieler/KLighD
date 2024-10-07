@@ -17,6 +17,7 @@
 package de.cau.cs.kieler.klighd.ui.wizard;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -39,7 +40,6 @@ import org.eclipse.xtext.ui.wizard.IProjectInfo;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
@@ -191,7 +191,7 @@ public class KlighdProjectCreator extends WorkspaceModifyOperation implements IP
         ppf.addProjectNatures(getProjectNatures());
         ppf.addBuilderIds(getBuilders());
         if (info.isCreateXtendFile()) {            
-            ppf.addFolders(Lists.newArrayList("xtend-gen"));
+            ppf.addFolders(List.of("xtend-gen"));
         }
 
         ppf.setBreeToUse(info.getExecutionEnvironment());
@@ -253,9 +253,9 @@ public class KlighdProjectCreator extends WorkspaceModifyOperation implements IP
                 info.getSourceModelClassFullyQualified().substring(0,
                         info.getSourceModelClassFullyQualified().lastIndexOf('.'));
         if (packageString.startsWith("java.")) {
-            return Lists.newArrayList();
+            return new ArrayList<>();
         } else {
-            return Lists.newArrayList(packageString);
+            return List.of(packageString);
         }
     }
     
@@ -294,7 +294,7 @@ public class KlighdProjectCreator extends WorkspaceModifyOperation implements IP
      * @return the folders being created within the project
      */
     protected List<String> getAllFolders() {
-        return Lists.newArrayList(KlighdWizardSetup.SRC_FOLDER);
+        return List.of(KlighdWizardSetup.SRC_FOLDER);
     }
 
     /**

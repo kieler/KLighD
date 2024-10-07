@@ -37,6 +37,7 @@ import java.text.DecimalFormatSymbols;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Locale;
 import java.util.Map;
@@ -66,8 +67,6 @@ import org.freehep.util.io.Base64OutputStream;
 import org.freehep.util.io.WriterOutputStream;
 
 import com.google.common.base.Strings;
-import com.google.common.collect.Maps;
-
 import de.cau.cs.kieler.klighd.Klighd;
 import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
@@ -227,7 +226,7 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
     
     private final float pointToPxFactor = KlighdConstants.DEFAULT_DISPLAY_DPI / 72f;
     /** A mapping of awt fonts to swt fonts. The latter are used for font size calculations. */
-    private Map<Font, org.eclipse.swt.graphics.Font> awtSwtFontCache = Maps.newHashMap();
+    private Map<Font, org.eclipse.swt.graphics.Font> awtSwtFontCache = new HashMap<>();
 
     /*
      * ================================================================================ |

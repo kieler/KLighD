@@ -18,6 +18,7 @@ package de.cau.cs.kieler.klighd.krendering;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -56,7 +57,7 @@ public final class KCustomRenderingWrapperFactory {
      * The wrapper look-up dictionary:
      * The keys are the wrapped types, the values are the concrete wrapping implementations. 
      */
-    private final Map<Class<?>, Class<?>> typeWrapperMap = Maps.newHashMap();
+    private final Map<Class<?>, Class<?>> typeWrapperMap = new HashMap<>();
 
     /**
      * Provides the single instance of the class.

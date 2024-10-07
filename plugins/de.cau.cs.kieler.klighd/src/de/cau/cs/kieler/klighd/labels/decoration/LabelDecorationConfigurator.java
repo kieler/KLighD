@@ -16,6 +16,7 @@
  */
 package de.cau.cs.kieler.klighd.labels.decoration;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Objects;
@@ -24,8 +25,6 @@ import java.util.function.Predicate;
 import org.eclipse.elk.core.math.ElkPadding;
 import org.eclipse.elk.core.options.CoreOptions;
 import org.eclipse.elk.core.options.EdgeLabelPlacement;
-
-import com.google.common.collect.Lists;
 
 import de.cau.cs.kieler.klighd.kgraph.KEdge;
 import de.cau.cs.kieler.klighd.kgraph.KGraphData;
@@ -118,7 +117,7 @@ public final class LabelDecorationConfigurator {
     /** The layout mode to use. */
     private LayoutMode layoutMode = LayoutMode.BOTH;
     /** Rendering providers that contribute decorations. */
-    private List<IDecoratorRenderingProvider> decoratorRenderingProviders = Lists.newArrayList();
+    private List<IDecoratorRenderingProvider> decoratorRenderingProviders = new ArrayList<>();
     /** Default decoration if there's nothing else available. */
     private IDecoratorRenderingProvider defaultDecorator = RectangleDecorator.create();
     /** Rendering provider for the actual label text. */

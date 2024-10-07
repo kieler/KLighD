@@ -16,14 +16,13 @@
  */
 package de.cau.cs.kieler.klighd.ui.modifymodel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.RegistryFactory;
 import org.eclipse.ui.IWorkbenchPart;
-
-import com.google.common.collect.Lists;
 
 import de.cau.cs.kieler.klighd.IModelModificationHandler;
 
@@ -79,7 +78,7 @@ public final class ModelModificationHandlerProvider {
      * Parse the extension point and generate handler instances.
      */
     private void readHandlerExtensionPoint() {
-        handlers = Lists.newLinkedList();
+        handlers = new ArrayList<>();
         // read extension point
         IConfigurationElement[] elements =
                 RegistryFactory.getRegistry().getConfigurationElementsFor(

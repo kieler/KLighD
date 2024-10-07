@@ -18,10 +18,13 @@ package de.cau.cs.kieler.klighd;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -50,7 +53,6 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableList.Builder;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 
 import de.cau.cs.kieler.klighd.internal.ISynthesis;
@@ -193,7 +195,7 @@ public final class KlighdDataManager {
     }
 
     /** the mapping of ids to the corresponding instances of {@link ISynthesis}. */
-    private final Map<String, ISynthesis> idSynthesisMapping = Maps.newLinkedHashMap();
+    private final Map<String, ISynthesis> idSynthesisMapping = new LinkedHashMap<>();
 
     /** the mapping of types to the corresponding instances of {@link ISynthesis}. */
     private final Multimap<Class<?>, ISynthesis> typeSynthesisMapping = ArrayListMultimap.create();
@@ -201,48 +203,48 @@ public final class KlighdDataManager {
     /**
      * A caching map that avoids the effort of determining the correct syntheses for a given type
      * each time. */
-    private final Map<Class<?>, Iterable<ISynthesis>> concreteTypeSynthesisMapping = Maps.newHashMap();
+    private final Map<Class<?>, Iterable<ISynthesis>> concreteTypeSynthesisMapping = new HashMap<>();
 
     /** the mapping of ids on the associated viewer providers. */
-    private Map<String, IViewerProvider> idViewerProviderMapping = Maps.newHashMap();
+    private Map<String, IViewerProvider> idViewerProviderMapping = new HashMap<>();
 
     /** the mapping of ids on the associated update strategies. */
-    private Map<String, IUpdateStrategy> idUpdateStrategyMapping = Maps.newHashMap();
+    private Map<String, IUpdateStrategy> idUpdateStrategyMapping = new HashMap<>();
     
     /** the mapping of priorities on the associated update strategies, sorted by priority. */
-    private TreeMap<Integer, IUpdateStrategy> priorityUpdateStrategyMapping = Maps.newTreeMap();
+    private TreeMap<Integer, IUpdateStrategy> priorityUpdateStrategyMapping = new TreeMap<>();
 
     private IUpdateStrategy highestPriorityUpdateStrategy = null;
 
     /** the mapping of ids to the associated style modifiers. */
-    private final Map<String, IStyleModifier> idStyleModifierMapping = Maps.newHashMap();
+    private final Map<String, IStyleModifier> idStyleModifierMapping = new HashMap<>();
 
     /** the mapping of ids to the associated actions. */
     private final BiMap<String, IAction> idActionMapping = HashBiMap.create();
 
     /** the mapping of ids to the associated configuration elements describing the exporters. */
-    private final Map<String, IConfigurationElement> exportersMap = Maps.newHashMap();
+    private final Map<String, IConfigurationElement> exportersMap = new HashMap<>();
 
     /** the list of the available exporters' descriptors. */
-    private final List<ExporterDescriptor> descriptors = Lists.newArrayList();
+    private final List<ExporterDescriptor> descriptors = new ArrayList<>();
 
     /** the mapping of ids to the associated export branding descriptors. */
-    private final Map<String, ExportBrandingDescriptor> idExportBrandingMapping = Maps.newHashMap();
+    private final Map<String, ExportBrandingDescriptor> idExportBrandingMapping = new HashMap<>();
 
     /** the mapping of ids to the associated off-screen renderer descriptors. */
-    private final Map<String, OffscreenRendererDescriptor> idOffscreenRendererMapping = Maps.newHashMap();
+    private final Map<String, OffscreenRendererDescriptor> idOffscreenRendererMapping = new HashMap<>();
 
     /** the mapping of custom figure types to wrapper figure type being supported by KLighD. */
-    private final List<CustomFigureWrapperDescriptor> customFigureWrapperMapping = Lists.newArrayList();
+    private final List<CustomFigureWrapperDescriptor> customFigureWrapperMapping = new ArrayList<>();
     
     /** the properties that shall be preserved from the layout graph to the kgraph */
-    private final List<IProperty<?>> preservedProperties = Lists.newArrayList();
+    private final List<IProperty<?>> preservedProperties = new ArrayList<>();
     
     /** the properties that are not allowed to be preserved when sending the skgraph to the client */
-    private final List<IProperty<?>> blacklistedProperties = Lists.newArrayList();
+    private final List<IProperty<?>> blacklistedProperties = new ArrayList<>();
     
     /** the properties that are outside the klighd/elk namespace that are explicitly allowed to be sent to the client */
-    private final List<IProperty<?>> whitelistedProperties = Lists.newArrayList();
+    private final List<IProperty<?>> whitelistedProperties = new ArrayList<>();
 
     /**
      * A private constructor to prevent instantiation.
@@ -1117,7 +1119,7 @@ public final class KlighdDataManager {
      * @return return a copy of the original list
      */
     public List<ExporterDescriptor> getAvailableExporters() {
-        return Lists.newLinkedList(descriptors);
+        return new ArrayList<>(descriptors);
     }
 
     /**
@@ -1162,7 +1164,7 @@ public final class KlighdDataManager {
                 descr -> descr.supportedFormats.contains(format)
         );
         
-        final List<IExportBranding> result = Lists.newArrayList();
+        final List<IExportBranding> result = new ArrayList<>();
         for (final ExportBrandingDescriptor descr : descriptors) {
             final IExportBranding branding = descr.supplier.get();
             

@@ -16,12 +16,11 @@
  */
 package de.cau.cs.kieler.klighd.labels.management;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.elk.graph.ElkLabel;
-
-import com.google.common.collect.Lists;
 
 /**
  * Takes a list of label managers that do the work of resizing labels. The label managers are asked
@@ -40,7 +39,7 @@ import com.google.common.collect.Lists;
 public class ListLabelManager extends AbstractKlighdLabelManager {
     
     /** The label managers used to manage the labels in the graph. */
-    private final List<AbstractKlighdLabelManager> labelManagers = Lists.newArrayList();
+    private final List<AbstractKlighdLabelManager> labelManagers = new ArrayList<>();
     /** Whether only the first label manager that actually changes the label's text is executed. */
     private boolean stopOnFirstHit = true;
     

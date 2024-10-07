@@ -28,6 +28,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -948,7 +949,7 @@ public class ContextViewer implements IViewer, ILayoutRecorder, ISelectionProvid
     /** the selection listeners registered on this view. */
     // don't change the type to a collection type violating the Set property
     //  see doc of 'ISelectionProvider.addSelectionChangedListener(...)'
-    private Set<ISelectionChangedListener> selectionListeners = Sets.newLinkedHashSet();
+    private Set<ISelectionChangedListener> selectionListeners = new LinkedHashSet<>();
 
     /**
      * Notifies the registered {@link ISelectionChangedListener ISelectionChangedListeners}. Such

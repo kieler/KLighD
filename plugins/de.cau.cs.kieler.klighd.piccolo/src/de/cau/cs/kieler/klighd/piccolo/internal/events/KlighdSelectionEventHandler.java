@@ -22,6 +22,7 @@ import static de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdMouseEventLi
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.Set;
@@ -29,8 +30,6 @@ import java.util.Set;
 import org.eclipse.emf.ecore.EObject;
 
 import com.google.common.collect.Iterators;
-import com.google.common.collect.Sets;
-
 import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.kgraph.KEdge;
 import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
@@ -340,7 +339,7 @@ public class KlighdSelectionEventHandler extends KlighdBasicInputEventHandler {
     protected Set<EObject> performEdgeSelection(final Set<EObject> selectedElements,
             final KEdge edge) {
         final Set<EObject> returnedElements =
-                selectedElements == null ? Sets.newHashSet() : selectedElements;
+                selectedElements == null ? new HashSet<>() : selectedElements;
 
         // add the currently found edge and its connected ones
         // to the set of elements to be selected,

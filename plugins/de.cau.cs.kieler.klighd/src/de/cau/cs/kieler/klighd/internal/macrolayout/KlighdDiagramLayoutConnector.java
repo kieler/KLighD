@@ -16,6 +16,7 @@
  */
 package de.cau.cs.kieler.klighd.internal.macrolayout;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
@@ -54,7 +55,6 @@ import com.google.common.base.Strings;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
-import com.google.common.collect.Lists;
 
 import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.IViewer;
@@ -682,7 +682,7 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
         // We need to process labels after the edges because during edge handling
         // the insets are handled and the source data adjusted accordingly.
         // We store the labels here to have them ready after the main switch.
-        List<ElkLabel> graphLabels = Lists.newArrayList();
+        List<ElkLabel> graphLabels = new ArrayList<>();
         
         // apply the layout of all mapped layout elements back to the associated element
         for (final Entry<ElkGraphElement, Object> elementMapping : elementMappings) {

@@ -33,6 +33,7 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Supplier;
 
 import org.eclipse.swt.graphics.Device;
@@ -41,8 +42,6 @@ import org.eclipse.swt.graphics.Path;
 import org.eclipse.swt.graphics.RGB;
 
 import com.google.common.base.Objects;
-import com.google.common.collect.Maps;
-
 import de.cau.cs.kieler.klighd.Klighd;
 import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.krendering.KRendering;
@@ -85,7 +84,7 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
 
     private static final long serialVersionUID = 8034306769936734586L;
 
-    private static final Map<Color, RGB> RGB_CACHE = Maps.newConcurrentMap();
+    private static final Map<Color, RGB> RGB_CACHE = new ConcurrentHashMap<>();
 
     // in order to fix the windows specific issue with the monitor zoom related line width scaling
     //  (KIPRA-1925) but avoid additional effort on other platforms,

@@ -16,6 +16,7 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.internal.controller;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import org.eclipse.elk.core.math.Spacing;
@@ -23,8 +24,6 @@ import org.eclipse.elk.core.options.CoreOptions;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
-import com.google.common.collect.Sets;
-
 import de.cau.cs.kieler.klighd.kgraph.KEdge;
 import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
 import de.cau.cs.kieler.klighd.kgraph.KInsets;
@@ -293,7 +292,7 @@ public class DiagramZoomControllerBoundsComputer {
     public PBounds getContainedSubDiagramsBoundingBox(final KNode node,
             final Predicate<KGraphElement> isDisplayedFilter) {
         final PBounds nodeBounds = new PBounds();
-        final Set<KEdge> visitedEdges = Sets.newHashSet();
+        final Set<KEdge> visitedEdges = new HashSet<>();
 
         for (final KNode childNode : Iterables.filter(node.getChildren(), isDisplayedFilter)) {
             nodeBounds.add(toPBoundsIncludingPortsAndLabels(childNode, false, null, false));

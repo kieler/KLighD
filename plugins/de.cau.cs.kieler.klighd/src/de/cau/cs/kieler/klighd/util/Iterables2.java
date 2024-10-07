@@ -16,6 +16,7 @@
  */
 package de.cau.cs.kieler.klighd.util;
 
+import java.util.ArrayDeque;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Queue;
@@ -26,7 +27,6 @@ import com.google.common.base.Function;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterators;
-import com.google.common.collect.Lists;
 
 /**
  * This class provides some convenience methods that I miss in
@@ -212,7 +212,7 @@ public final class Iterables2 {
                 srcIterator = src.iterator();
             }
 
-            queue = Lists.newLinkedList();
+            queue = new ArrayDeque<>();
 
             int i = count;
             while ((i--) != 0) {

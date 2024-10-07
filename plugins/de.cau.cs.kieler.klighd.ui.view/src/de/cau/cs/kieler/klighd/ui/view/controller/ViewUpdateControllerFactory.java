@@ -16,11 +16,11 @@
  */
 package de.cau.cs.kieler.klighd.ui.view.controller;
 
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IStatus;
@@ -30,7 +30,6 @@ import org.eclipse.ui.IEditorPart;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
 
 import de.cau.cs.kieler.klighd.Klighd;
 import de.cau.cs.kieler.klighd.ui.view.DiagramView;
@@ -358,18 +357,15 @@ public final class ViewUpdateControllerFactory {
      */
     private static String getFallbackController(final IEditorPart editor) {
         final Class<?> editorClass = editor.getClass();
-        List<Class<?>> validControllers = 
-                Lists.newArrayList(Iterables.filter(
-                        ViewUpdateControllerFactory.getInstance().fallbackControllerMapping.keySet(), 
-                        new Predicate<Class<?>>() {
-            public boolean apply(final Class<?> supportedEditorClass) {
-                return supportedEditorClass.isAssignableFrom(editorClass);
-            }
-        }));
-        if (!validControllers.isEmpty()) {
-          Collections.sort(validControllers, TYPE_SORTER);
-          // Return most specific controller
-          return ViewUpdateControllerFactory.getInstance().fallbackControllerMapping.get(validControllers.get(0));
+        Set<Class<?>> allClasses =
+                ViewUpdateControllerFactory.getInstance().fallbackControllerMapping.keySet();
+        Optional<Class<?>> firstValidController = allClasses.stream()
+                .filter(supportedEditorClass -> supportedEditorClass.isAssignableFrom(editorClass))
+                .min(TYPE_SORTER);
+        if (firstValidController.isPresent()) {
+            // Return most specific controller
+            return ViewUpdateControllerFactory.getInstance().fallbackControllerMapping
+                    .get(firstValidController.get());
         } else {
             return null;
         }

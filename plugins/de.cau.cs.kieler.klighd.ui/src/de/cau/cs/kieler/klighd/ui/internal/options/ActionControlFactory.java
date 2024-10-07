@@ -17,6 +17,7 @@
 package de.cau.cs.kieler.klighd.ui.internal.options;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
@@ -31,8 +32,6 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.forms.widgets.FormToolkit;
-
-import com.google.common.collect.Maps;
 
 import de.cau.cs.kieler.klighd.DisplayedActionData;
 import de.cau.cs.kieler.klighd.IAction;
@@ -95,7 +94,7 @@ public class ActionControlFactory implements ISelectionChangedListener, IViewCha
         actionDataControlMap.clear();
     }
 
-    private Map<DisplayedActionData, Control> actionDataControlMap = Maps.newHashMap();
+    private Map<DisplayedActionData, Control> actionDataControlMap = new HashMap<>();
 
     /**
      * Factory method for creating a check button related to a 'check' option.

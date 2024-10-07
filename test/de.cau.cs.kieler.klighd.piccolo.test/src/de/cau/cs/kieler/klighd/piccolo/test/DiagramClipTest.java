@@ -40,8 +40,6 @@ import org.junit.runners.Parameterized.Parameters;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
-
 import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.ViewContext;
@@ -108,7 +106,7 @@ public class DiagramClipTest {
         final KNode notOp = circuitGraph.getChildren().get(0).getChildren().get(1);
 
         final List<Object> clips =
-                Lists.newArrayList(andOp, orOp, notOp, circuitGraph, notOp, andOp, orOp, notOp,
+                List.of(andOp, orOp, notOp, circuitGraph, notOp, andOp, orOp, notOp,
                         circuitGraph, notOp, orOp, andOp, circuitGraph, FINISH);
 
         final Iterable<Object[]> result = Iterables.transform(clips, new Function<Object, Object[]>() {

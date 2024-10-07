@@ -16,6 +16,7 @@
  */
 package de.cau.cs.kieler.klighd.syntheses;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -28,7 +29,6 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Iterables;
-import com.google.common.collect.Sets;
 import com.google.inject.Binder;
 import com.google.inject.Guice;
 import com.google.inject.Key;
@@ -143,7 +143,7 @@ public class ReinitializingDiagramSynthesisProxy<S> implements ISynthesis {
         }
         
         private Class<? extends AbstractDiagramSynthesis<S>> mainTransformationClazz = null;
-        private Set<Object> instances = Sets.newHashSet();
+        private Set<Object> instances = new HashSet<>();
 
         private void clear() {
             this.instances.clear();
