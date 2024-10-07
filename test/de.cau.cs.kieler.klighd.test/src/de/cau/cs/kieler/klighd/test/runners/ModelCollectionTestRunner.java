@@ -124,7 +124,7 @@ import com.google.common.collect.Lists;
  * 
  *     <samp>@Models</samp>
  *     public static Iterable&lt;?&gt; getModels() {
- *         List&lt;Object&gt; models = new ArrayList<>();
+ *         List&lt;Object&gt; models = new ArrayList&lt;&gt;();
  *         return models;
  *     }
  * 
