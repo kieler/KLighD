@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -1674,6 +1675,13 @@ public final class PlacementUtil {
         return Bounds.max(Bounds.of(maxX, maxY), givenBounds);
     }
 
+    /**
+     * @deprecated Use {@link #findChildArea(KRendering, Deque)}
+     */
+    @Deprecated(forRemoval = true)
+    public static boolean findChildArea(KRendering rendering, LinkedList<KRendering> path) {
+        return findChildArea(rendering, (Deque<KRendering>) path);
+    }
 
     /**
      * Searches the rendering for a child area and records the path in the given list of renderings.
