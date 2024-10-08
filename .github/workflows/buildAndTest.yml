@@ -26,7 +26,7 @@ jobs:
       uses: actions/setup-java@v4
       with:
         java-version: 17
-        distribution: adopt
+        distribution: temurin
     - name: Cache Maven packages
       uses: actions/cache@v4
       with:
@@ -43,7 +43,7 @@ jobs:
           #print the folder structure up to depth 2 on the console as we have no other option of getting an inside into workspace folder
           find . -maxdepth 2
     - name: Archive P2 Repository
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: KLighD P2 Repository
         path: build/de.cau.cs.kieler.klighd.repository/target/repository/**/*
@@ -51,7 +51,7 @@ jobs:
         if-no-files-found: error
     - name: Archive MVN Repository
       if: ${{ !contains(github.ref, 'releases-') }}
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: KLighD MVN Repository
         path: klighd-snapshots/**/*
@@ -59,7 +59,7 @@ jobs:
         if-no-files-found: error
     - name: Archive MVN Release Repository
       if: ${{ contains(github.ref, 'releases-') }}
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: KLighD MVN Repository
         path: klighd/**/*
