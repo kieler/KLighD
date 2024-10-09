@@ -50,7 +50,6 @@
     <dependency>
       <groupId>org.eclipse.emf</groupId>
       <artifactId>org.eclipse.emf.ecore</artifactId>
-      <version>${emf-ecore-version}</version>
     </dependency>
   </dependencies>
 
