@@ -41,12 +41,12 @@ import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
  * <pre>
  * {@code
  * <extension
- *       point="de.cau.cs.kieler.klighd.piccolo.exportHooks">
- *    <exportHook
- *          class="de.cau.cs.kieler.klighd.piccolo.export.AuthorConfidentialExportHook"
+ *       point="de.cau.cs.kieler.klighd.extensions">
+ *    <exportBranding
+ *          class="de.cau.cs.kieler.klighd.piccolo.export.AuthorConfidentialExportBranding"
  *          id="de.cau.cs.kieler.klighd.piccolo.export.AuthorConfidentialExportHook"
  *          supportedFormats="bmp, jpeg, png, pdf, printout">
- *    </exportHook>
+ *    </exportBranding>
  * </extension>}
  * </pre>
  *
