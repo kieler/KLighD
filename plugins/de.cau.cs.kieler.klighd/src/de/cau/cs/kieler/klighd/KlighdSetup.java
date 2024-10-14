@@ -17,6 +17,7 @@
 package de.cau.cs.kieler.klighd;
 
 import org.eclipse.elk.core.labels.LabelManagementOptions;
+import org.eclipse.elk.core.options.CoreOptions;
 
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
 import de.cau.cs.kieler.klighd.microlayout.GridPlacementUtil;
@@ -37,5 +38,7 @@ public class KlighdSetup implements IKlighdStartupHook {
             .registerBlacklistedProperty(LabelManagementOptions.LABEL_MANAGER)
             .registerBlacklistedProperty(GridPlacementUtil.ESTIMATED_GRID_DATA)
             .registerBlacklistedProperty(GridPlacementUtil.CHILD_AREA_POSITION);
+//            .registerBlacklistedProperty(CoreOptions.TOPDOWN_OPTION_VALUE_MAP);
+
     }
 }
