@@ -22,10 +22,8 @@ import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.util.Objects;
 
-import org.eclipse.elk.core.util.Pair;
-
-import com.google.common.base.Function;
 import com.google.common.collect.Iterables;
 
 import de.cau.cs.kieler.klighd.DiagramExportConfig;
@@ -163,26 +161,11 @@ public abstract class AbstractDiagramExporter {
     private Trim getCumulatedTrim(final boolean tileTrim, final Iterable<IExportBranding> brandings,
             final Rectangle2D bounds, final Trim deviceTrim, final Point dotsPerInch) {
 
-        final Trim res = Iterables2.fold(brandings, new Function<Pair<Trim, IExportBranding>, Trim>() {
-
-            public Trim apply(final Pair<Trim, IExportBranding> input) {
-                final Trim previousResult = input.getFirst();
-                final IExportBranding branding = input.getSecond();
-                final Trim trim;
-
-                if (tileTrim) {
-                    trim = branding.getDiagramTileTrimm(bounds, dotsPerInch, deviceTrim);
-                } else {
-                    trim = branding.getDiagramTrim(bounds);
-                }
-
-                if (previousResult == null) {
-                    return trim;
-
-                } else if (trim == null) {
-                    return previousResult;
-
-                } else {
+        return Iterables2.stream(brandings)
+                .map(branding -> tileTrim
+                        ? branding.getDiagramTileTrimm(bounds, dotsPerInch, deviceTrim)
+                        : branding.getDiagramTrim(bounds))
+                .filter(Objects::nonNull).reduce((previousResult, trim) -> {
                     final float maxLeft = Math.max(previousResult.left, trim.left);
                     final float maxRight = Math.max(previousResult.right, trim.right);
                     final float maxTop = Math.max(previousResult.top, trim.top);
@@ -194,11 +177,7 @@ public abstract class AbstractDiagramExporter {
                     } else {
                         return previousResult;
                     }
-                }
-            }
-        });
-
-        return res != null ? res : new Trim(0, 0, 0, 0);
+                }).orElseGet(() -> new Trim(0, 0, 0, 0));
     }
 
 
