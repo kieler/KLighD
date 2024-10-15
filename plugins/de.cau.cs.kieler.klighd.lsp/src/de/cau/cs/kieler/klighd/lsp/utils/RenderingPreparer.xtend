@@ -64,30 +64,21 @@ import static extension de.cau.cs.kieler.klighd.lsp.utils.SprottyProperties.*
  * @author nre
  */
 final class RenderingPreparer {
-
+    
     /**
-     * Prepares a KGraphElement to be rendered in an external viewer.
-     * Calculates the position, width and height of each rendering of the parameters {@code element} from KLighD's 
-     * micro layout and persists the bounds and in case of a Decorator the decoration in the properties of the 
-     * rendering.
-     * See {@link #setBounds} and {@link #setDecoration}.
-     * In case of a {@link KRenderingRef} the bounds and decoration are persisted for every referenced rendering as a map
-     * inside the properties of the reference.
-     * For example: &lt;id of the rendering in the library: bounds in this instance&gt;
-     * Furthermore, for every rendering a unique ID is generated.
-     * Finally, modifiable styles defined by the synthesis are processed for the rendering.
+     * Prepares the rendering IDs of a KGraph to be generated for an external viewer.
      * 
-     * @param element The parent element containing the graph to calculate all rendering bounds for.
+     * 
+     * @param element The parent element containing the graph to calculate all rendering IDs for.
      * @param kGraphToSGraph A map for identifying the SGraph element for each KGraph element in this graph.
      */
-    static def void prepareRendering(KGraphElement element, Map<KGraphElement, SModelElement> kGraphToSGraph) {
-        // calculate the sizes of all renderings:
+    static def void prepareRenderingIDs(KGraphElement element, Map<KGraphElement, SModelElement> kGraphToSGraph) {
+        // calculate the IDs of all renderings:
         for (var int i = 0; i < element.data.size; i++) {
             val data = element.data.get(i)
             switch(data) {
                 KRenderingLibrary: {
-                    // The library needs to generate ids for all later KRenderingRefs to refer to, but no own bounds,
-                    // since these are generic renderings.
+                    // The library needs to generate ids for all later KRenderingRefs to refer to.
                     for (var int j = 0; j < data.renderings.size; j++) {
                         val rendering = data.renderings.get(j)
                         if (rendering instanceof KRendering) {
@@ -96,22 +87,12 @@ final class RenderingPreparer {
                     }
                 }
                 KRenderingRef: {
-                    // all references to KRenderings need to place a map with the ids of the renderings and their 
-                    // sizes and their decoration in this case in the properties of the reference.
-                    var boundsMap = new HashMap<String, Bounds>
-                    var decorationMap = new HashMap<String, Decoration>
-                    handleKRendering(element, data.rendering, boundsMap, decorationMap)
-                    // add new Property to contain the boundsMap
-                    data.properties.put(CALCULATED_BOUNDS_MAP, boundsMap)
-                    // and the decorationMap
-                    data.properties.put(CALCULATED_DECORATION_MAP, decorationMap)
-                    // remember the id of the rendering in the reference
+                    // rendering refs refer to the referred ID
                     data.renderingId = kGraphToSGraph.get(element)?.id + data.rendering.renderingId
                 }
                 KRendering: {
                     // every rendering needs an ID, generate it here
                     KRenderingIdGenerator.generateIdsRecursive(data, kGraphToSGraph.get(element)?.id + "$$", i)
-                    handleKRendering(element, data, null, null)
                 }
             }
         }
@@ -121,7 +102,7 @@ final class RenderingPreparer {
         
         if (element instanceof KLabeledGraphElement) {
             for (label : element.labels) {
-                prepareRendering(label, kGraphToSGraph)
+                prepareRenderingIDs(label, kGraphToSGraph)
             }
         }
         if (element instanceof KNode) {
@@ -138,17 +119,108 @@ final class RenderingPreparer {
             
             if (isExpanded) {
                 for (node : element.children) {
-                    prepareRendering(node, kGraphToSGraph)
+                    prepareRenderingIDs(node, kGraphToSGraph)
                 }
             }
             for (edge : element.outgoingEdges) {
                 // not expanded => edge must not have the target node inside the non-expanded
                 if (isExpanded || !KGraphUtil.isDescendant(edge.target, element)) {
-                    prepareRendering(edge, kGraphToSGraph)
+                    prepareRenderingIDs(edge, kGraphToSGraph)
                 }
             }
             for (port : element.ports) {
-                prepareRendering(port, kGraphToSGraph)
+                prepareRenderingIDs(port, kGraphToSGraph)
+            }
+        }
+        
+        // Also prepare the IDs of all proxy-renderings
+        val proxyRendering = element.getProperty(KlighdProperties.PROXY_VIEW_PROXY_RENDERING)
+        if (element.getProperty(KlighdProperties.PROXY_VIEW_RENDER_NODE_AS_PROXY) && proxyRendering !== null) {
+        for (var int i = 0; i < proxyRendering.size; i++) {
+            val data = proxyRendering.get(i)
+                switch(data) {
+                    KRenderingRef: {
+                        // rendering refs refer to the referred ID
+                        data.renderingId = kGraphToSGraph.get(element)?.id + data.rendering.renderingId
+                    }
+                    KRendering: {
+                        // every rendering needs an ID, generate it here
+                        KRenderingIdGenerator.generateIdsRecursive(data, kGraphToSGraph.get(element)?.id + "$$", i)
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Prepares a KGraphElement to be rendered in an external viewer.
+     * Calculates the position, width and height of each rendering of the parameters {@code element} from KLighD's 
+     * micro layout and persists the bounds and in case of a Decorator the decoration in the properties of the 
+     * rendering.
+     * See {@link #setBounds} and {@link #setDecoration}.
+     * In case of a {@link KRenderingRef} the bounds and decoration are persisted for every referenced rendering as a map
+     * inside the properties of the reference.
+     * For example: &lt;id of the rendering in the library: bounds in this instance&gt;
+     * Finally, modifiable styles defined by the synthesis are processed for the rendering.
+     * 
+     * @param element The parent element containing the graph to calculate all rendering bounds for.
+     * @param kGraphToSGraph A map for identifying the SGraph element for each KGraph element in this graph.
+     */
+    static def void prepareRenderingLayout(KGraphElement element, Map<KGraphElement, SModelElement> kGraphToSGraph) {
+        // calculate the sizes of all renderings:
+        for (var int i = 0; i < element.data.size; i++) {
+            val data = element.data.get(i)
+            switch(data) {
+                KRenderingRef: {
+                    // all references to KRenderings need to place a map with their 
+                    // sizes and their decoration in this case in the properties of the reference.
+                    var boundsMap = new HashMap<String, Bounds>
+                    var decorationMap = new HashMap<String, Decoration>
+                    handleKRendering(element, data.rendering, boundsMap, decorationMap)
+                    // add new Property to contain the boundsMap
+                    data.properties.put(CALCULATED_BOUNDS_MAP, boundsMap)
+                    // and the decorationMap
+                    data.properties.put(CALCULATED_DECORATION_MAP, decorationMap)
+                }
+                KRendering: {
+                    handleKRendering(element, data, null, null)
+                }
+            }
+        }
+        
+        // Recursively call this method for every child KGraphElement of this.
+        // (all labels, child nodes, outgoing edges and ports)
+        
+        if (element instanceof KLabeledGraphElement) {
+            for (label : element.labels) {
+                prepareRenderingLayout(label, kGraphToSGraph)
+            }
+        }
+        if (element instanceof KNode) {
+            // Do not recurse generating IDs if the element is not expanded, as there won't be any SGraph generated for
+            // it.
+            var boolean isExpanded
+            val renderingContextData = RenderingContextData.get(element)
+            if (renderingContextData.hasProperty(SprottyProperties.EXPANDED)) {
+                isExpanded = renderingContextData.getProperty(SprottyProperties.EXPANDED)
+            } else {
+                // If the expanded property does not exist yet, use the initial expansion.
+                isExpanded = element.getProperty(KlighdProperties.EXPAND)
+            }
+            
+            if (isExpanded) {
+                for (node : element.children) {
+                    prepareRenderingLayout(node, kGraphToSGraph)
+                }
+            }
+            for (edge : element.outgoingEdges) {
+                // not expanded => edge must not have the target node inside the non-expanded
+                if (isExpanded || !KGraphUtil.isDescendant(edge.target, element)) {
+                    prepareRenderingLayout(edge, kGraphToSGraph)
+                }
+            }
+            for (port : element.ports) {
+                prepareRenderingLayout(port, kGraphToSGraph)
             }
         }
         
@@ -168,13 +240,9 @@ final class RenderingPreparer {
                         data.properties.put(CALCULATED_BOUNDS_MAP, boundsMap)
                         // and the decorationMap
                         data.properties.put(CALCULATED_DECORATION_MAP, decorationMap)
-                        // remember the id of the rendering in the reference
-                    data.renderingId = kGraphToSGraph.get(element)?.id + data.rendering.renderingId
                         
                     }
                     KRendering: {
-                        // every rendering needs an ID, generate it here
-                        KRenderingIdGenerator.generateIdsRecursive(data, kGraphToSGraph.get(element)?.id + "$$", i)
                         if (data.eContainer instanceof KNode) {
                             // Calculate the size and layout of the proxy first.
                             val parent = data.eContainer as KNode

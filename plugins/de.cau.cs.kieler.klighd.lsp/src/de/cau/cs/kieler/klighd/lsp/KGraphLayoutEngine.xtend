@@ -87,7 +87,7 @@ class KGraphLayoutEngine extends ElkLayoutEngine {
 
         synchronized (kGraphContext.viewModel) {
             lightDiagramLayoutConfig.performLayout
-            RenderingPreparer.prepareRendering(kGraphContext.viewModel, diagramState.getKGraphToSModelElementMap(uri))
+            RenderingPreparer.prepareRenderingLayout(kGraphContext.viewModel, diagramState.getKGraphToSModelElementMap(uri))
         }
     }
 
