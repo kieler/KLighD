@@ -88,40 +88,6 @@
       <version>${project.version}</version>
     </dependency>
   </dependencies>
-  <dependencyManagement>
-    <dependencies>
-      <dependency>
-        <groupId>org.eclipse.elk</groupId>
-        <artifactId>org.eclipse.elk.alg.force</artifactId>
-        <version>${elk-version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.eclipse.elk</groupId>
-        <artifactId>org.eclipse.elk.alg.graphviz.dot</artifactId>
-        <version>${elk-version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.eclipse.elk</groupId>
-        <artifactId>org.eclipse.elk.alg.graphviz.layouter</artifactId>
-        <version>${elk-version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.eclipse.elk</groupId>
-        <artifactId>org.eclipse.elk.alg.layered</artifactId>
-        <version>${elk-version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.eclipse.elk</groupId>
-        <artifactId>org.eclipse.elk.alg.mrtree</artifactId>
-        <version>${elk-version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.eclipse.elk</groupId>
-        <artifactId>org.eclipse.elk.alg.radial</artifactId>
-        <version>${elk-version}</version>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
 
   <build>
     <resources>
