@@ -20,6 +20,7 @@ import org.eclipse.elk.graph.ElkLabel;
 import org.eclipse.swt.graphics.FontData;
 
 import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
+import de.cau.cs.kieler.klighd.util.KlighdProperties;
 
 /**
  * Label manager which soft wraps the text so it fits a certain width. Soft wrapping only inserts
@@ -36,6 +37,19 @@ import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
  */
 public class SoftWrappingLabelManager extends AbstractKlighdLabelManager {
 
+    /** Amount of line overhang that is permitted in percent of the effevtiveTargetWidth 
+     * 
+     * */
+    
+    /**
+     * Returns the amount of line overhang that is permitted in percent of the effevtiveTargetWidth.
+     * @param label The ElkLabel for which the fuzzyness is requested.
+     * @return The fuzzyness
+     */
+    public double getFuzzyness(final ElkLabel label) {
+        return label.getProperty(KlighdProperties.SOFTWRAPPING_FUZZYNESS);
+    }
+    
     @Override
     public Result doResizeLabel(final ElkLabel label, final double targetWidth) {
         final FontData font = LabelManagementUtil.fontDataFor(label);
@@ -69,6 +83,26 @@ public class SoftWrappingLabelManager extends AbstractKlighdLabelManager {
                     lineWidth = PlacementUtil.estimateTextSize(font, testText).getWidth();
                 } while (lineWidth < effectiveTargetWidth && currWordIndex < words.length);
 
+                // Check whether next line would be below the fuzzy threshold
+                int previewWordIndex = currWordIndex;
+                String previewLineText = words[previewWordIndex];
+                testText = previewLineText;
+                do {
+                    previewLineText = testText;
+                    if (previewWordIndex < words.length - 1) {
+                        testText = previewLineText + " " + words[++previewWordIndex];
+                    } else {
+                        testText = " ";
+                        previewWordIndex++;
+                    }
+                    lineWidth = PlacementUtil.estimateTextSize(font, testText).getWidth();
+                } while (lineWidth < effectiveTargetWidth && previewWordIndex < words.length);
+                if (lineWidth < effectiveTargetWidth * getFuzzyness(label)) {
+                    // next line would contain too much whitespace so append it to this line
+                    currWordIndex = previewWordIndex;
+                    currentLineText += " " + previewLineText;
+                }
+                
                 // No more words fit so the line is added to the result
                 if (currWordIndex < words.length) {
                     resultText.append(currentLineText).append("\n");
