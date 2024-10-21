@@ -85,22 +85,24 @@ public class SoftWrappingLabelManager extends AbstractKlighdLabelManager {
 
                 // Check whether next line would be below the fuzzy threshold
                 int previewWordIndex = currWordIndex;
-                String previewLineText = words[previewWordIndex];
-                testText = previewLineText;
-                do {
-                    previewLineText = testText;
-                    if (previewWordIndex < words.length - 1) {
-                        testText = previewLineText + " " + words[++previewWordIndex];
-                    } else {
-                        testText = " ";
-                        previewWordIndex++;
+                if (previewWordIndex < words.length) {
+                    String previewLineText = words[previewWordIndex];
+                    testText = previewLineText;
+                    do {
+                        previewLineText = testText;
+                        if (previewWordIndex < words.length - 1) {
+                            testText = previewLineText + " " + words[++previewWordIndex];
+                        } else {
+                            testText = " ";
+                            previewWordIndex++;
+                        }
+                        lineWidth = PlacementUtil.estimateTextSize(font, testText).getWidth();
+                    } while (lineWidth < effectiveTargetWidth && previewWordIndex < words.length);
+                    if (lineWidth < effectiveTargetWidth * getFuzzyness(label)) {
+                        // next line would contain too much whitespace so append it to this line
+                        currWordIndex = previewWordIndex;
+                        currentLineText += " " + previewLineText;
                     }
-                    lineWidth = PlacementUtil.estimateTextSize(font, testText).getWidth();
-                } while (lineWidth < effectiveTargetWidth && previewWordIndex < words.length);
-                if (lineWidth < effectiveTargetWidth * getFuzzyness(label)) {
-                    // next line would contain too much whitespace so append it to this line
-                    currWordIndex = previewWordIndex;
-                    currentLineText += " " + previewLineText;
                 }
                 
                 // No more words fit so the line is added to the result
