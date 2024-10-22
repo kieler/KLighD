@@ -429,11 +429,11 @@ public final class KlighdProperties {
             new Property<KVector>("klighd.roundedRectangle.autopadding", null);
     
     /**
-     * Determines the amount of fuzzyness to be used when performing softwrapping on labels.
+     * Determines the amount of fuzziness to be used when performing softwrapping on labels.
      * The value expresses the percent of overhang that is permitted for each line.
      * If the next line would take up less space than this threshold, it is appended to the
      * current line instead of being placed in a new line.
      */
-    public static final IProperty<Double> SOFTWRAPPING_FUZZYNESS = 
+    public static final IProperty<Double> SOFTWRAPPING_FUZZINESS = 
             new Property<Double>("klighd.softwrapping.fuzzyness",0.0);
 }

@@ -37,17 +37,13 @@ import de.cau.cs.kieler.klighd.util.KlighdProperties;
  */
 public class SoftWrappingLabelManager extends AbstractKlighdLabelManager {
 
-    /** Amount of line overhang that is permitted in percent of the effevtiveTargetWidth 
-     * 
-     * */
-    
     /**
-     * Returns the amount of line overhang that is permitted in percent of the effevtiveTargetWidth.
-     * @param label The ElkLabel for which the fuzzyness is requested.
-     * @return The fuzzyness
+     * Returns the amount of line overhang that is permitted in percent of the effectiveTargetWidth.
+     * @param label The ElkLabel for which the fuzziness is requested.
+     * @return The fuzziness
      */
-    public double getFuzzyness(final ElkLabel label) {
-        return label.getProperty(KlighdProperties.SOFTWRAPPING_FUZZYNESS);
+    public double getFuzziness(final ElkLabel label) {
+        return label.getProperty(KlighdProperties.SOFTWRAPPING_FUZZINESS);
     }
     
     @Override
@@ -84,24 +80,26 @@ public class SoftWrappingLabelManager extends AbstractKlighdLabelManager {
                 } while (lineWidth < effectiveTargetWidth && currWordIndex < words.length);
 
                 // Check whether next line would be below the fuzzy threshold
-                int previewWordIndex = currWordIndex;
-                if (previewWordIndex < words.length) {
-                    String previewLineText = words[previewWordIndex];
-                    testText = previewLineText;
-                    do {
-                        previewLineText = testText;
-                        if (previewWordIndex < words.length - 1) {
-                            testText = previewLineText + " " + words[++previewWordIndex];
-                        } else {
-                            testText = " ";
-                            previewWordIndex++;
+                if (getFuzziness(label) > 0) {
+                    int previewWordIndex = currWordIndex;
+                    if (previewWordIndex < words.length) {
+                        String previewLineText = words[previewWordIndex];
+                        testText = previewLineText;
+                        do {
+                            previewLineText = testText;
+                            if (previewWordIndex < words.length - 1) {
+                                testText = previewLineText + " " + words[++previewWordIndex];
+                            } else {
+                                testText = " ";
+                                previewWordIndex++;
+                            }
+                            lineWidth = PlacementUtil.estimateTextSize(font, testText).getWidth();
+                        } while (lineWidth < effectiveTargetWidth && previewWordIndex < words.length);
+                        if (lineWidth < effectiveTargetWidth * getFuzziness(label)) {
+                            // next line would contain too much whitespace so append it to this line
+                            currWordIndex = previewWordIndex;
+                            currentLineText += " " + previewLineText;
                         }
-                        lineWidth = PlacementUtil.estimateTextSize(font, testText).getWidth();
-                    } while (lineWidth < effectiveTargetWidth && previewWordIndex < words.length);
-                    if (lineWidth < effectiveTargetWidth * getFuzzyness(label)) {
-                        // next line would contain too much whitespace so append it to this line
-                        currWordIndex = previewWordIndex;
-                        currentLineText += " " + previewLineText;
                     }
                 }
                 
