@@ -797,7 +797,6 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
     private void shapeLayoutToLayoutGraph(
             final KShapeLayout sourceShapeLayout, final ElkShape targetShape) {
 
-        // Attention: Layout options are transfered by the {@link KGraphPropertyLayoutConfig}
         targetShape.setLocation(sourceShapeLayout.getXpos(), sourceShapeLayout.getYpos());
         targetShape.setDimensions(sourceShapeLayout.getWidth(), sourceShapeLayout.getHeight());
     }
