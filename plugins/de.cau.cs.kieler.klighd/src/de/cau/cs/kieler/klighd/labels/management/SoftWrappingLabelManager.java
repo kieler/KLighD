@@ -16,11 +16,11 @@
  */
 package de.cau.cs.kieler.klighd.labels.management;
 
+import org.eclipse.elk.core.options.CoreOptions;
 import org.eclipse.elk.graph.ElkLabel;
 import org.eclipse.swt.graphics.FontData;
 
 import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
-import de.cau.cs.kieler.klighd.util.KlighdProperties;
 
 /**
  * Label manager which soft wraps the text so it fits a certain width. Soft wrapping only inserts
@@ -43,7 +43,7 @@ public class SoftWrappingLabelManager extends AbstractKlighdLabelManager {
      * @return The fuzziness
      */
     public double getFuzziness(final ElkLabel label) {
-        return label.getProperty(KlighdProperties.SOFTWRAPPING_FUZZINESS);
+        return label.getProperty(CoreOptions.SOFTWRAPPING_FUZZINESS);
     }
     
     @Override
@@ -95,6 +95,7 @@ public class SoftWrappingLabelManager extends AbstractKlighdLabelManager {
                             }
                             lineWidth = PlacementUtil.estimateTextSize(font, testText).getWidth();
                         } while (lineWidth < effectiveTargetWidth && previewWordIndex < words.length);
+                        lineWidth = PlacementUtil.estimateTextSize(font, previewLineText).getWidth();
                         if (lineWidth < effectiveTargetWidth * getFuzziness(label)) {
                             // next line would contain too much whitespace so append it to this line
                             currWordIndex = previewWordIndex;
