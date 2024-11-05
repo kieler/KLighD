@@ -353,6 +353,7 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
      * Tells the server that the diagram should be refreshed.
      */
     protected def handle(RefreshDiagramAction action) {
+        getOptions().putAll(action.options)
         updateDiagram()
         return
     }
