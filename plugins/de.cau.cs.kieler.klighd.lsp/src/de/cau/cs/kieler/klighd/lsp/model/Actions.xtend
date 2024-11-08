@@ -3,7 +3,7 @@
  *
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright 2018-2022 by
+ * Copyright 2018-2024 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -18,6 +18,7 @@ package de.cau.cs.kieler.klighd.lsp.model
 
 import de.cau.cs.kieler.klighd.krendering.KImage
 import java.util.List
+import java.util.Map
 import java.util.Set
 import java.util.function.Consumer
 import org.eclipse.sprotty.Action
@@ -212,6 +213,8 @@ class PerformActionAction implements Action {
 class RefreshDiagramAction implements Action {
     public static val KIND = 'refreshDiagram'
     String kind = KIND
+    
+    Map<String, String> options
     
     new() {}
     new(Consumer<RefreshDiagramAction> initializer) {

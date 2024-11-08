@@ -3,7 +3,7 @@
  *
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright 2018-2021 by
+ * Copyright 2018-2024 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -40,6 +40,7 @@ import de.cau.cs.kieler.klighd.lsp.model.SKLabel
 import de.cau.cs.kieler.klighd.lsp.model.SKNode
 import de.cau.cs.kieler.klighd.lsp.model.SKPort
 import de.cau.cs.kieler.klighd.lsp.utils.KGraphElementIdGenerator
+import de.cau.cs.kieler.klighd.lsp.utils.KGraphMappingUtil
 import de.cau.cs.kieler.klighd.lsp.utils.SprottyProperties
 import de.cau.cs.kieler.klighd.util.KlighdPredicates
 import de.cau.cs.kieler.klighd.util.KlighdProperties
@@ -259,6 +260,7 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
         nodeElement.data = node.data.filter[KRenderingLibrary.isAssignableFrom(it.class)].toList
         
         setProperties(nodeElement, node)
+        KGraphMappingUtil.mapProperties(node, nodeElement)
         findSpecialRenderings(filteredData)
         
         val renderingContextData = RenderingContextData.get(node)
@@ -311,6 +313,7 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
 
         val renderings = edge.data.filter[KRendering.isAssignableFrom(it.class)].toList
         
+        KGraphMappingUtil.mapProperties(edge, edgeElement)
         findSpecialRenderings(renderings)
         edgeElement.children.addAll(createLabels(edge.labels))
         edgeElement.junctionPoints = edge.getProperty(CoreOptions.JUNCTION_POINTS)
@@ -332,6 +335,7 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
         
         val renderings = port.data.filter [ KRendering.isAssignableFrom(it.class)].toList
         
+        KGraphMappingUtil.mapProperties(port, portElement)
         findSpecialRenderings(renderings)
         portElement.children.addAll(createLabels(port.labels))
 
@@ -353,6 +357,7 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
 
         val renderings = label.data.filter[KRendering.isAssignableFrom(it.class)].toList
 
+        KGraphMappingUtil.mapProperties(label, labelElement)
         findSpecialRenderings(renderings)
         // activate the element by default if it does not have an active/inactive status yet.
         val renderingContextData = RenderingContextData.get(label)

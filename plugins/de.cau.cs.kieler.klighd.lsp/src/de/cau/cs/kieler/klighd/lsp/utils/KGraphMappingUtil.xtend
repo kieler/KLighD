@@ -23,6 +23,7 @@ import de.cau.cs.kieler.klighd.kgraph.KLabel
 import de.cau.cs.kieler.klighd.kgraph.KNode
 import de.cau.cs.kieler.klighd.kgraph.KPort
 import de.cau.cs.kieler.klighd.kgraph.KShapeLayout
+import de.cau.cs.kieler.klighd.kgraph.util.KGraphUtil
 import de.cau.cs.kieler.klighd.lsp.model.SKEdge
 import de.cau.cs.kieler.klighd.lsp.model.SKElement
 import de.cau.cs.kieler.klighd.lsp.model.SKLabel
@@ -39,7 +40,6 @@ import org.eclipse.sprotty.Dimension
 import org.eclipse.sprotty.Point
 import org.eclipse.sprotty.SModelElement
 import org.eclipse.sprotty.SShapeElement
-import de.cau.cs.kieler.klighd.kgraph.util.KGraphUtil
 
 /**
  * A helper class containing static methods for mapping of KGraph and SGraph bounds.
@@ -108,15 +108,7 @@ class KGraphMappingUtil {
         skEdge.junctionPoints.addAllAsCopies(0, kEdge.getProperty(CoreOptions.JUNCTION_POINTS))
         skEdge.junctionPoints.offset(new KVector(leftInset, topInset))
 
-        // map all properties excepts those that are blacklisted
-        // also include external whitelisted properties
-        var properties = kEdge.allProperties;
-
-        for (propertyKVPair : properties.entrySet()) {
-            if (keepProperty(propertyKVPair.key)) {
-                skEdge.properties.put(propertyKVPair.key.id, propertyKVPair.value)
-            }
-        }
+        mapProperties(kEdge, skEdge)
     }
     
     /**
@@ -138,11 +130,19 @@ class KGraphMappingUtil {
         skNode.position = new Point(kNode.xpos + leftInset, kNode.ypos + topInset)
         skNode.size = new Dimension(kNode.width, kNode.height)
 
-        var properties = kNode.allProperties;
+        mapProperties(kNode, skNode)
+    }
+    
+    /**
+     * Maps the properties of the KGraphElement to the corresponding SModelElement.
+     * Excepts those that are blacklisted, but also include whitelisted external properties.
+     */
+    static def mapProperties(KGraphElement kElement, SKElement sElement) {
+        val properties = kElement.allProperties
 
         for (propertyKVPair : properties.entrySet()) {
             if (keepProperty(propertyKVPair.key)) {
-                skNode.properties.put(propertyKVPair.key.id, propertyKVPair.value)
+                sElement.properties.put(propertyKVPair.key.id, propertyKVPair.value)
             }
         }
     }
