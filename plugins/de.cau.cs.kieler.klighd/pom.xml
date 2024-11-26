@@ -42,7 +42,6 @@
     <dependency>
       <groupId>org.eclipse.emf</groupId>
       <artifactId>org.eclipse.emf.ecore</artifactId>
-      <version>${emf-ecore-version}</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.emf</groupId>
@@ -62,7 +61,6 @@
     <dependency>
       <groupId>org.eclipse.platform</groupId>
       <artifactId>org.eclipse.ui.workbench</artifactId>
-      <version>${ui-workbench-version}</version>
     </dependency>
     <dependency>
       <groupId>com.google.inject</groupId>
