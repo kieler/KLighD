@@ -255,16 +255,11 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
     }
 
     /**
-     * Taken from {@code DefaultDiagramServer.handle(RequestModelAction)} to use this getModel.
-     * Needed for KeithUpdateModelAction
-     * 
-     * FIXME Remove this if UpdateModelAction has a cause.
+     * additionally read the color preferences from the request model action.
      */
     override protected handle(RequestModelAction request) {
+        super.handle(request)
         if (model.type == 'NONE' && diagramLanguageServer !== null) {
-            if (!request.requestId.nullOrEmpty)
-//                LOG.warn("Model requests are not supported by the Xtext diagram server.")
-            copyOptions(request)
             synchronized (diagramState) {
                 // In the request model action there may be some further information for the client color preferences to
                 // be applied here.
@@ -275,9 +270,6 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
                     diagramState.colorPreferences = new ColorPreferences(foregroundColor, backgroundColor, highlightColor)
                 }
             }
-            diagramLanguageServer.diagramUpdater.updateDiagram(this)
-        } else {
-            super.handle(request)
         }
     }
     
