@@ -53,7 +53,6 @@ import org.junit.runners.Parameterized.Parameter;
 import org.junit.runners.Parameterized.Parameters;
 
 import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
 
 import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.IViewer;
@@ -136,7 +135,7 @@ public class DiagramClipPortLabelVisibilityTest {
         compoundOp.setProperty(SHOW_CLIPPED_LABELS, false);
         andOp.setProperty(SHOW_CLIPPED_PORTS, false);
 
-        final List<Object[]> clips = Lists.newArrayList(
+        final List<Object[]> clips = List.of(
                 clip(circuitGraph),
 
                 /** in circuit content ports are set invisible by default in view model */

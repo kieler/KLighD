@@ -17,15 +17,13 @@ import java.util.HashMap;
 
 import org.eclipse.core.runtime.preferences.IEclipsePreferences.IPreferenceChangeListener;
 
-import com.google.common.collect.Maps;
-
 import de.cau.cs.kieler.klighd.IKlighdPreferenceStore;
 
 public class KlighdPlainPreferenceStore implements IKlighdPreferenceStore {
 
-    private final HashMap<Object, Object> values = Maps.newHashMap();
+    private final HashMap<Object, Object> values = new HashMap<>();
 
-    private final HashMap<Object, Object> defaults = Maps.newHashMap();
+    private final HashMap<Object, Object> defaults = new HashMap<>();
 
     public KlighdPlainPreferenceStore() {
         new PreferenceInitializer().initializeDefaultPreferences(this);

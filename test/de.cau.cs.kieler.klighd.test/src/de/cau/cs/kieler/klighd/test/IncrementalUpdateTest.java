@@ -3,7 +3,7 @@
  *
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright 2020 by
+ * Copyright 2020-2023 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -51,6 +51,34 @@ public class IncrementalUpdateTest {
         return new ViewContext((IDiagramWorkbenchPart) null, null);
     }
     
+    /*
+     * method for programatically creating the following KGraph in kgt notion:
+     * 
+     * kgraph nodeRoot
+     * 
+     * knode nodeA {
+     *   kport portA1
+     *   kport portA2
+     *   
+     *   klabel labelA1 "labelA1"
+     *   klabel labelA2 "labelA2"
+     * 
+     *   kedge (->nodeB) // edgeAB
+     *   kedge (->nodeC) // edgeAC
+     *   
+     *   kedge (:portA1->nodeB:portB1) // edgeA1B1
+     *   kedge (:portA1->nodeB:portB1) // edgeA1B1_2
+     * }
+     * knode nodeB {
+     *   kport portB1
+     * 
+     *   kedge (->nodeC) // edgeBC
+     * }
+     * knode nodeC {
+     *   kedge (->nodeB) // edgeCB
+     * }
+     * 
+     */
     private KNode createTestGraph() {
         final KNode nodeRoot = KGraphUtil.createInitializedNode();
         addIdentifier(nodeRoot, "nodeRoot");
@@ -140,7 +168,7 @@ public class IncrementalUpdateTest {
         
         final KNode newNode = KGraphUtil.createInitializedNode();
         final EObject newNodeSource = new EObjectImpl() { };
-        newNode.setProperty(KlighdInternalProperties.MODEL_ELEMEMT, newNodeSource);
+        newNode.setProperty(KlighdInternalProperties.MODEL_ELEMENT, newNodeSource);
         final int newNodePosition = 0;
         
         newGraph.getChildren().add(newNodePosition, newNode);
@@ -180,9 +208,9 @@ public class IncrementalUpdateTest {
         final EObject newNodeSource0 = new EObjectImpl() { };
         final EObject newNodeSource1 = new EObjectImpl() { };
         final EObject newNodeSource2 = new EObjectImpl() { };
-        newNode0.setProperty(KlighdInternalProperties.MODEL_ELEMEMT, newNodeSource0);
-        newNode1.setProperty(KlighdInternalProperties.MODEL_ELEMEMT, newNodeSource1);
-        newNode2.setProperty(KlighdInternalProperties.MODEL_ELEMEMT, newNodeSource2);
+        newNode0.setProperty(KlighdInternalProperties.MODEL_ELEMENT, newNodeSource0);
+        newNode1.setProperty(KlighdInternalProperties.MODEL_ELEMENT, newNodeSource1);
+        newNode2.setProperty(KlighdInternalProperties.MODEL_ELEMENT, newNodeSource2);
         final int newNode0Position = 0;
         final int newNode1Position = 1;
         final int newNode2Position = 2;
@@ -225,7 +253,7 @@ public class IncrementalUpdateTest {
         final KNode baseGraph = createTestGraph();
         final KNode baseNodeToRemove = baseGraph.getChildren().get(toRemovePosition);
         final EObject baseNodeToRemoveSource = new EObjectImpl() { };
-        baseNodeToRemove.setProperty(KlighdInternalProperties.MODEL_ELEMEMT, baseNodeToRemoveSource);
+        baseNodeToRemove.setProperty(KlighdInternalProperties.MODEL_ELEMENT, baseNodeToRemoveSource);
         
         final KNode newGraph = createTestGraph();
         
@@ -253,11 +281,11 @@ public class IncrementalUpdateTest {
         final KNode baseGraph = createTestGraph();
         final KNode baseNodeToMove = baseGraph.getChildren().get(oldPosition);
         final EObject nodeToMoveSource = new EObjectImpl() { };
-        baseNodeToMove.setProperty(KlighdInternalProperties.MODEL_ELEMEMT, nodeToMoveSource);
+        baseNodeToMove.setProperty(KlighdInternalProperties.MODEL_ELEMENT, nodeToMoveSource);
         
         final KNode newGraph = createTestGraph();
         final KNode newNodeToMove = newGraph.getChildren().get(oldPosition);
-        newNodeToMove.setProperty(KlighdInternalProperties.MODEL_ELEMEMT, nodeToMoveSource);
+        newNodeToMove.setProperty(KlighdInternalProperties.MODEL_ELEMENT, nodeToMoveSource);
         newGraph.getChildren().move(newPosition, newNodeToMove);
         
         
@@ -286,7 +314,7 @@ public class IncrementalUpdateTest {
         
         final KPort newPort = KGraphUtil.createInitializedPort();
         final EObject newPortSource = new EObjectImpl() { };
-        newPort.setProperty(KlighdInternalProperties.MODEL_ELEMEMT, newPortSource);
+        newPort.setProperty(KlighdInternalProperties.MODEL_ELEMENT, newPortSource);
         final int parentNodePosition = 0;
         final int newPortPosition = 0;
         
@@ -318,7 +346,7 @@ public class IncrementalUpdateTest {
         final KNode baseGraph = createTestGraph();
         final KPort basePortToRemove = baseGraph.getChildren().get(parentNodePosition).getPorts().get(toRemovePosition);
         final EObject basePortToRemoveSource = new EObjectImpl() { };
-        basePortToRemove.setProperty(KlighdInternalProperties.MODEL_ELEMEMT, basePortToRemoveSource);
+        basePortToRemove.setProperty(KlighdInternalProperties.MODEL_ELEMENT, basePortToRemoveSource);
         
         final KNode newGraph = createTestGraph();
         
@@ -347,11 +375,11 @@ public class IncrementalUpdateTest {
         final KNode baseGraph = createTestGraph();
         final KPort basePortToMove = baseGraph.getChildren().get(parentNodePosition).getPorts().get(oldPosition);
         final EObject portToMoveSource = new EObjectImpl() { };
-        basePortToMove.setProperty(KlighdInternalProperties.MODEL_ELEMEMT, portToMoveSource);
+        basePortToMove.setProperty(KlighdInternalProperties.MODEL_ELEMENT, portToMoveSource);
         
         final KNode newGraph = createTestGraph();
         final KPort newPortToMove = newGraph.getChildren().get(parentNodePosition).getPorts().get(oldPosition);
-        newPortToMove.setProperty(KlighdInternalProperties.MODEL_ELEMEMT, portToMoveSource);
+        newPortToMove.setProperty(KlighdInternalProperties.MODEL_ELEMENT, portToMoveSource);
         newGraph.getChildren().get(parentNodePosition).getPorts().move(newPosition, newPortToMove);
         
         
@@ -384,7 +412,7 @@ public class IncrementalUpdateTest {
         final KNode parentNode = newGraph.getChildren().get(parentNodePosition);
         final KLabel newLabel = KGraphUtil.createInitializedLabel(parentNode);
         final EObject newLabelSource = new EObjectImpl() { };
-        newLabel.setProperty(KlighdInternalProperties.MODEL_ELEMEMT, newLabelSource);
+        newLabel.setProperty(KlighdInternalProperties.MODEL_ELEMENT, newLabelSource);
         parentNode.getLabels().move(newLabelPosition, newLabel);
         
         final ViewContext viewContext = createViewContext();
@@ -413,7 +441,7 @@ public class IncrementalUpdateTest {
         final KNode baseGraph = createTestGraph();
         final KLabel baseLabelToRemove = baseGraph.getChildren().get(parentNodePosition).getLabels().get(toRemovePosition);
         final EObject baseLabelToRemoveSource = new EObjectImpl() { };
-        baseLabelToRemove.setProperty(KlighdInternalProperties.MODEL_ELEMEMT, baseLabelToRemoveSource);
+        baseLabelToRemove.setProperty(KlighdInternalProperties.MODEL_ELEMENT, baseLabelToRemoveSource);
         
         final KNode newGraph = createTestGraph();
         
@@ -442,11 +470,11 @@ public class IncrementalUpdateTest {
         final KNode baseGraph = createTestGraph();
         final KLabel baseLabelToMove = baseGraph.getChildren().get(parentNodePosition).getLabels().get(oldPosition);
         final EObject labelToMoveSource = new EObjectImpl() { };
-        baseLabelToMove.setProperty(KlighdInternalProperties.MODEL_ELEMEMT, labelToMoveSource);
+        baseLabelToMove.setProperty(KlighdInternalProperties.MODEL_ELEMENT, labelToMoveSource);
         
         final KNode newGraph = createTestGraph();
         final KLabel newLabelToMove = newGraph.getChildren().get(parentNodePosition).getLabels().get(oldPosition);
-        newLabelToMove.setProperty(KlighdInternalProperties.MODEL_ELEMEMT, labelToMoveSource);
+        newLabelToMove.setProperty(KlighdInternalProperties.MODEL_ELEMENT, labelToMoveSource);
         newGraph.getChildren().get(parentNodePosition).getLabels().move(newPosition, newLabelToMove);
         
         
@@ -477,7 +505,7 @@ public class IncrementalUpdateTest {
         
         final KEdge newEdge = KGraphUtil.createInitializedEdge();
         final EObject newEdgeSource = new EObjectImpl() { };
-        newEdge.setProperty(KlighdInternalProperties.MODEL_ELEMEMT, newEdgeSource);
+        newEdge.setProperty(KlighdInternalProperties.MODEL_ELEMENT, newEdgeSource);
         
         final int sourceNodePosition = 0;
         final int targetNodePosition = 1;
@@ -520,7 +548,7 @@ public class IncrementalUpdateTest {
         
         final KEdge newEdge = KGraphUtil.createInitializedEdge();
         final EObject newEdgeSource = new EObjectImpl() { };
-        newEdge.setProperty(KlighdInternalProperties.MODEL_ELEMEMT, newEdgeSource);
+        newEdge.setProperty(KlighdInternalProperties.MODEL_ELEMENT, newEdgeSource);
         
         final int sourceNodePosition = 0;
         final int targetNodePosition = 1;
@@ -559,6 +587,93 @@ public class IncrementalUpdateTest {
     }
     
     /**
+     * Tests adding an edge to an added port of an added node. Checks if the elements are added and if the edge is
+     * connected to the new port at the correct positions in various reference lists.
+     */
+    @Test
+    public void testAddEdgeNewNodeToNewTargetPort() {
+        final KNode baseGraph = createTestGraph();
+        final KNode newGraph = createTestGraph();
+
+        // Create a new source node on index 0.
+        final KNode newSourceNode = KGraphUtil.createInitializedNode();
+        final EObject newSourceNodeSource = new EObjectImpl() { };
+        newSourceNode.setProperty(KlighdInternalProperties.MODEL_ELEMENT, newSourceNodeSource);
+        final int newSourceNodePosition = 0;
+        
+        newGraph.getChildren().add(newSourceNodePosition, newSourceNode);
+        
+        // Create the new target port on another node with index 1.
+        final KPort newTargetPort = KGraphUtil.createInitializedPort();
+        final EObject newTargetPortSource = new EObjectImpl() { };
+        newTargetPort.setProperty(KlighdInternalProperties.MODEL_ELEMENT, newTargetPortSource);
+        final int targetNodePosition = 1;
+        final int newTargetPortPosition = 0;
+        
+        final KNode targetNode = newGraph.getChildren().get(targetNodePosition);
+        targetNode.getPorts().add(newTargetPortPosition, newTargetPort);
+        
+        // Create a new edge from the new source node to the new target port.
+        final KEdge newEdge = KGraphUtil.createInitializedEdge();
+        final EObject newEdgeSource = new EObjectImpl() { };
+        newEdge.setProperty(KlighdInternalProperties.MODEL_ELEMENT, newEdgeSource);
+        
+        newEdge.setSource(newSourceNode);
+        newEdge.setTargetPort(newTargetPort);
+        newEdge.setTarget(targetNode);
+        final int newEdgeSourcePosition = 0;
+        final int newEdgeTargetPortPosition = 0;
+        final int newEdgeTargetPosition = 0;
+        newSourceNode.getOutgoingEdges().move(newEdgeSourcePosition, newEdge);
+        newTargetPort.getEdges().move(newEdgeTargetPortPosition, newEdge);
+        targetNode.getIncomingEdges().move(newEdgeTargetPosition, newEdge);
+        
+        final ViewContext viewContext = createViewContext();
+        // Initialize the view context with the base graph.
+        INCREMENTAL_UPDATE_STRATEGY.update(viewContext.getViewModel(), baseGraph, viewContext);
+        // Update with the new graph.
+        INCREMENTAL_UPDATE_STRATEGY.update(viewContext.getViewModel(), newGraph, viewContext);
+        
+        // Assert the new node is in the updated base model.
+        EObject baseNewNode = viewContext.getTargetElements(newSourceNodeSource).stream().findFirst().orElse(null);
+        Assert.assertNotNull(baseNewNode);
+        Assert.assertTrue(baseNewNode instanceof KNode);
+        
+        // Assert the new port is in the updated base model.
+        EObject baseNewPort = viewContext.getTargetElements(newTargetPortSource).stream().findFirst().orElse(null);
+        Assert.assertNotNull(baseNewPort);
+        Assert.assertTrue(baseNewPort instanceof KPort);
+        
+        // Assert the new edge is in the updated base model.
+        EObject baseNewEdge = viewContext.getTargetElements(newEdgeSource).stream().findFirst().orElse(null);
+        Assert.assertNotNull(baseNewEdge);
+        Assert.assertTrue(baseNewEdge instanceof KEdge);
+        // Assert the new edge also connects to the new port correctly.
+        Assert.assertSame(baseNewPort, ((KEdge) baseNewEdge).getTargetPort());
+        
+        
+        // Assert that the new node is in the same positions in the updated base graph as it is in the new graph.
+        int baseNodePosition = viewContext.getViewModel().getChildren().indexOf(baseNewNode);
+        Assert.assertSame(newSourceNodePosition, baseNodePosition);
+        
+        // Assert that the new port is in the same positions in the updated base graph as it is in the new graph.
+        int basePortPosition = viewContext.getViewModel().getChildren().get(targetNodePosition).getPorts()
+                .indexOf(baseNewPort);
+        Assert.assertSame(newTargetPortPosition, basePortPosition);
+        
+        // Assert that the new edge is in the same positions in the updated base graph as it is in the new graph.
+        int baseEdgeSourcePosition = viewContext.getViewModel().getChildren().get(newSourceNodePosition)
+                .getOutgoingEdges().indexOf(baseNewEdge);
+        Assert.assertSame(newEdgeSourcePosition, baseEdgeSourcePosition);
+        int baseEdgeTargetPosition = viewContext.getViewModel().getChildren().get(targetNodePosition).getIncomingEdges()
+                .indexOf(baseNewEdge);
+        Assert.assertSame(newEdgeTargetPosition, baseEdgeTargetPosition);
+        int baseEdgeTargetPortPosition = viewContext.getViewModel().getChildren().get(targetNodePosition).getPorts()
+                .get(newTargetPortPosition).getEdges().indexOf(baseNewEdge);
+        Assert.assertSame(newEdgeTargetPortPosition, baseEdgeTargetPortPosition);
+    }
+    
+    /**
      * Tests removing an edge plainly on a node.
      */
     @Test
@@ -569,7 +684,7 @@ public class IncrementalUpdateTest {
         final KEdge baseEdgeToRemove = baseGraph.getChildren().get(sourceNodePosition).getOutgoingEdges()
             .get(toRemovePosition);
         final EObject baseEdgeToRemoveSource = new EObjectImpl() { };
-        baseEdgeToRemove.setProperty(KlighdInternalProperties.MODEL_ELEMEMT, baseEdgeToRemoveSource);
+        baseEdgeToRemove.setProperty(KlighdInternalProperties.MODEL_ELEMENT, baseEdgeToRemoveSource);
         
         final KNode newGraph = createTestGraph();
         
@@ -599,7 +714,7 @@ public class IncrementalUpdateTest {
         final KEdge baseEdgeToRemove = baseGraph.getChildren().get(sourceNodePosition).getPorts()
             .get(sourceNodePortPosition).getEdges().get(toRemovePosition);
         final EObject baseEdgeToRemoveSource = new EObjectImpl() { };
-        baseEdgeToRemove.setProperty(KlighdInternalProperties.MODEL_ELEMEMT, baseEdgeToRemoveSource);
+        baseEdgeToRemove.setProperty(KlighdInternalProperties.MODEL_ELEMENT, baseEdgeToRemoveSource);
         
         final KNode newGraph = createTestGraph();
         
@@ -631,12 +746,12 @@ public class IncrementalUpdateTest {
         final KEdge baseEdgeToMove = baseGraph.getChildren().get(sourceNodePosition).getOutgoingEdges()
             .get(oldSourcePosition);
         final EObject edgeToMoveSource = new EObjectImpl() { };
-        baseEdgeToMove.setProperty(KlighdInternalProperties.MODEL_ELEMEMT, edgeToMoveSource);
+        baseEdgeToMove.setProperty(KlighdInternalProperties.MODEL_ELEMENT, edgeToMoveSource);
         
         final KNode newGraph = createTestGraph();
         final KEdge newEdgeToMove = newGraph.getChildren().get(sourceNodePosition).getOutgoingEdges()
             .get(oldSourcePosition);
-        newEdgeToMove.setProperty(KlighdInternalProperties.MODEL_ELEMEMT, edgeToMoveSource);
+        newEdgeToMove.setProperty(KlighdInternalProperties.MODEL_ELEMENT, edgeToMoveSource);
         final KNode newTargetNode = newEdgeToMove.getTarget();
         newGraph.getChildren().get(sourceNodePosition).getOutgoingEdges().move(newSourcePosition, newEdgeToMove);
         newTargetNode.getIncomingEdges().move(newTargetPosition, newEdgeToMove);
@@ -674,12 +789,12 @@ public class IncrementalUpdateTest {
         final KEdge baseEdgeToMove = baseGraph.getChildren().get(sourceNodePosition).getPorts()
             .get(sourceNodePortPosition).getEdges().get(oldSourcePosition);
         final EObject edgeToMoveSource = new EObjectImpl() { };
-        baseEdgeToMove.setProperty(KlighdInternalProperties.MODEL_ELEMEMT, edgeToMoveSource);
+        baseEdgeToMove.setProperty(KlighdInternalProperties.MODEL_ELEMENT, edgeToMoveSource);
         
         final KNode newGraph = createTestGraph();
         final KEdge newEdgeToMove = newGraph.getChildren().get(sourceNodePosition).getPorts()
             .get(sourceNodePortPosition).getEdges().get(oldSourcePosition);
-        newEdgeToMove.setProperty(KlighdInternalProperties.MODEL_ELEMEMT, edgeToMoveSource);
+        newEdgeToMove.setProperty(KlighdInternalProperties.MODEL_ELEMENT, edgeToMoveSource);
         final KPort newTargetPort = newEdgeToMove.getTargetPort();
         newGraph.getChildren().get(sourceNodePosition).getPorts().get(sourceNodePortPosition).getEdges()
             .move(newSourcePosition, newEdgeToMove);
@@ -782,11 +897,11 @@ public class IncrementalUpdateTest {
         final EObject newNodeSource3 = new EObjectImpl() { };
         final EObject newNodeSourceL = new EObjectImpl() { };
         final EObject newNodeSource2 = new EObjectImpl() { };
-        newNodeC.setProperty(KlighdInternalProperties.MODEL_ELEMEMT, newNodeSourceC);
-        newNode1.setProperty(KlighdInternalProperties.MODEL_ELEMEMT, newNodeSource1);
-        newNode3.setProperty(KlighdInternalProperties.MODEL_ELEMEMT, newNodeSource3);
-        newNodeL.setProperty(KlighdInternalProperties.MODEL_ELEMEMT, newNodeSourceL);
-        newNode2.setProperty(KlighdInternalProperties.MODEL_ELEMEMT, newNodeSource2);
+        newNodeC.setProperty(KlighdInternalProperties.MODEL_ELEMENT, newNodeSourceC);
+        newNode1.setProperty(KlighdInternalProperties.MODEL_ELEMENT, newNodeSource1);
+        newNode3.setProperty(KlighdInternalProperties.MODEL_ELEMENT, newNodeSource3);
+        newNodeL.setProperty(KlighdInternalProperties.MODEL_ELEMENT, newNodeSourceL);
+        newNode2.setProperty(KlighdInternalProperties.MODEL_ELEMENT, newNodeSource2);
 
         final KPort newPortCOut = KGraphUtil.createInitializedPort();
         newPortCOut.setNode(newNodeC);

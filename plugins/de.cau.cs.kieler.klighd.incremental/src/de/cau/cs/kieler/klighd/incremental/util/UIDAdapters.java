@@ -58,7 +58,7 @@ public final class UIDAdapters {
         UIDAdapter newAdapter = new UIDAdapter();
         node.eAdapters().add(newAdapter);
         adapters.put(node, new WeakReference<UIDAdapter>(newAdapter));
-        newAdapter.generateIDs(node);
+        newAdapter.generateIDs(node, false, 0);
         return newAdapter;
     }
 

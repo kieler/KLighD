@@ -137,8 +137,7 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
     override accept(ActionMessage message) {
         if (message.action instanceof RequestModelAction) {
             val action = message.action as RequestModelAction
-            val diagramType = action.diagramType
-                    ?: action.options.get(DiagramOptions.OPTION_DIAGRAM_TYPE)
+            val diagramType = action.options.get(DiagramOptions.OPTION_DIAGRAM_TYPE)
             val server = diagramServerManager.getDiagramServer(diagramType, message.clientId)
             // If a diagram server is requested for the same client, but a different source file, then close the old server.
             // If the server does not have options yet, the server has not been used yet and does not need to be relaunched.

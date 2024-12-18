@@ -64,7 +64,8 @@ class KlighdProjectContributor implements IProjectFactoryContributor {
             case "JavaSE-1.6": "1.6"
             case "JavaSE-1.7": "1.7"
             case "JavaSE-1.8": "1.8"
-            default: "1.8"
+            case "JavaSE-11" : "11"
+            default: "11"
         }
         
         '''
@@ -88,7 +89,7 @@ class KlighdProjectContributor implements IProjectFactoryContributor {
         '''
             package «projectInfo.transformationPackage»
             
-            import javax.inject.Inject
+            import com.google.inject.Inject
             
             import de.cau.cs.kieler.klighd.kgraph.KNode
             import de.cau.cs.kieler.klighd.krendering.KRenderingFactory
@@ -455,7 +456,7 @@ class KlighdProjectContributor implements IProjectFactoryContributor {
                 };
             }
         
-            private static final Map<XtextEditor, ISelectionListener> selectionListeners = Maps.newHashMap();
+            private static final Map<XtextEditor, ISelectionListener> selectionListeners = new HashMap<>();
         
         
             /**

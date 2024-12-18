@@ -21,11 +21,11 @@ import org.eclipse.xtend.lib.annotations.Data
 /**
  * Data class for a layer constraint.
  * 
- * @author jet, cos, sdo
+ * @author jep, cos, sdo
  */
 @Data
 class LayerConstraint {
     String id
     int layer
-    int layerCons
+    int layerConstraint
 }

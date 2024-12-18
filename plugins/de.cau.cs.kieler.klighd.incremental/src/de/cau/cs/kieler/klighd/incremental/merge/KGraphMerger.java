@@ -3,7 +3,7 @@
  *
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright 2016,2020 by
+ * Copyright 2016-2023 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -19,7 +19,6 @@ package de.cau.cs.kieler.klighd.incremental.merge;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -32,11 +31,9 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.EMap;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 
-import com.google.common.collect.Lists;
 import com.google.common.collect.MapDifference.ValueDifference;
 import com.google.common.collect.Sets;
 
-import de.cau.cs.kieler.klighd.KlighdDataManager;
 import de.cau.cs.kieler.klighd.incremental.diff.KComparison;
 import de.cau.cs.kieler.klighd.kgraph.KEdge;
 import de.cau.cs.kieler.klighd.kgraph.KGraphData;
@@ -88,9 +85,54 @@ public class KGraphMerger {
         handleRemovedNodes();
         handleAddedNodes();
         handleMatchedNodes();
+        
+        // handle edges after everything else is done, because they are contained in their source, therefore we can't be 
+        // sure the target exists until we have gone through the entire model
+        handleRemovedEdges();
+        handleAddedEdges();
+        handleMatchedEdges();
+        
         updatePositions();
     }
+    
+    /**
+     * Removes edges from the base model.
+     */
+    private void handleRemovedEdges() {
+        for (KEdge edge : comparison.getRemovedEdges()) {
+            removeEdge(edge);
+        }
+    }
+    
+    /**
+     * Removes the edge from the graph it is contained in.
+     */
+    private void removeEdge(KEdge edge) {
+        edge.setSource(null);
+        edge.setTarget(null);
+        edge.setSourcePort(null);
+        edge.setTargetPort(null);
+    }
 
+    /**
+     * Adds edges from the new model to the base model.
+     */
+    private void handleAddedEdges() {
+        Stream<KEdge> newEdges = comparison.getAddedEdges().stream();
+        newEdges.forEach(
+            (KEdge edge) -> handleAddedEdge(edge)
+        );
+    }
+    
+    /**
+     * Handles edges that are present in both the base model and the new model.
+     */
+    private void handleMatchedEdges() {
+        for (ValueDifference<KEdge> diff : comparison.getMatchedEdges()) {
+            handleMatchedEdge(diff.rightValue());
+        }
+    }
+    
     /**
      * Remove nodes from the base model that are not longer present in the new model.
      */
@@ -142,10 +184,6 @@ public class KGraphMerger {
         )).forEachOrdered(
             (KNode node) -> addNode(node)
         );
-        // Add edges after adding the nodes to ensure that all targets are available.
-        for (KNode node : comparison.getAddedNodes()) {
-            handleEdges(comparison.lookupBaseNode(node), node);
-        }
     }
 
     /**
@@ -161,7 +199,10 @@ public class KGraphMerger {
             // and just copy the node and add it to the base adapter, without putting it into the base model directly.
             if (comparison.lookupBaseNode(node) == null) {
                 KNode copiedNode = EcoreUtil.copy(node);
-                comparison.getBaseAdapter().generateIDs(copiedNode);
+                // Edges from this node are handled later individually when the target is guaranteed to be added already,
+                // remove them for now.
+                allNewEdgesForCopiedNode(copiedNode).forEach(edge -> removeEdge(edge));
+                comparison.getBaseAdapter().generateIDs(copiedNode, true, -1);
             }
             return;
         }
@@ -180,9 +221,33 @@ public class KGraphMerger {
             if (comparison.lookupBaseNode(node) == null) {
                 int oldPosition = node.getParent().getChildren().indexOf(node);
                 KNode copiedNode = EcoreUtil.copy(node);
+                // Edges from this node are handled later individually when the target is guaranteed to be added already,
+                // remove them for now.
+                allNewEdgesForCopiedNode(copiedNode).forEach(edge -> removeEdge(edge));
                 baseParent.getChildren().add(oldPosition, copiedNode);
-                comparison.getBaseAdapter().generateIDs(copiedNode);
+                comparison.getBaseAdapter().generateIDs(copiedNode, true, oldPosition);
             }
+        }
+    }
+    
+    /**
+     * Returns all edges of this copied node, that are copied alongside it. Includes all outgoing edges, also of potential
+     * children of this node.
+     */
+    private List<KEdge> allNewEdgesForCopiedNode(KNode node) {
+        List<KEdge> allEdges = new ArrayList<KEdge>();
+        allNewEdgesForCopiedNode(node, allEdges);
+        return allEdges;
+    }
+    
+    /**
+     * Adds all edges of this copied node, that are copied alongside it to the {@code allEdges} list.
+     * Includes all outgoing edges, also of potential children of this node. Adds the result to the given list.
+     */
+    private void allNewEdgesForCopiedNode(KNode node, List<KEdge> allEdges) {
+        allEdges.addAll(node.getOutgoingEdges());
+        for (KNode childNode : node.getChildren()) {
+            allNewEdgesForCopiedNode(childNode, allEdges);
         }
     }
 
@@ -193,28 +258,6 @@ public class KGraphMerger {
         for (ValueDifference<KNode> diff : comparison.getMatchedNodes()) {
             updateKnode(diff.leftValue(), diff.rightValue());
         }
-    }
-    
-    /**
-     * Updates the positions of all nodes, edges, ports and labels in their containment and reference lists to match the
-     * new model.
-     */
-    private void updatePositions() {
-        for (Entry<KGraphElement, KGraphElement> entry : updatedElements.entrySet()) {
-            if (entry.getKey() instanceof KNode) {
-                updatePosition((KNode) entry.getKey(), (KNode) entry.getValue());
-            }
-            if (entry.getKey() instanceof KEdge) {
-                updatePosition((KEdge) entry.getKey(), (KEdge) entry.getValue());
-            }
-            if (entry.getKey() instanceof KPort) {
-                updatePosition((KPort) entry.getKey(), (KPort) entry.getValue());
-            }
-            if (entry.getKey() instanceof KLabel) {
-                updatePosition((KLabel) entry.getKey(), (KLabel) entry.getValue());
-            }
-        }
-        updatedElements.clear();
     }
 
     /**
@@ -231,43 +274,32 @@ public class KGraphMerger {
         copyInsets(newNode.getInsets(), baseNode.getInsets());
         handleLabels(baseNode, newNode);
         handlePorts(baseNode, newNode);
-        handleEdges(baseNode, newNode);
+        // edges are handled after all possible sources and targets have been handled
         updatedElements.put(baseNode, newNode);
     }
 
     /**
-     * Update all outgoing edges of the given node pair. Edges are removed, copied from the new
-     * model or updated.
+     * Update the matched edge.
      * 
-     * @param baseNode
-     *            the node to update to.
-     * @param newNode
-     *            the node to update from.
+     * @param matchedEdge the matched edge.
      */
-    private void handleEdges(final KNode baseNode, final KNode newNode) {
-        Set<KEdge> oldEdges = null;
-        if (baseNode != null) {
-            oldEdges = new HashSet<KEdge>(baseNode.getOutgoingEdges());
+    private void handleMatchedEdge(final KEdge matchedEdge) {
+        KEdge baseEdge = comparison.lookupBaseEdge(matchedEdge);
+        if (baseEdge != null && baseEdge.getTarget() != null) {
+            updateEdge(baseEdge, matchedEdge);
         }
-        for (KEdge newEdge : Lists.newLinkedList(newNode.getOutgoingEdges())) {
-            KEdge baseEdge = comparison.lookupBaseEdge(newEdge);
-            if (baseEdge == null || baseEdge.getTarget() == null) {
-                baseEdge = EcoreUtil.copy(newEdge);
-                updateEdge(baseEdge, newEdge);
-            } else {
-                if (oldEdges != null) {
-                    oldEdges.remove(baseEdge);
-                }
-                updateEdge(baseEdge, newEdge);
-            }
-        }
-        if (baseNode != null) {
-            for (KEdge oldEdge : oldEdges) {
-                oldEdge.setSource(null);
-                oldEdge.setTarget(null);
-                oldEdge.setSourcePort(null);
-                oldEdge.setTargetPort(null);
-            }
+    }
+
+    /**
+     * Update the added edge.
+     * 
+     * @param newEdge the added edge.
+     */
+    private void handleAddedEdge(final KEdge newEdge) {
+        KEdge baseEdge = comparison.lookupBaseEdge(newEdge);
+        if (baseEdge == null || baseEdge.getTarget() == null) {
+            baseEdge = EcoreUtil.copy(newEdge);
+            updateEdge(baseEdge, newEdge);
         }
     }
 
@@ -328,9 +360,9 @@ public class KGraphMerger {
             final KLabeledGraphElement newElement) {
         Set<KLabel> oldLabels = null;
         if (baseElement != null) {
-            oldLabels = new HashSet<KLabel>(baseElement.getLabels());
+            oldLabels = new HashSet<>(baseElement.getLabels());
         }
-        for (KLabel newLabel : Lists.newLinkedList(newElement.getLabels())) {
+        for (KLabel newLabel : new ArrayList<>(newElement.getLabels())) {
             KLabel baseLabel = comparison.lookupBaseLabel(newLabel);
             if (baseLabel == null) {
                 baseLabel = EcoreUtil.copy(newLabel);
@@ -374,7 +406,8 @@ public class KGraphMerger {
         updateShapeLayout(baseLabel, newLabel);
         baseLabel.setText(newLabel.getText());
         copyInsets(newLabel.getInsets(), baseLabel.getInsets());
-        comparison.getBaseAdapter().generateIDs(baseLabel);
+        int newPosition = newLabel.getParent().getLabels().indexOf(newLabel);
+        comparison.getBaseAdapter().generateIDs(baseLabel, newPosition);
         updatedElements.put(baseLabel, newLabel);
     }
 
@@ -390,9 +423,9 @@ public class KGraphMerger {
     private void handlePorts(final KNode baseNode, final KNode newNode) {
         Set<KPort> oldPorts = null;
         if (baseNode != null) {
-            oldPorts = new HashSet<KPort>(baseNode.getPorts());
+            oldPorts = new HashSet<>(baseNode.getPorts());
         }
-        for (KPort newPort : Lists.newLinkedList(newNode.getPorts())) {
+        for (KPort newPort : new ArrayList<>(newNode.getPorts())) {
             KPort basePort = comparison.lookupBasePort(newPort);
             if (basePort == null) {
                 basePort = EcoreUtil.copy(newPort);
@@ -428,7 +461,8 @@ public class KGraphMerger {
         updateGraphElement(basePort, newPort);
         updateShapeLayout(basePort, newPort);
         copyInsets(newPort.getInsets(), basePort.getInsets());
-        comparison.getBaseAdapter().generateIDs(basePort);
+        int newPosition = newPort.getNode().getPorts().indexOf(newPort);
+        comparison.getBaseAdapter().generateIDs(basePort, newPosition);
         handleLabels(basePort, newPort);
         updatedElements.put(basePort, newPort);
     }
@@ -451,12 +485,34 @@ public class KGraphMerger {
         baseData.addAll(newData);
         baseElement.copyProperties(newElement);
         EMap<IProperty<?>, Object> baseProperties = baseElement.getProperties();
-        LinkedList<IProperty<?>> removedProperties = Lists.newLinkedList(
+        List<IProperty<?>> removedProperties = new ArrayList<>(
                 Sets.difference(baseProperties.keySet(), newElement.getProperties().keySet()));        
         
         for (IProperty<?> property : removedProperties) {
             baseProperties.removeKey(property);
         }
+    }
+    
+    /**
+     * Updates the positions of all nodes, edges, ports and labels in their containment and reference lists to match the
+     * new model.
+     */
+    private void updatePositions() {
+        for (Entry<KGraphElement, KGraphElement> entry : updatedElements.entrySet()) {
+            if (entry.getKey() instanceof KNode) {
+                updatePosition((KNode) entry.getKey(), (KNode) entry.getValue());
+            }
+            if (entry.getKey() instanceof KEdge) {
+                updatePosition((KEdge) entry.getKey(), (KEdge) entry.getValue());
+            }
+            if (entry.getKey() instanceof KPort) {
+                updatePosition((KPort) entry.getKey(), (KPort) entry.getValue());
+            }
+            if (entry.getKey() instanceof KLabel) {
+                updatePosition((KLabel) entry.getKey(), (KLabel) entry.getValue());
+            }
+        }
+        updatedElements.clear();
     }
 
     /**

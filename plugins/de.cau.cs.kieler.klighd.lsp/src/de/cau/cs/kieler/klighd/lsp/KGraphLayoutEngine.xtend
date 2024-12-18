@@ -3,7 +3,7 @@
  * 
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright 2018,2019 by
+ * Copyright 2018-2024 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -18,11 +18,14 @@ package de.cau.cs.kieler.klighd.lsp
 
 import com.google.inject.Inject
 import de.cau.cs.kieler.klighd.LightDiagramLayoutConfig
+import de.cau.cs.kieler.klighd.lsp.launch.AbstractLanguageServer
 import de.cau.cs.kieler.klighd.lsp.utils.KGraphMappingUtil
 import de.cau.cs.kieler.klighd.lsp.utils.RenderingPreparer
 import java.io.ByteArrayOutputStream
 import java.util.ArrayList
 import org.apache.log4j.Logger
+import org.eclipse.elk.core.math.ElkPadding
+import org.eclipse.elk.core.options.CoreOptions
 import org.eclipse.elk.graph.ElkNode
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
@@ -48,16 +51,18 @@ class KGraphLayoutEngine extends ElkLayoutEngine {
 	public static val LOG = Logger.getLogger(KGraphLayoutEngine)
 	
 	override layout(SModelRoot root, Action cause) {
-	    synchronized (diagramState) {
-    	    if (root instanceof SGraph) {
-    	        // The layout is executed on the KGraph, not the SGraph. So get the KGraph belonging to this SGraph from
-    	        // the KGraphContext.
-                onlyLayoutOnKGraph(root.id)
-
-                // map layouted KGraph to SGraph
-                KGraphMappingUtil.mapLayout(diagramState.getKGraphToSModelElementMap(root.id))
+	    AbstractLanguageServer.addToMainThreadQueue([
+    	    synchronized (diagramState) {
+        	    if (root instanceof SGraph) {
+        	        // The layout is executed on the KGraph, not the SGraph. So get the KGraph belonging to this SGraph from
+        	        // the KGraphContext.
+                    onlyLayoutOnKGraph(root.id)
+    
+                    // map layouted KGraph to SGraph
+                    KGraphMappingUtil.mapLayout(diagramState.getKGraphToSModelElementMap(root.id))
+                }
             }
-        }
+        ])
     }
 
     /**
@@ -67,6 +72,8 @@ class KGraphLayoutEngine extends ElkLayoutEngine {
      */
     def onlyLayoutOnKGraph(String uri) {
         val kGraphContext = diagramState.getKGraphContext(uri)
+        // Remove any padding from the root node to avoid blank padding around the edge of the entire graph.
+        kGraphContext.viewModel.setProperty(CoreOptions.PADDING, new ElkPadding(0))
 
         // layout of KGraph
         val lightDiagramLayoutConfig = new LightDiagramLayoutConfig(kGraphContext)
@@ -80,7 +87,7 @@ class KGraphLayoutEngine extends ElkLayoutEngine {
 
         synchronized (kGraphContext.viewModel) {
             lightDiagramLayoutConfig.performLayout
-            RenderingPreparer.prepareRendering(kGraphContext.viewModel)
+            RenderingPreparer.prepareRenderingLayout(kGraphContext.viewModel, diagramState.getKGraphToSModelElementMap(uri))
         }
     }
 

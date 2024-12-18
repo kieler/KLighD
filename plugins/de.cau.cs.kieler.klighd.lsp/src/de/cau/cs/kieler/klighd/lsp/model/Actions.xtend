@@ -3,7 +3,7 @@
  *
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright 2018-2022 by
+ * Copyright 2018-2024 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -18,14 +18,13 @@ package de.cau.cs.kieler.klighd.lsp.model
 
 import de.cau.cs.kieler.klighd.krendering.KImage
 import java.util.List
+import java.util.Map
 import java.util.Set
 import java.util.function.Consumer
 import org.eclipse.sprotty.Action
 import org.eclipse.sprotty.RequestAction
 import org.eclipse.sprotty.ResponseAction
 import org.eclipse.sprotty.SModelElement
-import org.eclipse.sprotty.SModelRoot
-import org.eclipse.sprotty.UpdateModelAction
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.xtend.lib.annotations.EqualsHashCode
 import org.eclipse.xtend.lib.annotations.ToString
@@ -245,6 +244,8 @@ class RefreshDiagramAction implements Action {
     public static val KIND = 'refreshDiagram'
     String kind = KIND
     
+    Map<String, String> options
+    
     new() {}
     new(Consumer<RefreshDiagramAction> initializer) {
         initializer.accept(this)
@@ -266,36 +267,6 @@ class RefreshLayoutAction implements Action {
     new() {}
     new(Consumer<RefreshLayoutAction> initializer) {
         initializer.accept(this)
-    }
-}
-
-/**
- * Updates the model and sends the cause to the client.
- * Extends to UpdateModelAction.
- * FIXME Remove this if the UpdateModelAction includes a cause.
- * 
- * @author sdo
- */
-@Accessors
-@EqualsHashCode
-@ToString(skipNulls = true)
-public class KeithUpdateModelAction extends UpdateModelAction {
-    public static val KIND = 'updateModel'
-    String kind = KIND
-    
-    
-    SModelRoot newRoot
-    Boolean animate
-    Action cause
-    
-    new() {}
-    new(Consumer<KeithUpdateModelAction> initializer) {
-        initializer.accept(this)
-    }
-    
-    new(SModelRoot newRoot, Action cause) {
-        this.newRoot = newRoot
-        this.cause = cause
     }
 }
 

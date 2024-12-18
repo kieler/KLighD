@@ -16,8 +16,8 @@
  */
 package de.cau.cs.kieler.klighd.krendering;
 
-import de.cau.cs.kieler.klighd.krendering.KRendering;
 import java.util.EnumSet;
+
 import org.eclipse.elk.core.data.ILayoutMetaDataProvider;
 import org.eclipse.elk.core.data.LayoutOptionData;
 import org.eclipse.elk.graph.properties.IProperty;

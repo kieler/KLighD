@@ -20,6 +20,7 @@ import java.awt.Shape;
 import java.awt.geom.Point2D;
 import java.awt.geom.RectangularShape;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.runtime.IStatus;
@@ -406,7 +407,7 @@ final class KGERenderingControllerHelper {
 
         // handle children
         if (line.getChildren().size() > 0) {
-            final List<KRendering> restChildren = Lists.newLinkedList();
+            final List<KRendering> restChildren = new ArrayList<>();
             for (final KRendering rendering : line.getChildren()) {
                 if (DecoratorPlacementUtil.getDecoratorPlacementData(rendering) != null) {
                     controller.handleDecoratorPlacementRendering(rendering, propagatedStyles, path);
@@ -502,7 +503,7 @@ final class KGERenderingControllerHelper {
 
         // handle children
         if (polygon.getChildren().size() > 0) {
-            final List<KRendering> restChildren = Lists.newLinkedList();
+            final List<KRendering> restChildren = new ArrayList<>();
             for (final KRendering rendering : polygon.getChildren()) {
                 if (DecoratorPlacementUtil.getDecoratorPlacementData(rendering) != null) {
                     controller.handleDecoratorPlacementRendering(rendering, propagatedStyles, path);

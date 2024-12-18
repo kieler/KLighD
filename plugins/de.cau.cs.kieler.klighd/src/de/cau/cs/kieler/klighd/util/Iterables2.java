@@ -16,17 +16,15 @@
  */
 package de.cau.cs.kieler.klighd.util;
 
+import java.util.ArrayDeque;
+import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Queue;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
-import org.eclipse.elk.core.util.Pair;
-
-import com.google.common.base.Function;
 import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterators;
-import com.google.common.collect.Lists;
 
 /**
  * This class provides some convenience methods that I miss in
@@ -75,39 +73,6 @@ public final class Iterables2 {
                 return iterator;
             }
         };
-    }
-
-    /**
-     * Returns an {@link Iterable} containing only {@code value}.<br>
-     * This is a counterpart to {@link com.google.common.collect.Iterators#singletonIterator(Object)
-     * Iterators#singletonIterator(Object)}.<br>
-     * In case {@code value} is {@code null} an empty {@link Iterable} is returned.
-     *
-     * @param <T>
-     *            the type of value
-     * @param value
-     *            the value to be encapsulated
-     * @return the required {@link Iterable}
-     */
-    public static <T> Iterable<T> singletonIterable(final T value) {
-        return singletonList(value);
-    }
-
-    /**
-     * Returns a {@link List} containing only {@code value}.<br>
-     * This is a counterpart to
-     * {@link com.google.common.collect.Iterators#singletonIterator(Object)
-     * Iterators#singletonIterator(Object)}.<br>
-     * In case {@code value} is {@code null} an empty {@link List} is returned.
-     *
-     * @param <T>
-     *            the type of value
-     * @param value
-     *            the value to be encapsulated, may be null
-     * @return the required {@link Iterable}
-     */
-    public static <T> List<T> singletonList(final T value) {
-        return value != null ? ImmutableList.of(value) : ImmutableList.<T>of();
     }
 
     /**
@@ -212,7 +177,7 @@ public final class Iterables2 {
                 srcIterator = src.iterator();
             }
 
-            queue = Lists.newLinkedList();
+            queue = new ArrayDeque<>();
 
             int i = count;
             while ((i--) != 0) {
@@ -266,34 +231,15 @@ public final class Iterables2 {
     }
 
     /**
-     * Performs a <i>fold</i> operation on the elements of the provided {@link Iterable} by applying
-     * the provided {@link Function Function&lt;Pair&lt;R, E&gt;, R&gt;} onto each element.
+     * Returns a sequential {@code Stream} with the given {@link Iterable} as its source.
      *
-     * @param <E>
-     *            type of {@code iterable}'s elements
-     * @param <R>
-     *            type of the result determined by {@code function}
-     * @param iterable
-     *            the {@link Iterable} containing the particular elements
-     * @param function
-     *            the {@link Function} to be applied, is called with a {@link Pair} providing the
-     *            value of the previous application ({@link Pair#getFirst() first}, is {@code null}
-     *            for first time), and the particular element of {@code iterable} (
-     *            {@link Pair#getSecond() second})
-     * @return the accumulated result obtained by consecutively applying {@code function} on the
-     *         elements of {@code iterable} and the preliminary result of previous application,
-     *         starting with {@code null}
+     * @param <T> the type of elements
+     * @param iterable the iterable
+     * @return a stream backed by the iterable
      */
-    public static <E, R> R fold(final Iterable<E> iterable, final Function<Pair<R, E>, R> function) {
-
-        final Pair<R, E> pair = new Pair<R, E>();
-        R result = null;
-
-        for (final E element : iterable) {
-            pair.setFirst(result);
-            pair.setSecond(element);
-            result = function.apply(pair);
-        }
-        return result;
+    public static <T> Stream<T> stream(Iterable<T> iterable) {
+        return iterable instanceof Collection //
+                ? ((Collection<T>) iterable).stream()
+                : StreamSupport.stream(iterable.spliterator(), false);
     }
 }

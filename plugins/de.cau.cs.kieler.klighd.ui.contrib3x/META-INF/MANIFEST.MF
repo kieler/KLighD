@@ -2,9 +2,9 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: KLighD-specific Eclipse 3x UI contributions
 Bundle-SymbolicName: de.cau.cs.kieler.klighd.ui.contrib3x;singleton:=true
-Bundle-Version: 2.3.1.qualifier
+Bundle-Version: 3.0.3.qualifier
 Bundle-Vendor: Kiel University
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Require-Bundle: org.eclipse.ui;bundle-version="3.105.0",
  de.cau.cs.kieler.klighd.ui;bundle-version="0.5.0"
 Automatic-Module-Name: de.cau.cs.kieler.klighd.ui.contrib3x

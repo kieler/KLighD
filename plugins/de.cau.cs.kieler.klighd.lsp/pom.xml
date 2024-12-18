@@ -5,12 +5,11 @@
   <parent>
     <groupId>de.cau.cs.kieler.klighd</groupId>
     <artifactId>parent</artifactId>
-    <version>2.3.1-SNAPSHOT</version>
+    <version>3.0.3-SNAPSHOT</version>
     <relativePath>../../pom.xml</relativePath>
   </parent>
 
   <artifactId>de.cau.cs.kieler.klighd.lsp</artifactId>
-  <packaging>eclipse-plugin</packaging>
 
   <name>KIELER Lightweight Diagrams as Language Server</name>
   <description>KIELER Lightweight Diagrams as Language Server</description>
@@ -70,13 +69,18 @@
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>de.cau.cs.kieler.klighd.standalone</artifactId>
+      <artifactId>de.cau.cs.kieler.klighd.setup</artifactId>
       <version>${project.version}</version>
       <type>jar</type>
     </dependency>
     <dependency>
       <groupId>org.eclipse.elk</groupId>
       <artifactId>org.eclipse.elk.alg.layered</artifactId>
+      <version>${elk-version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.elk</groupId>
+      <artifactId>org.eclipse.elk.alg.mrtree</artifactId>
       <version>${elk-version}</version>
     </dependency>
     <dependency>
@@ -200,16 +204,31 @@
   
   <build>
     <sourceDirectory>src</sourceDirectory>
-    <resources>
-      <resource>
-        <directory>src/resources</directory>
-      </resource>
-    </resources>
     <plugins>
       <!-- Compile Xtend code -->
       <plugin>
         <groupId>org.eclipse.xtend</groupId>
         <artifactId>xtend-maven-plugin</artifactId>
+      </plugin>
+      <!-- Add sources -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+        <version>3.3.0</version>
+        <executions>
+          <execution>
+            <id>attach-sources</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>jar-no-fork</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <!-- make sure the source jar is also signed, putting the signing after it. -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-gpg-plugin</artifactId>
       </plugin>
     </plugins>
   </build>

@@ -16,21 +16,25 @@
  */
 package de.cau.cs.kieler.klighd.lsp
 
-import java.util.HashMap
-import org.eclipse.xtend.lib.annotations.Accessors
+import java.util.Map
+import org.eclipse.sprotty.Action
 
 /**
  * Abstract class to handle Sprotty actions.
- * 
- * @author sdo
  */
-abstract class AbstractActionHandler implements IActionHandler {
+abstract class AbstractActionHandler implements ISprottyActionHandler {
     
-    @Accessors(PUBLIC_GETTER, PROTECTED_SETTER)
-    HashMap<String, Class<?>> supportedMessages = newHashMap
+    Map<String, Class<? extends Action>> supportedMessages
+        
+    override Map<String, Class<? extends Action>> getSupportedMessages() {
+        return supportedMessages
+    }
+        
+    def setSupportedMessages(Map<String, Class<? extends Action>> messages) {
+        this.supportedMessages = messages
+    }
     
     override canHandleAction(String kind) {
-        return supportedMessages.containsKey(kind)
-            
-    }    
+        return supportedMessages.containsKey(kind)            
+    }
 }

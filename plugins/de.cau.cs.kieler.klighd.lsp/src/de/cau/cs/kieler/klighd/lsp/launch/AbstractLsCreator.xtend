@@ -30,7 +30,7 @@ import de.cau.cs.kieler.klighd.lsp.KGraphLanguageClient
 import de.cau.cs.kieler.klighd.lsp.LSPUtil
 import de.cau.cs.kieler.klighd.lsp.SprottyViewer
 import de.cau.cs.kieler.klighd.lsp.gson_utils.KGraphTypeAdapterUtil
-import de.cau.cs.kieler.klighd.standalone.KlighdStandaloneSetup
+import de.cau.cs.kieler.klighd.setup.KlighdStandaloneSetup
 import java.io.InputStream
 import java.io.OutputStream
 import java.util.Collection
@@ -124,7 +124,7 @@ abstract class AbstractLsCreator implements ILsCreator {
         
         // TypeAdapter is needed to be able to send recursive data in json
         val Consumer<GsonBuilder> configureGson = [ gsonBuilder |
-            KGraphTypeAdapterUtil.configureGson(gsonBuilder)
+            KGraphTypeAdapterUtil.configureGson(gsonBuilder, injector)
         ]
         // Get all LSExtensions to use them as local services
         val localServices = <Object>newArrayList

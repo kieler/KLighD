@@ -3,7 +3,7 @@
  *
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright 2018-2021 by
+ * Copyright 2018-2022 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -17,16 +17,10 @@
 package de.cau.cs.kieler.klighd.lsp.gson_utils
 
 import com.google.gson.GsonBuilder
+import com.google.inject.Injector
+import de.cau.cs.kieler.klighd.KlighdDataManager
 import de.cau.cs.kieler.klighd.SynthesisOption
-import de.cau.cs.kieler.klighd.lsp.interactive.layered.DeleteLayerConstraintAction
-import de.cau.cs.kieler.klighd.lsp.interactive.layered.DeletePositionConstraintAction
-import de.cau.cs.kieler.klighd.lsp.interactive.layered.DeleteStaticConstraintAction
-import de.cau.cs.kieler.klighd.lsp.interactive.layered.SetLayerConstraintAction
-import de.cau.cs.kieler.klighd.lsp.interactive.layered.SetPositionConstraintAction
-import de.cau.cs.kieler.klighd.lsp.interactive.layered.SetStaticConstraintAction
-import de.cau.cs.kieler.klighd.lsp.interactive.rectpacking.RectpackingDeletePositionConstraintAction
-import de.cau.cs.kieler.klighd.lsp.interactive.rectpacking.RectpackingSetPositionConstraintAction
-import de.cau.cs.kieler.klighd.lsp.interactive.rectpacking.SetAspectRatioAction
+import de.cau.cs.kieler.klighd.lsp.ISprottyActionHandler
 import de.cau.cs.kieler.klighd.lsp.model.CheckedImagesAction
 import de.cau.cs.kieler.klighd.lsp.model.ClientColorPreferencesAction
 import de.cau.cs.kieler.klighd.lsp.model.PerformActionAction
@@ -35,16 +29,17 @@ import de.cau.cs.kieler.klighd.lsp.model.RefreshLayoutAction
 import de.cau.cs.kieler.klighd.lsp.model.RequestDiagramPieceAction
 import de.cau.cs.kieler.klighd.lsp.model.SetSynthesisAction
 import java.awt.geom.Point2D
+import java.util.ServiceLoader
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.sprotty.server.json.ActionTypeAdapter
 
 /**
  * Static util class to configure needed gson type adapters for KGraph serialization.
  * 
- * @author nre
+ * @author nre, sdo
  */
 class KGraphTypeAdapterUtil {
-    def static GsonBuilder configureGson(GsonBuilder gsonBuilder) {
+    def static GsonBuilder configureGson(GsonBuilder gsonBuilder, Injector injector) {
         gsonBuilder
         .registerTypeAdapterFactory(
             new ActionTypeAdapter.Factory => [
@@ -56,21 +51,18 @@ class KGraphTypeAdapterUtil {
                 addActionKind(RefreshLayoutAction.KIND, RefreshLayoutAction)
                 addActionKind(ClientColorPreferencesAction.KIND, ClientColorPreferencesAction)
                 
-                // Interactive layered actions
-                addActionKind(SetStaticConstraintAction.KIND, SetStaticConstraintAction)
-                addActionKind(SetPositionConstraintAction.KIND, SetPositionConstraintAction)
-                addActionKind(SetLayerConstraintAction.KIND, SetLayerConstraintAction)
-                addActionKind(DeleteStaticConstraintAction.KIND, DeleteStaticConstraintAction)
-                addActionKind(DeletePositionConstraintAction.KIND, DeletePositionConstraintAction)
-                addActionKind(DeleteLayerConstraintAction.KIND, DeleteLayerConstraintAction)
-                
-                // Interactive rectpacking actions
-                addActionKind(RectpackingSetPositionConstraintAction.KIND, RectpackingSetPositionConstraintAction)
-                addActionKind(RectpackingDeletePositionConstraintAction.KIND, RectpackingDeletePositionConstraintAction)
-                addActionKind(SetAspectRatioAction.KIND, SetAspectRatioAction)
+                // Load all registered action handlers and add their actions.
+                ServiceLoader.load(ISprottyActionHandler, KlighdDataManager.getClassLoader()).forEach[handler |
+                    val handlerInstance = injector.getInstance(handler.class)
+                    handlerInstance.supportedMessages.keySet.forEach[kind |
+                        addActionKind(kind, handlerInstance.supportedMessages.get(kind))
+                    ]                    
+                ]
                 
                 // Incremental topdown actions
                 addActionKind(RequestDiagramPieceAction.KIND, RequestDiagramPieceAction)
+                
+                
             ]
         )
         .registerTypeAdapter(Point2D, new Point2DTypeAdapter)

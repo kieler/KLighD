@@ -17,13 +17,12 @@
 package de.cau.cs.kieler.klighd;
 
 import java.awt.geom.Rectangle2D;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 
 import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
 import de.cau.cs.kieler.klighd.kgraph.KNode;
@@ -251,7 +250,7 @@ public interface IViewChangeListener {
          */
         public ViewChange suppressSubsequentNotifications(final int durationInMS,
                 final ViewChangeType... changeTypes) {
-            return suppressSubsequentNotifications(durationInMS, Lists.newArrayList(changeTypes));
+            return suppressSubsequentNotifications(durationInMS, Arrays.asList(changeTypes));
         }
 
         /**
@@ -274,7 +273,7 @@ public interface IViewChangeListener {
                 final Iterable<ViewChangeType> changeTypes) {
 
             if (notificationSuppressions == null) {
-                notificationSuppressions = Maps.newHashMap();
+                notificationSuppressions = new HashMap<>();
             }
 
             for (final ViewChangeType type : changeTypes) {

@@ -29,6 +29,10 @@ import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Deque;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -48,8 +52,6 @@ import com.google.common.base.Predicate;
 import com.google.common.base.Strings;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 
 import de.cau.cs.kieler.klighd.Klighd;
 import de.cau.cs.kieler.klighd.KlighdConstants;
@@ -843,7 +845,7 @@ public final class PlacementUtil {
         if (kText != null) {
             // the following lines look for font styles propagated from parents
             //  TODO also make allowance of styles propagated via KRenderingRefs
-            final List<KStyle> styles = Lists.newLinkedList(kText.getStyles());            
+            final List<KStyle> styles = new ArrayList<>(kText.getStyles());
             for (final KRendering k : Iterables2.toIterable(Iterators.filter(
                     ModelingUtil.eAllContainers(kText), KRendering.class))) {
                 Iterables.addAll(styles, Iterables.filter(k.getStyles(), FILTER));
@@ -1017,7 +1019,7 @@ public final class PlacementUtil {
      * A font cache preserving requested font configurations in order to avoid re-instantiation of
      * {@link Font}, which is assumed to be much more expensive than {@link FontData}.
      */
-    private static final Map<FontData, Font> FONT_CACHE = Maps.newHashMap();
+    private static final Map<FontData, Font> FONT_CACHE = new HashMap<>();
 
     /**
      * Two instances of {@link GC} that the text size estimation is delegated to.
@@ -1520,7 +1522,7 @@ public final class PlacementUtil {
         }
 
         // find the path to the child area
-        final LinkedList<KRendering> path = Lists.newLinkedList();
+        final Deque<KRendering> path = new ArrayDeque<>();
 
         if (!findChildArea(rootRendering, path)) {
             // no child area so the whole node is the child area
@@ -1673,6 +1675,13 @@ public final class PlacementUtil {
         return Bounds.max(Bounds.of(maxX, maxY), givenBounds);
     }
 
+    /**
+     * @deprecated Use {@link #findChildArea(KRendering, Deque)}
+     */
+    @Deprecated(forRemoval = true)
+    public static boolean findChildArea(KRendering rendering, LinkedList<KRendering> path) {
+        return findChildArea(rendering, (Deque<KRendering>) path);
+    }
 
     /**
      * Searches the rendering for a child area and records the path in the given list of renderings.
@@ -1683,8 +1692,7 @@ public final class PlacementUtil {
      *            the list of renderings which will contain the path of renderings to the child area
      * @return true if a child area has been found; false else
      */
-    public static boolean findChildArea(final KRendering rendering,
-            final LinkedList<KRendering> path) {
+    public static boolean findChildArea(final KRendering rendering, final Deque<KRendering> path) {
         path.addLast(rendering);
         if (rendering instanceof KChildArea) {
             return true;

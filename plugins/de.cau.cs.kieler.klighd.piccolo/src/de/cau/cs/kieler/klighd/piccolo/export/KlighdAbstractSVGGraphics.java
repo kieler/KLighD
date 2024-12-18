@@ -47,6 +47,7 @@ import java.awt.image.renderable.RenderableImage;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.text.AttributedCharacterIterator;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.elk.core.util.Pair;
@@ -62,8 +63,6 @@ import org.eclipse.swt.graphics.Path;
 import org.eclipse.swt.graphics.RGB;
 
 import com.google.common.base.Objects;
-import com.google.common.collect.Maps;
-
 import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.krendering.KTextUtil;
 import de.cau.cs.kieler.klighd.piccolo.internal.KlighdSWTGraphicsEx;
@@ -100,7 +99,7 @@ public abstract class KlighdAbstractSVGGraphics extends Graphics2D implements Kl
 
     private FontData fontData = KlighdConstants.DEFAULT_FONT;
 
-    private final Map<ImageData, BufferedImage> imageBuffer = Maps.newHashMap();
+    private final Map<ImageData, BufferedImage> imageBuffer = new HashMap<>();
     private final Rectangle2D imageBoundsRect = new Rectangle2D.Double();
     
     // the dash constants in the following definitions are copied

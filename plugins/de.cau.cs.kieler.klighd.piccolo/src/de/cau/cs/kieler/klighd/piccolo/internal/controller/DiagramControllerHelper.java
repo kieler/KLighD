@@ -19,6 +19,7 @@ package de.cau.cs.kieler.klighd.piccolo.internal.controller;
 import java.awt.geom.Point2D;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.emf.ecore.EObject;
@@ -133,7 +134,7 @@ public final class DiagramControllerHelper {
             edgeNode.addAttribute(EDGE_OFFSET_LISTENER_KEY, listener);
 
             // calculate the offset and register the update offset listener
-            List<PNode> listenedNodes = Lists.newLinkedList();
+            List<PNode> listenedNodes = new ArrayList<>();
             Point2D offset = new Point2D.Double(0, 0);
             PNode currentNode = relativeChildArea;
             while (currentNode != null && currentNode != edgeNodeParent) {

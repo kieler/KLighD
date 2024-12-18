@@ -32,7 +32,7 @@ import com.google.common.collect.Iterators;
 import de.cau.cs.kieler.klighd.Klighd;
 import de.cau.cs.kieler.klighd.kgraph.KNode;
 import de.cau.cs.kieler.klighd.kgraph.util.KGraphDataUtil;
-import de.cau.cs.kieler.klighd.standalone.KlighdStandaloneSetup;
+import de.cau.cs.kieler.klighd.setup.KlighdStandaloneSetup;
 
 /**
  * The activator class controls the plug-in life cycle.

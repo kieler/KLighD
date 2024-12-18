@@ -18,11 +18,10 @@ package de.cau.cs.kieler.klighd.piccolo.test;
 
 import java.awt.geom.Point2D;
 import java.util.Arrays;
+import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Test;
-
-import com.google.common.collect.Lists;
 
 import de.cau.cs.kieler.klighd.kgraph.KEdge;
 import de.cau.cs.kieler.klighd.kgraph.KNode;
@@ -49,7 +48,7 @@ public class ApplyBendPointsActivityTest {
         KNode node0 = KGraphUtil.createInitializedNode(); 
         KNode node1 = KGraphUtil.createInitializedNode(); 
         KNode node2 = KGraphUtil.createInitializedNode();
-        node0.getChildren().addAll(Lists.newArrayList(node1, node2));
+        node0.getChildren().addAll(List.of(node1, node2));
         
         KEdge edge = KGraphUtil.createInitializedEdge();
         edge.setSource(node1);

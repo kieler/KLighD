@@ -26,7 +26,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -69,9 +68,6 @@ import org.eclipse.ui.progress.UIJob;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
-
 import de.cau.cs.kieler.klighd.Klighd;
 import de.cau.cs.kieler.klighd.KlighdDataManager;
 import de.cau.cs.kieler.klighd.LightDiagramLayoutConfig;
@@ -148,10 +144,10 @@ public final class DiagramView extends DiagramViewPart implements ISelectionChan
 
     /** Stores used synthesis options. */
     private final Map<SynthesisOption, Object> recentSynthesisOptions =
-            Collections.synchronizedMap(Maps.newHashMap());
+            Collections.synchronizedMap(new HashMap<>());
 
     /** Stores displayed syntheses. */
-    private final Set<ISynthesis> usedSyntheses = Collections.synchronizedSet(Sets.newHashSet());
+    private final Set<ISynthesis> usedSyntheses = Collections.synchronizedSet(new HashSet<>());
 
     /** The responsible controller performing model updates. */
     private AbstractViewUpdateController controller = null;
@@ -220,7 +216,7 @@ public final class DiagramView extends DiagramViewPart implements ISelectionChan
      * @return List of all {@link DiagramView}s
      */
     public static List<DiagramView> getAllDiagramViews() {
-        return Lists.newArrayList(views);
+        return new ArrayList<>(views);
     }
 
     // -- Constructor and Initialization

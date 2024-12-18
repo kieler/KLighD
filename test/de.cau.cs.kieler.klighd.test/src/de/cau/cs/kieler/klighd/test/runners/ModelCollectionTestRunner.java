@@ -24,6 +24,7 @@ import java.lang.annotation.Target;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -123,7 +124,7 @@ import com.google.common.collect.Lists;
  * 
  *     <samp>@Models</samp>
  *     public static Iterable&lt;?&gt; getModels() {
- *         List&lt;Object&gt; models = Lists.newLinkedList();
+ *         List&lt;Object&gt; models = new ArrayList&lt;&gt;();
  *         return models;
  *     }
  * 
@@ -365,7 +366,7 @@ public class ModelCollectionTestRunner extends Suite {
         // for each of the revealed model objects determine a name (the fragmentURI in case of
         //  EObjects) and create a related child test runner
         
-        final List<Runner> childRunners = Lists.newLinkedList();
+        final List<Runner> childRunners = new ArrayList<>();
         for (Object o : models) {
 
             final String modelName;
@@ -515,7 +516,7 @@ public class ModelCollectionTestRunner extends Suite {
                         ? (org.eclipse.emf.ecore.resource.ResourceSet) resourceSetMethod
                         .invokeExplosively(null) : new ResourceSetImpl();
                 
-                List<URL> urls = Lists.newArrayList();
+                List<URL> urls = new ArrayList<>();
                 
                 // for all provided model paths ...
                 for (String modelPath : modelPaths) {

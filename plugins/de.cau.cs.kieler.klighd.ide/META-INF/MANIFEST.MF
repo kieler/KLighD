@@ -2,16 +2,17 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: KIELER Lightweight Diagrams Ide Components
 Bundle-SymbolicName: de.cau.cs.kieler.klighd.ide;singleton:=true
-Bundle-Version: 2.3.1.qualifier
+Bundle-Version: 3.0.3.qualifier
 Automatic-Module-Name: de.cau.cs.kieler.klighd.ide
-Require-Bundle: de.cau.cs.kieler.klighd;visibility:=reexport,
+Require-Bundle: com.google.inject, 
+ de.cau.cs.kieler.klighd;visibility:=reexport,
  de.cau.cs.kieler.klighd.kgraph,
  org.eclipse.xtext.xbase,
  de.cau.cs.kieler.klighd.krendering.extensions,
  org.eclipse.elk.alg.layered,
  org.eclipse.elk.core
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-Vendor: Kiel University
 Export-Package: de.cau.cs.kieler.klighd.ide,
  de.cau.cs.kieler.klighd.ide.model,

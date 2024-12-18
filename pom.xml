@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>de.cau.cs.kieler.klighd</groupId>
   <artifactId>parent</artifactId>
-  <version>2.3.1-SNAPSHOT</version>
+  <version>3.0.3-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <modules>
@@ -23,6 +23,7 @@
     <module>plugins/de.cau.cs.kieler.klighd.krendering.extensions</module>
     <module>plugins/de.cau.cs.kieler.klighd.lsp</module>
     <module>plugins/de.cau.cs.kieler.klighd.piccolo</module>
+    <module>plugins/de.cau.cs.kieler.klighd.setup</module>
     <module>plugins/de.cau.cs.kieler.klighd.standalone</module>
     <module>test/de.cau.cs.kieler.klighd.test</module>
     <module>test/de.cau.cs.kieler.klighd.piccolo.test</module>
@@ -51,24 +52,26 @@
 
   <!-- Define a few properties used throughout all build profiles. -->
   <properties>
-    <core-resources-version>3.18.0</core-resources-version>
-    <core-runtime-version>3.26.0</core-runtime-version>
-    <elk-version>0.8.1</elk-version>
-    <emf-common-version>2.26.0</emf-common-version>
-    <emf-ecore-version>2.28.0</emf-ecore-version>
-    <emf-edit-version>2.17.0</emf-edit-version>
-    <gson-version>2.9.0</gson-version>
-    <guava-version>31.1-jre</guava-version>
-    <guice-version>5.1.0</guice-version>
-    <jface-version>3.27.0</jface-version>
-    <lsp4j-version>0.15.0</lsp4j-version>
-    <sprotty-version>0.9.0</sprotty-version>
+    <elk-version>0.9.1</elk-version>
+    <gson-version>2.10.1</gson-version>
+    <guava-version>32.1.3-jre</guava-version>
+    <guice-version>7.0.0</guice-version>
+    <jface-version>3.32.0</jface-version>
+    <lsp4j-version>0.22.0</lsp4j-version>
+    <sprotty-version>1.1.2</sprotty-version>
     <swt-mock-version>0.1.0</swt-mock-version>
-    <swt-version>3.121.0</swt-version>
+    <swt-version>3.124.200</swt-version>
     <tycho-version>2.7.3</tycho-version>
-    <ui-workbench-version>3.126.0</ui-workbench-version>
-    <xtend-version>2.28.0</xtend-version>
-    <xtext-version>2.28.0</xtext-version>
+    <xtend-version>2.33.0</xtend-version>
+    <xtext-version>2.33.0</xtext-version>
+
+    <!-- Some Eclipse Plugin versions, aligned with the target platform's versions-->
+    <core-resources-version>3.20.0</core-resources-version>
+    <core-runtime-version>3.30.0</core-runtime-version>
+    <emf-common-version>2.29.0</emf-common-version>
+    <emf-ecore-version>2.35.0</emf-ecore-version>
+    <emf-edit-version>2.20.0</emf-edit-version>
+    <ui-workbench-version>3.131.0</ui-workbench-version>
 
     <!-- chsch: copied from https://eclipse.googlesource.com/recommenders/org.eclipse.recommenders/+/3dae4575d3370da2da25a1cbce3dfcff198f0611/features/pom.xml -->
     <!-- Non-breakable space, as normal spaces are trimmed. -->
@@ -80,12 +83,10 @@
     <project.build.resourceEncoding>UTF-8</project.build.resourceEncoding>
     <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
 
-	<!-- pin the source code compatibility to 1.8 for the sake of backward compatibility -->
-    <maven.compiler.source>1.8</maven.compiler.source>
+	<!-- pin the source code compatibility to 11 for the sake of backward compatibility -->
+    <maven.compiler.source>11</maven.compiler.source>
 
-    <!-- don't pin the class file compatibility here, as this will overwrite the 'Bundle-RequiredExecutionEnvironment:' settings in the plug-ins' manifest files!
-         chsch: at the time of writing this all BREEs are pinned to 1.8 except for 'klighd.piccolo.test' that I switched to JavaSE-11 for convenience -->
-    <!-- maven.compiler.target>1.8</maven.compiler.target -->
+    <maven.compiler.target>11</maven.compiler.target>
 
     <!-- Enable java assertions during junit test runs. -->
     <!-- The "enableAssertions" property is only available in the maven-surefire plugin. -->
@@ -155,6 +156,7 @@
               <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
               <autoReleaseAfterClose>false</autoReleaseAfterClose> <!-- this allows to manually inspect the staging repository: https://central.sonatype.org/publish/release/
               trigger a release later with `mvn nexus-staging:release` or set to true if no inspection is wanted.-->
+              <stagingProgressTimeoutMinutes>10</stagingProgressTimeoutMinutes> <!-- increase if the remote staging runs into the default 5 minute limit -->
             </configuration>
           </plugin>
 
@@ -189,7 +191,7 @@
       <dependency>
         <groupId>org.eclipse.platform</groupId>
         <artifactId>org.eclipse.ui.workbench</artifactId>
-        <version>3.110.0</version>
+        <version>${ui-workbench-version}</version>
         <exclusions>
           <exclusion>
             <groupId>org.eclipse.platform</groupId>
@@ -217,12 +219,18 @@
       <dependency>
         <groupId>org.eclipse.platform</groupId>
         <artifactId>org.eclipse.e4.ui.workbench.renderers.swt</artifactId>
-        <version>0.15.600</version>
+        <version>0.16.100</version>
       </dependency>
       <dependency>
         <groupId>org.eclipse.emf</groupId>
         <artifactId>org.eclipse.emf.ecore.change</artifactId>
-        <version>2.14.0</version>
+        <version>2.15.0</version>
+      </dependency>
+      <!-- And another dependency that Eclipse gets wrong and we update to a working version number-->
+      <dependency>
+        <groupId>xml-apis</groupId>
+        <artifactId>xml-apis-ext</artifactId>
+        <version>1.3.04</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
@@ -251,6 +259,15 @@
 
   <!-- Modify the build process to add Tycho and configure some utility plug-ins. -->
   <build>
+    <resources>
+      <resource>
+        <directory>.</directory>
+         <includes>
+           <include>META-INF/services/**</include>
+         </includes>
+      </resource>
+    </resources>
+
     <sourceDirectory>src</sourceDirectory>
     <plugins>
       <!-- we need tycho plugin to build eclipse plugins -->
@@ -288,7 +305,7 @@
             <artifact>
               <groupId>de.cau.cs.kieler.klighd</groupId>
               <artifactId>de.cau.cs.kieler.klighd.targetplatform</artifactId>
-              <version>2.3.1-SNAPSHOT</version>
+              <version>3.0.3-SNAPSHOT</version>
             </artifact>
           </target>
 
@@ -331,7 +348,7 @@
       <plugin>
         <groupId>org.eclipse.xtend</groupId>
         <artifactId>xtend-maven-plugin</artifactId>
-        <version>${xtext-version}</version>
+        <version>${xtend-version}</version>
         <executions>
           <execution>
             <goals>
@@ -373,7 +390,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
-        <version>1.3</version>
+        <version>3.5.0</version>
         <executions>
           <execution>
             <id>add-source</id>
@@ -397,6 +414,7 @@
         <artifactId>maven-javadoc-plugin</artifactId>
         <version>3.5.0</version>
         <configuration>
+          <source>8</source>
           <tags>
           <!-- Let JavaDoc know about tags from Xtext -->
             <tag>

@@ -3,7 +3,7 @@
  *
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright ${year} by
+ * Copyright 2013-2024 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -16,6 +16,7 @@
  */
 package de.cau.cs.kieler.klighd.internal.macrolayout;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
@@ -54,7 +55,6 @@ import com.google.common.base.Strings;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
-import com.google.common.collect.Lists;
 
 import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.IViewer;
@@ -682,7 +682,7 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
         // We need to process labels after the edges because during edge handling
         // the insets are handled and the source data adjusted accordingly.
         // We store the labels here to have them ready after the main switch.
-        List<ElkLabel> graphLabels = Lists.newArrayList();
+        List<ElkLabel> graphLabels = new ArrayList<>();
         
         // apply the layout of all mapped layout elements back to the associated element
         for (final Entry<ElkGraphElement, Object> elementMapping : elementMappings) {
@@ -764,7 +764,7 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
             // special property
             LabelManagementResult managementResult =
                     layoutLabel.getProperty(KlighdOptions.LABELS_MANAGEMENT_RESULT);
-            if (managementResult != LabelManagementResult.UNMANAGED) {
+            if (managementResult == LabelManagementResult.MANAGED_MODIFIED) {
                 // TODO: This may in the future set the KText's text instead.
                 // However, doing so now doesn't do anything yet...
                 label.setProperty(KlighdOptions.LABELS_TEXT_OVERRIDE,
@@ -1216,7 +1216,9 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
                         -sourceNode.getInsets().getTop());
             }
         } else {
-            sourcePoint.add(sourceNode.getXpos(), sourceNode.getYpos());
+            // TODO: this probably only works for edges crossing at most one hierarchy level
+            sourcePoint.add(sourceNode.getXpos() * sourceNode.getProperty(CoreOptions.TOPDOWN_SCALE_FACTOR), 
+                    sourceNode.getYpos() * sourceNode.getProperty(CoreOptions.TOPDOWN_SCALE_FACTOR));
         }
         
         KPoint sourceKPoint = edge.getSourcePoint();
@@ -1228,7 +1230,9 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
 
         // determine the target point
         final KVector targetPoint = toElementBorder(targetNode, targetPort, sourceNode, sourcePort);
-        targetPoint.add(targetNode.getXpos(), targetNode.getYpos());
+        // TODO: this probably only works for edges crossing at most one hierarchy level
+        targetPoint.add(targetNode.getXpos() * targetNode.getParent().getProperty(CoreOptions.TOPDOWN_SCALE_FACTOR), 
+                targetNode.getYpos() * targetNode.getParent().getProperty(CoreOptions.TOPDOWN_SCALE_FACTOR));
         if (targetInSource) {
             KGraphUtil.toAbsolute(targetPoint, targetNode.getParent());
             KGraphUtil.toRelative(targetPoint, sourceNode);

@@ -2,7 +2,7 @@
 <feature
       id="de.cau.cs.kieler.klighd.view.feature"
       label="KIELER Lightweight Diagrams Generic Diagram View"
-      version="2.3.1.qualifier"
+      version="3.0.3.qualifier"
       provider-name="Kiel University"
       plugin="de.cau.cs.kieler.klighd.ui.view">
 
@@ -302,7 +302,7 @@ version(s), and exceptions or additional permissions here}.&quot;
    </url>
 
    <requires>
-      <import feature="de.cau.cs.kieler.klighd.feature" version="2.0.1" match="compatible"/>
+      <import feature="de.cau.cs.kieler.klighd.feature" version="3.0.2" match="compatible"/>
       <import feature="de.cau.cs.kieler.klighd.ide.feature"/>
    </requires>
 

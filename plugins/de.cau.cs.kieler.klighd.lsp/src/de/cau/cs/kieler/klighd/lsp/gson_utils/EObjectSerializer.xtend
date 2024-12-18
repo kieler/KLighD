@@ -20,7 +20,6 @@ import com.google.gson.JsonNull
 import com.google.gson.JsonObject
 import com.google.gson.JsonSerializationContext
 import com.google.gson.JsonSerializer
-import de.cau.cs.kieler.klighd.KlighdDataManager
 import de.cau.cs.kieler.klighd.kgraph.EMapPropertyHolder
 import de.cau.cs.kieler.klighd.kgraph.KInsets
 import de.cau.cs.kieler.klighd.kgraph.impl.EMapPropertyHolderImpl

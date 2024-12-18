@@ -20,7 +20,6 @@ import org.eclipse.elk.core.math.KVector;
 
 import de.cau.cs.kieler.klighd.ZoomStyle;
 import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
-import de.cau.cs.kieler.klighd.kgraph.KNode;
 
 /**
  * A dedicated interface enable the separation of the features provided by

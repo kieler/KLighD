@@ -10,7 +10,7 @@
   <parent>
     <groupId>de.cau.cs.kieler.klighd</groupId>
     <artifactId>parent</artifactId>
-    <version>2.3.1-SNAPSHOT</version>
+    <version>3.0.3-SNAPSHOT</version>
     <relativePath>../../pom.xml</relativePath>
   </parent>
 
@@ -52,19 +52,17 @@
             <configuration>
               <associateSites>
                 <!-- Eclipse -->
-                <associateSite>https://download.eclipse.org/releases/2022-09/</associateSite>
+                <associateSite>https://download.eclipse.org/releases/2023-12/</associateSite>
                 <!-- UML2 Tools (Meta Model Implemenetation, ...) -->
                 <associateSite>https://download.eclipse.org/modeling/mdt/uml2/updates/5.4/</associateSite>
                 <!-- Eclipse Layout Kernel -->
                 <!-- associateSite>http://build.eclipse.org/modeling/elk/updates/nightly/</associateSite -->
-                <associateSite>https://download.eclipse.org/elk/updates/releases/0.8.1/</associateSite>>
+                <associateSite>https://download.eclipse.org/elk/updates/releases/0.9.1/</associateSite>>
                 <!-- Xtext -->
-                <associateSite>https://download.eclipse.org/modeling/tmf/xtext/updates/releases/2.28.0/</associateSite>>
+                <associateSite>https://download.eclipse.org/modeling/tmf/xtext/updates/releases/2.33.0/</associateSite>>
                 <associateSite>https://xtext.github.io/download/updates/releases/2.1.1/</associateSite>>
                 <!-- Eclipse Orbit for Google Guave, Apache Batik, ... -->
-                <associateSite>https://download.eclipse.org/tools/orbit/downloads/drops/R20220830213456/repository/</associateSite>
-                <!-- Sprotty ... -->
-                <associateSite>https://rtsys.informatik.uni-kiel.de/~kieler/updatesite/sprotty/0.9.0/</associateSite>
+                <associateSite>https://download.eclipse.org/tools/orbit/simrel/orbit-aggregation/release/4.30.0</associateSite>
               </associateSites>
               <siteTemplateFolder>siteTemplate</siteTemplateFolder>
               <symbols>

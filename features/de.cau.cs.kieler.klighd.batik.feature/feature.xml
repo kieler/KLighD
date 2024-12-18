@@ -2,7 +2,7 @@
 <feature
       id="de.cau.cs.kieler.klighd.batik.feature"
       label="KIELER Lightweight Diagrams Vector Graphics Export Powered by Batik 1.6"
-      version="2.2.1.qualifier"
+      version="3.0.3.qualifier"
       provider-name="Kiel University">
 
    <description url="http://www.informatik.uni-kiel.de/rtsys/kieler">
@@ -205,10 +205,6 @@ of Computer Science, Kiel University
 
    <plugin
          id="de.cau.cs.kieler.klighd.piccolo.batik"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         fragment="true"
-         unpack="false"/>
+         version="0.0.0"/>
 
 </feature>

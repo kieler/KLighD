@@ -3,7 +3,7 @@
  *
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright 2018-2022 by
+ * Copyright 2018-2024 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -16,19 +16,16 @@
  */
 package de.cau.cs.kieler.klighd.lsp
 
-import com.google.common.base.Strings
 import com.google.common.base.Throwables
 import com.google.common.io.ByteStreams
 import com.google.inject.Inject
+import com.google.inject.Injector
 import de.cau.cs.kieler.klighd.IAction
 import de.cau.cs.kieler.klighd.IAction.ActionContext
 import de.cau.cs.kieler.klighd.Klighd
 import de.cau.cs.kieler.klighd.KlighdDataManager
 import de.cau.cs.kieler.klighd.ViewContext
 import de.cau.cs.kieler.klighd.kgraph.KNode
-import de.cau.cs.kieler.klighd.lsp.interactive.layered.LayeredInteractiveActionHandler
-import de.cau.cs.kieler.klighd.lsp.interactive.rectpacking.RectpackingInteractiveActionHandler
-import de.cau.cs.kieler.klighd.lsp.launch.AbstractLanguageServer
 import de.cau.cs.kieler.klighd.lsp.model.CheckImagesAction
 import de.cau.cs.kieler.klighd.lsp.model.CheckedImagesAction
 import de.cau.cs.kieler.klighd.lsp.model.ClientColorPreferencesAction
@@ -51,10 +48,11 @@ import java.io.InputStream
 import java.util.ArrayList
 import java.util.Base64
 import java.util.Collection
+import java.util.HashMap
 import java.util.List
 import java.util.Map
-import java.util.concurrent.CompletableFuture
-import org.apache.log4j.Logger
+import java.util.ServiceLoader
+import java.util.Set
 import org.eclipse.core.runtime.Platform
 import org.eclipse.elk.core.data.LayoutMetaDataService
 import org.eclipse.elk.core.data.LayoutOptionData
@@ -63,13 +61,8 @@ import org.eclipse.elk.graph.properties.IProperty
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.sprotty.Action
 import org.eclipse.sprotty.ActionMessage
-import org.eclipse.sprotty.ILayoutEngine
-import org.eclipse.sprotty.IModelUpdateListener
-import org.eclipse.sprotty.LayoutAction
 import org.eclipse.sprotty.RejectAction
-import org.eclipse.sprotty.RequestBoundsAction
 import org.eclipse.sprotty.RequestModelAction
-import org.eclipse.sprotty.SModelCloner
 import org.eclipse.sprotty.SModelElement
 import org.eclipse.sprotty.SModelRoot
 import org.eclipse.sprotty.SelectAction
@@ -85,13 +78,10 @@ import org.eclipse.xtend.lib.annotations.Accessors
  * @author nre
  */
 class KGraphDiagramServer extends LanguageAwareDiagramServer {
-    static val LOG = Logger.getLogger(KGraphDiagramServer)
     
-    @Inject
-    protected LayeredInteractiveActionHandler constraintActionHandler
+    @Inject protected Injector injector
     
-    @Inject
-    protected RectpackingInteractiveActionHandler rectpackingActionHandler
+    Map<String, ISprottyActionHandler> handlers = new HashMap
     
     @Inject 
     protected KGraphDiagramState diagramState
@@ -123,24 +113,15 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
      * 
      * FIXME Remove this if UpdateModelAction has a cause.
      */
-    protected String lastSubmittedModelType
-    
-    /**
-     * Needed for KeithUpdateModelAction
-     * 
-     * FIXME Remove this if UpdateModelAction has a cause.
-     */
-    protected int revision = 0
-    
-    /**
-     * Needed for KeithUpdateModelAction
-     * 
-     * FIXME Remove this if UpdateModelAction has a cause.
-     */
     new() {
-        currentRoot = new SModelRoot();
-        currentRoot.setType("NONE");
-        currentRoot.setId("ROOT");
+        super()
+        // Create map of registered action kinds and handlers.
+        ServiceLoader.load(ISprottyActionHandler, KlighdDataManager.getClassLoader()).forEach[handler | 
+            val Set<String> kindsSupported = handler.supportedMessages.keySet
+            for (kind : kindsSupported) {
+                handlers.put(kind, handler);
+            }
+        ]
     }
     
     /**
@@ -255,12 +236,16 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
                     handle(action as RefreshLayoutAction)
                 } else if (action.getKind === RequestDiagramPieceAction.KIND) {
                     handle(action as RequestDiagramPieceAction)
-                } else if (constraintActionHandler.canHandleAction(action.getKind)) {
-                    constraintActionHandler.handle(action, clientId, this)
-                } else if (rectpackingActionHandler.canHandleAction(action.getKind)) {
-                    rectpackingActionHandler.handle(action, clientId, this)
                 } else {
-                    super.accept(message)
+                    val handlerInstance = handlers.get(action.kind)
+                    if (handlerInstance !== null) {
+                        // Even though we have an instance, it is not yet populated with all injected things.
+                        val handler = injector.getInstance(handlerInstance.class)
+                        handler.handle(action, clientId, this)
+                    } else {
+                        // If no handler is registered for this message. Let the default super class handle it.
+                        super.accept(message)  
+                    }
                 }
             }
         } catch (Exception e) {
@@ -268,114 +253,7 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
             notificationHandler.sendErrorAndThrow(e)
         }
     }
-        
-    /**
-     * Submit a new or updated model to the client. If client layout is required, a {@link RequestBoundsAction}
-     * is sent, otherwise either a {@link SetModelAction} or an {@link UpdateModelAction} is sent depending on
-     * the {@code update} parameter.
-     * Needed for KeithUpdateModelAction
-     * 
-     * FIXME Remove this if UpdateModelAction has a cause.
-     */
-    override CompletableFuture<Void> submitModel(SModelRoot newRoot, boolean update, Action cause) {
-        if (needsClientLayout(newRoot)) {
-            if (!needsServerLayout(newRoot, cause)) {
-                // In this case the client won't send us the computed bounds
-                dispatch(new RequestBoundsAction(newRoot));
-                val IModelUpdateListener listener = getModelUpdateListener();
-                if (listener !== null) {
-                    listener.modelSubmitted(newRoot, this);
-                }
-            } else {
-                return request(new RequestBoundsAction(newRoot)).handle([response, exception | {
-                    if (exception !== null) {
-                        LOG.error("RequestBoundsAction failed with an exception.", exception);
-                    } else {
-                        try {
-                            var SModelRoot model = handle(response);
-                            if (model !== null)
-                                doSubmitModel(model, true, cause);
-                        } catch (Exception exc) {
-                            LOG.error("Exception while processing ComputedBoundsAction.", exc);
-                        }
-                    }
-                    return null;
-                }])
-            }
-        } else {
-            doSubmitModel(newRoot, update, cause);
-        }
-        return CompletableFuture.completedFuture(null);
-    }
-    
-    /**
-     * Needed for KeithUpdateModelAction
-     * 
-     * FIXME Remove this if UpdateModelAction has a cause.
-     */
-    override CompletableFuture<Void> setModel(SModelRoot newRoot) {
-        if (newRoot === null)
-            throw new NullPointerException();
-        synchronized(modelLock) {
-            newRoot.setRevision(revision + 1);
-            revision++
-            currentRoot = newRoot;
-        }
-        return submitModel(newRoot, false, null);
-    }
-    
-    /**
-     * Needed for KeithUpdateModelAction
-     * 
-     * FIXME Remove this if UpdateModelAction has a cause.
-     */
-    override CompletableFuture<Void> updateModel(SModelRoot newRoot) {
-        if (newRoot === null)
-            throw new IllegalArgumentException("updateModel() cannot be called with null");
-        synchronized(modelLock) {
-            currentRoot = newRoot;
-            newRoot.setRevision(revision + 1);
-            revision++
-        }
-        return submitModel(newRoot, true, null);
-    }
-    
-    
-    /**
-     * Needed for KeithUpdateModelAction
-     * 
-     * FIXME Remove this if UpdateModelAction has a cause.
-     */
-    def void doSubmitModel(SModelRoot newRoot, boolean update, Action cause) {
-        val ILayoutEngine layoutEngine = getLayoutEngine();
-        if (needsServerLayout(newRoot, cause)) {
-            AbstractLanguageServer.addToMainThreadQueue([
-                layoutEngine.layout(newRoot, cause)
-            ])
-        }
-        synchronized (modelLock) {
-            if (newRoot.getRevision() == revision) {
-                var String modelType = newRoot.getType();
-                if (cause instanceof RequestModelAction
-                        && !Strings.isNullOrEmpty((cause as RequestModelAction).getRequestId())) {
-                    var RequestModelAction request = cause as RequestModelAction;
-                    var SetModelAction response = new SetModelAction(newRoot);
-                    response.setResponseId(request.getRequestId());
-                    dispatch(response);
-                } else if (update && modelType !== null && modelType.equals(lastSubmittedModelType)) {
-                    dispatch(new UpdateModelAction(newRoot));
-                } else {
-                    dispatch(new SetModelAction(newRoot));
-                }
-                lastSubmittedModelType = modelType;
-                var IModelUpdateListener listener = getModelUpdateListener();
-                if (listener !== null) {
-                    listener.modelSubmitted(newRoot, this);
-                }
-            }
-        }
-    }
-    
+
     /**
      * Taken from {@code DefaultDiagramServer.handle(RequestModelAction)} to use this getModel.
      * Needed for KeithUpdateModelAction
@@ -385,7 +263,7 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
     override protected handle(RequestModelAction request) {
         if (model.type == 'NONE' && diagramLanguageServer !== null) {
             if (!request.requestId.nullOrEmpty)
-                LOG.warn("Model requests are not supported by the Xtext diagram server.")
+//                LOG.warn("Model requests are not supported by the Xtext diagram server.")
             copyOptions(request)
             synchronized (diagramState) {
                 // In the request model action there may be some further information for the client color preferences to
@@ -400,27 +278,6 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
             diagramLanguageServer.diagramUpdater.updateDiagram(this)
         } else {
             super.handle(request)
-        }
-    }
-    
-    /**
-     * Taken from {@code DefaultDiagramServer.handle(LayoutAction)} to use this getModel.
-     * Needed for KeithUpdateModelAction
-     * 
-     * FIXME Remove this if UpdateModelAction has a cause.
-     */
-    override void handle(LayoutAction action) {
-        if (needsServerLayout(model,action)) {
-            // Clone the current model, as it has already been sent to the client with the old revision
-            val SModelCloner cloner = getSModelCloner();
-            val SModelRoot newRoot = cloner.clone(model);
-            synchronized(modelLock) {
-                newRoot.setRevision(revision + 1);
-                revision++
-                currentRoot = newRoot;
-            }
-            // the actual layout is performed in doSubmitModel
-            doSubmitModel(newRoot, true, action);
         }
     }
     
@@ -544,6 +401,9 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
      * Tells the server that the diagram should be refreshed.
      */
     protected def handle(RefreshDiagramAction action) {
+        if (action.options !== null) {
+            getOptions().putAll(action.options)
+        }
         updateDiagram()
         return
     }
@@ -658,14 +518,5 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
             updateModel(currentRoot)
         }
         newModel = false
-    }
-
-    /**
-     * Needed for KeithUpdateModelAction
-     * 
-     * FIXME Remove this if UpdateModelAction has a cause.
-     */
-    override SModelRoot getModel() {
-        return currentRoot;
     }
 }

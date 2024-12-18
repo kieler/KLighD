@@ -17,6 +17,7 @@
 package de.cau.cs.kieler.klighd.kgraph.util;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -33,8 +34,6 @@ import org.eclipse.emf.ecore.util.EContentsEList.FeatureFilter;
 import org.eclipse.emf.ecore.util.EContentsEList.FeatureIteratorImpl;
 
 import com.google.common.base.Predicate;
-import com.google.common.collect.Maps;
-
 import de.cau.cs.kieler.klighd.kgraph.EMapPropertyHolder;
 import de.cau.cs.kieler.klighd.kgraph.KGraphPackage;
 import de.cau.cs.kieler.klighd.kgraph.KLayoutData;
@@ -207,7 +206,7 @@ public final class KGraphDataUtil {
             final Predicate<EMapPropertyHolder> handledTypes, final boolean clearProperties,
             final IProperty<?>... knownProps) {
 
-        Map<String, IProperty<?>> knowPropsMap = Maps.newHashMap();
+        Map<String, IProperty<?>> knowPropsMap = new HashMap<>();
         for (IProperty<?> p : knownProps) {
             knowPropsMap.put(p.getId(), p);
         }
@@ -299,9 +298,13 @@ public final class KGraphDataUtil {
 
             // if we have a valid layout option, parse its value.
             if (layoutOptionData != null) {
-                Object layoutOptionValue = layoutOptionData.parseValue(value);
-                if (layoutOptionValue != null) {
-                    propertyHolder.setProperty(layoutOptionData, layoutOptionValue);
+                try {
+                    Object layoutOptionValue = layoutOptionData.parseValue(value);
+                    if (layoutOptionValue != null) {
+                        propertyHolder.setProperty(layoutOptionData, layoutOptionValue);
+                    }
+                } catch (IllegalStateException e) {
+                    // Some options cannot be parsed, skip these.
                 }
             } else {
                 

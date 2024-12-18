@@ -3,7 +3,7 @@
  *
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright 2018-2021 by
+ * Copyright 2018-2024 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -19,12 +19,10 @@ package de.cau.cs.kieler.klighd.lsp
 import com.google.inject.Module
 import de.cau.cs.kieler.klighd.lsp.utils.KeithDiagramSelectionListener
 import de.cau.cs.kieler.klighd.lsp.utils.LazyTraceProvider
-import de.cau.cs.kieler.klighd.lsp.utils.SimpleTraceRegionProvider
 import org.eclipse.sprotty.IDiagramSelectionListener
 import org.eclipse.sprotty.xtext.DefaultDiagramModule
 import org.eclipse.sprotty.xtext.IDiagramGenerator
 import org.eclipse.sprotty.xtext.ls.DiagramUpdater
-import org.eclipse.sprotty.xtext.tracing.TextRegionProvider
 import org.eclipse.xtext.ide.server.WorkspaceManager
 import org.eclipse.xtext.naming.IQualifiedNameProvider
 import org.eclipse.xtext.naming.SimpleNameProvider
@@ -51,10 +49,6 @@ class KGraphDiagramModule extends DefaultDiagramModule {
 	
 	override bindIDiagramServer() {
         KGraphDiagramServer
-    }
-    
-	def Class<? extends TextRegionProvider> bindTraceRegionProvider() {
-        SimpleTraceRegionProvider
     }
     
     override bindTraceProvider() {

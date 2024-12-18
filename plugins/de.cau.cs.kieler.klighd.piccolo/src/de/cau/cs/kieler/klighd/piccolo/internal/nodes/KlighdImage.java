@@ -21,6 +21,7 @@ import java.awt.geom.RectangularShape;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.runtime.IStatus;
@@ -29,8 +30,6 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
-
-import com.google.common.collect.Lists;
 
 import de.cau.cs.kieler.klighd.Klighd;
 import de.cau.cs.kieler.klighd.krendering.KImage;
@@ -221,7 +220,7 @@ public class KlighdImage extends KlighdNode.KlighdFigureNode<KImage> implements 
     public void setImage(final URL url) {
         if (imageKey != null) {
             if (formerImages == null) {
-                formerImages = Lists.newArrayList();
+                formerImages = new ArrayList<>();
             }
             formerImages.add(imageKey);
         }

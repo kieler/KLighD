@@ -21,11 +21,11 @@ import org.eclipse.xtend.lib.annotations.Data
 /**
  * Data class for a position constraint.
  * 
- * @author jet, cos, sdo
+ * @author jep, cos, sdo
  */
 @Data
 class PositionConstraint {
     String id
     int position
-    int posCons
+    int positionConstraint
 }

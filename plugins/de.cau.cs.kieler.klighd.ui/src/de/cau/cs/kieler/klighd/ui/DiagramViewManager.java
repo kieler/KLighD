@@ -16,6 +16,7 @@
  */
 package de.cau.cs.kieler.klighd.ui;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.core.runtime.IStatus;
@@ -29,8 +30,6 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
-
-import com.google.common.collect.Maps;
 
 import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.Klighd;
@@ -58,10 +57,10 @@ public final class DiagramViewManager implements IPartListener {
     private boolean registered = false;
 
     /** the mapping of diagram view identifiers on workbench parts. */
-    private Map<String, IDiagramWorkbenchPart> idPartMapping = Maps.newHashMap();
+    private Map<String, IDiagramWorkbenchPart> idPartMapping = new HashMap<>();
 
     /** the mapping of diagram view identifiers on view contexts. */
-    private Map<String, ViewContext> idContextMapping = Maps.newHashMap();
+    private Map<String, ViewContext> idContextMapping = new HashMap<>();
 
     /**
      * Returns the singleton instance.

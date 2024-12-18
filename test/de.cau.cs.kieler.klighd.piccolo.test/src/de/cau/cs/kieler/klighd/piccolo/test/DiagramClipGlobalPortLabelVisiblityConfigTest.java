@@ -53,8 +53,6 @@ import org.junit.runners.Parameterized.Parameter;
 import org.junit.runners.Parameterized.Parameters;
 
 import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
-
 import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.ViewContext;
@@ -136,7 +134,7 @@ public class DiagramClipGlobalPortLabelVisiblityConfigTest {
         final KNode orOp = circuitGraph.getChildren().get(0).getChildren().get(0).getChildren().get(1);
         final KNode notOp = circuitGraph.getChildren().get(0).getChildren().get(1);
 
-        final List<Object[]> clips = Lists.newArrayList(
+        final List<Object[]> clips = List.of(
                 /** in circuit content ports are set invisible by default in view model */
                 clip(circuitContent, EXPECT_PORTS_INVISIBLE),
                 clip(circuitContent, SHOW_PORTS, EXPECT_PORTS_VISIBLE),

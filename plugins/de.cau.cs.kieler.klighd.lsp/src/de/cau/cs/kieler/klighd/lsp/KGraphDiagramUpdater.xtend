@@ -3,7 +3,7 @@
  * 
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright 2019, 2020, 2021 by
+ * Copyright 2019-2024 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -30,6 +30,7 @@ import de.cau.cs.kieler.klighd.lsp.launch.AbstractLanguageServer
 import de.cau.cs.kieler.klighd.lsp.model.RequestDiagramPieceAction
 import de.cau.cs.kieler.klighd.lsp.model.SKGraph
 import de.cau.cs.kieler.klighd.lsp.utils.KGraphMappingUtil
+import de.cau.cs.kieler.klighd.lsp.utils.RenderingPreparer
 import de.cau.cs.kieler.klighd.util.KlighdProperties
 import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties
 import java.util.HashSet
@@ -38,10 +39,12 @@ import java.util.Map
 import java.util.concurrent.CompletableFuture
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EObject
+import org.eclipse.sprotty.Action
 import org.eclipse.sprotty.IDiagramServer
 import org.eclipse.sprotty.SGraph
 import org.eclipse.sprotty.SModelElement
 import org.eclipse.sprotty.xtext.ILanguageAwareDiagramServer
+import org.eclipse.sprotty.xtext.LanguageAwareDiagramServer
 import org.eclipse.sprotty.xtext.ls.DiagramLanguageServer
 import org.eclipse.sprotty.xtext.ls.DiagramUpdater
 import org.eclipse.xtext.util.CancelIndicator
@@ -138,7 +141,19 @@ class KGraphDiagramUpdater extends DiagramUpdater {
     }
 
     override protected doUpdateDiagrams(String uri, List<? extends ILanguageAwareDiagramServer> diagramServers) {
-        if (diagramServers.empty) {
+        diagramServers.forEach[updateDiagram(it as LanguageAwareDiagramServer, null)]
+        return CompletableFuture.completedFuture(null)
+    }
+    
+    override updateDiagram(LanguageAwareDiagramServer server_, Action cause) {
+        if (!(server_ instanceof KGraphDiagramServer)) return super.updateDiagram(server_, cause)
+        
+        val server = server_ as KGraphDiagramServer
+        val uri = server.sourceUri
+        if (uri.isNullOrEmpty) {
+            val exc = new RuntimeException("Missing property 'sourceUri'.")
+            server.rejectRemoteRequest(cause, exc)
+//            LOG.error("Failed to update diagram.", exc)
             return CompletableFuture.completedFuture(null)
         }
         return (languageServer as KGraphLanguageServerExtension).doRead(uri) [ resource, ci |
@@ -167,16 +182,13 @@ class KGraphDiagramUpdater extends DiagramUpdater {
                     new StringBuilder, [builder, error | builder.append("\n" + error)]).toString
                 model = new MessageModel("The model contains errors:\n" + errors)
             }
-            val model_ = model;
-            (diagramServers as List<KGraphDiagramServer>).forEach [ KGraphDiagramServer server |
-                // Only update an erroneous model if there was no diagram shown before.
-                if (!hasErrors || server.currentRoot.type == "NONE") {
-                    synchronized (diagramState) {
-                        prepareModel(server, model_, uri)
-                        updateLayout(server)
-                    }
+            // Only update an erroneous model if there was no diagram shown before.
+            if (!hasErrors || server.currentRoot.type == "NONE") {
+                synchronized (diagramState) {
+                    prepareModel(server, model, uri)
+                    updateLayout(server)
                 }
-            ]
+            }
             return null as Void
         ]
     }
@@ -312,6 +324,7 @@ class KGraphDiagramUpdater extends DiagramUpdater {
         var SGraph sGraph = null;
         synchronized (diagramState) {
             sGraph = diagramGenerator.toSGraph(viewContext.viewModel, uri, cancelIndicator)
+            RenderingPreparer.prepareRenderingIDs(viewContext.viewModel, diagramGenerator.getKGraphToSModelElementMap)
         }
         if (incrementalDiagramGenerator) {
             val requestManager = new KGraphDiagramPieceRequestManager(diagramGenerator as KGraphIncrementalDiagramGenerator)

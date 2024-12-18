@@ -42,6 +42,7 @@ import java.awt.image.RenderedImage;
 import java.awt.image.renderable.RenderableImage;
 import java.lang.ref.WeakReference;
 import java.text.AttributedCharacterIterator;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -64,8 +65,6 @@ import org.eclipse.swt.graphics.TextLayout;
 import org.eclipse.swt.graphics.TextStyle;
 import org.eclipse.swt.graphics.Transform;
 import org.eclipse.swt.widgets.Display;
-
-import com.google.common.collect.Lists;
 
 import de.cau.cs.kieler.klighd.Klighd;
 import de.cau.cs.kieler.klighd.KlighdConstants;
@@ -438,7 +437,7 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
     protected static final HashMap<FontData, Font> FONT_CACHE = new HashMap<FontData, Font>();
 
     private boolean cacheFonts = true;
-    private List<org.eclipse.swt.graphics.Font> temporaryFonts = null;
+    private final List<Font> temporaryFonts = new ArrayList<>();
 
 
     /**
@@ -487,9 +486,6 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
             curFont = font;
 
         } else {
-            if (temporaryFonts == null) {
-                temporaryFonts = Lists.newArrayList();
-            }
             curFont = new org.eclipse.swt.graphics.Font(
                         fontCreationDevice != null ? fontCreationDevice : device, fontData);
             temporaryFonts.add(curFont);

@@ -18,6 +18,7 @@ package de.cau.cs.kieler.klighd.util;
 
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.eclipse.emf.ecore.EObject;
@@ -208,7 +209,7 @@ public class KlighdSemanticDiagramData implements Iterable<Map.Entry<String, Str
         }
 
         if (strStr == null && value != null) {
-            strStr = Maps.newLinkedHashMap();
+            strStr = new LinkedHashMap<>();
         }
 
         if (strFun != null && strFun.containsKey(key)) {
@@ -259,7 +260,7 @@ public class KlighdSemanticDiagramData implements Iterable<Map.Entry<String, Str
         }
 
         if (strFun == null && fun != null) {
-            strFun =  Maps.newLinkedHashMap();
+            strFun =  new LinkedHashMap<>();
         }
 
         if (strStr != null && strStr.containsKey(key)) {
@@ -319,7 +320,7 @@ public class KlighdSemanticDiagramData implements Iterable<Map.Entry<String, Str
         }
 
         if (strFunTextLine == null && fun != null) {
-            strFunTextLine = Maps.newLinkedHashMap();
+            strFunTextLine = new LinkedHashMap<>();
         }
 
         if (strFunTextLine != null) {

@@ -17,24 +17,19 @@
 package de.cau.cs.kieler.klighd.lsp.interactive.rectpacking
 
 import com.google.inject.Inject
-import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties
+import com.google.inject.Singleton
 import de.cau.cs.kieler.klighd.kgraph.KNode
+import de.cau.cs.kieler.klighd.kgraph.util.KGraphUtil
 import de.cau.cs.kieler.klighd.lsp.KGraphDiagramState
 import de.cau.cs.kieler.klighd.lsp.KGraphLanguageClient
 import de.cau.cs.kieler.klighd.lsp.KGraphLanguageServerExtension
 import de.cau.cs.kieler.klighd.lsp.LSPUtil
+import de.cau.cs.kieler.klighd.lsp.interactive.ConstraintProperty
 import de.cau.cs.kieler.klighd.lsp.interactive.InteractiveUtil
-import java.io.ByteArrayOutputStream
 import java.util.Arrays
 import java.util.List
-import java.util.Map
-import javax.inject.Singleton
 import org.eclipse.elk.alg.rectpacking.options.RectPackingOptions
 import org.eclipse.elk.core.options.CoreOptions
-import org.eclipse.elk.graph.ElkNode
-import org.eclipse.lsp4j.Position
-import org.eclipse.lsp4j.Range
-import org.eclipse.lsp4j.TextEdit
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.xtext.ide.server.ILanguageServerAccess
 import org.eclipse.xtext.ide.server.ILanguageServerExtension
@@ -99,9 +94,10 @@ class RectpackingInteractiveLanguageServerExtension implements ILanguageServerEx
                     }
                 }
             }
-            kNode.setProperty(RectPackingOptions.DESIRED_POSITION, desiredPosition)
-            refreshModelInEditor(changedNodes, uri)
+            refreshModelInEditor(new ConstraintProperty(kNode, RectPackingOptions.DESIRED_POSITION, desiredPosition), KGraphUtil.getRootNodeOf(kNode), uri)
 
+        } else {
+            languageServer.updateLayout(uri)
         }
     }
 
@@ -143,8 +139,10 @@ class RectpackingInteractiveLanguageServerExtension implements ILanguageServerEx
                 }
             }
             kNode.setProperty(RectPackingOptions.DESIRED_POSITION, null)
-            refreshModelInEditor(changedNodes, uri)
+            refreshModelInEditor(new ConstraintProperty(kNode, RectPackingOptions.DESIRED_POSITION, null), KGraphUtil.getRootNodeOf(kNode), uri)
 
+        } else {
+            languageServer.updateLayout(uri)
         }
     }
     
@@ -157,69 +155,22 @@ class RectpackingInteractiveLanguageServerExtension implements ILanguageServerEx
     def setAspectRatio(SetAspectRatio constraint, String clientId) {
         val uri = diagramState.getURIString(clientId)
         val kNode = LSPUtil.getKNode(diagramState, uri, constraint.id)
-        kNode.setProperty(RectPackingOptions.ASPECT_RATIO, Double.valueOf(constraint.aspectRatio))
-        val resource = languageServer.getResource(uri);  
-                  
-        // Get previous file content as String
-        var outputStream = new ByteArrayOutputStream
-        resource.save(outputStream, emptyMap)
-        val codeBefore = outputStream.toString
-        
-        val elkNode = kNode.getProperty(KlighdInternalProperties.MODEL_ELEMEMT)
-        if (elkNode instanceof ElkNode) {
-            val Map<String, List<TextEdit>> changes = newHashMap
-            elkNode.setProperty(RectPackingOptions.ASPECT_RATIO, constraint.aspectRatio)
-            
-            // Get changed file as String
-            outputStream = new ByteArrayOutputStream
-            resource.save(outputStream, emptyMap)
-            val codeAfter = outputStream.toString
-            
-            // The range is the length of the previous file.
-            val Range range = new Range(new Position(0, 0), new Position(codeBefore.split("\r\n|\r|\n").length, 0))
-            val TextEdit textEdit = new TextEdit(range, codeAfter)
-            changes.put(uri, #[textEdit]);
-            this.client.replaceContentInFile(uri, codeAfter, range)
-            return
-        }
+        refreshModelInEditor(new ConstraintProperty(kNode, RectPackingOptions.ASPECT_RATIO, Double.valueOf(constraint.aspectRatio)),
+            KGraphUtil.getRootNodeOf(kNode), uri
+        )
     }
 
     /**
      * Applies property changes to the file given by the uri by sending by notifying the client to execute the changes.
      * 
-     * @param changedNodes The KNodes that changed.
+     * @param constraint The constraint to serialize
+     * @param model The main KNode
      * @param uri uri of resource
      */
-    def refreshModelInEditor(List<KNode> changedNodes, String uri) {
-        val resource = languageServer.getResource(uri);
-            
-        // Get previous file content as String
-        var outputStream = new ByteArrayOutputStream
-        resource.save(outputStream, emptyMap)
-        val codeBefore = outputStream.toString
-        
-        for (node : changedNodes) {
-            val elkNode = node.getProperty(KlighdInternalProperties.MODEL_ELEMEMT)
-            if (elkNode instanceof ElkNode) {
-                InteractiveUtil.copyAllConstraints(elkNode, node)
-            }
-        }
-        val elkNode = changedNodes.get(0).getProperty(KlighdInternalProperties.MODEL_ELEMEMT)
-        if (elkNode instanceof ElkNode) {
-            val Map<String, List<TextEdit>> changes = newHashMap
-            
-            // Get changed file as String
-            outputStream = new ByteArrayOutputStream
-            resource.save(outputStream, emptyMap)
-            val codeAfter = outputStream.toString().trim()
-            
-            // The range is the length of the previous file.
-            val Range range = new Range(new Position(0, 0), new Position(codeBefore.split("\r\n|\r|\n").length, 0))
-            val TextEdit textEdit = new TextEdit(range, codeAfter)
-            changes.put(uri, #[textEdit]);
-            this.client.replaceContentInFile(uri, codeAfter, range)
-            return
-        }
-
+    def refreshModelInEditor(ConstraintProperty<Object> constraint, KNode model, String uri) {
+        val KNode kNode = constraint.KNode
+        kNode.setProperty(constraint.property, constraint.value)
+        InteractiveUtil.serializeConstraints(#[constraint], model, uri, this.languageServer, this.client)
+        return
     }
 }

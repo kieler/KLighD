@@ -5,11 +5,10 @@
   <parent>
     <groupId>de.cau.cs.kieler.klighd</groupId>
     <artifactId>test</artifactId>
-    <version>2.3.1-SNAPSHOT</version>
+    <version>3.0.3-SNAPSHOT</version>
   </parent>
-  <groupId>de.cau.cs.kieler.klighd</groupId>
+
   <artifactId>de.cau.cs.kieler.klighd.test</artifactId>
-  <version>2.3.1-SNAPSHOT</version>
   <packaging>eclipse-test-plugin</packaging>
   <build>
     <plugins>
@@ -25,6 +24,12 @@
                 <type>eclipse-plugin</type>
                 <id>org.eclipse.elk.alg.layered</id>
                 <versionRange>${elk-version}</versionRange>
+              </requirement>
+              <requirement>
+                <!-- Include javax.annotation which is needed by JUnit4 but not included by newer JDKs anymore. -->
+                <type>eclipse-plugin</type>
+                <id>javax.annotation</id>
+                <versionRange>0.0.0</versionRange>
               </requirement>
             </extraRequirements>
           </dependency-resolution>
