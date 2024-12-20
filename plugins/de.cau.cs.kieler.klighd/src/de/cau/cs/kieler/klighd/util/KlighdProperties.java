@@ -33,6 +33,7 @@ import de.cau.cs.kieler.klighd.filtering.SemanticFilterTag;
 import de.cau.cs.kieler.klighd.kgraph.KGraphData;
 import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
 import de.cau.cs.kieler.klighd.kgraph.KNode;
+import de.cau.cs.kieler.klighd.krendering.KColor;
 import de.cau.cs.kieler.klighd.krendering.KText;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
 
@@ -387,6 +388,12 @@ public final class KlighdProperties {
      */
     public static final IProperty<ColorPreferences> COLOR_PREFERENCES =
             new Property<ColorPreferences>("klighd.colorPreferences", null);
+    /**
+     * Property to be set on the root node of the graph that defines a custom background color that the diagram
+     * canvas should use. Null means no custom background, a default white one will be used.
+     */
+    public static final IProperty<KColor> DIAGRAM_BACKGROUND =
+            new Property<KColor>("klighd.diagramBackground", null);
     
     /**
      * Property determining whether this node should be rendered as a proxy.

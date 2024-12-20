@@ -17,6 +17,7 @@
 package de.cau.cs.kieler.klighd.lsp.model
 
 import de.cau.cs.kieler.klighd.krendering.KImage
+import de.cau.cs.kieler.klighd.util.ColorThemeKind
 import java.util.List
 import java.util.Map
 import java.util.Set
@@ -184,6 +185,7 @@ class ClientColorPreferencesAction implements Action {
  */
 @Accessors
 class ClientColorPreferences {
+    ColorThemeKind kind
     String foreground
     String background
     String highlight

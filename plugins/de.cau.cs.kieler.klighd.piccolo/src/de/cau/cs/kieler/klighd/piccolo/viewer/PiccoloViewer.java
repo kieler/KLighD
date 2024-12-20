@@ -63,6 +63,7 @@ import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdSelectiveZoomEventH
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.NodeUtil;
 import de.cau.cs.kieler.klighd.util.ColorPreferences;
+import de.cau.cs.kieler.klighd.util.ColorThemeKind;
 import de.cau.cs.kieler.klighd.util.KlighdProperties;
 import de.cau.cs.kieler.klighd.viewers.AbstractViewer;
 import de.cau.cs.kieler.klighd.viewers.ContextViewer;
@@ -156,6 +157,7 @@ public class PiccoloViewer extends AbstractViewer implements ILayoutRecorder,
                     // Simulate dark mode
                     background = Color.decode("#2f2f2f");
                     ColorPreferences colors = new ColorPreferences(
+                            ColorThemeKind.DARK,
                             KRenderingUtil.getColor("#cccccc"),
                             KRenderingUtil.getColor("#2f2f2f"),
                             KRenderingUtil.getColor("#cccccc")

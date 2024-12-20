@@ -3,7 +3,7 @@
  *
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright 2023 by
+ * Copyright 2023-2024 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -21,12 +21,16 @@ import de.cau.cs.kieler.klighd.krendering.KRenderingFactory;
 
 /**
  * Color preferences for KLighD syntheses. May provide information about the foreground, background, and a highlighting
- * color, that may be set by a frontend.
+ * color, that may be set by a frontend. Alternatively, this preference sets a general color theme kind instead of
+ * pre-defined colors.
  * 
  * @author nre
  */
 public class ColorPreferences {
 
+//    The kind of color theme to let the synthesis pick its own color palette.
+    private ColorThemeKind kind;
+    
     /**
      * The foreground color, to be used e.g. for texts, lines, etc., or as a reference.
      */
@@ -46,41 +50,75 @@ public class ColorPreferences {
      * Default constructor for color preferences, setting foreground and highlight to black, background to white.
      */
     public ColorPreferences() {
-        this(null, null, null);
+        this(null, null, null, null);
     }
 
     /**
      * Creates a new ColorPreferences with the given colors, or the default colors if some parameters are {@code null}.
      * 
+     * @param kind
      * @param foreground
      * @param background
      * @param highlight
      */
-    public ColorPreferences(KColor foreground, KColor background, KColor highlight) {
+    public ColorPreferences(ColorThemeKind kind, KColor foreground, KColor background, KColor highlight) {
+        this.kind = kind;
+        if (this.kind == null) {
+            this.kind = ColorThemeKind.LIGHT;
+        }
         if (foreground == null) {
-            foreground = KRenderingFactory.eINSTANCE.createKColor();
-            foreground.setRed(0);
-            foreground.setGreen(0);
-            foreground.setBlue(0);
+            this.foreground = KRenderingFactory.eINSTANCE.createKColor();
+            if (this.kind == ColorThemeKind.LIGHT || this.kind == ColorThemeKind.HIGH_CONTRAST_LIGHT) {
+                this.foreground.setRed(0);
+                this.foreground.setGreen(0);
+                this.foreground.setBlue(0);
+            } else { // dark theme
+                // D4D4D4
+                this.foreground.setRed(212);
+                this.foreground.setGreen(212);
+                this.foreground.setBlue(212);
+            }
         } else {
             this.foreground = foreground;
         }
         if (background == null) {
-            background = KRenderingFactory.eINSTANCE.createKColor();
-            background.setRed(255);
-            background.setGreen(255);
-            background.setBlue(255);
+            this.background = KRenderingFactory.eINSTANCE.createKColor();
+            if (this.kind == ColorThemeKind.LIGHT || this.kind == ColorThemeKind.HIGH_CONTRAST_LIGHT) {
+                this.background.setRed(255);
+                this.background.setGreen(255);
+                this.background.setBlue(255);
+            } else { // dark theme
+                // 1E1E1E
+                this.background.setRed(30);
+                this.background.setGreen(30);
+                this.background.setBlue(30);
+            }
         } else {
             this.background = background;
         }
         if (highlight == null) {
-            highlight = KRenderingFactory.eINSTANCE.createKColor();
-            highlight.setRed(0);
-            highlight.setGreen(0);
-            highlight.setBlue(0);
+            this.highlight = KRenderingFactory.eINSTANCE.createKColor();
+            if (this.kind == ColorThemeKind.LIGHT || this.kind == ColorThemeKind.HIGH_CONTRAST_LIGHT) {
+                // 005FB8
+                this.highlight.setRed(0);
+                this.highlight.setGreen(95);
+                this.highlight.setBlue(184);
+            } else { // dark theme
+                // 0078D4
+                this.highlight.setRed(0);
+                this.highlight.setGreen(120);
+                this.highlight.setBlue(212);
+            }
         } else {
             this.highlight = highlight;
         }
+    }
+
+    /**
+     * @return the theme kind
+     */
+    public ColorThemeKind getKind() {
+        return kind;
     }
     
     /**

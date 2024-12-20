@@ -152,6 +152,12 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
             id = uri
             children = new ArrayList
         ]
+        
+        // Special property for the diagram background, to be set on the diagram root.
+        val background = parentNode.getProperty(KlighdProperties.DIAGRAM_BACKGROUND)
+        if (background !== null) {
+            (diagramRoot as SKGraph).properties.put(KlighdProperties.DIAGRAM_BACKGROUND.id, background)
+        }
 
         diagramRoot.children.addAll(createNodesAndPrepareEdges(#[parentNode], diagramRoot))
         // Do post processing.

@@ -62,7 +62,6 @@ import org.eclipse.emf.ecore.EObject
 import org.eclipse.sprotty.Action
 import org.eclipse.sprotty.ActionMessage
 import org.eclipse.sprotty.RejectAction
-import org.eclipse.sprotty.RequestModelAction
 import org.eclipse.sprotty.SModelElement
 import org.eclipse.sprotty.SModelRoot
 import org.eclipse.sprotty.SelectAction
@@ -253,25 +252,6 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
             notificationHandler.sendErrorAndThrow(e)
         }
     }
-
-    /**
-     * additionally read the color preferences from the request model action.
-     */
-    override protected handle(RequestModelAction request) {
-        super.handle(request)
-        if (model.type == 'NONE' && diagramLanguageServer !== null) {
-            synchronized (diagramState) {
-                // In the request model action there may be some further information for the client color preferences to
-                // be applied here.
-                val foregroundColor = LSPUtil.parseColor(request.options.get("clientColorPreferenceForeground"))
-                val backgroundColor = LSPUtil.parseColor(request.options.get("clientColorPreferenceBackground"))
-                val highlightColor = LSPUtil.parseColor(request.options.get("clientColorPreferenceHighlight"))
-                if (foregroundColor !== null && backgroundColor !== null && highlightColor !== null) {
-                    diagramState.colorPreferences = new ColorPreferences(foregroundColor, backgroundColor, highlightColor)
-                }
-            }
-        }
-    }
     
     /**
      * Called when a {@link PerformActionAction} is received.
@@ -377,11 +357,12 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
      * Tells the server that the client has new color preferences available that should be considered.
      */
     protected def handle(ClientColorPreferencesAction action) {
+        val kind = action.clientColorPreferences.kind
         val foregroundColor = LSPUtil.parseColor(action.clientColorPreferences.foreground)
         val backgroundColor = LSPUtil.parseColor(action.clientColorPreferences.background)
         val highlightColor = LSPUtil.parseColor(action.clientColorPreferences.highlight)
         
-        val colorPreferences = new ColorPreferences(foregroundColor, backgroundColor, highlightColor)
+        val colorPreferences = new ColorPreferences(kind, foregroundColor, backgroundColor, highlightColor)
         synchronized (diagramState) {
             diagramState.colorPreferences = colorPreferences
         }
