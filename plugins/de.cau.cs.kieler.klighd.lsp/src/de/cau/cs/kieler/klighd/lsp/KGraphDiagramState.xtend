@@ -26,6 +26,7 @@ import de.cau.cs.kieler.klighd.internal.ISynthesis
 import de.cau.cs.kieler.klighd.kgraph.KGraphElement
 import de.cau.cs.kieler.klighd.krendering.KImage
 import de.cau.cs.kieler.klighd.lsp.model.ImageData
+import de.cau.cs.kieler.klighd.util.ColorPreferences
 import java.net.URLDecoder
 import java.util.HashMap
 import java.util.HashSet
@@ -105,6 +106,11 @@ class KGraphDiagramState {
      * The options predefined by the client that should be used during syntheses and layout.
      */
     JsonElement clientOptions
+    
+    /**
+     * The color preferences as configured by the client.
+     */
+    public ColorPreferences colorPreferences
     
     /**
      * A map to map the Sprotty client id to the URI leading to the resource.

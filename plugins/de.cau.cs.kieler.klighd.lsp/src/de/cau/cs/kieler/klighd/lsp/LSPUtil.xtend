@@ -3,7 +3,7 @@
  * 
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright 2020 by
+ * Copyright 2020-2024 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -17,8 +17,14 @@
 package de.cau.cs.kieler.klighd.lsp
 
 import com.google.common.html.HtmlEscapers
+import com.google.gson.JsonElement
 import de.cau.cs.kieler.klighd.ViewContext
 import de.cau.cs.kieler.klighd.kgraph.KNode
+import de.cau.cs.kieler.klighd.krendering.KColor
+import de.cau.cs.kieler.klighd.krendering.KRenderingFactory
+import de.cau.cs.kieler.klighd.util.ColorPreferences
+import de.cau.cs.kieler.klighd.util.ColorThemeKind
+import java.awt.Color
 
 /**
  * Utility methods for graphs in a language server context.
@@ -79,5 +85,47 @@ class LSPUtil {
             .replace("\n", "\\\n")
             // Replace tabs with four spaces.
             .replace("\t", "&nbsp;&nbsp;&nbsp;&nbsp;")
+    }
+    
+    
+    
+    /**
+     * Parses a jsonElement for color preferences from the client. unreadable colors are defaulted to black and white.
+     */
+    static def ColorPreferences parseColorPreferences(JsonElement jsonColors) {
+        if (jsonColors === null || !jsonColors.isJsonObject) return null
+        val kind = jsonColors.asJsonObject.get("kind")
+        val foreground = jsonColors.asJsonObject.get("foreground")
+        val background = jsonColors.asJsonObject.get("background")
+        val highlight = jsonColors.asJsonObject.get("highlight")
+        val ColorThemeKind colorKind = if (kind === null) ColorThemeKind.LIGHT else ColorThemeKind.values.get(kind.asInt)
+        val foregroundColor = parseColor(foreground)
+        val backgroundColor = parseColor(background)
+        val highlightColor = parseColor(highlight)
+        
+        return new ColorPreferences(colorKind, foregroundColor, backgroundColor, highlightColor)
+    }
+    
+    /**
+     * Parses a single color string in the form #RRGGBB into a KColor, or null if the string is unparsable.
+     */
+    static def KColor parseColor(String stringColor) {
+        var KColor color = null
+        try {
+            val awtColor = Color.decode(stringColor)
+            color = KRenderingFactory.eINSTANCE.createKColor
+            color.red = awtColor.red
+            color.green = awtColor.green
+            color.blue = awtColor.blue
+        } catch (NumberFormatException e) {}
+        return color
+    }
+    
+    /**
+     * Parses a single color string in the form #RRGGBB into a KColor, or null if the string is unparsable.
+     */
+    static def KColor parseColor(JsonElement jsonColor) {
+        if (jsonColor === null || !jsonColor.isJsonPrimitive) return null
+        return parseColor(jsonColor.asString)
     }
 }
