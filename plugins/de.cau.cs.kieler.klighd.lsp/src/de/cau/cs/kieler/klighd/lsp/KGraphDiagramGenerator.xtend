@@ -279,7 +279,7 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
         
         nodeElement.children.addAll(createPorts(node.ports))
         nodeElement.children.addAll(createLabels(node.labels))
-        if ((!node.children.empty) && isExpanded) {
+        if (isExpanded) {
             renderingContextData.setProperty(KlighdInternalProperties.POPULATED, true)
             nodeElement.children.addAll(createNodesAndPrepareEdges(node.children, nodeElement))
         } else {
