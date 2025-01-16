@@ -178,21 +178,23 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
         // add all node children
         for (node : nodes) {
             val SNode nodeElement = generateNode(node)
-            nodeAndEdgeElements.add(nodeElement)
-            kGraphToSModelElementMap.put(node, nodeElement)
-
-            // Add all edges in a list to be generated later, as they need their source and target nodes or ports
-            // to be generated previously. Because hierarchical edges could connect to any arbitrary parent or child node,
-            // they can only be generated safely in the end.
-            for (edge : node.outgoingEdges) {
-                if (edge.target !== null) {
-                    // if target node is directly or indirectly contained by the source node
-                    if (KGraphUtil.isDescendant(edge.target, node)) {
-                        // then generated element of node (add to its children)
-                        edgesToGenerate.add(edge -> nodeElement.children)
-                    } else {
-                        // otherwise the source node's parent generated element (add to its children)
-                        edgesToGenerate.add(edge -> parent.children)
+            if (nodeElement !== null) {
+                nodeAndEdgeElements.add(nodeElement)
+                kGraphToSModelElementMap.put(node, nodeElement)
+    
+                // Add all edges in a list to be generated later, as they need their source and target nodes or ports
+                // to be generated previously. Because hierarchical edges could connect to any arbitrary parent or child node,
+                // they can only be generated safely in the end.
+                for (edge : node.outgoingEdges) {
+                    if (edge.target !== null) {
+                        // if target node is directly or indirectly contained by the source node
+                        if (KGraphUtil.isDescendant(edge.target, node)) {
+                            // then generated element of node (add to its children)
+                            edgesToGenerate.add(edge -> nodeElement.children)
+                        } else {
+                            // otherwise the source node's parent generated element (add to its children)
+                            edgesToGenerate.add(edge -> parent.children)
+                        }
                     }
                 }
             }
@@ -226,8 +228,10 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
         val List<SPort> portElements = new ArrayList
         for (port : ports) {
             val SPort portElement = generatePort(port)
-            portElements.add(portElement)
-            kGraphToSModelElementMap.put(port, portElement)
+            if (portElement !== null) {
+                portElements.add(portElement)
+                kGraphToSModelElementMap.put(port, portElement)
+            }
         }
         return portElements
     }
@@ -240,8 +244,10 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
         val List<SLabel> labelElements = new ArrayList
         for (label : labels) {
             val SLabel labelElement = generateLabel(label)
-            labelElements.add(labelElement)
-            kGraphToSModelElementMap.put(label, labelElement)
+            if (labelElement !== null) {
+                labelElements.add(labelElement)
+                kGraphToSModelElementMap.put(label, labelElement)
+            }
         }
         return labelElements
     }
@@ -250,6 +256,13 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
      * Creates a Sprotty node corresponding to the given {@link KNode}.
      */
     private def SKNode generateNode(KNode node) {
+        val renderingContextData = RenderingContextData.get(node)
+        // activate the element if it should be shown.
+        renderingContextData.setProperty(KlighdInternalProperties.ACTIVE, node.getProperty(KlighdProperties.SHOW))
+        if (!node.getProperty(KlighdProperties.SHOW)) {
+            return null
+        }
+        
         val nodeElement = configSElement(SKNode, idGen.getId(node))
 
         nodeElement.size = new Dimension(node.width, node.height)
@@ -263,11 +276,6 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
         KGraphMappingUtil.mapProperties(node, nodeElement)
         findSpecialRenderings(filteredData)
         
-        val renderingContextData = RenderingContextData.get(node)
-        // activate the element by default if it does not have an active/inactive status yet.
-        if (!renderingContextData.containsPoperty(KlighdInternalProperties.ACTIVE)) {
-            renderingContextData.setProperty(KlighdInternalProperties.ACTIVE, true)
-        }
         // Populate the children of this node only if child nodes exist and the node should be drawn expanded.
         var boolean isExpanded
         if (renderingContextData.hasProperty(SprottyProperties.EXPANDED)) {
@@ -307,6 +315,13 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
      * Assumes, that the source and target nodes or ports of this {@code edge} have already been generated.
      */
     protected def SKEdge generateEdge(KEdge edge) {
+        val renderingContextData = RenderingContextData.get(edge)
+        // activate the element if it should be shown.
+        renderingContextData.setProperty(KlighdInternalProperties.ACTIVE, edge.getProperty(KlighdProperties.SHOW))
+        if (!edge.getProperty(KlighdProperties.SHOW)) {
+            return null
+        }
+        
         val SKEdge edgeElement = configSElement(SKEdge, idGen.getId(edge))
         edgeElement.sourceId = idGen.getId(edge.source)
         edgeElement.targetId = idGen.getId(edge.target)
@@ -318,12 +333,6 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
         edgeElement.children.addAll(createLabels(edge.labels))
         edgeElement.junctionPoints = edge.getProperty(CoreOptions.JUNCTION_POINTS)
 
-        // activate the element by default if it does not have an active/inactive status yet.
-        val renderingContextData = RenderingContextData.get(edge)
-        if (!renderingContextData.containsPoperty(KlighdInternalProperties.ACTIVE)) {
-            renderingContextData.setProperty(KlighdInternalProperties.ACTIVE, true)
-        }
-
         return edgeElement
     }
 
@@ -331,6 +340,12 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
      * Creates a Sprotty port corresponding to the given {@link KPort}.
      */
     protected def SKPort generatePort(KPort port) {
+        val renderingContextData = RenderingContextData.get(port)
+        // activate the element if it should be shown.
+        renderingContextData.setProperty(KlighdInternalProperties.ACTIVE, port.getProperty(KlighdProperties.SHOW))
+        if (!port.getProperty(KlighdProperties.SHOW)) {
+            return null
+        }
         val SKPort portElement = configSElement(SKPort, idGen.getId(port))
         
         val renderings = port.data.filter [ KRendering.isAssignableFrom(it.class)].toList
@@ -339,12 +354,6 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
         findSpecialRenderings(renderings)
         portElement.children.addAll(createLabels(port.labels))
 
-        // activate the element by default if it does not have an active/inactive status yet.
-        val renderingContextData = RenderingContextData.get(port)
-        if (!renderingContextData.containsPoperty(KlighdInternalProperties.ACTIVE)) {
-            renderingContextData.setProperty(KlighdInternalProperties.ACTIVE, true)
-        }
-
         return portElement
     }
 
@@ -352,6 +361,12 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
      * Creates a Sprotty label corresponding to the given {@link KLabel}.
      */
     protected def SKLabel generateLabel(KLabel label) {
+        val renderingContextData = RenderingContextData.get(label)
+        // activate the element if it should be shown.
+        renderingContextData.setProperty(KlighdInternalProperties.ACTIVE, label.getProperty(KlighdProperties.SHOW))
+        if (!label.getProperty(KlighdProperties.SHOW)) {
+            return null
+        }
         val SKLabel labelElement = configSElement(SKLabel, idGen.getId(label))
         labelElement.text = label.text
 
@@ -359,11 +374,6 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
 
         KGraphMappingUtil.mapProperties(label, labelElement)
         findSpecialRenderings(renderings)
-        // activate the element by default if it does not have an active/inactive status yet.
-        val renderingContextData = RenderingContextData.get(label)
-        if (!renderingContextData.containsPoperty(KlighdInternalProperties.ACTIVE)) {
-            renderingContextData.setProperty(KlighdInternalProperties.ACTIVE, true)
-        }
         return labelElement
     }
 
