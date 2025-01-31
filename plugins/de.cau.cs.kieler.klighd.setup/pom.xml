@@ -120,6 +120,11 @@
         <artifactId>org.eclipse.elk.alg.radial</artifactId>
         <version>${elk-version}</version>
       </dependency>
+      <dependency>
+      	<groupId>org.eclipse.elk</groupId>
+      	<artifactId>org.eclipse.elk.alg.vertiflex</artifactId>
+      	<version>${elk-version}</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
 

@@ -23,6 +23,7 @@ import org.eclipse.elk.alg.graphviz.layouter.GraphvizMetaDataProvider;
 import org.eclipse.elk.alg.layered.options.LayeredMetaDataProvider;
 import org.eclipse.elk.alg.mrtree.options.MrTreeMetaDataProvider;
 import org.eclipse.elk.alg.radial.options.RadialMetaDataProvider;
+import org.eclipse.elk.alg.vertiflex.options.VertiFlexMetaDataProvider;
 import org.eclipse.elk.core.data.ILayoutMetaDataProvider;
 import org.eclipse.elk.core.data.LayoutMetaDataService;
 import org.eclipse.elk.graph.util.ElkReflect;
@@ -63,7 +64,8 @@ public class KlighdStandaloneSetup {
                 getGraphvizMetaDataProvider(),
                 getLayeredMetaDataProvider(),
                 getMrTreeMetaDataProvider(),
-                getRadialMetaDataProvider()
+                getRadialMetaDataProvider(),
+                getVertiFlexDataProvider()
         );
         
         LayoutMetaDataService.getInstance().registerLayoutMetaDataProviders(
@@ -110,6 +112,14 @@ public class KlighdStandaloneSetup {
     protected ILayoutMetaDataProvider getRadialMetaDataProvider() {
         try {
             return new RadialMetaDataProvider();
+        } catch (Throwable t) {
+            return null;
+        }
+    }
+    
+    protected ILayoutMetaDataProvider getVertiFlexDataProvider() {
+        try {
+            return new VertiFlexMetaDataProvider();
         } catch (Throwable t) {
             return null;
         }
