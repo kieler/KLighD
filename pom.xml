@@ -61,7 +61,7 @@
     <sprotty-version>1.1.2</sprotty-version>
     <swt-mock-version>0.1.0</swt-mock-version>
     <swt-version>3.124.200</swt-version>
-    <tycho-version>2.7.3</tycho-version>
+    <tycho-version>4.0.9</tycho-version>
     <xtend-version>2.33.0</xtend-version>
     <xtext-version>2.33.0</xtext-version>
 
@@ -470,36 +470,6 @@
     <!-- the following definitions just register setups of plug-ins, their execution is enable elsewhere -->
     <pluginManagement>
      <plugins>
-       <plugin>
-        <!-- configuration of the source feature generation, is activated in features/pom -->
-        <groupId>org.eclipse.tycho.extras</groupId>
-        <artifactId>tycho-source-feature-plugin</artifactId>
-        <version>${tycho-version}</version>
-        <executions>
-          <execution>
-            <id>source-feature</id>
-            <phase>package</phase>
-            <goals>
-              <goal>source-feature</goal>
-            </goals>
-            <configuration>
-              <labelSuffix>${sourceFeatureLabelSuffix}</labelSuffix>
-              <excludes>
-                <!-- the following bundles are excluded in the source feature generation process
-                      as they don't contribute any classes and, thus,
-                      no related source bundles exist -->
-                <plugin id="de.cau.cs.kieler.klighd.ui.contrib3x" />
-                <plugin id="org.eclipse.emf" />
-                <plugin id="org.eclipse.swt" />
-
-                <!-- the following bundles are excluded as
-                      there are no sources offered via the eclipse update sites -->
-                <plugin id="edu.umd.cs.piccolo" />
-              </excludes>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
 
       <plugin>
         <groupId>org.eclipse.tycho</groupId>
@@ -556,74 +526,6 @@
 
         <!-- Configure Eclipse m2e to ignore certain plugin goals when integrating Maven build
           settings into Eclipse. -->
-        <plugin>
-          <groupId>org.eclipse.m2e</groupId>
-          <artifactId>lifecycle-mapping</artifactId>
-          <version>1.0.0</version>
-          <configuration>
-            <lifecycleMappingMetadata>
-              <pluginExecutions>
-                <pluginExecution>
-                  <pluginExecutionFilter>
-                    <groupId>org.eclipse.tycho</groupId>
-                    <artifactId>tycho-compiler-plugin</artifactId>
-                    <versionRange>${tycho-version}</versionRange>
-                    <goals>
-                      <goal>compile</goal>
-                      <goal>testCompile</goal>
-                      <goal>validate-classpath</goal>
-                    </goals>
-                  </pluginExecutionFilter>
-                  <action>
-                    <ignore/>
-                  </action>
-                </pluginExecution>
-                <pluginExecution>
-                  <pluginExecutionFilter>
-                    <groupId>org.eclipse.tycho</groupId>
-                    <artifactId>tycho-packaging-plugin</artifactId>
-                    <versionRange>${tycho-version}</versionRange>
-                    <goals>
-                      <goal>build-qualifier</goal>
-                      <goal>build-qualifier-aggregator</goal>
-                      <goal>validate-id</goal>
-                      <goal>validate-version</goal>
-                    </goals>
-                  </pluginExecutionFilter>
-                  <action>
-                    <ignore/>
-                  </action>
-                </pluginExecution>
-                <pluginExecution>
-                  <pluginExecutionFilter>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-clean-plugin</artifactId>
-                    <versionRange>[3.0.0,)</versionRange>
-                    <goals>
-                      <goal>clean</goal>
-                    </goals>
-                  </pluginExecutionFilter>
-                  <action>
-                    <ignore/>
-                  </action>
-                </pluginExecution>
-                <pluginExecution>
-                  <pluginExecutionFilter>
-                    <groupId>org.eclipse.tycho</groupId>
-                    <artifactId>target-platform-configuration</artifactId>
-                    <versionRange>[2.7.3,)</versionRange>
-                    <goals>
-                      <goal>target-platform</goal>
-                    </goals>
-                  </pluginExecutionFilter>
-                  <action>
-                    <ignore></ignore>
-                  </action>
-                </pluginExecution>
-              </pluginExecutions>
-            </lifecycleMappingMetadata>
-          </configuration>
-        </plugin>
       </plugins>
     </pluginManagement>
   </build>
