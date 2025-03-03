@@ -57,6 +57,7 @@ public class SoftWrappingLabelManager extends AbstractKlighdLabelManager {
             String[] words = textWithoutLineBreaks.split(" ");
             StringBuilder resultText = new StringBuilder(label.getText().length());
             String currentLineText;
+            String prefixLine = "";
             double effectiveTargetWidth =
                     Math.max(LabelManagementUtil.getWidthOfBiggestWord(font, words), targetWidth);
 
@@ -78,6 +79,20 @@ public class SoftWrappingLabelManager extends AbstractKlighdLabelManager {
                     }
                     lineWidth = PlacementUtil.estimateTextSize(font, testText).getWidth();
                 } while (lineWidth < effectiveTargetWidth && currWordIndex < words.length);
+                
+                // if current line is smaller than the threshold, then pull the next line up, this should only happen
+                // in the first line or after special line breaks such as semantic line breaks
+                if (prefixLine != "") {
+                    currentLineText = prefixLine + " " + currentLineText;
+                }
+                
+                // if current line is too small, make it a prefix line
+                lineWidth = PlacementUtil.estimateTextSize(font, currentLineText).getWidth();
+                prefixLine = "";
+                if (lineWidth < effectiveTargetWidth * getFuzziness(label)) {
+                    prefixLine = currentLineText;
+                    currentLineText = "";
+                }
 
                 // Check whether next line would be below the fuzzy threshold
                 if (getFuzziness(label) > 0) {
@@ -102,6 +117,11 @@ public class SoftWrappingLabelManager extends AbstractKlighdLabelManager {
                             currentLineText += " " + previewLineText;
                         }
                     }
+                }
+                
+                // this means that we deferred the current line and must do another iteration
+                if (currentLineText == "") {
+                    continue;
                 }
                 
                 // No more words fit so the line is added to the result
