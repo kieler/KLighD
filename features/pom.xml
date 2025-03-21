@@ -16,9 +16,33 @@
     <!-- find the configuration of the following plug-ins in the parent pom -->
     <plugins>
       <plugin>
-        <groupId>org.eclipse.tycho.extras</groupId>
-        <artifactId>tycho-source-feature-plugin</artifactId>
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>tycho-source-plugin</artifactId>
         <version>${tycho-version}</version>
+        <executions>
+          <execution>
+            <id>feature-source</id>
+            <phase>package</phase>
+            <goals>
+              <goal>feature-source</goal>
+            </goals>
+            <configuration>
+              <labelSuffix>${sourceFeatureLabelSuffix}</labelSuffix>
+              <excludes>
+                <!-- the following bundles are excluded in the source feature generation process
+                      as they don't contribute any classes and, thus,
+                      no related source bundles exist -->
+                <plugin id="de.cau.cs.kieler.klighd.ui.contrib3x" />
+                <plugin id="org.eclipse.emf" />
+                <plugin id="org.eclipse.swt" />
+
+                <!-- the following bundles are excluded as
+                      there are no sources offered via the eclipse update sites -->
+                <plugin id="edu.umd.cs.piccolo" />
+              </excludes>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
       <plugin>
         <groupId>org.eclipse.tycho</groupId>

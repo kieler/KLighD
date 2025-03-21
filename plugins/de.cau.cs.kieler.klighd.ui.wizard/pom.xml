@@ -18,12 +18,5 @@
 
   <build>
     <sourceDirectory>src</sourceDirectory>
-    <plugins>
-      <!-- Compile Xtend code -->
-      <plugin>
-        <groupId>org.eclipse.xtend</groupId>
-        <artifactId>xtend-maven-plugin</artifactId>
-      </plugin>
-    </plugins>
   </build>
 </project>

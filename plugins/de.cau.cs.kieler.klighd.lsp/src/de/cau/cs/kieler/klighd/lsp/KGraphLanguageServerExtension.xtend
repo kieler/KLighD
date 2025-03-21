@@ -3,7 +3,7 @@
  *
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright 2018, 2020 by
+ * Copyright 2018-2025 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -121,6 +121,12 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
             }
         }
         return super.initialize(params)
+    }
+    
+    // Fixes a NPE during initialization caused by an Xtext issue when initializing with no baseURI and no workspaceFolders.
+    // Should be removed again once https://github.com/eclipse-xtext/xtext/issues/3391 is resolved in a future Xtext release.
+    override clientSupportsWorkspaceFolders() {
+        return true
     }
     
     override didClose(String clientId) {

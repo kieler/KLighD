@@ -3,7 +3,7 @@
  *
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright 2019 by
+ * Copyright 2020 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -14,17 +14,14 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  */
-package de.cau.cs.kieler.kgraph.text.ide
-
-import com.google.inject.Injector
+package de.cau.cs.kieler.klighd.ide;
 
 /**
- * Registers the KGraph language in a language server setup.
- * 
  * @author sdo
+ *
  */
-class KGraphLSSetup {
-    def static Injector doLSSetup() {
-        return KGraphIdeSetup.doSetup()
-    }
+class KlighdIdePlugin {
+
+    /** The plug-in ID. */
+    public static final String PLUGIN_ID = "de.cau.cs.kieler.klighd.ide"; //$NON-NLS-1$
 }

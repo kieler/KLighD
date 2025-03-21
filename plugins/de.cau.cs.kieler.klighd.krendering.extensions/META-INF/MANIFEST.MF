@@ -11,7 +11,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.elk.core;bundle-version="0.1.0",
  de.cau.cs.kieler.klighd.krendering,
  de.cau.cs.kieler.klighd.kgraph
-Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-RequiredExecutionEnvironment: JavaSE-21
 Bundle-ActivationPolicy: lazy
 Export-Package: de.cau.cs.kieler.klighd.krendering.extensions
 Automatic-Module-Name: de.cau.cs.kieler.klighd.krendering.extensions

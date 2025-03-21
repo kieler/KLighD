@@ -28,7 +28,7 @@ import de.cau.cs.kieler.klighd.util.ModelingUtil;
  * 
  * @author als
  */
-public class EcoreModelExpandDetailsAction implements IAction {
+class EcoreModelExpandDetailsAction implements IAction {
     /** The action id. */
     public static final String ID =
             "de.cau.cs.kieler.klighd.ui.view.syntheses.action.EcoreModelExpandDetailsAction";
@@ -36,15 +36,14 @@ public class EcoreModelExpandDetailsAction implements IAction {
     /**
      * {@inheritDoc}
      */
-    @Override
-    public ActionResult execute(final ActionContext context) {
-        if (context.getKNode() != null) {
-            Iterator<KNode> nodeIter =
-                    ModelingUtil.eAllContentsOfType(context.getKNode(), KNode.class);
+    override execute(ActionContext context) {
+        if (context.getKNode() !== null) {
+            val Iterator<KNode> nodeIter =
+                    ModelingUtil.eAllContentsOfType(context.getKNode(), KNode);
             // Expand or collapse all nodes
             while (nodeIter.hasNext()) {
-                if ((boolean) context.getViewContext()
-                        .getOptionValue(EObjectFallbackSynthesis.EXPAND_DETAILS)) {
+                if (context.getViewContext()
+                        .getOptionValue(EObjectFallbackSynthesis.EXPAND_DETAILS) as Boolean) {
                     context.getActiveViewer().expand(nodeIter.next());
                 } else {
                     context.getActiveViewer().collapse(nodeIter.next());

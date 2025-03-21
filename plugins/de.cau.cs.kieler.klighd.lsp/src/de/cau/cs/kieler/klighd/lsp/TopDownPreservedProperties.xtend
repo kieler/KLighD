@@ -24,13 +24,12 @@ import de.cau.cs.kieler.klighd.IPreservedProperties;
  * @author mka
  *
  */
-public class TopDownPreservedProperties implements IPreservedProperties {
+class TopDownPreservedProperties implements IPreservedProperties {
 
     /**
      * {@inheritDoc}
      */
-    @Override
-    public List<IProperty<?>> getProperties() {
+    override List<IProperty<?>> getProperties() {
         return Arrays.asList(CoreOptions.TOPDOWN_SCALE_FACTOR);
     }
 
