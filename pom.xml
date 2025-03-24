@@ -164,7 +164,6 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-gpg-plugin</artifactId>
-            <version>3.1.0</version>
             <executions>
               <execution>
                 <id>sign-artifacts</id>
@@ -470,6 +469,18 @@
     <!-- the following definitions just register setups of plug-ins, their execution is enable elsewhere -->
     <pluginManagement>
      <plugins>
+
+       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-deploy-plugin</artifactId>
+        <version>3.1.4</version>
+       </plugin>
+
+       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-gpg-plugin</artifactId>
+        <version>3.2.7</version>
+       </plugin>
 
       <plugin>
         <groupId>org.eclipse.tycho</groupId>
