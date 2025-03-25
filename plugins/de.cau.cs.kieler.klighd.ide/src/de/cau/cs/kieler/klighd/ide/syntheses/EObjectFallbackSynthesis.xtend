@@ -139,7 +139,8 @@ class EObjectFallbackSynthesis extends AbstractDiagramSynthesis<EObject> {
         rootNode.setLayoutOption(LayeredOptions::NODE_PLACEMENT_BK_EDGE_STRAIGHTENING, EdgeStraighteningStrategy.IMPROVE_STRAIGHTNESS);
         rootNode.setLayoutOption(LayeredOptions::SPACING_EDGE_NODE, LayeredOptions.SPACING_NODE_NODE.^default * 1.1f);
         rootNode.setLayoutOption(LayeredOptions::SPACING_EDGE_NODE_BETWEEN_LAYERS, LayeredOptions.SPACING_NODE_NODE.^default * 1.1f);
-        rootNode.setProperty(KlighdProperties.DIAGRAM_BACKGROUND, backgroundColor)
+        
+        usedContext.setProperty(KlighdProperties.CANVAS_COLOR, new Color(backgroundColor.getRed(), backgroundColor.getGreen(), backgroundColor.getBlue()));
         
         // transform root object
         rootNode.children += model.transformToNode

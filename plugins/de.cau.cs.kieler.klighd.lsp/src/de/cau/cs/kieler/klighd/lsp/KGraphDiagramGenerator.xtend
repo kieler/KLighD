@@ -3,7 +3,7 @@
  *
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright 2018-2024 by
+ * Copyright 2018-2025 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -28,9 +28,11 @@ import de.cau.cs.kieler.klighd.kgraph.KLabel
 import de.cau.cs.kieler.klighd.kgraph.KNode
 import de.cau.cs.kieler.klighd.kgraph.KPort
 import de.cau.cs.kieler.klighd.kgraph.util.KGraphUtil
+import de.cau.cs.kieler.klighd.krendering.KColor
 import de.cau.cs.kieler.klighd.krendering.KContainerRendering
 import de.cau.cs.kieler.klighd.krendering.KImage
 import de.cau.cs.kieler.klighd.krendering.KRendering
+import de.cau.cs.kieler.klighd.krendering.KRenderingFactory
 import de.cau.cs.kieler.klighd.krendering.KRenderingLibrary
 import de.cau.cs.kieler.klighd.krendering.KRenderingUtil
 import de.cau.cs.kieler.klighd.lsp.model.ImageData
@@ -107,6 +109,11 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
      * element of each pair.
      */
     protected List<Pair<KEdge, List<SModelElement>>> edgesToGenerate
+    
+    /**
+     * The color that the background canvas of the viewer should be assigned.
+     */
+    protected KColor backgroundColor = null
 
     /**
      * Creates a {@link ViewContext} containing the KGraph model for the {@link ViewContext} of any {@link Object} model
@@ -128,6 +135,27 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
 			ret = toSGraph(content as KNode, context.resource.URI.toString, context.cancelIndicator)
 		}
 		return ret
+	}
+	
+	/**
+     * Translates a plain {@link KNode} or a KNode translated by {@link #translateModel} to an {@link SGraph}. 
+     * @param viewContext     the viewContext containing the KNode that should be translated and further information
+     *                        such as the background color for the canvas. This is the parent node containing all
+     *                        elements of the graph, that is translated
+     * @param uri             The uri of the source model the parent node was synthesized from. Used as the ID of the
+     *                        generated graph.
+     * @param cancelIndicator Indicates, if the action requesting this translation has already been canceled.
+     */
+	def SGraph toSGraph(ViewContext viewContext, String uri, CancelIndicator cancelIndicator) {
+	    if (viewContext.hasProperty(KlighdProperties.CANVAS_COLOR)) {
+	        val color = viewContext.getProperty(KlighdProperties.CANVAS_COLOR)
+	        backgroundColor = KRenderingFactory.eINSTANCE.createKColor() => [
+                red = color.red
+                green = color.green
+                blue = color.blue
+            ]
+	    }
+	    return toSGraph(viewContext.viewModel, uri, cancelIndicator)
 	}
 	
 	/**
@@ -153,10 +181,9 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
             children = new ArrayList
         ]
         
-        // Special property for the diagram background, to be set on the diagram root.
-        val background = parentNode.getProperty(KlighdProperties.DIAGRAM_BACKGROUND)
-        if (background !== null) {
-            (diagramRoot as SKGraph).properties.put(KlighdProperties.DIAGRAM_BACKGROUND.id, background)
+        // Special property for the diagram background.
+        if (backgroundColor !== null) {
+            (diagramRoot as SKGraph).properties.put(KlighdInternalProperties.DIAGRAM_BACKGROUND.id, backgroundColor)
         }
 
         diagramRoot.children.addAll(createNodesAndPrepareEdges(#[parentNode], diagramRoot))

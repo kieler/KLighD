@@ -323,7 +323,7 @@ class KGraphDiagramUpdater extends DiagramUpdater {
             : diagramGeneratorProvider.get
         var SGraph sGraph = null;
         synchronized (diagramState) {
-            sGraph = diagramGenerator.toSGraph(viewContext.viewModel, uri, cancelIndicator)
+            sGraph = diagramGenerator.toSGraph(viewContext, uri, cancelIndicator)
             RenderingPreparer.prepareRenderingIDs(viewContext.viewModel, diagramGenerator.getKGraphToSModelElementMap)
         }
         if (incrementalDiagramGenerator) {
