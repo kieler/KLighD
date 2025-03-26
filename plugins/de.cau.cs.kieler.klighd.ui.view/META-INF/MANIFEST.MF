@@ -15,7 +15,7 @@ Require-Bundle: org.eclipse.emf,
  org.eclipse.elk.alg.layered,
  de.cau.cs.kieler.klighd.kgraph,
  de.cau.cs.kieler.klighd.ide
-Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-RequiredExecutionEnvironment: JavaSE-21
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: Kiel University
 Export-Package: de.cau.cs.kieler.klighd.ui.view,

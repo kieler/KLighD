@@ -22,7 +22,7 @@ import de.cau.cs.kieler.klighd.IAction;
  * @author sdo
  *
  */
-public abstract class AbstractErrorModelShowExceptionAction implements IAction {
+abstract class AbstractErrorModelShowExceptionAction implements IAction {
 
     /** The action ID. */
     public static final String ID = "de.cau.cs.kieler.klighd.ui.view.syntheses.action.ErrorModelShowExceptionAction";

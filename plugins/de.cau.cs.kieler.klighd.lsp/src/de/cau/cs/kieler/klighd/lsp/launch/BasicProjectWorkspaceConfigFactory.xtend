@@ -28,19 +28,18 @@ import org.eclipse.xtext.workspace.WorkspaceConfig;
  * 
  * @author sdo
  */
-public class BasicProjectWorkspaceConfigFactory extends MultiProjectWorkspaceConfigFactory {
+class BasicProjectWorkspaceConfigFactory extends MultiProjectWorkspaceConfigFactory {
 
-    @Override
-    public void findProjects(WorkspaceConfig workspaceConfig, URI uri) {
-        if (uri == null) {
+    override void findProjects(WorkspaceConfig workspaceConfig, URI uri) {
+        if (uri === null) {
             return;
         }
-        File baseFile = new File(uri.toFileString());
+        val File baseFile = new File(uri.toFileString());
         if (!baseFile.isDirectory()) {
             return;
         }
-        for (File dir : baseFile.listFiles(File::isDirectory)) {
-            FileProjectConfig project = new FileProjectConfig(dir, workspaceConfig);
+        for (File dir : baseFile.listFiles([isDirectory])) {
+            val FileProjectConfig project = new FileProjectConfig(dir, workspaceConfig);
             // Disable source folder to not create an xtext folder
             // project.addSourceFolder(".");
             workspaceConfig.addProject(project);
