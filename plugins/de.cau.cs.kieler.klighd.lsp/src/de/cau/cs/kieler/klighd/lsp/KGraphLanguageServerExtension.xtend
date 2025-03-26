@@ -110,6 +110,8 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
      */
     public static String CLIENT_DIAGRAM_OPTIONS_PROPERTY = "clientDiagramOptions"
     
+    public static String CLIENT_COLOR_PREFERNENCES = "clientColorPreferences"
+    
     override initialize(InitializeParams params) {
         // Close all diagram servers still open from a previous session.
         val oldClientIds = diagramServerManager.diagramServers.map[ clientId ].toList // toList to avoid lazy evaluation
@@ -118,6 +120,7 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
         if (initializationOptions instanceof JsonObject) {
             synchronized (diagramState) {
                 diagramState.clientOptions = initializationOptions.get(CLIENT_DIAGRAM_OPTIONS_PROPERTY)
+                diagramState.colorPreferences = LSPUtil.parseColorPreferences(initializationOptions.get(CLIENT_COLOR_PREFERNENCES))
             }
         }
         return super.initialize(params)

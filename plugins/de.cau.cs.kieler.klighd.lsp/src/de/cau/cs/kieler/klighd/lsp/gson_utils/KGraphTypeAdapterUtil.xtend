@@ -22,6 +22,7 @@ import de.cau.cs.kieler.klighd.KlighdDataManager
 import de.cau.cs.kieler.klighd.SynthesisOption
 import de.cau.cs.kieler.klighd.lsp.ISprottyActionHandler
 import de.cau.cs.kieler.klighd.lsp.model.CheckedImagesAction
+import de.cau.cs.kieler.klighd.lsp.model.ClientColorPreferencesAction
 import de.cau.cs.kieler.klighd.lsp.model.PerformActionAction
 import de.cau.cs.kieler.klighd.lsp.model.RefreshDiagramAction
 import de.cau.cs.kieler.klighd.lsp.model.RefreshLayoutAction
@@ -48,6 +49,7 @@ class KGraphTypeAdapterUtil {
                 addActionKind(SetSynthesisAction.KIND, SetSynthesisAction)
                 addActionKind(RefreshDiagramAction.KIND, RefreshDiagramAction)
                 addActionKind(RefreshLayoutAction.KIND, RefreshLayoutAction)
+                addActionKind(ClientColorPreferencesAction.KIND, ClientColorPreferencesAction)
                 
                 // Load all registered action handlers and add their actions.
                 ServiceLoader.load(ISprottyActionHandler, KlighdDataManager.getClassLoader()).forEach[handler |
