@@ -352,11 +352,10 @@ public class KlighdCanvas extends Composite implements PComponent {
      * @param rectangle the new bounds
      */
     public void setBounds(final Rectangle rectangle) {
-        this.setBounds(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
-    }
-
-    @Override
-    public void setBounds(final int x, final int y, final int newWidth, final int newHeight) {
+        int x = rectangle.x;
+        int y = rectangle.y;
+        int newWidth = rectangle.width;
+        int newHeight = rectangle.height;
         // extracted the following check from the super implementation
         //  in order to allow to roll back most of the customizations in the Piccolo2D code some day
         if (newWidth == 0 || newHeight == 0) {
@@ -373,8 +372,14 @@ public class KlighdCanvas extends Composite implements PComponent {
                 resizeBackBuffer(newWidth, newHeight);
             }
 
-            super.setBounds(x, y, newWidth, newHeight);
+            super.setBounds(rectangle);
         }
+    }
+
+    @Override
+    public void setBounds(final int x, final int y, final int newWidth, final int newHeight) {
+        this.setBounds(new Rectangle(x, y, newWidth, newHeight));
+        
     }
 
     private void resizeBackBuffer(final int newWidth, final int newHeight) {
