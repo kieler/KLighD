@@ -3,7 +3,7 @@
  *
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright 2015 by
+ * Copyright 2015-2025 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -28,10 +28,10 @@ import de.cau.cs.kieler.klighd.ide.KlighdIdePlugin;
  * 
  * @author als
  */
-public class ErrorModel extends MessageModel {
+class ErrorModel extends MessageModel {
 
     /** The error stack trace. */
-    private final String stacktrace;
+    final String stacktrace;
 
     /**
      * Constructs an error model given message.
@@ -39,7 +39,7 @@ public class ErrorModel extends MessageModel {
      * @param message
      *            error message
      */
-    public ErrorModel(final String message) {
+    new(String message) {
         this(message, "Unkown", null);
     }
 
@@ -53,16 +53,16 @@ public class ErrorModel extends MessageModel {
      * @param stacktrace
      *            the stacktrace
      */
-    public ErrorModel(final String message, final String reason, final String stacktrace) {
+    new(String message, String reason, String stacktrace) {
         // CHECKSTYLEOFF MagicNumber NEXT
         super(message, reason, KlighdIdePlugin.PLUGIN_ID, "icons/full/model/error_sign.png", 250);
         // reason
-        String reasonToSet = "Unkown";
-        if (reason == null) {
+        var String reasonToSet = "Unkown";
+        if (reason === null) {
             // Parse reason from stacktrace
-            if (stacktrace != null && !stacktrace.isEmpty()) {
-                int newline = stacktrace.indexOf('\n');
-                int startReason = stacktrace.indexOf(':');
+            if (stacktrace !== null && !stacktrace.isEmpty()) {
+                val int newline = stacktrace.indexOf('\n');
+                val int startReason = stacktrace.indexOf(':');
                 if (newline != -1) {
                     if (startReason != -1 && startReason + 2 < newline) {
                         reasonToSet = stacktrace.substring(startReason + 2, newline);
@@ -76,13 +76,13 @@ public class ErrorModel extends MessageModel {
         }
         this.message = reasonToSet;
         // stacktrace
-        String stacktraceToSet = stacktrace;
+        var String stacktraceToSet = stacktrace;
         // Fix newlines
         // TODO still not working under windows, maybe the error dialog is evil
         if (!Platform.getOS().equals(Platform.OS_WIN32)) {
             // Fix newlines
-            String newline = System.getProperty("line.separator");
-            if (newline != null) {
+            val String newline = System.getProperty("line.separator");
+            if (newline !== null) {
                 stacktraceToSet = stacktrace.replaceAll("\n", newline);
             }
         }
@@ -97,7 +97,7 @@ public class ErrorModel extends MessageModel {
      * @param exception
      *            the exception
      */
-    public ErrorModel(final String message, final Exception exception) {
+    new(String message, Exception exception) {
         this(message, exception.getMessage(), getStackTraceString(exception));
     }
 
@@ -111,8 +111,8 @@ public class ErrorModel extends MessageModel {
      *            Exception
      * @return StackTrace as String
      */
-    private static String getStackTraceString(final Exception exception) {
-        StringWriter traceReader = new StringWriter();
+    def private static String getStackTraceString(Exception exception) {
+        val StringWriter traceReader = new StringWriter();
         exception.printStackTrace(new PrintWriter(traceReader));
         return traceReader.toString();
     }
@@ -123,7 +123,7 @@ public class ErrorModel extends MessageModel {
     /**
      * @return the exception
      */
-    public String getStackTrace() {
+    def String getStackTrace() {
         return stacktrace;
     }
     
@@ -134,20 +134,19 @@ public class ErrorModel extends MessageModel {
     /**
      * {@inheritDoc}
      */
-    @Override
-    public String toString() {
-        StringBuilder text = new StringBuilder();
-        String newline = System.getProperty("line.separator");
+    override String toString() {
+        val StringBuilder text = new StringBuilder();
+        val String newline = System.getProperty("line.separator");
         
-        if (title != null) {
+        if (title !== null) {
             text.append(title);
             text.append(newline);
         }
-        if (message != null) {
+        if (message !== null) {
             text.append(message);
             text.append(newline);
         }
-        if (stacktrace != null) {
+        if (stacktrace !== null) {
             text.append(stacktrace);
         }
         
