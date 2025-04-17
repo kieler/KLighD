@@ -3,7 +3,7 @@
  *
  * http://www.informatik.uni-kiel.de/rtsys/kieler/
  * 
- * Copyright 2012 by
+ * Copyright 2012-2025 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -14,18 +14,18 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  */
-package de.cau.cs.kieler.klighd.krendering.extensions;
+package de.cau.cs.kieler.klighd.krendering.extensions
 
 /**
  * A convenient helper while creating KPositions. We'll see in future whether it is helpful.
  *    
  * @author chsch
  */
-public enum PositionReferenceX {
+enum PositionReferenceY {
 
-    /** Indicator of relative positioning based on left border of parent. */
-    LEFT,
-    /** Indicator of relative positioning based on right border of parent. */
-    RIGHT
+    /** Indicator of relative positioning based on top border of parent. */
+    TOP,
+    /** Indicator of relative positioning based on bottom border of parent. */
+    BOTTOM
     
 }
