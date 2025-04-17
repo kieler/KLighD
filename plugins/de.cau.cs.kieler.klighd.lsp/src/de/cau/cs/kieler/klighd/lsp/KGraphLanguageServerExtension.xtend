@@ -3,7 +3,7 @@
  *
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright 2018, 2020 by
+ * Copyright 2018-2025 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -18,6 +18,7 @@ package de.cau.cs.kieler.klighd.lsp
 
 import com.google.common.base.Throwables
 import com.google.gson.JsonObject
+import com.google.gson.internal.LazilyParsedNumber
 import com.google.inject.Inject
 import com.google.inject.Provider
 import com.google.inject.Singleton
@@ -386,7 +387,9 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
                 && initialValue.equals(initialValue.intValue())) {
                 // The option contains an Integer
                 if (value instanceof Double) {
-                    viewContext.configureOption(option, Math.round(value))
+                    viewContext.configureOption(option, Math.round(value).intValue)
+                } else if (value instanceof LazilyParsedNumber) {
+                    viewContext.configureOption(option, value.intValue)
                 } else {
                     viewContext.configureOption(option, Integer.parseInt(value as String))
                 }
@@ -394,7 +397,9 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
             } else {
                 // The option contains a Float
                 if (value instanceof Double) {
-                    viewContext.configureOption(option, value)
+                    viewContext.configureOption(option, value.floatValue)
+                } else if (value instanceof LazilyParsedNumber) {
+                    viewContext.configureOption(option, value.floatValue)
                 } else {
                     viewContext.configureOption(option, Float.parseFloat(value as String))
                 }
