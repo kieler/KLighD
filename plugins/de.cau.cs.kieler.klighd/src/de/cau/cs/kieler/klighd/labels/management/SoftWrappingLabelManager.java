@@ -16,6 +16,7 @@
  */
 package de.cau.cs.kieler.klighd.labels.management;
 
+import org.eclipse.elk.core.options.CoreOptions;
 import org.eclipse.elk.graph.ElkLabel;
 import org.eclipse.swt.graphics.FontData;
 
@@ -36,6 +37,15 @@ import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
  */
 public class SoftWrappingLabelManager extends AbstractKlighdLabelManager {
 
+    /**
+     * Returns the amount of line overhang that is permitted in percent of the effectiveTargetWidth.
+     * @param label The ElkLabel for which the fuzziness is requested.
+     * @return The fuzziness
+     */
+    public double getFuzziness(final ElkLabel label) {
+        return label.getProperty(CoreOptions.SOFTWRAPPING_FUZZINESS);
+    }
+    
     @Override
     public Result doResizeLabel(final ElkLabel label, final double targetWidth) {
         final FontData font = LabelManagementUtil.fontDataFor(label);
@@ -47,6 +57,7 @@ public class SoftWrappingLabelManager extends AbstractKlighdLabelManager {
             String[] words = textWithoutLineBreaks.split(" ");
             StringBuilder resultText = new StringBuilder(label.getText().length());
             String currentLineText;
+            String prefixLine = "";
             double effectiveTargetWidth =
                     Math.max(LabelManagementUtil.getWidthOfBiggestWord(font, words), targetWidth);
 
@@ -68,7 +79,51 @@ public class SoftWrappingLabelManager extends AbstractKlighdLabelManager {
                     }
                     lineWidth = PlacementUtil.estimateTextSize(font, testText).getWidth();
                 } while (lineWidth < effectiveTargetWidth && currWordIndex < words.length);
+                
+                // if current line is smaller than the threshold, then pull the next line up, this should only happen
+                // in the first line or after special line breaks such as semantic line breaks
+                if (prefixLine != "") {
+                    currentLineText = prefixLine + " " + currentLineText;
+                }
+                
+                // if current line is too small, make it a prefix line
+                lineWidth = PlacementUtil.estimateTextSize(font, currentLineText).getWidth();
+                prefixLine = "";
+                if (lineWidth < effectiveTargetWidth * getFuzziness(label)) {
+                    prefixLine = currentLineText;
+                    currentLineText = "";
+                }
 
+                // Check whether next line would be below the fuzzy threshold
+                if (getFuzziness(label) > 0) {
+                    int previewWordIndex = currWordIndex;
+                    if (previewWordIndex < words.length) {
+                        String previewLineText = words[previewWordIndex];
+                        testText = previewLineText;
+                        do {
+                            previewLineText = testText;
+                            if (previewWordIndex < words.length - 1) {
+                                testText = previewLineText + " " + words[++previewWordIndex];
+                            } else {
+                                testText = " ";
+                                previewWordIndex++;
+                            }
+                            lineWidth = PlacementUtil.estimateTextSize(font, testText).getWidth();
+                        } while (lineWidth < effectiveTargetWidth && previewWordIndex < words.length);
+                        lineWidth = PlacementUtil.estimateTextSize(font, previewLineText).getWidth();
+                        if (lineWidth < effectiveTargetWidth * getFuzziness(label)) {
+                            // next line would contain too much whitespace so append it to this line
+                            currWordIndex = previewWordIndex;
+                            currentLineText += " " + previewLineText;
+                        }
+                    }
+                }
+                
+                // this means that we deferred the current line and must do another iteration
+                if (currentLineText == "") {
+                    continue;
+                }
+                
                 // No more words fit so the line is added to the result
                 if (currWordIndex < words.length) {
                     resultText.append(currentLineText).append("\n");
