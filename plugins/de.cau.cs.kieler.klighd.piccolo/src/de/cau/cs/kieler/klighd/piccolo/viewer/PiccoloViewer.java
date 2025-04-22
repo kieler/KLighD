@@ -16,6 +16,7 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.viewer;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.AffineTransform;
@@ -27,6 +28,8 @@ import javax.swing.Timer;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.preferences.IEclipsePreferences;
+import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.elk.core.math.KVector;
 import org.eclipse.elk.core.options.CoreOptions;
 import org.eclipse.swt.SWT;
@@ -46,6 +49,7 @@ import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
 import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
 import de.cau.cs.kieler.klighd.kgraph.KNode;
 import de.cau.cs.kieler.klighd.kgraph.util.KGraphUtil;
+import de.cau.cs.kieler.klighd.krendering.KRenderingUtil;
 import de.cau.cs.kieler.klighd.piccolo.KlighdPiccolo;
 import de.cau.cs.kieler.klighd.piccolo.internal.KlighdCanvas;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.DiagramController;
@@ -58,6 +62,8 @@ import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdSelectionEventHandl
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdSelectiveZoomEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.NodeUtil;
+import de.cau.cs.kieler.klighd.util.ColorPreferences;
+import de.cau.cs.kieler.klighd.util.ColorThemeKind;
 import de.cau.cs.kieler.klighd.util.KlighdProperties;
 import de.cau.cs.kieler.klighd.viewers.AbstractViewer;
 import de.cau.cs.kieler.klighd.viewers.ContextViewer;
@@ -140,8 +146,29 @@ public class PiccoloViewer extends AbstractViewer implements ILayoutRecorder,
             throw new IllegalArgumentException(msg);
         }
         this.parentViewer = theParentViewer;
-        this.canvas = new KlighdCanvas(parent, style,
-                theParentViewer.getViewContext().getProperty(KlighdProperties.CANVAS_COLOR));
+        
+        ViewContext viewContext = theParentViewer.getViewContext();
+        Color background = viewContext.getProperty(KlighdProperties.CANVAS_COLOR);
+        if (!viewContext.hasProperty(KlighdProperties.CANVAS_COLOR)) {
+            // Check and activate dark theme
+            IEclipsePreferences prefs = InstanceScope.INSTANCE.getNode("org.eclipse.e4.ui.css.swt.theme");
+            if (prefs != null) {
+                if ("org.eclipse.e4.ui.css.theme.e4_dark".equals(prefs.get("themeid", ""))) {
+                    // Simulate dark mode
+                    background = Color.decode("#2f2f2f");
+                    ColorPreferences colors = new ColorPreferences(
+                            ColorThemeKind.DARK,
+                            KRenderingUtil.getColor("#cccccc"),
+                            KRenderingUtil.getColor("#2f2f2f"),
+                            KRenderingUtil.getColor("#cccccc")
+                    );
+                    viewContext.setProperty(KlighdProperties.COLOR_PREFERENCES, colors);
+                } else {
+                    viewContext.setProperty(KlighdProperties.COLOR_PREFERENCES, KlighdProperties.COLOR_PREFERENCES.getDefault());
+                }
+            }
+        }
+        this.canvas = new KlighdCanvas(parent, style, background);
 
         final KlighdMainCamera camera = canvas.getCamera();
         this.magnificationLensVisibleSupplier = installEventHanders(camera);

@@ -33,6 +33,7 @@ import de.cau.cs.kieler.klighd.filtering.SemanticFilterTag;
 import de.cau.cs.kieler.klighd.kgraph.KGraphData;
 import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
 import de.cau.cs.kieler.klighd.kgraph.KNode;
+import de.cau.cs.kieler.klighd.krendering.KColor;
 import de.cau.cs.kieler.klighd.krendering.KText;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
 
@@ -380,6 +381,13 @@ public final class KlighdProperties {
      */
     public static final IProperty<Boolean> IS_NODE_TITLE =
             new Property<Boolean>("klighd.isNodeTitle", false);
+    
+    /**
+     * Property determining the custom color theme to be used by syntheses.
+     * Null means no preferences could be detected and the diagram background will most likely be white.
+     */
+    public static final IProperty<ColorPreferences> COLOR_PREFERENCES =
+            new Property<ColorPreferences>("klighd.colorPreferences", null);
     
     /**
      * Property determining whether this node should be rendered as a proxy.

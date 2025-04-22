@@ -31,6 +31,7 @@ import de.cau.cs.kieler.klighd.lsp.model.RequestDiagramPieceAction
 import de.cau.cs.kieler.klighd.lsp.model.SKGraph
 import de.cau.cs.kieler.klighd.lsp.utils.KGraphMappingUtil
 import de.cau.cs.kieler.klighd.lsp.utils.RenderingPreparer
+import de.cau.cs.kieler.klighd.util.KlighdProperties
 import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties
 import java.util.HashSet
 import java.util.List
@@ -269,6 +270,12 @@ class KGraphDiagramUpdater extends DiagramUpdater {
             }
         }
         
+        synchronized (diagramState) {
+            if (diagramState.colorPreferences !== null) {
+                viewContext.setProperty(KlighdProperties.COLOR_PREFERENCES, diagramState.colorPreferences)
+            }
+        }
+        
         val vc = viewContext
         // Update the model and with that call the diagram synthesis.
         AbstractLanguageServer.addToMainThreadQueue([
@@ -316,7 +323,7 @@ class KGraphDiagramUpdater extends DiagramUpdater {
             : diagramGeneratorProvider.get
         var SGraph sGraph = null;
         synchronized (diagramState) {
-            sGraph = diagramGenerator.toSGraph(viewContext.viewModel, uri, cancelIndicator)
+            sGraph = diagramGenerator.toSGraph(viewContext, uri, cancelIndicator)
             RenderingPreparer.prepareRenderingIDs(viewContext.viewModel, diagramGenerator.getKGraphToSModelElementMap)
         }
         if (incrementalDiagramGenerator) {

@@ -3,7 +3,7 @@
  *
  * http://www.informatik.uni-kiel.de/rtsys/kieler/
  * 
- * Copyright 2013 by
+ * Copyright 2013-2025 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -27,6 +27,7 @@ import de.cau.cs.kieler.klighd.ZoomStyle;
 import de.cau.cs.kieler.klighd.internal.ILayoutRecorder;
 import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
 import de.cau.cs.kieler.klighd.kgraph.PersistentEntry;
+import de.cau.cs.kieler.klighd.krendering.KColor;
 
 /**
  * A collection of internal KLighD-specific {@link IProperty IProperties}.
@@ -178,4 +179,11 @@ public final class KlighdInternalProperties {
             return pe.getKey().equals(KLIGHD_TESTING_WIDTH.getId());
         }
     };
+    
+    /**
+     * Property to be set on the root node of the Sprotty graph that defines a custom background color that the diagram
+     * canvas should use. Null means no custom background, a default white one will be used.
+     */
+    public static final IProperty<KColor> DIAGRAM_BACKGROUND =
+            new Property<KColor>("klighd.diagramBackground", null);
 }

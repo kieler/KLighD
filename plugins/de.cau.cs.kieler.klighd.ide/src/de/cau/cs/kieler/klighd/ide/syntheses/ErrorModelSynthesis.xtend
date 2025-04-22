@@ -43,7 +43,7 @@ class ErrorModelSynthesis extends AbstractDiagramSynthesis<ErrorModel> {
     extension KContainerRenderingExtensions
 
     @Inject
-    extension MessageModelSynthesis
+    MessageModelSynthesis delegate
 
     // -------------------------------------------------------------------------
     // Constants
@@ -53,7 +53,8 @@ class ErrorModelSynthesis extends AbstractDiagramSynthesis<ErrorModel> {
     // Synthesis
     override KNode transform(ErrorModel model) {
         // create basic representation with super synthesis
-        val rootNode = (model as MessageModel).transform;
+        delegate.use(usedContext);
+        val rootNode = delegate.transform(model as MessageModel);
         // Adjust diagram
         if (rootNode !== null && !rootNode.children.empty) {
             val messageNode = rootNode.children.head;
