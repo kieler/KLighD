@@ -51,7 +51,6 @@ public final class KlighdWizardSetup {
 
     /** required bundles for each klighd project. */
     public static final List<String> REQUIRED_BUNDLES = ImmutableList.of(
-            "javax.inject", 
             "com.google.guava", 
             "com.google.inject", 
             "org.eclipse.xtext.xbase.lib",

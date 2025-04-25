@@ -4,7 +4,7 @@ Bundle-Name: KIELER Lightweight Diagrams Standalone
 Bundle-SymbolicName: de.cau.cs.kieler.klighd.standalone
 Bundle-Version: 3.0.3.qualifier
 Bundle-Vendor: KIELER Lightweight Diagrams (KLighD)
-Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-RequiredExecutionEnvironment: JavaSE-21
 Require-Bundle: de.cau.cs.kieler.klighd.setup,
  de.cau.cs.kieler.klighd.piccolo
 Automatic-Module-Name: de.cau.cs.kieler.klighd.standalone

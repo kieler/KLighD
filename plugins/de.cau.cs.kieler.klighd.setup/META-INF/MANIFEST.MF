@@ -4,7 +4,7 @@ Bundle-Name: KIELER Lightweight Diagrams Setup
 Bundle-SymbolicName: de.cau.cs.kieler.klighd.setup
 Bundle-Version: 3.0.3.qualifier
 Bundle-Vendor: KIELER Lightweight Diagrams (KLighD)
-Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-RequiredExecutionEnvironment: JavaSE-21
 Require-Bundle: org.eclipse.emf.ecore.xmi,
  org.eclipse.elk.core,
  de.cau.cs.kieler.klighd,

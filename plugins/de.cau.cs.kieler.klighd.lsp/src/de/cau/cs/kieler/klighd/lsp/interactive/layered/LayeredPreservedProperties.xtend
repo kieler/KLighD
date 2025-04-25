@@ -14,30 +14,29 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  */
-package de.cau.cs.kieler.klighd.lsp.interactive.rectpacking;
+package de.cau.cs.kieler.klighd.lsp.interactive.layered;
 
 import java.util.Arrays;
 import java.util.List;
 
-import org.eclipse.elk.alg.rectpacking.options.RectPackingOptions;
+import org.eclipse.elk.alg.layered.options.LayeredOptions;
 import org.eclipse.elk.graph.properties.IProperty;
 
 import de.cau.cs.kieler.klighd.IPreservedProperties;
 
 /**
- * The position of a node shall be preserved from the layout run.
+ * The position and layer of a node shall be preserved from the layout run.
  * This enables us to use this position and layer for interactive layout handles.
  * 
  * @author sdo
  */
-public class RectpackingPreservedProperties implements IPreservedProperties {
+class LayeredPreservedProperties implements IPreservedProperties {
 
     /**
      * {@inheritDoc}
      */
-    @Override
-    public List<IProperty<?>> getProperties() {
-        return Arrays.asList(RectPackingOptions.CURRENT_POSITION);
+    override List<IProperty<?>> getProperties() {
+        return Arrays.asList(LayeredOptions.LAYERING_LAYER_ID, LayeredOptions.CROSSING_MINIMIZATION_POSITION_ID);
     }
 
 }

@@ -4,7 +4,7 @@ Bundle-Name: KLighD Model Modification Extensions for EMF Domains
 Bundle-SymbolicName: de.cau.cs.kieler.klighd.ui.emf;singleton:=true
 Bundle-Version: 3.0.3.qualifier
 Fragment-Host: de.cau.cs.kieler.klighd.ui
-Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-RequiredExecutionEnvironment: JavaSE-21
 Require-Bundle: org.eclipse.emf.transaction,
  org.eclipse.emf.workspace
 Bundle-Vendor: Kiel University

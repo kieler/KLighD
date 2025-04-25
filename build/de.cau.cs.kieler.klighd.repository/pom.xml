@@ -41,7 +41,7 @@
       <plugin>
         <groupId>org.jboss.tools.tycho-plugins</groupId>
         <artifactId>repository-utils</artifactId>
-        <version>2.7.5</version>
+        <version>4.0.7</version>
         <executions>
           <execution>
             <id>generate-facade</id>

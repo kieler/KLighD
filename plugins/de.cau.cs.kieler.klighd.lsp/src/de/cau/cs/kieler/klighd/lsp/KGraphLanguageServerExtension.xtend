@@ -127,6 +127,12 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
         return super.initialize(params)
     }
     
+    // Fixes a NPE during initialization caused by an Xtext issue when initializing with no baseURI and no workspaceFolders.
+    // Should be removed again once https://github.com/eclipse-xtext/xtext/issues/3391 is resolved in a future Xtext release.
+    override clientSupportsWorkspaceFolders() {
+        return true
+    }
+    
     override didClose(String clientId) {
         // Clear the diagramState of this client id additional to the default use of this method.
         synchronized (diagramState) {
