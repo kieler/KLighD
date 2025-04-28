@@ -10,7 +10,7 @@
   <parent>
     <groupId>de.cau.cs.kieler.klighd</groupId>
     <artifactId>parent</artifactId>
-    <version>3.0.3-SNAPSHOT</version>
+    <version>3.1.0.v20250428</version>
     <relativePath>../../pom.xml</relativePath>
   </parent>
 
@@ -52,22 +52,21 @@
             <configuration>
               <associateSites>
                 <!-- Eclipse -->
-                <associateSite>https://download.eclipse.org/releases/2023-12/</associateSite>
+                <associateSite>https://download.eclipse.org/releases/2024-12/</associateSite>
                 <!-- UML2 Tools (Meta Model Implemenetation, ...) -->
                 <associateSite>https://download.eclipse.org/modeling/mdt/uml2/updates/5.4/</associateSite>
                 <!-- Eclipse Layout Kernel -->
                 <!-- associateSite>http://build.eclipse.org/modeling/elk/updates/nightly/</associateSite -->
-                <associateSite>https://download.eclipse.org/elk/updates/releases/0.9.1/</associateSite>>
+                <associateSite>https://download.eclipse.org/elk/updates/releases/0.10.0/</associateSite>>
                 <!-- Xtext -->
-                <associateSite>https://download.eclipse.org/modeling/tmf/xtext/updates/releases/2.33.0/</associateSite>>
                 <associateSite>https://xtext.github.io/download/updates/releases/2.1.1/</associateSite>>
                 <!-- Eclipse Orbit for Google Guave, Apache Batik, ... -->
-                <associateSite>https://download.eclipse.org/tools/orbit/simrel/orbit-aggregation/release/4.30.0</associateSite>
+                <associateSite>https://download.eclipse.org/tools/orbit/simrel/orbit-aggregation/release/4.34.0</associateSite>
               </associateSites>
               <siteTemplateFolder>siteTemplate</siteTemplateFolder>
               <symbols>
                 <update.site.name>KIELER Lightweight Diagrams</update.site.name>
-                <update.site.description>Nightly</update.site.description>
+                <update.site.description>v3.1.0</update.site.description>
                 <update.site.version>${unqualifiedVersion}.${buildQualifier}</update.site.version>
               </symbols>
             </configuration>
