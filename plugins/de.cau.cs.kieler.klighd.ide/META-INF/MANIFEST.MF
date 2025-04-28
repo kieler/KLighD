@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: KIELER Lightweight Diagrams Ide Components
 Bundle-SymbolicName: de.cau.cs.kieler.klighd.ide;singleton:=true
-Bundle-Version: 3.0.3.qualifier
+Bundle-Version: 3.1.1.qualifier
 Automatic-Module-Name: de.cau.cs.kieler.klighd.ide
 Require-Bundle: com.google.inject, 
  de.cau.cs.kieler.klighd;visibility:=reexport,

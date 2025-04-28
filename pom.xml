@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>de.cau.cs.kieler.klighd</groupId>
   <artifactId>parent</artifactId>
-  <version>3.0.3-SNAPSHOT</version>
+  <version>3.1.1-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <modules>
@@ -293,7 +293,7 @@
             <artifact>
               <groupId>de.cau.cs.kieler.klighd</groupId>
               <artifactId>de.cau.cs.kieler.klighd.targetplatform</artifactId>
-              <version>3.0.3-SNAPSHOT</version>
+              <version>3.1.1-SNAPSHOT</version>
             </artifact>
           </target>
 
