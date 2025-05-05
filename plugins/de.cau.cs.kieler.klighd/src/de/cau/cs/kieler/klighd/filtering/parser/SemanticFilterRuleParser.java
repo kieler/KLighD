@@ -208,6 +208,7 @@ public class SemanticFilterRuleParser {
                 break;
             case "false":
                 result = new FalseConnective();
+                break;
             default:
                 // variable or number
                 if (ast.token.charAt(0) == '$' || ast.token.charAt(0) == '#') {
