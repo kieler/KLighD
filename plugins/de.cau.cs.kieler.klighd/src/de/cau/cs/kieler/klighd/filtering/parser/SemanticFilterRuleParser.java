@@ -153,7 +153,7 @@ public class SemanticFilterRuleParser {
                 break;
             // NUMERIC-TO-BOOLEAN
             case "=":
-                if (ast.type == 0) {
+                if (((OperatorNode)ast).getChildren().get(0).type == 0) {
                     result = new LogicEqualConnective(
                             convertAST(((OperatorNode)ast).getChildren().get(0)),
                             convertAST(((OperatorNode)ast).getChildren().get(1)));
@@ -208,6 +208,7 @@ public class SemanticFilterRuleParser {
                 break;
             case "false":
                 result = new FalseConnective();
+                break;
             default:
                 // variable or number
                 if (ast.token.charAt(0) == '$' || ast.token.charAt(0) == '#') {
@@ -319,7 +320,19 @@ public class SemanticFilterRuleParser {
             if (operand1.type != operand2.type) {
                 throw new InvalidSyntaxException("Mixed use of boolean and numeric types in operator " + operator.token + ".");
             }
-            operator.type = operand1.type;
+            switch (operator.token) {
+                case ">=":
+                case ">":
+                case "<=":
+                case "<":
+                case "=":
+                case "!=":
+                    operator.type = 0;
+                    break;
+                default:
+                    operator.type = operand1.type;
+                    break;
+            }
             outputStack.push(operator);
         }
     }
