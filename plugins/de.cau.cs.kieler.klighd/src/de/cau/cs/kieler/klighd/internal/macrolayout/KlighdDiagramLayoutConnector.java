@@ -3,7 +3,7 @@
  *
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright ${year} by
+ * Copyright 2013-2024 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -764,7 +764,7 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
             // special property
             LabelManagementResult managementResult =
                     layoutLabel.getProperty(KlighdOptions.LABELS_MANAGEMENT_RESULT);
-            if (managementResult != LabelManagementResult.UNMANAGED) {
+            if (managementResult == LabelManagementResult.MANAGED_MODIFIED) {
                 // TODO: This may in the future set the KText's text instead.
                 // However, doing so now doesn't do anything yet...
                 label.setProperty(KlighdOptions.LABELS_TEXT_OVERRIDE,

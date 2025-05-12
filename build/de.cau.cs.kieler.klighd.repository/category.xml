@@ -11,10 +11,10 @@
       </description>
    </category-def>
 
-   <feature url="features/de.cau.cs.kieler.klighd.feature_3.0.3.qualifier.jar" id="de.cau.cs.kieler.klighd.feature" version="3.0.3.qualifier">
+   <feature url="features/de.cau.cs.kieler.klighd.feature_3.1.1.qualifier.jar" id="de.cau.cs.kieler.klighd.feature" version="3.1.1.qualifier">
       <category name="kieler-klighd"/>
    </feature>
-   <feature url="features/de.cau.cs.kieler.klighd.feature.source_3.0.3.qualifier.jar" id="de.cau.cs.kieler.klighd.feature.source" version="3.0.3.qualifier">
+   <feature url="features/de.cau.cs.kieler.klighd.feature.source_3.1.1.qualifier.jar" id="de.cau.cs.kieler.klighd.feature.source" version="3.1.1.qualifier">
       <category name="kieler-klighd"/>
    </feature>
 
@@ -25,47 +25,46 @@
       <category name="kieler-klighd"/>
    </feature> -->
 
-   <feature url="features/de.cau.cs.kieler.klighd.freehep.feature_3.0.3.qualifier.jar" id="de.cau.cs.kieler.klighd.freehep.feature" version="3.0.3.qualifier">
+   <feature url="features/de.cau.cs.kieler.klighd.freehep.feature_3.1.1.qualifier.jar" id="de.cau.cs.kieler.klighd.freehep.feature" version="3.1.1.qualifier">
       <category name="kieler-klighd"/>
    </feature>
-   <feature url="features/de.cau.cs.kieler.klighd.freehep.feature.source_3.0.3.qualifier.jar" id="de.cau.cs.kieler.klighd.freehep.feature.source" version="3.0.3.qualifier">
-      <category name="kieler-klighd"/>
-   </feature>
-
-   <feature url="features/de.cau.cs.kieler.klighd.draw2d.feature_3.0.3.qualifier.jar" id="de.cau.cs.kieler.klighd.draw2d.feature" version="3.0.3.qualifier">
-      <category name="kieler-klighd"/>
-   </feature>
-   <feature url="features/de.cau.cs.kieler.klighd.draw2d.feature.source_3.0.3.qualifier.jar" id="de.cau.cs.kieler.klighd.draw2d.feature.source" version="3.0.3.qualifier">
-      <category name="kieler-klighd"/>
-   </feature>
-   <feature url="features/de.cau.cs.kieler.klighd.ide.feature_3.0.3.qualifier.jar" id="de.cau.cs.kieler.klighd.ide.feature" version="3.0.3.qualifier">
-      <category name="kieler-klighd"/>
-   </feature>
-   <feature url="features/de.cau.cs.kieler.klighd.ide.feature.source_3.0.3.qualifier.jar" id="de.cau.cs.kieler.klighd.ide.feature.source" version="3.0.3.qualifier">
+   <feature url="features/de.cau.cs.kieler.klighd.freehep.feature.source_3.1.1.qualifier.jar" id="de.cau.cs.kieler.klighd.freehep.feature.source" version="3.1.1.qualifier">
       <category name="kieler-klighd"/>
    </feature>
 
-   <feature url="features/de.cau.cs.kieler.klighd.view.feature_3.0.3.qualifier.jar" id="de.cau.cs.kieler.klighd.view.feature" version="3.0.3.qualifier">
+   <feature url="features/de.cau.cs.kieler.klighd.draw2d.feature_3.1.1.qualifier.jar" id="de.cau.cs.kieler.klighd.draw2d.feature" version="3.1.1.qualifier">
       <category name="kieler-klighd"/>
    </feature>
-   <feature url="features/de.cau.cs.kieler.klighd.view.feature.source_3.0.3.qualifier.jar" id="de.cau.cs.kieler.klighd.view.feature.source" version="3.0.3.qualifier">
+   <feature url="features/de.cau.cs.kieler.klighd.draw2d.feature.source_3.1.1.qualifier.jar" id="de.cau.cs.kieler.klighd.draw2d.feature.source" version="3.1.1.qualifier">
+      <category name="kieler-klighd"/>
+   </feature>
+   <feature url="features/de.cau.cs.kieler.klighd.ide.feature_3.1.1.qualifier.jar" id="de.cau.cs.kieler.klighd.ide.feature" version="3.1.1.qualifier">
+      <category name="kieler-klighd"/>
+   </feature>
+   <feature url="features/de.cau.cs.kieler.klighd.ide.feature.source_3.1.1.qualifier.jar" id="de.cau.cs.kieler.klighd.ide.feature.source" version="3.1.1.qualifier">
       <category name="kieler-klighd"/>
    </feature>
 
-   <feature url="features/de.cau.cs.kieler.klighd.sdk.feature_3.0.3.qualifier.jar" id="de.cau.cs.kieler.klighd.sdk.feature" version="3.0.3.qualifier">
+   <feature url="features/de.cau.cs.kieler.klighd.view.feature_3.1.1.qualifier.jar" id="de.cau.cs.kieler.klighd.view.feature" version="3.1.1.qualifier">
       <category name="kieler-klighd"/>
    </feature>
-   <feature url="features/de.cau.cs.kieler.klighd.sdk.feature.source_3.0.3.qualifier.jar" id="de.cau.cs.kieler.klighd.sdk.feature.source" version="3.0.3.qualifier">
+   <feature url="features/de.cau.cs.kieler.klighd.view.feature.source_3.1.1.qualifier.jar" id="de.cau.cs.kieler.klighd.view.feature.source" version="3.1.1.qualifier">
       <category name="kieler-klighd"/>
    </feature>
 
-   <bundle id="de.cau.cs.kieler.klighd.standalone" version="3.0.3.qualifier"/>
-   <bundle id="de.cau.cs.kieler.klighd.setup" version="3.0.3.qualifier"/>
+   <feature url="features/de.cau.cs.kieler.klighd.sdk.feature_3.1.1.qualifier.jar" id="de.cau.cs.kieler.klighd.sdk.feature" version="3.1.1.qualifier">
+      <category name="kieler-klighd"/>
+   </feature>
+   <feature url="features/de.cau.cs.kieler.klighd.sdk.feature.source_3.1.1.qualifier.jar" id="de.cau.cs.kieler.klighd.sdk.feature.source" version="3.1.1.qualifier">
+      <category name="kieler-klighd"/>
+   </feature>
 
-   <repository-reference location="https://download.eclipse.org/releases/2023-12/" enabled="true" />
+   <bundle id="de.cau.cs.kieler.klighd.standalone" version="3.1.1.qualifier"/>
+   <bundle id="de.cau.cs.kieler.klighd.setup" version="3.1.1.qualifier"/>
+
+   <repository-reference location="https://download.eclipse.org/releases/2024-12/" enabled="true" />
    <repository-reference location="https://download.eclipse.org/modeling/mdt/uml2/updates/5.4/" enabled="true" />
-   <repository-reference location="https://download.eclipse.org/elk/updates/releases/0.9.1/" enabled="true" />
-   <repository-reference location="https://download.eclipse.org/modeling/tmf/xtext/updates/releases/2.33.0/" enabled="true" />
+   <repository-reference location="https://download.eclipse.org/elk/updates/releases/0.10.0/" enabled="true" />
    <repository-reference location="https://xtext.github.io/download/updates/releases/2.1.1/" enabled="true" />
-   <repository-reference location="https://download.eclipse.org/tools/orbit/simrel/orbit-aggregation/release/4.30.0" enabled="true" />
+   <repository-reference location="https://download.eclipse.org/tools/orbit/simrel/orbit-aggregation/release/4.34.0" enabled="true" />
 </site>

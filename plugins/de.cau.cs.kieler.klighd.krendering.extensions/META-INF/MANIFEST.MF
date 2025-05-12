@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: KIELER Lightweight Diagrams Xtend-based Extension Library
 Bundle-SymbolicName: de.cau.cs.kieler.klighd.krendering.extensions
-Bundle-Version: 3.0.3.qualifier
+Bundle-Version: 3.1.1.qualifier
 Bundle-Activator: de.cau.cs.kieler.klighd.krendering.extensions.KRenderingExtensionsPlugin
 Bundle-Vendor: Kiel University
 Require-Bundle: org.eclipse.core.runtime,
@@ -11,7 +11,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.elk.core;bundle-version="0.1.0",
  de.cau.cs.kieler.klighd.krendering,
  de.cau.cs.kieler.klighd.kgraph
-Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-RequiredExecutionEnvironment: JavaSE-21
 Bundle-ActivationPolicy: lazy
 Export-Package: de.cau.cs.kieler.klighd.krendering.extensions
 Automatic-Module-Name: de.cau.cs.kieler.klighd.krendering.extensions

@@ -3,10 +3,10 @@ Bundle-ManifestVersion: 2
 Bundle-Name: KIELER Transient Diagram Format Definition
 Bundle-SymbolicName: de.cau.cs.kieler.klighd.krendering;singleton:=true
 Automatic-Module-Name: de.cau.cs.kieler.klighd.krendering
-Bundle-Version: 3.0.3.qualifier
+Bundle-Version: 3.1.1.qualifier
 Bundle-ClassPath: .
 Bundle-Vendor: Kiel University
-Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-RequiredExecutionEnvironment: JavaSE-21
 Export-Package: de.cau.cs.kieler.klighd.krendering,
  de.cau.cs.kieler.klighd.krendering.impl,
  de.cau.cs.kieler.klighd.krendering.util

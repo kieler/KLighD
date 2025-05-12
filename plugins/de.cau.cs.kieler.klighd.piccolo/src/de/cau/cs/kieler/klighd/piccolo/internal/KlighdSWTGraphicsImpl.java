@@ -437,7 +437,7 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
     protected static final HashMap<FontData, Font> FONT_CACHE = new HashMap<FontData, Font>();
 
     private boolean cacheFonts = true;
-    private List<org.eclipse.swt.graphics.Font> temporaryFonts = null;
+    private final List<Font> temporaryFonts = new ArrayList<>();
 
 
     /**
@@ -486,9 +486,6 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
             curFont = font;
 
         } else {
-            if (temporaryFonts == null) {
-                temporaryFonts = new ArrayList<>();
-            }
             curFont = new org.eclipse.swt.graphics.Font(
                         fontCreationDevice != null ? fontCreationDevice : device, fontData);
             temporaryFonts.add(curFont);

@@ -3,7 +3,7 @@
  *
  * http://www.informatik.uni-kiel.de/rtsys/kieler/
  * 
- * Copyright 2013 by
+ * Copyright 2013-2025 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -51,74 +51,9 @@ import com.google.inject.Provider;
  * @author uru
  */
 public class KlighdProjectCreator extends WorkspaceModifyOperation implements IProjectCreator {
-
-    /**
-     * Specialization in order to be able to configure the JRE container.
-     * Implementation is quite ugly and shall be replaced once
-     * <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=467391">
-     * https://bugs.eclipse.org/bugs/show_bug.cgi?id=467391</a> is resolved.
-     *  
-     * @author chsch
-     */
-    public static class KlighdProjectFactory extends PluginProjectFactory {
-        
-        private static final String J2SE_15 = "J2SE-1.5";
-        private static final String JAVA_SE_1 = "JavaSE-1.";
-
-        private String jreContainer = J2SE_15;
-        
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public void setBreeToUse(final String breeToUse) {
-            super.setBreeToUse(breeToUse);
-            this.jreContainer = breeToUse;
-        }
-
-        private static final Predicate<IClasspathEntry> CLASSPATH_FILTER = 
-                new Predicate<IClasspathEntry>() {
-
-            @SuppressWarnings("restriction")
-            public boolean apply(final IClasspathEntry input) {
-                
-                // I explicitly need to check for 'ClasspathEntry' as the path can't
-                //  be modified via just 'IClasspathEntry', see below
-                if (input instanceof org.eclipse.jdt.internal.core.ClasspathEntry) {
-                    final IPath path = input.getPath();
-                    return path != null && JavaRuntime.JRE_CONTAINER.equals(path.segment(0));
-                    
-                } else {
-                    return false;
-                }
-            }
-        };
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        @SuppressWarnings("restriction")
-        protected void addMoreClasspathEntriesTo(final List<IClasspathEntry> classpathEntries) {
-
-            final org.eclipse.jdt.internal.core.ClasspathEntry jre =
-                    (org.eclipse.jdt.internal.core.ClasspathEntry) 
-                            Iterables.find(classpathEntries, CLASSPATH_FILTER, null);
-
-            if (jre != null) {
-                final String lastSegment = jre.path.lastSegment();
-    
-                if (lastSegment.equals(J2SE_15) || lastSegment.startsWith(JAVA_SE_1)) {
-                    jre.path = jre.path.uptoSegment(2).append(jreContainer);
-                }
-            }
-
-            super.addMoreClasspathEntriesTo(classpathEntries);
-        }
-    }
     
     @Inject
-    private Provider<KlighdProjectFactory> projectFactoryProvider;
+    private Provider<PluginProjectFactory> projectFactoryProvider;
 
     private IFile result;
     private IProjectInfo projectInfo;
@@ -159,7 +94,7 @@ public class KlighdProjectCreator extends WorkspaceModifyOperation implements IP
     /**
      * @return plugin project factory
      */
-    protected KlighdProjectFactory createProjectFactory() {
+    protected PluginProjectFactory createProjectFactory() {
         // need to instantiate via injection since
         //  the base class 'ProjectFactory' has fields requiring injection
         return projectFactoryProvider.get();
@@ -219,7 +154,7 @@ public class KlighdProjectCreator extends WorkspaceModifyOperation implements IP
     protected String[] getProjectNatures() {
         return new String[] {
                 JavaCore.NATURE_ID,
-                org.eclipse.pde.internal.core.natures.PDE.PLUGIN_NATURE,
+                org.eclipse.pde.internal.core.natures.PluginProject.NATURE,
                 XtextProjectHelper.NATURE_ID
             };
     }
@@ -231,8 +166,8 @@ public class KlighdProjectCreator extends WorkspaceModifyOperation implements IP
     protected String[] getBuilders() {
         return new String[] {
                 JavaCore.BUILDER_ID,
-                org.eclipse.pde.internal.core.natures.PDE.MANIFEST_BUILDER_ID,
-                org.eclipse.pde.internal.core.natures.PDE.SCHEMA_BUILDER_ID,
+                org.eclipse.pde.internal.core.natures.PluginProject.MANIFEST_BUILDER_ID,
+                org.eclipse.pde.internal.core.natures.PluginProject.SCHEMA_BUILDER_ID,
                 XtextProjectHelper.BUILDER_ID
             };
     }

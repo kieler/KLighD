@@ -3,7 +3,7 @@
  *
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright 2018, 2020 by
+ * Copyright 2018-2025 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -18,6 +18,7 @@ package de.cau.cs.kieler.klighd.lsp
 
 import com.google.common.base.Throwables
 import com.google.gson.JsonObject
+import com.google.gson.internal.LazilyParsedNumber
 import com.google.inject.Inject
 import com.google.inject.Provider
 import com.google.inject.Singleton
@@ -110,6 +111,8 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
      */
     public static String CLIENT_DIAGRAM_OPTIONS_PROPERTY = "clientDiagramOptions"
     
+    public static String CLIENT_COLOR_PREFERNENCES = "clientColorPreferences"
+    
     override initialize(InitializeParams params) {
         // Close all diagram servers still open from a previous session.
         val oldClientIds = diagramServerManager.diagramServers.map[ clientId ].toList // toList to avoid lazy evaluation
@@ -118,9 +121,16 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
         if (initializationOptions instanceof JsonObject) {
             synchronized (diagramState) {
                 diagramState.clientOptions = initializationOptions.get(CLIENT_DIAGRAM_OPTIONS_PROPERTY)
+                diagramState.colorPreferences = LSPUtil.parseColorPreferences(initializationOptions.get(CLIENT_COLOR_PREFERNENCES))
             }
         }
         return super.initialize(params)
+    }
+    
+    // Fixes a NPE during initialization caused by an Xtext issue when initializing with no baseURI and no workspaceFolders.
+    // Should be removed again once https://github.com/eclipse-xtext/xtext/issues/3391 is resolved in a future Xtext release.
+    override clientSupportsWorkspaceFolders() {
+        return true
     }
     
     override didClose(String clientId) {
@@ -383,7 +393,9 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
                 && initialValue.equals(initialValue.intValue())) {
                 // The option contains an Integer
                 if (value instanceof Double) {
-                    viewContext.configureOption(option, Math.round(value))
+                    viewContext.configureOption(option, Math.round(value).intValue)
+                } else if (value instanceof LazilyParsedNumber) {
+                    viewContext.configureOption(option, value.intValue)
                 } else {
                     viewContext.configureOption(option, Integer.parseInt(value as String))
                 }
@@ -391,7 +403,9 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
             } else {
                 // The option contains a Float
                 if (value instanceof Double) {
-                    viewContext.configureOption(option, value)
+                    viewContext.configureOption(option, value.floatValue)
+                } else if (value instanceof LazilyParsedNumber) {
+                    viewContext.configureOption(option, value.floatValue)
                 } else {
                     viewContext.configureOption(option, Float.parseFloat(value as String))
                 }

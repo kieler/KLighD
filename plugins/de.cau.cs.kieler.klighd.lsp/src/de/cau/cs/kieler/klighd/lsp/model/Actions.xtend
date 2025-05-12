@@ -3,7 +3,7 @@
  *
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright 2018-2022 by
+ * Copyright 2018-2024 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -17,7 +17,9 @@
 package de.cau.cs.kieler.klighd.lsp.model
 
 import de.cau.cs.kieler.klighd.krendering.KImage
+import de.cau.cs.kieler.klighd.util.ColorThemeKind
 import java.util.List
+import java.util.Map
 import java.util.Set
 import java.util.function.Consumer
 import org.eclipse.sprotty.Action
@@ -159,6 +161,37 @@ class CheckedImagesAction implements ResponseAction {
 }
 
 /**
+ * Sent from the client to the server to notify it about new color preferences.
+ * 
+ * @author nre
+ */
+@Accessors
+@EqualsHashCode
+@ToString(skipNulls = true)
+class ClientColorPreferencesAction implements Action {
+    public static val KIND = 'changeClientColorPreferences'
+    String kind = KIND
+    
+    ClientColorPreferences clientColorPreferences
+
+    new() {}
+    new(Consumer<ClientColorPreferencesAction> initializer) {
+        initializer.accept(this)
+    }
+}
+
+/**
+ * The client color preferences for individual styling for syntheses for the ClientColorPreferencesAction
+ */
+@Accessors
+class ClientColorPreferences {
+    ColorThemeKind kind
+    String foreground
+    String background
+    String highlight
+}
+
+/**
  * Sent from the client to the server to request a new diagram with the given synthesis.
  * 
  * @author nre
@@ -212,6 +245,8 @@ class PerformActionAction implements Action {
 class RefreshDiagramAction implements Action {
     public static val KIND = 'refreshDiagram'
     String kind = KIND
+    
+    Map<String, String> options
     
     new() {}
     new(Consumer<RefreshDiagramAction> initializer) {
