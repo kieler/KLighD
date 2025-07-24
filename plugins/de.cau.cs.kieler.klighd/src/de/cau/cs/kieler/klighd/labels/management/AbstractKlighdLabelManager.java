@@ -261,7 +261,8 @@ public abstract class AbstractKlighdLabelManager implements ILabelManager {
             // set its text override, estimate the size of the whole rendering, and kill the
             // override again
             KText kText = LabelManagementUtil.ktextFor(elkLabel);
-            // Apparently this can be null?
+            // If the target language label manager deleted the label, the KText will be null and does not need to be
+            // handled.
             if (kText != null) {
                 kText.setProperty(KlighdOptions.LABELS_TEXT_OVERRIDE, text);
                 
