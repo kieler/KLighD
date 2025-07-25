@@ -27,6 +27,12 @@ import de.cau.cs.kieler.klighd.filtering.SemanticFilterTag;
 public class KlighdTags {
     
     /**
+     * Hidden constructor to prevent instantiation.
+     */
+    private KlighdTags() {
+    }
+    
+    /**
      * Determines whether a sub-KRendering can be interpreted as a title for a node.
      * By default no rendering is seen as a title.
      */
