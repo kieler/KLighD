@@ -378,7 +378,7 @@ public final class KlighdProperties {
      * Determines whether a sub-KRendering can be interpreted as a title for a node.
      * By default no rendering is seen as a title.
      * 
-     * @deprecated Since version 3.1.1. Replaced by semantic tag {@link KlighdTags.IS_NODE_TITLE}
+     * @deprecated Since version 3.1.1. Replaced by semantic tag KlighdTags.IS_NODE_TITLE.
      */
     public static final IProperty<Boolean> IS_NODE_TITLE =
         new Property<Boolean>("klighd.isNodeTitle", false);
