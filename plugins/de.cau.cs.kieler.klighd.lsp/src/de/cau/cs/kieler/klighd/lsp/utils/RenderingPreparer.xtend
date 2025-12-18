@@ -164,9 +164,8 @@ final class RenderingPreparer {
      * Finally, modifiable styles defined by the synthesis are processed for the rendering.
      * 
      * @param element The parent element containing the graph to calculate all rendering bounds for.
-     * @param kGraphToSGraph A map for identifying the SGraph element for each KGraph element in this graph.
      */
-    static def void prepareRenderingLayout(KGraphElement element, Map<KGraphElement, SModelElement> kGraphToSGraph) {
+    static def void prepareRenderingLayout(KGraphElement element) {
         // calculate the sizes of all renderings:
         for (var int i = 0; i < element.data.size; i++) {
             val data = element.data.get(i)
@@ -193,7 +192,7 @@ final class RenderingPreparer {
         
         if (element instanceof KLabeledGraphElement) {
             for (label : element.labels) {
-                prepareRenderingLayout(label, kGraphToSGraph)
+                prepareRenderingLayout(label)
             }
         }
         if (element instanceof KNode) {
@@ -210,17 +209,17 @@ final class RenderingPreparer {
             
             if (isExpanded) {
                 for (node : element.children) {
-                    prepareRenderingLayout(node, kGraphToSGraph)
+                    prepareRenderingLayout(node)
                 }
             }
             for (edge : element.outgoingEdges) {
                 // not expanded => edge must not have the target node inside the non-expanded
                 if (isExpanded || !KGraphUtil.isDescendant(edge.target, element)) {
-                    prepareRenderingLayout(edge, kGraphToSGraph)
+                    prepareRenderingLayout(edge)
                 }
             }
             for (port : element.ports) {
-                prepareRenderingLayout(port, kGraphToSGraph)
+                prepareRenderingLayout(port)
             }
         }
         
