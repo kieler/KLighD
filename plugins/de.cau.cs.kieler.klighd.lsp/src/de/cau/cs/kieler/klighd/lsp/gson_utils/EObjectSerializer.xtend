@@ -3,7 +3,7 @@
  *
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright 2019-2021 by
+ * Copyright 2019-2026 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -23,7 +23,7 @@ import com.google.gson.JsonSerializer
 import de.cau.cs.kieler.klighd.kgraph.EMapPropertyHolder
 import de.cau.cs.kieler.klighd.kgraph.KInsets
 import de.cau.cs.kieler.klighd.kgraph.impl.EMapPropertyHolderImpl
-import de.cau.cs.kieler.klighd.krendering.KContainerRendering
+import de.cau.cs.kieler.klighd.krendering.KPlacementData
 import de.cau.cs.kieler.klighd.krendering.KRendering
 import de.cau.cs.kieler.klighd.krendering.KRenderingLibrary
 import de.cau.cs.kieler.klighd.krendering.KRenderingRef
@@ -103,8 +103,8 @@ class EObjectSerializer implements JsonSerializer<EObject> {
     def shouldSkipField(Field f) {
         return Modifier.isStatic(f.modifiers)
             || KRenderingRef      .isAssignableFrom(f.declaringClass) && (f.getName().equals("rendering"))
-            || KRendering         .isAssignableFrom(f.declaringClass) && (f.getName().equals("placementData"))
-            || KContainerRendering.isAssignableFrom(f.declaringClass) && (f.getName().equals("childPlacement")) 
+//            || KRendering         .isAssignableFrom(f.declaringClass) && (f.getName().equals("placementData"))
+//            || KContainerRendering.isAssignableFrom(f.declaringClass) && (f.getName().equals("childPlacement")) 
     }
     
     /**
@@ -128,6 +128,7 @@ class EObjectSerializer implements JsonSerializer<EObject> {
             || KStyle           .isAssignableFrom(c)
             || KXPosition       .isAssignableFrom(c)
             || KYPosition       .isAssignableFrom(c)
+            || KPlacementData   .isAssignableFrom(c)
     }
     
     // TODO: Special handling of default values
