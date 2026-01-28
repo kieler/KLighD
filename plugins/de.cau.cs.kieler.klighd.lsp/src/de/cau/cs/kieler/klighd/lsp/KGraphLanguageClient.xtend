@@ -28,14 +28,6 @@ import org.eclipse.lsp4j.services.LanguageClient
 interface KGraphLanguageClient extends LanguageClient {
     
     /**
-     * Send to client if some message should be displayed. {@code type} is one of "info", "warn", and "error".
-     * 
-     * @deprecated Use the default LSP "window/showMessage" notification instead.
-     */
-    @JsonNotification("general/sendMessage")
-    def void sendMessage(String message, String type)
-    
-    /**
      * Send to the client to replace the given range of the file given by the URI by the code string.
      */
     @JsonNotification("general/replaceContentInFile")
