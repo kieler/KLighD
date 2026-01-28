@@ -35,6 +35,7 @@ import de.cau.cs.kieler.klighd.lsp.model.SKLabel
 import de.cau.cs.kieler.klighd.lsp.model.SKNode
 import de.cau.cs.kieler.klighd.lsp.model.SKPort
 import de.cau.cs.kieler.klighd.lsp.utils.KGraphElementIdGenerator
+import de.cau.cs.kieler.klighd.lsp.utils.KGraphMappingUtil
 import de.cau.cs.kieler.klighd.lsp.utils.SprottyProperties
 import de.cau.cs.kieler.klighd.util.KlighdPredicates
 import de.cau.cs.kieler.klighd.util.KlighdProperties
@@ -192,23 +193,25 @@ class KGraphIncrementalDiagramGenerator extends KGraphDiagramGenerator {
         val nodeAndEdgeElements = new ArrayList
         // add all node children
         val SNode nodeElement = incrementalGenerateNode(node)
-        nodeAndEdgeElements.add(nodeElement)
-        kGraphToSModelElementMap.put(node, nodeElement)
-        elementsToPostProcess.add(new Pair(node, nodeElement))
-
-        // Add all edges in a list to be generated later, as they need their source and target nodes or ports
-        // to be generated previously. Because hierarchical edges could connect to any arbitrary parent or child node,
-        // they can only be generated safely in the end.\
-        // NOTE: since I will now do post processing for every increment, hierarchical edges should be completely broken
-        for (edge : node.outgoingEdges) {
-            if (edge.target !== null) {
-                // if target node is directly or indirectly contained by the source node
-                if (KGraphUtil.isDescendant(edge.target, node)) {
-                    // then generated element of node (add to its children)
-                    edgesToGenerate.add(edge -> nodeElement.children)
-                } else {
-                    // otherwise the source node's parent generated element (add to its children)
-                    edgesToGenerate.add(edge -> parent.children)
+        if (nodeElement !== null) {
+            nodeAndEdgeElements.add(nodeElement)
+            kGraphToSModelElementMap.put(node, nodeElement)
+            elementsToPostProcess.add(new Pair(node, nodeElement))
+    
+            // Add all edges in a list to be generated later, as they need their source and target nodes or ports
+            // to be generated previously. Because hierarchical edges could connect to any arbitrary parent or child node,
+            // they can only be generated safely in the end.\
+            // NOTE: since I will now do post processing for every increment, hierarchical edges should be completely broken
+            for (edge : node.outgoingEdges) {
+                if (edge.target !== null) {
+                    // if target node is directly or indirectly contained by the source node
+                    if (KGraphUtil.isDescendant(edge.target, node)) {
+                        // then generated element of node (add to its children)
+                        edgesToGenerate.add(edge -> nodeElement.children)
+                    } else {
+                        // otherwise the source node's parent generated element (add to its children)
+                        edgesToGenerate.add(edge -> parent.children)
+                    }
                 }
             }
         }
@@ -219,6 +222,13 @@ class KGraphIncrementalDiagramGenerator extends KGraphDiagramGenerator {
      * Creates a Sprotty node corresponding to the given {@link KNode}.
      */
     private def SKNode incrementalGenerateNode(KNode node) {
+        val renderingContextData = RenderingContextData.get(node)
+        // activate the element if it should be shown.
+        renderingContextData.setProperty(KlighdInternalProperties.ACTIVE, node.getProperty(KlighdProperties.SHOW))
+        if (!node.getProperty(KlighdProperties.SHOW)) {
+            return null
+        }
+        
         // only generate self and leave children as stubs to be generated later
         val nodeElement = configSElement(SKNode, idGen.getId(node))
         
@@ -230,14 +240,9 @@ class KGraphIncrementalDiagramGenerator extends KGraphDiagramGenerator {
         nodeElement.data = node.data.filter[KRenderingLibrary.isAssignableFrom(it.class)].toList
         
         setProperties(nodeElement, node)
+        KGraphMappingUtil.mapProperties(node, nodeElement)
         findSpecialRenderings(filteredData)
-        
-        val renderingContextData = RenderingContextData.get(node)
-        // activate the element by default if it does not have an active/inactive status yet.
-        if (!renderingContextData.containsPoperty(KlighdInternalProperties.ACTIVE)) {
-            renderingContextData.setProperty(KlighdInternalProperties.ACTIVE, true)
-        }
-        
+                
         var boolean isExpanded
         if (renderingContextData.hasProperty(SprottyProperties.EXPANDED)) {
             isExpanded = renderingContextData.getProperty(SprottyProperties.EXPANDED)
@@ -249,7 +254,7 @@ class KGraphIncrementalDiagramGenerator extends KGraphDiagramGenerator {
         nodeElement.children.addAll(createPorts(node.ports))
         nodeElement.children.addAll(createLabels(node.labels))
         
-        if ((!node.children.empty) && isExpanded) {
+        if (isExpanded) {
             renderingContextData.setProperty(KlighdInternalProperties.POPULATED, true)
             // nodeElement.children.addAll(createNodesAndPrepareEdges(node.children, nodeElement))
             childrenToProcess.addAll(node.children)
