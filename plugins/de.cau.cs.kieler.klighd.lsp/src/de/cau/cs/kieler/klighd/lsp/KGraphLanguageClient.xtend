@@ -3,7 +3,7 @@
  *
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright 2020 by
+ * Copyright 2020-2026 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -29,6 +29,8 @@ interface KGraphLanguageClient extends LanguageClient {
     
     /**
      * Send to client if some message should be displayed. {@code type} is one of "info", "warn", and "error".
+     * 
+     * @deprecated Use the default LSP "window/showMessage" notification instead.
      */
     @JsonNotification("general/sendMessage")
     def void sendMessage(String message, String type)
