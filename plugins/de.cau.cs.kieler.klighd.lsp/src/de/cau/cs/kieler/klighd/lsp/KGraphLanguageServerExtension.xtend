@@ -3,7 +3,7 @@
  *
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright 2018-2025 by
+ * Copyright 2018-2026 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -48,6 +48,8 @@ import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.lsp4j.DocumentHighlight
 import org.eclipse.lsp4j.DocumentHighlightParams
 import org.eclipse.lsp4j.InitializeParams
+import org.eclipse.lsp4j.MessageParams
+import org.eclipse.lsp4j.MessageType
 import org.eclipse.lsp4j.services.LanguageClient
 import org.eclipse.sprotty.ActionMessage
 import org.eclipse.sprotty.DiagramOptions
@@ -616,7 +618,7 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
     
     override sendError(String message) {
         if (this.kgraphLanguageClient !== null) {
-            this.kgraphLanguageClient.sendMessage(LSPUtil.escapeHtml(message), "error")
+            this.kgraphLanguageClient.showMessage(new MessageParams(MessageType.Error, LSPUtil.escapeHtml(message)))
             return true
         }
         return false
@@ -624,7 +626,7 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
     
     override sendWarning(String message) {
         if (this.kgraphLanguageClient !== null) {
-            this.kgraphLanguageClient.sendMessage(LSPUtil.escapeHtml(message), "warn")
+            this.kgraphLanguageClient.showMessage(new MessageParams(MessageType.Warning, LSPUtil.escapeHtml(message)))
             return true
         }
         return false
@@ -632,7 +634,7 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
     
     override sendInfo(String message) {
         if (this.kgraphLanguageClient !== null) {
-            this.kgraphLanguageClient.sendMessage(LSPUtil.escapeHtml(message), "info")
+            this.kgraphLanguageClient.showMessage(new MessageParams(MessageType.Info, LSPUtil.escapeHtml(message)))
             return true
         }
         return false

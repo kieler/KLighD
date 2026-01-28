@@ -3,7 +3,7 @@
  *
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright 2020 by
+ * Copyright 2020-2026 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -26,12 +26,6 @@ import org.eclipse.lsp4j.services.LanguageClient
  * @author sdo
  */
 interface KGraphLanguageClient extends LanguageClient {
-    
-    /**
-     * Send to client if some message should be displayed. {@code type} is one of "info", "warn", and "error".
-     */
-    @JsonNotification("general/sendMessage")
-    def void sendMessage(String message, String type)
     
     /**
      * Send to the client to replace the given range of the file given by the URI by the code string.
