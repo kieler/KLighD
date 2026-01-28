@@ -63,6 +63,7 @@ public class SimpleUpdateStrategy implements IUpdateStrategy {
      * {@inheritDoc}
      */
     public void update(final KNode baseModel, final KNode newModel, final ViewContext viewContext) {
+        System.out.println(System.currentTimeMillis() + ": SimpleUpdateStrategy started");
 
         final List<KNode> newChildren = new ArrayList<>(newModel.getChildren());
         final List<KGraphData> newData = new ArrayList<>(newModel.getData());
@@ -96,6 +97,7 @@ public class SimpleUpdateStrategy implements IUpdateStrategy {
         //  by means of a property on the corresponding layout data.
         // Thus, the baseModel node obtains its associated source element through the above statement
         //  'baseModel.getData().addAll(newData); :-)
+        System.out.println(System.currentTimeMillis() + ": SimpleUpdateStrategy finished");
     }
     
     private void applyShapeLayout(final KShapeLayout baseLayout, final KShapeLayout newLayout) {

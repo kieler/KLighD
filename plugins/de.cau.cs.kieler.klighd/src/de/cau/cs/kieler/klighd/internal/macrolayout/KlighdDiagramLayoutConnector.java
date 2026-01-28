@@ -157,6 +157,7 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
      */
     @Override
     public LayoutMapping buildLayoutGraph(final IWorkbenchPart workbenchPart, final Object diagramPart) {
+        System.out.println(System.currentTimeMillis() + ": *****Server[KlighdDiagramLayoutConnector]: Build Layout Graph (micro layout 1 + K->ElkGraph) started");
         final KNode viewModel;
         final ViewContext viewContext;
 
@@ -198,7 +199,8 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
             // remember the layout recorder if any
             mapping.setProperty(KlighdInternalProperties.RECORDER, viewContext.getLayoutRecorder());
         }
-        
+
+        System.out.println(System.currentTimeMillis() + ": *****Server[KlighdDiagramLayoutConnector]: Build Layout Graph (micro layout 1 + K->ElkGraph) finished");
         return mapping;
     }
 

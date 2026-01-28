@@ -54,12 +54,14 @@ class KGraphLayoutEngine extends ElkLayoutEngine {
 	    AbstractLanguageServer.addToMainThreadQueue([
     	    synchronized (diagramState) {
         	    if (root instanceof SGraph) {
+        	        System.out.println(System.currentTimeMillis + ": Server: layout starting.")
         	        // The layout is executed on the KGraph, not the SGraph. So get the KGraph belonging to this SGraph from
         	        // the KGraphContext.
                     onlyLayoutOnKGraph(root.id)
     
                     // map layouted KGraph to SGraph
                     KGraphMappingUtil.mapLayout(diagramState.getKGraphToSModelElementMap(root.id))
+                    System.out.println(System.currentTimeMillis + ": Server: layout finished.")
                 }
             }
         ])
@@ -86,8 +88,14 @@ class KGraphLayoutEngine extends ElkLayoutEngine {
         lightDiagramLayoutConfig.options(configurators)
 
         synchronized (kGraphContext.viewModel) {
+            
+            System.out.println(System.currentTimeMillis() + ": *****Server[KGraphLayoutEngine]: performLayout started");
             lightDiagramLayoutConfig.performLayout
+            System.out.println(System.currentTimeMillis() + ": *****Server[KGraphLayoutEngine]: performLayout finished");
+        
+            System.out.println(System.currentTimeMillis() + ": *****Server[KGraphLayoutEngine]: Prepare Rendering (micro layout 2) started");
             RenderingPreparer.prepareRenderingLayout(kGraphContext.viewModel, diagramState.getKGraphToSModelElementMap(uri))
+            System.out.println(System.currentTimeMillis() + ": *****Server[KGraphLayoutEngine]: Prepare Rendering (micro layout 2) finished");
         }
     }
 

@@ -54,6 +54,7 @@ class KGraphMappingUtil {
      * @param mapping The mapping between KGraph and SGraph elements
      */
     static def mapLayout(Map<KGraphElement, SModelElement> mapping) {
+        System.out.println(System.currentTimeMillis() + ": Server: Layout Mapping started");
         mapping.forEach[kGraphElement, sModelElement |
             // Layout data looks different for different KGraph Element Types
             if (kGraphElement instanceof KNode && sModelElement instanceof SKNode) {
@@ -68,6 +69,7 @@ class KGraphMappingUtil {
                     + kGraphElement.class + ", " + sModelElement.class)
             }
         ]
+        System.out.println(System.currentTimeMillis() + ": Server: Layout Mapping finished");
     }
     
     /**

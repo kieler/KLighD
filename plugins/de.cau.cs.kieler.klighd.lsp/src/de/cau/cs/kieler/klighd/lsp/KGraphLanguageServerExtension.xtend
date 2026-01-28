@@ -143,6 +143,7 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
     
     override accept(ActionMessage message) {
         if (message.action instanceof RequestModelAction) {
+            System.out.println(System.currentTimeMillis + ": Server: Request Model Action received.")
             val action = message.action as RequestModelAction
             val diagramType = action.options.get(DiagramOptions.OPTION_DIAGRAM_TYPE)
             val server = diagramServerManager.getDiagramServer(diagramType, message.clientId)
@@ -157,6 +158,7 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
             // After a new server has been initialized, also send the available syntheses to the client.
             val path = action.options.get(DiagramOptions.OPTION_SOURCE_URI)
             val newServer = diagramServerManager.getDiagramServer(diagramType, message.clientId)
+            System.out.println(System.currentTimeMillis + ": Server: Sending available syntheses (asynchronous).")
             sendAvailableSyntheses(path, newServer)
         }
         super.accept(message)

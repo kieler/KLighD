@@ -133,6 +133,7 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
      * @param newRoot the diagram to request the images for.
      */
     protected def prepareUpdateModel(SModelRoot newRoot) {
+        System.out.println(System.currentTimeMillis + ": Server: prepareUpdateModel starting.")
         synchronized (modelLock) {
             currentRoot = newRoot
             if (newRoot !== null) {
@@ -485,11 +486,18 @@ class KGraphDiagramServer extends LanguageAwareDiagramServer {
     
     /** Sets or updates the {@code currentRoot} as the model. */
     protected def void setOrUpdateModel() {
+        System.out.println(System.currentTimeMillis + ": Server[KGraphDiagramServer]: setOrUpdateModel starting (images and texts are updated).")
         if (newModel) {
             setModel(currentRoot)                
         } else {
             updateModel(currentRoot)
         }
         newModel = false
+    }
+    
+    override void ^dispatch(Action action) {
+        System.out.println(System.currentTimeMillis + ": Server[KGraphDiagramServer]: dispatching an action: " + action.kind)
+        super.dispatch(action)
+        System.out.println(System.currentTimeMillis + ": Server[KGraphDiagramServer]: action dispatch completed: " + action.kind)
     }
 }

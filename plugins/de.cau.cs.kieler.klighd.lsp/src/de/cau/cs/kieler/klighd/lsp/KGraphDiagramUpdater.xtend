@@ -119,6 +119,7 @@ class KGraphDiagramUpdater extends DiagramUpdater {
         val uri = diagramServer.sourceUri
         return (languageServer as KGraphLanguageServerExtension).doRead(uri) [ resource, ci |
             // Just update the SGraph from the already existing KGraph.
+            System.out.println(System.currentTimeMillis + ": Server[KGraphDiagramUpdater]: doUpdateLayout starting (pre KGraph->SKGraph).")
             var ViewContext viewContext = null
             synchronized(diagramState) {
                 viewContext = diagramState.getKGraphContext(uri)
@@ -126,6 +127,7 @@ class KGraphDiagramUpdater extends DiagramUpdater {
             
             return diagramServer -> createModel(viewContext, uri, ci)
         ].thenAccept [
+            System.out.println(System.currentTimeMillis + ": Server[KGraphDiagramUpdater]: doUpdateLayout (post KGraph->SKGraph).")
             if (value !== null) {
                 key.prepareUpdateModel(value)
             } else {
@@ -156,7 +158,9 @@ class KGraphDiagramUpdater extends DiagramUpdater {
 //            LOG.error("Failed to update diagram.", exc)
             return CompletableFuture.completedFuture(null)
         }
+        System.out.println(System.currentTimeMillis + ": Server[KGraphDiagramUpdater]: doUpdateDiagrams starting.")
         return (languageServer as KGraphLanguageServerExtension).doRead(uri) [ resource, ci |
+            System.out.println(System.currentTimeMillis + ": Server[KGraphDiagramUpdater]: doUpdateDiagrams continuing async. (resource available)")
             var Object snapshotModel = null
             synchronized (diagramState) {
                 snapshotModel = diagramState.getSnapshotModel(uri)
@@ -202,6 +206,7 @@ class KGraphDiagramUpdater extends DiagramUpdater {
      * @param uri The identifying URI to access the diagram state maps.
      */
     def void prepareModel(KGraphDiagramServer server, Object model, String uri) {
+        System.out.println(System.currentTimeMillis + ": Server: prepareModel starting.")
         val properties = new KlighdSynthesisProperties()
         var SprottyViewer viewer = null
         var String synthesisId
@@ -279,7 +284,9 @@ class KGraphDiagramUpdater extends DiagramUpdater {
         val vc = viewContext
         // Update the model and with that call the diagram synthesis.
         AbstractLanguageServer.addToMainThreadQueue([
+            System.out.println(System.currentTimeMillis + ": ****Server[KGraphDiagramUpdater]: prepareModel pre synthesis.")
             vc.update(model)
+            System.out.println(System.currentTimeMillis + ": ****Server[KGraphDiagramUpdater]: prepareModel post synthesis.")
         ])
 
         synchronized (diagramState) {
@@ -324,7 +331,10 @@ class KGraphDiagramUpdater extends DiagramUpdater {
         var SGraph sGraph = null;
         synchronized (diagramState) {
             sGraph = diagramGenerator.toSGraph(viewContext, uri, cancelIndicator)
+            
+            System.out.println(System.currentTimeMillis() + "Server[KGraphDiagramUpdater]: Rendering IDs started");
             RenderingPreparer.prepareRenderingIDs(viewContext.viewModel, diagramGenerator.getKGraphToSModelElementMap)
+            System.out.println(System.currentTimeMillis() + "Server[KGraphDiagramUpdater]: Rendering IDs finished");
         }
         if (incrementalDiagramGenerator) {
             val requestManager = new KGraphDiagramPieceRequestManager(diagramGenerator as KGraphIncrementalDiagramGenerator)

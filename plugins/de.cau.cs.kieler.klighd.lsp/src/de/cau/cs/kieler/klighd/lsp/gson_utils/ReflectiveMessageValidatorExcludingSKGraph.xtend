@@ -20,10 +20,15 @@ import de.cau.cs.kieler.klighd.kgraph.EMapPropertyHolder
 import de.cau.cs.kieler.klighd.krendering.KImage
 import java.util.Deque
 import java.util.List
+import org.eclipse.lsp4j.jsonrpc.JsonRpcException
 import org.eclipse.lsp4j.jsonrpc.MessageConsumer
+import org.eclipse.lsp4j.jsonrpc.MessageIssueException
+import org.eclipse.lsp4j.jsonrpc.messages.Message
 import org.eclipse.lsp4j.jsonrpc.messages.MessageIssue
 import org.eclipse.lsp4j.jsonrpc.validation.ReflectiveMessageValidator
 import org.eclipse.sprotty.SModelElement
+import org.eclipse.lsp4j.jsonrpc.messages.NotificationMessage
+import org.eclipse.sprotty.ActionMessage
 
 /**
  * Extension to the lsp4j {@link ReflectiveMessageValidator} to ignore direct or indirect circular references in sent
@@ -44,5 +49,15 @@ class ReflectiveMessageValidatorExcludingSKGraph extends ReflectiveMessageValida
             return
         }
         super.validate(object, issues, objectStack, accessorStack)
+    }
+    
+    
+    override void consume(Message message) throws MessageIssueException, JsonRpcException {
+        System.out.println(System.currentTimeMillis() + ": *****Server[ReflectiveMessageValidatorExcludingSKGraph]: Gson mapping started");
+        if (message instanceof NotificationMessage && (message as NotificationMessage)?.params instanceof ActionMessage) {
+            System.out.println(((message as NotificationMessage)?.params as ActionMessage)?.action.kind)
+        }
+        super.consume(message)
+        System.out.println(System.currentTimeMillis() + ": *****Server[ReflectiveMessageValidatorExcludingSKGraph]: Gson mapping finished");
     }
 }
