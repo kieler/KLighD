@@ -161,7 +161,7 @@ public final class SynthesisOption {
      * @return a 'Separator' {@link SynthesisOption}.
      */
     public static SynthesisOption createSeparator(final String label) {
-        return new SynthesisOption(label, TransformationOptionType.SEPARATOR, true);
+        return new SynthesisOption(createIdFromName(label, TransformationOptionType.SEPARATOR), label, TransformationOptionType.SEPARATOR, true);
     }
     
     /**

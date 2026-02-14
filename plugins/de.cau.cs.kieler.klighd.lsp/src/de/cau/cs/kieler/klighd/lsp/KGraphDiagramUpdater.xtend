@@ -183,7 +183,7 @@ class KGraphDiagramUpdater extends DiagramUpdater {
                 model = new MessageModel("The model contains errors:\n" + errors)
             }
             // Only update an erroneous model if there was no diagram shown before.
-            if (!hasErrors || server.currentRoot.type == "NONE") {
+            if (!hasErrors || server.currentRoot === null || server.currentRoot.type == "NONE") {
                 synchronized (diagramState) {
                     prepareModel(server, model, uri)
                     updateLayout(server)
