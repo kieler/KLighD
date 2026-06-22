@@ -53,6 +53,7 @@ import org.eclipse.xtext.ide.server.ILanguageServerExtension
 import org.eclipse.xtext.ide.server.IMultiRootWorkspaceConfigFactory
 import org.eclipse.xtext.ide.server.LanguageServerImpl
 import org.eclipse.xtext.ide.server.ServerLauncher
+import org.eclipse.xtext.ide.server.ServerModule
 import org.eclipse.xtext.resource.IResourceServiceProvider
 import org.eclipse.xtext.util.Modules2
 
@@ -80,7 +81,7 @@ abstract class AbstractLsCreator implements ILsCreator {
      */
     override createLSModules(boolean socket) {
         return Modules2.mixin(
-            new LanguageServerModule,
+            new ServerModule,
             [
                 if (socket) {
                     // nothing special to bind
