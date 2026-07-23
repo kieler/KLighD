@@ -570,9 +570,7 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
         return requestManager.runRead [ ci |
             try {
                 val resource = getResource(_uriExtensions.toUri(path))
-                synchronized(resource) {
-	                return work.apply(resource, ci)
-                }
+                return work.apply(resource, ci)
             } catch (Exception e) {
                 sendErrorAndThrow(e)
             }
