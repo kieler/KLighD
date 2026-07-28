@@ -3,7 +3,7 @@
  * 
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright 2019-2021 by
+ * Copyright 2019-2026 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -41,6 +41,8 @@ import java.util.function.Function
 import org.apache.log4j.AsyncAppender
 import org.apache.log4j.Logger
 import org.eclipse.core.runtime.IStatus
+import org.eclipse.lsp4j.MessageParams
+import org.eclipse.lsp4j.MessageType
 import org.eclipse.lsp4j.jsonrpc.Launcher.Builder
 import org.eclipse.lsp4j.jsonrpc.MessageConsumer
 import org.eclipse.lsp4j.services.LanguageClient
@@ -51,6 +53,7 @@ import org.eclipse.xtext.ide.server.ILanguageServerExtension
 import org.eclipse.xtext.ide.server.IMultiRootWorkspaceConfigFactory
 import org.eclipse.xtext.ide.server.LanguageServerImpl
 import org.eclipse.xtext.ide.server.ServerLauncher
+import org.eclipse.xtext.ide.server.ServerModule
 import org.eclipse.xtext.resource.IResourceServiceProvider
 import org.eclipse.xtext.util.Modules2
 
@@ -78,7 +81,7 @@ abstract class AbstractLsCreator implements ILsCreator {
      */
     override createLSModules(boolean socket) {
         return Modules2.mixin(
-            new LanguageServerModule,
+            new ServerModule,
             [
                 if (socket) {
                     // nothing special to bind
@@ -181,18 +184,18 @@ abstract class AbstractLsCreator implements ILsCreator {
         // Register a new status handler that forwards the messages to the client.
         Klighd.setStatusManager( [status, style |
             if (style !== IKlighdStatusManager.NONE) {
-                var String type
+                var MessageType type
                 switch (status.getSeverity()) {
                 case IStatus.INFO:
-                    type = "info"
+                    type = MessageType.Info
                 case IStatus.WARNING:
-                    type = "warn"
+                    type = MessageType.Warning
                 case IStatus.ERROR:
-                    type = "error"
+                    type = MessageType.Error
                 default:
                     return
                 }
-                languageClient.sendMessage(statusToMessage(status), type)
+                languageClient.showMessage(new MessageParams(type, statusToMessage(status)))
             }
         ])
     }
