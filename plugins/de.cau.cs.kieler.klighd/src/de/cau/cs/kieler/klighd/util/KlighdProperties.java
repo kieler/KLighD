@@ -373,14 +373,15 @@ public final class KlighdProperties {
      */
     public static final IProperty<float[]> CALCULATED_TEXT_LINE_HEIGHTS = 
         new Property<float[]>("klighd.calculated.text.line.heights", null);
-
-	    
+    
     /**
      * Determines whether a sub-KRendering can be interpreted as a title for a node.
      * By default no rendering is seen as a title.
+     * 
+     * @deprecated Since version 3.1.1. Replaced by semantic tag KlighdTags.IS_NODE_TITLE.
      */
     public static final IProperty<Boolean> IS_NODE_TITLE =
-            new Property<Boolean>("klighd.isNodeTitle", false);
+        new Property<Boolean>("klighd.isNodeTitle", false);
     
     /**
      * Property determining the custom color theme to be used by syntheses.
