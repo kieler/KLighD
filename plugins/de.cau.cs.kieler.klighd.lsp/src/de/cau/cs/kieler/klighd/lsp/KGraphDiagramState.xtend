@@ -364,7 +364,7 @@ class KGraphDiagramState {
     def remove(String clientId) {
         val uri = uriStringMap.get(clientId)
         if (uri !== null) {
-            kGraphContexts.remove(URLDecoder.decode(uri, "UTF-8"))
+            kGraphContexts.remove(uri)
             kGraphToSModelElementMap.remove(uri)
             idToKGraphElementMap.remove(uri)
             snapshotModelMapping.remove(uri)
