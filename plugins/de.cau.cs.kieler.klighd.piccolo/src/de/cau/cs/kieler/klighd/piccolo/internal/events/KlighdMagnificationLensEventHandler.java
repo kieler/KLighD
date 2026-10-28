@@ -235,7 +235,7 @@ public class KlighdMagnificationLensEventHandler extends KlighdBasicInputEventHa
 
     private void detachCameraFromLayers() {
         @SuppressWarnings("unchecked")
-        final Iterable<PLayer> layers = Lists.reverse(
+        final Iterable<PLayer> layers = Lists.<PLayer>reverse(
             Lists.<PLayer>newArrayList(lensCamera.getLayersReference())
         );
 
