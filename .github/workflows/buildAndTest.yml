@@ -27,11 +27,21 @@ jobs:
       with:
         java-version: 21
         distribution: temurin
-    - name: Cache Maven packages
+    - name: Cache Maven packages and distribution
       uses: actions/cache@v4
       with:
-        path: .m2
+        path: |
+          .m2
+          ~/.m2/wrapper/dists
         key: ${{ runner.os }}-m2-${{ hashFiles('.github/workflows/**/*.*', '**/pom.xml', '**/META-INF/MANIFEST.MF', 'build/de.cau.cs.kieler.klighd.targetplatform/de.cau.cs.kieler.klighd.targetplatform.target') }}
+    - name: Download Maven wrapper
+      run: >
+          mvn --batch-mode --non-recursive
+          org.apache.maven.plugins:maven-wrapper-plugin:3.3.4:wrapper
+          -Dmaven=3.9.16
+          -Dtype=only-script
+          -DdistributionUrl=https://repo.maven.apache.org/maven2/org/apache/maven/apache-maven/3.9.16/apache-maven-3.9.16-bin.zip
+          -DdistributionSha256Sum=5af3b743dd8b876b5c45da33b676251e5f1687712644abb4ee519ca56e1d89ce
     - name: Run mvn build headless
       run: |
           export DISPLAY=:0
@@ -39,7 +49,7 @@ jobs:
           # Xvfb -screen 0 1280x1024x16 -ac :17 > /dev/null 2>&1 &
           #use screen 0 with 1280x1024x8 that is default according to https://www.x.org/releases/X11R7.6/doc/man/man1/Xvfb.1.xhtml
           Xvfb -ac > /dev/null 2>&1 &
-          mvn -B -fae -Dmaven.repo.local=.m2 -Dmaven.test.failure.ignore=true -ntp -s mvn-local-settings.xml clean deploy
+          ./mvnw -B -fae -Dmaven.repo.local=.m2 -Dmaven.test.failure.ignore=true -ntp -s mvn-local-settings.xml clean deploy
           #print the folder structure up to depth 2 on the console as we have no other option of getting an inside into workspace folder
           find . -maxdepth 2
     - name: Archive P2 Repository
