@@ -36,12 +36,16 @@ jobs:
         key: ${{ runner.os }}-m2-${{ hashFiles('.github/workflows/**/*.*', '**/pom.xml', '**/META-INF/MANIFEST.MF', 'build/de.cau.cs.kieler.klighd.targetplatform/de.cau.cs.kieler.klighd.targetplatform.target') }}
     - name: Download Maven wrapper
       run: >
+          cd "$RUNNER_TEMP"
+
           mvn --batch-mode --non-recursive
           org.apache.maven.plugins:maven-wrapper-plugin:3.3.4:wrapper
           -Dmaven=3.9.16
           -Dtype=only-script
           -DdistributionUrl=https://repo.maven.apache.org/maven2/org/apache/maven/apache-maven/3.9.16/apache-maven-3.9.16-bin.zip
           -DdistributionSha256Sum=5af3b743dd8b876b5c45da33b676251e5f1687712644abb4ee519ca56e1d89ce
+
+          cp -r mvnw mvnw.cmd .mvn "$GITHUB_WORKSPACE/"
     - name: Run mvn build headless
       run: |
           export DISPLAY=:0
